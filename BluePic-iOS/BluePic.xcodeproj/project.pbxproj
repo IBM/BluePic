@@ -79,6 +79,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3470B2661BF3FF47009F17A2 /* ExternalLibraries */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ExternalLibraries;
+			sourceTree = "<group>";
+		};
 		3472B80F1BF25F22000511A1 = {
 			isa = PBXGroup;
 			children = (
@@ -110,6 +117,7 @@
 				3472B8221BF25F22000511A1 /* Assets.xcassets */,
 				3472B8241BF25F22000511A1 /* LaunchScreen.storyboard */,
 				3472B8271BF25F22000511A1 /* Info.plist */,
+				3470B2661BF3FF47009F17A2 /* ExternalLibraries */,
 			);
 			path = BluePic;
 			sourceTree = "<group>";
