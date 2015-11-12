@@ -227,24 +227,8 @@ public enum ParameterEncoding {
         //
         //==========================================================================================================
 
-        if #available(iOS 8.3, OSX 10.10, *) {
-            escaped = string.stringByAddingPercentEncodingWithAllowedCharacters(allowedCharacterSet) ?? string
-        } else {
-            let batchSize = 50
-            var index = string.startIndex
-
-            while index != string.endIndex {
-                let startIndex = index
-                let endIndex = index.advancedBy(batchSize, limit: string.endIndex)
-                let range = Range(start: startIndex, end: endIndex)
-
-                let substring = string.substringWithRange(range)
-
-                escaped += substring.stringByAddingPercentEncodingWithAllowedCharacters(allowedCharacterSet) ?? substring
-
-                index = endIndex
-            }
-        }
+        escaped = string.stringByAddingPercentEncodingWithAllowedCharacters(allowedCharacterSet) ?? string
+        
 
         return escaped
     }
