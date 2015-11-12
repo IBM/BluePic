@@ -14,6 +14,7 @@
 		3472B8261BF25F22000511A1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3472B8241BF25F22000511A1 /* LaunchScreen.storyboard */; };
 		3472B8311BF25F22000511A1 /* BluePicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3472B8301BF25F22000511A1 /* BluePicTests.swift */; };
 		3472B83C1BF25F22000511A1 /* BluePicUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3472B83B1BF25F22000511A1 /* BluePicUITests.swift */; };
+		7966EF98A84250A8FBF553CF /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D824C2382D098935189D8B4A /* Pods.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 		3472B83B1BF25F22000511A1 /* BluePicUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluePicUITests.swift; sourceTree = "<group>"; };
 		3472B83D1BF25F22000511A1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4E634BA75AA6E913EDC1B742 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		D824C2382D098935189D8B4A /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +58,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7966EF98A84250A8FBF553CF /* Pods.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -91,6 +94,7 @@
 				3472B83A1BF25F22000511A1 /* BluePicUITests */,
 				3472B8191BF25F22000511A1 /* Products */,
 				45C897928D47CD19BF0AED94 /* Pods */,
+				3AC834D878B397ADDD4DCDCF /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -134,6 +138,14 @@
 				3472B83D1BF25F22000511A1 /* Info.plist */,
 			);
 			path = BluePicUITests;
+			sourceTree = "<group>";
+		};
+		3AC834D878B397ADDD4DCDCF /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D824C2382D098935189D8B4A /* Pods.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		45C897928D47CD19BF0AED94 /* Pods */ = {
