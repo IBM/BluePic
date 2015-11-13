@@ -480,7 +480,7 @@
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = BluePic/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = mil.ibm.com.BluePic;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ibm.cio.be.BluePic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -492,7 +492,7 @@
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = BluePic/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = mil.ibm.com.BluePic;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ibm.cio.be.BluePic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
