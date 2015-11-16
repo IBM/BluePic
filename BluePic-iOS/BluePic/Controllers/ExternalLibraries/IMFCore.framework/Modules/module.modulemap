@@ -1,0 +1,6 @@
+framework module IMFCore {
+  umbrella header "IMFCore.h"
+
+  export *
+  module * { export * }
+}
