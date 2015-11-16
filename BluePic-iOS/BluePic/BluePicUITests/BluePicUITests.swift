@@ -2,7 +2,7 @@
 //  BluePicUITests.swift
 //  BluePicUITests
 //
-//  Created by Ricardo Olivieri on 11/12/15.
+//  Created by Nathan Hekman on 11/16/15.
 //  Copyright © 2015 MIL. All rights reserved.
 //
 

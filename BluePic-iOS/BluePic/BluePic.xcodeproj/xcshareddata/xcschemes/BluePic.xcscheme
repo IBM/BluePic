@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0700"
+   LastUpgradeVersion = "0710"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4966004A1BF504160091BB49"
+               BlueprintIdentifier = "347472891BFA8C6A0018B7F6"
                BuildableName = "BluePic.app"
                BlueprintName = "BluePic"
                ReferencedContainer = "container:BluePic.xcodeproj">
@@ -32,7 +32,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4966005E1BF504160091BB49"
+               BlueprintIdentifier = "3474729D1BFA8C6A0018B7F6"
                BuildableName = "BluePicTests.xctest"
                BlueprintName = "BluePicTests"
                ReferencedContainer = "container:BluePic.xcodeproj">
@@ -42,7 +42,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "496600691BF504160091BB49"
+               BlueprintIdentifier = "347472A81BFA8C6A0018B7F6"
                BuildableName = "BluePicUITests.xctest"
                BlueprintName = "BluePicUITests"
                ReferencedContainer = "container:BluePic.xcodeproj">
@@ -52,7 +52,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "4966004A1BF504160091BB49"
+            BlueprintIdentifier = "347472891BFA8C6A0018B7F6"
             BuildableName = "BluePic.app"
             BlueprintName = "BluePic"
             ReferencedContainer = "container:BluePic.xcodeproj">
@@ -75,7 +75,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "4966004A1BF504160091BB49"
+            BlueprintIdentifier = "347472891BFA8C6A0018B7F6"
             BuildableName = "BluePic.app"
             BlueprintName = "BluePic"
             ReferencedContainer = "container:BluePic.xcodeproj">
@@ -94,7 +94,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "4966004A1BF504160091BB49"
+            BlueprintIdentifier = "347472891BFA8C6A0018B7F6"
             BuildableName = "BluePic.app"
             BlueprintName = "BluePic"
             ReferencedContainer = "container:BluePic.xcodeproj">
