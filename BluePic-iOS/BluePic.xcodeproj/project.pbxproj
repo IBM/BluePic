@@ -7,25 +7,26 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		34B801D81BFA4B2200E7C73C /* LocalizationUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B801D61BFA4B2200E7C73C /* LocalizationUtils.swift */; settings = {ASSET_TAGS = (); }; };
-		34B801D91BFA4B2200E7C73C /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B801D71BFA4B2200E7C73C /* Utils.swift */; settings = {ASSET_TAGS = (); }; };
-		34D56C781BFA4169008C3521 /* CGFloatExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D56C681BFA4169008C3521 /* CGFloatExtension.swift */; settings = {ASSET_TAGS = (); }; };
-		34D56C791BFA4169008C3521 /* DoubleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D56C691BFA4169008C3521 /* DoubleExtension.swift */; settings = {ASSET_TAGS = (); }; };
-		34D56C7A1BFA4169008C3521 /* FloatExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D56C6A1BFA4169008C3521 /* FloatExtension.swift */; settings = {ASSET_TAGS = (); }; };
-		34D56C7B1BFA4169008C3521 /* IntExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D56C6B1BFA4169008C3521 /* IntExtension.swift */; settings = {ASSET_TAGS = (); }; };
-		34D56C7C1BFA4169008C3521 /* NSCoderExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D56C6C1BFA4169008C3521 /* NSCoderExtension.swift */; settings = {ASSET_TAGS = (); }; };
-		34D56C7D1BFA4169008C3521 /* NSDateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D56C6D1BFA4169008C3521 /* NSDateExtension.swift */; settings = {ASSET_TAGS = (); }; };
-		34D56C7E1BFA4169008C3521 /* NSDictionaryExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D56C6E1BFA4169008C3521 /* NSDictionaryExtension.swift */; settings = {ASSET_TAGS = (); }; };
-		34D56C7F1BFA4169008C3521 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D56C6F1BFA4169008C3521 /* StringExtension.swift */; settings = {ASSET_TAGS = (); }; };
-		34D56C801BFA4169008C3521 /* UIButtonExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D56C701BFA4169008C3521 /* UIButtonExtension.swift */; settings = {ASSET_TAGS = (); }; };
-		34D56C811BFA4169008C3521 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D56C711BFA4169008C3521 /* UIColorExtension.swift */; settings = {ASSET_TAGS = (); }; };
-		34D56C821BFA4169008C3521 /* UIFontExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D56C721BFA4169008C3521 /* UIFontExtension.swift */; settings = {ASSET_TAGS = (); }; };
-		34D56C831BFA4169008C3521 /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D56C731BFA4169008C3521 /* UIImageExtension.swift */; settings = {ASSET_TAGS = (); }; };
-		34D56C841BFA4169008C3521 /* UIImageViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D56C741BFA4169008C3521 /* UIImageViewExtension.swift */; settings = {ASSET_TAGS = (); }; };
-		34D56C851BFA4169008C3521 /* UILabelExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D56C751BFA4169008C3521 /* UILabelExtension.swift */; settings = {ASSET_TAGS = (); }; };
-		34D56C861BFA4169008C3521 /* UIViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D56C761BFA4169008C3521 /* UIViewExtensions.swift */; settings = {ASSET_TAGS = (); }; };
-		34D56C971BFA4206008C3521 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 34D56C961BFA4206008C3521 /* Main.storyboard */; settings = {ASSET_TAGS = (); }; };
-		34D56C991BFA4251008C3521 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D56C981BFA4251008C3521 /* ViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		341A76251BFA6D6300BD945C /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 341A76241BFA6D6300BD945C /* Info.plist */; };
+		34B801D81BFA4B2200E7C73C /* LocalizationUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B801D61BFA4B2200E7C73C /* LocalizationUtils.swift */; };
+		34B801D91BFA4B2200E7C73C /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B801D71BFA4B2200E7C73C /* Utils.swift */; };
+		34D56C781BFA4169008C3521 /* CGFloatExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D56C681BFA4169008C3521 /* CGFloatExtension.swift */; };
+		34D56C791BFA4169008C3521 /* DoubleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D56C691BFA4169008C3521 /* DoubleExtension.swift */; };
+		34D56C7A1BFA4169008C3521 /* FloatExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D56C6A1BFA4169008C3521 /* FloatExtension.swift */; };
+		34D56C7B1BFA4169008C3521 /* IntExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D56C6B1BFA4169008C3521 /* IntExtension.swift */; };
+		34D56C7C1BFA4169008C3521 /* NSCoderExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D56C6C1BFA4169008C3521 /* NSCoderExtension.swift */; };
+		34D56C7D1BFA4169008C3521 /* NSDateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D56C6D1BFA4169008C3521 /* NSDateExtension.swift */; };
+		34D56C7E1BFA4169008C3521 /* NSDictionaryExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D56C6E1BFA4169008C3521 /* NSDictionaryExtension.swift */; };
+		34D56C7F1BFA4169008C3521 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D56C6F1BFA4169008C3521 /* StringExtension.swift */; };
+		34D56C801BFA4169008C3521 /* UIButtonExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D56C701BFA4169008C3521 /* UIButtonExtension.swift */; };
+		34D56C811BFA4169008C3521 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D56C711BFA4169008C3521 /* UIColorExtension.swift */; };
+		34D56C821BFA4169008C3521 /* UIFontExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D56C721BFA4169008C3521 /* UIFontExtension.swift */; };
+		34D56C831BFA4169008C3521 /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D56C731BFA4169008C3521 /* UIImageExtension.swift */; };
+		34D56C841BFA4169008C3521 /* UIImageViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D56C741BFA4169008C3521 /* UIImageViewExtension.swift */; };
+		34D56C851BFA4169008C3521 /* UILabelExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D56C751BFA4169008C3521 /* UILabelExtension.swift */; };
+		34D56C861BFA4169008C3521 /* UIViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D56C761BFA4169008C3521 /* UIViewExtensions.swift */; };
+		34D56C971BFA4206008C3521 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 34D56C961BFA4206008C3521 /* Main.storyboard */; };
+		34D56C991BFA4251008C3521 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D56C981BFA4251008C3521 /* ViewController.swift */; };
 		4966004F1BF504160091BB49 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4966004E1BF504160091BB49 /* AppDelegate.swift */; };
 		496600561BF504160091BB49 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 496600551BF504160091BB49 /* Assets.xcassets */; };
 		496600591BF504160091BB49 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 496600571BF504160091BB49 /* LaunchScreen.storyboard */; };
@@ -123,6 +124,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		341A76241BFA6D6300BD945C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		34B801D61BFA4B2200E7C73C /* LocalizationUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalizationUtils.swift; sourceTree = "<group>"; };
 		34B801D71BFA4B2200E7C73C /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		34D56C681BFA4169008C3521 /* CGFloatExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGFloatExtension.swift; sourceTree = "<group>"; };
@@ -146,7 +148,6 @@
 		4966004E1BF504160091BB49 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		496600551BF504160091BB49 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		496600581BF504160091BB49 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		4966005A1BF504160091BB49 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4966005F1BF504160091BB49 /* BluePicTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BluePicTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		496600631BF504160091BB49 /* BluePicTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluePicTests.swift; sourceTree = "<group>"; };
 		496600651BF504160091BB49 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -182,6 +183,42 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		341A761F1BFA6D2100BD945C /* Configuration */ = {
+			isa = PBXGroup;
+			children = (
+				341A76241BFA6D6300BD945C /* Info.plist */,
+			);
+			path = Configuration;
+			sourceTree = "<group>";
+		};
+		341A76201BFA6D2100BD945C /* ExternalLibraries */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ExternalLibraries;
+			sourceTree = "<group>";
+		};
+		341A76211BFA6D2100BD945C /* SupportingFiles */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = SupportingFiles;
+			sourceTree = "<group>";
+		};
+		341A76221BFA6D2100BD945C /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		341A76231BFA6D2100BD945C /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		34B801D51BFA4B2200E7C73C /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
@@ -214,13 +251,6 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		34D56C771BFA4169008C3521 /* ExternalLibraries */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ExternalLibraries;
-			sourceTree = "<group>";
-		};
 		34D56C921BFA41AF008C3521 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -235,20 +265,6 @@
 				34D56C961BFA4206008C3521 /* Main.storyboard */,
 			);
 			path = Storyboards;
-			sourceTree = "<group>";
-		};
-		34D56C941BFA41AF008C3521 /* ViewModels */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ViewModels;
-			sourceTree = "<group>";
-		};
-		34D56C951BFA41AF008C3521 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Views;
 			sourceTree = "<group>";
 		};
 		496600421BF504160091BB49 = {
@@ -278,14 +294,15 @@
 				4966004E1BF504160091BB49 /* AppDelegate.swift */,
 				496600551BF504160091BB49 /* Assets.xcassets */,
 				496600571BF504160091BB49 /* LaunchScreen.storyboard */,
-				4966005A1BF504160091BB49 /* Info.plist */,
+				341A761F1BFA6D2100BD945C /* Configuration */,
 				34D56C921BFA41AF008C3521 /* Controllers */,
 				34D56C931BFA41AF008C3521 /* Storyboards */,
-				34D56C951BFA41AF008C3521 /* Views */,
-				34D56C941BFA41AF008C3521 /* ViewModels */,
-				34D56C771BFA4169008C3521 /* ExternalLibraries */,
 				34B801D51BFA4B2200E7C73C /* Utilities */,
 				34D56C671BFA4169008C3521 /* Extensions */,
+				341A76201BFA6D2100BD945C /* ExternalLibraries */,
+				341A76211BFA6D2100BD945C /* SupportingFiles */,
+				341A76221BFA6D2100BD945C /* ViewModels */,
+				341A76231BFA6D2100BD945C /* Views */,
 			);
 			path = BluePic;
 			sourceTree = "<group>";
@@ -485,6 +502,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				341A76251BFA6D6300BD945C /* Info.plist in Resources */,
 				34D56C971BFA4206008C3521 /* Main.storyboard in Resources */,
 				496600591BF504160091BB49 /* LaunchScreen.storyboard in Resources */,
 				496600561BF504160091BB49 /* Assets.xcassets in Resources */,
