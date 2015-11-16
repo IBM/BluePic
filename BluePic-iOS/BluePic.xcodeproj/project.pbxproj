@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		341A76251BFA6D6300BD945C /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 341A76241BFA6D6300BD945C /* Info.plist */; };
+		341A765B1BFA714400BD945C /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 341A765A1BFA714400BD945C /* Info.plist */; };
 		34B801D81BFA4B2200E7C73C /* LocalizationUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B801D61BFA4B2200E7C73C /* LocalizationUtils.swift */; };
 		34B801D91BFA4B2200E7C73C /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B801D71BFA4B2200E7C73C /* Utils.swift */; };
 		34D56C781BFA4169008C3521 /* CGFloatExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D56C681BFA4169008C3521 /* CGFloatExtension.swift */; };
@@ -124,7 +124,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		341A76241BFA6D6300BD945C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		341A765A1BFA714400BD945C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		34B801D61BFA4B2200E7C73C /* LocalizationUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalizationUtils.swift; sourceTree = "<group>"; };
 		34B801D71BFA4B2200E7C73C /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		34D56C681BFA4169008C3521 /* CGFloatExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGFloatExtension.swift; sourceTree = "<group>"; };
@@ -186,7 +186,7 @@
 		341A761F1BFA6D2100BD945C /* Configuration */ = {
 			isa = PBXGroup;
 			children = (
-				341A76241BFA6D6300BD945C /* Info.plist */,
+				341A765A1BFA714400BD945C /* Info.plist */,
 			);
 			path = Configuration;
 			sourceTree = "<group>";
@@ -502,7 +502,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				341A76251BFA6D6300BD945C /* Info.plist in Resources */,
+				341A765B1BFA714400BD945C /* Info.plist in Resources */,
 				34D56C971BFA4206008C3521 /* Main.storyboard in Resources */,
 				496600591BF504160091BB49 /* LaunchScreen.storyboard in Resources */,
 				496600561BF504160091BB49 /* Assets.xcassets in Resources */,
