@@ -1,0 +1,12 @@
+source 'https://github.com/CocoaPods/Specs.git'
+platform :ios, '9.0'
+use_frameworks!
+
+pod 'AlamofireObjectMapper', '~> 2.0'
+
+pod "CDTDatastore"
+
+pod 'IMFData'
+pod 'CloudantToolkit'
+pod 'IMFCore'
+pod 'IMFFacebookAuthentication'
