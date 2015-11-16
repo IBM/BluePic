@@ -1,0 +1,43 @@
+PODS:
+  - Alamofire (3.1.2)
+  - AlamofireObjectMapper (2.0.2):
+    - Alamofire (~> 3.1.0)
+    - ObjectMapper (~> 1.0)
+  - CDTDatastore (1.0.0):
+    - CDTDatastore/standard (= 1.0.0)
+  - CDTDatastore/common-dependencies (1.0.0):
+    - CDTDatastore/no-arc
+    - CocoaLumberjack (~> 2.0)
+  - CDTDatastore/no-arc (1.0.0)
+  - CDTDatastore/standard (1.0.0):
+    - CDTDatastore/common-dependencies
+    - FMDB (= 2.3)
+  - CocoaLumberjack (2.2.0):
+    - CocoaLumberjack/Default (= 2.2.0)
+    - CocoaLumberjack/Extensions (= 2.2.0)
+  - CocoaLumberjack/Core (2.2.0)
+  - CocoaLumberjack/Default (2.2.0):
+    - CocoaLumberjack/Core
+  - CocoaLumberjack/Extensions (2.2.0):
+    - CocoaLumberjack/Default
+  - FMDB (2.3):
+    - FMDB/standard (= 2.3)
+  - FMDB/common (2.3)
+  - FMDB/standard (2.3):
+    - FMDB/common
+  - ObjectMapper (1.0.1)
+
+DEPENDENCIES:
+  - Alamofire (~> 3.0)
+  - AlamofireObjectMapper (~> 2.0)
+  - CDTDatastore
+
+SPEC CHECKSUMS:
+  Alamofire: 7c16ca65f3c7e681fd925fd7f2dec7747ff96855
+  AlamofireObjectMapper: 3047127bcc25ec43e8243b89d819022ccee77546
+  CDTDatastore: ff31119f168689ab9ab7b339b02327f21a2b3cfa
+  CocoaLumberjack: 17fe8581f84914d5d7e6360f7c70022b173c3ae0
+  FMDB: 773d79bb74226959b7e2286b1d6e0bd857c88915
+  ObjectMapper: 98524bac0dca46c6b3d5ee02cd410fc700ec6ce2
+
+COCOAPODS: 0.39.0

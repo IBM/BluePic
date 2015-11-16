@@ -7,11 +7,15 @@
 //
 
 import UIKit
+import Alamofire
+import ObjectMapper
+import AlamofireObjectMapper
 
 class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        Alamofire.request(.GET, "https://httpbin.org/get")
         // Do any additional setup after loading the view, typically from a nib.
     }
 
