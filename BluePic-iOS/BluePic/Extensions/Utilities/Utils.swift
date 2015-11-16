@@ -188,7 +188,6 @@ class Utils: NSObject {
     
     
     
-    
     /**
     Method obtain file from main bundle by name and fileType
     
