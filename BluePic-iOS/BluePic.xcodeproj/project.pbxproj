@@ -32,7 +32,8 @@
 		347472EE1BFA8DEF0018B7F6 /* LocalizationUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347472D61BFA8DEF0018B7F6 /* LocalizationUtils.swift */; };
 		347472EF1BFA8DEF0018B7F6 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347472D71BFA8DEF0018B7F6 /* Utils.swift */; };
 		347472F11BFA8E320018B7F6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347472F01BFA8E320018B7F6 /* ViewController.swift */; };
-		347472F61BFA9E700018B7F6 /* IMFCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 347472F51BFA9E700018B7F6 /* IMFCore.framework */; };
+		34F697251BFB8D9F00A2D2EC /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 34F697241BFB8D9F00A2D2EC /* Info.plist */; };
+		34F6972E1BFB8EB900A2D2EC /* IMFCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34F6972D1BFB8EB900A2D2EC /* IMFCore.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,7 +58,6 @@
 		3474728D1BFA8C6A0018B7F6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		347472941BFA8C6A0018B7F6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		347472971BFA8C6A0018B7F6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		347472991BFA8C6A0018B7F6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../Info.plist; sourceTree = "<group>"; };
 		3474729E1BFA8C6A0018B7F6 /* BluePicTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BluePicTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		347472A21BFA8C6A0018B7F6 /* BluePicTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluePicTests.swift; sourceTree = "<group>"; };
 		347472A41BFA8C6A0018B7F6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -83,7 +83,8 @@
 		347472D61BFA8DEF0018B7F6 /* LocalizationUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalizationUtils.swift; sourceTree = "<group>"; };
 		347472D71BFA8DEF0018B7F6 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		347472F01BFA8E320018B7F6 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		347472F51BFA9E700018B7F6 /* IMFCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = IMFCore.framework; sourceTree = "<group>"; };
+		34F697241BFB8D9F00A2D2EC /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		34F6972D1BFB8EB900A2D2EC /* IMFCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = IMFCore.framework; sourceTree = "<group>"; };
 		4DF2008F9A93E25237957424 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		548428B896D4182B293AB59E /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		98504A8A7A38E746325F96D3 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -94,7 +95,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				347472F61BFA9E700018B7F6 /* IMFCore.framework in Frameworks */,
+				34F6972E1BFB8EB900A2D2EC /* IMFCore.framework in Frameworks */,
 				30335A68CF4DBF821FF50239 /* Pods.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -145,14 +146,14 @@
 				347472941BFA8C6A0018B7F6 /* Assets.xcassets */,
 				347472961BFA8C6A0018B7F6 /* LaunchScreen.storyboard */,
 				347472BB1BFA8DEF0018B7F6 /* Configuration */,
-				347472F41BFA9E600018B7F6 /* ExternalLibraries */,
+				34F6972C1BFB8EB900A2D2EC /* ExternalLibraries */,
 				347472BD1BFA8DEF0018B7F6 /* Controllers */,
+				34F6972B1BFB8E6C00A2D2EC /* SupportingFiles */,
 				347472BF1BFA8DEF0018B7F6 /* Extensions */,
 				347472D21BFA8DEF0018B7F6 /* Storyboards */,
-				347472D41BFA8DEF0018B7F6 /* SupportingFiles */,
+				34F697281BFB8DF200A2D2EC /* Views */,
+				34F697291BFB8E3C00A2D2EC /* ViewModels */,
 				347472D51BFA8DEF0018B7F6 /* Utilities */,
-				347472D81BFA8DEF0018B7F6 /* ViewModels */,
-				347472D91BFA8DEF0018B7F6 /* Views */,
 			);
 			path = BluePic;
 			sourceTree = "<group>";
@@ -178,7 +179,7 @@
 		347472BB1BFA8DEF0018B7F6 /* Configuration */ = {
 			isa = PBXGroup;
 			children = (
-				347472991BFA8C6A0018B7F6 /* Info.plist */,
+				34F697241BFB8D9F00A2D2EC /* Info.plist */,
 			);
 			path = Configuration;
 			sourceTree = "<group>";
@@ -221,13 +222,6 @@
 			path = Storyboards;
 			sourceTree = "<group>";
 		};
-		347472D41BFA8DEF0018B7F6 /* SupportingFiles */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = SupportingFiles;
-			sourceTree = "<group>";
-		};
 		347472D51BFA8DEF0018B7F6 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
@@ -237,27 +231,34 @@
 			path = Utilities;
 			sourceTree = "<group>";
 		};
-		347472D81BFA8DEF0018B7F6 /* ViewModels */ = {
+		34F697281BFB8DF200A2D2EC /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Views;
+			path = Utilities/Views;
+			sourceTree = "<group>";
+		};
+		34F697291BFB8E3C00A2D2EC /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
-		347472D91BFA8DEF0018B7F6 /* Views */ = {
+		34F6972B1BFB8E6C00A2D2EC /* SupportingFiles */ = {
 			isa = PBXGroup;
 			children = (
 			);
-			path = Views;
+			path = SupportingFiles;
 			sourceTree = "<group>";
 		};
-		347472F41BFA9E600018B7F6 /* ExternalLibraries */ = {
+		34F6972C1BFB8EB900A2D2EC /* ExternalLibraries */ = {
 			isa = PBXGroup;
 			children = (
-				347472F51BFA9E700018B7F6 /* IMFCore.framework */,
+				34F6972D1BFB8EB900A2D2EC /* IMFCore.framework */,
 			);
-			name = ExternalLibraries;
-			path = Controllers/ExternalLibraries;
+			path = ExternalLibraries;
 			sourceTree = "<group>";
 		};
 		C93A0D59BDE755BE5A1209FC /* Frameworks */ = {
@@ -384,6 +385,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				34F697251BFB8D9F00A2D2EC /* Info.plist in Resources */,
 				347472ED1BFA8DEF0018B7F6 /* Main.storyboard in Resources */,
 				347472981BFA8C6A0018B7F6 /* LaunchScreen.storyboard in Resources */,
 				347472951BFA8C6A0018B7F6 /* Assets.xcassets in Resources */,
@@ -617,6 +619,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/BluePic/Controllers/ExternalLibraries",
+					"$(PROJECT_DIR)/BluePic/ExternalLibraries",
 				);
 				INFOPLIST_FILE = BluePic/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -635,6 +638,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/BluePic/Controllers/ExternalLibraries",
+					"$(PROJECT_DIR)/BluePic/ExternalLibraries",
 				);
 				INFOPLIST_FILE = BluePic/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
