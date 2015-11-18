@@ -15,8 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // Override point for customization after application launch.
-        
+        //IMFClient.sharedInstance().initializeWithBackendRoute(add_your_applicationRoute_here, backendGUID: add_your_appGUID_here);
         return true
     }
 
