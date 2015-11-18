@@ -31,6 +31,12 @@
 		347472EE1BFA8DEF0018B7F6 /* LocalizationUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347472D61BFA8DEF0018B7F6 /* LocalizationUtils.swift */; };
 		347472EF1BFA8DEF0018B7F6 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347472D71BFA8DEF0018B7F6 /* Utils.swift */; };
 		347472F11BFA8E320018B7F6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347472F01BFA8E320018B7F6 /* ViewController.swift */; };
+		34C809431BFCB0FF00C48004 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34C8093D1BFCB0C800C48004 /* Alamofire.framework */; };
+		34C809441BFCB0FF00C48004 /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 34C8093D1BFCB0C800C48004 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		34C809461BFCB10100C48004 /* AlamofireObjectMapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34C8093E1BFCB0C800C48004 /* AlamofireObjectMapper.framework */; };
+		34C809471BFCB10100C48004 /* AlamofireObjectMapper.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 34C8093E1BFCB0C800C48004 /* AlamofireObjectMapper.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		34C809481BFCB10300C48004 /* ObjectMapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34C8093F1BFCB0C800C48004 /* ObjectMapper.framework */; };
+		34C809491BFCB10300C48004 /* ObjectMapper.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 34C8093F1BFCB0C800C48004 /* ObjectMapper.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		34F697251BFB8D9F00A2D2EC /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 34F697241BFB8D9F00A2D2EC /* Info.plist */; };
 		FC315DE6D7B8C71B03B95C18 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 11F4C7A29750E1B7B37ABAFA /* libPods.a */; };
 /* End PBXBuildFile section */
@@ -51,6 +57,22 @@
 			remoteInfo = BluePic;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		34C809451BFCB0FF00C48004 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				34C809491BFCB10300C48004 /* ObjectMapper.framework in Embed Frameworks */,
+				34C809441BFCB0FF00C48004 /* Alamofire.framework in Embed Frameworks */,
+				34C809471BFCB10100C48004 /* AlamofireObjectMapper.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		11F4C7A29750E1B7B37ABAFA /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -83,6 +105,9 @@
 		347472D61BFA8DEF0018B7F6 /* LocalizationUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalizationUtils.swift; sourceTree = "<group>"; };
 		347472D71BFA8DEF0018B7F6 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		347472F01BFA8E320018B7F6 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		34C8093D1BFCB0C800C48004 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
+		34C8093E1BFCB0C800C48004 /* AlamofireObjectMapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AlamofireObjectMapper.framework; path = Carthage/Build/iOS/AlamofireObjectMapper.framework; sourceTree = "<group>"; };
+		34C8093F1BFCB0C800C48004 /* ObjectMapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ObjectMapper.framework; path = Carthage/Build/iOS/ObjectMapper.framework; sourceTree = "<group>"; };
 		34F697241BFB8D9F00A2D2EC /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4DF2008F9A93E25237957424 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		548428B896D4182B293AB59E /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
@@ -95,6 +120,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				FC315DE6D7B8C71B03B95C18 /* libPods.a in Frameworks */,
+				34C809461BFCB10100C48004 /* AlamofireObjectMapper.framework in Frameworks */,
+				34C809481BFCB10300C48004 /* ObjectMapper.framework in Frameworks */,
+				34C809431BFCB0FF00C48004 /* Alamofire.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -262,6 +290,9 @@
 		C93A0D59BDE755BE5A1209FC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				34C8093D1BFCB0C800C48004 /* Alamofire.framework */,
+				34C8093E1BFCB0C800C48004 /* AlamofireObjectMapper.framework */,
+				34C8093F1BFCB0C800C48004 /* ObjectMapper.framework */,
 				11F4C7A29750E1B7B37ABAFA /* libPods.a */,
 			);
 			name = Frameworks;
@@ -289,6 +320,7 @@
 				347472881BFA8C6A0018B7F6 /* Resources */,
 				28652D394171C4F52E5A398D /* Embed Pods Frameworks */,
 				7D0179214381D54F428B05CB /* Copy Pods Resources */,
+				34C809451BFCB0FF00C48004 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -621,6 +653,7 @@
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/BluePic/Controllers/ExternalLibraries",
 					"$(PROJECT_DIR)/BluePic/ExternalLibraries",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = BluePic/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -643,6 +676,7 @@
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/BluePic/Controllers/ExternalLibraries",
 					"$(PROJECT_DIR)/BluePic/ExternalLibraries",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = BluePic/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;

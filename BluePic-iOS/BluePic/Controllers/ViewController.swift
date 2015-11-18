@@ -7,16 +7,17 @@
 //
 
 import UIKit
-//import Alamofire
-//import ObjectMapper
-//import AlamofireObjectMapper
+import Alamofire
+import ObjectMapper
+import AlamofireObjectMapper
 
 class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        //Alamofire.request(.GET, "https://httpbin.org/get")
-        // Do any additional setup after loading the view, typically from a nib.
+        
+        //Test to prove Alamofire is working
+        Alamofire.request(.GET, "https://httpbin.org/get")
 
         //Test code to see if CDTDatastore works
         do {
