@@ -18,6 +18,12 @@ class Utils: NSObject {
         return self.visibleViewController(UIApplication.sharedApplication().keyWindow?.rootViewController)
     }
     
+    class func getKeyFromPlist (plist: String!, key: String!) -> String {
+        let path: String = NSBundle.mainBundle().pathForResource(plist, ofType: "plist")!
+        let keyList = NSDictionary(contentsOfFile: path)
+        return keyList!.objectForKey(key) as! String
+    }
+    
     
     /**
     Method returns the current visible view controller that the user sees. Its a helper method to the other visibleViewController method

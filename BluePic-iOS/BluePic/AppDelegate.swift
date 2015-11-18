@@ -15,7 +15,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        //IMFClient.sharedInstance().initializeWithBackendRoute(add_your_applicationRoute_here, backendGUID: add_your_appGUID_here);
+        let key = Utils.getKeyFromPlist("keys", key: "backend_route")
+        let guid = Utils.getKeyFromPlist("keys", key: "GUID")
+        IMFClient.sharedInstance().initializeWithBackendRoute(key, backendGUID: guid);
         return true
     }
 
@@ -35,7 +37,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-        //FBAppEvents.activateApp()
+        FBAppEvents.activateApp()
     }
 
     func applicationWillTerminate(application: UIApplication) {
