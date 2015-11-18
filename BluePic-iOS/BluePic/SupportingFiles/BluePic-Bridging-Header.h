@@ -5,6 +5,7 @@
 #import <FacebookSDK/FacebookSDK.h>
 #import <IMFCore/IMFCore.h>
 #import <IMFFacebookAuthentication/IMFFacebookAuthenticationHandler.h>
+#import <SDWebImage/UIImageView+WebCache.h>
 
 /*
 + (void)getAuthToken:(void (^)(enum NetworkRequest))callback {

@@ -39,6 +39,7 @@ class ViewController: UIViewController {
         }
         
         IMFFacebookAuthenticationHandler.sharedInstance().registerWithDefaultDelegate()
+        
     }
 
     override func didReceiveMemoryWarning() {

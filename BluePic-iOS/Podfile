@@ -8,3 +8,5 @@ platform :ios, '9.0'
 pod 'CDTDatastore'
 
 pod 'IMFFacebookAuthentication'
+
+pod 'SDWebImage', '~>3.7'
