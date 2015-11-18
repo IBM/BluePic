@@ -179,8 +179,9 @@
 				34F6972B1BFB8E6C00A2D2EC /* SupportingFiles */,
 				347472BF1BFA8DEF0018B7F6 /* Extensions */,
 				347472D21BFA8DEF0018B7F6 /* Storyboards */,
-				34F697281BFB8DF200A2D2EC /* Views */,
-				34F697291BFB8E3C00A2D2EC /* ViewModels */,
+				34C809511BFD0CBC00C48004 /* DataManagers */,
+				34C809521BFD0CBC00C48004 /* ViewModels */,
+				34C809531BFD0CBC00C48004 /* Views */,
 				347472D51BFA8DEF0018B7F6 /* Utilities */,
 			);
 			path = BluePic;
@@ -260,19 +261,25 @@
 			path = Utilities;
 			sourceTree = "<group>";
 		};
-		34F697281BFB8DF200A2D2EC /* Views */ = {
+		34C809511BFD0CBC00C48004 /* DataManagers */ = {
 			isa = PBXGroup;
 			children = (
 			);
-			name = Views;
-			path = Utilities/Views;
+			path = DataManagers;
 			sourceTree = "<group>";
 		};
-		34F697291BFB8E3C00A2D2EC /* ViewModels */ = {
+		34C809521BFD0CBC00C48004 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
 			);
 			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		34C809531BFD0CBC00C48004 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		34F6972B1BFB8E6C00A2D2EC /* SupportingFiles */ = {
