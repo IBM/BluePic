@@ -41,6 +41,17 @@ class ViewController: UIViewController {
         
         
     }
+    
+    override func viewDidAppear(animated: Bool) {
+        FacebookDataManager.authenticateUser({(response: FacebookDataManager.NetworkRequest) in
+            if (response == FacebookDataManager.NetworkRequest.Success) {
+                print("success")
+            }
+            else {
+                print("failure")
+            }
+        })
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
