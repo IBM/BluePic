@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		30335A68CF4DBF821FF50239 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98504A8A7A38E746325F96D3 /* Pods.framework */; };
 		3474728E1BFA8C6A0018B7F6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3474728D1BFA8C6A0018B7F6 /* AppDelegate.swift */; };
 		347472951BFA8C6A0018B7F6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 347472941BFA8C6A0018B7F6 /* Assets.xcassets */; };
 		347472981BFA8C6A0018B7F6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 347472961BFA8C6A0018B7F6 /* LaunchScreen.storyboard */; };
@@ -33,7 +32,7 @@
 		347472EF1BFA8DEF0018B7F6 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347472D71BFA8DEF0018B7F6 /* Utils.swift */; };
 		347472F11BFA8E320018B7F6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347472F01BFA8E320018B7F6 /* ViewController.swift */; };
 		34F697251BFB8D9F00A2D2EC /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 34F697241BFB8D9F00A2D2EC /* Info.plist */; };
-		34F6972E1BFB8EB900A2D2EC /* IMFCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34F6972D1BFB8EB900A2D2EC /* IMFCore.framework */; };
+		FC315DE6D7B8C71B03B95C18 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 11F4C7A29750E1B7B37ABAFA /* libPods.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +53,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		11F4C7A29750E1B7B37ABAFA /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		3474728A1BFA8C6A0018B7F6 /* BluePic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BluePic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3474728D1BFA8C6A0018B7F6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		347472941BFA8C6A0018B7F6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -84,10 +84,8 @@
 		347472D71BFA8DEF0018B7F6 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		347472F01BFA8E320018B7F6 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		34F697241BFB8D9F00A2D2EC /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		34F6972D1BFB8EB900A2D2EC /* IMFCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = IMFCore.framework; sourceTree = "<group>"; };
 		4DF2008F9A93E25237957424 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		548428B896D4182B293AB59E /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
-		98504A8A7A38E746325F96D3 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDC4B5F21BFBC77200CC1648 /* BluePic-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BluePic-Bridging-Header.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -96,8 +94,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				34F6972E1BFB8EB900A2D2EC /* IMFCore.framework in Frameworks */,
-				30335A68CF4DBF821FF50239 /* Pods.framework in Frameworks */,
+				FC315DE6D7B8C71B03B95C18 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -258,7 +255,6 @@
 		34F6972C1BFB8EB900A2D2EC /* ExternalLibraries */ = {
 			isa = PBXGroup;
 			children = (
-				34F6972D1BFB8EB900A2D2EC /* IMFCore.framework */,
 			);
 			path = ExternalLibraries;
 			sourceTree = "<group>";
@@ -266,7 +262,7 @@
 		C93A0D59BDE755BE5A1209FC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				98504A8A7A38E746325F96D3 /* Pods.framework */,
+				11F4C7A29750E1B7B37ABAFA /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

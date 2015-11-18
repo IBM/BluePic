@@ -1,8 +1,6 @@
-EMBEDDED_CONTENT_CONTAINS_SWIFT = YES
+FRAMEWORK_SEARCH_PATHS = $(inherited) "$(PODS_ROOT)/IMFCore/Frameworks" "${PODS_ROOT}/IMFCore/Frameworks"
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
-LD_RUNPATH_SEARCH_PATHS = $(inherited) '@executable_path/Frameworks' '@loader_path/Frameworks'
-OTHER_CFLAGS = $(inherited) -iquote "$CONFIGURATION_BUILD_DIR/Alamofire.framework/Headers" -iquote "$CONFIGURATION_BUILD_DIR/AlamofireObjectMapper.framework/Headers" -iquote "$CONFIGURATION_BUILD_DIR/CDTDatastore.framework/Headers" -iquote "$CONFIGURATION_BUILD_DIR/CocoaLumberjack.framework/Headers" -iquote "$CONFIGURATION_BUILD_DIR/FMDB.framework/Headers" -iquote "$CONFIGURATION_BUILD_DIR/ObjectMapper.framework/Headers"
-OTHER_LDFLAGS = $(inherited) -framework "Alamofire" -framework "AlamofireObjectMapper" -framework "CDTDatastore" -framework "CocoaLumberjack" -framework "FMDB" -framework "ObjectMapper"
-OTHER_SWIFT_FLAGS = $(inherited) "-D" "COCOAPODS"
-PODS_FRAMEWORK_BUILD_PATH = $(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/Pods
+HEADER_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/Bolts" "${PODS_ROOT}/Headers/Public/CDTDatastore" "${PODS_ROOT}/Headers/Public/CocoaLumberjack" "${PODS_ROOT}/Headers/Public/FMDB" "${PODS_ROOT}/Headers/Public/Facebook-iOS-SDK" "${PODS_ROOT}/Headers/Public/IMFCore" "${PODS_ROOT}/Headers/Public/IMFFacebookAuthentication"
+OTHER_CFLAGS = $(inherited) -isystem "${PODS_ROOT}/Headers/Public" -isystem "${PODS_ROOT}/Headers/Public/Bolts" -isystem "${PODS_ROOT}/Headers/Public/CDTDatastore" -isystem "${PODS_ROOT}/Headers/Public/CocoaLumberjack" -isystem "${PODS_ROOT}/Headers/Public/FMDB" -isystem "${PODS_ROOT}/Headers/Public/Facebook-iOS-SDK" -isystem "${PODS_ROOT}/Headers/Public/IMFCore" -isystem "${PODS_ROOT}/Headers/Public/IMFFacebookAuthentication"
+OTHER_LDFLAGS = $(inherited) -ObjC -l"Bolts" -l"CDTDatastore" -l"CocoaLumberjack" -l"FMDB" -l"Facebook-iOS-SDK" -l"IMFFacebookAuthentication" -l"sqlite3" -l"stdc++.6" -l"z" -framework "IMFCore" -framework "SystemConfiguration" -weak_framework "Accounts" -weak_framework "AudioToolbox" -weak_framework "CoreGraphics" -weak_framework "CoreLocation" -weak_framework "Foundation" -weak_framework "QuartzCore" -weak_framework "Security" -weak_framework "Social" -weak_framework "UIKit"
 PODS_ROOT = ${SRCROOT}/Pods

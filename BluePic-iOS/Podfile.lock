@@ -1,8 +1,10 @@
 PODS:
-  - Alamofire (3.1.2)
-  - AlamofireObjectMapper (2.0.2):
-    - Alamofire (~> 3.1.0)
-    - ObjectMapper (~> 1.0)
+  - Bolts (1.5.0):
+    - Bolts/AppLinks (= 1.5.0)
+    - Bolts/Tasks (= 1.5.0)
+  - Bolts/AppLinks (1.5.0):
+    - Bolts/Tasks
+  - Bolts/Tasks (1.5.0)
   - CDTDatastore (1.0.0):
     - CDTDatastore/standard (= 1.0.0)
   - CDTDatastore/common-dependencies (1.0.0):
@@ -20,24 +22,29 @@ PODS:
     - CocoaLumberjack/Core
   - CocoaLumberjack/Extensions (2.2.0):
     - CocoaLumberjack/Default
+  - Facebook-iOS-SDK (3.24.1):
+    - Bolts (~> 1.2)
   - FMDB (2.3):
     - FMDB/standard (= 2.3)
   - FMDB/common (2.3)
   - FMDB/standard (2.3):
     - FMDB/common
-  - ObjectMapper (1.0.1)
+  - IMFCore (1.0.7)
+  - IMFFacebookAuthentication (1.0.0):
+    - Facebook-iOS-SDK (~> 3.19)
+    - IMFCore (~> 1.0.0)
 
 DEPENDENCIES:
-  - Alamofire (~> 3.0)
-  - AlamofireObjectMapper (~> 2.0)
   - CDTDatastore
+  - IMFFacebookAuthentication
 
 SPEC CHECKSUMS:
-  Alamofire: 7c16ca65f3c7e681fd925fd7f2dec7747ff96855
-  AlamofireObjectMapper: 3047127bcc25ec43e8243b89d819022ccee77546
+  Bolts: 722ab9a4f8b50fc4ed1b9998a5a7a2b3f16d80b4
   CDTDatastore: ff31119f168689ab9ab7b339b02327f21a2b3cfa
   CocoaLumberjack: 17fe8581f84914d5d7e6360f7c70022b173c3ae0
+  Facebook-iOS-SDK: 08689c2690dc4e087b9c8e171e48667608b72a2a
   FMDB: 773d79bb74226959b7e2286b1d6e0bd857c88915
-  ObjectMapper: 98524bac0dca46c6b3d5ee02cd410fc700ec6ce2
+  IMFCore: dfba72f52c9c55a5a0bd6bfe9b9e43e8db4de526
+  IMFFacebookAuthentication: 065e0b5d377ecdb6e5fafb160fecb8d359b04375
 
 COCOAPODS: 0.39.0
