@@ -38,7 +38,7 @@ class ViewController: UIViewController {
             print("Encountered an error: \(error)")
         }
         
-        IMFFacebookAuthenticationHandler.sharedInstance().registerWithDefaultDelegate()
+        
         
     }
 

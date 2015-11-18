@@ -15,9 +15,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+        //Initialize backend
         let key = Utils.getKeyFromPlist("keys", key: "backend_route")
         let guid = Utils.getKeyFromPlist("keys", key: "GUID")
         IMFClient.sharedInstance().initializeWithBackendRoute(key, backendGUID: guid);
+        
+        //Initialize FB
+        IMFFacebookAuthenticationHandler.sharedInstance().registerWithDefaultDelegate()
         return true
     }
 
