@@ -36,6 +36,8 @@ class ViewController: UIViewController {
         } catch {
             print("Encountered an error: \(error)")
         }
+        
+        //IMFFacebookAuthenticationHandler.sharedInstance().registerWithDefaultDelegate()
     }
 
     override func didReceiveMemoryWarning() {
