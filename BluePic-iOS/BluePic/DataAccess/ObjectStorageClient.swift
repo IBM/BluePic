@@ -9,7 +9,6 @@
 import Foundation
 import Alamofire
 import ObjectMapper
-import AlamofireObjectMapper
 
 /**
  * Convenience class for querying the Object Storage service on Bluemix.
