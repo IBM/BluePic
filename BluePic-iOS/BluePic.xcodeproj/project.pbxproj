@@ -40,6 +40,8 @@
 		34C8094B1BFCD9A300C48004 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 34C8094A1BFCD9A300C48004 /* Info.plist */; };
 		34C8094D1BFCEA0400C48004 /* keys.plist in Resources */ = {isa = PBXBuildFile; fileRef = 34C8094C1BFCEA0400C48004 /* keys.plist */; };
 		34C809551BFD0F2400C48004 /* FacebookDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C809541BFD0F2400C48004 /* FacebookDataManager.swift */; };
+		494AA0AE1BFE4CA9006FC48E /* ObjectStorageClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494AA0AD1BFE4CA9006FC48E /* ObjectStorageClient.swift */; };
+		494AA0B01BFE4CBA006FC48E /* ObjectStorageClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494AA0AF1BFE4CBA006FC48E /* ObjectStorageClientTests.swift */; };
 		FC315DE6D7B8C71B03B95C18 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 11F4C7A29750E1B7B37ABAFA /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -113,6 +115,8 @@
 		34C8094A1BFCD9A300C48004 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		34C8094C1BFCEA0400C48004 /* keys.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = keys.plist; sourceTree = "<group>"; };
 		34C809541BFD0F2400C48004 /* FacebookDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookDataManager.swift; sourceTree = "<group>"; };
+		494AA0AD1BFE4CA9006FC48E /* ObjectStorageClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectStorageClient.swift; sourceTree = "<group>"; };
+		494AA0AF1BFE4CBA006FC48E /* ObjectStorageClientTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectStorageClientTests.swift; sourceTree = "<group>"; };
 		4DF2008F9A93E25237957424 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		548428B896D4182B293AB59E /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		BDC4B5F21BFBC77200CC1648 /* BluePic-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BluePic-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -175,6 +179,7 @@
 				3474728D1BFA8C6A0018B7F6 /* AppDelegate.swift */,
 				347472941BFA8C6A0018B7F6 /* Assets.xcassets */,
 				347472961BFA8C6A0018B7F6 /* LaunchScreen.storyboard */,
+				494AA0AC1BFE4CA9006FC48E /* DataAccess */,
 				347472BB1BFA8DEF0018B7F6 /* Configuration */,
 				34F6972C1BFB8EB900A2D2EC /* ExternalLibraries */,
 				347472BD1BFA8DEF0018B7F6 /* Controllers */,
@@ -193,6 +198,7 @@
 			isa = PBXGroup;
 			children = (
 				347472A21BFA8C6A0018B7F6 /* BluePicTests.swift */,
+				494AA0AF1BFE4CBA006FC48E /* ObjectStorageClientTests.swift */,
 				347472A41BFA8C6A0018B7F6 /* Info.plist */,
 			);
 			path = BluePicTests;
@@ -298,6 +304,14 @@
 			children = (
 			);
 			path = ExternalLibraries;
+			sourceTree = "<group>";
+		};
+		494AA0AC1BFE4CA9006FC48E /* DataAccess */ = {
+			isa = PBXGroup;
+			children = (
+				494AA0AD1BFE4CA9006FC48E /* ObjectStorageClient.swift */,
+			);
+			path = DataAccess;
 			sourceTree = "<group>";
 		};
 		C93A0D59BDE755BE5A1209FC /* Frameworks */ = {
@@ -511,6 +525,7 @@
 				347472DE1BFA8DEF0018B7F6 /* FloatExtension.swift in Sources */,
 				347472E01BFA8DEF0018B7F6 /* NSCoderExtension.swift in Sources */,
 				347472E41BFA8DEF0018B7F6 /* UIButtonExtension.swift in Sources */,
+				494AA0AE1BFE4CA9006FC48E /* ObjectStorageClient.swift in Sources */,
 				347472EF1BFA8DEF0018B7F6 /* Utils.swift in Sources */,
 				347472E51BFA8DEF0018B7F6 /* UIColorExtension.swift in Sources */,
 				347472E71BFA8DEF0018B7F6 /* UIImageExtension.swift in Sources */,
@@ -533,6 +548,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				347472A31BFA8C6A0018B7F6 /* BluePicTests.swift in Sources */,
+				494AA0B01BFE4CBA006FC48E /* ObjectStorageClientTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
