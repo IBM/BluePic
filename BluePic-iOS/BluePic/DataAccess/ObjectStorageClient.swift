@@ -69,6 +69,10 @@ class ObjectStorageClient {
         })
     }
     
+    func isAuthenticated() -> Bool {
+        return (self.token != nil)
+    }
+    
     /**
      * Creates a container on the Object Storage service. The name of the container should be the facebook userID
      * of the logged on user.
