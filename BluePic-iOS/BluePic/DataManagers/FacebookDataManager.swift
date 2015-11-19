@@ -47,7 +47,8 @@ class FacebookDataManager: NSObject {
             else {
                 if let identity = authManager.userIdentity {
                     if let userID = identity["id"] as?NSString {
-                        print("Authenticated user with id \(userID)")
+                        let userName = identity["displayName"]
+                        print("Authenticated user \(userName) with id \(userID)")
                         callback(networkRequest: NetworkRequest.Success)
                     }
                     else {

@@ -43,6 +43,10 @@ class ViewController: UIViewController {
     }
     
     override func viewDidAppear(animated: Bool) {
+        
+    }
+
+    @IBAction func loginTapped(sender: AnyObject) {
         FacebookDataManager.authenticateUser({(response: FacebookDataManager.NetworkRequest) in
             if (response == FacebookDataManager.NetworkRequest.Success) {
                 print("success")
@@ -51,8 +55,10 @@ class ViewController: UIViewController {
                 print("failure")
             }
         })
+        
     }
-
+    
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
