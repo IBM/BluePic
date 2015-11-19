@@ -47,9 +47,15 @@ class ViewController: UIViewController {
     }
 
     @IBAction func loginTapped(sender: AnyObject) {
-        FacebookDataManager.authenticateUser({(response: FacebookDataManager.NetworkRequest) in
+        FacebookDataManager.SharedInstance.authenticateUser({(response: FacebookDataManager.NetworkRequest) in
             if (response == FacebookDataManager.NetworkRequest.Success) {
                 print("success")
+                if let userID = FacebookDataManager.SharedInstance.fbUniqueUserID {
+                    print("\(userID)")
+                }
+                if let userDisplayName = FacebookDataManager.SharedInstance.fbUserDisplayName {
+                    print("\(userDisplayName)")
+                }
             }
             else {
                 print("failure")

@@ -9,12 +9,49 @@
 import UIKit
 
 class FacebookDataManager: NSObject {
+    
+    /// Shared instance of data manager
+    static let SharedInstance: FacebookDataManager = {
+        
+        var manager = FacebookDataManager()
+        
+        return manager
+        
+    }()
+    
+
+    private override init() {} //This prevents others from using the default '()' initializer for this class.
+
+    /// Facebook app ID
+    var fbAppID: String?
+    
+    /// Display name for the app on Facebook
+    var fbAppDisplayName: String?
+    
+    /// Display name for user on Facebook
+    var fbUserDisplayName: String?
+    
+    /// Unique user ID given from Facebook API
+    var fbUniqueUserID: String?
+    
+    /**
+     Custom enum for whether facebook authentication was successful or not
+     
+     - Success: successful
+     - Failure: failure to connect
+     */
     enum NetworkRequest {
         case Success
         case Failure
     }
     
-    class func authenticateUser(callback : ((networkRequest : NetworkRequest) -> ())){
+    
+    /**
+     Method to auth user using Facebook SDK
+     
+     - parameter callback: Success or Failure
+     */
+    func authenticateUser(callback : ((networkRequest : NetworkRequest) -> ())){
         if (self.checkIMFClient() && self.checkAuthenticationConfig()) {
             self.getAuthToken(callback)
         }
@@ -25,7 +62,12 @@ class FacebookDataManager: NSObject {
     }
     
     
-    class func getAuthToken(callback : ((networkRequest: NetworkRequest) -> ())) {
+    /**
+     Method to get authentication token from Facebook SDK
+     
+     - parameter callback: Success or Failure
+     */
+    func getAuthToken(callback : ((networkRequest: NetworkRequest) -> ())) {
        let authManager = IMFAuthorizationManager.sharedInstance()
         authManager.obtainAuthorizationHeaderWithCompletionHandler( {(response: IMFResponse?, error: NSError?) in
             let errorMsg = NSMutableString()
@@ -47,9 +89,15 @@ class FacebookDataManager: NSObject {
             else {
                 if let identity = authManager.userIdentity {
                     if let userID = identity["id"] as?NSString {
-                        let userName = identity["displayName"]
+                        if let userName = identity["displayName"] as? NSString {
+                        
+                        //save username and id to shared instance of this class
+                        self.fbUniqueUserID = userID as String
+                        self.fbUserDisplayName = userName as String
+                        
                         print("Authenticated user \(userName) with id \(userID)")
                         callback(networkRequest: NetworkRequest.Success)
+                        }
                     }
                     else {
                         print("Valid Authentication Header and userIdentity, but id not found")
@@ -70,7 +118,12 @@ class FacebookDataManager: NSObject {
     }
     
     
-    class func checkIMFClient() -> Bool {
+    /**
+     Method to check to make sure IMFClient is valid (route and GUID)
+     
+     - returns: true or false if valid or not
+     */
+    func checkIMFClient() -> Bool {
         let imfClient = IMFClient.sharedInstance()
         let route = imfClient.backendRoute
         let guid = imfClient.backendGUID
@@ -90,7 +143,12 @@ class FacebookDataManager: NSObject {
     
     
     
-    class func checkAuthenticationConfig() -> Bool {
+    /**
+     Method to check if Facebook is configured
+     
+     - returns: true if configured, false if not
+     */
+    func checkAuthenticationConfig() -> Bool {
         if (self.isFacebookConfigured()) {
             return true
         } else {
@@ -102,7 +160,12 @@ class FacebookDataManager: NSObject {
     }
     
     
-    class func isFacebookConfigured() -> Bool {
+    /**
+     Method to check if Facebook SDK is setup on native iOS side and all required keys have been added to plist
+     
+     - returns: true if configured, false if not
+     */
+    func isFacebookConfigured() -> Bool {
         let facebookAppID = NSBundle.mainBundle().objectForInfoDictionaryKey("FacebookAppID") as? NSString
         let facebookDisplayName = NSBundle.mainBundle().objectForInfoDictionaryKey("FacebookDisplayName") as? NSString
         let urlTypes = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleURLTypes") as? NSArray
@@ -122,9 +185,16 @@ class FacebookDataManager: NSObject {
             return false
         }
         
+        //success if made it past this point
+        
+        
+        
+        //save app ID and app display name to this class
+        self.fbAppID = facebookAppID! as String
+        self.fbAppDisplayName = facebookDisplayName! as String
         
 
-        print("Facebook Authentication Configured:\nFacebookAppID \(facebookAppID)\nFacebookDisplayName \(facebookDisplayName)\nFacebookURLScheme \(facebookURLScheme)")
+        print("Facebook Authentication Configured:\nFacebookAppID \(facebookAppID!)\nFacebookDisplayName \(facebookDisplayName!)\nFacebookURLScheme \(facebookURLScheme!)")
         return true;
     }
     
