@@ -138,6 +138,7 @@ class ObjectStorageClient {
                     statusCode = httpResponse.statusCode
                 }
                 print("statusCode = \(statusCode)")
+                // TODO: Verify if token has expired; if so, then re-authenticate and retry current operation
                 
                 let statusCodeIndex = successCodes.indexOf(statusCode)
                 if (statusCodeIndex != nil) {
