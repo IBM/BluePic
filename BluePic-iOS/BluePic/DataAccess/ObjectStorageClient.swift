@@ -9,7 +9,6 @@
 import Foundation
 import Alamofire
 import ObjectMapper
-import AlamofireObjectMapper
 
 /**
  * Convenience class for querying the Object Storage service on Bluemix.
@@ -68,6 +67,10 @@ class ObjectStorageClient {
             onFailure: { (errorMsg) in
                 onFailure(error: "Could not get authentication token from Object Storage service: \(errorMsg)")
         })
+    }
+    
+    func isAuthenticated() -> Bool {
+        return (self.token != nil)
     }
     
     /**

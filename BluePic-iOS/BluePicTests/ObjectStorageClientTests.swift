@@ -84,13 +84,29 @@ class ObjectStorageClientTests: XCTestCase {
                     self.xctExpectation?.fulfill()
             })
         })
-        self.waitForExpectationsWithTimeout(50.0, handler:nil)    }
+        self.waitForExpectationsWithTimeout(50.0, handler:nil)
+    }
+    
+    func testNonAuthenticated() {
+        XCTAssertFalse(self.objectStorageClient.isAuthenticated())
+        self.objectStorageClient.createContainer(self.containerName,
+            onSuccess: {(containerName: String) in
+                XCTFail("Somehow the client was able to complete the call though it was not authenticated...")
+                self.xctExpectation?.fulfill()
+            },
+            onFailure: {(error: String) in
+                XCTAssertNotNil(error)
+                self.xctExpectation?.fulfill()
+        })
+        self.waitForExpectationsWithTimeout(50.0, handler:nil)
+    }
     
     /**
      * Convenience method for authenticating.
      */
     func authenticate(testName: String, onSuccess: () -> Void) {
         objectStorageClient.authenticate({() in
+            XCTAssertTrue(self.objectStorageClient.isAuthenticated())
             onSuccess()
             }, onFailure: {(error) in
                 print("\(testName) failed!")
