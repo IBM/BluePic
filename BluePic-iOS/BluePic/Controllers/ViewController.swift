@@ -15,6 +15,8 @@ class ViewController: UIViewController {
 
     @IBOutlet weak var loadingIndicator: UIActivityIndicatorView!
     
+    @IBOutlet weak var signInLaterButton: UIButton!
+    
     @IBOutlet weak var facebookButton: UIButton!
     
     @IBOutlet weak var welcomeLabel: UILabel!
@@ -55,6 +57,7 @@ class ViewController: UIViewController {
 
     @IBAction func loginTapped(sender: AnyObject) {
         self.facebookButton.hidden = true
+        self.signInLaterButton.hidden = true
         self.loadingIndicator.startAnimating()
         FacebookDataManager.SharedInstance.authenticateUser({(response: FacebookDataManager.NetworkRequest) in
             self.loadingIndicator.stopAnimating()
@@ -76,6 +79,7 @@ class ViewController: UIViewController {
                 print("failure")
                 self.welcomeLabel.text = "Uh oh, an error occurred!"
                 self.facebookButton.hidden = false
+                self.signInLaterButton.hidden = false
             }
         })
         
