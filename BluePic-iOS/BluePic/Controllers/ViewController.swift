@@ -72,6 +72,8 @@ class ViewController: UIViewController {
                     print("\(userDisplayName)")
                     let name = userDisplayName.componentsSeparatedByString(" ").first
                     self.welcomeLabel.text = "Welcome to BluePic, \(name!)!"
+                    self.sendIDToBluemix()
+                    
                     
                 }
             }
@@ -82,6 +84,38 @@ class ViewController: UIViewController {
                 self.signInLaterButton.hidden = false
             }
         })
+        
+    }
+    
+    
+    func sendIDToBluemix() {
+        
+        let parameters = [
+            "fb_id": FacebookDataManager.SharedInstance.fbUniqueUserID!,
+            "profile_name": FacebookDataManager.SharedInstance.fbUserDisplayName!
+        ]
+        
+        let headers = [
+            "Content-Type": "application/json"
+        ]
+        
+        let url = "http://BluePic-II.mybluemix.net/cloudantapi"
+        
+                Alamofire.request(.POST, url, parameters: parameters, headers: headers, encoding: .JSON)
+                    .responseJSON { response in
+        
+                    print(response)
+                }
+        
+//        Alamofire.request(.POST, url, parameters: parameters, headers: headers, encoding: .JSON)
+//            .responseObject() { (response: Response<OAuth, NSError>) in
+//                debugPrint(response)
+//                
+//                let oAuth = response.result.value
+//                
+//                
+//                
+//        }
         
     }
     
