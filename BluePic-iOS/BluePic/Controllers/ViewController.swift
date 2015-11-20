@@ -13,6 +13,13 @@ import AlamofireObjectMapper
 
 class ViewController: UIViewController {
 
+    @IBOutlet weak var loadingIndicator: UIActivityIndicatorView!
+    
+    @IBOutlet weak var facebookButton: UIButton!
+    
+    @IBOutlet weak var welcomeLabel: UILabel!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -47,7 +54,12 @@ class ViewController: UIViewController {
     }
 
     @IBAction func loginTapped(sender: AnyObject) {
+        self.facebookButton.hidden = true
+        self.loadingIndicator.startAnimating()
         FacebookDataManager.SharedInstance.authenticateUser({(response: FacebookDataManager.NetworkRequest) in
+            self.loadingIndicator.stopAnimating()
+            self.loadingIndicator.hidden = true
+            self.welcomeLabel.hidden = false
             if (response == FacebookDataManager.NetworkRequest.Success) {
                 print("success")
                 if let userID = FacebookDataManager.SharedInstance.fbUniqueUserID {
@@ -55,10 +67,14 @@ class ViewController: UIViewController {
                 }
                 if let userDisplayName = FacebookDataManager.SharedInstance.fbUserDisplayName {
                     print("\(userDisplayName)")
+                    let name = userDisplayName.componentsSeparatedByString(" ").first
+                    self.welcomeLabel.text = "Welcome to BluePic, \(name!)!"
+                    
                 }
             }
             else {
                 print("failure")
+                self.welcomeLabel.text = "Uh oh, an error occurred!"
             }
         })
         
