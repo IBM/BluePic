@@ -71,7 +71,7 @@ also built on IBM Bluemix services.</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wjw-Zr-PRg">
-                                <rect key="frame" x="128" y="603" width="345" height="44"/>
+                                <rect key="frame" x="15" y="603" width="570" height="44"/>
                                 <animations/>
                                 <color key="backgroundColor" red="0.0" green="0.56862745098039214" blue="0.91764705882352937" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -87,6 +87,11 @@ also built on IBM Bluemix services.</string>
                                         <real key="value" value="5.5"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="ngh-7T-lfh"/>
+                                    </mask>
+                                </variation>
                                 <connections>
                                     <action selector="loginTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Y2u-3b-aAA"/>
                                 </connections>
@@ -140,9 +145,11 @@ also built on IBM Bluemix services.</string>
                             <constraint firstItem="g2J-LJ-jge" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" constant="1" id="8Vb-3w-1iR"/>
                             <constraint firstItem="OyD-TT-jb1" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" constant="68" id="9Mx-VI-8DS"/>
                             <constraint firstAttribute="bottomMargin" secondItem="g2J-LJ-jge" secondAttribute="bottom" constant="33" id="BrA-Mg-9yT"/>
+                            <constraint firstItem="Wjw-Zr-PRg" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="15" id="F9G-Z6-Oyr"/>
                             <constraint firstAttribute="bottomMargin" secondItem="gtv-K7-hIk" secondAttribute="bottom" constant="123" id="JOd-X9-MNN"/>
                             <constraint firstItem="ANO-Gs-Tk5" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" id="Jlx-8C-0GH"/>
                             <constraint firstItem="cIW-Ou-STz" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" constant="175" id="PQt-gW-VB2"/>
+                            <constraint firstAttribute="trailing" secondItem="Wjw-Zr-PRg" secondAttribute="trailing" constant="15" id="QIj-7S-Qit"/>
                             <constraint firstItem="gtv-K7-hIk" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" constant="0.5" id="TUv-VN-qfh"/>
                             <constraint firstItem="cIW-Ou-STz" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="WCY-Kg-EIr"/>
                             <constraint firstItem="ANO-Gs-Tk5" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="Yk1-eN-7XX"/>
@@ -155,6 +162,11 @@ also built on IBM Bluemix services.</string>
                             <constraint firstItem="ANO-Gs-Tk5" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="y6k-qc-rXf"/>
                             <constraint firstItem="Hia-oq-hEM" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="z3S-M2-DO0"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="0R1-rU-8sk"/>
+                            </mask>
+                        </variation>
                     </view>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="600" height="667"/>
