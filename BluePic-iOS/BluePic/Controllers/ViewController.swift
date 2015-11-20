@@ -75,6 +75,7 @@ class ViewController: UIViewController {
             else {
                 print("failure")
                 self.welcomeLabel.text = "Uh oh, an error occurred!"
+                self.facebookButton.hidden = false
             }
         })
         

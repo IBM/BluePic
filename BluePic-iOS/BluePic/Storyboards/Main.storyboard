@@ -120,7 +120,7 @@ also built on IBM Bluemix services.</string>
                                 </state>
                             </button>
                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gtv-K7-hIk">
-                                <rect key="frame" x="168" y="617" width="267" height="20"/>
+                                <rect key="frame" x="167" y="524" width="267" height="20"/>
                                 <animations/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="3xK-ij-LXs"/>
@@ -136,14 +136,14 @@ also built on IBM Bluemix services.</string>
                         <constraints>
                             <constraint firstItem="Wjw-Zr-PRg" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="0R1-rU-8sk"/>
                             <constraint firstItem="JA3-DV-7dk" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" constant="218" id="4Gc-mR-BBA"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="neQ-m5-2vk" secondAttribute="bottom" constant="78" id="5XF-wZ-oHn"/>
                             <constraint firstItem="g2J-LJ-jge" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" constant="1" id="8Vb-3w-1iR"/>
                             <constraint firstItem="OyD-TT-jb1" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" constant="68" id="9Mx-VI-8DS"/>
                             <constraint firstAttribute="bottomMargin" secondItem="g2J-LJ-jge" secondAttribute="bottom" constant="33" id="BrA-Mg-9yT"/>
-                            <constraint firstItem="neQ-m5-2vk" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" constant="560" id="Fyk-nJ-RJ3"/>
-                            <constraint firstAttribute="bottomMargin" secondItem="gtv-K7-hIk" secondAttribute="bottom" constant="30" id="JOd-X9-MNN"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="gtv-K7-hIk" secondAttribute="bottom" constant="123" id="JOd-X9-MNN"/>
                             <constraint firstItem="ANO-Gs-Tk5" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" id="Jlx-8C-0GH"/>
                             <constraint firstItem="cIW-Ou-STz" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" constant="175" id="PQt-gW-VB2"/>
-                            <constraint firstItem="gtv-K7-hIk" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" constant="1.5" id="TUv-VN-qfh"/>
+                            <constraint firstItem="gtv-K7-hIk" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" constant="0.5" id="TUv-VN-qfh"/>
                             <constraint firstItem="cIW-Ou-STz" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="WCY-Kg-EIr"/>
                             <constraint firstItem="ANO-Gs-Tk5" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="Yk1-eN-7XX"/>
                             <constraint firstItem="neQ-m5-2vk" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="coA-y2-fHJ"/>
