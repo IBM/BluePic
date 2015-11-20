@@ -1,0 +1,13 @@
+applications:
+- path: .
+  memory: 512M
+  instances: 1
+  domain: mybluemix.net
+  name: BluePic II
+  host: BluePic-II
+  disk_quota: 1024M
+  services:
+  - BluePic II-cloudantNoSQLDB
+  - BluePic II-imfpush
+  - BluePic II-AdvancedMobileAccess
+  - Object Storage-rz
