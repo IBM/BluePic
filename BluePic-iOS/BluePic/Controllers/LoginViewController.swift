@@ -25,12 +25,7 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        //self.pullLatestCloudantData()
-        
-        
-        
-        
+   
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -85,14 +80,7 @@ class LoginViewController: UIViewController {
         })
         
     }
-    
-    
-//    func pullLatestCloudantData() {
-//        
-//        //First do a pull to make sure datastore is up to date
-//        CloudantSyncClient.SharedInstance.pullFromRemoteDatabase()
-//        
-//    }
+
     
     
 
