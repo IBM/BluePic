@@ -107,15 +107,12 @@ class FacebookDataManager: NSObject {
                             NSUserDefaults.standardUserDefaults().setObject(userName, forKey: "user_name")
                             NSUserDefaults.standardUserDefaults().synchronize()
                             
-//                            // save that user has logged in to user defaults
-//                            NSUserDefaults.standardUserDefaults().setBool(true, forKey: "hasLoggedIn")
-//                            NSUserDefaults.standardUserDefaults().synchronize()
                         
-                        print("Authenticated user \(userName) with id \(userID)")
+                            print("Authenticated user \(userName) with id \(userID)")
                             
-                        self.checkIfUserExistsOnCloudantAndPushIfNeeded()
+                            self.checkIfUserExistsOnCloudantAndPushIfNeeded()
                             
-                        callback(networkRequest: NetworkRequest.Success)
+                            callback(networkRequest: NetworkRequest.Success)
                         }
                     }
                     else {
@@ -216,6 +213,34 @@ class FacebookDataManager: NSObject {
         print("Facebook Authentication Configured:\nFacebookAppID \(facebookAppID!)\nFacebookDisplayName \(facebookDisplayName!)\nFacebookURLScheme \(facebookURLScheme!)")
         return true;
     }
+    
+    
+    
+    
+    func tryToShowLoginScreen() {
+        //check if user is already authenticated
+        if let userID = NSUserDefaults.standardUserDefaults().objectForKey("user_id") as? String {
+            if let userName = NSUserDefaults.standardUserDefaults().objectForKey("user_name") as? String {
+                self.fbUserDisplayName = userName
+                self.fbUniqueUserID = userID
+            
+                self.checkIfUserExistsOnCloudantAndPushIfNeeded() //push copy of user id if it somehow got deleted from database
+                print("Welcome back, user \(userID)!")
+            }
+        }
+        else { //user not authenticated
+            
+            //show login if user hasn't pressed "sign in later"
+            if !NSUserDefaults.standardUserDefaults().boolForKey("hasPressedLater") {
+                let loginVC = Utils.vcWithNameFromStoryboardWithName("loginVC", storyboardName: "Main") as! LoginViewController
+                Utils.rootViewController().presentViewController(loginVC, animated: false, completion: nil)
+                
+            }
+        }
+        
+        
+    }
+    
     
     func checkIfUserExistsOnCloudantAndPushIfNeeded() {
         
