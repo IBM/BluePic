@@ -11,7 +11,24 @@ import Foundation
 
 
 class CloudantSyncClient {
-    /**
+    
+    
+    /// Shared instance of data manager
+    static let SharedInstance: CloudantSyncClient = {
+        
+        let key = Utils.getKeyFromPlist("keys", key: "cdt_key")
+        let pass = Utils.getKeyFromPlist("keys", key: "cdt_pass")
+        let dbName = Utils.getKeyFromPlist("keys", key: "cdt_db_name")
+        let username = Utils.getKeyFromPlist("keys", key: "cdt_username")
+        var manager = CloudantSyncClient(apiKey: key, apiPassword: pass, dbName: dbName, username: username)
+        
+        
+        return manager
+        
+    }()
+    
+    
+        /**
      * Instance variables
      */
     var manager:CDTDatastoreManager

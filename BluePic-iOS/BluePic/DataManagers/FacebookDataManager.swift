@@ -15,6 +15,7 @@ class FacebookDataManager: NSObject {
         
         var manager = FacebookDataManager()
         
+        
         return manager
         
     }()

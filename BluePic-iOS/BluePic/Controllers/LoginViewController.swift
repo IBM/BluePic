@@ -22,7 +22,6 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var welcomeLabel: UILabel!
     
     
-    var cSync:CloudantSyncClient!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -74,13 +73,9 @@ class LoginViewController: UIViewController {
     
     
     func pullLatestCloudantData() {
-        let key = Utils.getKeyFromPlist("keys", key: "cdt_key")
-        let pass = Utils.getKeyFromPlist("keys", key: "cdt_pass")
-        let dbName = Utils.getKeyFromPlist("keys", key: "cdt_db_name")
-        let username = Utils.getKeyFromPlist("keys", key: "cdt_username")
-        cSync = CloudantSyncClient(apiKey: key, apiPassword: pass, dbName: dbName, username: username)
+        
         //First do a pull to make sure datastore is up to date
-        cSync.pullFromRemoteDatabase()
+        CloudantSyncClient.SharedInstance.pullFromRemoteDatabase()
         
     }
     
@@ -88,12 +83,12 @@ class LoginViewController: UIViewController {
     func checkIfUserExistsOnCloudantAndPushIfNeeded() {
         
         //Check if doc with fb id exists
-        if(!cSync.doesExist(FacebookDataManager.SharedInstance.fbUniqueUserID!))
+        if(!CloudantSyncClient.SharedInstance.doesExist(FacebookDataManager.SharedInstance.fbUniqueUserID!))
         {
             //Create profile document locally
-            cSync.createProfileDoc(FacebookDataManager.SharedInstance.fbUniqueUserID!, name: FacebookDataManager.SharedInstance.fbUserDisplayName!)
+            CloudantSyncClient.SharedInstance.createProfileDoc(FacebookDataManager.SharedInstance.fbUniqueUserID!, name: FacebookDataManager.SharedInstance.fbUserDisplayName!)
             //Push new profile document to remote database
-            cSync.pushToRemoteDatabase()
+            CloudantSyncClient.SharedInstance.pushToRemoteDatabase()
             
                 
             
