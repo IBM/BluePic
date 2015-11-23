@@ -96,6 +96,7 @@ class LoginViewController: UIViewController {
         let userDisplayName = FacebookDataManager.SharedInstance.fbUserDisplayName!
         let name = userDisplayName.componentsSeparatedByString(" ").first
         self.welcomeLabel.text = "Welcome to BluePic, \(name!)!"
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
     
     
