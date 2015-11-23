@@ -26,7 +26,7 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.pullLatestCloudantData()
+        //self.pullLatestCloudantData()
         
         
         
@@ -39,6 +39,8 @@ class LoginViewController: UIViewController {
     
     
     @IBAction func signInLaterTapped(sender: AnyObject) {
+        NSUserDefaults.standardUserDefaults().setBool(true, forKey: "hasPressedLater")
+        NSUserDefaults.standardUserDefaults().synchronize()
         self.dismissViewControllerAnimated(true, completion: nil)
     }
 
@@ -54,16 +56,29 @@ class LoginViewController: UIViewController {
                 print("success")
                 if let userID = FacebookDataManager.SharedInstance.fbUniqueUserID {
                     print("\(userID)")
+                    
                 }
                 if let userDisplayName = FacebookDataManager.SharedInstance.fbUserDisplayName {
                     print("\(userDisplayName)")
-                    self.checkIfUserExistsOnCloudantAndPushIfNeeded()
+                    //save that user has not pressed login later
+                    NSUserDefaults.standardUserDefaults().setBool(false, forKey: "hasPressedLater")
+                    NSUserDefaults.standardUserDefaults().synchronize()
+                    
+                    //update labels
+                    let userDisplayName = FacebookDataManager.SharedInstance.fbUserDisplayName!
+                    let name = userDisplayName.componentsSeparatedByString(" ").first
+                    self.welcomeLabel.text = "Welcome to BluePic, \(name!)!"
+                    
+                    //dismiss login vc
+                    self.dismissViewControllerAnimated(true, completion: nil)
+                    
+                    //self.checkIfUserExistsOnCloudantAndPushIfNeeded()
                     
                 }
             }
             else {
                 print("failure")
-                self.welcomeLabel.text = "Uh oh, an error occurred!"
+                self.welcomeLabel.text = "Oops, an error occurred! Try again."
                 self.facebookButton.hidden = false
                 self.signInLaterButton.hidden = false
             }
@@ -72,64 +87,16 @@ class LoginViewController: UIViewController {
     }
     
     
-    func pullLatestCloudantData() {
-        
-        //First do a pull to make sure datastore is up to date
-        CloudantSyncClient.SharedInstance.pullFromRemoteDatabase()
-        
-    }
+//    func pullLatestCloudantData() {
+//        
+//        //First do a pull to make sure datastore is up to date
+//        CloudantSyncClient.SharedInstance.pullFromRemoteDatabase()
+//        
+//    }
     
     
-    func checkIfUserExistsOnCloudantAndPushIfNeeded() {
-        
-        //Check if doc with fb id exists
-        if(!CloudantSyncClient.SharedInstance.doesExist(FacebookDataManager.SharedInstance.fbUniqueUserID!))
-        {
-            //Create profile document locally
-            CloudantSyncClient.SharedInstance.createProfileDoc(FacebookDataManager.SharedInstance.fbUniqueUserID!, name: FacebookDataManager.SharedInstance.fbUserDisplayName!)
-            //Push new profile document to remote database
-            CloudantSyncClient.SharedInstance.pushToRemoteDatabase()
-            
-                
-            
-        }
-        let userDisplayName = FacebookDataManager.SharedInstance.fbUserDisplayName!
-        let name = userDisplayName.componentsSeparatedByString(" ").first
-        self.welcomeLabel.text = "Welcome to BluePic, \(name!)!"
-        self.dismissViewControllerAnimated(true, completion: nil)
-    }
-    
-    
-    func sendIDToBluemix() {
-        
-        let parameters = [
-            "fb_id": FacebookDataManager.SharedInstance.fbUniqueUserID!,
-            "profile_name": FacebookDataManager.SharedInstance.fbUserDisplayName!
-        ]
-        
-        let headers = [
-            "Content-Type": "application/json"
-        ]
-        
-        let url = "http://BluePic-II.mybluemix.net/cloudantapi"
-        
-                Alamofire.request(.POST, url, parameters: parameters, headers: headers, encoding: .JSON)
-                    .responseJSON { response in
-        
-                    print(response)
-                }
-        
-//        Alamofire.request(.POST, url, parameters: parameters, headers: headers, encoding: .JSON)
-//            .responseObject() { (response: Response<OAuth, NSError>) in
-//                debugPrint(response)
-//                
-//                let oAuth = response.result.value
-//                
-//                
-//                
-//        }
-        
-    }
+
+
     
     
     override func didReceiveMemoryWarning() {

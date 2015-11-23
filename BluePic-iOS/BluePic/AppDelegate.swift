@@ -15,15 +15,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        //Initialize backend
-        let key = Utils.getKeyFromPlist("keys", key: "backend_route")
-        let guid = Utils.getKeyFromPlist("keys", key: "GUID")
-        IMFClient.sharedInstance().initializeWithBackendRoute(key, backendGUID: guid);
+        self.initializeBackendForFacebookAuth()
+        self.pullLatestCloudantData()
         
-        //Initialize FB
-        IMFFacebookAuthenticationHandler.sharedInstance().registerWithDefaultDelegate()
         return true
     }
+    
+    func pullLatestCloudantData() {
+        
+        //First do a pull to make sure datastore is up to date
+        CloudantSyncClient.SharedInstance.pullFromRemoteDatabase()
+        
+    }
+    
+    
+    func initializeBackendForFacebookAuth() {
+    //Initialize backend
+    let key = Utils.getKeyFromPlist("keys", key: "backend_route")
+    let guid = Utils.getKeyFromPlist("keys", key: "GUID")
+    IMFClient.sharedInstance().initializeWithBackendRoute(key, backendGUID: guid);
+    
+    //Initialize FB
+    IMFFacebookAuthenticationHandler.sharedInstance().registerWithDefaultDelegate()
+    
+    }
+
 
     func applicationWillResignActive(application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

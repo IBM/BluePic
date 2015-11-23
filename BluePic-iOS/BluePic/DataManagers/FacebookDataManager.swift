@@ -35,6 +35,9 @@ class FacebookDataManager: NSObject {
     /// Unique user ID given from Facebook API
     var fbUniqueUserID: String?
     
+    /// Bool if user is authenticated with facebook
+    var isLoggedIn = false
+    
     /**
      Custom enum for whether facebook authentication was successful or not
      
@@ -92,11 +95,25 @@ class FacebookDataManager: NSObject {
                     if let userID = identity["id"] as?NSString {
                         if let userName = identity["displayName"] as? NSString {
                         
-                        //save username and id to shared instance of this class
-                        self.fbUniqueUserID = userID as String
-                        self.fbUserDisplayName = userName as String
+                            //save username and id to shared instance of this class
+                            self.fbUniqueUserID = userID as String
+                            self.fbUserDisplayName = userName as String
+                        
+                            //set user logged in
+                            self.isLoggedIn = true
+                            
+                            //save that user has logged in for future app launches
+                            NSUserDefaults.standardUserDefaults().setObject(userID, forKey: "user_id")
+                            NSUserDefaults.standardUserDefaults().synchronize()
+                            
+//                            // save that user has logged in to user defaults
+//                            NSUserDefaults.standardUserDefaults().setBool(true, forKey: "hasLoggedIn")
+//                            NSUserDefaults.standardUserDefaults().synchronize()
                         
                         print("Authenticated user \(userName) with id \(userID)")
+                            
+                        self.checkIfUserExistsOnCloudantAndPushIfNeeded()
+                            
                         callback(networkRequest: NetworkRequest.Success)
                         }
                     }
@@ -197,6 +214,20 @@ class FacebookDataManager: NSObject {
 
         print("Facebook Authentication Configured:\nFacebookAppID \(facebookAppID!)\nFacebookDisplayName \(facebookDisplayName!)\nFacebookURLScheme \(facebookURLScheme!)")
         return true;
+    }
+    
+    func checkIfUserExistsOnCloudantAndPushIfNeeded() {
+        
+        //Check if doc with fb id exists
+        if(!CloudantSyncClient.SharedInstance.doesExist(self.fbUniqueUserID!))
+        {
+            //Create profile document locally
+            CloudantSyncClient.SharedInstance.createProfileDoc(self.fbUniqueUserID!, name: self.fbUserDisplayName!)
+            //Push new profile document to remote database
+            CloudantSyncClient.SharedInstance.pushToRemoteDatabase()
+            
+        }
+        
     }
     
     

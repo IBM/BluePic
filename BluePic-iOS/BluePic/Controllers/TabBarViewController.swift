@@ -9,8 +9,6 @@
 import UIKit
 
 class TabBarViewController: UITabBarController {
-    
-    var hasShownLogin = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,10 +18,7 @@ class TabBarViewController: UITabBarController {
     }
     
     override func viewDidAppear(animated: Bool) {
-        if (!hasShownLogin) {
             self.showLoginScreen()
-            self.hasShownLogin = true
-        }
         
     }
 
@@ -34,8 +29,20 @@ class TabBarViewController: UITabBarController {
     
     
     func showLoginScreen() {
-        let loginVC = Utils.vcWithNameFromStoryboardWithName("loginVC", storyboardName: "Main") as! LoginViewController
-        self.presentViewController(loginVC, animated: true, completion: nil)
+        //check if user is already authenticated
+        if let userID = NSUserDefaults.standardUserDefaults().objectForKey("user_id") as? String {
+            print("Welcome back, user \(userID)!")
+        }
+        else { //user not authenticated
+        
+            //show login if user hasn't pressed "sign in later"
+            if !NSUserDefaults.standardUserDefaults().boolForKey("hasPressedLater") {
+                let loginVC = Utils.vcWithNameFromStoryboardWithName("loginVC", storyboardName: "Main") as! LoginViewController
+                self.presentViewController(loginVC, animated: false, completion: nil)
+                
+            }
+        }
+    
         
     }
 

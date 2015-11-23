@@ -125,11 +125,11 @@ also built on IBM Bluemix services.</string>
                                 </constraints>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hia-oq-hEM">
-                                <rect key="frame" x="290" y="348" width="20" height="1"/>
+                                <rect key="frame" x="290" y="348" width="20" height="2"/>
                                 <animations/>
                                 <color key="backgroundColor" red="0.0" green="0.56862745098039214" blue="0.91764705882352937" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="1" id="Cc5-SZ-uZB"/>
+                                    <constraint firstAttribute="height" constant="2" id="Cc5-SZ-uZB"/>
                                     <constraint firstAttribute="width" constant="20" id="Ft2-aN-JbV"/>
                                 </constraints>
                             </view>
