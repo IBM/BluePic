@@ -22,6 +22,7 @@
 		3435C7C91C0368B1004923BD /* Feed.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3435C7C81C0368B1004923BD /* Feed.storyboard */; };
 		3435C7CB1C0368DA004923BD /* Camera.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3435C7CA1C0368DA004923BD /* Camera.storyboard */; };
 		3435C7CD1C03690F004923BD /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3435C7CC1C03690F004923BD /* Profile.storyboard */; };
+		3435C7CF1C036A60004923BD /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3435C7CE1C036A60004923BD /* TabBarViewController.swift */; };
 		3474728E1BFA8C6A0018B7F6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3474728D1BFA8C6A0018B7F6 /* AppDelegate.swift */; };
 		347472951BFA8C6A0018B7F6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 347472941BFA8C6A0018B7F6 /* Assets.xcassets */; };
 		347472981BFA8C6A0018B7F6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 347472961BFA8C6A0018B7F6 /* LaunchScreen.storyboard */; };
@@ -45,7 +46,7 @@
 		347472ED1BFA8DEF0018B7F6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 347472D31BFA8DEF0018B7F6 /* Main.storyboard */; };
 		347472EE1BFA8DEF0018B7F6 /* LocalizationUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347472D61BFA8DEF0018B7F6 /* LocalizationUtils.swift */; };
 		347472EF1BFA8DEF0018B7F6 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347472D71BFA8DEF0018B7F6 /* Utils.swift */; };
-		347472F11BFA8E320018B7F6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347472F01BFA8E320018B7F6 /* ViewController.swift */; };
+		347472F11BFA8E320018B7F6 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347472F01BFA8E320018B7F6 /* LoginViewController.swift */; };
 		34C809431BFCB0FF00C48004 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34C8093D1BFCB0C800C48004 /* Alamofire.framework */; };
 		34C809441BFCB0FF00C48004 /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 34C8093D1BFCB0C800C48004 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		34C809461BFCB10100C48004 /* AlamofireObjectMapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34C8093E1BFCB0C800C48004 /* AlamofireObjectMapper.framework */; };
@@ -110,6 +111,7 @@
 		3435C7C81C0368B1004923BD /* Feed.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Feed.storyboard; sourceTree = "<group>"; };
 		3435C7CA1C0368DA004923BD /* Camera.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Camera.storyboard; sourceTree = "<group>"; };
 		3435C7CC1C03690F004923BD /* Profile.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Profile.storyboard; sourceTree = "<group>"; };
+		3435C7CE1C036A60004923BD /* TabBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		3474728A1BFA8C6A0018B7F6 /* BluePic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BluePic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3474728D1BFA8C6A0018B7F6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		347472941BFA8C6A0018B7F6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -138,7 +140,7 @@
 		347472D31BFA8DEF0018B7F6 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		347472D61BFA8DEF0018B7F6 /* LocalizationUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalizationUtils.swift; sourceTree = "<group>"; };
 		347472D71BFA8DEF0018B7F6 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
-		347472F01BFA8E320018B7F6 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		347472F01BFA8E320018B7F6 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		34C8093D1BFCB0C800C48004 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
 		34C8093E1BFCB0C800C48004 /* AlamofireObjectMapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AlamofireObjectMapper.framework; path = Carthage/Build/iOS/AlamofireObjectMapper.framework; sourceTree = "<group>"; };
 		34C8093F1BFCB0C800C48004 /* ObjectMapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ObjectMapper.framework; path = Carthage/Build/iOS/ObjectMapper.framework; sourceTree = "<group>"; };
@@ -275,7 +277,8 @@
 		347472BD1BFA8DEF0018B7F6 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				347472F01BFA8E320018B7F6 /* ViewController.swift */,
+				347472F01BFA8E320018B7F6 /* LoginViewController.swift */,
+				3435C7CE1C036A60004923BD /* TabBarViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -589,6 +592,7 @@
 			files = (
 				347472DD1BFA8DEF0018B7F6 /* DoubleExtension.swift in Sources */,
 				347472E91BFA8DEF0018B7F6 /* UILabelExtension.swift in Sources */,
+				3435C7CF1C036A60004923BD /* TabBarViewController.swift in Sources */,
 				347472DF1BFA8DEF0018B7F6 /* IntExtension.swift in Sources */,
 				347472DE1BFA8DEF0018B7F6 /* FloatExtension.swift in Sources */,
 				347472E01BFA8DEF0018B7F6 /* NSCoderExtension.swift in Sources */,
@@ -605,7 +609,7 @@
 				347472E31BFA8DEF0018B7F6 /* StringExtension.swift in Sources */,
 				347472E81BFA8DEF0018B7F6 /* UIImageViewExtension.swift in Sources */,
 				347472EA1BFA8DEF0018B7F6 /* UIViewExtensions.swift in Sources */,
-				347472F11BFA8E320018B7F6 /* ViewController.swift in Sources */,
+				347472F11BFA8E320018B7F6 /* LoginViewController.swift in Sources */,
 				3474728E1BFA8C6A0018B7F6 /* AppDelegate.swift in Sources */,
 				34C809551BFD0F2400C48004 /* FacebookDataManager.swift in Sources */,
 			);

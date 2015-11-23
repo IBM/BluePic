@@ -13,10 +13,10 @@
         </mutableArray>
     </customFonts>
     <scenes>
-        <!--Tab Bar Controller-->
+        <!--Tab Bar View Controller-->
         <scene sceneID="buh-Yt-C7i">
             <objects>
-                <tabBarController id="8AK-xM-BIZ" sceneMemberID="viewController">
+                <tabBarController id="8AK-xM-BIZ" customClass="TabBarViewController" customModule="BluePic" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBar key="tabBar" contentMode="scaleToFill" id="163-n0-olj">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -33,10 +33,10 @@
             </objects>
             <point key="canvasLocation" x="-790" y="918"/>
         </scene>
-        <!--View Controller-->
+        <!--Login View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="BluePic" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="loginVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="BYZ-38-t0r" customClass="LoginViewController" customModule="BluePic" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -143,6 +143,9 @@ also built on IBM Bluemix services.</string>
                                 <state key="normal" title="I’ll sign in later">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="signInLaterTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gPb-DO-Xyg"/>
+                                </connections>
                             </button>
                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gtv-K7-hIk">
                                 <rect key="frame" x="167" y="524" width="267" height="20"/>

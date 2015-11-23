@@ -11,7 +11,7 @@ import Alamofire
 import ObjectMapper
 import AlamofireObjectMapper
 
-class ViewController: UIViewController {
+class LoginViewController: UIViewController {
 
     @IBOutlet weak var loadingIndicator: UIActivityIndicatorView!
     
@@ -53,6 +53,11 @@ class ViewController: UIViewController {
     
     override func viewDidAppear(animated: Bool) {
         
+    }
+    
+    
+    @IBAction func signInLaterTapped(sender: AnyObject) {
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
 
     @IBAction func loginTapped(sender: AnyObject) {
