@@ -102,8 +102,9 @@ class FacebookDataManager: NSObject {
                             //set user logged in
                             self.isLoggedIn = true
                             
-                            //save that user has logged in for future app launches
+                            //save user id and name for future app launches
                             NSUserDefaults.standardUserDefaults().setObject(userID, forKey: "user_id")
+                            NSUserDefaults.standardUserDefaults().setObject(userName, forKey: "user_name")
                             NSUserDefaults.standardUserDefaults().synchronize()
                             
 //                            // save that user has logged in to user defaults

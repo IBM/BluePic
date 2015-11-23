@@ -9,6 +9,12 @@
 import UIKit
 
 class TabBarViewController: UITabBarController {
+    
+    var user_id: String!
+    var user_name: String!
+    
+    /// Boolean if showLoginScreen() has been called yet this app launch (should only try to show login once)
+    var hasTriedToPresentLoginThisAppLaunch = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,7 +24,10 @@ class TabBarViewController: UITabBarController {
     }
     
     override func viewDidAppear(animated: Bool) {
-            self.showLoginScreen()
+        if (!hasTriedToPresentLoginThisAppLaunch) {
+            self.tryToShowLoginScreen()
+            self.hasTriedToPresentLoginThisAppLaunch = true
+        }
         
     }
 
@@ -28,9 +37,11 @@ class TabBarViewController: UITabBarController {
     }
     
     
-    func showLoginScreen() {
+    func tryToShowLoginScreen() {
         //check if user is already authenticated
         if let userID = NSUserDefaults.standardUserDefaults().objectForKey("user_id") as? String {
+            self.user_id = userID
+            self.checkIfUserExistsOnCloudantAndPushIfNeeded() //push copy of user id if it somehow got deleted from database
             print("Welcome back, user \(userID)!")
         }
         else { //user not authenticated
@@ -43,6 +54,24 @@ class TabBarViewController: UITabBarController {
             }
         }
     
+        
+    }
+    
+    func checkIfUserExistsOnCloudantAndPushIfNeeded() {
+        
+        if let userName = NSUserDefaults.standardUserDefaults().objectForKey("user_name") as? String {
+            self.user_name = userName
+            
+                //Check if doc with fb id exists, add it if not
+            if(!CloudantSyncClient.SharedInstance.doesExist(self.user_id))
+                {
+                        //Create profile document locally
+                    CloudantSyncClient.SharedInstance.createProfileDoc(self.user_id, name: self.user_name)
+                    //Push new profile document to remote database
+                    CloudantSyncClient.SharedInstance.pushToRemoteDatabase()
+            
+            }
+        }
         
     }
 
