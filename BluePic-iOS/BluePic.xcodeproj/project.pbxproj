@@ -54,6 +54,7 @@
 		34C809551BFD0F2400C48004 /* FacebookDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C809541BFD0F2400C48004 /* FacebookDataManager.swift */; };
 		494AA0AE1BFE4CA9006FC48E /* ObjectStorageClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494AA0AD1BFE4CA9006FC48E /* ObjectStorageClient.swift */; };
 		494AA0B01BFE4CBA006FC48E /* ObjectStorageClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494AA0AF1BFE4CBA006FC48E /* ObjectStorageClientTests.swift */; };
+		B386EAA21C00DEDE005387D4 /* CloudantSyncClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B386EAA11C00DEDE005387D4 /* CloudantSyncClient.swift */; };
 		FC315DE6D7B8C71B03B95C18 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 11F4C7A29750E1B7B37ABAFA /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -143,6 +144,7 @@
 		494AA0AF1BFE4CBA006FC48E /* ObjectStorageClientTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectStorageClientTests.swift; sourceTree = "<group>"; };
 		4DF2008F9A93E25237957424 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		548428B896D4182B293AB59E /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		B386EAA11C00DEDE005387D4 /* CloudantSyncClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CloudantSyncClient.swift; path = ../Utilities/CloudantSyncClient.swift; sourceTree = "<group>"; };
 		BDC4B5F21BFBC77200CC1648 /* BluePic-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BluePic-Bridging-Header.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -354,6 +356,7 @@
 			isa = PBXGroup;
 			children = (
 				494AA0AD1BFE4CA9006FC48E /* ObjectStorageClient.swift */,
+				B386EAA11C00DEDE005387D4 /* CloudantSyncClient.swift */,
 			);
 			path = DataAccess;
 			sourceTree = "<group>";
@@ -586,6 +589,7 @@
 				347472E51BFA8DEF0018B7F6 /* UIColorExtension.swift in Sources */,
 				347472E71BFA8DEF0018B7F6 /* UIImageExtension.swift in Sources */,
 				347472E21BFA8DEF0018B7F6 /* NSDictionaryExtension.swift in Sources */,
+				B386EAA21C00DEDE005387D4 /* CloudantSyncClient.swift in Sources */,
 				347472E11BFA8DEF0018B7F6 /* NSDateExtension.swift in Sources */,
 				347472E61BFA8DEF0018B7F6 /* UIFontExtension.swift in Sources */,
 				347472DC1BFA8DEF0018B7F6 /* CGFloatExtension.swift in Sources */,
