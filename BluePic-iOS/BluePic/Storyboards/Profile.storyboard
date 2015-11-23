@@ -18,7 +18,9 @@
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Profile" id="Ran-21-Chf" userLabel="Item 3"/>
+                    <tabBarItem key="tabBarItem" title="" image="profile" id="Ran-21-Chf" userLabel="Item 3">
+                        <inset key="imageInsets" minX="0.0" minY="6" maxX="0.0" maxY="-6"/>
+                    </tabBarItem>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GEo-GV-AQQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -26,4 +28,7 @@
             <point key="canvasLocation" x="55" y="1432"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="profile" width="15" height="21"/>
+    </resources>
 </document>

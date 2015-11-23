@@ -4,7 +4,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
     </dependencies>
     <scenes>
-        <!--Feed-->
+        <!--View Controller-->
         <scene sceneID="acj-GN-THL">
             <objects>
                 <viewController id="3iH-dT-DNB" sceneMemberID="viewController">
@@ -18,7 +18,9 @@
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Feed" id="P5o-FN-NsA"/>
+                    <tabBarItem key="tabBarItem" title="" image="home" id="P5o-FN-NsA">
+                        <inset key="imageInsets" minX="0.0" minY="6" maxX="0.0" maxY="-6"/>
+                    </tabBarItem>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JIN-4Y-jeg" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -26,4 +28,7 @@
             <point key="canvasLocation" x="55" y="88"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="home" width="18" height="19"/>
+    </resources>
 </document>

@@ -4,7 +4,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
     </dependencies>
     <scenes>
-        <!--Camera-->
+        <!--View Controller-->
         <scene sceneID="NaP-l3-fIt">
             <objects>
                 <viewController id="CYV-BP-7ef" sceneMemberID="viewController">
@@ -18,7 +18,9 @@
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Camera" id="qf8-Eh-6U4"/>
+                    <tabBarItem key="tabBarItem" title="" image="camera" id="qf8-Eh-6U4">
+                        <inset key="imageInsets" minX="0.0" minY="6" maxX="0.0" maxY="-6"/>
+                    </tabBarItem>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pG0-uJ-loH" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -26,4 +28,7 @@
             <point key="canvasLocation" x="55" y="749"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="camera" width="26" height="26"/>
+    </resources>
 </document>
