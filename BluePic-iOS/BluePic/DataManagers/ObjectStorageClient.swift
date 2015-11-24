@@ -164,13 +164,13 @@ class ObjectStorageClient {
     }
     
     /**
-     * Uploads given UIImage object to the Object Storage service on Bluemix. Before doing so, this method creates a JPEG
-     * representation of the image using the least compression possible. The compression quality value can be changed if necessary.
+     * Uploads given UIImage object to the Object Storage service on Bluemix. Before doing so, this method creates a PNG
+     * representation of the image.
      */
     func uploadImage(containerName: String, imageName: String, image: UIImage,
         onSuccess: (imageURL: String) -> Void, onFailure: (error: String) -> Void) {
             // http://stackoverflow.com/questions/8564833/ios-upload-image-and-text-using-http-post
-            let imageData = UIImageJPEGRepresentation(image, 1.0);
+            let imageData = UIImagePNGRepresentation(image)
             let imageURL = "\(publicURL)/\(containerName)/\(imageName)"
             let nsURL = NSURL(string: imageURL)!
             let mutableURLRequest = NSMutableURLRequest(URL: nsURL)

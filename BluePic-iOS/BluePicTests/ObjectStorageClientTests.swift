@@ -67,8 +67,8 @@ class ObjectStorageClientTests: XCTestCase {
     func testUploadImage() {
         let testName = "testUploadImage"
         authenticate(testName, onSuccess: {
-            let imageName = "ibm-icon.jpeg"
-            let image = UIImage(named : "ibm-icon")
+            let imageName = "puppy.png"
+            let image = UIImage(named : "puppy")
             XCTAssertNotNil(image)
             self.objectStorageClient.uploadImage(self.containerName, imageName: imageName, image: image!,
                 onSuccess: { (imageURL: String) in
