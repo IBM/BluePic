@@ -54,8 +54,9 @@ class TabBarViewController: UITabBarController {
         self.loadingIndicator.hidesWhenStopped = true
         self.loadingIndicator.center = self.view.center
         self.loadingIndicator.activityIndicatorViewStyle = .WhiteLarge
-        self.loadingIndicator.startAnimating()
-        self.backgroundImageView.addSubview(self.loadingIndicator)
+        self.loadingIndicator.color = UIColor.colorWithRedValue(0, greenValue: 145, blueValue: 234, alpha: 1.0)
+        self.loadingIndicator.hidden = true
+        self.view.addSubview(self.loadingIndicator)
         
     }
     

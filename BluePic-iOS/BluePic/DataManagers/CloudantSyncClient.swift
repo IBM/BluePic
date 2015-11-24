@@ -249,8 +249,7 @@ class pullDelegate:NSObject, CDTReplicatorDelegate {
         dispatch_async(dispatch_get_main_queue()) {
             print("PULL complete, hiding loading")
             let tabVC = Utils.rootViewController() as! TabBarViewController
-            tabVC.backgroundImageView.removeFromSuperview()
-            tabVC.backgroundImageView.hidden = true
+            tabVC.loadingIndicator.stopAnimating()
         }
         
     }
