@@ -43,7 +43,7 @@ class TabBarViewController: UITabBarController {
     
     
     /**
-     Add image so no flickering occurs when showing login. Starts a simple loading animation that is dismissed when PULL from CloudantSyncClient completes
+     Add image view so no flickering occurs before showing login. Starts a simple loading animation that is dismissed when PULL from CloudantSyncClient completes
      */
     func addBackgroundImageView() {
         self.backgroundImageView = UIImageView(frame: self.view.frame)
