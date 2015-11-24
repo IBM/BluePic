@@ -62,7 +62,6 @@ class TabBarViewController: UITabBarController {
     
     func tryToShowLogin() {
         if (!hasTriedToPresentLoginThisAppLaunch) {
-            //self.tryToShowLoginScreen()
             self.hasTriedToPresentLoginThisAppLaunch = true
             FacebookDataManager.SharedInstance.tryToShowLoginScreen(self)
         } 
