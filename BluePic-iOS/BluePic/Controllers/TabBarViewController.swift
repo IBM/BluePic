@@ -9,21 +9,26 @@
 import UIKit
 
 class TabBarViewController: UITabBarController {
-    
-    var user_id: String!
-    var user_name: String!
+
     
     /// Boolean if showLoginScreen() has been called yet this app launch (should only try to show login once)
     var hasTriedToPresentLoginThisAppLaunch = false
+    
+    /// Image view to temporarily cover feed and content so it doesn't appear to flash when showing login screen
+    var backgroundImageView: UIImageView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         self.tabBar.tintColor! = UIColor.whiteColor()
+        
+        self.addBackgroundImageView()
         // Do any additional setup after loading the view.
     }
     
-    
+    override func viewWillAppear(animated: Bool) {
+        
+    }
     
     override func viewDidAppear(animated: Bool) {
         self.tryToShowLogin()
@@ -36,11 +41,18 @@ class TabBarViewController: UITabBarController {
     }
     
     
+    func addBackgroundImageView() {
+        self.backgroundImageView = UIImageView(frame: self.view.frame)
+        self.backgroundImageView.image = UIImage(named: "login_background")
+        self.view.addSubview(self.backgroundImageView)
+        
+    }
+    
     
     func tryToShowLogin() {
         if (!hasTriedToPresentLoginThisAppLaunch) {
             //self.tryToShowLoginScreen()
-            FacebookDataManager.SharedInstance.tryToShowLoginScreen()
+            FacebookDataManager.SharedInstance.tryToShowLoginScreen(self)
             self.hasTriedToPresentLoginThisAppLaunch = true
         }
         

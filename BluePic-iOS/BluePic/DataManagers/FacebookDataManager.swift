@@ -217,7 +217,8 @@ class FacebookDataManager: NSObject {
     
     
     
-    func tryToShowLoginScreen() {
+    func tryToShowLoginScreen(presentingVC: TabBarViewController!) {
+        
         //check if user is already authenticated
         if let userID = NSUserDefaults.standardUserDefaults().objectForKey("user_id") as? String {
             if let userName = NSUserDefaults.standardUserDefaults().objectForKey("user_name") as? String {
@@ -226,6 +227,7 @@ class FacebookDataManager: NSObject {
             
                 self.checkIfUserExistsOnCloudantAndPushIfNeeded() //push copy of user id if it somehow got deleted from database
                 print("Welcome back, user \(userID)!")
+                presentingVC.backgroundImageView.hidden = true
             }
         }
         else { //user not authenticated
@@ -233,7 +235,13 @@ class FacebookDataManager: NSObject {
             //show login if user hasn't pressed "sign in later"
             if !NSUserDefaults.standardUserDefaults().boolForKey("hasPressedLater") {
                 let loginVC = Utils.vcWithNameFromStoryboardWithName("loginVC", storyboardName: "Main") as! LoginViewController
-                Utils.rootViewController().presentViewController(loginVC, animated: false, completion: nil)
+                presentingVC.presentViewController(loginVC, animated: false, completion: { _ in
+                    presentingVC.backgroundImageView.removeFromSuperview()
+                    presentingVC.backgroundImageView.hidden = true
+                    
+                    
+                    
+                })
                 
             }
         }
