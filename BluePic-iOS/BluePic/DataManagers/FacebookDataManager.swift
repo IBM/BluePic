@@ -227,6 +227,7 @@ class FacebookDataManager: NSObject {
             
                 self.checkIfUserExistsOnCloudantAndPushIfNeeded() //push copy of user id if it somehow got deleted from database
                 print("Welcome back, user \(userID)!")
+                presentingVC.backgroundImageView.removeFromSuperview()
                 presentingVC.backgroundImageView.hidden = true
             }
         }
@@ -250,6 +251,9 @@ class FacebookDataManager: NSObject {
     }
     
     
+    /**
+     Query CloudantSync to see if id exists, and push to database if needed. Will wait until pull replicator is finished to execute
+     */
     func checkIfUserExistsOnCloudantAndPushIfNeeded() {
         
         //Check if doc with fb id exists

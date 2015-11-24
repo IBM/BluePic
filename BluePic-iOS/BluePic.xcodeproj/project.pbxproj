@@ -23,6 +23,8 @@
 		3435C7CB1C0368DA004923BD /* Camera.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3435C7CA1C0368DA004923BD /* Camera.storyboard */; };
 		3435C7CD1C03690F004923BD /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3435C7CC1C03690F004923BD /* Profile.storyboard */; };
 		3435C7CF1C036A60004923BD /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3435C7CE1C036A60004923BD /* TabBarViewController.swift */; };
+		3435C7D21C03E223004923BD /* CloudantSyncClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3435C7D01C03E223004923BD /* CloudantSyncClient.swift */; };
+		3435C7D31C03E223004923BD /* ObjectStorageClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3435C7D11C03E223004923BD /* ObjectStorageClient.swift */; };
 		3474728E1BFA8C6A0018B7F6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3474728D1BFA8C6A0018B7F6 /* AppDelegate.swift */; };
 		347472951BFA8C6A0018B7F6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 347472941BFA8C6A0018B7F6 /* Assets.xcassets */; };
 		347472981BFA8C6A0018B7F6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 347472961BFA8C6A0018B7F6 /* LaunchScreen.storyboard */; };
@@ -56,9 +58,7 @@
 		34C8094B1BFCD9A300C48004 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 34C8094A1BFCD9A300C48004 /* Info.plist */; };
 		34C8094D1BFCEA0400C48004 /* keys.plist in Resources */ = {isa = PBXBuildFile; fileRef = 34C8094C1BFCEA0400C48004 /* keys.plist */; };
 		34C809551BFD0F2400C48004 /* FacebookDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C809541BFD0F2400C48004 /* FacebookDataManager.swift */; };
-		494AA0AE1BFE4CA9006FC48E /* ObjectStorageClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494AA0AD1BFE4CA9006FC48E /* ObjectStorageClient.swift */; };
 		494AA0B01BFE4CBA006FC48E /* ObjectStorageClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494AA0AF1BFE4CBA006FC48E /* ObjectStorageClientTests.swift */; };
-		B386EAA21C00DEDE005387D4 /* CloudantSyncClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B386EAA11C00DEDE005387D4 /* CloudantSyncClient.swift */; };
 		FC315DE6D7B8C71B03B95C18 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 11F4C7A29750E1B7B37ABAFA /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -113,6 +113,8 @@
 		3435C7CA1C0368DA004923BD /* Camera.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Camera.storyboard; sourceTree = "<group>"; };
 		3435C7CC1C03690F004923BD /* Profile.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Profile.storyboard; sourceTree = "<group>"; };
 		3435C7CE1C036A60004923BD /* TabBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
+		3435C7D01C03E223004923BD /* CloudantSyncClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudantSyncClient.swift; sourceTree = "<group>"; };
+		3435C7D11C03E223004923BD /* ObjectStorageClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectStorageClient.swift; sourceTree = "<group>"; };
 		3474728A1BFA8C6A0018B7F6 /* BluePic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BluePic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3474728D1BFA8C6A0018B7F6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		347472941BFA8C6A0018B7F6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -148,11 +150,9 @@
 		34C8094A1BFCD9A300C48004 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		34C8094C1BFCEA0400C48004 /* keys.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = keys.plist; sourceTree = "<group>"; };
 		34C809541BFD0F2400C48004 /* FacebookDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookDataManager.swift; sourceTree = "<group>"; };
-		494AA0AD1BFE4CA9006FC48E /* ObjectStorageClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectStorageClient.swift; sourceTree = "<group>"; };
 		494AA0AF1BFE4CBA006FC48E /* ObjectStorageClientTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectStorageClientTests.swift; sourceTree = "<group>"; };
 		4DF2008F9A93E25237957424 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		548428B896D4182B293AB59E /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
-		B386EAA11C00DEDE005387D4 /* CloudantSyncClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CloudantSyncClient.swift; path = ../Utilities/CloudantSyncClient.swift; sourceTree = "<group>"; };
 		BDC4B5F21BFBC77200CC1648 /* BluePic-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BluePic-Bridging-Header.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -232,7 +232,6 @@
 				3474728D1BFA8C6A0018B7F6 /* AppDelegate.swift */,
 				347472941BFA8C6A0018B7F6 /* Assets.xcassets */,
 				347472961BFA8C6A0018B7F6 /* LaunchScreen.storyboard */,
-				494AA0AC1BFE4CA9006FC48E /* DataAccess */,
 				347472BB1BFA8DEF0018B7F6 /* Configuration */,
 				34F6972C1BFB8EB900A2D2EC /* ExternalLibraries */,
 				347472BD1BFA8DEF0018B7F6 /* Controllers */,
@@ -330,6 +329,8 @@
 		34C809511BFD0CBC00C48004 /* DataManagers */ = {
 			isa = PBXGroup;
 			children = (
+				3435C7D01C03E223004923BD /* CloudantSyncClient.swift */,
+				3435C7D11C03E223004923BD /* ObjectStorageClient.swift */,
 				34C809541BFD0F2400C48004 /* FacebookDataManager.swift */,
 			);
 			path = DataManagers;
@@ -362,15 +363,6 @@
 			children = (
 			);
 			path = ExternalLibraries;
-			sourceTree = "<group>";
-		};
-		494AA0AC1BFE4CA9006FC48E /* DataAccess */ = {
-			isa = PBXGroup;
-			children = (
-				494AA0AD1BFE4CA9006FC48E /* ObjectStorageClient.swift */,
-				B386EAA11C00DEDE005387D4 /* CloudantSyncClient.swift */,
-			);
-			path = DataAccess;
 			sourceTree = "<group>";
 		};
 		C93A0D59BDE755BE5A1209FC /* Frameworks */ = {
@@ -600,16 +592,16 @@
 				347472DE1BFA8DEF0018B7F6 /* FloatExtension.swift in Sources */,
 				347472E01BFA8DEF0018B7F6 /* NSCoderExtension.swift in Sources */,
 				347472E41BFA8DEF0018B7F6 /* UIButtonExtension.swift in Sources */,
-				494AA0AE1BFE4CA9006FC48E /* ObjectStorageClient.swift in Sources */,
 				347472EF1BFA8DEF0018B7F6 /* Utils.swift in Sources */,
 				347472E51BFA8DEF0018B7F6 /* UIColorExtension.swift in Sources */,
 				347472E71BFA8DEF0018B7F6 /* UIImageExtension.swift in Sources */,
 				347472E21BFA8DEF0018B7F6 /* NSDictionaryExtension.swift in Sources */,
-				B386EAA21C00DEDE005387D4 /* CloudantSyncClient.swift in Sources */,
+				3435C7D21C03E223004923BD /* CloudantSyncClient.swift in Sources */,
 				347472E11BFA8DEF0018B7F6 /* NSDateExtension.swift in Sources */,
 				347472E61BFA8DEF0018B7F6 /* UIFontExtension.swift in Sources */,
 				347472DC1BFA8DEF0018B7F6 /* CGFloatExtension.swift in Sources */,
 				347472EE1BFA8DEF0018B7F6 /* LocalizationUtils.swift in Sources */,
+				3435C7D31C03E223004923BD /* ObjectStorageClient.swift in Sources */,
 				347472E31BFA8DEF0018B7F6 /* StringExtension.swift in Sources */,
 				347472E81BFA8DEF0018B7F6 /* UIImageViewExtension.swift in Sources */,
 				347472EA1BFA8DEF0018B7F6 /* UIViewExtensions.swift in Sources */,
