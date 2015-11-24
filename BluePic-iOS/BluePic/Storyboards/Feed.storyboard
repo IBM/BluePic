@@ -5,10 +5,10 @@
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Feed View Controller-->
         <scene sceneID="acj-GN-THL">
             <objects>
-                <viewController id="3iH-dT-DNB" sceneMemberID="viewController">
+                <viewController id="3iH-dT-DNB" customClass="FeedViewController" customModule="BluePic" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="8wL-91-O7K"/>
                         <viewControllerLayoutGuide type="bottom" id="FM8-p5-wjj"/>
@@ -37,12 +37,22 @@
                                     <constraint firstItem="lgu-fG-Ypn" firstAttribute="centerX" secondItem="Omw-XB-9gH" secondAttribute="centerX" id="ebm-WH-VZ2"/>
                                 </constraints>
                             </view>
+                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="puppy" translatesAutoresizingMaskIntoConstraints="NO" id="tgd-Lu-4at">
+                                <rect key="frame" x="197" y="211" width="207.5" height="178"/>
+                                <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="207.5" id="Aab-eP-p5g"/>
+                                    <constraint firstAttribute="height" constant="178" id="ToO-w8-01r"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="tgd-Lu-4at" firstAttribute="centerX" secondItem="g4t-4c-UGB" secondAttribute="centerX" id="IDe-3p-w7o"/>
                             <constraint firstItem="Omw-XB-9gH" firstAttribute="centerX" secondItem="g4t-4c-UGB" secondAttribute="centerX" id="LPC-GM-uJK"/>
                             <constraint firstAttribute="topMargin" secondItem="Omw-XB-9gH" secondAttribute="top" id="XP7-Cv-7iG"/>
+                            <constraint firstItem="tgd-Lu-4at" firstAttribute="centerY" secondItem="g4t-4c-UGB" secondAttribute="centerY" id="nqu-1u-MEz"/>
                             <constraint firstItem="Omw-XB-9gH" firstAttribute="width" secondItem="g4t-4c-UGB" secondAttribute="width" id="wGz-n4-uyp"/>
                         </constraints>
                     </view>
@@ -50,6 +60,9 @@
                         <inset key="imageInsets" minX="0.0" minY="6" maxX="0.0" maxY="-6"/>
                     </tabBarItem>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="puppyImage" destination="tgd-Lu-4at" id="YL1-7c-R1n"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JIN-4Y-jeg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -59,5 +72,6 @@
     <resources>
         <image name="home" width="18" height="19"/>
         <image name="logo" width="41" height="30"/>
+        <image name="puppy" width="160" height="160"/>
     </resources>
 </document>

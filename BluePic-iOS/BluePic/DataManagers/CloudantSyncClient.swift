@@ -250,6 +250,8 @@ class pullDelegate:NSObject, CDTReplicatorDelegate {
             print("PULL complete, hiding loading")
             let tabVC = Utils.rootViewController() as! TabBarViewController
             tabVC.loadingIndicator.stopAnimating()
+            let feedVC = tabVC.viewControllers![0] as! FeedViewController
+            feedVC.puppyImage.hidden = false
         }
         
     }
