@@ -227,8 +227,6 @@ class FacebookDataManager: NSObject {
             
                 self.checkIfUserExistsOnCloudantAndPushIfNeeded() //push copy of user id if it somehow got deleted from database
                 print("Welcome back, user \(userID)!")
-                presentingVC.backgroundImageView.removeFromSuperview()
-                presentingVC.backgroundImageView.hidden = true
             }
         }
         else { //user not authenticated
@@ -237,12 +235,12 @@ class FacebookDataManager: NSObject {
             if !NSUserDefaults.standardUserDefaults().boolForKey("hasPressedLater") {
                 let loginVC = Utils.vcWithNameFromStoryboardWithName("loginVC", storyboardName: "Main") as! LoginViewController
                 presentingVC.presentViewController(loginVC, animated: false, completion: { _ in
-                    presentingVC.backgroundImageView.removeFromSuperview()
-                    presentingVC.backgroundImageView.hidden = true
                     
-                    
-                    
+   
                 })
+                
+            } else { //user pressed "sign in later"
+
                 
             }
         }

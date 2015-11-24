@@ -16,6 +16,8 @@ class TabBarViewController: UITabBarController {
     
     /// Image view to temporarily cover feed and content so it doesn't appear to flash when showing login screen
     var backgroundImageView: UIImageView!
+    
+    var loadingIndicator: UIActivityIndicatorView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,7 +25,6 @@ class TabBarViewController: UITabBarController {
         self.tabBar.tintColor! = UIColor.whiteColor()
         
         self.addBackgroundImageView()
-        // Do any additional setup after loading the view.
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -41,10 +42,20 @@ class TabBarViewController: UITabBarController {
     }
     
     
+    /**
+     Add image so no flickering occurs when showing login. Starts a simple loading animation that is dismissed when PULL from CloudantSyncClient completes
+     */
     func addBackgroundImageView() {
         self.backgroundImageView = UIImageView(frame: self.view.frame)
         self.backgroundImageView.image = UIImage(named: "login_background")
         self.view.addSubview(self.backgroundImageView)
+        
+        self.loadingIndicator = UIActivityIndicatorView(frame: CGRectMake(50, 10, 37, 37))
+        self.loadingIndicator.hidesWhenStopped = true
+        self.loadingIndicator.center = self.view.center
+        self.loadingIndicator.activityIndicatorViewStyle = .WhiteLarge
+        self.loadingIndicator.startAnimating()
+        self.backgroundImageView.addSubview(self.loadingIndicator)
         
     }
     
@@ -52,9 +63,9 @@ class TabBarViewController: UITabBarController {
     func tryToShowLogin() {
         if (!hasTriedToPresentLoginThisAppLaunch) {
             //self.tryToShowLoginScreen()
-            FacebookDataManager.SharedInstance.tryToShowLoginScreen(self)
             self.hasTriedToPresentLoginThisAppLaunch = true
-        }
+            FacebookDataManager.SharedInstance.tryToShowLoginScreen(self)
+        } 
         
     }
     

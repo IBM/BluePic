@@ -230,6 +230,7 @@ class pullDelegate:NSObject, CDTReplicatorDelegate {
      */
     func replicatorDidComplete(replicator:CDTReplicator) {
         print("PULL Replicator completed.")
+        self.hideLoadingImageView()
     }
     
     /**
@@ -238,6 +239,20 @@ class pullDelegate:NSObject, CDTReplicatorDelegate {
     func replicatorDidError(replicator:CDTReplicator, info:NSError) {
         print("PULL Replicator ERROR: ")
         print(info)
+    }
+    
+    
+    /**
+     Hide loading image view in tab bar vc once pulling is finished
+     */
+    func hideLoadingImageView() {
+        dispatch_async(dispatch_get_main_queue()) {
+            print("PULL complete, hiding loading")
+            let tabVC = Utils.rootViewController() as! TabBarViewController
+            tabVC.backgroundImageView.removeFromSuperview()
+            tabVC.backgroundImageView.hidden = true
+        }
+        
     }
 }
 
