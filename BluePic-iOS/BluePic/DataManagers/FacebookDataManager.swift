@@ -219,13 +219,13 @@ class FacebookDataManager: NSObject {
     
     func tryToShowLoginScreen(presentingVC: TabBarViewController!) {
         
-        //check if user is already authenticated
+        //check if user is already authenticated previously
         if let userID = NSUserDefaults.standardUserDefaults().objectForKey("user_id") as? String {
             if let userName = NSUserDefaults.standardUserDefaults().objectForKey("user_name") as? String {
                 self.fbUserDisplayName = userName
                 self.fbUniqueUserID = userID
                 self.hideBackgroundImageAndStartLoading(presentingVC)
-                self.checkIfUserExistsOnCloudantAndPushIfNeeded() //push copy of user id if it somehow got deleted from database
+                //self.checkIfUserExistsOnCloudantAndPushIfNeeded() //push copy of user id if it somehow got deleted from database //this prevents loading from starting
                 print("Welcome back, user \(userID)!")
             }
         }
