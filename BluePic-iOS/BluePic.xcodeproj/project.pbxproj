@@ -63,6 +63,7 @@
 		34C809551BFD0F2400C48004 /* FacebookDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C809541BFD0F2400C48004 /* FacebookDataManager.swift */; };
 		34CA18201C04CB6700EC2636 /* ObjectStorageDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34CA181F1C04CB6700EC2636 /* ObjectStorageDataManager.swift */; };
 		494AA0B01BFE4CBA006FC48E /* ObjectStorageClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494AA0AF1BFE4CBA006FC48E /* ObjectStorageClientTests.swift */; };
+		B3A9E7DA1C063FA1002D4AEE /* CloudantSyncClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3A9E7D91C063FA1002D4AEE /* CloudantSyncClientTests.swift */; };
 		FC315DE6D7B8C71B03B95C18 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 11F4C7A29750E1B7B37ABAFA /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -161,6 +162,7 @@
 		494AA0AF1BFE4CBA006FC48E /* ObjectStorageClientTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectStorageClientTests.swift; sourceTree = "<group>"; };
 		4DF2008F9A93E25237957424 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		548428B896D4182B293AB59E /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		B3A9E7D91C063FA1002D4AEE /* CloudantSyncClientTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudantSyncClientTests.swift; sourceTree = "<group>"; };
 		BDC4B5F21BFBC77200CC1648 /* BluePic-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BluePic-Bridging-Header.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -261,6 +263,7 @@
 				347472A21BFA8C6A0018B7F6 /* BluePicTests.swift */,
 				494AA0AF1BFE4CBA006FC48E /* ObjectStorageClientTests.swift */,
 				347472A41BFA8C6A0018B7F6 /* Info.plist */,
+				B3A9E7D91C063FA1002D4AEE /* CloudantSyncClientTests.swift */,
 			);
 			path = BluePicTests;
 			sourceTree = "<group>";
@@ -631,6 +634,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B3A9E7DA1C063FA1002D4AEE /* CloudantSyncClientTests.swift in Sources */,
 				347472A31BFA8C6A0018B7F6 /* BluePicTests.swift in Sources */,
 				494AA0B01BFE4CBA006FC48E /* ObjectStorageClientTests.swift in Sources */,
 			);
