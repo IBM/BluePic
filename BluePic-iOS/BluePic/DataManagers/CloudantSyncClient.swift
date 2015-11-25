@@ -8,12 +8,9 @@
 
 import Foundation
 
-
-
 class CloudantSyncClient {
     
-    
-    /// Shared instance of data manager
+    // Shared instance of data manager
     static let SharedInstance: CloudantSyncClient = {
         
         let key = Utils.getKeyFromPlist("keys", key: "cdt_key")
@@ -22,13 +19,11 @@ class CloudantSyncClient {
         let username = Utils.getKeyFromPlist("keys", key: "cdt_username")
         var manager = CloudantSyncClient(apiKey: key, apiPassword: pass, dbName: dbName, username: username)
         
-        
         return manager
         
     }()
     
-    
-        /**
+    /**
      * Instance variables
      */
     var manager:CDTDatastoreManager
@@ -96,9 +91,10 @@ class CloudantSyncClient {
     // Checks if document with given ID exists or not.
     func doesExist(id:String) -> Bool {
         var count = 1
-        while(pullReplicator.isActive())
+        while(self.pullReplicator.isActive())
         {
             NSThread.sleepForTimeInterval(1.0)
+            print(self.pullReplicator)
             print(count)
             count++
         }
@@ -174,14 +170,15 @@ class CloudantSyncClient {
     }
 }
 
-
+/**
+* Delegates for Push and Pull asynchronous tasks.
+*/
 class pushDelegate:NSObject, CDTReplicatorDelegate {
     /**
      * Called when the replicator changes state.
      */
     func replicatorDidChangeState(replicator:CDTReplicator) {
         print("PUSH Replicator changed state.")
-        
     }
     
     /**
@@ -214,7 +211,6 @@ class pullDelegate:NSObject, CDTReplicatorDelegate {
      */
     func replicatorDidChangeState(replicator:CDTReplicator) {
         print("PULL Replicator changed state.")
-        
     }
     
     /**
@@ -240,7 +236,6 @@ class pullDelegate:NSObject, CDTReplicatorDelegate {
         print("PULL Replicator ERROR: ")
         print(info)
     }
-    
     
     /**
      Hide loading image view in tab bar vc once pulling is finished
