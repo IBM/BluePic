@@ -40,44 +40,64 @@ class LoginViewController: UIViewController {
     }
 
     @IBAction func loginTapped(sender: AnyObject) {
-        self.facebookButton.hidden = true
-        self.signInLaterButton.hidden = true
-        self.loadingIndicator.startAnimating()
+        self.startLoading()
         FacebookDataManager.SharedInstance.authenticateUser({(response: FacebookDataManager.NetworkRequest) in
-            self.loadingIndicator.stopAnimating()
-            self.loadingIndicator.hidden = true
-            self.welcomeLabel.hidden = false
             if (response == FacebookDataManager.NetworkRequest.Success) {
-                print("success")
+                print("successfully logged into facebook")
                 if let userID = FacebookDataManager.SharedInstance.fbUniqueUserID {
-                    print("\(userID)")
+                    if let userDisplayName = FacebookDataManager.SharedInstance.fbUserDisplayName {
+                        print("\(userID)")
+                        print("\(userDisplayName)")
+                        //save that user has not pressed login later
+                        NSUserDefaults.standardUserDefaults().setBool(false, forKey: "hasPressedLater")
+                        NSUserDefaults.standardUserDefaults().synchronize()
+                        
+                        
+                        //add container once to object storage, then stop loading once completed
+                        
+                        
+                        //stop loading on completion
+                        self.stopLoading()
+                        
                     
-                }
-                if let userDisplayName = FacebookDataManager.SharedInstance.fbUserDisplayName {
-                    print("\(userDisplayName)")
-                    //save that user has not pressed login later
-                    NSUserDefaults.standardUserDefaults().setBool(false, forKey: "hasPressedLater")
-                    NSUserDefaults.standardUserDefaults().synchronize()
+                        //update labels
+                        let userDisplayName = FacebookDataManager.SharedInstance.fbUserDisplayName!
+                        let name = userDisplayName.componentsSeparatedByString(" ").first
+                        self.welcomeLabel.text = "Welcome to BluePic, \(name!)!"
                     
-                    //update labels
-                    let userDisplayName = FacebookDataManager.SharedInstance.fbUserDisplayName!
-                    let name = userDisplayName.componentsSeparatedByString(" ").first
-                    self.welcomeLabel.text = "Welcome to BluePic, \(name!)!"
+                        //dismiss login vc
+                        self.dismissViewControllerAnimated(true, completion: nil)
                     
-                    //dismiss login vc
-                    self.dismissViewControllerAnimated(true, completion: nil)
                     
-                    //self.checkIfUserExistsOnCloudantAndPushIfNeeded()
-                    
+                    }
                 }
             }
             else {
-                print("failure")
+                self.stopLoading()
+                print("failure logging into facebook")
                 self.welcomeLabel.text = "Oops, an error occurred! Try again."
                 self.facebookButton.hidden = false
                 self.signInLaterButton.hidden = false
             }
         })
+        
+    }
+    
+    
+    
+    func startLoading() {
+        self.facebookButton.hidden = true
+        self.signInLaterButton.hidden = true
+        self.loadingIndicator.startAnimating()
+        
+    }
+    
+    
+    
+    func stopLoading() {
+        self.loadingIndicator.stopAnimating()
+        self.loadingIndicator.hidden = true
+        self.welcomeLabel.hidden = false
         
     }
 
