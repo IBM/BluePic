@@ -263,7 +263,7 @@ class pullDelegate:NSObject, CDTReplicatorDelegate {
     func replicatorDidError(replicator:CDTReplicator, info:NSError) {
         print("PULL Replicator ERROR: \(info)")
         let tabVC = Utils.rootViewController() as! TabBarViewController
-        tabVC.showErrorAlert()
+        tabVC.showCloudantErrorAlert()
         
     }
     
