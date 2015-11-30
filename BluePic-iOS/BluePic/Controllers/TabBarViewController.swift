@@ -54,7 +54,7 @@ class TabBarViewController: UITabBarController {
         self.loadingIndicator.hidesWhenStopped = true
         self.loadingIndicator.center = self.view.center
         self.loadingIndicator.activityIndicatorViewStyle = .WhiteLarge
-        self.loadingIndicator.color = UIColor.colorWithRedValue(0, greenValue: 145, blueValue: 234, alpha: 1.0)
+        self.loadingIndicator.color = UIColor.colorWithRedValue(51, greenValue: 51, blueValue: 51, alpha: 1.0)
         self.loadingIndicator.hidden = true
         self.view.addSubview(self.loadingIndicator)
         
@@ -69,6 +69,54 @@ class TabBarViewController: UITabBarController {
         
     }
     
+    
+    
+    
+    /**
+     Hide loading image view in tab bar vc once pulling is finished
+     */
+    func hideLoadingImageView() {
+        dispatch_async(dispatch_get_main_queue()) {
+            print("PULL complete, hiding loading")
+            self.loadingIndicator.stopAnimating()
+            let feedVC = self.viewControllers![0] as! FeedViewController
+            feedVC.puppyImage.hidden = false
+        }
+        
+    }
+    
+    
+    /**
+     Method to show the error alert and asks user if they would like to retry
+     */
+    func showErrorAlert() {
+        
+        let alert = UIAlertController(title: nil, message: NSLocalizedString("Oops! An error occurred.", comment: ""), preferredStyle: UIAlertControllerStyle.Alert)
+        
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Try Again", comment: ""), style: .Default, handler: { (action: UIAlertAction!) in
+            self.retryPullingData()
+        }))
+        
+        dispatch_async(dispatch_get_main_queue()) {
+            self.presentViewController(alert, animated: true, completion: nil)
+        }
+    }
+    
+    
+    /**
+     Retry pulling cloudant data upon error
+     */
+    func retryPullingData() {
+        //CloudantSyncClient.SharedInstance.pullReplicator.stop()
+        CloudantSyncClient.SharedInstance.pullFromRemoteDatabase()
+        dispatch_async(dispatch_get_main_queue()) {
+            print("Retrying to pull Cloudant data")
+            
+            FacebookDataManager.SharedInstance.tryToShowLoginScreen(self)
+            
+        }
+        
+    }
     
 
 
