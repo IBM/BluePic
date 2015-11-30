@@ -8,6 +8,14 @@
 
 import Foundation
 
+/**
+ * With Cloudant Sync, the application will be able to perform CRUD operations its local replication of the
+ * remote database.
+ *
+ * The only network calls will be to sync the local database with the remote one. This is accomplished via
+ * 2 main methods: push and pull. These are asynchronous calls made in order to push new documents and pull
+ * new documents, respectively. 
+ */
 class CloudantSyncClient {
     
     // Shared instance of data manager
@@ -150,12 +158,22 @@ class CloudantSyncClient {
         return rev
     }
     
+    // Delete a local profile document given an ID.
+    func deleteProfileDoc(id:String) -> Void{
+        do {
+            // Save the document to the database
+            try datastore.deleteDocumentWithId(id)
+        } catch {
+            print("createProfileDoc: Encountered an error: \(error)")
+        }
+    }
+    
     // Create a local picture document given an display name, file name, URL, owner.
-    func createPictureDoc(id:String, displayName:String, fileName:String, url:String, ownerID:String) -> CDTDocumentRevision {
+    func createPictureDoc(displayName:String, fileName:String, url:String, ownerID:String) -> CDTDocumentRevision {
         let rev:CDTDocumentRevision = CDTDocumentRevision()
         do {
             // Create a document
-            let rev = CDTDocumentRevision(docId: id)
+            let rev = CDTDocumentRevision()
             rev.body = ["display_name":displayName,
                         "file_name":fileName,
                         "URL":url,

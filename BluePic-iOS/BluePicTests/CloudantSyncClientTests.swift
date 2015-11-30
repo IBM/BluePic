@@ -37,6 +37,18 @@ class CloudantSyncClientTests: XCTestCase {
         XCTAssertEqual(name, "Rolando Asmat")
     }
     
+    func testDeleteProfileLocally() {
+        CloudantSyncClient.SharedInstance.deleteProfileDoc("1234")
+        let exists = CloudantSyncClient.SharedInstance.doesExist("1234")
+        XCTAssertEqual(exists, false)
+    }
+    
+    func multiplePulls() {
+        CloudantSyncClient.SharedInstance.pullFromRemoteDatabase()
+        CloudantSyncClient.SharedInstance.pullFromRemoteDatabase()
+        
+    }
+    
     func testPerformanceExample() {
         // This is an example of a performance test case.
         self.measureBlock {
