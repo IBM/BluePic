@@ -135,6 +135,14 @@ class CloudantSyncClient {
     func pullFromRemoteDatabase()
     {
         do {
+            //Initialize replicators
+            let replicatorFactory = CDTReplicatorFactory(datastoreManager: manager)
+            let s = "https://"+apiKey+":"+apiPassword+"@"+username+".cloudant.com/"+dbName
+            let remoteDatabaseURL = NSURL(string: s)
+            // Pull Replicate from remote database to the local
+            let pullReplication = CDTPullReplication(source: remoteDatabaseURL, target: datastore)
+            self.pullReplicator =  try replicatorFactory.oneWay(pullReplication)
+            pullReplicator.delegate = pullDlgt;
             //Start the replicator
             try pullReplicator.start()
             
