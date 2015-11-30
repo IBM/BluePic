@@ -224,6 +224,7 @@ class FacebookDataManager: NSObject {
     func tryToShowLoginScreen(presentingVC: TabBarViewController!) {
         //authenticate with object storage every time opening app, try to show facebook login once completed
         if (!ObjectStorageDataManager.SharedInstance.objectStorageClient.isAuthenticated()) { //try to authenticate if not authenticated
+            print("Attempting to authenticate with Object storage...")
             ObjectStorageDataManager.SharedInstance.objectStorageClient.authenticate({() in
                     print("success authenticating with object storage!")
                     self.showLoginIfUserNotAuthenticated(presentingVC)
@@ -233,6 +234,7 @@ class FacebookDataManager: NSObject {
             })
         }
         else { //if already authenticated with object storage, just try to show facebook login
+            print("Object storage already authenticated somehow!")
             self.showLoginIfUserNotAuthenticated(presentingVC)
             
         }
@@ -242,7 +244,7 @@ class FacebookDataManager: NSObject {
     
     
     /**
-     Method will try to show login screen if user is not authenticated nor has pressed "sign in later" button
+     Method will pull down latest cloudant data, and try to show login screen if user is not authenticated nor has pressed "sign in later" button
      
      - parameter presentingVC: tab bar VC to present login VC on
      */
