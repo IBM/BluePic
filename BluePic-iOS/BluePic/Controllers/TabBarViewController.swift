@@ -76,6 +76,7 @@ class TabBarViewController: UITabBarController {
      Hide loading image view in tab bar vc once pulling is finished
      */
     func hideLoadingImageView() {
+        //ObjectStorageDataManager.SharedInstance.objectStorageClient.authenticate(<#T##onSuccess: () -> Void##() -> Void#>, onFailure: <#T##(error: String) -> Void#>)
         dispatch_async(dispatch_get_main_queue()) {
             print("PULL complete, hiding loading")
             self.loadingIndicator.stopAnimating()
