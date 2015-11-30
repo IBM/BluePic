@@ -108,7 +108,7 @@ class FacebookDataManager: NSObject {
                             NSUserDefaults.standardUserDefaults().synchronize()
                             
                         
-                            print("Authenticated user \(userName) with id \(userID)")
+                            print("Got facebook auth token for user \(userName) with id \(userID)")
                             
                             self.checkIfUserExistsOnCloudantAndPushIfNeeded()
                             
@@ -210,7 +210,7 @@ class FacebookDataManager: NSObject {
         self.fbAppDisplayName = facebookDisplayName! as String
         
 
-        print("Facebook Auth configured and ready to show native FB App:\nFacebookAppID \(facebookAppID!)\nFacebookDisplayName \(facebookDisplayName!)\nFacebookURLScheme \(facebookURLScheme!)")
+        print("Facebook Auth configured, getting ready to show native FB App:\nFacebookAppID \(facebookAppID!)\nFacebookDisplayName \(facebookDisplayName!)\nFacebookURLScheme \(facebookURLScheme!)")
         return true;
     }
     

@@ -103,8 +103,9 @@ class LoginViewController: UIViewController {
     func startLoading() {
         self.facebookButton.hidden = true
         self.signInLaterButton.hidden = true
+        self.welcomeLabel.hidden = true
         self.loadingIndicator.startAnimating()
-        
+        self.loadingIndicator.hidden = false
     }
     
     
@@ -113,7 +114,6 @@ class LoginViewController: UIViewController {
         self.loadingIndicator.stopAnimating()
         self.loadingIndicator.hidden = true
         self.welcomeLabel.hidden = false
-        
     }
 
     
