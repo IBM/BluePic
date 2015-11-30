@@ -210,7 +210,7 @@ class FacebookDataManager: NSObject {
         self.fbAppDisplayName = facebookDisplayName! as String
         
 
-        print("Facebook Auth configured, getting ready to show native FB App:\nFacebookAppID \(facebookAppID!)\nFacebookDisplayName \(facebookDisplayName!)\nFacebookURLScheme \(facebookURLScheme!)")
+        print("Facebook Auth configured, getting ready to show native FB Login:\nFacebookAppID \(facebookAppID!)\nFacebookDisplayName \(facebookDisplayName!)\nFacebookURLScheme \(facebookURLScheme!)")
         return true;
     }
     

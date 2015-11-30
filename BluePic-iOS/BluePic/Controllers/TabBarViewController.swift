@@ -32,6 +32,7 @@ class TabBarViewController: UITabBarController {
     }
     
     override func viewDidAppear(animated: Bool) {
+        self.view.userInteractionEnabled = false
         self.tryToShowLogin()
         
     }
@@ -80,6 +81,7 @@ class TabBarViewController: UITabBarController {
     func hideLoadingImageView() {
         dispatch_async(dispatch_get_main_queue()) {
             print("PULL complete, hiding loading")
+            self.view.userInteractionEnabled = true
             self.loadingIndicator.stopAnimating()
             let feedVC = self.viewControllers![0] as! FeedViewController
             feedVC.puppyImage.hidden = false

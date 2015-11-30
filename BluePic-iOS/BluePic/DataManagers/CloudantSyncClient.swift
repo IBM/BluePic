@@ -254,7 +254,6 @@ class pullDelegate:NSObject, CDTReplicatorDelegate {
         print("PULL Replicator completed.")
         let tabVC = Utils.rootViewController() as! TabBarViewController
         tabVC.hideLoadingImageView()
-        //tabVC.showErrorAlert()
     }
     
     /**
