@@ -210,7 +210,7 @@ class FacebookDataManager: NSObject {
         self.fbAppDisplayName = facebookDisplayName! as String
         
 
-        print("Facebook Authentication Configured:\nFacebookAppID \(facebookAppID!)\nFacebookDisplayName \(facebookDisplayName!)\nFacebookURLScheme \(facebookURLScheme!)")
+        print("Facebook Auth configured and ready to show native FB App:\nFacebookAppID \(facebookAppID!)\nFacebookDisplayName \(facebookDisplayName!)\nFacebookURLScheme \(facebookURLScheme!)")
         return true;
     }
     
@@ -250,10 +250,11 @@ class FacebookDataManager: NSObject {
      */
     func showLoginIfUserNotAuthenticated(presentingVC: TabBarViewController!) {
         //start pulling from cloudant sync (will automatically hide loading when successful)
+        print("Pulling latest cloudant data...")
         self.pullLatestCloudantData()
         
         //check if user is already authenticated previously
-        print("checking if user is authenticated with facebook...")
+        print("Checking if user is authenticated with facebook...")
         if let userID = NSUserDefaults.standardUserDefaults().objectForKey("user_id") as? String {
             if let userName = NSUserDefaults.standardUserDefaults().objectForKey("user_name") as? String {
                 self.fbUserDisplayName = userName
@@ -264,12 +265,12 @@ class FacebookDataManager: NSObject {
         }
         else { //user not authenticated
             
-            //show login if user hasn't pressed "sign in later"
+            //show login if user hasn't pressed "sign in later" (first time logging in)
             if !NSUserDefaults.standardUserDefaults().boolForKey("hasPressedLater") {
                 let loginVC = Utils.vcWithNameFromStoryboardWithName("loginVC", storyboardName: "Main") as! LoginViewController
                 presentingVC.presentViewController(loginVC, animated: false, completion: { _ in
                     self.hideBackgroundImageAndStartLoading(presentingVC)
-                    print("user needs to log into Facebook")
+                    print("user needs to log into Facebook, showing login")
                 })
                 
             } else { //user pressed "sign in later"

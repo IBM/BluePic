@@ -43,7 +43,7 @@ class LoginViewController: UIViewController {
         self.startLoading()
         FacebookDataManager.SharedInstance.authenticateUser({(response: FacebookDataManager.NetworkRequest) in
             if (response == FacebookDataManager.NetworkRequest.Success) {
-                print("successfully logged into facebook")
+                print("successfully logged into facebook with keys:")
                 if let userID = FacebookDataManager.SharedInstance.fbUniqueUserID {
                     if let userDisplayName = FacebookDataManager.SharedInstance.fbUserDisplayName {
                         print("\(userID)")
@@ -54,21 +54,8 @@ class LoginViewController: UIViewController {
                         
                         
                         //add container once to object storage, then stop loading once completed
+                        self.createObjectStorageContainer(userID)
                         
-                        
-                        //stop loading on completion
-                        self.stopLoading()
-                        
-                    
-                        //update labels
-                        let userDisplayName = FacebookDataManager.SharedInstance.fbUserDisplayName!
-                        let name = userDisplayName.componentsSeparatedByString(" ").first
-                        self.welcomeLabel.text = "Welcome to BluePic, \(name!)!"
-                    
-                        //dismiss login vc
-                        self.dismissViewControllerAnimated(true, completion: nil)
-                    
-                    
                     }
                 }
             }
@@ -79,6 +66,34 @@ class LoginViewController: UIViewController {
                 self.facebookButton.hidden = false
                 self.signInLaterButton.hidden = false
             }
+        })
+        
+    }
+    
+    
+    
+    func createObjectStorageContainer(userID: String!) {
+        print("Creating object storage container...")
+        ObjectStorageDataManager.SharedInstance.objectStorageClient.createContainer(userID, onSuccess: {(name) in
+            print("Successfully created object storage container with name \(name)") //success closure
+            //stop loading on completion
+            self.stopLoading()
+
+            //update labels
+            let userDisplayName = FacebookDataManager.SharedInstance.fbUserDisplayName!
+            let name = userDisplayName.componentsSeparatedByString(" ").first
+            self.welcomeLabel.text = "Welcome to BluePic, \(name!)!"
+            
+            //dismiss login vc
+            self.dismissViewControllerAnimated(true, completion: nil)
+            
+            }, onFailure: {(error) in //failure closure
+                print("Facebook auth successful, but error creating Object Storage container: \(error)")
+                self.stopLoading()
+                self.welcomeLabel.text = "Oops, an error occurred! Try again."
+                self.facebookButton.hidden = false
+                self.signInLaterButton.hidden = false
+                
         })
         
     }
