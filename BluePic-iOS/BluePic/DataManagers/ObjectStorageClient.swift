@@ -48,7 +48,7 @@ class ObjectStorageClient {
         mutableURLRequest.setValue("application/json; charset=UTF-8", forHTTPHeaderField: "Content-Type")
         let jsonPayload = "{ \"auth\": { \"identity\": { \"methods\": [ \"password\" ], \"password\": { \"user\": { \"id\": \"\(userId)\", \"password\": \"\(password)\" } } }, \"scope\": { \"project\": { \"id\": \"\(projectId)\" } } } }"
         
-        print("jsonPayload = \(jsonPayload)")
+        //print("jsonPayload = \(jsonPayload)")
         mutableURLRequest.HTTPBody = jsonPayload.dataUsingEncoding(NSUTF8StringEncoding)
         //mutableURLRequest.HTTPBody = try NSJSONSerialization.dataWithJSONObject(jsonPayload, options: NSJSONWritingOptions())
         
@@ -57,7 +57,7 @@ class ObjectStorageClient {
                 if let headers = responseHeaders {
                     if let authToken = headers["X-Subject-Token"] as? String {
                         self.token = authToken
-                        print("Auth token: \(authToken)")
+                        print("Object Storage auth token: \(authToken)")
                         onSuccess()
                         return
                     }

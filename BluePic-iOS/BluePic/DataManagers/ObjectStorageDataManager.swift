@@ -38,17 +38,6 @@ class ObjectStorageDataManager: NSObject {
         
     }
     
-    /**
-     * Convenience method for authenticating.
-     */
-    func authenticate(onSuccess: () -> Void, onFailure: (error: String) -> Void) {
-        objectStorageClient.authenticate({() in
-            onSuccess()
-            }, onFailure: {(error) in
-                onFailure(error: error)
-                
-        })
-    }
     
     
 }

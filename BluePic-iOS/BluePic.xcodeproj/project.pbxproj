@@ -289,8 +289,8 @@
 		347472BD1BFA8DEF0018B7F6 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				347472F01BFA8E320018B7F6 /* LoginViewController.swift */,
 				3435C7CE1C036A60004923BD /* TabBarViewController.swift */,
+				347472F01BFA8E320018B7F6 /* LoginViewController.swift */,
 				3435C7D41C04110C004923BD /* FeedViewController.swift */,
 				3435C7D61C041116004923BD /* CameraViewController.swift */,
 				3435C7D81C04111F004923BD /* ProfileViewController.swift */,

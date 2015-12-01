@@ -16,17 +16,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         self.initializeBackendForFacebookAuth()
-        self.pullLatestCloudantData()
-        
+                
         return true
     }
     
-    func pullLatestCloudantData() {
-        
-        //First do a pull to make sure datastore is up to date
-        CloudantSyncClient.SharedInstance.pullFromRemoteDatabase()
-        
-    }
+    
     
     
     func initializeBackendForFacebookAuth() {
