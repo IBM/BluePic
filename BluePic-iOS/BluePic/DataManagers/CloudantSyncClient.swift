@@ -66,21 +66,27 @@ class CloudantSyncClient {
             let path = storeURL.path
             manager = try CDTDatastoreManager(directory: path)
             datastore = try manager.datastoreNamed(dbName)
+            
+            //Initialize replicators
+            let replicatorFactory = CDTReplicatorFactory(datastoreManager: manager)
+            let s = "https://"+apiKey+":"+apiPassword+"@"+username+".cloudant.com/"+dbName
+            let remoteDatabaseURL = NSURL(string: s)
+            // Push Replicate from the local to remote database
+            let pushReplication = CDTPushReplication(source: datastore, target: remoteDatabaseURL)
+            self.pushReplicator =  try replicatorFactory.oneWay(pushReplication)
+            pushReplicator.delegate = pushDlgt;
+            // Pull Replicate from remote database to the local
+            let pullReplication = CDTPullReplication(source: remoteDatabaseURL, target: datastore)
+            self.pullReplicator =  try replicatorFactory.oneWay(pullReplication)
+            pullReplicator.delegate = pullDlgt;
+            
         } catch {
             print("Init, ERROR: \(error)")
         }
     }
     
-    // Checks if document with given ID exists or not - BLOCKING if pull replicator is running.
+    // Checks if document with given ID exists or not
     func doesExist(id:String) -> Bool {
-        var count = 1
-        while(self.pullReplicator.isActive())
-        {
-            NSThread.sleepForTimeInterval(1.0)
-            print(self.pullReplicator)
-            print(count)
-            count++
-        }
         var exists:Bool
         do {
             try datastore.getDocumentWithId(id)
@@ -158,7 +164,7 @@ class CloudantSyncClient {
     }
     
     // Get array of picture documents that belong to specified user, sorted from newest to oldest.
-    func getPicturesOfOwnerId(id:String) {
+    func getPicturesOfOwnerId(id:String) -> CDTQResultSet {
         
         //datastore.ensureIndexed(["ownerID","Type","display_name"], withName: "pictures")
         datastore.ensureIndexed(["ts"], withName: "timestamps")
@@ -171,13 +177,8 @@ class CloudantSyncClient {
         ]
         
         let result = datastore.find(query, skip: 0, limit: 0, fields: ["URL","display_name","ts"], sort: sortDocument)
-        result.enumerateObjectsUsingBlock({ (rev, idx, stop) -> Void in
-            // do something
-            print("")
-            print(rev.body["URL"]!)
-            print(rev.body["display_name"]!)
-            print(rev.body["ts"]!)
-        })
+        
+        return result
     }
     
 /**
