@@ -13,8 +13,8 @@ import Foundation
  * remote database.
  *
  * The only network calls will be to sync the local database with the remote one. This is accomplished via
- * 2 main methods: push and pull. These are asynchronous calls made in order to push new documents and pull
- * new documents, respectively. 
+ * 2 main methods: pushToRemoteDatabase and pullFromRemoteDatabase. These are asynchronous calls made in order 
+ * to push new documents and pull new documents, respectively.
  */
 class CloudantSyncClient {
     
@@ -66,37 +66,12 @@ class CloudantSyncClient {
             let path = storeURL.path
             manager = try CDTDatastoreManager(directory: path)
             datastore = try manager.datastoreNamed(dbName)
-            //Initialize replicators
-            let replicatorFactory = CDTReplicatorFactory(datastoreManager: manager)
-            let s = "https://"+apiKey+":"+apiPassword+"@"+username+".cloudant.com/"+dbName
-            let remoteDatabaseURL = NSURL(string: s)
-            // Push Replicate from the local to remote database
-            let pushReplication = CDTPushReplication(source: datastore, target: remoteDatabaseURL)
-            self.pushReplicator =  try replicatorFactory.oneWay(pushReplication)
-            pushReplicator.delegate = pushDlgt;
-            // Pull Replicate from remote database to the local
-            let pullReplication = CDTPullReplication(source: remoteDatabaseURL, target: datastore)
-            self.pullReplicator =  try replicatorFactory.oneWay(pullReplication)
-            pullReplicator.delegate = pullDlgt;
-            
         } catch {
             print("Init, ERROR: \(error)")
         }
     }
     
-    // Return document with passed ID, if it exists.
-    func getDoc(id:String) -> CDTDocumentRevision {
-        var retrieved:CDTDocumentRevision = CDTDocumentRevision()
-        do {
-            retrieved = try datastore.getDocumentWithId(id)
-        }
-        catch {
-            print("getDocumentWithId, ERROR: \(error)")
-        }
-        return retrieved
-    }
-    
-    // Checks if document with given ID exists or not.
+    // Checks if document with given ID exists or not - BLOCKING if pull replicator is running.
     func doesExist(id:String) -> Bool {
         var count = 1
         while(self.pullReplicator.isActive())
@@ -119,36 +94,20 @@ class CloudantSyncClient {
         return exists
     }
     
-    // Push changes to remote database
-    func pushToRemoteDatabase()
-    {
+/**
+* CRUD Operations
+*/
+     
+     // Return document with passed ID, if it exists.
+    func getDoc(id:String) -> CDTDocumentRevision {
+        var retrieved:CDTDocumentRevision = CDTDocumentRevision()
         do {
-            //Start the replicator
-            try pushReplicator.start()
-            
-        } catch {
-            print("Encountered an error: \(error)")
+            retrieved = try datastore.getDocumentWithId(id)
         }
-    }
-    
-    // Pull changes from remote database
-    func pullFromRemoteDatabase()
-    {
-        do {
-            //Initialize replicators
-            let replicatorFactory = CDTReplicatorFactory(datastoreManager: manager)
-            let s = "https://"+apiKey+":"+apiPassword+"@"+username+".cloudant.com/"+dbName
-            let remoteDatabaseURL = NSURL(string: s)
-            // Pull Replicate from remote database to the local
-            let pullReplication = CDTPullReplication(source: remoteDatabaseURL, target: datastore)
-            self.pullReplicator =  try replicatorFactory.oneWay(pullReplication)
-            pullReplicator.delegate = pullDlgt;
-            //Start the replicator
-            try pullReplicator.start()
-            
-        } catch {
-            print("Encountered an error: \(error)")
+        catch {
+            print("getDocumentWithId, ERROR: \(error)")
         }
+        return retrieved
     }
     
     // Create a local profile document given an ID and name.
@@ -167,7 +126,7 @@ class CloudantSyncClient {
     }
     
     // Delete a local profile document given an ID.
-    func deleteProfileDoc(id:String) -> Void{
+    func deleteProfileDoc(id:String) -> Void {
         do {
             // Save the document to the database
             try datastore.deleteDocumentWithId(id)
@@ -180,13 +139,16 @@ class CloudantSyncClient {
     func createPictureDoc(displayName:String, fileName:String, url:String, ownerID:String) -> CDTDocumentRevision {
         let rev:CDTDocumentRevision = CDTDocumentRevision()
         do {
+            // Get current timestamp
+            let ts = NSDate.timeIntervalSinceReferenceDate()
             // Create a document
             let rev = CDTDocumentRevision()
             rev.body = ["display_name":displayName,
-                        "file_name":fileName,
-                        "URL":url,
-                        "ownerID":ownerID,
-                        "Type":"picture"]
+                "file_name":fileName,
+                "URL":url,
+                "ownerID":ownerID,
+                "ts":ts,
+                "Type":"picture"]
             // Save the document to the database
             try datastore.createDocumentFromRevision(rev)
         } catch {
@@ -194,11 +156,129 @@ class CloudantSyncClient {
         }
         return rev
     }
+    
+    // Get array of picture documents that belong to specified user, sorted from newest to oldest.
+    func getPicturesOfOwnerId(id:String) {
+        
+        //datastore.ensureIndexed(["ownerID","Type","display_name"], withName: "pictures")
+        datastore.ensureIndexed(["ts"], withName: "timestamps")
+        // Create sort document
+        let sortDocument = [["ts":"desc"]]
+        
+        let query = [
+            "ownerID" : id,
+            "Type" : "picture"
+        ]
+        
+        let result = datastore.find(query, skip: 0, limit: 0, fields: ["URL","display_name","ts"], sort: sortDocument)
+        result.enumerateObjectsUsingBlock({ (rev, idx, stop) -> Void in
+            // do something
+            print("")
+            print(rev.body["URL"]!)
+            print(rev.body["display_name"]!)
+            print(rev.body["ts"]!)
+        })
+    }
+    
+/**
+* PUSH and PULL network calls
+*/
+     
+    // Push changes to remote database
+    func pushToRemoteDatabase() {
+        do {
+            //Initialize replicators
+            let replicatorFactory = CDTReplicatorFactory(datastoreManager: manager)
+            let s = "https://"+apiKey+":"+apiPassword+"@"+username+".cloudant.com/"+dbName
+            let remoteDatabaseURL = NSURL(string: s)
+            // Push Replicate from the local to remote database
+            let pushReplication = CDTPushReplication(source: datastore, target: remoteDatabaseURL)
+            self.pushReplicator =  try replicatorFactory.oneWay(pushReplication)
+            pushReplicator.delegate = pushDlgt;
+            //Start the replicator
+            try pushReplicator.start()
+            
+        } catch {
+            print("Encountered an error: \(error)")
+        }
+    }
+    
+    // Push changes to remote database - BLOCKING
+    func pushToRemoteDatabaseSynchronous() {
+        do {
+            //Initialize replicators
+            let replicatorFactory = CDTReplicatorFactory(datastoreManager: manager)
+            let s = "https://"+apiKey+":"+apiPassword+"@"+username+".cloudant.com/"+dbName
+            let remoteDatabaseURL = NSURL(string: s)
+            // Push Replicate from the local to remote database
+            let pushReplication = CDTPushReplication(source: datastore, target: remoteDatabaseURL)
+            self.pushReplicator =  try replicatorFactory.oneWay(pushReplication)
+            pushReplicator.delegate = pushDlgt;
+            //Start the replicator
+            try pushReplicator.start()
+            var count = 1
+            while(self.pushReplicator.isActive()) {
+                NSThread.sleepForTimeInterval(1.0)
+                print(self.pushReplicator)
+                print(count)
+                count++
+            }
+            
+        } catch {
+            print("Encountered an error: \(error)")
+        }
+    }
+    
+    // Pull changes from remote database
+    func pullFromRemoteDatabase() {
+        do {
+            //Initialize replicators
+            let replicatorFactory = CDTReplicatorFactory(datastoreManager: manager)
+            let s = "https://"+apiKey+":"+apiPassword+"@"+username+".cloudant.com/"+dbName
+            let remoteDatabaseURL = NSURL(string: s)
+            // Pull Replicate from remote database to the local
+            let pullReplication = CDTPullReplication(source: remoteDatabaseURL, target: datastore)
+            self.pullReplicator =  try replicatorFactory.oneWay(pullReplication)
+            pullReplicator.delegate = pullDlgt;
+            //Start the replicator
+            try pullReplicator.start()
+            
+        } catch {
+            print("Encountered an error: \(error)")
+        }
+    }
+    
+    // Pull changes from remote database - BLOCKING
+    func pullFromRemoteDatabaseSynchronous() {
+        do {
+            //Initialize replicators
+            let replicatorFactory = CDTReplicatorFactory(datastoreManager: manager)
+            let s = "https://"+apiKey+":"+apiPassword+"@"+username+".cloudant.com/"+dbName
+            let remoteDatabaseURL = NSURL(string: s)
+            // Pull Replicate from remote database to the local
+            let pullReplication = CDTPullReplication(source: remoteDatabaseURL, target: datastore)
+            self.pullReplicator =  try replicatorFactory.oneWay(pullReplication)
+            pullReplicator.delegate = pullDlgt;
+            //Start the replicator
+            try pullReplicator.start()
+            var count = 1
+            while(self.pullReplicator.isActive()) {
+                NSThread.sleepForTimeInterval(1.0)
+                print(self.pullReplicator)
+                print(count)
+                count++
+            }
+            
+        } catch {
+            print("Encountered an error: \(error)")
+        }
+    }
 }
 
 /**
 * Delegates for Push and Pull asynchronous tasks.
 */
+
 class pushDelegate:NSObject, CDTReplicatorDelegate {
     /**
      * Called when the replicator changes state.
@@ -253,7 +333,8 @@ class pullDelegate:NSObject, CDTReplicatorDelegate {
     func replicatorDidComplete(replicator:CDTReplicator) {
         print("PULL Replicator completed.")
         let tabVC = Utils.rootViewController() as! TabBarViewController
-        tabVC.stopLoadingImageView()
+        tabVC.hideLoadingImageView()
+        //tabVC.showErrorAlert()
     }
     
     /**
@@ -262,13 +343,8 @@ class pullDelegate:NSObject, CDTReplicatorDelegate {
     func replicatorDidError(replicator:CDTReplicator, info:NSError) {
         print("PULL Replicator ERROR: \(info)")
         let tabVC = Utils.rootViewController() as! TabBarViewController
-        tabVC.showCloudantErrorAlert()
-        
+        tabVC.showErrorAlert()
     }
-    
-    
-    
-    
     
 }
 
