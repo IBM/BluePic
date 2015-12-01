@@ -38,33 +38,25 @@ class CloudantSyncClientTests: XCTestCase {
         XCTAssertEqual(exists, false)
     }
     
-    func testCreatePictureLocally() {
-        // Create 3 pictures and set owner id to 1234
-        let picture1URL = "http://www.tenayalodge.com/img/Carousel-DiscoverYosemite_img3.jpg"
-        CloudantSyncClient.SharedInstance.createPictureDoc("Yosemite", fileName: "yosemite.jpg", url: picture1URL, ownerID: "1234")
-        let picture2URL = "http://media-cdn.tripadvisor.com/media/photo-s/02/92/12/75/sierra-del-carmen-sunset.jpg"
-        CloudantSyncClient.SharedInstance.createPictureDoc("Big Bend", fileName: "bigbend.jpg", url: picture2URL, ownerID: "1234")
-        let picture3URL = "https://www.flmnh.ufl.edu/fish/SouthFlorida/images/bocachita.JPG"
-        CloudantSyncClient.SharedInstance.createPictureDoc("Yosemite", fileName: "yosemite.jpg", url: picture3URL, ownerID: "1234")
-        
-        //CloudantSyncClient.SharedInstance.pushToRemoteDatabaseSynchronous()
-        
-        //let myPictures = CloudantSyncClient.SharedInstance.getPicturesOfOwnerId("1234")
-        
-        //CloudantSyncClient.SharedInstance.deleteProfileDoc("1234")
-    }
-    
     func testGetPictures() {
         
         // Create 3 pictures and set owner id to 1234
+        let id = "1234"
         let picture1URL = "http://www.tenayalodge.com/img/Carousel-DiscoverYosemite_img3.jpg"
-        CloudantSyncClient.SharedInstance.createPictureDoc("Yosemite", fileName: "yosemite.jpg", url: picture1URL, ownerID: "1234")
+        CloudantSyncClient.SharedInstance.createPictureDoc("Yosemite", fileName: "yosemite.jpg", url: picture1URL, ownerID: id)
         let picture2URL = "http://media-cdn.tripadvisor.com/media/photo-s/02/92/12/75/sierra-del-carmen-sunset.jpg"
-        CloudantSyncClient.SharedInstance.createPictureDoc("Big Bend", fileName: "bigbend.jpg", url: picture2URL, ownerID: "1234")
+        CloudantSyncClient.SharedInstance.createPictureDoc("Big Bend", fileName: "bigbend.jpg", url: picture2URL, ownerID: id)
         let picture3URL = "https://www.flmnh.ufl.edu/fish/SouthFlorida/images/bocachita.JPG"
-        CloudantSyncClient.SharedInstance.createPictureDoc("Keys", fileName: "keys.jpg", url: picture3URL, ownerID: "1234")
+        CloudantSyncClient.SharedInstance.createPictureDoc("Keys", fileName: "keys.jpg", url: picture3URL, ownerID: id)
         
-        CloudantSyncClient.SharedInstance.getPicturesOfOwnerId("1234")
+        let result = CloudantSyncClient.SharedInstance.getPicturesOfOwnerId("1234")
+        
+        result.enumerateObjectsUsingBlock({ (rev, idx, stop) -> Void in
+            print("Index: "+idx.description)
+            print(rev.body["URL"]!)
+            print(rev.body["display_name"]!)
+            print(rev.body["ts"]!)
+        })
     }
 
     
