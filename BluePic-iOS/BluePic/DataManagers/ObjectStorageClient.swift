@@ -48,7 +48,7 @@ class ObjectStorageClient {
         mutableURLRequest.setValue("application/json; charset=UTF-8", forHTTPHeaderField: "Content-Type")
         let jsonPayload = "{ \"auth\": { \"identity\": { \"methods\": [ \"password\" ], \"password\": { \"user\": { \"id\": \"\(userId)\", \"password\": \"\(password)\" } } }, \"scope\": { \"project\": { \"id\": \"\(projectId)\" } } } }"
         
-        print("jsonPayload = \(jsonPayload)")
+        //print("jsonPayload = \(jsonPayload)")
         mutableURLRequest.HTTPBody = jsonPayload.dataUsingEncoding(NSUTF8StringEncoding)
         //mutableURLRequest.HTTPBody = try NSJSONSerialization.dataWithJSONObject(jsonPayload, options: NSJSONWritingOptions())
         
@@ -57,7 +57,7 @@ class ObjectStorageClient {
                 if let headers = responseHeaders {
                     if let authToken = headers["X-Subject-Token"] as? String {
                         self.token = authToken
-                        print("Auth token: \(authToken)")
+                        print("Object Storage auth token: \(authToken)")
                         onSuccess()
                         return
                     }
@@ -164,13 +164,13 @@ class ObjectStorageClient {
     }
     
     /**
-     * Uploads given UIImage object to the Object Storage service on Bluemix. Before doing so, this method creates a JPEG
-     * representation of the image using the least compression possible. The compression quality value can be changed if necessary.
+     * Uploads given UIImage object to the Object Storage service on Bluemix. Before doing so, this method creates a PNG
+     * representation of the image.
      */
     func uploadImage(containerName: String, imageName: String, image: UIImage,
         onSuccess: (imageURL: String) -> Void, onFailure: (error: String) -> Void) {
             // http://stackoverflow.com/questions/8564833/ios-upload-image-and-text-using-http-post
-            let imageData = UIImageJPEGRepresentation(image, 1.0);
+            let imageData = UIImagePNGRepresentation(image)
             let imageURL = "\(publicURL)/\(containerName)/\(imageName)"
             let nsURL = NSURL(string: imageURL)!
             let mutableURLRequest = NSMutableURLRequest(URL: nsURL)

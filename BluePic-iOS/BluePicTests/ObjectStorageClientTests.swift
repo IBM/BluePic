@@ -14,17 +14,16 @@ class ObjectStorageClientTests: XCTestCase {
     var objectStorageClient: ObjectStorageClient!
     var xctExpectation:XCTestExpectation?
     let containerName = "test-container"
-    let publicURL = "https://dal.objectstorage.open.softlayer.com/v1/AUTH_dd1ceb19680948119774a6d2f08057c2"
+    let publicURL = Utils.getKeyFromPlist("keys", key: "obj_stg_public_url")
     
     override func setUp() {
         super.setUp()
         
         // Set up connection properties for Object Storage service on Bluemix
-        // TODO: Extract properties to a config plist file
-        let password = "wqQ^0=MEs.0=2Yuk"
-        let userId = "f7de00fe33404786857f90c1c73d255d"
-        let projectId = "dd1ceb19680948119774a6d2f08057c2"
-        let authURL = "https://identity.open.softlayer.com/v3/auth/tokens"
+        let password = Utils.getKeyFromPlist("keys", key: "obj_stg_password")
+        let userId = Utils.getKeyFromPlist("keys", key: "obj_stg_user_id")
+        let projectId = Utils.getKeyFromPlist("keys", key: "obj_stg_project_id")
+        let authURL = Utils.getKeyFromPlist("keys", key: "obj_stg_auth_url")
         
         // Init variables for test execution
         objectStorageClient = ObjectStorageClient(userId: userId, password: password, projectId: projectId, authURL: authURL, publicURL: publicURL)
@@ -67,8 +66,8 @@ class ObjectStorageClientTests: XCTestCase {
     func testUploadImage() {
         let testName = "testUploadImage"
         authenticate(testName, onSuccess: {
-            let imageName = "ibm-icon.jpeg"
-            let image = UIImage(named : "ibm-icon")
+            let imageName = "puppy.png"
+            let image = UIImage(named : "puppy")
             XCTAssertNotNil(image)
             self.objectStorageClient.uploadImage(self.containerName, imageName: imageName, image: image!,
                 onSuccess: { (imageURL: String) in

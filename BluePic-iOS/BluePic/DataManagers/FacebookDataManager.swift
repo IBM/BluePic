@@ -15,6 +15,7 @@ class FacebookDataManager: NSObject {
         
         var manager = FacebookDataManager()
         
+        
         return manager
         
     }()
@@ -33,6 +34,9 @@ class FacebookDataManager: NSObject {
     
     /// Unique user ID given from Facebook API
     var fbUniqueUserID: String?
+    
+    /// Bool if user is authenticated with facebook
+    var isLoggedIn = false
     
     /**
      Custom enum for whether facebook authentication was successful or not
@@ -91,12 +95,24 @@ class FacebookDataManager: NSObject {
                     if let userID = identity["id"] as?NSString {
                         if let userName = identity["displayName"] as? NSString {
                         
-                        //save username and id to shared instance of this class
-                        self.fbUniqueUserID = userID as String
-                        self.fbUserDisplayName = userName as String
+                            //save username and id to shared instance of this class
+                            self.fbUniqueUserID = userID as String
+                            self.fbUserDisplayName = userName as String
                         
-                        print("Authenticated user \(userName) with id \(userID)")
-                        callback(networkRequest: NetworkRequest.Success)
+                            //set user logged in
+                            self.isLoggedIn = true
+                            
+                            //save user id and name for future app launches
+                            NSUserDefaults.standardUserDefaults().setObject(userID, forKey: "user_id")
+                            NSUserDefaults.standardUserDefaults().setObject(userName, forKey: "user_name")
+                            NSUserDefaults.standardUserDefaults().synchronize()
+                            
+                        
+                            print("Got facebook auth token for user \(userName) with id \(userID)")
+                            
+                            self.checkIfUserExistsOnCloudantAndPushIfNeeded()
+                            
+                            callback(networkRequest: NetworkRequest.Success)
                         }
                     }
                     else {
@@ -194,8 +210,105 @@ class FacebookDataManager: NSObject {
         self.fbAppDisplayName = facebookDisplayName! as String
         
 
-        print("Facebook Authentication Configured:\nFacebookAppID \(facebookAppID!)\nFacebookDisplayName \(facebookDisplayName!)\nFacebookURLScheme \(facebookURLScheme!)")
+        print("Facebook Auth configured, getting ready to show native FB Login:\nFacebookAppID \(facebookAppID!)\nFacebookDisplayName \(facebookDisplayName!)\nFacebookURLScheme \(facebookURLScheme!)")
         return true;
+    }
+    
+    
+    
+    /**
+     Method will try to first authenticate with Object storage. If successful, wil try to show login screen if not authenticated with Facebook. If failure, will retry authentication with object storage
+     
+     - parameter presentingVC: tab bar VC to show error alert if it occurs
+     */
+    func tryToShowLoginScreen(presentingVC: TabBarViewController!) {
+        //authenticate with object storage every time opening app, try to show facebook login once completed
+        if (!ObjectStorageDataManager.SharedInstance.objectStorageClient.isAuthenticated()) { //try to authenticate if not authenticated
+            print("Attempting to authenticate with Object storage...")
+            ObjectStorageDataManager.SharedInstance.objectStorageClient.authenticate({() in
+                    print("success authenticating with object storage!")
+                    self.showLoginIfUserNotAuthenticated(presentingVC)
+                }, onFailure: {(error) in
+                    print("error authenticating with object storage: \(error)")
+                    presentingVC.showObjectStorageErrorAlert()
+            })
+        }
+        else { //if already authenticated with object storage, just try to show facebook login
+            print("Object storage already authenticated somehow!")
+            self.showLoginIfUserNotAuthenticated(presentingVC)
+            
+        }
+   
+    }
+    
+    
+    
+    /**
+     Method will pull down latest cloudant data, and try to show login screen if user is not authenticated nor has pressed "sign in later" button
+     
+     - parameter presentingVC: tab bar VC to present login VC on
+     */
+    func showLoginIfUserNotAuthenticated(presentingVC: TabBarViewController!) {
+        //start pulling from cloudant sync (will automatically hide loading when successful)
+        print("Pulling latest cloudant data...")
+        self.pullLatestCloudantData()
+        
+        //check if user is already authenticated previously
+        print("Checking if user is authenticated with facebook...")
+        if let userID = NSUserDefaults.standardUserDefaults().objectForKey("user_id") as? String {
+            if let userName = NSUserDefaults.standardUserDefaults().objectForKey("user_name") as? String {
+                self.fbUserDisplayName = userName
+                self.fbUniqueUserID = userID
+                presentingVC.hideBackgroundImageAndStartLoading()
+                print("User already logged into Facebook. Welcome back, user \(userID)!")
+            }
+        }
+        else { //user not authenticated
+            
+            //show login if user hasn't pressed "sign in later" (first time logging in)
+            if !NSUserDefaults.standardUserDefaults().boolForKey("hasPressedLater") {
+                let loginVC = Utils.vcWithNameFromStoryboardWithName("loginVC", storyboardName: "Main") as! LoginViewController
+                presentingVC.presentViewController(loginVC, animated: false, completion: { _ in
+                    presentingVC.hideBackgroundImageAndStartLoading()
+                    print("user needs to log into Facebook, showing login")
+                })
+                
+            } else { //user pressed "sign in later"
+                presentingVC.hideBackgroundImageAndStartLoading()
+                print("user pressed sign in later button")
+                
+            }
+        }
+        
+    }
+    
+
+    
+    
+    
+    func pullLatestCloudantData() {
+        
+        //First do a pull to make sure datastore is up to date
+        CloudantSyncClient.SharedInstance.pullFromRemoteDatabase()
+        
+    }
+    
+    
+    /**
+     Query CloudantSync to see if id exists, and push to database if needed. Will wait until pull replicator is finished to execute
+     */
+    func checkIfUserExistsOnCloudantAndPushIfNeeded() {
+        
+        //Check if doc with fb id exists
+        if(!CloudantSyncClient.SharedInstance.doesExist(self.fbUniqueUserID!))
+        {
+            //Create profile document locally
+            CloudantSyncClient.SharedInstance.createProfileDoc(self.fbUniqueUserID!, name: self.fbUserDisplayName!)
+            //Push new profile document to remote database
+            CloudantSyncClient.SharedInstance.pushToRemoteDatabase()
+            
+        }
+        
     }
     
     
