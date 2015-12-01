@@ -333,7 +333,7 @@ class pullDelegate:NSObject, CDTReplicatorDelegate {
     func replicatorDidComplete(replicator:CDTReplicator) {
         print("PULL Replicator completed.")
         let tabVC = Utils.rootViewController() as! TabBarViewController
-        tabVC.hideLoadingImageView()
+        tabVC.stopLoadingImageView()
         //tabVC.showErrorAlert()
     }
     
@@ -343,7 +343,7 @@ class pullDelegate:NSObject, CDTReplicatorDelegate {
     func replicatorDidError(replicator:CDTReplicator, info:NSError) {
         print("PULL Replicator ERROR: \(info)")
         let tabVC = Utils.rootViewController() as! TabBarViewController
-        tabVC.showErrorAlert()
+        tabVC.showCloudantErrorAlert()
     }
     
 }
