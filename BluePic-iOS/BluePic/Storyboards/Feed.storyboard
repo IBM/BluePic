@@ -61,6 +61,7 @@
                     </tabBarItem>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="logoImageView" destination="lgu-fG-Ypn" id="Gt6-WJ-PvK"/>
                         <outlet property="puppyImage" destination="tgd-Lu-4at" id="YL1-7c-R1n"/>
                     </connections>
                 </viewController>

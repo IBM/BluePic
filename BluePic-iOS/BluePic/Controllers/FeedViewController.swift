@@ -12,11 +12,16 @@ class FeedViewController: UIViewController {
 
     @IBOutlet weak var puppyImage: UIImageView!
     
+    @IBOutlet weak var logoImageView: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        
     }
 
     override func didReceiveMemoryWarning() {

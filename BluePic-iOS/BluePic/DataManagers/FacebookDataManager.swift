@@ -259,7 +259,7 @@ class FacebookDataManager: NSObject {
             if let userName = NSUserDefaults.standardUserDefaults().objectForKey("user_name") as? String {
                 self.fbUserDisplayName = userName
                 self.fbUniqueUserID = userID
-                self.hideBackgroundImageAndStartLoading(presentingVC)
+                presentingVC.hideBackgroundImageAndStartLoading()
                 print("User already logged into Facebook. Welcome back, user \(userID)!")
             }
         }
@@ -269,12 +269,12 @@ class FacebookDataManager: NSObject {
             if !NSUserDefaults.standardUserDefaults().boolForKey("hasPressedLater") {
                 let loginVC = Utils.vcWithNameFromStoryboardWithName("loginVC", storyboardName: "Main") as! LoginViewController
                 presentingVC.presentViewController(loginVC, animated: false, completion: { _ in
-                    self.hideBackgroundImageAndStartLoading(presentingVC)
+                    presentingVC.hideBackgroundImageAndStartLoading()
                     print("user needs to log into Facebook, showing login")
                 })
                 
             } else { //user pressed "sign in later"
-                self.hideBackgroundImageAndStartLoading(presentingVC)
+                presentingVC.hideBackgroundImageAndStartLoading()
                 print("user pressed sign in later button")
                 
             }
@@ -283,15 +283,7 @@ class FacebookDataManager: NSObject {
     }
     
 
-    func hideBackgroundImageAndStartLoading(presentingVC: TabBarViewController!) {
-
-        //hide temp background image used to prevent flash animation
-        presentingVC.backgroundImageView.hidden = true
-        presentingVC.backgroundImageView.removeFromSuperview()
-        presentingVC.loadingIndicator.startAnimating()
-        presentingVC.loadingIndicator.hidden = false
-        
-    }
+    
     
     
     func pullLatestCloudantData() {
