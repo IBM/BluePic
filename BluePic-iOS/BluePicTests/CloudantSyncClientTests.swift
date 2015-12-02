@@ -150,7 +150,6 @@ class CloudantSyncClientTests: XCTestCase {
         let id = "3958"
         let name = "Maureen George"
         CloudantSyncClient.SharedInstance.createProfileDoc(id, name: name)
-        CloudantSyncClient.SharedInstance.pushToRemoteDatabaseSynchronous()
         // Authenticate
         ObjectStorageDataManager.SharedInstance.objectStorageClient.authenticate({() in
             print("success authenticating with object storage!")
