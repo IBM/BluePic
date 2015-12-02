@@ -364,7 +364,7 @@ class pushDelegate:NSObject, CDTReplicatorDelegate {
      */
     func replicatorDidComplete(replicator:CDTReplicator) {
         print("PUSH Replicator completed.")
-        //check if cameraDataManager.
+        //check if cameraDataManager != nil, then stop loading
     }
     
     /**
