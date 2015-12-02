@@ -109,6 +109,7 @@ class CloudantSyncClient {
         var retrieved:CDTDocumentRevision = CDTDocumentRevision()
         do {
             retrieved = try datastore.getDocumentWithId(id)
+            print("Retrieved doc with id: "+id)
         }
         catch {
             print("getDoc, ERROR: \(error)")
@@ -122,6 +123,7 @@ class CloudantSyncClient {
         do {
             retrieved = try datastore.getDocumentWithId(id)
             let name = retrieved.body["profile_name"]! as! String
+            print("Retrieved display name: "+name)
             return name
         }
         catch {
@@ -139,6 +141,7 @@ class CloudantSyncClient {
             rev.body = ["profile_name":name, "Type":"profile"]
             // Save the document to the database
             try datastore.createDocumentFromRevision(rev)
+            print("Created profile doc with id: "+id)
         } catch {
             print("createProfileDoc: Encountered an error: \(error)")
         }
@@ -150,6 +153,7 @@ class CloudantSyncClient {
         do {
             // Delete document
             try datastore.deleteDocumentWithId(id)
+            print("Deleted doc with id: "+id)
         } catch {
             print("deleteDoc: Encountered an error: \(error)")
         }
@@ -192,6 +196,7 @@ class CloudantSyncClient {
                 
                 // Save the document to the database
                 try datastore.createDocumentFromRevision(rev)
+                print("Created picture doc with display name: "+displayName)
             } catch {
                 print("createPictureDoc: Encountered an error: \(error)")
             }

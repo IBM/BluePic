@@ -129,6 +129,16 @@ class CloudantSyncClientTests: XCTestCase {
             print(rev.body["ownerName"]!)
         })
         
+        // Delete created users'pictures
+        CloudantSyncClient.SharedInstance.deletePicturesOfUser(id1)
+        CloudantSyncClient.SharedInstance.deletePicturesOfUser(id2)
+        CloudantSyncClient.SharedInstance.deletePicturesOfUser(id3)
+        
+        // Delete created users
+        CloudantSyncClient.SharedInstance.deleteDoc(id1)
+        CloudantSyncClient.SharedInstance.deleteDoc(id2)
+        CloudantSyncClient.SharedInstance.deleteDoc(id3)
+        
     }
 
     
