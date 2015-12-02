@@ -106,6 +106,7 @@ class CameraDataManager: NSObject {
     func showCameraConfirmation() {
         self.confirmationView = CameraConfirmationView.instanceFromNib()
         self.confirmationView.frame = CGRect(x: 0, y: 0, width: self.tabVC.view.frame.width, height: self.tabVC.view.frame.height)
+        self.confirmationView.originalFrame = self.confirmationView.frame
         
         //set up button actions
         self.confirmationView.cancelButton.addTarget(self, action: "dismissCameraConfirmation", forControlEvents: .TouchUpInside)
@@ -119,12 +120,12 @@ class CameraDataManager: NSObject {
     
     
     func dismissCameraConfirmation() {
-        UIView.animateWithDuration(0.5, animations: { _ in
+        self.confirmationView.endEditing(true) //dismiss keyboard first if shown
+        UIView.animateWithDuration(0.4, animations: { _ in
                 self.confirmationView.frame = CGRect(x: 0, y: self.tabVC.view.frame.height, width: self.tabVC.view.frame.width, height: self.tabVC.view.frame.height)
-            
             }, completion: { _ in
+                self.confirmationView.removeKeyboardObservers()
                 self.confirmationView.removeFromSuperview()
-                
         })
         
         
@@ -135,6 +136,8 @@ class CameraDataManager: NSObject {
         
         
     }
+    
+
     
     
     
@@ -157,7 +160,10 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
     }
     func imagePickerControllerDidCancel(picker: UIImagePickerController)
     {
+        self.confirmationView.removeKeyboardObservers()
+        self.confirmationView.removeFromSuperview()
         picker.dismissViewControllerAnimated(true, completion: nil)
+        
         print("picker canceled.")
     }
     
