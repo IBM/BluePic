@@ -187,11 +187,11 @@ class CloudantSyncClientTests: XCTestCase {
             }, onFailure: {(error) in
                 print("error authenticating with object storage: \(error)")
         })
-        CloudantSyncClient.SharedInstance.deletePicturesOfUser(id)
-        CloudantSyncClient.SharedInstance.deleteDoc(id)
         self.waitForExpectationsWithTimeout(50.0, handler:nil)
+		CloudantSyncClient.SharedInstance.deletePicturesOfUser(id)
+		CloudantSyncClient.SharedInstance.deleteDoc(id)
     }
-    
+
     func testPerformanceExample() {
         // This is an example of a performance test case.
         self.measureBlock {
