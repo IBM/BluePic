@@ -36,7 +36,6 @@ class TabBarViewController: UITabBarController {
     }
     
     override func viewDidAppear(animated: Bool) {
-        self.view.userInteractionEnabled = false
         
         self.setupFeedVC()
 
@@ -70,6 +69,7 @@ class TabBarViewController: UITabBarController {
     
     func tryToShowLogin() {
         if (!hasTriedToPresentLoginThisAppLaunch) {
+            self.view.userInteractionEnabled = false
             self.hasTriedToPresentLoginThisAppLaunch = true
             FacebookDataManager.SharedInstance.tryToShowLoginScreen(self)
         } 

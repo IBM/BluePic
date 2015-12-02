@@ -115,7 +115,8 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
     }
     func imagePickerControllerDidCancel(picker: UIImagePickerController)
     {
-        print("picker cancel.")
+        picker.dismissViewControllerAnimated(true, completion: nil)
+        print("picker canceled.")
     }
     
     
