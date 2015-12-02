@@ -111,7 +111,7 @@ class CloudantSyncClient {
             retrieved = try datastore.getDocumentWithId(id)
         }
         catch {
-            print("getDocumentWithId, ERROR: \(error)")
+            print("getDoc, ERROR: \(error)")
         }
         return retrieved
     }
@@ -125,7 +125,7 @@ class CloudantSyncClient {
             return name
         }
         catch {
-            print("getDocumentWithId, ERROR: \(error)")
+            print("getDisplayName, ERROR: \(error)")
         }
         return ""
     }
@@ -145,10 +145,10 @@ class CloudantSyncClient {
         return rev
     }
     
-    // Delete a local profile document given an ID.
+    // Delete document given an ID.
     func deleteDoc(id:String) -> Void {
         do {
-            // Save the document to the database
+            // Delete document
             try datastore.deleteDocumentWithId(id)
         } catch {
             print("deleteDoc: Encountered an error: \(error)")
@@ -158,19 +158,19 @@ class CloudantSyncClient {
     // Delete the pictures belonging to a user
     func deletePicturesOfUser(id:String) -> Void {
         do {
-            // Save the document to the database
+            // Get all picture documents that belong to passed in id
             let docs = getPicturesOfOwnerId(id)
             let idArray = docs.documentIds
             for id in idArray {
                 deleteDoc(id as! String)
             }
         } catch {
-            print("deleteProfileDoc: Encountered an error: \(error)")
+            print("deletePicturesOfUser: Encountered an error: \(error)")
         }
     }
     
     // Create a local picture document given an display name, file name, URL, owner.
-    func createPictureDoc(displayName:String, fileName:String, url:String, ownerID:String) -> Bool {
+    func createPictureDoc(displayName:String, fileName:String, url:String, ownerID:String,width:String, height:String) -> Bool {
         let rev:CDTDocumentRevision = CDTDocumentRevision()
         if(doesExist(ownerID)) {
             do {
@@ -186,6 +186,8 @@ class CloudantSyncClient {
                     "ownerID":ownerID,
                     "ownerName":ownerName,
                     "ts":ts,
+                    "width":width,
+                    "height":height,
                     "Type":"picture"]
                 
                 // Save the document to the database
