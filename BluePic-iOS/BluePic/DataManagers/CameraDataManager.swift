@@ -124,8 +124,8 @@ class CameraDataManager: NSObject {
         UIView.animateWithDuration(0.4, animations: { _ in
                 self.confirmationView.frame = CGRect(x: 0, y: self.tabVC.view.frame.height, width: self.tabVC.view.frame.width, height: self.tabVC.view.frame.height)
             }, completion: { _ in
-                self.confirmationView.removeKeyboardObservers()
-                self.confirmationView.removeFromSuperview()
+                self.destroyConfirmationView()
+                print("picker canceled from confirmation view.")
         })
         
         
@@ -134,6 +134,15 @@ class CameraDataManager: NSObject {
     
     func postPhoto() {
         
+        //push to object storage, then on success push to cloudant sync
+        
+        
+    }
+    
+    func destroyConfirmationView() {
+        self.confirmationView.removeKeyboardObservers()
+        self.confirmationView.removeFromSuperview()
+        self.confirmationView = nil
         
     }
     
@@ -160,8 +169,7 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
     }
     func imagePickerControllerDidCancel(picker: UIImagePickerController)
     {
-        self.confirmationView.removeKeyboardObservers()
-        self.confirmationView.removeFromSuperview()
+        self.destroyConfirmationView()
         picker.dismissViewControllerAnimated(true, completion: nil)
         
         print("picker canceled.")
