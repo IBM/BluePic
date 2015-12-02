@@ -38,9 +38,8 @@ class CameraConfirmationView: UIView, UITextFieldDelegate {
      */
     override func awakeFromNib() {
         super.awakeFromNib()
-        setupView()
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
+        self.setupView()
+        self.addKeyboardObservers()
         
     
     }
@@ -51,7 +50,7 @@ class CameraConfirmationView: UIView, UITextFieldDelegate {
         self.titleTextField.attributedPlaceholder = NSAttributedString(string:localizedString,
             attributes:[NSForegroundColorAttributeName: UIColor.grayColor()])
         self.translatesAutoresizingMaskIntoConstraints = true
-        
+        self.titleTextField.tintColor = UIColor.whiteColor()
         
     }
     
@@ -68,6 +67,11 @@ class CameraConfirmationView: UIView, UITextFieldDelegate {
         self.endEditing(true)
     }
     
+    
+    func addKeyboardObservers() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
+    }
     
     func removeKeyboardObservers() {
         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillShowNotification, object: nil)
