@@ -104,7 +104,7 @@ class CloudantSyncClient {
 * CRUD Operations
 */
      
-     // Return document with passed ID, if it exists.
+    // Return document with passed ID, if it exists.
     func getDoc(id:String) -> CDTDocumentRevision {
         var retrieved:CDTDocumentRevision = CDTDocumentRevision()
         do {
@@ -114,6 +114,20 @@ class CloudantSyncClient {
             print("getDocumentWithId, ERROR: \(error)")
         }
         return retrieved
+    }
+    
+    // Get display name
+    func getDisplayName(id:String) -> String {
+        var retrieved:CDTDocumentRevision = CDTDocumentRevision()
+        do {
+            retrieved = try datastore.getDocumentWithId(id)
+            let name = retrieved.body["profile_name"]! as! String
+            return name
+        }
+        catch {
+            print("getDocumentWithId, ERROR: \(error)")
+        }
+        return ""
     }
     
     // Create a local profile document given an ID and name.
@@ -132,51 +146,98 @@ class CloudantSyncClient {
     }
     
     // Delete a local profile document given an ID.
-    func deleteProfileDoc(id:String) -> Void {
+    func deleteDoc(id:String) -> Void {
         do {
             // Save the document to the database
             try datastore.deleteDocumentWithId(id)
         } catch {
-            print("createProfileDoc: Encountered an error: \(error)")
+            print("deleteDoc: Encountered an error: \(error)")
+        }
+    }
+    
+    // Delete the pictures belonging to a user
+    func deletePicturesOfUser(id:String) -> Void {
+        do {
+            // Save the document to the database
+            let docs = getPicturesOfOwnerId(id)
+            let idArray = docs.documentIds
+            for id in idArray {
+                deleteDoc(id as! String)
+            }
+        } catch {
+            print("deleteProfileDoc: Encountered an error: \(error)")
         }
     }
     
     // Create a local picture document given an display name, file name, URL, owner.
-    func createPictureDoc(displayName:String, fileName:String, url:String, ownerID:String) -> CDTDocumentRevision {
+    func createPictureDoc(displayName:String, fileName:String, url:String, ownerID:String) -> Bool {
         let rev:CDTDocumentRevision = CDTDocumentRevision()
-        do {
-            // Get current timestamp
-            let ts = NSDate.timeIntervalSinceReferenceDate()
-            // Create a document
-            let rev = CDTDocumentRevision()
-            rev.body = ["display_name":displayName,
-                "file_name":fileName,
-                "URL":url,
-                "ownerID":ownerID,
-                "ts":ts,
-                "Type":"picture"]
-            // Save the document to the database
-            try datastore.createDocumentFromRevision(rev)
-        } catch {
-            print("createProfileDoc: Encountered an error: \(error)")
+        if(doesExist(ownerID)) {
+            do {
+                // Get current timestamp + formatted date
+                let ts = NSDate.timeIntervalSinceReferenceDate()
+                // Get display name of owner id
+                let ownerName = getDisplayName(ownerID)
+                // Create a document
+                let rev = CDTDocumentRevision()
+                rev.body = ["display_name":displayName,
+                    "file_name":fileName,
+                    "URL":url,
+                    "ownerID":ownerID,
+                    "ownerName":ownerName,
+                    "ts":ts,
+                    "Type":"picture"]
+                
+                // Save the document to the database
+                try datastore.createDocumentFromRevision(rev)
+            } catch {
+                print("createPictureDoc: Encountered an error: \(error)")
+            }
+            return true
         }
-        return rev
+        else {
+            print("Passed in owner id does NOT exist: "+ownerID)
+            return false
+        }
     }
     
     // Get array of picture documents that belong to specified user, sorted from newest to oldest.
     func getPicturesOfOwnerId(id:String) -> CDTQResultSet {
         
-        //datastore.ensureIndexed(["ownerID","Type","display_name"], withName: "pictures")
+        // Create index for sort method to use
         datastore.ensureIndexed(["ts"], withName: "timestamps")
+        
         // Create sort document
         let sortDocument = [["ts":"desc"]]
         
+        // Define query to run
         let query = [
             "ownerID" : id,
             "Type" : "picture"
         ]
         
-        let result = datastore.find(query, skip: 0, limit: 0, fields: ["URL","display_name","ts"], sort: sortDocument)
+        // Run query and get a CDTQResultSet object
+        let result = datastore.find(query, skip: 0, limit: 0, fields: nil, sort: sortDocument)
+        
+        return result
+    }
+    
+    // Get ALL picture documents, sorted from newest to oldest.
+    func getAllPictureDocs() -> CDTQResultSet {
+        
+        // Create index for sort method to use
+        datastore.ensureIndexed(["ts"], withName: "timestamps")
+        
+        // Create sort document
+        let sortDocument = [["ts":"desc"]]
+        
+        // Define query to run
+        let query = [
+            "Type" : "picture"
+        ]
+        
+        // Run query and get a CDTQResultSet object
+        let result = datastore.find(query, skip: 0, limit: 0, fields: nil, sort: sortDocument)
         
         return result
     }
