@@ -75,6 +75,7 @@
                     </tabBarItem>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="collectionView" destination="zly-lq-htn" id="Zs4-5s-gMJ"/>
                         <outlet property="logoImageView" destination="lgu-fG-Ypn" id="Gt6-WJ-PvK"/>
                     </connections>
                 </viewController>

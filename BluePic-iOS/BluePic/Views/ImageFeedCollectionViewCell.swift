@@ -9,10 +9,20 @@
 import UIKit
 
 class ImageFeedCollectionViewCell: UICollectionViewCell {
-
+    
+    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var captionLabel: UILabel!
+    @IBOutlet weak var photographerNameLabel: UILabel!
+    @IBOutlet weak var timeSincePostedLabel: UILabel!
+    @IBOutlet weak var moreButton: UIButton!
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
+    
         // Initialization code
     }
+    
+    
 
 }

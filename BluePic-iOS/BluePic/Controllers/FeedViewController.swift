@@ -14,9 +14,10 @@ class FeedViewController: UIViewController {
     
     @IBOutlet weak var logoImageView: UIImageView!
     
+    @IBOutlet weak var collectionView: UICollectionView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
         // Do any additional setup after loading the view.
     }
     
@@ -29,6 +30,17 @@ class FeedViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    func setupCollectionView(){
+        
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        
+        Utils.registerNibWithCollectionView("ImageFeedCollectionViewCell", collectionView: collectionView)
+    }
+    
+    
+    
+    
 
     /*
     // MARK: - Navigation
@@ -40,4 +52,35 @@ class FeedViewController: UIViewController {
     }
     */
 
+}
+
+
+extension FeedViewController: UICollectionViewDataSource {
+    
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        return viewModel.setUpCollectionViewCell(indexPath, collectionView : collectionView)
+    }
+    
+    
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        
+        
+    }
+    
+    
+    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+        
+        
+        
+    }
+    
+    
+}
+
+
+extension FeedViewController:UICollectionViewDelegate {
+    
+    
+    
+    
 }
