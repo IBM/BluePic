@@ -7,7 +7,7 @@
         <!--Item 3-->
         <scene sceneID="QQh-XR-bhx">
             <objects>
-                <viewController id="wJk-Pu-oAw" userLabel="Item 3" customClass="CameraViewController" customModule="BluePic" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="wJk-Pu-oAw" userLabel="Item 3" customClass="ProfileViewController" customModule="BluePic" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="4zx-78-hDa"/>
                         <viewControllerLayoutGuide type="bottom" id="REx-zO-IJd"/>
