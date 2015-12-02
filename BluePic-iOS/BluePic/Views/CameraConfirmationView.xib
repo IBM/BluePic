@@ -72,7 +72,7 @@
                 <constraint firstItem="Pfc-My-QgD" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="44" id="LEo-Zc-RiJ"/>
                 <constraint firstAttribute="bottom" secondItem="Pfc-My-QgD" secondAttribute="bottom" constant="127" id="MDE-dG-oMM"/>
                 <constraint firstItem="Pfc-My-QgD" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="MMq-2i-3tV"/>
-                <constraint firstAttribute="bottom" secondItem="uqc-ek-PMi" secondAttribute="bottom" constant="88" id="VXu-X3-aEd"/>
+                <constraint firstItem="uqc-ek-PMi" firstAttribute="top" secondItem="Pfc-My-QgD" secondAttribute="bottom" constant="-1" id="P9T-Fq-DXs"/>
                 <constraint firstItem="cQr-Kg-s1V" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="20" id="hO1-1B-k0K"/>
                 <constraint firstAttribute="trailing" secondItem="P01-uK-Cyb" secondAttribute="trailing" constant="20" id="lg4-fu-vKJ"/>
                 <constraint firstItem="uqc-ek-PMi" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="mIL-ZP-4q3"/>
@@ -86,7 +86,6 @@
                 </mask>
             </variation>
             <connections>
-                <outlet property="bottomConstraint" destination="VXu-X3-aEd" id="jNL-eZ-DOU"/>
                 <outlet property="cancelButton" destination="cQr-Kg-s1V" id="bif-6e-6eG"/>
                 <outlet property="photoImageView" destination="Pfc-My-QgD" id="Hmy-DB-2xe"/>
                 <outlet property="postButton" destination="P01-uK-Cyb" id="0Di-DJ-gul"/>

@@ -18,8 +18,6 @@ class CameraConfirmationView: UIView, UITextFieldDelegate {
     
     @IBOutlet weak var titleTextField: UITextField!
     
-    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
-    
     var originalFrame: CGRect!
     var originalSize: CGSize!
     /*
