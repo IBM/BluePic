@@ -170,27 +170,35 @@ class CloudantSyncClient {
     }
     
     // Create a local picture document given an display name, file name, URL, owner.
-    func createPictureDoc(displayName:String, fileName:String, url:String, ownerID:String) -> CDTDocumentRevision {
+    func createPictureDoc(displayName:String, fileName:String, url:String, ownerID:String) -> Bool {
         let rev:CDTDocumentRevision = CDTDocumentRevision()
-        do {
-            // Get current timestamp + formatted date
-            let ts = NSDate.timeIntervalSinceReferenceDate()
-            
-            // Create a document
-            let rev = CDTDocumentRevision()
-            rev.body = ["display_name":displayName,
-                "file_name":fileName,
-                "URL":url,
-                "ownerID":ownerID,
-                "ts":ts,
-                "Type":"picture"]
-            
-            // Save the document to the database
-            try datastore.createDocumentFromRevision(rev)
-        } catch {
-            print("createPictureDoc: Encountered an error: \(error)")
+        if(doesExist(ownerID)) {
+            do {
+                // Get current timestamp + formatted date
+                let ts = NSDate.timeIntervalSinceReferenceDate()
+                // Get display name of owner id
+                let ownerName = getDisplayName(ownerID)
+                // Create a document
+                let rev = CDTDocumentRevision()
+                rev.body = ["display_name":displayName,
+                    "file_name":fileName,
+                    "URL":url,
+                    "ownerID":ownerID,
+                    "ownerName":ownerName,
+                    "ts":ts,
+                    "Type":"picture"]
+                
+                // Save the document to the database
+                try datastore.createDocumentFromRevision(rev)
+            } catch {
+                print("createPictureDoc: Encountered an error: \(error)")
+            }
+            return true
         }
-        return rev
+        else {
+            print("Passed in owner id does NOT exist: "+ownerID)
+            return false
+        }
     }
     
     // Get array of picture documents that belong to specified user, sorted from newest to oldest.
@@ -205,6 +213,26 @@ class CloudantSyncClient {
         // Define query to run
         let query = [
             "ownerID" : id,
+            "Type" : "picture"
+        ]
+        
+        // Run query and get a CDTQResultSet object
+        let result = datastore.find(query, skip: 0, limit: 0, fields: nil, sort: sortDocument)
+        
+        return result
+    }
+    
+    // Get ALL picture documents, sorted from newest to oldest.
+    func getAllPictureDocs() -> CDTQResultSet {
+        
+        // Create index for sort method to use
+        datastore.ensureIndexed(["ts"], withName: "timestamps")
+        
+        // Create sort document
+        let sortDocument = [["ts":"desc"]]
+        
+        // Define query to run
+        let query = [
             "Type" : "picture"
         ]
         

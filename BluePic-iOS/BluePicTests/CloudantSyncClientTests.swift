@@ -78,6 +78,48 @@ class CloudantSyncClientTests: XCTestCase {
         CloudantSyncClient.SharedInstance.deleteDoc(id)
         CloudantSyncClient.SharedInstance.deletePicturesOfUser(id)
     }
+    
+    // Tests retrieval of ALL pictures of BluePic
+    func testGetAllPictures() {
+        // Create Users
+        let id1 = "1837"
+        let name1 = "Earl Fleming"
+        CloudantSyncClient.SharedInstance.createProfileDoc(id1, name: name1)
+        
+        let id2 = "2948"
+        let name2 = "Johnnie Willis"
+        CloudantSyncClient.SharedInstance.createProfileDoc(id2, name: name2)
+        
+        let id3 = "1087"
+        let name3 = "Marsha Cobb"
+        CloudantSyncClient.SharedInstance.createProfileDoc(id3, name: name3)
+        
+        // Create 3 pictures and set their owner id
+        let displayNames = ["Keys", "Big Bend", "Yosemite"]
+        let fileNames = ["keys.jpg", "bigbend.jpg", "yosemite.jpg"]
+        // Picture 1
+        let picture1URL = "http://www.tenayalodge.com/img/Carousel-DiscoverYosemite_img3.jpg"
+        CloudantSyncClient.SharedInstance.createPictureDoc(displayNames[2], fileName: fileNames[2], url: picture1URL, ownerID: id1)
+        // Picture 2
+        let picture2URL = "http://media-cdn.tripadvisor.com/media/photo-s/02/92/12/75/sierra-del-carmen-sunset.jpg"
+        CloudantSyncClient.SharedInstance.createPictureDoc(displayNames[1], fileName: fileNames[1], url: picture2URL, ownerID: id2)
+        // Picture 3
+        let picture3URL = "https://www.flmnh.ufl.edu/fish/SouthFlorida/images/bocachita.JPG"
+        CloudantSyncClient.SharedInstance.createPictureDoc(displayNames[0], fileName: fileNames[0], url: picture3URL, ownerID: id3)
+        
+        // Run Query to get ALL pictures in BluePic
+        let result = CloudantSyncClient.SharedInstance.getAllPictureDocs()
+        
+        // Go through set of returned docs and print fields.
+        result.enumerateObjectsUsingBlock({ (rev, idx, stop) -> Void in
+            print("Index: "+idx.description)
+            print(rev.body["URL"]!)
+            print(rev.body["display_name"]!)
+            print(rev.body["ts"]!)
+            print(rev.body["ownerName"]!)
+        })
+        
+    }
 
     
     func testPerformanceExample() {
