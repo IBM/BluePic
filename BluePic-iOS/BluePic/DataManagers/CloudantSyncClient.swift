@@ -364,14 +364,15 @@ class pushDelegate:NSObject, CDTReplicatorDelegate {
      */
     func replicatorDidComplete(replicator:CDTReplicator) {
         print("PUSH Replicator completed.")
+        //check if cameraDataManager != nil, then stop loading
     }
     
     /**
      * Called when a state transition to ERROR is completed.
      */
     func replicatorDidError(replicator:CDTReplicator, info:NSError) {
-        print("PUSH Replicator ERROR: ")
-        print(info)
+        print("PUSH Replicator ERROR: \(info)")
+        //show error here
     }
 }
 
@@ -398,7 +399,6 @@ class pullDelegate:NSObject, CDTReplicatorDelegate {
         print("PULL Replicator completed.")
         let tabVC = Utils.rootViewController() as! TabBarViewController
         tabVC.stopLoadingImageView()
-        //tabVC.showErrorAlert()
     }
     
     /**

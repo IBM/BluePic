@@ -37,16 +37,16 @@ class CameraDataManager: NSObject {
     func showImagePickerActionSheet(presentingVC: TabBarViewController!) {
         self.tabVC = presentingVC
         self.picker = UIImagePickerController()
-        let alert:UIAlertController=UIAlertController(title: "Choose Image", message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
-        let cameraAction = UIAlertAction(title: "Camera", style: UIAlertActionStyle.Default)
-            {
-                UIAlertAction in
-                self.openCamera()
-        }
-        let galleryAction = UIAlertAction(title: "Gallery", style: UIAlertActionStyle.Default)
+        let alert:UIAlertController=UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
+        let cameraAction = UIAlertAction(title: "Photo Library", style: UIAlertActionStyle.Default)
             {
                 UIAlertAction in
                 self.openGallery()
+        }
+        let galleryAction = UIAlertAction(title: "Take Photo", style: UIAlertActionStyle.Default)
+            {
+                UIAlertAction in
+                self.openCamera()
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel)
             {
@@ -106,6 +106,7 @@ class CameraDataManager: NSObject {
     func showCameraConfirmation() {
         self.confirmationView = CameraConfirmationView.instanceFromNib()
         self.confirmationView.frame = CGRect(x: 0, y: 0, width: self.tabVC.view.frame.width, height: self.tabVC.view.frame.height)
+        self.confirmationView.originalFrame = self.confirmationView.frame
         
         //set up button actions
         self.confirmationView.cancelButton.addTarget(self, action: "dismissCameraConfirmation", forControlEvents: .TouchUpInside)
@@ -119,12 +120,12 @@ class CameraDataManager: NSObject {
     
     
     func dismissCameraConfirmation() {
-        UIView.animateWithDuration(0.5, animations: { _ in
+        self.confirmationView.endEditing(true) //dismiss keyboard first if shown
+        UIView.animateWithDuration(0.4, animations: { _ in
                 self.confirmationView.frame = CGRect(x: 0, y: self.tabVC.view.frame.height, width: self.tabVC.view.frame.width, height: self.tabVC.view.frame.height)
-            
             }, completion: { _ in
-                self.confirmationView.removeFromSuperview()
-                
+                self.destroyConfirmationView()
+                print("picker canceled from confirmation view.")
         })
         
         
@@ -133,8 +134,19 @@ class CameraDataManager: NSObject {
     
     func postPhoto() {
         
+        //push to object storage, then on success push to cloudant sync
+        
         
     }
+    
+    func destroyConfirmationView() {
+        self.confirmationView.removeKeyboardObservers()
+        self.confirmationView.removeFromSuperview()
+        self.confirmationView = nil
+        
+    }
+    
+
     
     
     
@@ -157,7 +169,9 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
     }
     func imagePickerControllerDidCancel(picker: UIImagePickerController)
     {
+        self.destroyConfirmationView()
         picker.dismissViewControllerAnimated(true, completion: nil)
+        
         print("picker canceled.")
     }
     
