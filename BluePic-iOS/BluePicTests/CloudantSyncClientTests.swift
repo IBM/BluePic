@@ -11,9 +11,12 @@ import XCTest
 
 class CloudantSyncClientTests: XCTestCase {
     
+    var xctExpectation:XCTestExpectation?
+    
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
+        xctExpectation = self.expectationWithDescription("Asynchronous request about to occur...")
     }
     
     override func tearDown() {
@@ -140,7 +143,55 @@ class CloudantSyncClientTests: XCTestCase {
         CloudantSyncClient.SharedInstance.deleteDoc(id3)
         
     }
+    
+    // Run this test to upload an image to object storage, create the picture document locally, and push that document to cloudant.
+    func testPrepolpulate() {
+        // Create fake user
+        let id = "3958"
+        let name = "Maureen George"
+        CloudantSyncClient.SharedInstance.createProfileDoc(id, name: name)
+        CloudantSyncClient.SharedInstance.pushToRemoteDatabaseSynchronous()
+        // Authenticate
+        ObjectStorageDataManager.SharedInstance.objectStorageClient.authenticate({() in
+            print("success authenticating with object storage!")
+            // Create Container
+            ObjectStorageDataManager.SharedInstance.objectStorageClient.createContainer(id,
+                onSuccess: { (name: String) in
+                    print("CONTAINER CREATED")
+                    print(name)
+                    XCTAssertNotNil(name)
+                    let imageName = "puppy.png"
+                    let image = UIImage(named : "puppy")
+                    let width:String = String(image?.size.width)
+                    let height:String = String(image?.size.height)
+                    XCTAssertNotNil(image)
+                    // Upload Image
+                    ObjectStorageDataManager.SharedInstance.objectStorageClient.uploadImage(id, imageName: imageName, image: image!,
+                        onSuccess: { (imageURL: String) in
+                            XCTAssertNotNil(imageURL)
+                            print("imageURL: \(imageURL)")
+                            // Create local picture document
+                            CloudantSyncClient.SharedInstance.createPictureDoc("Cute Puppy", fileName: imageName, url: imageURL, ownerID: id, width: width, height: height)
+                            // Push document to remote Cloudant database
+                            CloudantSyncClient.SharedInstance.pushToRemoteDatabaseSynchronous()
+                            self.xctExpectation?.fulfill()
+                        }, onFailure: { (error) in
+                            print("error: \(error)")
+                            XCTFail(error)
+                            self.xctExpectation?.fulfill()
+                    })
+                }, onFailure: { (error) in
+                    print("error: \(error)")
+                    XCTFail(error)
+            })
 
+            }, onFailure: {(error) in
+                print("error authenticating with object storage: \(error)")
+        })
+        CloudantSyncClient.SharedInstance.deletePicturesOfUser(id)
+        CloudantSyncClient.SharedInstance.deleteDoc(id)
+        self.waitForExpectationsWithTimeout(50.0, handler:nil)
+    }
     
     func testPerformanceExample() {
         // This is an example of a performance test case.
@@ -148,5 +199,7 @@ class CloudantSyncClientTests: XCTestCase {
             // Put the code you want to measure the time of here.
         }
     }
+    
+
     
 }
