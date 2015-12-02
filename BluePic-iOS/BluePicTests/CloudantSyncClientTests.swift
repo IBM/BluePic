@@ -22,30 +22,36 @@ class CloudantSyncClientTests: XCTestCase {
     }
     
     func testCreateProfileLocally() {
-        CloudantSyncClient.SharedInstance.createProfileDoc("1234", name: "Rolando Asmat")
-        let exists = CloudantSyncClient.SharedInstance.doesExist("1234")
+        // Create User
+        let id = "4876"
+        let name = "Ellen Harrison"
+        
+        CloudantSyncClient.SharedInstance.createProfileDoc(id, name: name)
+        let exists = CloudantSyncClient.SharedInstance.doesExist(id)
         XCTAssertEqual(exists, true)
-        let doc = CloudantSyncClient.SharedInstance.getDoc("1234")
-        let name:String = doc.body["profile_name"]! as! String
-        XCTAssertEqual(name, "Rolando Asmat")
-        CloudantSyncClient.SharedInstance.deleteDoc("1234")
+        let doc = CloudantSyncClient.SharedInstance.getDoc(id)
+        let docName:String = doc.body["profile_name"]! as! String
+        XCTAssertEqual(docName, name)
+        CloudantSyncClient.SharedInstance.deleteDoc(id)
     }
     
     func testDeleteProfileLocally() {
         // Create User to delete
-        CloudantSyncClient.SharedInstance.createProfileDoc("1234", name: "Rolando Asmat")
+        let id = "1039"
+        let name = "Brad Tyler"
+        CloudantSyncClient.SharedInstance.createProfileDoc(id, name: name)
         
         // Delete User
-        CloudantSyncClient.SharedInstance.deleteDoc("1234")
-        let exists = CloudantSyncClient.SharedInstance.doesExist("1234")
+        CloudantSyncClient.SharedInstance.deleteDoc(id)
+        let exists = CloudantSyncClient.SharedInstance.doesExist(id)
         XCTAssertEqual(exists, false)
     }
     
     // Tests creation of pictures, assigning them to a user and finally deleting them.
     func testUserPictures() {
         // Create User
-        let id = "3028"
-        let name = "Rolando Asmat"
+        let id = "7532"
+        let name = "Kenny Reid"
         CloudantSyncClient.SharedInstance.createProfileDoc(id, name: name)
         
         // Create 3 pictures and set their owner id
@@ -53,13 +59,13 @@ class CloudantSyncClientTests: XCTestCase {
         let fileNames = ["keys.jpg", "bigbend.jpg", "yosemite.jpg"]
         // Picture 1
         let picture1URL = "http://www.tenayalodge.com/img/Carousel-DiscoverYosemite_img3.jpg"
-        CloudantSyncClient.SharedInstance.createPictureDoc(displayNames[2], fileName: fileNames[2], url: picture1URL, ownerID: id)
+        CloudantSyncClient.SharedInstance.createPictureDoc(displayNames[2], fileName: fileNames[2], url: picture1URL, ownerID: id, width:"100", height:"100")
         // Picture 2
         let picture2URL = "http://media-cdn.tripadvisor.com/media/photo-s/02/92/12/75/sierra-del-carmen-sunset.jpg"
-        CloudantSyncClient.SharedInstance.createPictureDoc(displayNames[1], fileName: fileNames[1], url: picture2URL, ownerID: id)
+        CloudantSyncClient.SharedInstance.createPictureDoc(displayNames[1], fileName: fileNames[1], url: picture2URL, ownerID: id, width:"200", height:"300")
         // Picture 3
         let picture3URL = "https://www.flmnh.ufl.edu/fish/SouthFlorida/images/bocachita.JPG"
-        CloudantSyncClient.SharedInstance.createPictureDoc(displayNames[0], fileName: fileNames[0], url: picture3URL, ownerID: id)
+        CloudantSyncClient.SharedInstance.createPictureDoc(displayNames[0], fileName: fileNames[0], url: picture3URL, ownerID: id, width:"100", height:"500")
         
         // Run Query to get pictures corresponding to specified user id
         let result = CloudantSyncClient.SharedInstance.getPicturesOfOwnerId(id)
@@ -70,13 +76,17 @@ class CloudantSyncClientTests: XCTestCase {
             print(rev.body["URL"]!)
             print(rev.body["display_name"]!)
             print(rev.body["ts"]!)
+            print(rev.body["width"]!)
+            print(rev.body["height"]!)
             // Assert order of display names
             XCTAssertEqual(rev.body["display_name"]! as! String, displayNames[Int(idx)])
         })
         
         // Delete created user and their pictures
-        CloudantSyncClient.SharedInstance.deleteDoc(id)
         CloudantSyncClient.SharedInstance.deletePicturesOfUser(id)
+        CloudantSyncClient.SharedInstance.deleteDoc(id)
+        let exists = CloudantSyncClient.SharedInstance.doesExist(id)
+        XCTAssertEqual(exists, false)
     }
     
     // Tests retrieval of ALL pictures of BluePic
@@ -99,13 +109,13 @@ class CloudantSyncClientTests: XCTestCase {
         let fileNames = ["keys.jpg", "bigbend.jpg", "yosemite.jpg"]
         // Picture 1
         let picture1URL = "http://www.tenayalodge.com/img/Carousel-DiscoverYosemite_img3.jpg"
-        CloudantSyncClient.SharedInstance.createPictureDoc(displayNames[2], fileName: fileNames[2], url: picture1URL, ownerID: id1)
+        CloudantSyncClient.SharedInstance.createPictureDoc(displayNames[2], fileName: fileNames[2], url: picture1URL, ownerID: id1, width:"100", height:"500")
         // Picture 2
         let picture2URL = "http://media-cdn.tripadvisor.com/media/photo-s/02/92/12/75/sierra-del-carmen-sunset.jpg"
-        CloudantSyncClient.SharedInstance.createPictureDoc(displayNames[1], fileName: fileNames[1], url: picture2URL, ownerID: id2)
+        CloudantSyncClient.SharedInstance.createPictureDoc(displayNames[1], fileName: fileNames[1], url: picture2URL, ownerID: id2, width:"100", height:"500")
         // Picture 3
         let picture3URL = "https://www.flmnh.ufl.edu/fish/SouthFlorida/images/bocachita.JPG"
-        CloudantSyncClient.SharedInstance.createPictureDoc(displayNames[0], fileName: fileNames[0], url: picture3URL, ownerID: id3)
+        CloudantSyncClient.SharedInstance.createPictureDoc(displayNames[0], fileName: fileNames[0], url: picture3URL, ownerID: id3, width:"100", height:"500")
         
         // Run Query to get ALL pictures in BluePic
         let result = CloudantSyncClient.SharedInstance.getAllPictureDocs()
