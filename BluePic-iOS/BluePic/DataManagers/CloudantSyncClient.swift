@@ -161,21 +161,16 @@ class CloudantSyncClient {
     
     // Delete the pictures belonging to a user
     func deletePicturesOfUser(id:String) -> Void {
-        do {
-            // Get all picture documents that belong to passed in id
-            let docs = getPicturesOfOwnerId(id)
-            let idArray = docs.documentIds
-            for id in idArray {
-                deleteDoc(id as! String)
-            }
-        } catch {
-            print("deletePicturesOfUser: Encountered an error: \(error)")
+        // Get all picture documents that belong to passed in id
+        let docs = getPicturesOfOwnerId(id)
+        let idArray = docs.documentIds
+        for id in idArray {
+            deleteDoc(id as! String)
         }
     }
     
     // Create a local picture document given an display name, file name, URL, owner.
     func createPictureDoc(displayName:String, fileName:String, url:String, ownerID:String,width:String, height:String) -> Bool {
-        let rev:CDTDocumentRevision = CDTDocumentRevision()
         if(doesExist(ownerID)) {
             do {
                 // Get current timestamp + formatted date
