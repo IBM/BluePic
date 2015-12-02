@@ -9,8 +9,6 @@
 import UIKit
 
 class FeedViewController: UIViewController {
-
-    @IBOutlet weak var puppyImage: UIImageView!
     
     @IBOutlet weak var logoImageView: UIImageView!
     

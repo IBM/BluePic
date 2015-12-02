@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1BC7AF5C1C0E39F100DDFD02 /* FeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC7AF5B1C0E39F100DDFD02 /* FeedViewModel.swift */; };
 		3435C7551BFE9E06004923BD /* Roboto-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3435C7491BFE9E06004923BD /* Roboto-Black.ttf */; };
 		3435C7561BFE9E06004923BD /* Roboto-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3435C74A1BFE9E06004923BD /* Roboto-BlackItalic.ttf */; };
 		3435C7571BFE9E06004923BD /* Roboto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3435C74B1BFE9E06004923BD /* Roboto-Bold.ttf */; };
@@ -102,6 +103,7 @@
 
 /* Begin PBXFileReference section */
 		11F4C7A29750E1B7B37ABAFA /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		1BC7AF5B1C0E39F100DDFD02 /* FeedViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedViewModel.swift; sourceTree = "<group>"; };
 		3435C7491BFE9E06004923BD /* Roboto-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Black.ttf"; sourceTree = "<group>"; };
 		3435C74A1BFE9E06004923BD /* Roboto-BlackItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-BlackItalic.ttf"; sourceTree = "<group>"; };
 		3435C74B1BFE9E06004923BD /* Roboto-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Bold.ttf"; sourceTree = "<group>"; };
@@ -354,6 +356,7 @@
 		34C809521BFD0CBC00C48004 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				1BC7AF5B1C0E39F100DDFD02 /* FeedViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -614,6 +617,7 @@
 				347472E21BFA8DEF0018B7F6 /* NSDictionaryExtension.swift in Sources */,
 				3435C7D21C03E223004923BD /* CloudantSyncClient.swift in Sources */,
 				347472E11BFA8DEF0018B7F6 /* NSDateExtension.swift in Sources */,
+				1BC7AF5C1C0E39F100DDFD02 /* FeedViewModel.swift in Sources */,
 				347472E61BFA8DEF0018B7F6 /* UIFontExtension.swift in Sources */,
 				347472DC1BFA8DEF0018B7F6 /* CGFloatExtension.swift in Sources */,
 				347472EE1BFA8DEF0018B7F6 /* LocalizationUtils.swift in Sources */,

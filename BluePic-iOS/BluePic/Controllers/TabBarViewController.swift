@@ -49,7 +49,7 @@ class TabBarViewController: UITabBarController {
     
     func setupFeedVC() {
         self.feedVC = self.viewControllers![0] as! FeedViewController
-        feedVC.logoImageView.image = UIImage(named: "logo")
+        feedVC.logoImageView.image = UIImage(named: "shutter")
         
     }
     
@@ -81,7 +81,7 @@ class TabBarViewController: UITabBarController {
         //hide temp background image used to prevent flash animation
         self.backgroundImageView.hidden = true
         self.backgroundImageView.removeFromSuperview()
-        self.feedVC.logoImageView.startRotating(0.5) //animate rotating logo with certain speed
+        self.feedVC.logoImageView.startRotating(1) //animate rotating logo with certain speed
         
     }
     
@@ -95,7 +95,6 @@ class TabBarViewController: UITabBarController {
             print("PULL complete, stopping loading")
             self.view.userInteractionEnabled = true
             self.feedVC.logoImageView.stopRotating()
-            self.feedVC.puppyImage.hidden = false
         }
         
     }
