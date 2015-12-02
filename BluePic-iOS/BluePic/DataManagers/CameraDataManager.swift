@@ -38,17 +38,17 @@ class CameraDataManager: NSObject {
         self.tabVC = presentingVC
         self.picker = UIImagePickerController()
         let alert:UIAlertController=UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
-        let cameraAction = UIAlertAction(title: "Photo Library", style: UIAlertActionStyle.Default)
+        let cameraAction = UIAlertAction(title: NSLocalizedString("Photo Library", comment: ""), style: UIAlertActionStyle.Default)
             {
                 UIAlertAction in
                 self.openGallery()
         }
-        let galleryAction = UIAlertAction(title: "Take Photo", style: UIAlertActionStyle.Default)
+        let galleryAction = UIAlertAction(title: NSLocalizedString("Take Photo", comment: ""), style: UIAlertActionStyle.Default)
             {
                 UIAlertAction in
                 self.openCamera()
         }
-        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel)
+        let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: UIAlertActionStyle.Cancel)
             {
                 UIAlertAction in
         }
