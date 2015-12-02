@@ -20,6 +20,8 @@ class FeedViewController: UIViewController {
         super.viewDidLoad()
         
         setupViewModel()
+        
+    
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -32,7 +34,7 @@ class FeedViewController: UIViewController {
     }
     
     func setupViewModel(){
-        viewModel = FeedViewModel()
+        viewModel = FeedViewModel(refreshCallback: reloadDataInCollectionView)
     }
     
     func setupCollectionView(){
@@ -42,6 +44,12 @@ class FeedViewController: UIViewController {
         
         Utils.registerNibWithCollectionView("ImageFeedCollectionViewCell", collectionView: collectionView)
     }
+    
+    
+    func reloadDataInCollectionView(){
+        collectionView.reloadData()
+    }
+    
     
 
     /*

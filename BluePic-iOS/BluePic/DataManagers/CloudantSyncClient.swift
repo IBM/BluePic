@@ -244,6 +244,34 @@ class CloudantSyncClient {
         return result
     }
     
+    
+    /**
+     Method that returns all picture objects by converting the picture docs to picture objects
+     
+     - returns: [Picture]
+     */
+    func getAllPictureObjects() -> [Picture] {
+        
+       let result = self.getAllPictureDocs()
+        
+        var pictureObjects = [Picture]()
+        
+        result.enumerateObjectsUsingBlock({ (rev, idx, stop) -> Void in
+            let newPicture = Picture()
+            
+            newPicture.url = rev.body["URL"] as? String
+            newPicture.displayName = rev.body["display_name"] as? String
+            newPicture.timeStamp = rev.body["ts"] as? String
+            newPicture.ownerName = rev.body["ownerName"] as? String
+            
+            pictureObjects.append(newPicture)
+        })
+
+        return pictureObjects
+    }
+    
+    
+    
 /**
 * PUSH and PULL network calls
 */
