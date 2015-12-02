@@ -111,7 +111,7 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject])
     {
         picker.dismissViewControllerAnimated(true, completion: nil)
-        imageView.image=info[UIImagePickerControllerOriginalImage] as? UIImage
+        //imageView.image=info[UIImagePickerControllerOriginalImage] as? UIImage
     }
     func imagePickerControllerDidCancel(picker: UIImagePickerController)
     {
