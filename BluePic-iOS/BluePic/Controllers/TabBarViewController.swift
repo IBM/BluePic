@@ -27,6 +27,8 @@ class TabBarViewController: UITabBarController {
         self.tabBar.tintColor! = UIColor.whiteColor()
         
         self.addBackgroundImageView()
+        
+        self.delegate = self
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -34,7 +36,6 @@ class TabBarViewController: UITabBarController {
     }
     
     override func viewDidAppear(animated: Bool) {
-        self.view.userInteractionEnabled = false
         
         self.setupFeedVC()
 
@@ -68,6 +69,7 @@ class TabBarViewController: UITabBarController {
     
     func tryToShowLogin() {
         if (!hasTriedToPresentLoginThisAppLaunch) {
+            self.view.userInteractionEnabled = false
             self.hasTriedToPresentLoginThisAppLaunch = true
             FacebookDataManager.SharedInstance.tryToShowLoginScreen(self)
         } 
@@ -178,4 +180,22 @@ class TabBarViewController: UITabBarController {
     }
     */
 
+}
+
+
+extension TabBarViewController: UITabBarControllerDelegate {
+    
+    func tabBarController(tabBarController: UITabBarController, shouldSelectViewController viewController: UIViewController) -> Bool {
+        if let _ = viewController as? CameraViewController { //if camera tab is selected, show camera picker
+            print("Opening camera picker...")
+            CameraDataManager.SharedInstance.showImagePickerActionSheet(self)
+            
+            return false
+        } else { //if not camera tab selected, actually show the selected tab
+            return true
+        }
+    }
+    
+    
+    
 }

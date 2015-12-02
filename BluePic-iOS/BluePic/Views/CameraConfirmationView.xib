@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="Roboto-Regular.ttf">
+            <string>Roboto-Regular</string>
+            <string>Roboto-Regular</string>
+        </mutableArray>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" restorationIdentifier="CameraConfirmationView" id="iN0-l3-epB" customClass="CameraConfirmationView" customModule="BluePic" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Pfc-My-QgD">
+                    <rect key="frame" x="0.0" y="53" width="600" height="420"/>
+                    <animations/>
+                </imageView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cQr-Kg-s1V">
+                    <rect key="frame" x="8" y="562" width="46" height="30"/>
+                    <animations/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="30" id="I2x-5y-w1b"/>
+                        <constraint firstAttribute="width" constant="46" id="Qqb-3g-GFb"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="14"/>
+                    <state key="normal" title="Cancel">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P01-uK-Cyb">
+                    <rect key="frame" x="512" y="562" width="80" height="30"/>
+                    <animations/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="30" id="AKK-Cq-2jd"/>
+                        <constraint firstAttribute="width" constant="80" id="J9s-2V-Keg"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="14"/>
+                    <state key="normal" title="Post Photo">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                </button>
+            </subviews>
+            <animations/>
+            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="P01-uK-Cyb" secondAttribute="bottom" constant="8" id="8wc-pY-dpg"/>
+                <constraint firstAttribute="bottom" secondItem="cQr-Kg-s1V" secondAttribute="bottom" constant="8" id="ApX-Bm-qoy"/>
+                <constraint firstItem="Pfc-My-QgD" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" id="Bb8-kj-nB4"/>
+                <constraint firstItem="Pfc-My-QgD" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="53" id="LEo-Zc-RiJ"/>
+                <constraint firstAttribute="bottom" secondItem="Pfc-My-QgD" secondAttribute="bottom" constant="127" id="MDE-dG-oMM"/>
+                <constraint firstItem="Pfc-My-QgD" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="MMq-2i-3tV"/>
+                <constraint firstItem="cQr-Kg-s1V" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="hO1-1B-k0K"/>
+                <constraint firstAttribute="trailing" secondItem="P01-uK-Cyb" secondAttribute="trailing" constant="8" id="lg4-fu-vKJ"/>
+            </constraints>
+            <connections>
+                <outlet property="cancelButton" destination="cQr-Kg-s1V" id="bif-6e-6eG"/>
+                <outlet property="photoImageView" destination="Pfc-My-QgD" id="Hmy-DB-2xe"/>
+                <outlet property="postButton" destination="P01-uK-Cyb" id="0Di-DJ-gul"/>
+            </connections>
+        </view>
+    </objects>
+</document>
