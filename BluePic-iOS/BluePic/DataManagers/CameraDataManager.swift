@@ -29,6 +29,8 @@ class CameraDataManager: NSObject {
     
     var picker: UIImagePickerController!
     
+    var confirmationView: CameraConfirmationView!
+    
     
     
     
@@ -75,10 +77,14 @@ class CameraDataManager: NSObject {
     
     func openCamera()
     {
+        
         if(UIImagePickerController .isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera))
         {
+            
             picker!.sourceType = UIImagePickerControllerSourceType.Camera
-            self.tabVC.presentViewController(picker, animated: true, completion: nil)
+            self.tabVC.presentViewController(picker, animated: true, completion: { _ in
+                self.showCameraConfirmation()
+            })
         }
         else
         {
@@ -90,7 +96,43 @@ class CameraDataManager: NSObject {
     func openGallery()
     {
         picker!.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
-        self.tabVC.presentViewController(picker, animated: true, completion: nil)
+        self.tabVC.presentViewController(picker, animated: true, completion:{ _ in
+            self.showCameraConfirmation()
+        })
+        
+    }
+    
+    
+    func showCameraConfirmation() {
+        self.confirmationView = CameraConfirmationView.instanceFromNib()
+        self.confirmationView.frame = CGRect(x: 0, y: 0, width: self.tabVC.view.frame.width, height: self.tabVC.view.frame.height)
+        
+        //set up button actions
+        self.confirmationView.cancelButton.addTarget(self, action: "dismissCameraConfirmation", forControlEvents: .TouchUpInside)
+        self.confirmationView.postButton.addTarget(self, action: "postPhoto", forControlEvents: .TouchUpInside)
+        
+        //show view
+        self.tabVC.view.addSubview(self.confirmationView)
+    }
+    
+    
+    
+    
+    func dismissCameraConfirmation() {
+        UIView.animateWithDuration(0.5, animations: { _ in
+                self.confirmationView.frame = CGRect(x: 0, y: self.tabVC.view.frame.height, width: self.tabVC.view.frame.width, height: self.tabVC.view.frame.height)
+            
+            }, completion: { _ in
+                self.confirmationView.removeFromSuperview()
+                
+        })
+        
+        
+    }
+    
+    
+    func postPhoto() {
+        
         
     }
     
@@ -111,7 +153,7 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject])
     {
         picker.dismissViewControllerAnimated(true, completion: nil)
-        //imageView.image=info[UIImagePickerControllerOriginalImage] as? UIImage
+        self.confirmationView.photoImageView.image=info[UIImagePickerControllerOriginalImage] as? UIImage
     }
     func imagePickerControllerDidCancel(picker: UIImagePickerController)
     {

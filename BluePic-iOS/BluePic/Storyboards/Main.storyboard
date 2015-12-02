@@ -207,42 +207,6 @@ also built on IBM Bluemix services.</string>
             </objects>
             <point key="canvasLocation" x="-1544" y="917.5"/>
         </scene>
-        <!--Camera Confirmation View Controller-->
-        <scene sceneID="bm1-uU-pth">
-            <objects>
-                <viewController id="Wy3-7Q-VYJ" customClass="CameraConfirmationViewController" customModule="BluePic" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="vv8-tH-oW6"/>
-                        <viewControllerLayoutGuide type="bottom" id="9ZX-uJ-RL4"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="jCj-54-Bcz">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="kxu-FC-8GG">
-                                <rect key="frame" x="0.0" y="67" width="600" height="420"/>
-                                <animations/>
-                            </imageView>
-                        </subviews>
-                        <animations/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="bottomMargin" secondItem="kxu-FC-8GG" secondAttribute="bottom" constant="113" id="1qC-h8-Fsi"/>
-                            <constraint firstItem="kxu-FC-8GG" firstAttribute="centerX" secondItem="jCj-54-Bcz" secondAttribute="centerX" id="Ti9-gv-u5l"/>
-                            <constraint firstItem="kxu-FC-8GG" firstAttribute="width" secondItem="jCj-54-Bcz" secondAttribute="width" id="q9K-ld-hj7"/>
-                            <constraint firstItem="kxu-FC-8GG" firstAttribute="top" secondItem="jCj-54-Bcz" secondAttribute="topMargin" constant="67" id="wAh-PF-AfY"/>
-                        </constraints>
-                    </view>
-                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="600" height="600"/>
-                    <connections>
-                        <outlet property="photoImageView" destination="kxu-FC-8GG" id="mxQ-0c-jDc"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="K1Z-Oc-zc0" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-790" y="1627"/>
-        </scene>
         <!--Feed-->
         <scene sceneID="kfC-tD-Yra">
             <objects>
