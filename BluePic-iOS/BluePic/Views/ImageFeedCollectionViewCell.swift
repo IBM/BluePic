@@ -24,5 +24,25 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
     }
     
     
+    
+    func setupData(imageURL : String?, captionText : String?, photographerName : String?, timeSincePosted : String?){
+        
+        let urlString = imageURL ?? ""
+        
+        if let url = NSURL(string: urlString){
+            imageView.sd_setImageWithURL(url, completed: { _ in
+                
+                
+                
+            })
+        }
+        
+        captionLabel.text = captionText ?? ""
+        
+        photographerNameLabel.text = photographerName ?? ""
+        
+    }
+    
+    
 
 }

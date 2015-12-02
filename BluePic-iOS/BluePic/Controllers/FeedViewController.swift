@@ -14,9 +14,12 @@ class FeedViewController: UIViewController {
     
     @IBOutlet weak var collectionView: UICollectionView!
     
+    var viewModel : FeedViewModel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
+        setupViewModel()
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -28,6 +31,10 @@ class FeedViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    func setupViewModel(){
+        viewModel = FeedViewModel()
+    }
+    
     func setupCollectionView(){
         
         collectionView.delegate = self
@@ -35,9 +42,6 @@ class FeedViewController: UIViewController {
         
         Utils.registerNibWithCollectionView("ImageFeedCollectionViewCell", collectionView: collectionView)
     }
-    
-    
-    
     
 
     /*
@@ -61,15 +65,12 @@ extension FeedViewController: UICollectionViewDataSource {
     
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
-        
+        return viewModel.numberOfItemsInSection(section)
     }
     
     
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        
-        
-        
+        return viewModel.numberOfSectionsInCollectionView()
     }
     
     

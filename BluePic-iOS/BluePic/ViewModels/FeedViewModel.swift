@@ -25,9 +25,11 @@ class FeedViewModel: NSObject {
     
     func setUpCollectionViewCell(indexPath : NSIndexPath, collectionView : UICollectionView) -> UICollectionViewCell {
         
-        let cell: UICollectionViewCell
+        let cell: ImageFeedCollectionViewCell
         
-        cell = collectionView.dequeueReusableCellWithReuseIdentifier("ImageFeedCollectionViewCell", forIndexPath: indexPath) as! ImageFeedCollectionViewCell
+        cell = collectionView.dequeueReusableCellWithReuseIdentifier("ImageFeedCollectionViewCell", forIndexPath: indexPath)
+        
+        cell.setupData("", captionText: "Test", photographerName: Test, timeSincePosted: "")
         
         cell.layer.shouldRasterize = true
         cell.layer.rasterizationScale = UIScreen.mainScreen().scale
