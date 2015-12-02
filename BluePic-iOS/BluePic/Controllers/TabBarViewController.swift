@@ -27,6 +27,8 @@ class TabBarViewController: UITabBarController {
         self.tabBar.tintColor! = UIColor.whiteColor()
         
         self.addBackgroundImageView()
+        
+        self.delegate = self
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -178,4 +180,22 @@ class TabBarViewController: UITabBarController {
     }
     */
 
+}
+
+
+extension TabBarViewController: UITabBarControllerDelegate {
+    
+    func tabBarController(tabBarController: UITabBarController, shouldSelectViewController viewController: UIViewController) -> Bool {
+        if let cameraVC = viewController as? CameraViewController { //if camera tab is selected, show camera picker
+            print("Opening camera picker...")
+            
+            
+            return false
+        } else { //if not camera tab selected, actually show the selected tab
+            return true
+        }
+    }
+    
+    
+    
 }
