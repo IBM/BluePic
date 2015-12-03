@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1BC7AF5C1C0E39F100DDFD02 /* FeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC7AF5B1C0E39F100DDFD02 /* FeedViewModel.swift */; };
 		3435C7551BFE9E06004923BD /* Roboto-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3435C7491BFE9E06004923BD /* Roboto-Black.ttf */; };
 		3435C7561BFE9E06004923BD /* Roboto-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3435C74A1BFE9E06004923BD /* Roboto-BlackItalic.ttf */; };
 		3435C7571BFE9E06004923BD /* Roboto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3435C74B1BFE9E06004923BD /* Roboto-Bold.ttf */; };
@@ -28,6 +29,9 @@
 		3435C7D51C04110C004923BD /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3435C7D41C04110C004923BD /* FeedViewController.swift */; };
 		3435C7D71C041116004923BD /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3435C7D61C041116004923BD /* CameraViewController.swift */; };
 		3435C7D91C04111F004923BD /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3435C7D81C04111F004923BD /* ProfileViewController.swift */; };
+		346F947C1C0F868C004999A8 /* CameraDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 346F947B1C0F868C004999A8 /* CameraDataManager.swift */; };
+		346F94801C0F9211004999A8 /* CameraConfirmationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 346F947F1C0F9211004999A8 /* CameraConfirmationView.xib */; };
+		346F94821C0F9225004999A8 /* CameraConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 346F94811C0F9225004999A8 /* CameraConfirmationView.swift */; };
 		3474728E1BFA8C6A0018B7F6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3474728D1BFA8C6A0018B7F6 /* AppDelegate.swift */; };
 		347472951BFA8C6A0018B7F6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 347472941BFA8C6A0018B7F6 /* Assets.xcassets */; };
 		347472981BFA8C6A0018B7F6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 347472961BFA8C6A0018B7F6 /* LaunchScreen.storyboard */; };
@@ -102,6 +106,7 @@
 
 /* Begin PBXFileReference section */
 		11F4C7A29750E1B7B37ABAFA /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		1BC7AF5B1C0E39F100DDFD02 /* FeedViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedViewModel.swift; sourceTree = "<group>"; };
 		3435C7491BFE9E06004923BD /* Roboto-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Black.ttf"; sourceTree = "<group>"; };
 		3435C74A1BFE9E06004923BD /* Roboto-BlackItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-BlackItalic.ttf"; sourceTree = "<group>"; };
 		3435C74B1BFE9E06004923BD /* Roboto-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Bold.ttf"; sourceTree = "<group>"; };
@@ -123,6 +128,9 @@
 		3435C7D41C04110C004923BD /* FeedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
 		3435C7D61C041116004923BD /* CameraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		3435C7D81C04111F004923BD /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		346F947B1C0F868C004999A8 /* CameraDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraDataManager.swift; sourceTree = "<group>"; };
+		346F947F1C0F9211004999A8 /* CameraConfirmationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CameraConfirmationView.xib; sourceTree = "<group>"; };
+		346F94811C0F9225004999A8 /* CameraConfirmationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraConfirmationView.swift; sourceTree = "<group>"; };
 		3474728A1BFA8C6A0018B7F6 /* BluePic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BluePic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3474728D1BFA8C6A0018B7F6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		347472941BFA8C6A0018B7F6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -347,6 +355,7 @@
 				3435C7D11C03E223004923BD /* ObjectStorageClient.swift */,
 				34CA181F1C04CB6700EC2636 /* ObjectStorageDataManager.swift */,
 				34C809541BFD0F2400C48004 /* FacebookDataManager.swift */,
+				346F947B1C0F868C004999A8 /* CameraDataManager.swift */,
 			);
 			path = DataManagers;
 			sourceTree = "<group>";
@@ -354,6 +363,7 @@
 		34C809521BFD0CBC00C48004 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				1BC7AF5B1C0E39F100DDFD02 /* FeedViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -361,6 +371,8 @@
 		34C809531BFD0CBC00C48004 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				346F947F1C0F9211004999A8 /* CameraConfirmationView.xib */,
+				346F94811C0F9225004999A8 /* CameraConfirmationView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -514,6 +526,7 @@
 				3435C75C1BFE9E06004923BD /* Roboto-Medium.ttf in Resources */,
 				3435C7C91C0368B1004923BD /* Feed.storyboard in Resources */,
 				3435C7581BFE9E06004923BD /* Roboto-BoldItalic.ttf in Resources */,
+				346F94801C0F9211004999A8 /* CameraConfirmationView.xib in Resources */,
 				34C8094D1BFCEA0400C48004 /* keys.plist in Resources */,
 				3435C75B1BFE9E06004923BD /* Roboto-LightItalic.ttf in Resources */,
 				3435C75D1BFE9E06004923BD /* Roboto-MediumItalic.ttf in Resources */,
@@ -600,6 +613,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				346F94821C0F9225004999A8 /* CameraConfirmationView.swift in Sources */,
 				347472DD1BFA8DEF0018B7F6 /* DoubleExtension.swift in Sources */,
 				347472E91BFA8DEF0018B7F6 /* UILabelExtension.swift in Sources */,
 				3435C7CF1C036A60004923BD /* TabBarViewController.swift in Sources */,
@@ -608,12 +622,14 @@
 				347472E01BFA8DEF0018B7F6 /* NSCoderExtension.swift in Sources */,
 				347472E41BFA8DEF0018B7F6 /* UIButtonExtension.swift in Sources */,
 				347472EF1BFA8DEF0018B7F6 /* Utils.swift in Sources */,
+				346F947C1C0F868C004999A8 /* CameraDataManager.swift in Sources */,
 				347472E51BFA8DEF0018B7F6 /* UIColorExtension.swift in Sources */,
 				347472E71BFA8DEF0018B7F6 /* UIImageExtension.swift in Sources */,
 				3435C7D91C04111F004923BD /* ProfileViewController.swift in Sources */,
 				347472E21BFA8DEF0018B7F6 /* NSDictionaryExtension.swift in Sources */,
 				3435C7D21C03E223004923BD /* CloudantSyncClient.swift in Sources */,
 				347472E11BFA8DEF0018B7F6 /* NSDateExtension.swift in Sources */,
+				1BC7AF5C1C0E39F100DDFD02 /* FeedViewModel.swift in Sources */,
 				347472E61BFA8DEF0018B7F6 /* UIFontExtension.swift in Sources */,
 				347472DC1BFA8DEF0018B7F6 /* CGFloatExtension.swift in Sources */,
 				347472EE1BFA8DEF0018B7F6 /* LocalizationUtils.swift in Sources */,

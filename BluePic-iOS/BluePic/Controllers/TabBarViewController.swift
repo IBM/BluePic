@@ -27,6 +27,8 @@ class TabBarViewController: UITabBarController {
         self.tabBar.tintColor! = UIColor.whiteColor()
         
         self.addBackgroundImageView()
+        
+        self.delegate = self
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -34,7 +36,6 @@ class TabBarViewController: UITabBarController {
     }
     
     override func viewDidAppear(animated: Bool) {
-        self.view.userInteractionEnabled = false
         
         self.setupFeedVC()
 
@@ -49,7 +50,7 @@ class TabBarViewController: UITabBarController {
     
     func setupFeedVC() {
         self.feedVC = self.viewControllers![0] as! FeedViewController
-        feedVC.logoImageView.image = UIImage(named: "logo")
+        feedVC.logoImageView.image = UIImage(named: "shutter")
         
     }
     
@@ -68,6 +69,7 @@ class TabBarViewController: UITabBarController {
     
     func tryToShowLogin() {
         if (!hasTriedToPresentLoginThisAppLaunch) {
+            self.view.userInteractionEnabled = false
             self.hasTriedToPresentLoginThisAppLaunch = true
             FacebookDataManager.SharedInstance.tryToShowLoginScreen(self)
         } 
@@ -81,7 +83,7 @@ class TabBarViewController: UITabBarController {
         //hide temp background image used to prevent flash animation
         self.backgroundImageView.hidden = true
         self.backgroundImageView.removeFromSuperview()
-        self.feedVC.logoImageView.startRotating(0.5) //animate rotating logo with certain speed
+        self.feedVC.logoImageView.startRotating(1) //animate rotating logo with certain speed
         
     }
     
@@ -95,20 +97,35 @@ class TabBarViewController: UITabBarController {
             print("PULL complete, stopping loading")
             self.view.userInteractionEnabled = true
             self.feedVC.logoImageView.stopRotating()
-            self.feedVC.puppyImage.hidden = false
         }
         
     }
     
     
     
+    /**
+     Method to show the error alert and asks user if they would like to retry cloudant data pushing
+     */
+    func showCloudantPushingErrorAlert() {
+        
+        let alert = UIAlertController(title: nil, message: NSLocalizedString("Oops! An error occurred uploading to Cloudant.", comment: ""), preferredStyle: UIAlertControllerStyle.Alert)
+        
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Try Again", comment: ""), style: .Default, handler: { (action: UIAlertAction!) in
+            CloudantSyncClient.SharedInstance.pushToRemoteDatabase()
+        }))
+        
+        dispatch_async(dispatch_get_main_queue()) {
+            self.presentViewController(alert, animated: true, completion: nil)
+        }
+    }
+    
     
     /**
      Method to show the error alert and asks user if they would like to retry cloudant data pulling
      */
-    func showCloudantErrorAlert() {
+    func showCloudantPullingErrorAlert() {
         
-        let alert = UIAlertController(title: nil, message: NSLocalizedString("Oops! An error occurred with Cloudant.", comment: ""), preferredStyle: UIAlertControllerStyle.Alert)
+        let alert = UIAlertController(title: nil, message: NSLocalizedString("Oops! An error downloading Cloudant data.", comment: ""), preferredStyle: UIAlertControllerStyle.Alert)
         
         alert.addAction(UIAlertAction(title: NSLocalizedString("Try Again", comment: ""), style: .Default, handler: { (action: UIAlertAction!) in
             self.retryPullingCloudantData()
@@ -179,4 +196,22 @@ class TabBarViewController: UITabBarController {
     }
     */
 
+}
+
+
+extension TabBarViewController: UITabBarControllerDelegate {
+    
+    func tabBarController(tabBarController: UITabBarController, shouldSelectViewController viewController: UIViewController) -> Bool {
+        if let _ = viewController as? CameraViewController { //if camera tab is selected, show camera picker
+            print("Opening camera picker...")
+            CameraDataManager.SharedInstance.showImagePickerActionSheet(self)
+            
+            return false
+        } else { //if not camera tab selected, actually show the selected tab
+            return true
+        }
+    }
+    
+    
+    
 }

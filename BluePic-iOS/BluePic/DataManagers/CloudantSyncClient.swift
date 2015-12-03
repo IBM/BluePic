@@ -13,8 +13,8 @@ import Foundation
  * remote database.
  *
  * The only network calls will be to sync the local database with the remote one. This is accomplished via
- * 2 main methods: push and pull. These are asynchronous calls made in order to push new documents and pull
- * new documents, respectively. 
+ * 2 main methods: pushToRemoteDatabase and pullFromRemoteDatabase. These are asynchronous calls made in order 
+ * to push new documents and pull new documents, respectively.
  */
 class CloudantSyncClient {
     
@@ -66,6 +66,7 @@ class CloudantSyncClient {
             let path = storeURL.path
             manager = try CDTDatastoreManager(directory: path)
             datastore = try manager.datastoreNamed(dbName)
+            
             //Initialize replicators
             let replicatorFactory = CDTReplicatorFactory(datastoreManager: manager)
             let s = "https://"+apiKey+":"+apiPassword+"@"+username+".cloudant.com/"+dbName
@@ -84,28 +85,8 @@ class CloudantSyncClient {
         }
     }
     
-    // Return document with passed ID, if it exists.
-    func getDoc(id:String) -> CDTDocumentRevision {
-        var retrieved:CDTDocumentRevision = CDTDocumentRevision()
-        do {
-            retrieved = try datastore.getDocumentWithId(id)
-        }
-        catch {
-            print("getDocumentWithId, ERROR: \(error)")
-        }
-        return retrieved
-    }
-    
-    // Checks if document with given ID exists or not.
+    // Checks if document with given ID exists or not
     func doesExist(id:String) -> Bool {
-        var count = 1
-        while(self.pullReplicator.isActive())
-        {
-            NSThread.sleepForTimeInterval(1.0)
-            print(self.pullReplicator)
-            print(count)
-            count++
-        }
         var exists:Bool
         do {
             try datastore.getDocumentWithId(id)
@@ -119,10 +100,167 @@ class CloudantSyncClient {
         return exists
     }
     
-    // Push changes to remote database
-    func pushToRemoteDatabase()
-    {
+/**
+* CRUD Operations
+*/
+     
+    // Return document with passed ID, if it exists.
+    func getDoc(id:String) -> CDTDocumentRevision {
+        var retrieved:CDTDocumentRevision = CDTDocumentRevision()
         do {
+            retrieved = try datastore.getDocumentWithId(id)
+            print("Retrieved doc with id: "+id)
+        }
+        catch {
+            print("getDoc, ERROR: \(error)")
+        }
+        return retrieved
+    }
+    
+    // Get display name
+    func getDisplayName(id:String) -> String {
+        var retrieved:CDTDocumentRevision = CDTDocumentRevision()
+        do {
+            retrieved = try datastore.getDocumentWithId(id)
+            let name = retrieved.body["profile_name"]! as! String
+            print("Retrieved display name: "+name)
+            return name
+        }
+        catch {
+            print("getDisplayName, ERROR: \(error)")
+        }
+        return ""
+    }
+    
+    // Create a local profile document given an ID and name.
+    func createProfileDoc(id:String, name:String) -> CDTDocumentRevision {
+        let rev:CDTDocumentRevision = CDTDocumentRevision()
+        do {
+            // Create a document
+            let rev = CDTDocumentRevision(docId: id)
+            rev.body = ["profile_name":name, "Type":"profile"]
+            // Save the document to the database
+            try datastore.createDocumentFromRevision(rev)
+            print("Created profile doc with id: "+id)
+        } catch {
+            print("createProfileDoc: Encountered an error: \(error)")
+        }
+        return rev
+    }
+    
+    // Delete document given an ID.
+    func deleteDoc(id:String) -> Void {
+        do {
+            // Delete document
+            try datastore.deleteDocumentWithId(id)
+            print("Deleted doc with id: "+id)
+        } catch {
+            print("deleteDoc: Encountered an error: \(error)")
+        }
+    }
+    
+    // Delete the pictures belonging to a user
+    func deletePicturesOfUser(id:String) -> Void {
+        // Get all picture documents that belong to passed in id
+        let docs = getPicturesOfOwnerId(id)
+        let idArray = docs.documentIds
+        for id in idArray {
+            deleteDoc(id as! String)
+        }
+    }
+    
+    // Create a local picture document given an display name, file name, URL, owner.
+    func createPictureDoc(displayName:String, fileName:String, url:String, ownerID:String,width:String, height:String) -> Bool {
+        if(doesExist(ownerID)) {
+            do {
+                // Get current timestamp + formatted date
+                let ts = NSDate.timeIntervalSinceReferenceDate()
+                // Get display name of owner id
+                let ownerName = getDisplayName(ownerID)
+                // Create a document
+                let rev = CDTDocumentRevision()
+                rev.body = ["display_name":displayName,
+                    "file_name":fileName,
+                    "URL":url,
+                    "ownerID":ownerID,
+                    "ownerName":ownerName,
+                    "ts":ts,
+                    "width":width,
+                    "height":height,
+                    "Type":"picture"]
+                
+                // Save the document to the database
+                try datastore.createDocumentFromRevision(rev)
+                print("Created picture doc with display name: "+displayName)
+                print("pushing to cloudant...")
+                self.pushToRemoteDatabase()
+            } catch {
+                print("createPictureDoc: Encountered an error: \(error)")
+            }
+            return true
+        }
+        else {
+            print("Passed in owner id does NOT exist: "+ownerID)
+            return false
+        }
+    }
+    
+    // Get array of picture documents that belong to specified user, sorted from newest to oldest.
+    func getPicturesOfOwnerId(id:String) -> CDTQResultSet {
+        
+        // Create index for sort method to use
+        datastore.ensureIndexed(["ts"], withName: "timestamps")
+        
+        // Create sort document
+        let sortDocument = [["ts":"desc"]]
+        
+        // Define query to run
+        let query = [
+            "ownerID" : id,
+            "Type" : "picture"
+        ]
+        
+        // Run query and get a CDTQResultSet object
+        let result = datastore.find(query, skip: 0, limit: 0, fields: nil, sort: sortDocument)
+        
+        return result
+    }
+    
+    // Get ALL picture documents, sorted from newest to oldest.
+    func getAllPictureDocs() -> CDTQResultSet {
+        
+        // Create index for sort method to use
+        datastore.ensureIndexed(["ts"], withName: "timestamps")
+        
+        // Create sort document
+        let sortDocument = [["ts":"desc"]]
+        
+        // Define query to run
+        let query = [
+            "Type" : "picture"
+        ]
+        
+        // Run query and get a CDTQResultSet object
+        let result = datastore.find(query, skip: 0, limit: 0, fields: nil, sort: sortDocument)
+        
+        return result
+    }
+    
+/**
+* PUSH and PULL network calls
+*/
+     
+    // Push changes to remote database
+    func pushToRemoteDatabase() {
+        do {
+            //Initialize replicators
+            let replicatorFactory = CDTReplicatorFactory(datastoreManager: manager)
+            let s = "https://"+apiKey+":"+apiPassword+"@"+username+".cloudant.com/"+dbName
+            let remoteDatabaseURL = NSURL(string: s)
+            // Push Replicate from the local to remote database
+            let pushReplication = CDTPushReplication(source: datastore, target: remoteDatabaseURL)
+            self.pushReplicator =  try replicatorFactory.oneWay(pushReplication)
+            pushReplicator.delegate = pushDlgt;
             //Start the replicator
             try pushReplicator.start()
             
@@ -131,9 +269,34 @@ class CloudantSyncClient {
         }
     }
     
+    // Push changes to remote database - BLOCKING
+    func pushToRemoteDatabaseSynchronous() {
+        do {
+            //Initialize replicators
+            let replicatorFactory = CDTReplicatorFactory(datastoreManager: manager)
+            let s = "https://"+apiKey+":"+apiPassword+"@"+username+".cloudant.com/"+dbName
+            let remoteDatabaseURL = NSURL(string: s)
+            // Push Replicate from the local to remote database
+            let pushReplication = CDTPushReplication(source: datastore, target: remoteDatabaseURL)
+            self.pushReplicator =  try replicatorFactory.oneWay(pushReplication)
+            pushReplicator.delegate = pushDlgt;
+            //Start the replicator
+            try pushReplicator.start()
+            var count = 1
+            while(self.pushReplicator.isActive()) {
+                NSThread.sleepForTimeInterval(1.0)
+                print(self.pushReplicator)
+                print(count)
+                count++
+            }
+            
+        } catch {
+            print("Encountered an error: \(error)")
+        }
+    }
+    
     // Pull changes from remote database
-    func pullFromRemoteDatabase()
-    {
+    func pullFromRemoteDatabase() {
         do {
             //Initialize replicators
             let replicatorFactory = CDTReplicatorFactory(datastoreManager: manager)
@@ -151,54 +314,37 @@ class CloudantSyncClient {
         }
     }
     
-    // Create a local profile document given an ID and name.
-    func createProfileDoc(id:String, name:String) -> CDTDocumentRevision {
-        let rev:CDTDocumentRevision = CDTDocumentRevision()
+    // Pull changes from remote database - BLOCKING
+    func pullFromRemoteDatabaseSynchronous() {
         do {
-            // Create a document
-            let rev = CDTDocumentRevision(docId: id)
-            rev.body = ["profile_name":name, "Type":"profile"]
-            // Save the document to the database
-            try datastore.createDocumentFromRevision(rev)
+            //Initialize replicators
+            let replicatorFactory = CDTReplicatorFactory(datastoreManager: manager)
+            let s = "https://"+apiKey+":"+apiPassword+"@"+username+".cloudant.com/"+dbName
+            let remoteDatabaseURL = NSURL(string: s)
+            // Pull Replicate from remote database to the local
+            let pullReplication = CDTPullReplication(source: remoteDatabaseURL, target: datastore)
+            self.pullReplicator =  try replicatorFactory.oneWay(pullReplication)
+            pullReplicator.delegate = pullDlgt;
+            //Start the replicator
+            try pullReplicator.start()
+            var count = 1
+            while(self.pullReplicator.isActive()) {
+                NSThread.sleepForTimeInterval(1.0)
+                print(self.pullReplicator)
+                print(count)
+                count++
+            }
+            
         } catch {
-            print("createProfileDoc: Encountered an error: \(error)")
+            print("Encountered an error: \(error)")
         }
-        return rev
-    }
-    
-    // Delete a local profile document given an ID.
-    func deleteProfileDoc(id:String) -> Void{
-        do {
-            // Save the document to the database
-            try datastore.deleteDocumentWithId(id)
-        } catch {
-            print("createProfileDoc: Encountered an error: \(error)")
-        }
-    }
-    
-    // Create a local picture document given an display name, file name, URL, owner.
-    func createPictureDoc(displayName:String, fileName:String, url:String, ownerID:String) -> CDTDocumentRevision {
-        let rev:CDTDocumentRevision = CDTDocumentRevision()
-        do {
-            // Create a document
-            let rev = CDTDocumentRevision()
-            rev.body = ["display_name":displayName,
-                        "file_name":fileName,
-                        "URL":url,
-                        "ownerID":ownerID,
-                        "Type":"picture"]
-            // Save the document to the database
-            try datastore.createDocumentFromRevision(rev)
-        } catch {
-            print("createProfileDoc: Encountered an error: \(error)")
-        }
-        return rev
     }
 }
 
 /**
 * Delegates for Push and Pull asynchronous tasks.
 */
+
 class pushDelegate:NSObject, CDTReplicatorDelegate {
     /**
      * Called when the replicator changes state.
@@ -220,14 +366,33 @@ class pushDelegate:NSObject, CDTReplicatorDelegate {
      */
     func replicatorDidComplete(replicator:CDTReplicator) {
         print("PUSH Replicator completed.")
+        //check if cameraDataManager != nil, then stop loading
+        if let _ = CameraDataManager.SharedInstance.confirmationView {
+            dispatch_async(dispatch_get_main_queue()) { //dismiss the camera confirmation view on the main thread
+                CameraDataManager.SharedInstance.dismissCameraConfirmation()
+            }
+            
+        }
     }
     
     /**
      * Called when a state transition to ERROR is completed.
      */
     func replicatorDidError(replicator:CDTReplicator, info:NSError) {
-        print("PUSH Replicator ERROR: ")
-        print(info)
+        print("PUSH Replicator ERROR: \(info)")
+        //show error here -- check whether to show it on tabVC or confirmationView (depending on if confirmationView is nil or not)
+        if let _ = CameraDataManager.SharedInstance.confirmationView {
+            dispatch_async(dispatch_get_main_queue()) {
+                CameraDataManager.SharedInstance.showCloudantErrorAlert()
+            }
+            
+        } else { //show error when trying to push when creating
+            dispatch_async(dispatch_get_main_queue()) {
+                let tabVC = Utils.rootViewController() as! TabBarViewController
+                tabVC.showCloudantPushingErrorAlert()
+            }
+            
+        }
     }
 }
 
@@ -262,13 +427,8 @@ class pullDelegate:NSObject, CDTReplicatorDelegate {
     func replicatorDidError(replicator:CDTReplicator, info:NSError) {
         print("PULL Replicator ERROR: \(info)")
         let tabVC = Utils.rootViewController() as! TabBarViewController
-        tabVC.showCloudantErrorAlert()
-        
+        tabVC.showCloudantPullingErrorAlert()
     }
-    
-    
-    
-    
     
 }
 
