@@ -159,7 +159,7 @@ class CameraDataManager: NSObject {
                 print("imageURL: \(imageURL)")
                 print("creating cloudant picture document...")
                 self.lastPhotoTakenURL = imageURL
-                CloudantSyncClient.SharedInstance.createPictureDoc(FacebookDataManager.SharedInstance.fbUserDisplayName!, fileName: self.lastPhotoTakenName, url: self.lastPhotoTakenURL, ownerID: FacebookDataManager.SharedInstance.fbUniqueUserID!, width: "400", height: "600") //todo: need to find actual width and height, need parameter for picture title?
+                CloudantSyncClient.SharedInstance.createPictureDoc(self.lastPhotoTakenCaption, fileName: self.lastPhotoTakenName, url: self.lastPhotoTakenURL, ownerID: FacebookDataManager.SharedInstance.fbUniqueUserID!, width: "400", height: "600") //todo: need to find actual width and height, need parameter for picture title?
             }, onFailure: { (error) in
                 self.confirmationView.loadingIndicator.stopAnimating()
                 print("upload to object storage failed!")
