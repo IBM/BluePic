@@ -367,9 +367,8 @@ class pushDelegate:NSObject, CDTReplicatorDelegate {
     func replicatorDidComplete(replicator:CDTReplicator) {
         print("PUSH Replicator completed.")
         //check if cameraDataManager != nil, then stop loading
-        if let confirmationView = CameraDataManager.SharedInstance.confirmationView {
-            dispatch_async(dispatch_get_main_queue()) { //dismiss the view in the main thread
-                confirmationView.loadingIndicator.stopAnimating()
+        if let _ = CameraDataManager.SharedInstance.confirmationView {
+            dispatch_async(dispatch_get_main_queue()) { //dismiss the camera confirmation view on the main thread
                 CameraDataManager.SharedInstance.dismissCameraConfirmation()
             }
             
@@ -381,11 +380,9 @@ class pushDelegate:NSObject, CDTReplicatorDelegate {
      */
     func replicatorDidError(replicator:CDTReplicator, info:NSError) {
         print("PUSH Replicator ERROR: \(info)")
-        //show error here -- check whether to show it on tabVC or confirmationView
-        if let confirmationView = CameraDataManager.SharedInstance.confirmationView {
+        //show error here -- check whether to show it on tabVC or confirmationView (depending on if confirmationView is nil or not)
+        if let _ = CameraDataManager.SharedInstance.confirmationView {
             dispatch_async(dispatch_get_main_queue()) {
-                confirmationView.userInteractionEnabled = true
-                confirmationView.loadingIndicator.stopAnimating()
                 CameraDataManager.SharedInstance.showCloudantErrorAlert()
             }
             

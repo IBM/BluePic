@@ -129,11 +129,13 @@ class CameraDataManager: NSObject {
     
     
     func dismissCameraConfirmation() {
+        self.confirmationView.loadingIndicator.stopAnimating()
         self.confirmationView.endEditing(true) //dismiss keyboard first if shown
         UIView.animateWithDuration(0.4, animations: { _ in
                 self.confirmationView.frame = CGRect(x: 0, y: self.tabVC.view.frame.height, width: self.tabVC.view.frame.width, height: self.tabVC.view.frame.height)
             }, completion: { _ in
                 self.destroyConfirmationView()
+                self.tabVC.view.userInteractionEnabled = true
                 print("picker dismissed from confirmation view.")
         })
         
@@ -145,6 +147,7 @@ class CameraDataManager: NSObject {
         self.lastPhotoTakenCaption = self.confirmationView.titleTextField.text //save caption text
         self.confirmationView.endEditing(true) //dismiss keyboard first if shown
         self.confirmationView.userInteractionEnabled = false
+        self.tabVC.view.userInteractionEnabled = false
         self.confirmationView.loadingIndicator.startAnimating()
         self.confirmationView.cancelButton.hidden = true
         self.confirmationView.postButton.hidden = true
@@ -182,11 +185,17 @@ class CameraDataManager: NSObject {
      Method to show the error alert and asks user if they would like to retry pushing to cloudant
      */
     func showCloudantErrorAlert() {
+        //re-enable UI
+        self.confirmationView.userInteractionEnabled = true
+        self.tabVC.view.userInteractionEnabled = true
+        self.confirmationView.loadingIndicator.stopAnimating()
+        self.confirmationView.cancelButton.hidden = false
+        self.confirmationView.postButton.hidden = false
         
         let alert = UIAlertController(title: nil, message: NSLocalizedString("Oops! An error occurred with Cloudant.", comment: ""), preferredStyle: UIAlertControllerStyle.Alert)
         
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Try Again", comment: ""), style: .Default, handler: { (action: UIAlertAction!) in
-            self.postPhoto()
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .Cancel, handler: { (action: UIAlertAction!) in
+
         }))
         
         dispatch_async(dispatch_get_main_queue()) {
@@ -199,11 +208,17 @@ class CameraDataManager: NSObject {
      Method to show the error alert and asks user if they would like to retry pushing to object storage
      */
     func showObjectStorageErrorAlert() {
+        //re-enable UI
+        self.confirmationView.userInteractionEnabled = true
+        self.tabVC.view.userInteractionEnabled = true
+        self.confirmationView.loadingIndicator.stopAnimating()
+        self.confirmationView.cancelButton.hidden = false
+        self.confirmationView.postButton.hidden = false
         
         let alert = UIAlertController(title: nil, message: NSLocalizedString("Oops! An error occurred with Object Storage.", comment: ""), preferredStyle: UIAlertControllerStyle.Alert)
         
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Try Again", comment: ""), style: .Default, handler: { (action: UIAlertAction!) in
-            self.postPhoto()
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .Cancel, handler: { (action: UIAlertAction!) in
+
         }))
         
         dispatch_async(dispatch_get_main_queue()) {
@@ -234,7 +249,7 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
         //show image on confirmationView, save a copy
         let takenImage = info[UIImagePickerControllerOriginalImage] as! UIImage
         self.confirmationView.photoImageView.image = takenImage
-        let photoNSData = takenImage.lowQualityJPEGNSData
+        let photoNSData = takenImage.lowestQualityJPEGNSData
         self.lastPhotoTaken = UIImage(data: photoNSData)
         
         //save name of image as current date and time
