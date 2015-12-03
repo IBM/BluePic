@@ -163,12 +163,32 @@ class CameraDataManager: NSObject {
                 CloudantSyncClient.SharedInstance.createPictureDoc(self.lastPhotoTakenCaption, fileName: self.lastPhotoTakenName, url: self.lastPhotoTakenURL, ownerID: FacebookDataManager.SharedInstance.fbUniqueUserID!, width: "400", height: "400") //todo: need to find actual width and height, need parameter for picture title?
                 CloudantSyncClient.SharedInstance.pushToRemoteDatabase()
             }, onFailure: { (error) in
-                self.confirmationView.loadingIndicator.stopAnimating()
                 print("upload to object storage failed!")
                 print("error: \(error)")
+                self.confirmationView.loadingIndicator.stopAnimating()
                 self.showObjectStorageErrorAlert()
         })
  
+    }
+    
+    /**
+     For test method for pre-populating database with images
+     */
+    func postPhotoForTests(photo: UIImage!, caption: String!, photoName: String!, FBUserID: String!) {
+        print("uploading photo to object storage...")
+        //push to object storage, then on success push to cloudant sync
+        ObjectStorageDataManager.SharedInstance.objectStorageClient.uploadImage(FBUserID, imageName: photoName, image: photo,
+            onSuccess: { (imageURL: String) in
+                print("upload to object storage succeeded.")
+                print("imageURL: \(imageURL)")
+                print("creating cloudant picture document...")
+                CloudantSyncClient.SharedInstance.createPictureDoc(caption, fileName: photoName, url: imageURL, ownerID: FBUserID, width: "400", height: "400") //todo: need to find actual width and height, need parameter for picture title?
+                CloudantSyncClient.SharedInstance.pushToRemoteDatabase()
+            }, onFailure: { (error) in
+                print("upload to object storage failed!")
+                print("error: \(error)")
+        })
+        
     }
     
     
