@@ -193,7 +193,6 @@ class CloudantSyncClient {
                 try datastore.createDocumentFromRevision(rev)
                 print("Created picture doc with display name: "+displayName)
                 print("pushing to cloudant...")
-                self.pushToRemoteDatabase()
             } catch {
                 print("createPictureDoc: Encountered an error: \(error)")
             }

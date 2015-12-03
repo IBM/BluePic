@@ -32,6 +32,7 @@
 		346F947C1C0F868C004999A8 /* CameraDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 346F947B1C0F868C004999A8 /* CameraDataManager.swift */; };
 		346F94801C0F9211004999A8 /* CameraConfirmationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 346F947F1C0F9211004999A8 /* CameraConfirmationView.xib */; };
 		346F94821C0F9225004999A8 /* CameraConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 346F94811C0F9225004999A8 /* CameraConfirmationView.swift */; };
+		346F94841C10AA32004999A8 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 346F94831C10AA32004999A8 /* ImageIO.framework */; };
 		3474728E1BFA8C6A0018B7F6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3474728D1BFA8C6A0018B7F6 /* AppDelegate.swift */; };
 		347472951BFA8C6A0018B7F6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 347472941BFA8C6A0018B7F6 /* Assets.xcassets */; };
 		347472981BFA8C6A0018B7F6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 347472961BFA8C6A0018B7F6 /* LaunchScreen.storyboard */; };
@@ -131,6 +132,7 @@
 		346F947B1C0F868C004999A8 /* CameraDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraDataManager.swift; sourceTree = "<group>"; };
 		346F947F1C0F9211004999A8 /* CameraConfirmationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CameraConfirmationView.xib; sourceTree = "<group>"; };
 		346F94811C0F9225004999A8 /* CameraConfirmationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraConfirmationView.swift; sourceTree = "<group>"; };
+		346F94831C10AA32004999A8 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		3474728A1BFA8C6A0018B7F6 /* BluePic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BluePic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3474728D1BFA8C6A0018B7F6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		347472941BFA8C6A0018B7F6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -179,6 +181,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				346F94841C10AA32004999A8 /* ImageIO.framework in Frameworks */,
 				FC315DE6D7B8C71B03B95C18 /* libPods.a in Frameworks */,
 				34C809461BFCB10100C48004 /* AlamofireObjectMapper.framework in Frameworks */,
 				34C809481BFCB10300C48004 /* ObjectMapper.framework in Frameworks */,
@@ -395,6 +398,7 @@
 		C93A0D59BDE755BE5A1209FC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				346F94831C10AA32004999A8 /* ImageIO.framework */,
 				34C8093D1BFCB0C800C48004 /* Alamofire.framework */,
 				34C8093E1BFCB0C800C48004 /* AlamofireObjectMapper.framework */,
 				34C8093F1BFCB0C800C48004 /* ObjectMapper.framework */,
