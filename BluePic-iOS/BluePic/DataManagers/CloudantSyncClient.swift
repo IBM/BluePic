@@ -329,12 +329,13 @@ class CloudantSyncClient {
             //Start the replicator
             try pullReplicator.start()
             var count = 1
-            while(self.pullReplicator.isActive()) {
-                NSThread.sleepForTimeInterval(1.0)
+            repeat {
                 print(self.pullReplicator)
                 print(count)
                 count++
-            }
+                NSThread.sleepForTimeInterval(1.0)
+            } while(self.pullReplicator.isActive())
+            print("replicator pulled \(pullReplicator.changesProcessed) documents")
             
         } catch {
             print("Encountered an error: \(error)")
