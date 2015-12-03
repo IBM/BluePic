@@ -52,7 +52,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="667"/>
                                 <animations/>
                             </imageView>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="g2J-LJ-jge">
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="g2J-LJ-jge">
                                 <rect key="frame" x="291" y="614" width="20" height="20"/>
                                 <animations/>
                                 <constraints>

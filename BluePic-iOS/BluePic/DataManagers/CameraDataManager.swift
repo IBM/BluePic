@@ -31,6 +31,10 @@ class CameraDataManager: NSObject {
     
     var confirmationView: CameraConfirmationView!
     
+    var lastPhotoTaken: UIImage!
+    
+    var lastPhotoTakenName: String!
+    
     
     
     
@@ -125,7 +129,7 @@ class CameraDataManager: NSObject {
                 self.confirmationView.frame = CGRect(x: 0, y: self.tabVC.view.frame.height, width: self.tabVC.view.frame.width, height: self.tabVC.view.frame.height)
             }, completion: { _ in
                 self.destroyConfirmationView()
-                print("picker canceled from confirmation view.")
+                print("picker dismissed from confirmation view.")
         })
         
         
@@ -133,8 +137,25 @@ class CameraDataManager: NSObject {
     
     
     func postPhoto() {
-        
+        self.confirmationView.endEditing(true) //dismiss keyboard first if shown
+        self.confirmationView.userInteractionEnabled = false
+        self.confirmationView.loadingIndicator.startAnimating()
+        self.confirmationView.cancelButton.hidden = true
+        self.confirmationView.postButton.hidden = true
+        print("uploading photo to object storage...")
         //push to object storage, then on success push to cloudant sync
+        ObjectStorageDataManager.SharedInstance.objectStorageClient.uploadImage(FacebookDataManager.SharedInstance.fbUniqueUserID!, imageName: self.lastPhotoTakenName, image: self.lastPhotoTaken,
+            onSuccess: { (imageURL: String) in
+                self.confirmationView.loadingIndicator.stopAnimating()
+                print("upload to object storage succeeded.")
+                print("imageURL: \(imageURL)")
+            }, onFailure: { (error) in
+                self.confirmationView.loadingIndicator.stopAnimating()
+                print("upload to object storage failed!")
+                print("error: \(error)")
+        })
+        
+        
         
         
     }
@@ -165,7 +186,18 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject])
     {
         picker.dismissViewControllerAnimated(true, completion: nil)
-        self.confirmationView.photoImageView.image=info[UIImagePickerControllerOriginalImage] as? UIImage
+        
+        //save image
+        let takenImage = info[UIImagePickerControllerOriginalImage] as! UIImage
+        self.confirmationView.photoImageView.image = takenImage
+        let photoNSData = takenImage.lowQualityJPEGNSData
+        self.lastPhotoTaken = UIImage(data: photoNSData)
+        
+        //save name of image as current date and time
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "MM-dd-yyyy_HHmmss"
+        let todaysDate = NSDate()
+        self.lastPhotoTakenName = dateFormatter.stringFromDate(todaysDate) + ".JPG"
     }
     func imagePickerControllerDidCancel(picker: UIImagePickerController)
     {

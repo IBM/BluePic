@@ -8,6 +8,16 @@ import AVFoundation
 import UIKit
 
 extension UIImage{
+    
+    var uncompressedPNGData: NSData      { return UIImagePNGRepresentation(self)!        }
+    var highestQualityJPEGNSData: NSData { return UIImageJPEGRepresentation(self, 1.0)!  }
+    var highQualityJPEGNSData: NSData    { return UIImageJPEGRepresentation(self, 0.75)! }
+    var mediumQualityJPEGNSData: NSData  { return UIImageJPEGRepresentation(self, 0.5)!  }
+    var lowQualityJPEGNSData: NSData     { return UIImageJPEGRepresentation(self, 0.25)! }
+    var lowestQualityJPEGNSData:NSData   { return UIImageJPEGRepresentation(self, 0.0)!  }
+    
+    
+    
     func croppedImage(bound : CGRect) -> UIImage
     {
         let scaledBounds : CGRect = CGRectMake(bound.origin.x * scale, bound.origin.y * scale, bound.size.width * scale, bound.size.height * scale)
@@ -15,6 +25,9 @@ extension UIImage{
         let croppedImage : UIImage = UIImage(CGImage: imageRef!, scale: scale, orientation: UIImageOrientation.Up)
         return croppedImage
     }
+    
+    
+
     
     /**
     Creates an image from a video. Created with help from http://stackoverflow.com/questions/8906004/thumbnail-image-of-video/8906104#8906104

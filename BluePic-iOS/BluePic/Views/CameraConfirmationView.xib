@@ -62,6 +62,15 @@
                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                 </button>
+                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="eEg-If-sLb">
+                    <rect key="frame" x="290" y="542" width="20" height="20"/>
+                    <animations/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="20" id="IyY-7m-6aq"/>
+                        <constraint firstAttribute="width" constant="20" id="iuT-Zz-Nky"/>
+                    </constraints>
+                    <color key="color" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </activityIndicatorView>
             </subviews>
             <animations/>
             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -70,6 +79,7 @@
                 <constraint firstAttribute="bottom" secondItem="P01-uK-Cyb" secondAttribute="bottom" constant="33" id="8wc-pY-dpg"/>
                 <constraint firstAttribute="bottom" secondItem="cQr-Kg-s1V" secondAttribute="bottom" constant="33" id="ApX-Bm-qoy"/>
                 <constraint firstItem="Pfc-My-QgD" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" id="Bb8-kj-nB4"/>
+                <constraint firstItem="eEg-If-sLb" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="IiO-yv-4Ll"/>
                 <constraint firstItem="Pfc-My-QgD" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="44" id="LEo-Zc-RiJ"/>
                 <constraint firstAttribute="bottom" secondItem="Pfc-My-QgD" secondAttribute="bottom" constant="127" id="MDE-dG-oMM"/>
                 <constraint firstItem="Pfc-My-QgD" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="MMq-2i-3tV"/>
@@ -78,6 +88,7 @@
                 <constraint firstAttribute="trailing" secondItem="P01-uK-Cyb" secondAttribute="trailing" constant="20" id="lg4-fu-vKJ"/>
                 <constraint firstItem="uqc-ek-PMi" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="mIL-ZP-4q3"/>
                 <constraint firstItem="uqc-ek-PMi" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" id="pwy-tW-WWp"/>
+                <constraint firstAttribute="bottom" secondItem="eEg-If-sLb" secondAttribute="bottom" constant="38" id="qig-wf-nXd"/>
                 <constraint firstItem="uqc-ek-PMi" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="uUp-r3-7Of"/>
             </constraints>
             <variation key="default">
@@ -88,6 +99,7 @@
             </variation>
             <connections>
                 <outlet property="cancelButton" destination="cQr-Kg-s1V" id="bif-6e-6eG"/>
+                <outlet property="loadingIndicator" destination="eEg-If-sLb" id="j5Y-33-0FL"/>
                 <outlet property="photoImageView" destination="Pfc-My-QgD" id="Hmy-DB-2xe"/>
                 <outlet property="postButton" destination="P01-uK-Cyb" id="0Di-DJ-gul"/>
                 <outlet property="titleTextField" destination="uqc-ek-PMi" id="jK3-js-m79"/>

@@ -18,6 +18,9 @@ class CameraConfirmationView: UIView, UITextFieldDelegate {
     
     @IBOutlet weak var titleTextField: UITextField!
     
+    @IBOutlet weak var loadingIndicator: UIActivityIndicatorView!
+    
+    
     var originalFrame: CGRect!
     var originalSize: CGSize!
     /*
