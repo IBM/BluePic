@@ -192,6 +192,8 @@ class CloudantSyncClient {
                 // Save the document to the database
                 try datastore.createDocumentFromRevision(rev)
                 print("Created picture doc with display name: "+displayName)
+                print("pushing to cloudant...")
+                self.pushToRemoteDatabase()
             } catch {
                 print("createPictureDoc: Encountered an error: \(error)")
             }
@@ -365,6 +367,13 @@ class pushDelegate:NSObject, CDTReplicatorDelegate {
     func replicatorDidComplete(replicator:CDTReplicator) {
         print("PUSH Replicator completed.")
         //check if cameraDataManager != nil, then stop loading
+        if let confirmationView = CameraDataManager.SharedInstance.confirmationView {
+            dispatch_async(dispatch_get_main_queue()) { //dismiss the view in the main thread
+                confirmationView.loadingIndicator.stopAnimating()
+                CameraDataManager.SharedInstance.dismissCameraConfirmation()
+            }
+            
+        }
     }
     
     /**
@@ -372,7 +381,7 @@ class pushDelegate:NSObject, CDTReplicatorDelegate {
      */
     func replicatorDidError(replicator:CDTReplicator, info:NSError) {
         print("PUSH Replicator ERROR: \(info)")
-        //show error here
+        //show error here -- check whether to show it on tabVC or confirmationView
     }
 }
 

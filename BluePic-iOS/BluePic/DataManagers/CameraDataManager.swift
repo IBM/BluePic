@@ -35,6 +35,8 @@ class CameraDataManager: NSObject {
     
     var lastPhotoTakenName: String!
     
+    var lastPhotoTakenURL: String!
+    
     
     
     
@@ -146,19 +148,21 @@ class CameraDataManager: NSObject {
         //push to object storage, then on success push to cloudant sync
         ObjectStorageDataManager.SharedInstance.objectStorageClient.uploadImage(FacebookDataManager.SharedInstance.fbUniqueUserID!, imageName: self.lastPhotoTakenName, image: self.lastPhotoTaken,
             onSuccess: { (imageURL: String) in
-                self.confirmationView.loadingIndicator.stopAnimating()
+                self.lastPhotoTakenURL = imageURL
                 print("upload to object storage succeeded.")
                 print("imageURL: \(imageURL)")
+                print("creating cloudant picture document...")
+                CloudantSyncClient.SharedInstance.createPictureDoc(FacebookDataManager.SharedInstance.fbUserDisplayName!, fileName: self.lastPhotoTakenName, url: self.lastPhotoTakenURL, ownerID: FacebookDataManager.SharedInstance.fbUniqueUserID!, width: "400", height: "600") //todo: need to find actual width and height
             }, onFailure: { (error) in
                 self.confirmationView.loadingIndicator.stopAnimating()
                 print("upload to object storage failed!")
                 print("error: \(error)")
         })
-        
-        
-        
-        
+ 
     }
+    
+    
+    
     
     func destroyConfirmationView() {
         self.confirmationView.removeKeyboardObservers()
