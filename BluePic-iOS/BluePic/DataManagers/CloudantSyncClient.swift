@@ -382,6 +382,20 @@ class pushDelegate:NSObject, CDTReplicatorDelegate {
     func replicatorDidError(replicator:CDTReplicator, info:NSError) {
         print("PUSH Replicator ERROR: \(info)")
         //show error here -- check whether to show it on tabVC or confirmationView
+        if let confirmationView = CameraDataManager.SharedInstance.confirmationView {
+            dispatch_async(dispatch_get_main_queue()) {
+                confirmationView.userInteractionEnabled = true
+                confirmationView.loadingIndicator.stopAnimating()
+                CameraDataManager.SharedInstance.showCloudantErrorAlert()
+            }
+            
+        } else { //show error when trying to push when creating
+            dispatch_async(dispatch_get_main_queue()) {
+                let tabVC = Utils.rootViewController() as! TabBarViewController
+                tabVC.showCloudantPushingErrorAlert()
+            }
+            
+        }
     }
 }
 
@@ -416,7 +430,7 @@ class pullDelegate:NSObject, CDTReplicatorDelegate {
     func replicatorDidError(replicator:CDTReplicator, info:NSError) {
         print("PULL Replicator ERROR: \(info)")
         let tabVC = Utils.rootViewController() as! TabBarViewController
-        tabVC.showCloudantErrorAlert()
+        tabVC.showCloudantPullingErrorAlert()
     }
     
 }

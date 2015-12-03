@@ -37,6 +37,9 @@ class CameraDataManager: NSObject {
     
     var lastPhotoTakenURL: String!
     
+    var lastPhotoTakenCaption: String!
+    
+    
     
     
     
@@ -139,6 +142,7 @@ class CameraDataManager: NSObject {
     
     
     func postPhoto() {
+        self.lastPhotoTakenCaption = self.confirmationView.titleTextField.text //save caption text
         self.confirmationView.endEditing(true) //dismiss keyboard first if shown
         self.confirmationView.userInteractionEnabled = false
         self.confirmationView.loadingIndicator.startAnimating()
@@ -148,15 +152,16 @@ class CameraDataManager: NSObject {
         //push to object storage, then on success push to cloudant sync
         ObjectStorageDataManager.SharedInstance.objectStorageClient.uploadImage(FacebookDataManager.SharedInstance.fbUniqueUserID!, imageName: self.lastPhotoTakenName, image: self.lastPhotoTaken,
             onSuccess: { (imageURL: String) in
-                self.lastPhotoTakenURL = imageURL
                 print("upload to object storage succeeded.")
                 print("imageURL: \(imageURL)")
                 print("creating cloudant picture document...")
-                CloudantSyncClient.SharedInstance.createPictureDoc(FacebookDataManager.SharedInstance.fbUserDisplayName!, fileName: self.lastPhotoTakenName, url: self.lastPhotoTakenURL, ownerID: FacebookDataManager.SharedInstance.fbUniqueUserID!, width: "400", height: "600") //todo: need to find actual width and height
+                self.lastPhotoTakenURL = imageURL
+                CloudantSyncClient.SharedInstance.createPictureDoc(FacebookDataManager.SharedInstance.fbUserDisplayName!, fileName: self.lastPhotoTakenName, url: self.lastPhotoTakenURL, ownerID: FacebookDataManager.SharedInstance.fbUniqueUserID!, width: "400", height: "600") //todo: need to find actual width and height, need parameter for picture title?
             }, onFailure: { (error) in
                 self.confirmationView.loadingIndicator.stopAnimating()
                 print("upload to object storage failed!")
                 print("error: \(error)")
+                self.showObjectStorageErrorAlert()
         })
  
     }
@@ -169,6 +174,41 @@ class CameraDataManager: NSObject {
         self.confirmationView.removeFromSuperview()
         self.confirmationView = nil
         
+    }
+    
+    
+    
+    /**
+     Method to show the error alert and asks user if they would like to retry pushing to cloudant
+     */
+    func showCloudantErrorAlert() {
+        
+        let alert = UIAlertController(title: nil, message: NSLocalizedString("Oops! An error occurred with Cloudant.", comment: ""), preferredStyle: UIAlertControllerStyle.Alert)
+        
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Try Again", comment: ""), style: .Default, handler: { (action: UIAlertAction!) in
+            self.postPhoto()
+        }))
+        
+        dispatch_async(dispatch_get_main_queue()) {
+            self.tabVC.presentViewController(alert, animated: true, completion: nil)
+        }
+    }
+    
+    
+    /**
+     Method to show the error alert and asks user if they would like to retry pushing to object storage
+     */
+    func showObjectStorageErrorAlert() {
+        
+        let alert = UIAlertController(title: nil, message: NSLocalizedString("Oops! An error occurred with Object Storage.", comment: ""), preferredStyle: UIAlertControllerStyle.Alert)
+        
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Try Again", comment: ""), style: .Default, handler: { (action: UIAlertAction!) in
+            self.postPhoto()
+        }))
+        
+        dispatch_async(dispatch_get_main_queue()) {
+            self.tabVC.presentViewController(alert, animated: true, completion: nil)
+        }
     }
     
 
@@ -191,7 +231,7 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
     {
         picker.dismissViewControllerAnimated(true, completion: nil)
         
-        //save image
+        //show image on confirmationView, save a copy
         let takenImage = info[UIImagePickerControllerOriginalImage] as! UIImage
         self.confirmationView.photoImageView.image = takenImage
         let photoNSData = takenImage.lowQualityJPEGNSData

@@ -21,8 +21,8 @@ class CameraConfirmationView: UIView, UITextFieldDelegate {
     @IBOutlet weak var loadingIndicator: UIActivityIndicatorView!
     
     
+    
     var originalFrame: CGRect!
-    var originalSize: CGSize!
     /*
     // Only override drawRect: if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.
