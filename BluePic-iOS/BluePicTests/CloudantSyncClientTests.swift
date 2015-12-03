@@ -16,7 +16,7 @@ class CloudantSyncClientTests: XCTestCase {
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
-        xctExpectation = self.expectationWithDescription("Asynchronous request about to occur...")
+        CloudantSyncClient.SharedInstance.dbName = "tests_db"
     }
     
     override func tearDown() {
@@ -145,7 +145,8 @@ class CloudantSyncClientTests: XCTestCase {
     }
     
     // Run this test to upload an image to object storage, create the picture document locally, and push that document to cloudant.
-    func testPrepolpulate() {
+    func testPrePopulate() {
+        xctExpectation = self.expectationWithDescription("Asynchronous request about to occur...")
         // Create fake user
         let id = "3958"
         let name = "Maureen George"
@@ -161,8 +162,8 @@ class CloudantSyncClientTests: XCTestCase {
                     XCTAssertNotNil(name)
                     let imageName = "puppy.png"
                     let image = UIImage(named : "puppy")
-                    let width:String = String(image?.size.width)
-                    let height:String = String(image?.size.height)
+                    let width:String = (image?.size.width)!.description
+                    let height:String = (image?.size.height)!.description
                     XCTAssertNotNil(image)
                     // Upload Image
                     ObjectStorageDataManager.SharedInstance.objectStorageClient.uploadImage(id, imageName: imageName, image: image!,
@@ -187,9 +188,11 @@ class CloudantSyncClientTests: XCTestCase {
             }, onFailure: {(error) in
                 print("error authenticating with object storage: \(error)")
         })
+        self.waitForExpectationsWithTimeout(50.0, handler:nil)
         CloudantSyncClient.SharedInstance.deletePicturesOfUser(id)
         CloudantSyncClient.SharedInstance.deleteDoc(id)
-        self.waitForExpectationsWithTimeout(50.0, handler:nil)
+        // Push document to remote Cloudant database
+        CloudantSyncClient.SharedInstance.pushToRemoteDatabaseSynchronous()
     }
     
     func testPerformanceExample() {
