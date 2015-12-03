@@ -281,14 +281,15 @@ class CloudantSyncClient {
             self.pushReplicator =  try replicatorFactory.oneWay(pushReplication)
             pushReplicator.delegate = pushDlgt;
             //Start the replicator
-            try pushReplicator.start()
+            try self.pushReplicator.start()
             var count = 1
-            while(self.pushReplicator.isActive()) {
-                NSThread.sleepForTimeInterval(1.0)
+            repeat {
                 print(self.pushReplicator)
                 print(count)
                 count++
-            }
+                NSThread.sleepForTimeInterval(1.0)
+            } while(self.pushReplicator.isActive())
+            print("replicator pushed \(pushReplicator.changesProcessed) documents")
             
         } catch {
             print("Encountered an error: \(error)")
