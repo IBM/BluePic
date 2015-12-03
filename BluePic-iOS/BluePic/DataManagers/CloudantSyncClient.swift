@@ -193,7 +193,6 @@ class CloudantSyncClient {
                 try datastore.createDocumentFromRevision(rev)
                 print("Created picture doc with display name: "+displayName)
                 print("pushing to cloudant...")
-                self.pushToRemoteDatabase()
             } catch {
                 print("createPictureDoc: Encountered an error: \(error)")
             }
@@ -390,8 +389,9 @@ class pushDelegate:NSObject, CDTReplicatorDelegate {
             
         } else { //show error when trying to push when creating
             dispatch_async(dispatch_get_main_queue()) {
-                let tabVC = Utils.rootViewController() as! TabBarViewController
-                tabVC.showCloudantPushingErrorAlert()
+                if let tabVC = Utils.rootViewController() as? TabBarViewController {
+                    tabVC.showCloudantPushingErrorAlert()
+                }
             }
             
         }
