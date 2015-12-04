@@ -19,13 +19,14 @@ class FeedViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupCollectionView()
         setupViewModel()
-        
-    
+       
     }
     
     override func viewDidAppear(animated: Bool) {
         
+
     }
 
     override func didReceiveMemoryWarning() {
@@ -47,6 +48,7 @@ class FeedViewController: UIViewController {
     
     
     func reloadDataInCollectionView(){
+        
         collectionView.reloadData()
     }
     
@@ -85,9 +87,26 @@ extension FeedViewController: UICollectionViewDataSource {
 }
 
 
-extension FeedViewController:UICollectionViewDelegate {
+extension FeedViewController: UICollectionViewDelegate {
+    
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    
+            print(indexPath.row)
+        
+        
+    }
     
     
-    
-    
+}
+
+
+extension FeedViewController: UICollectionViewDelegateFlowLayout {
+
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+
+        return viewModel.sizeForItemAtIndexPath(indexPath, collectionView: collectionView)
+    }
+
+
+
 }
