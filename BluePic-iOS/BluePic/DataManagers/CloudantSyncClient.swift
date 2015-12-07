@@ -37,8 +37,8 @@ class CloudantSyncClient {
     var username:String // Username from BlueMix service credentials section.
     var apiKey:String // API Key, must have replication permissions for specified database.
     var apiPassword:String // API password for the Key.
-    var pushDlgt:pushDelegate?
-    var pullDlgt:pullDelegate?
+    var pushDlgt:pushDelegate
+    var pullDlgt:pullDelegate
     var manager:CDTDatastoreManager!
     var datastore:CDTDatastore!
     var pushReplicator:CDTReplicator!
@@ -52,6 +52,8 @@ class CloudantSyncClient {
         self.apiPassword = apiPassword
         self.dbName = dbName
         self.username = username
+        self.pushDlgt = pushDelegate()
+        self.pullDlgt = pullDelegate()
         do {
             // Create local datastore
             let fileManager = NSFileManager.defaultManager()
@@ -182,8 +184,6 @@ class CloudantSyncClient {
                 // Save the document to the database
                 try datastore.createDocumentFromRevision(rev)
                 print("Created picture doc with display name: "+displayName)
-                print("pushing to cloudant...")
-                self.pushToRemoteDatabase()
                 return rev
             } catch {
                 print("createPictureDoc: Encountered an error: \(error)")
@@ -236,6 +236,34 @@ class CloudantSyncClient {
         
         return result
     }
+    
+    
+    /**
+     Method that returns all picture objects by converting the picture docs to picture objects
+     
+     - returns: [Picture]
+     */
+    func getAllPictureObjects() -> [Picture] {
+        
+       let result = self.getAllPictureDocs()
+        
+        var pictureObjects = [Picture]()
+        
+        result.enumerateObjectsUsingBlock({ (rev, idx, stop) -> Void in
+            let newPicture = Picture()
+            
+            newPicture.url = rev.body["URL"] as? String
+            newPicture.displayName = rev.body["display_name"] as? String
+            newPicture.timeStamp = rev.body["ts"] as? String
+            newPicture.ownerName = rev.body["ownerName"] as? String
+            
+            pictureObjects.append(newPicture)
+        })
+
+        return pictureObjects
+    }
+    
+    
     
 /**
 * PUSH and PULL network calls

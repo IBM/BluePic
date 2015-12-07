@@ -33,7 +33,7 @@ class CloudantSyncClientTests: XCTestCase {
         let exists = CloudantSyncClient.SharedInstance.doesExist(id)
         XCTAssertEqual(exists, true)
         let doc = CloudantSyncClient.SharedInstance.getDoc(id)
-        let docName:String = doc.body["profile_name"]! as! String
+        let docName:String = doc!.body["profile_name"]! as! String
         XCTAssertEqual(docName, name)
         CloudantSyncClient.SharedInstance.deleteDoc(id)
     }
