@@ -29,12 +29,17 @@ class CloudantSyncClientTests: XCTestCase {
         let id = "4876"
         let name = "Ellen Harrison"
         
-        CloudantSyncClient.SharedInstance.createProfileDoc(id, name: name)
+        let created = CloudantSyncClient.SharedInstance.createProfileDoc(id, name: name)
+        XCTAssertNotNil(created)
+        // Check if doc with provided id exists
         let exists = CloudantSyncClient.SharedInstance.doesExist(id)
         XCTAssertEqual(exists, true)
         let doc = CloudantSyncClient.SharedInstance.getDoc(id)
-        let docName:String = doc!.body["profile_name"]! as! String
+        XCTAssertNotNil(doc)
+        // Make sure that profile names are the same
+        let docName:String = CloudantSyncClient.SharedInstance.getProfileName(id)
         XCTAssertEqual(docName, name)
+        // Delete doc
         CloudantSyncClient.SharedInstance.deleteDoc(id)
     }
     
@@ -43,32 +48,39 @@ class CloudantSyncClientTests: XCTestCase {
         let id = "1039"
         let name = "Brad Tyler"
         CloudantSyncClient.SharedInstance.createProfileDoc(id, name: name)
-        
+        // Make sure doc exists
+        var exists = CloudantSyncClient.SharedInstance.doesExist(id)
+        XCTAssertEqual(exists, true)
         // Delete User
         CloudantSyncClient.SharedInstance.deleteDoc(id)
-        let exists = CloudantSyncClient.SharedInstance.doesExist(id)
+        // Make sure doc does not exist
+        exists = CloudantSyncClient.SharedInstance.doesExist(id)
         XCTAssertEqual(exists, false)
     }
     
-    // Tests creation of pictures, assigning them to a user and finally deleting them.
+    // Tests creation of pictures, assigning them to a specific user, iterating through a user's pictures and finally deleting them.
     func testUserPictures() {
         // Create User
         let id = "7532"
         let name = "Kenny Reid"
-        CloudantSyncClient.SharedInstance.createProfileDoc(id, name: name)
+        let created = CloudantSyncClient.SharedInstance.createProfileDoc(id, name: name)
+        XCTAssertNotNil(created)
         
         // Create 3 pictures and set their owner id
         let displayNames = ["Keys", "Big Bend", "Yosemite"]
         let fileNames = ["keys.jpg", "bigbend.jpg", "yosemite.jpg"]
         // Picture 1
         let picture1URL = "http://www.tenayalodge.com/img/Carousel-DiscoverYosemite_img3.jpg"
-        CloudantSyncClient.SharedInstance.createPictureDoc(displayNames[2], fileName: fileNames[2], url: picture1URL, ownerID: id, width:"100", height:"100")
+        var picDoc = CloudantSyncClient.SharedInstance.createPictureDoc(displayNames[2], fileName: fileNames[2], url: picture1URL, ownerID: id, width:"400", height:"100")
+        XCTAssertNotNil(picDoc)
         // Picture 2
         let picture2URL = "http://media-cdn.tripadvisor.com/media/photo-s/02/92/12/75/sierra-del-carmen-sunset.jpg"
-        CloudantSyncClient.SharedInstance.createPictureDoc(displayNames[1], fileName: fileNames[1], url: picture2URL, ownerID: id, width:"200", height:"300")
+        picDoc = CloudantSyncClient.SharedInstance.createPictureDoc(displayNames[1], fileName: fileNames[1], url: picture2URL, ownerID: id, width:"200", height:"300")
+        XCTAssertNotNil(picDoc)
         // Picture 3
         let picture3URL = "https://www.flmnh.ufl.edu/fish/SouthFlorida/images/bocachita.JPG"
-        CloudantSyncClient.SharedInstance.createPictureDoc(displayNames[0], fileName: fileNames[0], url: picture3URL, ownerID: id, width:"100", height:"500")
+        picDoc = CloudantSyncClient.SharedInstance.createPictureDoc(displayNames[0], fileName: fileNames[0], url: picture3URL, ownerID: id, width:"500", height:"150")
+        XCTAssertNotNil(picDoc)
         
         // Run Query to get pictures corresponding to specified user id
         let result = CloudantSyncClient.SharedInstance.getPicturesOfOwnerId(id)
@@ -82,7 +94,7 @@ class CloudantSyncClientTests: XCTestCase {
             print(rev.body["width"]!)
             print(rev.body["height"]!)
             // Assert order of display names
-            XCTAssertEqual(rev.body["display_name"]! as! String, displayNames[Int(idx)])
+            XCTAssertEqual(rev.body["display_name"]! as? String, displayNames[Int(idx)])
         })
         
         // Delete created user and their pictures
