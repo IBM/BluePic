@@ -22,7 +22,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     
     
-    
     func initializeBackendForFacebookAuth() {
     //Initialize backend
     let key = Utils.getKeyFromPlist("keys", key: "backend_route")
