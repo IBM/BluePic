@@ -160,7 +160,8 @@ class CameraDataManager: NSObject {
                 print("imageURL: \(imageURL)")
                 print("creating cloudant picture document...")
                 self.lastPhotoTakenURL = imageURL
-                CloudantSyncClient.SharedInstance.createPictureDoc(self.lastPhotoTakenCaption, fileName: self.lastPhotoTakenName, url: self.lastPhotoTakenURL, ownerID: FacebookDataManager.SharedInstance.fbUniqueUserID!, width: "400", height: "400") //todo: need to find actual width and height, need parameter for picture title?
+                print("image orientation is: \(self.lastPhotoTaken.imageOrientation.rawValue), width: \(self.lastPhotoTaken.size.width) height: \(self.lastPhotoTaken.size.height)")
+                CloudantSyncClient.SharedInstance.createPictureDoc(self.lastPhotoTakenCaption, fileName: self.lastPhotoTakenName, url: self.lastPhotoTakenURL, ownerID: FacebookDataManager.SharedInstance.fbUniqueUserID!, width: "\(self.lastPhotoTaken.size.width)", height: "\(self.lastPhotoTaken.size.height)")
                 CloudantSyncClient.SharedInstance.pushToRemoteDatabase()
             }, onFailure: { (error) in
                 print("upload to object storage failed!")
@@ -182,7 +183,7 @@ class CameraDataManager: NSObject {
                 print("upload to object storage succeeded.")
                 print("imageURL: \(imageURL)")
                 print("creating cloudant picture document...")
-                CloudantSyncClient.SharedInstance.createPictureDoc(caption, fileName: photoName, url: imageURL, ownerID: FBUserID, width: "400", height: "400") //todo: need to find actual width and height, need parameter for picture title?
+                CloudantSyncClient.SharedInstance.createPictureDoc(caption, fileName: photoName, url: imageURL, ownerID: FBUserID, width: "\(photo.size.width)", height: "\(photo.size.height)")
                 CloudantSyncClient.SharedInstance.pushToRemoteDatabase()
             }, onFailure: { (error) in
                 print("upload to object storage failed!")
