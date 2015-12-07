@@ -97,7 +97,6 @@ extension FeedViewController: UICollectionViewDelegate {
     
             print(indexPath.row)
         
-        
     }
     
     
