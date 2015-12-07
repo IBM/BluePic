@@ -1,0 +1,108 @@
+//
+//  PopulateFeedWithPhotos.swift
+//  BluePic
+//
+//  Created by Nathan Hekman on 12/7/15.
+//  Copyright © 2015 MIL. All rights reserved.
+//
+
+@testable import BluePic
+import XCTest
+
+class PopulateFeedWithPhotos: XCTestCase {
+    
+    var xctExpectation:XCTestExpectation?
+    
+    var imageNames: [String: String]!
+    
+    var imageCount: Int!
+    
+    override func setUp() {
+        super.setUp()
+        // Put setup code here. This method is called before the invocation of each test method in the class.
+        CloudantSyncClient.SharedInstance.dbName = Utils.getKeyFromPlist("keys", key: "cdt_db_name")
+        self.imageNames = ["photo1": "Mountains", "photo2": "Fog", "photo3": "Island"]
+        self.imageCount = self.imageNames.count
+    }
+    
+    override func tearDown() {
+        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        super.tearDown()
+    }
+    
+    
+    
+    // Run this test to upload an image to object storage, create the picture document locally, and push that document to cloudant.
+    func testPrePopulate() {
+        
+        
+        xctExpectation = self.expectationWithDescription("Asynchronous request about to occur...")
+        // Create fake user
+        let id = "1234"
+        let name = "Mobile Innovation Lab"
+        CloudantSyncClient.SharedInstance.createProfileDoc(id, name: name)
+        // Authenticate
+        ObjectStorageDataManager.SharedInstance.objectStorageClient.authenticate({() in
+            print("success authenticating with object storage!")
+            // Create Container
+            ObjectStorageDataManager.SharedInstance.objectStorageClient.createContainer(id,
+                onSuccess: { (name: String) in
+                    print("CONTAINER CREATED")
+                    print(name)
+                    XCTAssertNotNil(name)
+                    self.postPhotoForTests(name)
+                    
+                    
+                    
+                }, onFailure: { (error) in
+                    print("error creating container: \(error)")
+                    XCTFail(error)
+            })
+            
+            }, onFailure: {(error) in
+                print("error authenticating with object storage: \(error)")
+        })
+        // Push document to remote Cloudant database
+        CloudantSyncClient.SharedInstance.pushToRemoteDatabase()
+        self.waitForExpectationsWithTimeout(100.0, handler:nil)
+    }
+    
+    
+    
+    /**
+     For test method for pre-populating database with images
+     */
+    func postPhotoForTests(FBUserID: String!) {
+        print("uploading photo to object storage...")
+        for (picture_name, caption) in self.imageNames { //loop through all images
+            let imageName = picture_name + ".jpg"
+            let image = UIImage(named : picture_name)
+            XCTAssertNotNil(image)
+            // Upload Image
+            
+        //push to object storage, then on success push to cloudant sync
+        ObjectStorageDataManager.SharedInstance.objectStorageClient.uploadImage(FBUserID, imageName: imageName, image: image!,
+            onSuccess: { (imageURL: String) in
+                XCTAssertNotNil(imageURL)
+                print("upload to object storage succeeded.")
+                print("imageURL: \(imageURL)")
+                print("creating cloudant picture document...")
+                CloudantSyncClient.SharedInstance.createPictureDoc(caption, fileName: imageName, url: imageURL, ownerID: FBUserID, width: "\(image!.size.width)", height: "\(image!.size.height)")
+                
+                self.imageCount = self.imageCount - 1 //decrement number of images to upload remaining
+                if (self.imageCount == 0) { 
+                    CloudantSyncClient.SharedInstance.pushToRemoteDatabaseSynchronous()
+                    self.xctExpectation?.fulfill() //test is done if all images added
+                }
+            }, onFailure: { (error) in
+                print("upload to object storage failed!")
+                print("error: \(error)")
+                XCTFail(error)
+                self.xctExpectation?.fulfill()
+        })
+        
+    }
+    }
+    
+    
+}
