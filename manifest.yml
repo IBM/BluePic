@@ -1,0 +1,26 @@
+declared-services:
+  BluePic II-cloudantNoSQLDB:
+    label: cloudantNoSQLDB
+    plan:  Shared
+  BluePic II-imfpush:
+    label: imfpush
+    plan: Basic
+  BluePic II-AdvancedMobileAccess:
+    label: AdvancedMobileAccess
+    plan: Bronze
+  Object Storage-rz:
+    label: Object-Storage
+    plan: Free
+applications:
+- path: ./NodeStarterCode
+  memory: 512M
+  instances: 1
+  domain: mybluemix.net
+  name: BluePic II
+  host: BluePic-II
+  disk_quota: 1024M
+  services:
+  - BluePic II-cloudantNoSQLDB
+  - BluePic II-imfpush
+  - BluePic II-AdvancedMobileAccess
+  - Object Storage-rz

@@ -4,11 +4,8 @@
 	"description": "A template Mobile Backend application",
 	"dependencies": {
 		"express": "4.*",
-		"body-parser": "1.14.1",
-		"cloudant": "*",
 		"passport": "*",
 		"passport-imf-token-validation": "*",
-		"when": "^3.7.4",
 		"imf-oauth-user-sdk": "*"
 	},
 	"engines": {
