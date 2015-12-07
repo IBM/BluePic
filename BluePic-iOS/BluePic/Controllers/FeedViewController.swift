@@ -16,6 +16,8 @@ class FeedViewController: UIViewController {
     
     var viewModel : FeedViewModel!
     
+    let kMinimumInterItemSpacingForSectionAtIndex : CGFloat = 0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -89,10 +91,11 @@ extension FeedViewController: UICollectionViewDataSource {
 
 extension FeedViewController: UICollectionViewDelegate {
     
+    
+    
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
     
             print(indexPath.row)
-        
         
     }
     
