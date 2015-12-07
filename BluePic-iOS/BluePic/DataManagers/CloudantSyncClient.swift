@@ -81,6 +81,16 @@ class CloudantSyncClient {
         }
     }
     
+    
+    func setHandleAppStartUpResultCallback(handleAppStartUpResultCallback : ((appStartUpResult : AppStartUpResult)->())!){
+        
+        pushDlgt.handleAppStartUpResultCallback = handleAppStartUpResultCallback
+        pullDlgt.handleAppStartUpResultCallback = handleAppStartUpResultCallback
+        
+    }
+    
+    
+    
 /**
 * CRUD Operations
 */
@@ -367,6 +377,10 @@ class CloudantSyncClient {
 */
 
 class pushDelegate:NSObject, CDTReplicatorDelegate {
+    
+    var handleAppStartUpResultCallback : ((appStartUpResult : AppStartUpResult)->())!
+    
+    
     /**
      * Called when the replicator changes state.
      */
@@ -409,8 +423,11 @@ class pushDelegate:NSObject, CDTReplicatorDelegate {
             
         } else { //show error when trying to push when creating
             dispatch_async(dispatch_get_main_queue()) {
-                let tabVC = Utils.rootViewController() as! TabBarViewController
-                tabVC.showCloudantPushingErrorAlert()
+//                let tabVC = Utils.rootViewController() as! TabBarViewController
+//                tabVC.showCloudantPushingErrorAlert()
+                
+                self.handleAppStartUpResultCallback(appStartUpResult: AppStartUpResult.showCloudantPushingErrorAlert)
+                
             }
             
         }
@@ -418,6 +435,9 @@ class pushDelegate:NSObject, CDTReplicatorDelegate {
 }
 
 class pullDelegate:NSObject, CDTReplicatorDelegate {
+    
+    var handleAppStartUpResultCallback : ((appStartUpResult : AppStartUpResult)->())!
+    
     /**
      * Called when the replicator changes state.
      */
@@ -438,8 +458,10 @@ class pullDelegate:NSObject, CDTReplicatorDelegate {
      */
     func replicatorDidComplete(replicator:CDTReplicator) {
         print("PULL Replicator completed.")
-        let tabVC = Utils.rootViewController() as! TabBarViewController
-        tabVC.stopLoadingImageView()
+//        let tabVC = Utils.rootViewController() as! TabBarViewController
+//        tabVC.stopLoadingImageView()
+        
+        self.handleAppStartUpResultCallback(appStartUpResult: AppStartUpResult.stopLoadingImageView)
     }
     
     /**
@@ -447,8 +469,9 @@ class pullDelegate:NSObject, CDTReplicatorDelegate {
      */
     func replicatorDidError(replicator:CDTReplicator, info:NSError) {
         print("PULL Replicator ERROR: \(info)")
-        let tabVC = Utils.rootViewController() as! TabBarViewController
-        tabVC.showCloudantPullingErrorAlert()
+//        let tabVC = Utils.rootViewController() as! TabBarViewController
+//        tabVC.showCloudantPullingErrorAlert()
+        self.handleAppStartUpResultCallback(appStartUpResult: AppStartUpResult.showCloudantPullingErrorAlert)
     }
     
 }

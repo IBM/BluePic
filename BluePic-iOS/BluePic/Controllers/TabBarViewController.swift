@@ -22,7 +22,7 @@ class TabBarViewController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        viewModel = TabBarViewModel()
+        viewModel = TabBarViewModel(handleErrorStatesUponAppStartUpCallback: handleErrorStatesUponAppStartUp)
         
         self.tabBar.tintColor! = UIColor.whiteColor()
         
@@ -69,16 +69,47 @@ class TabBarViewController: UITabBarController {
     
     func tryToShowLogin() {
         
-        let hasTriedToPresentLoginThisAppLaunch = viewModel.getHasTriedToPresentLoginThisAppLaunch()
+    
+        viewModel.tryToShowLogin(({ userInteractionEnabled in
+            
+            self.view.userInteractionEnabled = userInteractionEnabled
+            
+        }))
         
-        if (!hasTriedToPresentLoginThisAppLaunch) {
-            self.view.userInteractionEnabled = false
-            viewModel.setHasTriedToPresentLoginThisAppLaunchToTrue()
-            FacebookDataManager.SharedInstance.tryToShowLoginScreen(self)
-        } 
+        
+//        let hasTriedToPresentLoginThisAppLaunch = viewModel.getHasTriedToPresentLoginThisAppLaunch()
+//        
+//        if (!hasTriedToPresentLoginThisAppLaunch) {
+//            self.view.userInteractionEnabled = false
+//            viewModel.setHasTriedToPresentLoginThisAppLaunchToTrue()
+//            FacebookDataManager.SharedInstance.tryToShowLoginScreen(self)
+//        } 
         
     }
     
+    
+    func handleErrorStatesUponAppStartUp(appStartUpResult : AppStartUpResult){
+        
+        if(appStartUpResult == AppStartUpResult.hideBackgroundImageAndStartLoading){
+            hideBackgroundImageAndStartLoading()
+        }
+        else if(appStartUpResult == AppStartUpResult.stopLoadingImageView){
+            stopLoadingImageView()
+        }
+        else if(appStartUpResult == AppStartUpResult.showObjectStorageErrorAlert){
+            showObjectStorageErrorAlert()
+        }
+        else if(appStartUpResult == AppStartUpResult.showCloudantPushingErrorAlert){
+            showCloudantPushingErrorAlert()
+        }
+        else if(appStartUpResult == AppStartUpResult.showCloudantPullingErrorAlert){
+            showCloudantPullingErrorAlert()
+        }
+        else if(appStartUpResult == AppStartUpResult.presentLoginVC){
+            presentLoginVC()
+        }
+        
+    }
     
     
     func hideBackgroundImageAndStartLoading() {
@@ -105,7 +136,6 @@ class TabBarViewController: UITabBarController {
     }
     
     
-    
     /**
      Method to show the error alert and asks user if they would like to retry cloudant data pushing
      */
@@ -114,7 +144,7 @@ class TabBarViewController: UITabBarController {
         let alert = UIAlertController(title: nil, message: NSLocalizedString("Oops! An error occurred uploading to Cloudant.", comment: ""), preferredStyle: UIAlertControllerStyle.Alert)
         
         alert.addAction(UIAlertAction(title: NSLocalizedString("Try Again", comment: ""), style: .Default, handler: { (action: UIAlertAction!) in
-            CloudantSyncClient.SharedInstance.pushToRemoteDatabase()
+            self.viewModel.retryPushingCloudantData()
         }))
         
         dispatch_async(dispatch_get_main_queue()) {
@@ -131,7 +161,8 @@ class TabBarViewController: UITabBarController {
         let alert = UIAlertController(title: nil, message: NSLocalizedString("Oops! An error downloading Cloudant data.", comment: ""), preferredStyle: UIAlertControllerStyle.Alert)
         
         alert.addAction(UIAlertAction(title: NSLocalizedString("Try Again", comment: ""), style: .Default, handler: { (action: UIAlertAction!) in
-            self.retryPullingCloudantData()
+           //self.retryPullingCloudantData()
+            self.viewModel.retryPullingCloudantData()
         }))
         
         dispatch_async(dispatch_get_main_queue()) {
@@ -148,7 +179,9 @@ class TabBarViewController: UITabBarController {
         let alert = UIAlertController(title: nil, message: NSLocalizedString("Oops! An error occurred with Object Storage.", comment: ""), preferredStyle: UIAlertControllerStyle.Alert)
         
         alert.addAction(UIAlertAction(title: NSLocalizedString("Try Again", comment: ""), style: .Default, handler: { (action: UIAlertAction!) in
-            self.retryAuthenticatingObjectStorage()
+            //self.retryAuthenticatingObjectStorage()
+            
+            self.viewModel.retryAuthenticatingObjectStorage()
         }))
         
         dispatch_async(dispatch_get_main_queue()) {
@@ -157,35 +190,45 @@ class TabBarViewController: UITabBarController {
     }
     
     
-    
-    /**
-     Retry pulling cloudant data upon error
-     */
-    func retryPullingCloudantData() {
-        //CloudantSyncClient.SharedInstance.pullReplicator.stop()
-        CloudantSyncClient.SharedInstance.pullFromRemoteDatabase()
-        dispatch_async(dispatch_get_main_queue()) {
-            print("Retrying to pull Cloudant data")
-            
-            FacebookDataManager.SharedInstance.tryToShowLoginScreen(self)
-            
-        }
+    func presentLoginVC(){
         
+        let loginVC = Utils.vcWithNameFromStoryboardWithName("loginVC", storyboardName: "Main") as! LoginViewController
+        self.presentViewController(loginVC, animated: false, completion: { _ in
+            self.hideBackgroundImageAndStartLoading()
+            print(NSLocalizedString("user needs to log into Facebook, showing login", comment: ""))
+        })
+   
     }
     
     
-    /**
-     Retry authenticating with object storage upon error
-     */
-    func retryAuthenticatingObjectStorage() {
-        dispatch_async(dispatch_get_main_queue()) {
-            print("Retrying to authenticate with Object Storage")
-            
-            FacebookDataManager.SharedInstance.tryToShowLoginScreen(self)
-            
-        }
-        
-    }
+    
+//    /**
+//     Retry pulling cloudant data upon error
+//     */
+//    func retryPullingCloudantData() {
+//        //CloudantSyncClient.SharedInstance.pullReplicator.stop()
+//        CloudantSyncClient.SharedInstance.pullFromRemoteDatabase()
+//        dispatch_async(dispatch_get_main_queue()) {
+//            print("Retrying to pull Cloudant data")
+//            
+//            FacebookDataManager.SharedInstance.tryToShowLoginScreen(self)
+//            
+//        }
+//    }
+//    
+//    
+//    /**
+//     Retry authenticating with object storage upon error
+//     */
+//    func retryAuthenticatingObjectStorage() {
+//        dispatch_async(dispatch_get_main_queue()) {
+//            print("Retrying to authenticate with Object Storage")
+//            
+//            FacebookDataManager.SharedInstance.tryToShowLoginScreen(self)
+//            
+//        }
+//        
+//    }
     
 
 
