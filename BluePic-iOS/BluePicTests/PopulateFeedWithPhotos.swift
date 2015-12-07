@@ -21,7 +21,11 @@ class PopulateFeedWithPhotos: XCTestCase {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
         CloudantSyncClient.SharedInstance.dbName = Utils.getKeyFromPlist("keys", key: "cdt_db_name")
-        self.imageNames = ["photo1": "Mountains", "photo2": "Fog", "photo3": "Island"]
+        //imagename : Caption from asset directory
+        self.imageNames = [
+            "photo1": "Mountains",
+            "photo2": "Fog",
+            "photo3": "Island"]
         self.imageCount = self.imageNames.count
     }
     
@@ -51,9 +55,6 @@ class PopulateFeedWithPhotos: XCTestCase {
                     print(name)
                     XCTAssertNotNil(name)
                     self.postPhotoForTests(name)
-                    
-                    
-                    
                 }, onFailure: { (error) in
                     print("error creating container: \(error)")
                     XCTFail(error)
@@ -75,8 +76,11 @@ class PopulateFeedWithPhotos: XCTestCase {
     func postPhotoForTests(FBUserID: String!) {
         print("uploading photo to object storage...")
         for (picture_name, caption) in self.imageNames { //loop through all images
-            let imageName = picture_name + ".jpg"
-            let image = UIImage(named : picture_name)
+            let imageName = picture_name + ".JPG"
+            let highResImage = UIImage(named : picture_name)
+            let photoNSData = highResImage!.lowestQualityJPEGNSData
+            let image = UIImage(data: photoNSData)
+            
             XCTAssertNotNil(image)
             // Upload Image
             
@@ -84,12 +88,13 @@ class PopulateFeedWithPhotos: XCTestCase {
         ObjectStorageDataManager.SharedInstance.objectStorageClient.uploadImage(FBUserID, imageName: imageName, image: image!,
             onSuccess: { (imageURL: String) in
                 XCTAssertNotNil(imageURL)
-                print("upload to object storage succeeded.")
+                print("upload of \(imageName) to object storage succeeded.")
                 print("imageURL: \(imageURL)")
                 print("creating cloudant picture document...")
                 CloudantSyncClient.SharedInstance.createPictureDoc(caption, fileName: imageName, url: imageURL, ownerID: FBUserID, width: "\(image!.size.width)", height: "\(image!.size.height)")
                 
                 self.imageCount = self.imageCount - 1 //decrement number of images to upload remaining
+                //check if test is done (all photos uploaded)
                 if (self.imageCount == 0) { 
                     CloudantSyncClient.SharedInstance.pushToRemoteDatabaseSynchronous()
                     self.xctExpectation?.fulfill() //test is done if all images added
