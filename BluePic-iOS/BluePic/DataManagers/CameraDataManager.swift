@@ -172,25 +172,7 @@ class CameraDataManager: NSObject {
  
     }
     
-    /**
-     For test method for pre-populating database with images
-     */
-    func postPhotoForTests(photo: UIImage!, caption: String!, photoName: String!, FBUserID: String!) {
-        print("uploading photo to object storage...")
-        //push to object storage, then on success push to cloudant sync
-        ObjectStorageDataManager.SharedInstance.objectStorageClient.uploadImage(FBUserID, imageName: photoName, image: photo,
-            onSuccess: { (imageURL: String) in
-                print("upload to object storage succeeded.")
-                print("imageURL: \(imageURL)")
-                print("creating cloudant picture document...")
-                CloudantSyncClient.SharedInstance.createPictureDoc(caption, fileName: photoName, url: imageURL, ownerID: FBUserID, width: "\(photo.size.width)", height: "\(photo.size.height)")
-                CloudantSyncClient.SharedInstance.pushToRemoteDatabase()
-            }, onFailure: { (error) in
-                print("upload to object storage failed!")
-                print("error: \(error)")
-        })
-        
-    }
+    
     
     
     
