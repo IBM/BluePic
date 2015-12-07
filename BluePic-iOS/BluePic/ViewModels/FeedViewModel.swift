@@ -15,16 +15,17 @@ class FeedViewModel: NSObject {
     let kNumberOfSectionsInCollectionView = 1
     
     var pictureDataArray = [Picture]()
-    var refreshCallback : (()->())?
+    var refreshVCCallback : (()->())?
     
     
-    init(refreshCallback : (()->())){
-        super.init()
-        
-        self.refreshCallback = refreshCallback
-        
-        getPictureObjects()
-    }
+    
+//    init(refreshCallback : (()->())){
+//        super.init()
+//        
+//        self.refreshCallback = refreshCallback
+//        
+//        getPictureObjects()
+//    }
     
     
     func getPictureObjects(){
@@ -68,7 +69,7 @@ class FeedViewModel: NSObject {
     }
     
     func callRefreshCallBack(){
-        if let callback = refreshCallback {
+        if let callback = refreshVCCallback {
             callback()
         }
     }

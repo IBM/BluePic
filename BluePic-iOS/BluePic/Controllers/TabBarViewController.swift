@@ -29,6 +29,8 @@ class TabBarViewController: UITabBarController {
         self.addBackgroundImageView()
         
         self.delegate = self
+        
+        self.setupFeedViewModel()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -48,10 +50,16 @@ class TabBarViewController: UITabBarController {
         // Dispose of any resources that can be recreated.
     }
     
-    func setupFeedVC() {
+    func setupFeedViewModel() {
+        self.feedVC = self.viewControllers![0] as! FeedViewController
+        
+        feedVC.viewModel = viewModel.getFeedViewModel()
+    }
+    
+    func setupFeedVC(){
         self.feedVC = self.viewControllers![0] as! FeedViewController
         feedVC.logoImageView.image = UIImage(named: "shutter")
-        
+
     }
     
     
@@ -232,15 +240,18 @@ class TabBarViewController: UITabBarController {
     
 
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        
+        
+        
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
     }
-    */
+
 
 }
 

@@ -37,7 +37,8 @@ class FeedViewController: UIViewController {
     }
     
     func setupViewModel(){
-        viewModel = FeedViewModel(refreshCallback: reloadDataInCollectionView)
+        viewModel.refreshVCCallback = reloadDataInCollectionView
+        viewModel.getPictureObjects()
     }
     
     func setupCollectionView(){

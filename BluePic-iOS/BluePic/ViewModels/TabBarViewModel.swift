@@ -22,8 +22,9 @@ class TabBarViewModel: NSObject {
 
     /// Boolean if showLoginScreen() has been called yet this app launch (should only try to show login once)
     var hasTriedToPresentLoginThisAppLaunch = false
-    
     var handleErrorStatesUponAppStartUpCallback : ((appStartUpResult : AppStartUpResult)->())!
+    
+    var feedViewModel : FeedViewModel!
     
     
     init(handleErrorStatesUponAppStartUpCallback : ((appStartUpResult : AppStartUpResult)->())){
@@ -53,6 +54,14 @@ class TabBarViewModel: NSObject {
     
     
     func handleAppStartUpResult(appStartUpResult : AppStartUpResult){
+        
+        if(appStartUpResult == AppStartUpResult.stopLoadingImageView){
+            dispatch_async(dispatch_get_main_queue()) {
+
+               self.feedViewModel.getPictureObjects()
+            }
+        }
+        
         
        handleErrorStatesUponAppStartUpCallback(appStartUpResult: appStartUpResult)
   
@@ -112,8 +121,20 @@ class TabBarViewModel: NSObject {
         hasTriedToPresentLoginThisAppLaunch = true
         
     }
-
     
- 
     
+    
+    func getFeedViewModel() -> FeedViewModel {
+        
+        if(feedViewModel == nil){
+            feedViewModel = FeedViewModel()
+            return feedViewModel
+        }
+        else{
+            
+            return feedViewModel
+        }
+        
+    }
+  
 }
