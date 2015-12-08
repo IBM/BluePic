@@ -14,20 +14,13 @@ class ObjectStorageDataManager: NSObject {
     static let SharedInstance: ObjectStorageDataManager = {
         
         var manager = ObjectStorageDataManager()
-        manager.initializeObjectStorageClient()
         
         return manager
         
     }()
     
     
-    private override init() {} //This prevents others from using the default '()' initializer for this class.
-    
-    
-    var objectStorageClient: ObjectStorageClient!
-    
-    
-    private func initializeObjectStorageClient() {
+    private override init() {
         // Set up connection properties for Object Storage service on Bluemix
         let userId = Utils.getKeyFromPlist("keys", key: "obj_stg_user_id")
         let password = Utils.getKeyFromPlist("keys", key: "obj_stg_password")
@@ -35,8 +28,11 @@ class ObjectStorageDataManager: NSObject {
         let authURL = Utils.getKeyFromPlist("keys", key: "obj_stg_auth_url")
         let publicURL = Utils.getKeyFromPlist("keys", key: "obj_stg_public_url")
         self.objectStorageClient = ObjectStorageClient(userId: userId, password: password, projectId: projectId, authURL: authURL, publicURL: publicURL)
-        
+    
     }
+    
+    
+    var objectStorageClient: ObjectStorageClient!
     
     
     

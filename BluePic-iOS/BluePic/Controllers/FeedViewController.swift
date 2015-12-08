@@ -12,13 +12,26 @@ class FeedViewController: UIViewController {
     
     @IBOutlet weak var logoImageView: UIImageView!
     
+    @IBOutlet weak var collectionView: UICollectionView!
+    
+    var viewModel : FeedViewModel!
+    
+    var refreshControl:UIRefreshControl!
+    
+    let kMinimumInterItemSpacingForSectionAtIndex : CGFloat = 0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+        setupCollectionView()
+        setupViewModel()
+        
+        logoImageView.startRotating(1.0)
+       
     }
     
     override func viewDidAppear(animated: Bool) {
+        
         
     }
 
@@ -26,6 +39,46 @@ class FeedViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    
+    
+    func setupViewModel(){
+        viewModel = FeedViewModel(refreshCallback: reloadDataInCollectionView)
+    }
+    
+    
+    func setupCollectionView(){
+        
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        
+        Utils.registerNibWithCollectionView("ImageFeedCollectionViewCell", collectionView: collectionView)
+        
+        self.refreshControl = UIRefreshControl()
+        self.refreshControl.addTarget(self, action: "userTriggeredRefresh", forControlEvents: UIControlEvents.ValueChanged)
+        self.refreshControl.hidden = true
+        
+        self.collectionView.addSubview(refreshControl)
+    }
+    
+    
+    func reloadDataInCollectionView(){
+        
+        collectionView.reloadData()
+        logoImageView.stopRotating()
+    }
+    
+    
+    
+    func userTriggeredRefresh(){
+        
+        logoImageView.startRotating(1)
+        self.refreshControl.endRefreshing()
+        
+        viewModel.repullForNewData()
+        
+    }
+    
     
 
     /*
@@ -37,5 +90,45 @@ class FeedViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
+
+}
+
+
+extension FeedViewController: UICollectionViewDataSource {
+    
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        return viewModel.setUpCollectionViewCell(indexPath, collectionView : collectionView)
+    }
+    
+    
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return viewModel.numberOfItemsInSection(section)
+    }
+    
+    
+    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+        return viewModel.numberOfSectionsInCollectionView()
+    }
+    
+}
+
+
+extension FeedViewController: UICollectionViewDelegate {
+    
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+            print(indexPath.row)
+    }
+    
+}
+
+
+extension FeedViewController: UICollectionViewDelegateFlowLayout {
+
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+
+        return viewModel.sizeForItemAtIndexPath(indexPath, collectionView: collectionView)
+    }
+
+
 
 }

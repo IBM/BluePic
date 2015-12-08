@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import ImageIO
 
 class CameraDataManager: NSObject {
 
@@ -159,15 +160,20 @@ class CameraDataManager: NSObject {
                 print("imageURL: \(imageURL)")
                 print("creating cloudant picture document...")
                 self.lastPhotoTakenURL = imageURL
-                CloudantSyncClient.SharedInstance.createPictureDoc(FacebookDataManager.SharedInstance.fbUserDisplayName!, fileName: self.lastPhotoTakenName, url: self.lastPhotoTakenURL, ownerID: FacebookDataManager.SharedInstance.fbUniqueUserID!, width: "400", height: "600") //todo: need to find actual width and height, need parameter for picture title?
+                print("image orientation is: \(self.lastPhotoTaken.imageOrientation.rawValue), width: \(self.lastPhotoTaken.size.width) height: \(self.lastPhotoTaken.size.height)")
+                CloudantSyncClient.SharedInstance.createPictureDoc(self.lastPhotoTakenCaption, fileName: self.lastPhotoTakenName, url: self.lastPhotoTakenURL, ownerID: FacebookDataManager.SharedInstance.fbUniqueUserID!, width: "\(self.lastPhotoTaken.size.width)", height: "\(self.lastPhotoTaken.size.height)", orientation: "\(self.lastPhotoTaken.imageOrientation.rawValue)")
+                CloudantSyncClient.SharedInstance.pushToRemoteDatabase()
             }, onFailure: { (error) in
-                self.confirmationView.loadingIndicator.stopAnimating()
                 print("upload to object storage failed!")
                 print("error: \(error)")
+                self.confirmationView.loadingIndicator.stopAnimating()
                 self.showObjectStorageErrorAlert()
         })
  
     }
+    
+    
+    
     
     
     
@@ -248,9 +254,12 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
         
         //show image on confirmationView, save a copy
         let takenImage = info[UIImagePickerControllerOriginalImage] as! UIImage
-        self.confirmationView.photoImageView.image = takenImage
-        let photoNSData = takenImage.lowestQualityJPEGNSData
-        self.lastPhotoTaken = UIImage(data: photoNSData)
+        print("original image width: \(takenImage.size.width) height: \(takenImage.size.height)")
+        self.lastPhotoTaken = UIImage.resizeImage(takenImage, newWidth: 520)
+        print("resized image width: \(self.lastPhotoTaken.size.width) height: \(self.lastPhotoTaken.size.height)")
+        self.confirmationView.photoImageView.image = self.lastPhotoTaken
+
+        
         
         //save name of image as current date and time
         let dateFormatter = NSDateFormatter()

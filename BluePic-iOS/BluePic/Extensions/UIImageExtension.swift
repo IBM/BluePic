@@ -27,6 +27,26 @@ extension UIImage{
     }
     
     
+    /**
+     Resizes a UIImage given a height
+     
+     - parameter image:     image to resize
+     - parameter newHeight: height of new size of image
+     
+     - returns: newly resized image
+     */
+    class func resizeImage(image: UIImage, newWidth: CGFloat) -> UIImage {
+//        let newWidth = image.size.width * scale
+//        let newHeight = image.size.height * scale
+        let scale = newWidth / image.size.width
+        let newHeight = image.size.height * scale
+        UIGraphicsBeginImageContext(CGSizeMake(newWidth, newHeight))
+        image.drawInRect(CGRectMake(0, 0, newWidth, newHeight))
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return newImage
+    }
 
     
     /**
