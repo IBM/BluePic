@@ -16,6 +16,8 @@ class FeedViewController: UIViewController {
     
     var viewModel : FeedViewModel!
     
+    var refreshControl:UIRefreshControl!
+    
     let kMinimumInterItemSpacingForSectionAtIndex : CGFloat = 0
     
     override func viewDidLoad() {
@@ -23,12 +25,14 @@ class FeedViewController: UIViewController {
         
         setupCollectionView()
         setupViewModel()
+        
+        logoImageView.startRotating(1.0)
        
     }
     
     override func viewDidAppear(animated: Bool) {
         
-
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -36,9 +40,12 @@ class FeedViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    
+    
     func setupViewModel(){
         viewModel = FeedViewModel(refreshCallback: reloadDataInCollectionView)
     }
+    
     
     func setupCollectionView(){
         
@@ -46,12 +53,30 @@ class FeedViewController: UIViewController {
         collectionView.dataSource = self
         
         Utils.registerNibWithCollectionView("ImageFeedCollectionViewCell", collectionView: collectionView)
+        
+        self.refreshControl = UIRefreshControl()
+        self.refreshControl.addTarget(self, action: "userTriggeredRefresh", forControlEvents: UIControlEvents.ValueChanged)
+        self.refreshControl.hidden = true
+        
+        self.collectionView.addSubview(refreshControl)
     }
     
     
     func reloadDataInCollectionView(){
         
         collectionView.reloadData()
+        logoImageView.stopRotating()
+    }
+    
+    
+    
+    func userTriggeredRefresh(){
+        
+        logoImageView.startRotating(1)
+        self.refreshControl.endRefreshing()
+        
+        viewModel.repullForNewData()
+        
     }
     
     
@@ -85,20 +110,14 @@ extension FeedViewController: UICollectionViewDataSource {
         return viewModel.numberOfSectionsInCollectionView()
     }
     
-    
 }
 
 
 extension FeedViewController: UICollectionViewDelegate {
     
-    
-    
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-    
             print(indexPath.row)
-        
     }
-    
     
 }
 

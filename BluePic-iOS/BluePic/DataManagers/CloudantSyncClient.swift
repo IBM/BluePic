@@ -111,6 +111,8 @@ class CloudantSyncClient {
         
     }
     
+    
+
 /**
 * CRUD Operations
 */
@@ -374,6 +376,10 @@ class CloudantSyncClient {
 */
 
 class pushDelegate:NSObject, CDTReplicatorDelegate {
+    
+    //var handleAppStartUpResultCallback : ((dataManagerNotification : DataManagerNotification)->())!
+    
+    
     /**
      * Called when the replicator changes state.
      */
@@ -416,8 +422,11 @@ class pushDelegate:NSObject, CDTReplicatorDelegate {
             
         } else { //show error when trying to push when creating
             dispatch_async(dispatch_get_main_queue()) {
-                let tabVC = Utils.rootViewController() as! TabBarViewController
-                tabVC.showCloudantPushingErrorAlert()
+//                let tabVC = Utils.rootViewController() as! TabBarViewController
+//                tabVC.showCloudantPushingErrorAlert()
+                
+                //self.handleAppStartUpResultCallback(dataManagerNotification: DataManagerNotification.showCloudantPushingErrorAlert)
+                DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantPushDataFailiure)
             }
             
         }
@@ -425,6 +434,8 @@ class pushDelegate:NSObject, CDTReplicatorDelegate {
 }
 
 class pullDelegate:NSObject, CDTReplicatorDelegate {
+    
+    
     /**
      * Called when the replicator changes state.
      */
@@ -445,8 +456,12 @@ class pullDelegate:NSObject, CDTReplicatorDelegate {
      */
     func replicatorDidComplete(replicator:CDTReplicator) {
         print("PULL Replicator completed.")
-        let tabVC = Utils.rootViewController() as! TabBarViewController
-        tabVC.stopLoadingImageView()
+//        let tabVC = Utils.rootViewController() as! TabBarViewController
+//        tabVC.stopLoadingImageView()
+        
+        
+        DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantPullDataSuccess)
+        //self.handleAppStartUpResultCallback(dataManagerNotification: DataManagerNotification.stopLoadingImageView)
     }
     
     /**
@@ -454,8 +469,11 @@ class pullDelegate:NSObject, CDTReplicatorDelegate {
      */
     func replicatorDidError(replicator:CDTReplicator, info:NSError) {
         print("PULL Replicator ERROR: \(info)")
-        let tabVC = Utils.rootViewController() as! TabBarViewController
-        tabVC.showCloudantPullingErrorAlert()
+//        let tabVC = Utils.rootViewController() as! TabBarViewController
+//        tabVC.showCloudantPullingErrorAlert()
+        
+        DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantPullDataFailure)
+       // self.handleAppStartUpResultCallback(dataManagerNotification: DataManagerNotification.showCloudantPullingErrorAlert)
     }
     
 }

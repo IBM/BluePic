@@ -9,31 +9,36 @@
 import UIKit
 
 class TabBarViewController: UITabBarController {
-
-    
-    /// Boolean if showLoginScreen() has been called yet this app launch (should only try to show login once)
-    var hasTriedToPresentLoginThisAppLaunch = false
     
     /// Image view to temporarily cover feed and content so it doesn't appear to flash when showing login screen
     var backgroundImageView: UIImageView!
     
     var feedVC: FeedViewController!
     
+    var viewModel : TabBarViewModel!
+    
     
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        viewModel = TabBarViewModel(passDataNotificationToTabBarVCCallback: handleDataNotification)
+        
         self.tabBar.tintColor! = UIColor.whiteColor()
         
         self.addBackgroundImageView()
         
         self.delegate = self
+        
+        //self.setupFeedViewModel()
     }
+    
     
     override func viewWillAppear(animated: Bool) {
         
     }
+    
+    
     
     override func viewDidAppear(animated: Bool) {
         
@@ -48,10 +53,12 @@ class TabBarViewController: UITabBarController {
         // Dispose of any resources that can be recreated.
     }
     
-    func setupFeedVC() {
+
+    
+    func setupFeedVC(){
         self.feedVC = self.viewControllers![0] as! FeedViewController
         feedVC.logoImageView.image = UIImage(named: "shutter")
-        
+
     }
     
     
@@ -68,39 +75,40 @@ class TabBarViewController: UITabBarController {
     
     
     func tryToShowLogin() {
-        if (!hasTriedToPresentLoginThisAppLaunch) {
-            self.view.userInteractionEnabled = false
-            self.hasTriedToPresentLoginThisAppLaunch = true
-            FacebookDataManager.SharedInstance.tryToShowLoginScreen(self)
-        } 
+    
+        viewModel.tryToShowLogin()
         
     }
     
     
-    
-    func hideBackgroundImageAndStartLoading() {
+    func handleDataNotification(dataManagerNotification : DataManagerNotification){
         
-        //hide temp background image used to prevent flash animation
-        self.backgroundImageView.hidden = true
-        self.backgroundImageView.removeFromSuperview()
-        self.feedVC.logoImageView.startRotating(1) //animate rotating logo with certain speed
-        
-    }
-    
-    
-    
-    /**
-     Stop loading image view in feedVC once pulling is finished
-     */
-    func stopLoadingImageView() {
-        dispatch_async(dispatch_get_main_queue()) {
-            print("PULL complete, stopping loading")
-            self.view.userInteractionEnabled = true
-            self.feedVC.logoImageView.stopRotating()
+        if(dataManagerNotification == DataManagerNotification.GotPastLoginCheck){
+            hideBackgroundImage()
+        }
+        else if(dataManagerNotification == DataManagerNotification.ObjectStorageAuthError){
+            showObjectStorageErrorAlert()
+        }
+        else if(dataManagerNotification == DataManagerNotification.CloudantPushDataFailiure){
+            showCloudantPushingErrorAlert()
+        }
+        else if(dataManagerNotification == DataManagerNotification.CloudantPullDataFailure){
+            showCloudantPullingErrorAlert()
+        }
+        else if(dataManagerNotification == DataManagerNotification.UserNotAuthenticated){
+            presentLoginVC()
         }
         
     }
     
+    
+    func hideBackgroundImage() {
+        
+        //hide temp background image used to prevent flash animation
+        self.backgroundImageView.hidden = true
+        self.backgroundImageView.removeFromSuperview()
+        
+    }
     
     
     /**
@@ -111,7 +119,7 @@ class TabBarViewController: UITabBarController {
         let alert = UIAlertController(title: nil, message: NSLocalizedString("Oops! An error occurred uploading to Cloudant.", comment: ""), preferredStyle: UIAlertControllerStyle.Alert)
         
         alert.addAction(UIAlertAction(title: NSLocalizedString("Try Again", comment: ""), style: .Default, handler: { (action: UIAlertAction!) in
-            CloudantSyncClient.SharedInstance.pushToRemoteDatabase()
+            self.viewModel.retryPushingCloudantData()
         }))
         
         dispatch_async(dispatch_get_main_queue()) {
@@ -128,7 +136,8 @@ class TabBarViewController: UITabBarController {
         let alert = UIAlertController(title: nil, message: NSLocalizedString("Oops! An error downloading Cloudant data.", comment: ""), preferredStyle: UIAlertControllerStyle.Alert)
         
         alert.addAction(UIAlertAction(title: NSLocalizedString("Try Again", comment: ""), style: .Default, handler: { (action: UIAlertAction!) in
-            self.retryPullingCloudantData()
+           //self.retryPullingCloudantData()
+            self.viewModel.retryPullingCloudantData()
         }))
         
         dispatch_async(dispatch_get_main_queue()) {
@@ -145,7 +154,9 @@ class TabBarViewController: UITabBarController {
         let alert = UIAlertController(title: nil, message: NSLocalizedString("Oops! An error occurred with Object Storage.", comment: ""), preferredStyle: UIAlertControllerStyle.Alert)
         
         alert.addAction(UIAlertAction(title: NSLocalizedString("Try Again", comment: ""), style: .Default, handler: { (action: UIAlertAction!) in
-            self.retryAuthenticatingObjectStorage()
+            //self.retryAuthenticatingObjectStorage()
+            
+            self.viewModel.retryAuthenticatingObjectStorage()
         }))
         
         dispatch_async(dispatch_get_main_queue()) {
@@ -154,47 +165,26 @@ class TabBarViewController: UITabBarController {
     }
     
     
-    
-    /**
-     Retry pulling cloudant data upon error
-     */
-    func retryPullingCloudantData() {
-        //CloudantSyncClient.SharedInstance.pullReplicator.stop()
-        CloudantSyncClient.SharedInstance.pullFromRemoteDatabase()
-        dispatch_async(dispatch_get_main_queue()) {
-            print("Retrying to pull Cloudant data")
-            
-            FacebookDataManager.SharedInstance.tryToShowLoginScreen(self)
-            
-        }
+    func presentLoginVC(){
         
+        let loginVC = Utils.vcWithNameFromStoryboardWithName("loginVC", storyboardName: "Main") as! LoginViewController
+        self.presentViewController(loginVC, animated: false, completion: { _ in
+            self.hideBackgroundImage()
+            print(NSLocalizedString("user needs to log into Facebook, showing login", comment: ""))
+        })
+   
     }
     
     
-    /**
-     Retry authenticating with object storage upon error
-     */
-    func retryAuthenticatingObjectStorage() {
-        dispatch_async(dispatch_get_main_queue()) {
-            print("Retrying to authenticate with Object Storage")
-            
-            FacebookDataManager.SharedInstance.tryToShowLoginScreen(self)
-            
-        }
-        
-    }
-    
-
-
-    /*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
     }
-    */
+
 
 }
 

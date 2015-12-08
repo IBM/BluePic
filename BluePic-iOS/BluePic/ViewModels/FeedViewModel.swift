@@ -9,28 +9,49 @@
 import UIKit
 
 
-
 class FeedViewModel: NSObject {
 
     let kNumberOfSectionsInCollectionView = 1
     
     var pictureDataArray = [Picture]()
-    var refreshCallback : (()->())?
+    var refreshVCCallback : (()->())?
+    
     
     
     init(refreshCallback : (()->())){
         super.init()
         
-        self.refreshCallback = refreshCallback
+        self.refreshVCCallback = refreshCallback
+        
+        DataManagerCalbackCoordinator.SharedInstance.addCallback(handleDataManagerNotification)
         
         getPictureObjects()
+    }
+    
+    
+    
+    func handleDataManagerNotification(dataManagerNotification : DataManagerNotification){
+        
+        if(dataManagerNotification == DataManagerNotification.CloudantPullDataSuccess){
+            
+            getPictureObjects()
+            
+        }
+    }
+    
+    
+    func repullForNewData(){
+        CloudantSyncClient.SharedInstance.pullFromRemoteDatabase()
     }
     
     
     func getPictureObjects(){
         pictureDataArray = CloudantSyncClient.SharedInstance.getAllPictureObjects()
         
-        callRefreshCallBack()
+        
+         dispatch_async(dispatch_get_main_queue()) {
+            self.callRefreshCallBack()
+        }
     }
     
     
@@ -68,7 +89,7 @@ class FeedViewModel: NSObject {
     }
     
     func callRefreshCallBack(){
-        if let callback = refreshCallback {
+        if let callback = refreshVCCallback {
             callback()
         }
     }
