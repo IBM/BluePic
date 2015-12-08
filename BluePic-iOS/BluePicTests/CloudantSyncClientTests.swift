@@ -71,15 +71,15 @@ class CloudantSyncClientTests: XCTestCase {
         let fileNames = ["keys.jpg", "bigbend.jpg", "yosemite.jpg"]
         // Picture 1
         let picture1URL = "http://www.tenayalodge.com/img/Carousel-DiscoverYosemite_img3.jpg"
-        var picDoc = CloudantSyncClient.SharedInstance.createPictureDoc(displayNames[2], fileName: fileNames[2], url: picture1URL, ownerID: id, width:"400", height:"100")
+        var picDoc = CloudantSyncClient.SharedInstance.createPictureDoc(displayNames[2], fileName: fileNames[2], url: picture1URL, ownerID: id, width:"400", height:"100", oriendation:"up")
         XCTAssertNotNil(picDoc)
         // Picture 2
         let picture2URL = "http://media-cdn.tripadvisor.com/media/photo-s/02/92/12/75/sierra-del-carmen-sunset.jpg"
-        picDoc = CloudantSyncClient.SharedInstance.createPictureDoc(displayNames[1], fileName: fileNames[1], url: picture2URL, ownerID: id, width:"200", height:"300")
+        picDoc = CloudantSyncClient.SharedInstance.createPictureDoc(displayNames[1], fileName: fileNames[1], url: picture2URL, ownerID: id, width:"200", height:"300", oriendation:"up")
         XCTAssertNotNil(picDoc)
         // Picture 3
         let picture3URL = "https://www.flmnh.ufl.edu/fish/SouthFlorida/images/bocachita.JPG"
-        picDoc = CloudantSyncClient.SharedInstance.createPictureDoc(displayNames[0], fileName: fileNames[0], url: picture3URL, ownerID: id, width:"500", height:"150")
+        picDoc = CloudantSyncClient.SharedInstance.createPictureDoc(displayNames[0], fileName: fileNames[0], url: picture3URL, ownerID: id, width:"500", height:"150", oriendation:"up")
         XCTAssertNotNil(picDoc)
         
         // Run Query to get pictures corresponding to specified user id
@@ -124,13 +124,13 @@ class CloudantSyncClientTests: XCTestCase {
         let fileNames = ["keys.jpg", "bigbend.jpg", "yosemite.jpg"]
         // Picture 1
         let picture1URL = "http://www.tenayalodge.com/img/Carousel-DiscoverYosemite_img3.jpg"
-        CloudantSyncClient.SharedInstance.createPictureDoc(displayNames[2], fileName: fileNames[2], url: picture1URL, ownerID: id1, width:"100", height:"500")
+        CloudantSyncClient.SharedInstance.createPictureDoc(displayNames[2], fileName: fileNames[2], url: picture1URL, ownerID: id1, width:"100", height:"500", oriendation:"up")
         // Picture 2
         let picture2URL = "http://media-cdn.tripadvisor.com/media/photo-s/02/92/12/75/sierra-del-carmen-sunset.jpg"
-        CloudantSyncClient.SharedInstance.createPictureDoc(displayNames[1], fileName: fileNames[1], url: picture2URL, ownerID: id2, width:"100", height:"500")
+        CloudantSyncClient.SharedInstance.createPictureDoc(displayNames[1], fileName: fileNames[1], url: picture2URL, ownerID: id2, width:"100", height:"500", oriendation:"up")
         // Picture 3
         let picture3URL = "https://www.flmnh.ufl.edu/fish/SouthFlorida/images/bocachita.JPG"
-        CloudantSyncClient.SharedInstance.createPictureDoc(displayNames[0], fileName: fileNames[0], url: picture3URL, ownerID: id3, width:"100", height:"500")
+        CloudantSyncClient.SharedInstance.createPictureDoc(displayNames[0], fileName: fileNames[0], url: picture3URL, ownerID: id3, width:"100", height:"500", oriendation:"up")
         
         // Run Query to get ALL pictures in BluePic
         let result = CloudantSyncClient.SharedInstance.getAllPictureDocs()
@@ -153,58 +153,6 @@ class CloudantSyncClientTests: XCTestCase {
         CloudantSyncClient.SharedInstance.deleteDoc(id1)
         CloudantSyncClient.SharedInstance.deleteDoc(id2)
         CloudantSyncClient.SharedInstance.deleteDoc(id3)
-        
-    }
-    
-    // Run this test to upload an image to object storage, create the picture document locally, and push that document to cloudant.
-    func testPrePopulate() {
-        xctExpectation = self.expectationWithDescription("Asynchronous request about to occur...")
-        // Create fake user
-        let id = "3958"
-        let name = "Maureen George"
-        CloudantSyncClient.SharedInstance.createProfileDoc(id, name: name)
-        // Authenticate
-        ObjectStorageDataManager.SharedInstance.objectStorageClient.authenticate({() in
-            print("success authenticating with object storage!")
-            // Create Container
-            ObjectStorageDataManager.SharedInstance.objectStorageClient.createContainer(id,
-                onSuccess: { (name: String) in
-                    print("CONTAINER CREATED")
-                    print(name)
-                    XCTAssertNotNil(name)
-                    let imageName = "puppy.png"
-                    let image = UIImage(named : "puppy")
-                    let width:String = (image?.size.width)!.description
-                    let height:String = (image?.size.height)!.description
-                    XCTAssertNotNil(image)
-                    // Upload Image
-                    ObjectStorageDataManager.SharedInstance.objectStorageClient.uploadImage(id, imageName: imageName, image: image!,
-                        onSuccess: { (imageURL: String) in
-                            XCTAssertNotNil(imageURL)
-                            print("imageURL: \(imageURL)")
-                            // Create local picture document
-                            CloudantSyncClient.SharedInstance.createPictureDoc("Cute Puppy", fileName: imageName, url: imageURL, ownerID: id, width: width, height: height)
-                            // Push document to remote Cloudant database
-                            CloudantSyncClient.SharedInstance.pushToRemoteDatabaseSynchronous()
-                            self.xctExpectation?.fulfill()
-                        }, onFailure: { (error) in
-                            print("error: \(error)")
-                            XCTFail(error)
-                            self.xctExpectation?.fulfill()
-                    })
-                }, onFailure: { (error) in
-                    print("error: \(error)")
-                    XCTFail(error)
-            })
-
-            }, onFailure: {(error) in
-                print("error authenticating with object storage: \(error)")
-        })
-        self.waitForExpectationsWithTimeout(50.0, handler:nil)
-        CloudantSyncClient.SharedInstance.deletePicturesOfUser(id)
-        CloudantSyncClient.SharedInstance.deleteDoc(id)
-        // Push document to remote Cloudant database
-        CloudantSyncClient.SharedInstance.pushToRemoteDatabaseSynchronous()
     }
     
     func testPerformanceExample() {

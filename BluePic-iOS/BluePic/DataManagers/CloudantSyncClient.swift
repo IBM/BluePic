@@ -62,7 +62,17 @@ class CloudantSyncClient {
             let path = storeURL.path
             self.manager = try CDTDatastoreManager(directory: path)
             self.datastore = try manager.datastoreNamed(dbName)
-            
+            // Initialize the push replicator
+            createPushReplicator()
+            // Initialize the pull replicator
+            createPullReplicator()
+        } catch {
+            print("Init, ERROR: \(error)")
+        }
+    }
+    
+    func createPushReplicator() {
+        do {
             //Initialize replicators
             let replicatorFactory = CDTReplicatorFactory(datastoreManager: manager)
             let s = "https://"+apiKey+":"+apiPassword+"@"+username+".cloudant.com/"+dbName
@@ -71,14 +81,25 @@ class CloudantSyncClient {
             let pushReplication = CDTPushReplication(source: datastore, target: remoteDatabaseURL)
             self.pushReplicator =  try replicatorFactory.oneWay(pushReplication)
             self.pushReplicator.delegate = pushDlgt;
+        } catch {
+            print("createPushReplicator, ERROR: \(error)")
+        }
+    }
+    
+    func createPullReplicator() {
+        do {
+            //Initialize replicators
+            let replicatorFactory = CDTReplicatorFactory(datastoreManager: manager)
+            let s = "https://"+apiKey+":"+apiPassword+"@"+username+".cloudant.com/"+dbName
+            let remoteDatabaseURL = NSURL(string: s)
             // Pull Replicate from remote database to the local
             let pullReplication = CDTPullReplication(source: remoteDatabaseURL, target: datastore)
             self.pullReplicator =  try replicatorFactory.oneWay(pullReplication)
             self.pullReplicator.delegate = pullDlgt;
-            
         } catch {
-            print("Init, ERROR: \(error)")
+            print("createPullReplicator, ERROR: \(error)")
         }
+        
     }
     
 /**
@@ -163,7 +184,7 @@ class CloudantSyncClient {
     }
     
     // Create a local picture document given an display name, file name, URL, owner.
-    func createPictureDoc(displayName:String, fileName:String, url:String, ownerID:String,width:String, height:String) -> CDTDocumentRevision? {
+    func createPictureDoc(displayName:String, fileName:String, url:String, ownerID:String,width:String, height:String, orientation:String) -> CDTDocumentRevision? {
         if(doesExist(ownerID)) {
             do {
                 // Get current timestamp
@@ -180,6 +201,7 @@ class CloudantSyncClient {
                     "ts":ts,
                     "width":width,
                     "height":height,
+                    "orientation":orientation,
                     "Type":"picture"]
                 // Save the document to the database
                 try datastore.createDocumentFromRevision(rev)
@@ -272,16 +294,10 @@ class CloudantSyncClient {
     // Push changes to remote database
     func pushToRemoteDatabase() {
         do {
-            //Initialize replicators
-            let replicatorFactory = CDTReplicatorFactory(datastoreManager: manager)
-            let s = "https://"+apiKey+":"+apiPassword+"@"+username+".cloudant.com/"+dbName
-            let remoteDatabaseURL = NSURL(string: s)
-            // Push Replicate from the local to remote database
-            let pushReplication = CDTPushReplication(source: datastore, target: remoteDatabaseURL)
-            self.pushReplicator =  try replicatorFactory.oneWay(pushReplication)
-            pushReplicator.delegate = pushDlgt;
+            //Initialize replicator
+            createPushReplicator()
             //Start the replicator
-            try pushReplicator.start()
+            try self.pushReplicator.start()
             
         } catch {
             print("Encountered an error: \(error)")
@@ -292,13 +308,7 @@ class CloudantSyncClient {
     func pushToRemoteDatabaseSynchronous() {
         do {
             //Initialize replicators
-            let replicatorFactory = CDTReplicatorFactory(datastoreManager: manager)
-            let s = "https://"+apiKey+":"+apiPassword+"@"+username+".cloudant.com/"+dbName
-            let remoteDatabaseURL = NSURL(string: s)
-            // Push Replicate from the local to remote database
-            let pushReplication = CDTPushReplication(source: datastore, target: remoteDatabaseURL)
-            self.pushReplicator =  try replicatorFactory.oneWay(pushReplication)
-            pushReplicator.delegate = pushDlgt;
+            createPushReplicator()
             //Start the replicator
             try self.pushReplicator.start()
             var count = 1
@@ -318,14 +328,8 @@ class CloudantSyncClient {
     // Pull changes from remote database
     func pullFromRemoteDatabase() {
         do {
-            //Initialize replicators
-            let replicatorFactory = CDTReplicatorFactory(datastoreManager: manager)
-            let s = "https://"+apiKey+":"+apiPassword+"@"+username+".cloudant.com/"+dbName
-            let remoteDatabaseURL = NSURL(string: s)
-            // Pull Replicate from remote database to the local
-            let pullReplication = CDTPullReplication(source: remoteDatabaseURL, target: datastore)
-            self.pullReplicator =  try replicatorFactory.oneWay(pullReplication)
-            pullReplicator.delegate = pullDlgt;
+            //Initialize replicator
+            createPullReplicator()
             //Start the replicator
             try pullReplicator.start()
             
@@ -337,14 +341,8 @@ class CloudantSyncClient {
     // Pull changes from remote database - BLOCKING
     func pullFromRemoteDatabaseSynchronous() {
         do {
-            //Initialize replicators
-            let replicatorFactory = CDTReplicatorFactory(datastoreManager: manager)
-            let s = "https://"+apiKey+":"+apiPassword+"@"+username+".cloudant.com/"+dbName
-            let remoteDatabaseURL = NSURL(string: s)
-            // Pull Replicate from remote database to the local
-            let pullReplication = CDTPullReplication(source: remoteDatabaseURL, target: datastore)
-            self.pullReplicator =  try replicatorFactory.oneWay(pullReplication)
-            pullReplicator.delegate = pullDlgt;
+            //Initialize replicator
+            createPullReplicator()
             //Start the replicator
             try pullReplicator.start()
             var count = 1
