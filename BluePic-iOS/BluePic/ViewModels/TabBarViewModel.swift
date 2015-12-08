@@ -22,17 +22,17 @@ class TabBarViewModel: NSObject {
 
     /// Boolean if showLoginScreen() has been called yet this app launch (should only try to show login once)
     var hasTriedToPresentLoginThisAppLaunch = false
-    var handleErrorStatesUponAppStartUpCallback : ((dataManagerNotification : DataManagerNotification)->())!
+    var passDataNotificationToTabBarVCCallback : ((dataManagerNotification : DataManagerNotification)->())!
     
     var feedViewModel : FeedViewModel!
     
     
-    init(handleErrorStatesUponAppStartUpCallback : ((dataManagerNotification: DataManagerNotification)->())){
+    init(passDataNotificationToTabBarVCCallback : ((dataManagerNotification: DataManagerNotification)->())){
         super.init()
         
-        self.handleErrorStatesUponAppStartUpCallback = handleErrorStatesUponAppStartUpCallback
+        self.passDataNotificationToTabBarVCCallback = passDataNotificationToTabBarVCCallback
         
-        DataManagerCalbackCoordinator.SharedInstance.addCallback(handleAppStartUpResult)
+        DataManagerCalbackCoordinator.SharedInstance.addCallback(handleDataManagerNotifications)
         
     }
     
@@ -45,24 +45,19 @@ class TabBarViewModel: NSObject {
             hasTriedToPresentLoginThisAppLaunch = true
             
             FacebookDataManager.SharedInstance.tryToShowLoginScreen()
-            
         }
     }
     
     
     
-    
-    
-    func handleAppStartUpResult(dataManagerNotification : DataManagerNotification){
+    func handleDataManagerNotifications(dataManagerNotification : DataManagerNotification){
         
-       handleErrorStatesUponAppStartUpCallback(dataManagerNotification: dataManagerNotification)
+       passDataNotificationToTabBarVCCallback(dataManagerNotification: dataManagerNotification)
   
     }
     
     
-    
-    
-    
+
     /**
      Retry pushing cloudant data upon error
      */
@@ -98,34 +93,5 @@ class TabBarViewModel: NSObject {
         }
         
     }
-    
-    
-    
-    func getHasTriedToPresentLoginThisAppLaunch() -> Bool{
-        
-        return hasTriedToPresentLoginThisAppLaunch
-        
-    }
-    
-    
-    func setHasTriedToPresentLoginThisAppLaunchToTrue(){
-        
-        hasTriedToPresentLoginThisAppLaunch = true
-        
-    }
-    
-    
-    
-//    func getFeedViewModel() -> FeedViewModel {
-//        
-//        if(feedViewModel == nil){
-//            feedViewModel = FeedViewModel()
-//            return feedViewModel
-//        }
-//        else{
-//            
-//            return feedViewModel
-//        }
-//    }
   
 }

@@ -22,7 +22,7 @@ class TabBarViewController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        viewModel = TabBarViewModel(handleErrorStatesUponAppStartUpCallback: handleErrorStatesUponAppStartUp)
+        viewModel = TabBarViewModel(passDataNotificationToTabBarVCCallback: handleDataNotification)
         
         self.tabBar.tintColor! = UIColor.whiteColor()
         
@@ -53,11 +53,7 @@ class TabBarViewController: UITabBarController {
         // Dispose of any resources that can be recreated.
     }
     
-//    func setupFeedViewModel() {
-//        self.feedVC = self.viewControllers![0] as! FeedViewController
-//        
-//        feedVC.viewModel = viewModel.getFeedViewModel()
-//    }
+
     
     func setupFeedVC(){
         self.feedVC = self.viewControllers![0] as! FeedViewController
@@ -79,26 +75,16 @@ class TabBarViewController: UITabBarController {
     
     
     func tryToShowLogin() {
-        
     
         viewModel.tryToShowLogin()
-        
-        
-//        let hasTriedToPresentLoginThisAppLaunch = viewModel.getHasTriedToPresentLoginThisAppLaunch()
-//        
-//        if (!hasTriedToPresentLoginThisAppLaunch) {
-//            self.view.userInteractionEnabled = false
-//            viewModel.setHasTriedToPresentLoginThisAppLaunchToTrue()
-//            FacebookDataManager.SharedInstance.tryToShowLoginScreen(self)
-//        } 
         
     }
     
     
-    func handleErrorStatesUponAppStartUp(dataManagerNotification : DataManagerNotification){
+    func handleDataNotification(dataManagerNotification : DataManagerNotification){
         
         if(dataManagerNotification == DataManagerNotification.GotPastLoginCheck){
-            hideBackgroundImageAndStartLoading()
+            hideBackgroundImage()
         }
         else if(dataManagerNotification == DataManagerNotification.ObjectStorageAuthError){
             showObjectStorageErrorAlert()
@@ -116,25 +102,11 @@ class TabBarViewController: UITabBarController {
     }
     
     
-    func hideBackgroundImageAndStartLoading() {
+    func hideBackgroundImage() {
         
         //hide temp background image used to prevent flash animation
         self.backgroundImageView.hidden = true
         self.backgroundImageView.removeFromSuperview()
-        //self.feedVC.logoImageView.startRotating(1) //animate rotating logo with certain speed
-        
-    }
-    
-    
-    /**
-     Stop loading image view in feedVC once pulling is finished
-     */
-    func stopLoadingImageView() {
-        dispatch_async(dispatch_get_main_queue()) {
-            print("PULL complete, stopping loading")
-            self.view.userInteractionEnabled = true
-           // self.feedVC.logoImageView.stopRotating()
-        }
         
     }
     
@@ -197,51 +169,17 @@ class TabBarViewController: UITabBarController {
         
         let loginVC = Utils.vcWithNameFromStoryboardWithName("loginVC", storyboardName: "Main") as! LoginViewController
         self.presentViewController(loginVC, animated: false, completion: { _ in
-            self.hideBackgroundImageAndStartLoading()
+            self.hideBackgroundImage()
             print(NSLocalizedString("user needs to log into Facebook, showing login", comment: ""))
         })
    
     }
     
     
-    
-//    /**
-//     Retry pulling cloudant data upon error
-//     */
-//    func retryPullingCloudantData() {
-//        //CloudantSyncClient.SharedInstance.pullReplicator.stop()
-//        CloudantSyncClient.SharedInstance.pullFromRemoteDatabase()
-//        dispatch_async(dispatch_get_main_queue()) {
-//            print("Retrying to pull Cloudant data")
-//            
-//            FacebookDataManager.SharedInstance.tryToShowLoginScreen(self)
-//            
-//        }
-//    }
-//    
-//    
-//    /**
-//     Retry authenticating with object storage upon error
-//     */
-//    func retryAuthenticatingObjectStorage() {
-//        dispatch_async(dispatch_get_main_queue()) {
-//            print("Retrying to authenticate with Object Storage")
-//            
-//            FacebookDataManager.SharedInstance.tryToShowLoginScreen(self)
-//            
-//        }
-//        
-//    }
-    
-
-
-    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        
-        
         
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
