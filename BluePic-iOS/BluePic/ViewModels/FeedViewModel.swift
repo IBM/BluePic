@@ -9,17 +9,6 @@
 import UIKit
 
 
-//enum FeedViewModelNotification {
-//    case stopLoadingImageView
-//    case hideBackgroundImageAndStartLoading
-//    case stopLoadingImageView
-//    case showCloudantPushingErrorAlert
-//    case showCloudantPullingErrorAlert
-//    case presentLoginVC
-//}
-
-
-
 class FeedViewModel: NSObject {
 
     let kNumberOfSectionsInCollectionView = 1
