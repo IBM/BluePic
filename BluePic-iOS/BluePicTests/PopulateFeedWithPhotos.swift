@@ -15,8 +15,6 @@ class PopulateFeedWithPhotos: XCTestCase {
     
     var imageNames: [String: String]!
     
-    var imageCount: Int!
-    
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -26,7 +24,6 @@ class PopulateFeedWithPhotos: XCTestCase {
             "photo1": "Mountains",
             "photo2": "Fog",
             "photo3": "Island"]
-        self.imageCount = self.imageNames.count
     }
     
     override func tearDown() {
@@ -75,6 +72,8 @@ class PopulateFeedWithPhotos: XCTestCase {
      */
     func postPhotoForTests(FBUserID: String!) {
         print("uploading photo to object storage...")
+        var imageCount = self.imageNames.count //keep track of how many images left to upload
+        
         for (picture_name, caption) in self.imageNames { //loop through all images
             let imageName = picture_name + ".JPG"
             let highResImage = UIImage(named : picture_name)
@@ -82,8 +81,8 @@ class PopulateFeedWithPhotos: XCTestCase {
             let image = UIImage(data: photoNSData)
             
             XCTAssertNotNil(image)
-            // Upload Image
             
+            // Upload Image
         //push to object storage, then on success push to cloudant sync
         ObjectStorageDataManager.SharedInstance.objectStorageClient.uploadImage(FBUserID, imageName: imageName, image: image!,
             onSuccess: { (imageURL: String) in
@@ -93,9 +92,9 @@ class PopulateFeedWithPhotos: XCTestCase {
                 print("creating cloudant picture document...")
                 CloudantSyncClient.SharedInstance.createPictureDoc(caption, fileName: imageName, url: imageURL, ownerID: FBUserID, width: "\(image!.size.width)", height: "\(image!.size.height)")
                 
-                self.imageCount = self.imageCount - 1 //decrement number of images to upload remaining
+                imageCount-- //decrement number of images to upload remaining
                 //check if test is done (all photos uploaded)
-                if (self.imageCount == 0) { 
+                if (imageCount == 0) {
                     CloudantSyncClient.SharedInstance.pushToRemoteDatabaseSynchronous()
                     self.xctExpectation?.fulfill() //test is done if all images added
                 }
