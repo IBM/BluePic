@@ -254,9 +254,12 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
         
         //show image on confirmationView, save a copy
         let takenImage = info[UIImagePickerControllerOriginalImage] as! UIImage
-        self.confirmationView.photoImageView.image = takenImage
-        let photoNSData = takenImage.lowestQualityJPEGNSData
-        self.lastPhotoTaken = UIImage(data: photoNSData)
+        print("original image width: \(takenImage.size.width) height: \(takenImage.size.height)")
+        self.lastPhotoTaken = UIImage.resizeImage(takenImage, newWidth: 520)
+        print("resized image width: \(self.lastPhotoTaken.size.width) height: \(self.lastPhotoTaken.size.height)")
+        self.confirmationView.photoImageView.image = self.lastPhotoTaken
+
+        
         
         //save name of image as current date and time
         let dateFormatter = NSDateFormatter()
