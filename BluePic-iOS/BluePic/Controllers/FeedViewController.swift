@@ -30,7 +30,7 @@ class FeedViewController: UIViewController {
     
     override func viewDidAppear(animated: Bool) {
         
-
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -52,8 +52,8 @@ class FeedViewController: UIViewController {
         
         
         self.refreshControl = UIRefreshControl()
-        self.refreshControl.backgroundColor = UIColor.clearColor()
-        self.refreshControl.tintColor = UIColor.clearColor()
+        //self.refreshControl.backgroundColor = UIColor.clearColor()
+        //self.refreshControl.tintColor = UIColor.clearColor()
         self.refreshControl.addTarget(self, action: "refresh", forControlEvents: UIControlEvents.ValueChanged)
         self.refreshControl.hidden = true
         
@@ -67,6 +67,8 @@ class FeedViewController: UIViewController {
     }
     
     func refresh(){
+        
+        logoImageView.startRotating(1)
         self.refreshControl.endRefreshing()
         
         
@@ -130,4 +132,18 @@ extension FeedViewController: UICollectionViewDelegateFlowLayout {
 
 
 
+}
+
+
+
+extension FeedViewController : UIScrollViewDelegate {
+    
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        
+        print(scrollView.contentOffset)
+        
+        
+    }
+    
+    
 }
