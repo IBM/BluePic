@@ -154,7 +154,7 @@ class ObjectStorageClient {
      * @param onSuccess Closure that should be invoked upon succcessful completion.
      * @param onFailure Closure that should be invoked upon failure.
      */
-    func executeCall(mutableURLRequest: NSMutableURLRequest, successCodes: [Int],
+    private func executeCall(mutableURLRequest: NSMutableURLRequest, successCodes: [Int],
         onSuccess: (headers: [NSObject : AnyObject]?) -> Void, onFailure: (error: String) -> Void) {
             // Fire off HTTP request
             Alamofire.request(mutableURLRequest).responseJSON {response in
