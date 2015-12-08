@@ -106,6 +106,28 @@ class ObjectStorageClientTests: XCTestCase {
     }
     
     /**
+     * Tests uploading an image to the Object Storage service.
+     * If the credentials used are invalid, authentication will fail and, as a consequence, this test method will also fail.
+     */
+    func testUploadImageToInvalidContainer() {
+        let testName = "testUploadImageToInvalidContainer"
+        authenticate(testName, onSuccess: {
+            let imageName = "puppy.png"
+            let image = UIImage(named : "puppy")
+            XCTAssertNotNil(image)
+            self.objectStorageClient.uploadImage("invalid-container-name", imageName: imageName, image: image!,
+                onSuccess: { (imageURL: String) in
+                    print("\(testName) failed! Somehow you uploaded an image to a container that does not exist!")
+                    self.xctExpectation?.fulfill()
+                }, onFailure: { (error) in
+                    print("\(testName) succeeded.")
+                    self.xctExpectation?.fulfill()
+            })
+        })
+        self.waitForExpectationsWithTimeout(50.0, handler:nil)
+    }
+    
+    /**
      * Tests that without an authenticaed user, no action can be performed.
      */
     func testNonAuthenticated() {
