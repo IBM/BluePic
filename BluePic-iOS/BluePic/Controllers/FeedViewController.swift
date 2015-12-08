@@ -16,6 +16,8 @@ class FeedViewController: UIViewController {
     
     var viewModel : FeedViewModel!
     
+    var refreshControl:UIRefreshControl!
+    
     let kMinimumInterItemSpacingForSectionAtIndex : CGFloat = 0
     
     override func viewDidLoad() {
@@ -47,12 +49,27 @@ class FeedViewController: UIViewController {
         collectionView.dataSource = self
         
         Utils.registerNibWithCollectionView("ImageFeedCollectionViewCell", collectionView: collectionView)
+        
+        
+        self.refreshControl = UIRefreshControl()
+        self.refreshControl.backgroundColor = UIColor.clearColor()
+        self.refreshControl.tintColor = UIColor.clearColor()
+        self.refreshControl.addTarget(self, action: "refresh", forControlEvents: UIControlEvents.ValueChanged)
+        self.refreshControl.hidden = true
+        
+        self.collectionView.addSubview(refreshControl)
     }
     
     
     func reloadDataInCollectionView(){
         
         collectionView.reloadData()
+    }
+    
+    func refresh(){
+        self.refreshControl.endRefreshing()
+        
+        
     }
     
     
