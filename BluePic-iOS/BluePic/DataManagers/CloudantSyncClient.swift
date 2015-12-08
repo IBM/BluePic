@@ -54,6 +54,15 @@ class CloudantSyncClient {
         self.username = username
         self.pushDlgt = pushDelegate()
         self.pullDlgt = pullDelegate()
+        // Create local datastore
+        createLocalDatastore()
+        // Initialize the push replicator
+        createPushReplicator()
+        // Initialize the pull replicator
+        createPullReplicator()
+    }
+    
+    func createLocalDatastore() {
         do {
             // Create local datastore
             let fileManager = NSFileManager.defaultManager()
@@ -67,7 +76,7 @@ class CloudantSyncClient {
             // Initialize the pull replicator
             createPullReplicator()
         } catch {
-            print("Init, ERROR: \(error)")
+            print("createLocalDatastore, ERROR: \(error)")
         }
     }
     
