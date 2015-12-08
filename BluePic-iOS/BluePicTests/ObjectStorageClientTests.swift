@@ -2,6 +2,10 @@
 //  ObjectStorageClientTests.swift
 //  BluePic
 //
+//  For more infor on how to write test methods that test async functionality, please see the following URLs:
+//     http://nshipster.com/xctestcase/
+//     https://www.bignerdranch.com/blog/asynchronous-testing-with-xcode-6/
+//
 //  Created by Ricardo Olivieri on 11/17/15.
 //  Copyright © 2015 MIL. All rights reserved.
 //
@@ -9,6 +13,9 @@
 import XCTest
 @testable import BluePic
 
+/**
+ * Test class for the ObjectStorageClient class.
+ */
 class ObjectStorageClientTests: XCTestCase {
     
     var objectStorageClient: ObjectStorageClient!
@@ -36,6 +43,10 @@ class ObjectStorageClientTests: XCTestCase {
         xctExpectation = nil
     }
     
+    /**
+     * Tests authentication against the Object Storage service. 
+     * If the credentials used are invalid, authentication will fail and, as a consequence, this test method will also fail.
+     */
     func testAuthenticate() {
         let testName = "testAuthenticate"
         authenticate(testName, onSuccess: {
@@ -45,6 +56,10 @@ class ObjectStorageClientTests: XCTestCase {
         self.waitForExpectationsWithTimeout(20.0, handler:nil)
     }
     
+    /**
+     * Tests the creation of a container on the Object Storage service.
+     * If the credentials used are invalid, authentication will fail and, as a consequence, this test method will also fail.
+     */
     func testCreateContainer() {
         let testName = "testCreateContainer"
         authenticate(testName, onSuccess: {
@@ -63,6 +78,10 @@ class ObjectStorageClientTests: XCTestCase {
         self.waitForExpectationsWithTimeout(50.0, handler:nil)
     }
     
+    /**
+     * Tests uploading an image to the Object Storage service.
+     * If the credentials used are invalid, authentication will fail and, as a consequence, this test method will also fail.
+     */
     func testUploadImage() {
         let testName = "testUploadImage"
         authenticate(testName, onSuccess: {
@@ -86,6 +105,9 @@ class ObjectStorageClientTests: XCTestCase {
         self.waitForExpectationsWithTimeout(50.0, handler:nil)
     }
     
+    /**
+     * Tests that without an authenticaed user, no action can be performed.
+     */
     func testNonAuthenticated() {
         XCTAssertFalse(self.objectStorageClient.isAuthenticated())
         self.objectStorageClient.createContainer(self.containerName,
@@ -101,7 +123,7 @@ class ObjectStorageClientTests: XCTestCase {
     }
     
     /**
-     * Convenience method for authenticating.
+     * Convenience method for authenticating. This method is leveraged by each one of the test methods.
      */
     func authenticate(testName: String, onSuccess: () -> Void) {
         objectStorageClient.authenticate({() in
