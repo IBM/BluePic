@@ -7,14 +7,14 @@
 //
 
 
-enum AppStartUpResult {
-    case showObjectStorageErrorAlert
-    case hideBackgroundImageAndStartLoading
-    case stopLoadingImageView
-    case showCloudantPushingErrorAlert
-    case showCloudantPullingErrorAlert
-    case presentLoginVC
-}
+//enum AppStartUpResult {
+//    case showObjectStorageErrorAlert
+//    case hideBackgroundImageAndStartLoading
+//    case stopLoadingImageView
+//    case showCloudantPushingErrorAlert
+//    case showCloudantPullingErrorAlert
+//    case presentLoginVC
+//}
 
 
 
@@ -22,29 +22,29 @@ class TabBarViewModel: NSObject {
 
     /// Boolean if showLoginScreen() has been called yet this app launch (should only try to show login once)
     var hasTriedToPresentLoginThisAppLaunch = false
-    var handleErrorStatesUponAppStartUpCallback : ((appStartUpResult : AppStartUpResult)->())!
+    var handleErrorStatesUponAppStartUpCallback : ((dataManagerNotification : DataManagerNotification)->())!
     
     var feedViewModel : FeedViewModel!
     
     
-    init(handleErrorStatesUponAppStartUpCallback : ((appStartUpResult : AppStartUpResult)->())){
+    init(handleErrorStatesUponAppStartUpCallback : ((dataManagerNotification: DataManagerNotification)->())){
         super.init()
         
         self.handleErrorStatesUponAppStartUpCallback = handleErrorStatesUponAppStartUpCallback
         
+        DataManagerCalbackCoordinator.SharedInstance.addCallback(handleAppStartUpResult)
+        
     }
     
     
     
-    func tryToShowLogin(callback : ((userInteractionEnabled : Bool)->())){
+    func tryToShowLogin(){
         
         if(!hasTriedToPresentLoginThisAppLaunch){
-            callback(userInteractionEnabled: false)
-            
+           
             hasTriedToPresentLoginThisAppLaunch = true
             
-            FacebookDataManager.SharedInstance.tryToShowLoginScreen(handleAppStartUpResult)
-            
+            FacebookDataManager.SharedInstance.tryToShowLoginScreen()
             
         }
     }
@@ -53,17 +53,9 @@ class TabBarViewModel: NSObject {
     
     
     
-    func handleAppStartUpResult(appStartUpResult : AppStartUpResult){
+    func handleAppStartUpResult(dataManagerNotification : DataManagerNotification){
         
-        if(appStartUpResult == AppStartUpResult.stopLoadingImageView){
-            dispatch_async(dispatch_get_main_queue()) {
-
-               self.feedViewModel.getPictureObjects()
-            }
-        }
-        
-        
-       handleErrorStatesUponAppStartUpCallback(appStartUpResult: appStartUpResult)
+       handleErrorStatesUponAppStartUpCallback(dataManagerNotification: dataManagerNotification)
   
     }
     
@@ -88,7 +80,7 @@ class TabBarViewModel: NSObject {
         dispatch_async(dispatch_get_main_queue()) {
             print("Retrying to pull Cloudant data")
             
-            FacebookDataManager.SharedInstance.tryToShowLoginScreen(self.handleAppStartUpResult)
+            FacebookDataManager.SharedInstance.tryToShowLoginScreen()
             
         }
     }
@@ -101,7 +93,7 @@ class TabBarViewModel: NSObject {
         dispatch_async(dispatch_get_main_queue()) {
             print("Retrying to authenticate with Object Storage")
             
-            FacebookDataManager.SharedInstance.tryToShowLoginScreen(self.handleAppStartUpResult)
+            FacebookDataManager.SharedInstance.tryToShowLoginScreen()
             
         }
         
@@ -124,17 +116,16 @@ class TabBarViewModel: NSObject {
     
     
     
-    func getFeedViewModel() -> FeedViewModel {
-        
-        if(feedViewModel == nil){
-            feedViewModel = FeedViewModel()
-            return feedViewModel
-        }
-        else{
-            
-            return feedViewModel
-        }
-        
-    }
+//    func getFeedViewModel() -> FeedViewModel {
+//        
+//        if(feedViewModel == nil){
+//            feedViewModel = FeedViewModel()
+//            return feedViewModel
+//        }
+//        else{
+//            
+//            return feedViewModel
+//        }
+//    }
   
 }

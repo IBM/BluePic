@@ -228,22 +228,24 @@ class FacebookDataManager: NSObject {
      
      - parameter presentingVC: tab bar VC to show error alert if it occurs
      */
-    func tryToShowLoginScreen(handleAppStartUpResultCallback: ((appStartUpResult : AppStartUpResult)->())) {
+    func tryToShowLoginScreen() {
         //authenticate with object storage every time opening app, try to show facebook login once completed
         if (!ObjectStorageDataManager.SharedInstance.objectStorageClient.isAuthenticated()) { //try to authenticate if not authenticated
             print("Attempting to authenticate with Object storage...")
             ObjectStorageDataManager.SharedInstance.objectStorageClient.authenticate({() in
                     print("success authenticating with object storage!")
-                    self.showLoginIfUserNotAuthenticated(handleAppStartUpResultCallback)
+                    self.showLoginIfUserNotAuthenticated()
                 }, onFailure: {(error) in
                     print("error authenticating with object storage: \(error)")
                     //presentingVC.showObjectStorageErrorAlert()
-                    handleAppStartUpResultCallback(appStartUpResult: AppStartUpResult.showObjectStorageErrorAlert)
+                    
+                    DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.ObjectStorageAuthError)
+                    //handleAppStartUpResultCallback(appStartUpResult: DataManagerNotification.showObjectStorageErrorAlert)
             })
         }
         else { //if already authenticated with object storage, just try to show facebook login
             print("Object storage already authenticated somehow!")
-            self.showLoginIfUserNotAuthenticated(handleAppStartUpResultCallback)
+            self.showLoginIfUserNotAuthenticated()
             
         }
    
@@ -256,10 +258,10 @@ class FacebookDataManager: NSObject {
      
      - parameter presentingVC: tab bar VC to present login VC on
      */
-    func showLoginIfUserNotAuthenticated(handleAppStartUpResultCallback: ((appStartUpResult : AppStartUpResult)->())) {
+    func showLoginIfUserNotAuthenticated() {
         //start pulling from cloudant sync (will automatically hide loading when successful)
         print("Pulling latest cloudant data...")
-        self.pullLatestCloudantData(handleAppStartUpResultCallback)
+        self.pullLatestCloudantData()
         
         //check if user is already authenticated previously
         print("Checking if user is authenticated with facebook...")
@@ -268,7 +270,8 @@ class FacebookDataManager: NSObject {
                 self.fbUserDisplayName = userName
                 self.fbUniqueUserID = userID
                 //presentingVC.hideBackgroundImageAndStartLoading()
-                handleAppStartUpResultCallback(appStartUpResult: AppStartUpResult.hideBackgroundImageAndStartLoading)
+                //handleAppStartUpResultCallback(appStartUpResult: DataManagerNotification.hideBackgroundImageAndStartLoading)
+                DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.GotPastLoginCheck)
                 print("User already logged into Facebook. Welcome back, user \(userID)!")
             }
         }
@@ -281,11 +284,13 @@ class FacebookDataManager: NSObject {
 //                    presentingVC.hideBackgroundImageAndStartLoading()
 //                    print("user needs to log into Facebook, showing login")
 //                })
-                handleAppStartUpResultCallback(appStartUpResult: AppStartUpResult.hideBackgroundImageAndStartLoading)
+                //handleAppStartUpResultCallback(appStartUpResult: DataManagerNotification.hideBackgroundImageAndStartLoading)
+                DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.UserNotAuthenticated)
                 
             } else { //user pressed "sign in later"
                 //presentingVC.hideBackgroundImageAndStartLoading()
-                handleAppStartUpResultCallback(appStartUpResult: AppStartUpResult.hideBackgroundImageAndStartLoading)
+                DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.GotPastLoginCheck)
+                //handleAppStartUpResultCallback(appStartUpResult: DataManagerNotification.hideBackgroundImageAndStartLoading)
                 
                 print("user pressed sign in later button")
                 
@@ -298,9 +303,9 @@ class FacebookDataManager: NSObject {
     
     
     
-    func pullLatestCloudantData(handleAppStartUpResultCallback: ((appStartUpResult : AppStartUpResult)->())) {
+    func pullLatestCloudantData() {
         
-        CloudantSyncClient.SharedInstance.setHandleAppStartUpResultCallback(handleAppStartUpResultCallback)
+        //CloudantSyncClient.SharedInstance.setHandleAppStartUpResultCallback(handleAppStartUpResultCallback)
         
         //First do a pull to make sure datastore is up to date
         CloudantSyncClient.SharedInstance.pullFromRemoteDatabase()

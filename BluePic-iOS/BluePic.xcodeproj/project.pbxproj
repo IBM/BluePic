@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1B057E041C17637700AC21EE /* DataManagerCalbackCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B057E031C17637700AC21EE /* DataManagerCalbackCoordinator.swift */; };
 		1B3BA0761C0F5FBD0064C850 /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = 1B3BA0751C0F5FBD0064C850 /* .gitkeep */; };
 		1B3BA0781C0F62850064C850 /* Picture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3BA0771C0F62850064C850 /* Picture.swift */; };
 		1B5555BE1C1616B000B3086E /* TabBarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B5555BD1C1616B000B3086E /* TabBarViewModel.swift */; };
@@ -112,6 +113,7 @@
 
 /* Begin PBXFileReference section */
 		11F4C7A29750E1B7B37ABAFA /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		1B057E031C17637700AC21EE /* DataManagerCalbackCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataManagerCalbackCoordinator.swift; sourceTree = "<group>"; };
 		1B3BA0751C0F5FBD0064C850 /* .gitkeep */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		1B3BA0771C0F62850064C850 /* Picture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Picture.swift; sourceTree = "<group>"; };
 		1B5555BD1C1616B000B3086E /* TabBarViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarViewModel.swift; sourceTree = "<group>"; };
@@ -379,6 +381,7 @@
 				34CA181F1C04CB6700EC2636 /* ObjectStorageDataManager.swift */,
 				34C809541BFD0F2400C48004 /* FacebookDataManager.swift */,
 				346F947B1C0F868C004999A8 /* CameraDataManager.swift */,
+				1B057E031C17637700AC21EE /* DataManagerCalbackCoordinator.swift */,
 			);
 			path = DataManagers;
 			sourceTree = "<group>";
@@ -642,6 +645,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1B057E041C17637700AC21EE /* DataManagerCalbackCoordinator.swift in Sources */,
 				346F94821C0F9225004999A8 /* CameraConfirmationView.swift in Sources */,
 				347472DD1BFA8DEF0018B7F6 /* DoubleExtension.swift in Sources */,
 				347472E91BFA8DEF0018B7F6 /* UILabelExtension.swift in Sources */,

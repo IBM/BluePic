@@ -25,6 +25,8 @@ class FeedViewController: UIViewController {
         
         setupCollectionView()
         setupViewModel()
+        
+        logoImageView.startRotating(1.0)
        
     }
     
@@ -38,10 +40,12 @@ class FeedViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    
+    
     func setupViewModel(){
-        viewModel.refreshVCCallback = reloadDataInCollectionView
-        viewModel.getPictureObjects()
+        viewModel = FeedViewModel(refreshCallback: reloadDataInCollectionView)
     }
+    
     
     func setupCollectionView(){
         
@@ -50,11 +54,8 @@ class FeedViewController: UIViewController {
         
         Utils.registerNibWithCollectionView("ImageFeedCollectionViewCell", collectionView: collectionView)
         
-        
         self.refreshControl = UIRefreshControl()
-        //self.refreshControl.backgroundColor = UIColor.clearColor()
-        //self.refreshControl.tintColor = UIColor.clearColor()
-        self.refreshControl.addTarget(self, action: "refresh", forControlEvents: UIControlEvents.ValueChanged)
+        self.refreshControl.addTarget(self, action: "userTriggeredRefresh", forControlEvents: UIControlEvents.ValueChanged)
         self.refreshControl.hidden = true
         
         self.collectionView.addSubview(refreshControl)
@@ -64,13 +65,17 @@ class FeedViewController: UIViewController {
     func reloadDataInCollectionView(){
         
         collectionView.reloadData()
+        logoImageView.stopRotating()
     }
     
-    func refresh(){
+    
+    
+    func userTriggeredRefresh(){
         
         logoImageView.startRotating(1)
         self.refreshControl.endRefreshing()
         
+        viewModel.repullForNewData()
         
     }
     
@@ -105,20 +110,14 @@ extension FeedViewController: UICollectionViewDataSource {
         return viewModel.numberOfSectionsInCollectionView()
     }
     
-    
 }
 
 
 extension FeedViewController: UICollectionViewDelegate {
     
-    
-    
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-    
             print(indexPath.row)
-        
     }
-    
     
 }
 
@@ -132,18 +131,4 @@ extension FeedViewController: UICollectionViewDelegateFlowLayout {
 
 
 
-}
-
-
-
-extension FeedViewController : UIScrollViewDelegate {
-    
-    func scrollViewDidScroll(scrollView: UIScrollView) {
-        
-        print(scrollView.contentOffset)
-        
-        
-    }
-    
-    
 }

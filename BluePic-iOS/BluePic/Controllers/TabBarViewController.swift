@@ -30,12 +30,15 @@ class TabBarViewController: UITabBarController {
         
         self.delegate = self
         
-        self.setupFeedViewModel()
+        //self.setupFeedViewModel()
     }
+    
     
     override func viewWillAppear(animated: Bool) {
         
     }
+    
+    
     
     override func viewDidAppear(animated: Bool) {
         
@@ -50,11 +53,11 @@ class TabBarViewController: UITabBarController {
         // Dispose of any resources that can be recreated.
     }
     
-    func setupFeedViewModel() {
-        self.feedVC = self.viewControllers![0] as! FeedViewController
-        
-        feedVC.viewModel = viewModel.getFeedViewModel()
-    }
+//    func setupFeedViewModel() {
+//        self.feedVC = self.viewControllers![0] as! FeedViewController
+//        
+//        feedVC.viewModel = viewModel.getFeedViewModel()
+//    }
     
     func setupFeedVC(){
         self.feedVC = self.viewControllers![0] as! FeedViewController
@@ -78,11 +81,7 @@ class TabBarViewController: UITabBarController {
     func tryToShowLogin() {
         
     
-        viewModel.tryToShowLogin(({ userInteractionEnabled in
-            
-            self.view.userInteractionEnabled = userInteractionEnabled
-            
-        }))
+        viewModel.tryToShowLogin()
         
         
 //        let hasTriedToPresentLoginThisAppLaunch = viewModel.getHasTriedToPresentLoginThisAppLaunch()
@@ -96,24 +95,21 @@ class TabBarViewController: UITabBarController {
     }
     
     
-    func handleErrorStatesUponAppStartUp(appStartUpResult : AppStartUpResult){
+    func handleErrorStatesUponAppStartUp(dataManagerNotification : DataManagerNotification){
         
-        if(appStartUpResult == AppStartUpResult.hideBackgroundImageAndStartLoading){
+        if(dataManagerNotification == DataManagerNotification.GotPastLoginCheck){
             hideBackgroundImageAndStartLoading()
         }
-        else if(appStartUpResult == AppStartUpResult.stopLoadingImageView){
-            stopLoadingImageView()
-        }
-        else if(appStartUpResult == AppStartUpResult.showObjectStorageErrorAlert){
+        else if(dataManagerNotification == DataManagerNotification.ObjectStorageAuthError){
             showObjectStorageErrorAlert()
         }
-        else if(appStartUpResult == AppStartUpResult.showCloudantPushingErrorAlert){
+        else if(dataManagerNotification == DataManagerNotification.CloudantPushDataFailiure){
             showCloudantPushingErrorAlert()
         }
-        else if(appStartUpResult == AppStartUpResult.showCloudantPullingErrorAlert){
+        else if(dataManagerNotification == DataManagerNotification.CloudantPullDataFailure){
             showCloudantPullingErrorAlert()
         }
-        else if(appStartUpResult == AppStartUpResult.presentLoginVC){
+        else if(dataManagerNotification == DataManagerNotification.UserNotAuthenticated){
             presentLoginVC()
         }
         
@@ -125,10 +121,9 @@ class TabBarViewController: UITabBarController {
         //hide temp background image used to prevent flash animation
         self.backgroundImageView.hidden = true
         self.backgroundImageView.removeFromSuperview()
-        self.feedVC.logoImageView.startRotating(1) //animate rotating logo with certain speed
+        //self.feedVC.logoImageView.startRotating(1) //animate rotating logo with certain speed
         
     }
-    
     
     
     /**
@@ -138,7 +133,7 @@ class TabBarViewController: UITabBarController {
         dispatch_async(dispatch_get_main_queue()) {
             print("PULL complete, stopping loading")
             self.view.userInteractionEnabled = true
-            self.feedVC.logoImageView.stopRotating()
+           // self.feedVC.logoImageView.stopRotating()
         }
         
     }

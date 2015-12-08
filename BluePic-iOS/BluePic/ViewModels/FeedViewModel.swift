@@ -9,6 +9,16 @@
 import UIKit
 
 
+//enum FeedViewModelNotification {
+//    case stopLoadingImageView
+//    case hideBackgroundImageAndStartLoading
+//    case stopLoadingImageView
+//    case showCloudantPushingErrorAlert
+//    case showCloudantPullingErrorAlert
+//    case presentLoginVC
+//}
+
+
 
 class FeedViewModel: NSObject {
 
@@ -19,19 +29,40 @@ class FeedViewModel: NSObject {
     
     
     
-//    init(refreshCallback : (()->())){
-//        super.init()
-//        
-//        self.refreshCallback = refreshCallback
-//        
-//        getPictureObjects()
-//    }
+    init(refreshCallback : (()->())){
+        super.init()
+        
+        self.refreshVCCallback = refreshCallback
+        
+        DataManagerCalbackCoordinator.SharedInstance.addCallback(handleDataManagerNotification)
+        
+        getPictureObjects()
+    }
+    
+    
+    
+    func handleDataManagerNotification(dataManagerNotification : DataManagerNotification){
+        
+        if(dataManagerNotification == DataManagerNotification.CloudantPullDataSuccess){
+            
+            getPictureObjects()
+            
+        }
+    }
+    
+    
+    func repullForNewData(){
+        CloudantSyncClient.SharedInstance.pullFromRemoteDatabase()
+    }
     
     
     func getPictureObjects(){
         pictureDataArray = CloudantSyncClient.SharedInstance.getAllPictureObjects()
         
-        callRefreshCallBack()
+        
+         dispatch_async(dispatch_get_main_queue()) {
+            self.callRefreshCallBack()
+        }
     }
     
     
