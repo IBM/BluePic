@@ -77,20 +77,20 @@ class PopulateFeedWithPhotos: XCTestCase {
         for (picture_name, caption) in self.imageNames { //loop through all images
             let imageName = picture_name + ".JPG"
             let highResImage = UIImage(named : picture_name)
-            let photoNSData = highResImage!.lowestQualityJPEGNSData
-            let image = UIImage(data: photoNSData)
-            
+            print("original image width: \(highResImage!.size.width) height: \(highResImage!.size.height)")
+            let image = UIImage.resizeImage(highResImage!, newWidth: 520)
+            print("resized image width: \(image.size.width) height: \(image.size.height)")
             XCTAssertNotNil(image)
             
             // Upload Image
         //push to object storage, then on success push to cloudant sync
-        ObjectStorageDataManager.SharedInstance.objectStorageClient.uploadImage(FBUserID, imageName: imageName, image: image!,
+        ObjectStorageDataManager.SharedInstance.objectStorageClient.uploadImage(FBUserID, imageName: imageName, image: image,
             onSuccess: { (imageURL: String) in
                 XCTAssertNotNil(imageURL)
                 print("upload of \(imageName) to object storage succeeded.")
                 print("imageURL: \(imageURL)")
                 print("creating cloudant picture document...")
-                CloudantSyncClient.SharedInstance.createPictureDoc(caption, fileName: imageName, url: imageURL, ownerID: FBUserID, width: "\(image!.size.width)", height: "\(image!.size.height)", orientation: "\(image!.imageOrientation.rawValue)")
+                CloudantSyncClient.SharedInstance.createPictureDoc(caption, fileName: imageName, url: imageURL, ownerID: FBUserID, width: "\(image.size.width)", height: "\(image.size.height)", orientation: "\(image.imageOrientation.rawValue)")
                 
                 imageCount-- //decrement number of images to upload remaining
                 //check if test is done (all photos uploaded)
