@@ -64,7 +64,7 @@ class FeedViewModel: NSObject {
         do {
             try CloudantSyncClient.SharedInstance!.pullFromRemoteDatabase()
         } catch {
-            print("Pull error: \(error)")
+            print("repullForNewData ERROR: \(error)")
             DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantPullDataFailure)
         }
     }

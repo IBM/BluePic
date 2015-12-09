@@ -95,7 +95,7 @@ class TabBarViewController: UITabBarController {
         else if(dataManagerNotification == DataManagerNotification.UserNotAuthenticated){
             presentLoginVC()
         }
-        else if(dataManagerNotification == DataManagerNotification.CloudantPushDataFailiure){
+        else if(dataManagerNotification == DataManagerNotification.CloudantPushDataFailure){
             showCloudantPushingErrorAlert()
         }
         else if(dataManagerNotification == DataManagerNotification.CloudantPullDataFailure){

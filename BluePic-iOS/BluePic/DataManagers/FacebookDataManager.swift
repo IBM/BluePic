@@ -311,7 +311,8 @@ class FacebookDataManager: NSObject {
         do {
             try CloudantSyncClient.SharedInstance!.pullFromRemoteDatabase()
         } catch {
-            print("pullLatestCloudantData Error: \(error)")
+            print("pullLatestCloudantData ERROR: \(error)")
+            DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantPullDataFailure)
         }
         
         
@@ -329,10 +330,17 @@ class FacebookDataManager: NSObject {
             do {
                 //Create profile document locally
                 try CloudantSyncClient.SharedInstance!.createProfileDoc(self.fbUniqueUserID!, name: self.fbUserDisplayName!)
+            } catch {
+                print("checkIfUserExistsOnCloudantAndPushIfNeeded ERROR: \(error)")
+                DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantCreateProfileFailure)
+            }
+            
+            do {
                 //Push new profile document to remote database
                 try CloudantSyncClient.SharedInstance!.pushToRemoteDatabase()
             } catch {
                 print("checkIfUserExistsOnCloudantAndPushIfNeeded ERROR: \(error)")
+                DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantPushDataFailure)
             }
             
             

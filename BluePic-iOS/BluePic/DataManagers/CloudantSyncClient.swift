@@ -369,9 +369,7 @@ class PushDelegate:NSObject, CDTReplicatorDelegate {
     func replicatorDidError(replicator:CDTReplicator, info:NSError) {
         print("PUSH Replicator ERROR: \(info)")
         //show error when trying to push when creating
-        DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantPushDataFailiure)
-        
-        
+        DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantPushDataFailure)
     }
 }
 
@@ -379,7 +377,6 @@ class PushDelegate:NSObject, CDTReplicatorDelegate {
  * Delegate for Pull Replicators.
  */
 class PullDelegate:NSObject, CDTReplicatorDelegate {
-    
     
     /**
      * Called when the replicator changes state.

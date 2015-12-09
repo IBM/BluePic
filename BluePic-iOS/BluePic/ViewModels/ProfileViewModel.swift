@@ -75,6 +75,7 @@ class ProfileViewModel: NSObject {
             try CloudantSyncClient.SharedInstance!.pullFromRemoteDatabase()
         } catch {
             print("repullForNewData error: \(error)")
+            DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantPullDataFailure)
         }
     }
     
