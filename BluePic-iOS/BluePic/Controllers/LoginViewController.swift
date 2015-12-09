@@ -79,11 +79,6 @@ class LoginViewController: UIViewController {
             print("Successfully created object storage container with name \(name)") //success closure
             //stop loading on completion
             self.stopLoading()
-
-            //update labels
-            let userDisplayName = FacebookDataManager.SharedInstance.fbUserDisplayName!
-            let name = userDisplayName.componentsSeparatedByString(" ").first
-            self.welcomeLabel.text = "Welcome to BluePic, \(name!)!"
             
             //dismiss login vc
             self.dismissViewControllerAnimated(true, completion: nil)
