@@ -14,6 +14,8 @@ class ProfileViewModel: NSObject {
     var refreshVCCallback : (()->())!
     let kNumberOfSectionsInCollectionView = 1
     
+    let kCollectionViewCellInfoViewHeight : CGFloat = 60
+    
     init(refreshVCCallback : (()->())){
        super.init()
         
@@ -93,7 +95,22 @@ class ProfileViewModel: NSObject {
     
     func sizeForItemAtIndexPath(indexPath : NSIndexPath, collectionView : UICollectionView) -> CGSize {
         
-        return CGSize(width: collectionView.frame.width, height: 364)
+        let picture = pictureDataArray[indexPath.row]
+        
+        
+        if let width = picture.width, let height = picture.height {
+            
+            let ratio = height / width
+            
+            let height = collectionView.frame.width * ratio
+            
+            return CGSize(width: collectionView.frame.width, height: height + kCollectionViewCellInfoViewHeight)
+            
+        }
+        else{
+            return CGSize(width: collectionView.frame.width, height: collectionView.frame.width + kCollectionViewCellInfoViewHeight)
+        }
+        
     }
     
     

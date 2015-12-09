@@ -17,6 +17,9 @@ class FeedViewModel: NSObject {
     var refreshVCCallback : (()->())?
     
     
+    let kCollectionViewCellInfoViewHeight : CGFloat = 76
+    
+    
     
     init(refreshCallback : (()->())){
         super.init()
@@ -91,7 +94,22 @@ class FeedViewModel: NSObject {
     
     func sizeForItemAtIndexPath(indexPath : NSIndexPath, collectionView : UICollectionView) -> CGSize {
         
-        return CGSize(width: collectionView.frame.width, height: 364)
+        let picture = pictureDataArray[indexPath.row]
+        
+        
+        if let width = picture.width, let height = picture.height {
+            
+            let ratio = height / width
+            
+            let height = collectionView.frame.width * ratio
+            
+            return CGSize(width: collectionView.frame.width, height: height + kCollectionViewCellInfoViewHeight)
+            
+        }
+        else{
+            return CGSize(width: collectionView.frame.width, height: collectionView.frame.width + kCollectionViewCellInfoViewHeight)
+        }
+
     }
     
     
