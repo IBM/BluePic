@@ -17,7 +17,10 @@ class ProfileViewController: UIViewController {
     var viewModel : ProfileViewModel!
     var refreshControl: UIRefreshControl!
     
+    var headerImageView : UIImageView!
+    
     let kHeaderViewHeight : CGFloat = 480
+    let kHeaderImageViewHeight : CGFloat = 375
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,6 +29,8 @@ class ProfileViewController: UIViewController {
         setupViewModel()
         
         setupCollectionView()
+        
+        setupHeaderView()
 
         // Do any additional setup after loading the view.
     }
@@ -41,6 +46,18 @@ class ProfileViewController: UIViewController {
         viewModel = ProfileViewModel(refreshVCCallback: reloadDataInCollectionView)
         
         
+    }
+    
+    func setupHeaderView(){
+        
+        headerImageView = UIImageView(frame: CGRectMake(0, 0, collectionView.frame.size.width, kHeaderImageViewHeight))
+        
+        headerImageView.image = UIImage(named: "photo1")
+        
+        self.view.addSubview(headerImageView)
+        self.view.insertSubview(headerImageView, belowSubview: collectionView)
+        
+    
     }
     
     
