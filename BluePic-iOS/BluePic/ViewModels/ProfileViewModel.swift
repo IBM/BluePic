@@ -30,6 +30,31 @@ class ProfileViewModel: NSObject {
     
     func handleDataManagerNotifications(dataManagerNotification : DataManagerNotification){
         
+        
+        if (dataManagerNotification == DataManagerNotification.UserUploadedNewPhoto){
+            
+            addUsersLastPhotoTakenToPictureDataArrayAndRefreshCollectionView()
+            
+        }
+        
+        
+        
+        
+    }
+    
+    
+    func addUsersLastPhotoTakenToPictureDataArrayAndRefreshCollectionView(){
+        
+        
+        let lastPhotoTaken = CameraDataManager.SharedInstance.lastPictureObjectTaken
+        
+        var lastPhotoTakenArray = [Picture]()
+        lastPhotoTakenArray.append(lastPhotoTaken)
+        
+        pictureDataArray = lastPhotoTakenArray + pictureDataArray
+        
+        callRefreshCallBack()
+        
     }
     
     
