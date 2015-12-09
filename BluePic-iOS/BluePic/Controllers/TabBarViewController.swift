@@ -194,6 +194,16 @@ class TabBarViewController: UITabBarController {
    
     }
     
+    func presentLoginVCAnimated(){
+        
+        let loginVC = Utils.vcWithNameFromStoryboardWithName("loginVC", storyboardName: "Main") as! LoginViewController
+        self.presentViewController(loginVC, animated: true, completion: { _ in
+            self.hideBackgroundImage()
+            print(NSLocalizedString("user needs to log into Facebook, showing login", comment: ""))
+        })
+        
+    }
+    
     
     // MARK: - Navigation
 
@@ -212,13 +222,30 @@ extension TabBarViewController: UITabBarControllerDelegate {
     
     func tabBarController(tabBarController: UITabBarController, shouldSelectViewController viewController: UIViewController) -> Bool {
         if let _ = viewController as? CameraViewController { //if camera tab is selected, show camera picker
-            print("Opening camera picker...")
-            CameraDataManager.SharedInstance.showImagePickerActionSheet(self)
-            
+            checkIfUserPressedSignInLater()
             return false
-        } else { //if not camera tab selected, actually show the selected tab
+        }
+        else if let _ = viewController as? ProfileViewController {
+            checkIfUserPressedSignInLater()
+            return false
+        }
+        else { //if not camera tab selected, actually show the selected tab
             return true
         }
+    }
+    
+    
+    func checkIfUserPressedSignInLater() {
+        if !NSUserDefaults.standardUserDefaults().boolForKey("hasPressedLater") { //show camera picker unless user has pressed "sign in later"
+            print("Opening camera picker...")
+            CameraDataManager.SharedInstance.showImagePickerActionSheet(self)
+        }
+        else {
+            print("user not logged in, prompt login now!")
+            presentLoginVCAnimated()
+        }
+        
+        
     }
     
     
