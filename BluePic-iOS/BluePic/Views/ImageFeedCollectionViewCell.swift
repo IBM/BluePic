@@ -45,9 +45,16 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
             }
         }
         
-        captionLabel.text = displayName?.capitalizedString ?? ""
+       
         
-        photographerNameLabel.text = ownerName ?? ""
+        captionLabel.text = displayName?.uppercaseString ?? ""
+        
+        
+        var ownerNameString = ""
+        if let owner = ownerName {
+            ownerNameString = NSLocalizedString("by", comment: "") + " \(owner)"
+        }
+        photographerNameLabel.text = ownerNameString
         
     }
     

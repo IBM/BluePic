@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9060" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="wJk-Pu-oAw">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Item 3-->
@@ -17,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="A1R-FP-eUQ">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="551"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="2sI-ub-Crc">
                                     <size key="itemSize" width="50" height="50"/>
@@ -42,10 +43,20 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="A1R-FP-eUQ" firstAttribute="width" secondItem="85X-CK-LJJ" secondAttribute="width" id="54g-pC-ilK"/>
-                            <constraint firstItem="A1R-FP-eUQ" firstAttribute="height" secondItem="85X-CK-LJJ" secondAttribute="height" id="71m-ef-owX"/>
+                            <constraint firstItem="A1R-FP-eUQ" firstAttribute="height" secondItem="85X-CK-LJJ" secondAttribute="height" constant="-49" id="71m-ef-owX"/>
+                            <constraint firstAttribute="topMargin" secondItem="A1R-FP-eUQ" secondAttribute="top" id="H9R-je-VMr"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="A1R-FP-eUQ" secondAttribute="bottom" id="PMG-fW-dTI"/>
                             <constraint firstItem="A1R-FP-eUQ" firstAttribute="centerY" secondItem="85X-CK-LJJ" secondAttribute="centerY" id="YbX-uS-0jJ"/>
+                            <constraint firstItem="REx-zO-IJd" firstAttribute="top" secondItem="A1R-FP-eUQ" secondAttribute="bottom" id="mID-ma-SFv"/>
                             <constraint firstItem="A1R-FP-eUQ" firstAttribute="centerX" secondItem="85X-CK-LJJ" secondAttribute="centerX" id="pni-9i-BmW"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="71m-ef-owX"/>
+                                <exclude reference="PMG-fW-dTI"/>
+                                <exclude reference="YbX-uS-0jJ"/>
+                            </mask>
+                        </variation>
                     </view>
                     <tabBarItem key="tabBarItem" title="" image="profile" id="Ran-21-Chf" userLabel="Item 3">
                         <inset key="imageInsets" minX="0.0" minY="6" maxX="0.0" maxY="-6"/>

@@ -46,7 +46,7 @@ class ProfileCollectionViewCell: UICollectionViewCell {
             }
         }
         
-        captionLabel.text = displayName?.capitalizedString ?? ""
+        captionLabel.text = displayName?.uppercaseString ?? ""
         
         
     }
