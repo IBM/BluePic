@@ -40,10 +40,13 @@ class CameraDataManager: NSObject {
     
     var lastPhotoTakenCaption: String!
     
+    var lastPhotoTakenWidth : CGFloat!
+    
+    var lastPhotoTakenHeight : CGFloat!
+    
     var lastPictureObjectTaken : Picture!
     
-    
-    
+
     
     
     func showImagePickerActionSheet(presentingVC: TabBarViewController!) {
@@ -156,7 +159,13 @@ class CameraDataManager: NSObject {
         self.confirmationView.postButton.hidden = true
         self.createLastPictureObjectTaken()
         dismissCameraConfirmation()
-        DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.UserUploadedNewPhoto)
+        DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.UserDecidedToPostPhoto)
+        self.uploadImageToObjectStorage()
+ 
+    }
+    
+    
+    func uploadImageToObjectStorage() {
         print("uploading photo to object storage...")
         //push to object storage, then on success push to cloudant sync
         ObjectStorageDataManager.SharedInstance.objectStorageClient.uploadImage(FacebookDataManager.SharedInstance.fbUniqueUserID!, imageName: self.lastPhotoTakenName, image: self.lastPhotoTaken,
@@ -172,10 +181,10 @@ class CameraDataManager: NSObject {
             }, onFailure: { (error) in
                 print("upload to object storage failed!")
                 print("error: \(error)")
-                self.confirmationView.loadingIndicator.stopAnimating()
-                self.showObjectStorageErrorAlert()
+                DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.ObjectStorageUploadError)
         })
- 
+        
+        
     }
     
     
@@ -186,6 +195,8 @@ class CameraDataManager: NSObject {
         lastPictureObjectTaken.image = lastPhotoTaken
         lastPictureObjectTaken.displayName = lastPhotoTakenCaption
         lastPictureObjectTaken.ownerName = FacebookDataManager.SharedInstance.fbUserDisplayName
+        lastPictureObjectTaken.width = lastPhotoTakenWidth
+        lastPictureObjectTaken.height = lastPhotoTakenHeight
         
         
     }
@@ -201,51 +212,7 @@ class CameraDataManager: NSObject {
     }
     
     
-    
-    /**
-     Method to show the error alert and asks user if they would like to retry pushing to cloudant
-     */
-    func showCloudantErrorAlert() {
-        //re-enable UI
-        self.confirmationView.userInteractionEnabled = true
-        self.tabVC.view.userInteractionEnabled = true
-        self.confirmationView.loadingIndicator.stopAnimating()
-        self.confirmationView.cancelButton.hidden = false
-        self.confirmationView.postButton.hidden = false
-        
-        let alert = UIAlertController(title: nil, message: NSLocalizedString("Oops! An error occurred with Cloudant.", comment: ""), preferredStyle: UIAlertControllerStyle.Alert)
-        
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .Cancel, handler: { (action: UIAlertAction!) in
 
-        }))
-        
-        dispatch_async(dispatch_get_main_queue()) {
-            self.tabVC.presentViewController(alert, animated: true, completion: nil)
-        }
-    }
-    
-    
-    /**
-     Method to show the error alert and asks user if they would like to retry pushing to object storage
-     */
-    func showObjectStorageErrorAlert() {
-        //re-enable UI
-        self.confirmationView.userInteractionEnabled = true
-        self.tabVC.view.userInteractionEnabled = true
-        self.confirmationView.loadingIndicator.stopAnimating()
-        self.confirmationView.cancelButton.hidden = false
-        self.confirmationView.postButton.hidden = false
-        
-        let alert = UIAlertController(title: nil, message: NSLocalizedString("Oops! An error occurred with Object Storage.", comment: ""), preferredStyle: UIAlertControllerStyle.Alert)
-        
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .Cancel, handler: { (action: UIAlertAction!) in
-
-        }))
-        
-        dispatch_async(dispatch_get_main_queue()) {
-            self.tabVC.presentViewController(alert, animated: true, completion: nil)
-        }
-    }
     
 
     
@@ -271,6 +238,8 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
         let takenImage = info[UIImagePickerControllerOriginalImage] as! UIImage
         print("original image width: \(takenImage.size.width) height: \(takenImage.size.height)")
         self.lastPhotoTaken = UIImage.resizeImage(takenImage, newWidth: 520)
+        self.lastPhotoTakenWidth = self.lastPhotoTaken.size.width
+        self.lastPhotoTakenHeight = self.lastPhotoTaken.size.height
         print("resized image width: \(self.lastPhotoTaken.size.width) height: \(self.lastPhotoTaken.size.height)")
         self.confirmationView.photoImageView.image = self.lastPhotoTaken
 

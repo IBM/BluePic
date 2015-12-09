@@ -48,8 +48,8 @@ extension Request {
             let result = JSONResponseSerializer.serializeResponse(request, response, data, error)
         
             let JSONToMap: AnyObject?
-            if let keyPath = keyPath {
-                JSONToMap = result.value?[keyPath]
+            if let keyPath = keyPath where keyPath.isEmpty == false {
+                JSONToMap = result.value?.valueForKeyPath(keyPath)
             } else {
                 JSONToMap = result.value
             }
@@ -91,6 +91,18 @@ extension Request {
      Adds a handler to be called once the request has finished.
      
      - parameter queue:             The queue on which the completion handler is dispatched.
+     - parameter completionHandler: A closure to be executed once the request has finished and the data has been mapped by ObjectMapper.
+     
+     - returns: The request.
+     */
+    public func responseObject<T: Mappable>(queue: dispatch_queue_t?, completionHandler: Response<T, NSError> -> Void) -> Self {
+        return responseObject(queue, keyPath: nil, completionHandler: completionHandler)
+    }
+    
+    /**
+     Adds a handler to be called once the request has finished.
+     
+     - parameter queue:             The queue on which the completion handler is dispatched.
      - parameter keyPath:           The key path where object mapping should be performed
      - parameter completionHandler: A closure to be executed once the request has finished and the data has been mapped by ObjectMapper.
      
@@ -116,8 +128,8 @@ extension Request {
             let result = JSONResponseSerializer.serializeResponse(request, response, data, error)
             
             let JSONToMap: AnyObject?
-            if let keyPath = keyPath {
-                JSONToMap = result.value?[keyPath]
+            if let keyPath = keyPath where keyPath.isEmpty == false {
+                JSONToMap = result.value?.valueForKeyPath(keyPath)
             } else {
                 JSONToMap = result.value
             }

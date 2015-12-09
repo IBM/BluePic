@@ -264,6 +264,7 @@ class CloudantSyncClient {
             newPicture.displayName = rev.body["display_name"] as? String
             newPicture.timeStamp = rev.body["ts"] as? String
             newPicture.ownerName = rev.body["ownerName"] as? String
+            newPicture.setWidthAndHeight(rev.body["width"] as? String, height: rev.body["height"] as? String)
             
             pictureObjects.append(newPicture)
         })
@@ -312,6 +313,7 @@ class CloudantSyncClient {
             newPicture.displayName = rev.body["display_name"] as? String
             newPicture.timeStamp = rev.body["ts"] as? String
             newPicture.ownerName = rev.body["ownerName"] as? String
+            newPicture.setWidthAndHeight(rev.body["width"] as? String, height: rev.body["height"] as? String)
             
             pictureObjects.append(newPicture)
         })
@@ -423,13 +425,7 @@ class pushDelegate:NSObject, CDTReplicatorDelegate {
      */
     func replicatorDidComplete(replicator:CDTReplicator) {
         print("PUSH Replicator completed.")
-        //check if cameraDataManager != nil, then stop loading
-        if let _ = CameraDataManager.SharedInstance.confirmationView {
-            dispatch_async(dispatch_get_main_queue()) { //dismiss the camera confirmation view on the main thread
-                CameraDataManager.SharedInstance.dismissCameraConfirmation()
-            }
-            
-        }
+        //may need to add logic to know when done pushing to hide fb login
     }
     
     /**
@@ -437,22 +433,10 @@ class pushDelegate:NSObject, CDTReplicatorDelegate {
      */
     func replicatorDidError(replicator:CDTReplicator, info:NSError) {
         print("PUSH Replicator ERROR: \(info)")
-        //show error here -- check whether to show it on tabVC or confirmationView (depending on if confirmationView is nil or not)
-        if let _ = CameraDataManager.SharedInstance.confirmationView {
-            dispatch_async(dispatch_get_main_queue()) {
-                CameraDataManager.SharedInstance.showCloudantErrorAlert()
-            }
+        //show error when trying to push when creating
+        DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantPushDataFailiure)
             
-        } else { //show error when trying to push when creating
-            dispatch_async(dispatch_get_main_queue()) {
-//                let tabVC = Utils.rootViewController() as! TabBarViewController
-//                tabVC.showCloudantPushingErrorAlert()
-                
-                //self.handleAppStartUpResultCallback(dataManagerNotification: DataManagerNotification.showCloudantPushingErrorAlert)
-                DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantPushDataFailiure)
-            }
-            
-        }
+    
     }
 }
 
@@ -479,12 +463,7 @@ class pullDelegate:NSObject, CDTReplicatorDelegate {
      */
     func replicatorDidComplete(replicator:CDTReplicator) {
         print("PULL Replicator completed.")
-//        let tabVC = Utils.rootViewController() as! TabBarViewController
-//        tabVC.stopLoadingImageView()
-        
-        
         DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantPullDataSuccess)
-        //self.handleAppStartUpResultCallback(dataManagerNotification: DataManagerNotification.stopLoadingImageView)
     }
     
     /**
@@ -492,11 +471,7 @@ class pullDelegate:NSObject, CDTReplicatorDelegate {
      */
     func replicatorDidError(replicator:CDTReplicator, info:NSError) {
         print("PULL Replicator ERROR: \(info)")
-//        let tabVC = Utils.rootViewController() as! TabBarViewController
-//        tabVC.showCloudantPullingErrorAlert()
-        
         DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantPullDataFailure)
-       // self.handleAppStartUpResultCallback(dataManagerNotification: DataManagerNotification.showCloudantPullingErrorAlert)
     }
     
 }

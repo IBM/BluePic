@@ -20,5 +20,30 @@ class Picture: NSObject {
     
     var ownerName : String?
     
+    var width : CGFloat?
+    
+    var height : CGFloat?
+    
+    let kDefaultWidthAndHeight : CGFloat = 100
+    
+    
+    
+    func setWidthAndHeight(width : String?, height : String?){
+        
+        if let w = width {
+            if w != "" {
+                self.width = CGFloat((w as NSString).floatValue)
+            }
+        }
+        
+        if let h = height {
+            if h != "" {
+                self.height = CGFloat((h as NSString).floatValue)
+            }
+        }
+        
+  
+    }
+    
     
 }

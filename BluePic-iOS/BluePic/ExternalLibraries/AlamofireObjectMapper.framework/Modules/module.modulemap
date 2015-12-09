@@ -1,0 +1,10 @@
+framework module AlamofireObjectMapper {
+  umbrella header "AlamofireObjectMapper.h"
+
+  export *
+  module * { export * }
+}
+
+module AlamofireObjectMapper.Swift {
+    header "AlamofireObjectMapper-Swift.h"
+}
