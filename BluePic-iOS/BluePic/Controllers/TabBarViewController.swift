@@ -222,27 +222,38 @@ extension TabBarViewController: UITabBarControllerDelegate {
     
     func tabBarController(tabBarController: UITabBarController, shouldSelectViewController viewController: UIViewController) -> Bool {
         if let _ = viewController as? CameraViewController { //if camera tab is selected, show camera picker
-            checkIfUserPressedSignInLater()
-            return false
+            return checkIfUserPressedSignInLater(true)
         }
         else if let _ = viewController as? ProfileViewController {
-            checkIfUserPressedSignInLater()
-            return false
+            return checkIfUserPressedSignInLater(false)
         }
-        else { //if not camera tab selected, actually show the selected tab
+        else { //if feed selected, actually show it everytime
             return true
         }
     }
     
-    
-    func checkIfUserPressedSignInLater() {
-        if !NSUserDefaults.standardUserDefaults().boolForKey("hasPressedLater") { //show camera picker unless user has pressed "sign in later"
-            print("Opening camera picker...")
-            CameraDataManager.SharedInstance.showImagePickerActionSheet(self)
-        }
-        else {
+    /**
+     Check if user has pressed sign in later button previously, and if he/she has, will show login if user taps camera or profile
+     
+     - parameter showCameraPicker: whether or not to show the camera picker (camera tab or profile tab tapped)
+     
+     - returns: Returns a boolean -- true if tab bar with show the selected tab, and false if it will not
+     */
+    func checkIfUserPressedSignInLater(showCameraPicker: Bool!) -> Bool! {
+        if NSUserDefaults.standardUserDefaults().boolForKey("hasPressedLater") == true {
             print("user not logged in, prompt login now!")
             presentLoginVCAnimated()
+            return false
+        }
+        else { //only show camera picker if user has not pressed "sign in later"
+            if (showCameraPicker == true) { //only show camera picker if tapped the camera tab
+                print("Opening camera picker...")
+                CameraDataManager.SharedInstance.showImagePickerActionSheet(self)
+                return false
+            }
+            else { //if tapping profile page and logged in, show that tab
+                return true
+            }
         }
         
         
