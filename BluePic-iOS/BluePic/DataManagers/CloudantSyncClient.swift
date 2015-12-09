@@ -264,6 +264,7 @@ class CloudantSyncClient {
             newPicture.displayName = rev.body["display_name"] as? String
             newPicture.timeStamp = rev.body["ts"] as? String
             newPicture.ownerName = rev.body["ownerName"] as? String
+            newPicture.setWidthAndHeight(rev.body["width"] as? String, height: rev.body["height"] as? String)
             
             pictureObjects.append(newPicture)
         })
@@ -312,6 +313,7 @@ class CloudantSyncClient {
             newPicture.displayName = rev.body["display_name"] as? String
             newPicture.timeStamp = rev.body["ts"] as? String
             newPicture.ownerName = rev.body["ownerName"] as? String
+            newPicture.setWidthAndHeight(rev.body["width"] as? String, height: rev.body["height"] as? String)
             
             pictureObjects.append(newPicture)
         })
