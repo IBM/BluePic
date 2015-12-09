@@ -40,10 +40,13 @@ class CameraDataManager: NSObject {
     
     var lastPhotoTakenCaption: String!
     
+    var lastPhotoTakenWidth : CGFloat!
+    
+    var lastPhotoTakenHeight : CGFloat!
+    
     var lastPictureObjectTaken : Picture!
     
-    
-    
+
     
     
     func showImagePickerActionSheet(presentingVC: TabBarViewController!) {
@@ -186,6 +189,8 @@ class CameraDataManager: NSObject {
         lastPictureObjectTaken.image = lastPhotoTaken
         lastPictureObjectTaken.displayName = lastPhotoTakenCaption
         lastPictureObjectTaken.ownerName = FacebookDataManager.SharedInstance.fbUserDisplayName
+        lastPictureObjectTaken.width = lastPhotoTakenWidth
+        lastPictureObjectTaken.height = lastPhotoTakenHeight
         
         
     }
@@ -271,6 +276,8 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
         let takenImage = info[UIImagePickerControllerOriginalImage] as! UIImage
         print("original image width: \(takenImage.size.width) height: \(takenImage.size.height)")
         self.lastPhotoTaken = UIImage.resizeImage(takenImage, newWidth: 520)
+        self.lastPhotoTakenWidth = self.lastPhotoTaken.size.width
+        self.lastPhotoTakenHeight = self.lastPhotoTaken.size.height
         print("resized image width: \(self.lastPhotoTaken.size.width) height: \(self.lastPhotoTaken.size.height)")
         self.confirmationView.photoImageView.image = self.lastPhotoTaken
 
