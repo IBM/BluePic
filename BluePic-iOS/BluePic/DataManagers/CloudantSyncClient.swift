@@ -180,17 +180,14 @@ class CloudantSyncClient {
      *
      * @param id Unique ID the created document to have.
      * @param name Profile name for the created document.
-     *
-     * @return Returns the created document if successful, throws an exception if not.
      */
-    func createProfileDoc(id:String, name:String) throws -> CDTDocumentRevision {
+    func createProfileDoc(id:String, name:String) throws -> Void {
         // Create a document
         let rev = CDTDocumentRevision(docId: id)
         rev.body = ["profile_name":name, "Type":"profile"]
         // Save the document to the datastore
         try datastore.createDocumentFromRevision(rev)
         print("Created profile doc with id: \(id)")
-        return rev
     }
     
     /**
