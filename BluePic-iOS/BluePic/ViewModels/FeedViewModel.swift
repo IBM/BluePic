@@ -37,7 +37,7 @@ class FeedViewModel: NSObject {
             getPictureObjects()
             
         }
-        else if(dataManagerNotification == DataManagerNotification.UserUploadedNewPhoto){
+        else if(dataManagerNotification == DataManagerNotification.UserDecidedToPostPhoto){
             addUsersLastPhotoTakenToPictureDataArrayAndRefreshCollectionView()
         }
     }

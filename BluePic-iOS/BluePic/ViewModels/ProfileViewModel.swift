@@ -31,7 +31,7 @@ class ProfileViewModel: NSObject {
     func handleDataManagerNotifications(dataManagerNotification : DataManagerNotification){
         
         
-        if (dataManagerNotification == DataManagerNotification.UserUploadedNewPhoto){
+        if (dataManagerNotification == DataManagerNotification.UserDecidedToPostPhoto){
             
             addUsersLastPhotoTakenToPictureDataArrayAndRefreshCollectionView()
             
