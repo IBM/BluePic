@@ -70,13 +70,13 @@ class ProfileViewModel: NSObject {
     
     func setUpCollectionViewCell(indexPath : NSIndexPath, collectionView : UICollectionView) -> UICollectionViewCell {
         
-        let cell: ImageFeedCollectionViewCell
+        let cell: ProfileCollectionViewCell
         
-        cell = collectionView.dequeueReusableCellWithReuseIdentifier("ImageFeedCollectionViewCell", forIndexPath: indexPath) as! ImageFeedCollectionViewCell
+        cell = collectionView.dequeueReusableCellWithReuseIdentifier("ProfileCollectionViewCell", forIndexPath: indexPath) as! ProfileCollectionViewCell
         
         let picture = pictureDataArray[indexPath.row]
         
-        cell.setupData(picture.url, displayName: picture.displayName, ownerName: picture.ownerName, timeStamp: picture.timeStamp)
+        cell.setupData(picture.url, displayName: picture.displayName, timeStamp: picture.timeStamp)
         
         cell.layer.shouldRasterize = true
         cell.layer.rasterizationScale = UIScreen.mainScreen().scale
