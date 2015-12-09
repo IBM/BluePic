@@ -15,9 +15,10 @@ enum DataManagerNotification {
     case CloudantPullDataFailure
     case CloudantPushDataFailiure
     case ObjectStorageAuthError
+    case ObjectStorageUploadError
     case GotPastLoginCheck
     case UserNotAuthenticated
-    case UserUploadedNewPhoto
+    case UserDecidedToPostPhoto
 }
 
 
