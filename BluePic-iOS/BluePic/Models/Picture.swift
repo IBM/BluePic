@@ -12,6 +12,8 @@ class Picture: NSObject {
 
     var url : String?
     
+    var image : UIImage?
+    
     var displayName : String?
     
     var timeStamp : String?

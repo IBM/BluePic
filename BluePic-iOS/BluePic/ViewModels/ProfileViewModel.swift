@@ -76,7 +76,7 @@ class ProfileViewModel: NSObject {
         
         let picture = pictureDataArray[indexPath.row]
         
-        cell.setupData(picture.url, displayName: picture.displayName, timeStamp: picture.timeStamp)
+        cell.setupData(picture.url, image: picture.image, displayName: picture.displayName, timeStamp: picture.timeStamp)
         
         cell.layer.shouldRasterize = true
         cell.layer.rasterizationScale = UIScreen.mainScreen().scale

@@ -25,16 +25,24 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
     
     
     
-    func setupData(url : String?, displayName : String?, ownerName: String?, timeStamp: String?){
+    func setupData(url : String?, image : UIImage?, displayName : String?, ownerName: String?, timeStamp: String?){
         
         let urlString = url ?? ""
         
-        if let nsurl = NSURL(string: urlString){
-            imageView.sd_setImageWithURL(nsurl, completed: { _ in
+        if let img = image {
+            
+            imageView.image = img
+            
+        }
+        else{
+            if let nsurl = NSURL(string: urlString){
                 
-                
-                
-            })
+                imageView.sd_setImageWithURL(nsurl, completed: { _ in
+                    
+                    
+                    
+                })
+            }
         }
         
         captionLabel.text = displayName?.capitalizedString ?? ""

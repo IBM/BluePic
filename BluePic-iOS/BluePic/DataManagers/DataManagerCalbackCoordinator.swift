@@ -17,6 +17,7 @@ enum DataManagerNotification {
     case ObjectStorageAuthError
     case GotPastLoginCheck
     case UserNotAuthenticated
+    case UserUploadedNewPhoto
 }
 
 
