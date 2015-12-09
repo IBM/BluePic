@@ -40,6 +40,8 @@ class CameraDataManager: NSObject {
     
     var lastPhotoTakenCaption: String!
     
+    var lastPictureObjectTaken : Picture!
+    
     
     
     
@@ -152,6 +154,9 @@ class CameraDataManager: NSObject {
         self.confirmationView.loadingIndicator.startAnimating()
         self.confirmationView.cancelButton.hidden = true
         self.confirmationView.postButton.hidden = true
+        self.createLastPictureObjectTaken()
+        dismissCameraConfirmation()
+        DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.UserUploadedNewPhoto)
         print("uploading photo to object storage...")
         //push to object storage, then on success push to cloudant sync
         ObjectStorageDataManager.SharedInstance.objectStorageClient.uploadImage(FacebookDataManager.SharedInstance.fbUniqueUserID!, imageName: self.lastPhotoTakenName, image: self.lastPhotoTaken,
@@ -161,6 +166,7 @@ class CameraDataManager: NSObject {
                 print("creating cloudant picture document...")
                 self.lastPhotoTakenURL = imageURL
                 print("image orientation is: \(self.lastPhotoTaken.imageOrientation.rawValue), width: \(self.lastPhotoTaken.size.width) height: \(self.lastPhotoTaken.size.height)")
+                
                 CloudantSyncClient.SharedInstance.createPictureDoc(self.lastPhotoTakenCaption, fileName: self.lastPhotoTakenName, url: self.lastPhotoTakenURL, ownerID: FacebookDataManager.SharedInstance.fbUniqueUserID!, width: "\(self.lastPhotoTaken.size.width)", height: "\(self.lastPhotoTaken.size.height)", orientation: "\(self.lastPhotoTaken.imageOrientation.rawValue)")
                 CloudantSyncClient.SharedInstance.pushToRemoteDatabase()
             }, onFailure: { (error) in
@@ -173,7 +179,16 @@ class CameraDataManager: NSObject {
     }
     
     
-    
+    func createLastPictureObjectTaken(){
+        
+        
+        lastPictureObjectTaken = Picture()
+        lastPictureObjectTaken.image = lastPhotoTaken
+        lastPictureObjectTaken.displayName = lastPhotoTakenCaption
+        lastPictureObjectTaken.ownerName = FacebookDataManager.SharedInstance.fbUserDisplayName
+        
+        
+    }
     
     
     

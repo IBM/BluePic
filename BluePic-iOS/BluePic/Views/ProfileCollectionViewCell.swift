@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ImageFeedCollectionViewCell: UICollectionViewCell {
+class ProfileCollectionViewCell: UICollectionViewCell {
     
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var captionLabel: UILabel!
@@ -25,9 +25,10 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
     
     
     
-    func setupData(url : String?, image : UIImage?, displayName : String?, ownerName: String?, timeStamp: String?){
+    func setupData(url : String?, image : UIImage?, displayName : String?, timeStamp: String?){
         
         let urlString = url ?? ""
+        
         
         if let img = image {
             
@@ -36,25 +37,17 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
         }
         else{
             if let nsurl = NSURL(string: urlString){
-                
+            
                 imageView.sd_setImageWithURL(nsurl, completed: { _ in
-                    
-                    
-                    
+                
+                
+                
                 })
             }
         }
         
-       
-        
         captionLabel.text = displayName?.uppercaseString ?? ""
         
-        
-        var ownerNameString = ""
-        if let owner = ownerName {
-            ownerNameString = NSLocalizedString("by", comment: "") + " \(owner)"
-        }
-        photographerNameLabel.text = ownerNameString
         
     }
     

@@ -250,6 +250,29 @@ class CloudantSyncClient {
         return result
     }
     
+    
+    func getAllPictureObjectsOfOwnerId(id :String) -> [Picture] {
+        
+        let result = getPicturesOfOwnerId(id)
+        
+        var pictureObjects = [Picture]()
+        
+        result.enumerateObjectsUsingBlock({ (rev, idx, stop) -> Void in
+            let newPicture = Picture()
+            
+            newPicture.url = rev.body["URL"] as? String
+            newPicture.displayName = rev.body["display_name"] as? String
+            newPicture.timeStamp = rev.body["ts"] as? String
+            newPicture.ownerName = rev.body["ownerName"] as? String
+            
+            pictureObjects.append(newPicture)
+        })
+        
+        return pictureObjects
+        
+    }
+    
+    
     // Get ALL picture documents, sorted from newest to oldest.
     func getAllPictureDocs() -> CDTQResultSet {
         

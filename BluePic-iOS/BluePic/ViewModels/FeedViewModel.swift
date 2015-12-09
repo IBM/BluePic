@@ -37,7 +37,27 @@ class FeedViewModel: NSObject {
             getPictureObjects()
             
         }
+        else if(dataManagerNotification == DataManagerNotification.UserUploadedNewPhoto){
+            addUsersLastPhotoTakenToPictureDataArrayAndRefreshCollectionView()
+        }
     }
+    
+    
+    func addUsersLastPhotoTakenToPictureDataArrayAndRefreshCollectionView(){
+        
+        
+        let lastPhotoTaken = CameraDataManager.SharedInstance.lastPictureObjectTaken
+        
+        var lastPhotoTakenArray = [Picture]()
+        lastPhotoTakenArray.append(lastPhotoTaken)
+        
+        pictureDataArray = lastPhotoTakenArray + pictureDataArray
+        
+        callRefreshCallBack()
+        
+    }
+    
+    
     
     
     func repullForNewData(){
@@ -79,7 +99,7 @@ class FeedViewModel: NSObject {
         
         let picture = pictureDataArray[indexPath.row]
         
-        cell.setupData(picture.url, displayName: picture.displayName, ownerName: picture.ownerName, timeStamp: picture.timeStamp)
+        cell.setupData(picture.url, image: picture.image, displayName: picture.displayName, ownerName: picture.ownerName, timeStamp: picture.timeStamp)
         
         cell.layer.shouldRasterize = true
         cell.layer.rasterizationScale = UIScreen.mainScreen().scale

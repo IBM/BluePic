@@ -7,7 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1B0432E51C17E967007643B1 /* ProfileCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0432E31C17E967007643B1 /* ProfileCollectionViewCell.swift */; };
+		1B0432E61C17E967007643B1 /* ProfileCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1B0432E41C17E967007643B1 /* ProfileCollectionViewCell.xib */; };
 		1B057E041C17637700AC21EE /* DataManagerCalbackCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B057E031C17637700AC21EE /* DataManagerCalbackCoordinator.swift */; };
+		1B057E061C17B10100AC21EE /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B057E051C17B10100AC21EE /* ProfileViewModel.swift */; };
+		1B057E091C17C03400AC21EE /* ProfileHeaderCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B057E071C17C03400AC21EE /* ProfileHeaderCollectionReusableView.swift */; };
+		1B057E0A1C17C03400AC21EE /* ProfileHeaderCollectionReusableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1B057E081C17C03400AC21EE /* ProfileHeaderCollectionReusableView.xib */; };
 		1B3BA0761C0F5FBD0064C850 /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = 1B3BA0751C0F5FBD0064C850 /* .gitkeep */; };
 		1B3BA0781C0F62850064C850 /* Picture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3BA0771C0F62850064C850 /* Picture.swift */; };
 		1B5555BE1C1616B000B3086E /* TabBarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B5555BD1C1616B000B3086E /* TabBarViewModel.swift */; };
@@ -114,7 +119,12 @@
 
 /* Begin PBXFileReference section */
 		11F4C7A29750E1B7B37ABAFA /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		1B0432E31C17E967007643B1 /* ProfileCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileCollectionViewCell.swift; sourceTree = "<group>"; };
+		1B0432E41C17E967007643B1 /* ProfileCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileCollectionViewCell.xib; sourceTree = "<group>"; };
 		1B057E031C17637700AC21EE /* DataManagerCalbackCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataManagerCalbackCoordinator.swift; sourceTree = "<group>"; };
+		1B057E051C17B10100AC21EE /* ProfileViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
+		1B057E071C17C03400AC21EE /* ProfileHeaderCollectionReusableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileHeaderCollectionReusableView.swift; sourceTree = "<group>"; };
+		1B057E081C17C03400AC21EE /* ProfileHeaderCollectionReusableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileHeaderCollectionReusableView.xib; sourceTree = "<group>"; };
 		1B3BA0751C0F5FBD0064C850 /* .gitkeep */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		1B3BA0771C0F62850064C850 /* Picture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Picture.swift; sourceTree = "<group>"; };
 		1B5555BD1C1616B000B3086E /* TabBarViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarViewModel.swift; sourceTree = "<group>"; };
@@ -394,6 +404,7 @@
 			children = (
 				1BC7AF5B1C0E39F100DDFD02 /* FeedViewModel.swift */,
 				1B5555BD1C1616B000B3086E /* TabBarViewModel.swift */,
+				1B057E051C17B10100AC21EE /* ProfileViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -401,10 +412,14 @@
 		34C809531BFD0CBC00C48004 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				1B0432E31C17E967007643B1 /* ProfileCollectionViewCell.swift */,
+				1B0432E41C17E967007643B1 /* ProfileCollectionViewCell.xib */,
 				346F947F1C0F9211004999A8 /* CameraConfirmationView.xib */,
 				346F94811C0F9225004999A8 /* CameraConfirmationView.swift */,
 				1BC7AF5D1C0E480800DDFD02 /* ImageFeedCollectionViewCell.swift */,
 				1BC7AF5E1C0E480800DDFD02 /* ImageFeedCollectionViewCell.xib */,
+				1B057E071C17C03400AC21EE /* ProfileHeaderCollectionReusableView.swift */,
+				1B057E081C17C03400AC21EE /* ProfileHeaderCollectionReusableView.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -553,10 +568,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1B0432E61C17E967007643B1 /* ProfileCollectionViewCell.xib in Resources */,
 				3435C75F1BFE9E06004923BD /* Roboto-Thin.ttf in Resources */,
 				3435C7CB1C0368DA004923BD /* Camera.storyboard in Resources */,
 				3435C7CD1C03690F004923BD /* Profile.storyboard in Resources */,
 				3435C75C1BFE9E06004923BD /* Roboto-Medium.ttf in Resources */,
+				1B057E0A1C17C03400AC21EE /* ProfileHeaderCollectionReusableView.xib in Resources */,
 				3435C7C91C0368B1004923BD /* Feed.storyboard in Resources */,
 				3435C7581BFE9E06004923BD /* Roboto-BoldItalic.ttf in Resources */,
 				346F94801C0F9211004999A8 /* CameraConfirmationView.xib in Resources */,
@@ -663,6 +680,7 @@
 				346F947C1C0F868C004999A8 /* CameraDataManager.swift in Sources */,
 				347472E51BFA8DEF0018B7F6 /* UIColorExtension.swift in Sources */,
 				347472E71BFA8DEF0018B7F6 /* UIImageExtension.swift in Sources */,
+				1B0432E51C17E967007643B1 /* ProfileCollectionViewCell.swift in Sources */,
 				3435C7D91C04111F004923BD /* ProfileViewController.swift in Sources */,
 				347472E21BFA8DEF0018B7F6 /* NSDictionaryExtension.swift in Sources */,
 				3435C7D21C03E223004923BD /* CloudantSyncClient.swift in Sources */,
@@ -680,8 +698,10 @@
 				347472F11BFA8E320018B7F6 /* LoginViewController.swift in Sources */,
 				3474728E1BFA8C6A0018B7F6 /* AppDelegate.swift in Sources */,
 				3435C7D51C04110C004923BD /* FeedViewController.swift in Sources */,
+				1B057E091C17C03400AC21EE /* ProfileHeaderCollectionReusableView.swift in Sources */,
 				1B5555BE1C1616B000B3086E /* TabBarViewModel.swift in Sources */,
 				34C809551BFD0F2400C48004 /* FacebookDataManager.swift in Sources */,
+				1B057E061C17B10100AC21EE /* ProfileViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
