@@ -21,6 +21,7 @@ class LoginViewController: UIViewController {
     
     @IBOutlet weak var welcomeLabel: UILabel!
     
+    @IBOutlet weak var connectingLabel: UILabel!
     
     
     override func viewDidLoad() {
@@ -106,6 +107,7 @@ class LoginViewController: UIViewController {
         self.welcomeLabel.hidden = true
         self.loadingIndicator.startAnimating()
         self.loadingIndicator.hidden = false
+        self.connectingLabel.hidden = false
     }
     
     
@@ -114,6 +116,7 @@ class LoginViewController: UIViewController {
         self.loadingIndicator.stopAnimating()
         self.loadingIndicator.hidden = true
         self.welcomeLabel.hidden = false
+        self.connectingLabel.hidden = true
     }
 
     

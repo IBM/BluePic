@@ -4,14 +4,6 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <mutableArray key="Roboto-Regular.ttf">
-            <string>Roboto-Regular</string>
-            <string>Roboto-Regular</string>
-            <string>Roboto-Regular</string>
-            <string>Roboto-Regular</string>
-        </mutableArray>
-    </customFonts>
     <scenes>
         <!--Tab Bar View Controller-->
         <scene sceneID="buh-Yt-C7i">
@@ -75,7 +67,7 @@ pictures and sharing them to the BluePic community. BluePic is
 also built on IBM Bluemix services.</string>
                                         <attributes>
                                             <color key="NSColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <font key="NSFont" size="14" name="Roboto-Regular"/>
+                                            <font key="NSFont" size="14" name="SanFranciscoText-Regular"/>
                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineHeightMultiple="1.5" tighteningFactorForTruncation="0.0"/>
                                         </attributes>
                                     </fragment>
@@ -89,7 +81,7 @@ also built on IBM Bluemix services.</string>
                                     <constraint firstAttribute="width" constant="267" id="YMB-Xq-LqD"/>
                                     <constraint firstAttribute="height" constant="35" id="g3J-Gq-moa"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -101,7 +93,7 @@ also built on IBM Bluemix services.</string>
                                     <constraint firstAttribute="height" constant="44" id="eKN-Rv-bz3"/>
                                     <constraint firstAttribute="width" constant="345" id="ngh-7T-lfh"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="14"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <state key="normal" title="SIGN IN WITH FACEBOOK">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -142,7 +134,7 @@ also built on IBM Bluemix services.</string>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="100.5" id="F27-v2-W2V"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="14"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <state key="normal" title="I’ll sign in later">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -157,7 +149,18 @@ also built on IBM Bluemix services.</string>
                                     <constraint firstAttribute="height" constant="20" id="3xK-ij-LXs"/>
                                     <constraint firstAttribute="width" constant="267" id="dfU-Ye-2i0"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="14"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Connecting to Facebook" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LMk-mW-Kmu">
+                                <rect key="frame" x="168" y="569" width="267" height="20"/>
+                                <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="Vk1-8C-hfh"/>
+                                    <constraint firstAttribute="width" constant="267" id="fdV-cJ-dxd"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -166,6 +169,7 @@ also built on IBM Bluemix services.</string>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="Wjw-Zr-PRg" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="0R1-rU-8sk"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="LMk-mW-Kmu" secondAttribute="bottom" constant="78" id="1D8-BC-AUx"/>
                             <constraint firstItem="JA3-DV-7dk" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" constant="218" id="4Gc-mR-BBA"/>
                             <constraint firstAttribute="bottomMargin" secondItem="neQ-m5-2vk" secondAttribute="bottom" constant="78" id="5XF-wZ-oHn"/>
                             <constraint firstItem="g2J-LJ-jge" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" constant="1" id="8Vb-3w-1iR"/>
@@ -184,6 +188,7 @@ also built on IBM Bluemix services.</string>
                             <constraint firstItem="Hia-oq-hEM" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" constant="348" id="lG5-9M-mkA"/>
                             <constraint firstItem="JA3-DV-7dk" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="loP-gA-4Md"/>
                             <constraint firstAttribute="bottomMargin" secondItem="Wjw-Zr-PRg" secondAttribute="bottom" constant="20" id="oV2-H7-clG"/>
+                            <constraint firstItem="LMk-mW-Kmu" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" constant="1.5" id="okh-xK-xRG"/>
                             <constraint firstItem="OyD-TT-jb1" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" constant="1" id="s7Y-kb-Ucf"/>
                             <constraint firstItem="ANO-Gs-Tk5" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="y6k-qc-rXf"/>
                             <constraint firstItem="Hia-oq-hEM" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="z3S-M2-DO0"/>
@@ -197,6 +202,7 @@ also built on IBM Bluemix services.</string>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="600" height="667"/>
                     <connections>
+                        <outlet property="connectingLabel" destination="LMk-mW-Kmu" id="GaH-SG-lzf"/>
                         <outlet property="facebookButton" destination="Wjw-Zr-PRg" id="JWS-FC-pxj"/>
                         <outlet property="loadingIndicator" destination="g2J-LJ-jge" id="ghq-Sm-EkT"/>
                         <outlet property="signInLaterButton" destination="neQ-m5-2vk" id="gFO-gx-1eF"/>
