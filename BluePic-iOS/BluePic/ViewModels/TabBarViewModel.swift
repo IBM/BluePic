@@ -62,7 +62,11 @@ class TabBarViewModel: NSObject {
      Retry pushing cloudant data upon error
      */
     func retryPushingCloudantData(){
-         CloudantSyncClient.SharedInstance.pushToRemoteDatabase()
+        do {
+            try CloudantSyncClient.SharedInstance!.pushToRemoteDatabase()
+        } catch {
+            print("Retry pushing error: \(error)")
+        }
     }
     
     
@@ -71,7 +75,11 @@ class TabBarViewModel: NSObject {
      */
     func retryPullingCloudantData() {
         //CloudantSyncClient.SharedInstance.pullReplicator.stop()
-        CloudantSyncClient.SharedInstance.pullFromRemoteDatabase()
+        do {
+            try CloudantSyncClient.SharedInstance!.pullFromRemoteDatabase()
+        } catch {
+            print("Retry pulling error: \(error)")
+        }
         dispatch_async(dispatch_get_main_queue()) {
             print("Retrying to pull Cloudant data")
             

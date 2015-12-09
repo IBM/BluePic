@@ -308,7 +308,12 @@ class FacebookDataManager: NSObject {
         //CloudantSyncClient.SharedInstance.setHandleAppStartUpResultCallback(handleAppStartUpResultCallback)
         
         //First do a pull to make sure datastore is up to date
-        CloudantSyncClient.SharedInstance.pullFromRemoteDatabase()
+        do {
+            try CloudantSyncClient.SharedInstance!.pullFromRemoteDatabase()
+        } catch {
+            print("pullLatestCloudantData Error: \(error)")
+        }
+        
         
     }
     
@@ -319,12 +324,17 @@ class FacebookDataManager: NSObject {
     func checkIfUserExistsOnCloudantAndPushIfNeeded() {
         
         //Check if doc with fb id exists
-        if(!CloudantSyncClient.SharedInstance.doesExist(self.fbUniqueUserID!))
+        if(!CloudantSyncClient.SharedInstance!.doesExist(self.fbUniqueUserID!))
         {
-            //Create profile document locally
-            CloudantSyncClient.SharedInstance.createProfileDoc(self.fbUniqueUserID!, name: self.fbUserDisplayName!)
-            //Push new profile document to remote database
-            CloudantSyncClient.SharedInstance.pushToRemoteDatabase()
+            do {
+                //Create profile document locally
+                try CloudantSyncClient.SharedInstance!.createProfileDoc(self.fbUniqueUserID!, name: self.fbUserDisplayName!)
+                //Push new profile document to remote database
+                try CloudantSyncClient.SharedInstance!.pushToRemoteDatabase()
+            } catch {
+                print("checkIfUserExistsOnCloudantAndPushIfNeeded ERROR: \(error)")
+            }
+            
             
         }
         
