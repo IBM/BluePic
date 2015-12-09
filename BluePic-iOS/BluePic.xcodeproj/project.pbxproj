@@ -75,7 +75,6 @@
 		34C809471BFCB10100C48004 /* AlamofireObjectMapper.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 34C8093E1BFCB0C800C48004 /* AlamofireObjectMapper.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		34C809481BFCB10300C48004 /* ObjectMapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34C8093F1BFCB0C800C48004 /* ObjectMapper.framework */; };
 		34C809491BFCB10300C48004 /* ObjectMapper.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 34C8093F1BFCB0C800C48004 /* ObjectMapper.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		34C8094B1BFCD9A300C48004 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 34C8094A1BFCD9A300C48004 /* Info.plist */; };
 		34C8094D1BFCEA0400C48004 /* keys.plist in Resources */ = {isa = PBXBuildFile; fileRef = 34C8094C1BFCEA0400C48004 /* keys.plist */; };
 		34C809551BFD0F2400C48004 /* FacebookDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C809541BFD0F2400C48004 /* FacebookDataManager.swift */; };
 		34CA18201C04CB6700EC2636 /* ObjectStorageDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34CA181F1C04CB6700EC2636 /* ObjectStorageDataManager.swift */; };
@@ -580,7 +579,6 @@
 				34C8094D1BFCEA0400C48004 /* keys.plist in Resources */,
 				3435C75B1BFE9E06004923BD /* Roboto-LightItalic.ttf in Resources */,
 				3435C75D1BFE9E06004923BD /* Roboto-MediumItalic.ttf in Resources */,
-				34C8094B1BFCD9A300C48004 /* Info.plist in Resources */,
 				3435C75A1BFE9E06004923BD /* Roboto-Light.ttf in Resources */,
 				347472ED1BFA8DEF0018B7F6 /* Main.storyboard in Resources */,
 				3435C7561BFE9E06004923BD /* Roboto-BlackItalic.ttf in Resources */,
@@ -846,8 +844,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
-					"$(PROJECT_DIR)/BluePic/Controllers/ExternalLibraries",
-					"$(PROJECT_DIR)/BluePic/ExternalLibraries",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/BluePic/Configuration/Info.plist";
@@ -869,8 +865,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
-					"$(PROJECT_DIR)/BluePic/Controllers/ExternalLibraries",
-					"$(PROJECT_DIR)/BluePic/ExternalLibraries",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/BluePic/Configuration/Info.plist";
