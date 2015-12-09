@@ -8,6 +8,16 @@ import AVFoundation
 import UIKit
 
 extension UIImage{
+    
+    var uncompressedPNGData: NSData      { return UIImagePNGRepresentation(self)!        }
+    var highestQualityJPEGNSData: NSData { return UIImageJPEGRepresentation(self, 1.0)!  }
+    var highQualityJPEGNSData: NSData    { return UIImageJPEGRepresentation(self, 0.75)! }
+    var mediumQualityJPEGNSData: NSData  { return UIImageJPEGRepresentation(self, 0.5)!  }
+    var lowQualityJPEGNSData: NSData     { return UIImageJPEGRepresentation(self, 0.25)! }
+    var lowestQualityJPEGNSData:NSData   { return UIImageJPEGRepresentation(self, 0.0)!  }
+    
+    
+    
     func croppedImage(bound : CGRect) -> UIImage
     {
         let scaledBounds : CGRect = CGRectMake(bound.origin.x * scale, bound.origin.y * scale, bound.size.width * scale, bound.size.height * scale)
@@ -15,6 +25,29 @@ extension UIImage{
         let croppedImage : UIImage = UIImage(CGImage: imageRef!, scale: scale, orientation: UIImageOrientation.Up)
         return croppedImage
     }
+    
+    
+    /**
+     Resizes a UIImage given a height
+     
+     - parameter image:     image to resize
+     - parameter newHeight: height of new size of image
+     
+     - returns: newly resized image
+     */
+    class func resizeImage(image: UIImage, newWidth: CGFloat) -> UIImage {
+//        let newWidth = image.size.width * scale
+//        let newHeight = image.size.height * scale
+        let scale = newWidth / image.size.width
+        let newHeight = image.size.height * scale
+        UIGraphicsBeginImageContext(CGSizeMake(newWidth, newHeight))
+        image.drawInRect(CGRectMake(0, 0, newWidth, newHeight))
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return newImage
+    }
+
     
     /**
     Creates an image from a video. Created with help from http://stackoverflow.com/questions/8906004/thumbnail-image-of-video/8906104#8906104

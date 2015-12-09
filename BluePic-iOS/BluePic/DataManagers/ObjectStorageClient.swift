@@ -1,6 +1,7 @@
 //
 //  ObjectStorageClient.swift
 //  BluePic
+//  For detailed information on the Object Storage API, please see the following URL: http://developer.openstack.org/api-ref-objectstorage-v1.html
 //
 //  Created by Ricardo Olivieri on 11/17/15.
 //  Copyright © 2015 MIL. All rights reserved.
@@ -8,7 +9,6 @@
 
 import Foundation
 import Alamofire
-import ObjectMapper
 
 /**
  * Convenience class for querying the Object Storage service on Bluemix.
@@ -97,6 +97,15 @@ class ObjectStorageClient {
         })
     }
     
+    /**
+     * Configures the specified container on the Object Storage service for web hosting. This step is needed
+     * so we can serve images via URLs. In most cases, clients won't have to invoke this method since the
+     * createContainer method invokes this method as part of the creation of the container.
+     *
+     * @param name The name for the container.
+     * @param onSuccess Closure that should be invoked upon succcessful completion.
+     * @param onFailure Closure that should be invoked upon failure.
+     */
     func configureContainerForWebHosting(name: String, onSuccess: (name : String) -> Void, onFailure: (error: String) -> Void) {
         let nsURL = NSURL(string: "\(publicURL)/\(name)")!
         let mutableURLRequest = NSMutableURLRequest(URL: nsURL)
@@ -112,6 +121,15 @@ class ObjectStorageClient {
         })
     }
     
+    /**
+     * Configures the specified container on the Object Storage service for public access. This step is needed
+     * so we can serve images via URLs. In most cases, clients won't have to invoke this method since the
+     * createContainer method invokes this method as part of the creation of the container.
+     *
+     * @param name The name for the container.
+     * @param onSuccess Closure that should be invoked upon succcessful completion.
+     * @param onFailure Closure that should be invoked upon failure.
+     */
     func configureContainerForPublicAccess(name: String, onSuccess: (name: String) -> Void, onFailure: (error: String) -> Void) {
         let nsURL = NSURL(string: "\(publicURL)/\(name)")!
         let mutableURLRequest = NSMutableURLRequest(URL: nsURL)
@@ -130,8 +148,13 @@ class ObjectStorageClient {
     /**
      * Convenience method for executing REST calls against the Object Storage service on Bluemix. All methods in this class
      * levegare this method to avoid code duplication.
+     *
+     * @param mutableURLRequest An instance of the NSMutableURLRequest class that specifies the configuration to use for the HTTP REST call.
+     * @param successCodes An integer array that specificies which HTTP return codes should be considered successful for the given invocation.
+     * @param onSuccess Closure that should be invoked upon succcessful completion.
+     * @param onFailure Closure that should be invoked upon failure.
      */
-    func executeCall(mutableURLRequest: NSMutableURLRequest, successCodes: [Int],
+    private func executeCall(mutableURLRequest: NSMutableURLRequest, successCodes: [Int],
         onSuccess: (headers: [NSObject : AnyObject]?) -> Void, onFailure: (error: String) -> Void) {
             // Fire off HTTP request
             Alamofire.request(mutableURLRequest).responseJSON {response in
@@ -166,6 +189,12 @@ class ObjectStorageClient {
     /**
      * Uploads given UIImage object to the Object Storage service on Bluemix. Before doing so, this method creates a PNG
      * representation of the image.
+     *
+     * @param containerName The name of the container to which to upload the image.
+     * @param imageName The name of the image that shall be used to persist it.
+     * @param image An instance of the UIImage class. Contains the actual image to store.
+     * @param onSuccess Closure that should be invoked upon succcessful completion.
+     * @param onFailure Closure that should be invoked upon failure.
      */
     func uploadImage(containerName: String, imageName: String, image: UIImage,
         onSuccess: (imageURL: String) -> Void, onFailure: (error: String) -> Void) {

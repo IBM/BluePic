@@ -7,7 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1B0432E51C17E967007643B1 /* ProfileCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0432E31C17E967007643B1 /* ProfileCollectionViewCell.swift */; };
+		1B0432E61C17E967007643B1 /* ProfileCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1B0432E41C17E967007643B1 /* ProfileCollectionViewCell.xib */; };
+		1B057E041C17637700AC21EE /* DataManagerCalbackCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B057E031C17637700AC21EE /* DataManagerCalbackCoordinator.swift */; };
+		1B057E061C17B10100AC21EE /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B057E051C17B10100AC21EE /* ProfileViewModel.swift */; };
+		1B057E091C17C03400AC21EE /* ProfileHeaderCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B057E071C17C03400AC21EE /* ProfileHeaderCollectionReusableView.swift */; };
+		1B057E0A1C17C03400AC21EE /* ProfileHeaderCollectionReusableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1B057E081C17C03400AC21EE /* ProfileHeaderCollectionReusableView.xib */; };
+		1B3BA0761C0F5FBD0064C850 /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = 1B3BA0751C0F5FBD0064C850 /* .gitkeep */; };
+		1B3BA0781C0F62850064C850 /* Picture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3BA0771C0F62850064C850 /* Picture.swift */; };
+		1B5555BE1C1616B000B3086E /* TabBarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B5555BD1C1616B000B3086E /* TabBarViewModel.swift */; };
 		1BC7AF5C1C0E39F100DDFD02 /* FeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC7AF5B1C0E39F100DDFD02 /* FeedViewModel.swift */; };
+		1BC7AF5F1C0E480800DDFD02 /* ImageFeedCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC7AF5D1C0E480800DDFD02 /* ImageFeedCollectionViewCell.swift */; };
+		1BC7AF601C0E480800DDFD02 /* ImageFeedCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1BC7AF5E1C0E480800DDFD02 /* ImageFeedCollectionViewCell.xib */; };
+		342E4EBB1C161FE500DC3771 /* PopulateFeedWithPhotos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342E4EBA1C161FE500DC3771 /* PopulateFeedWithPhotos.swift */; };
 		3435C7551BFE9E06004923BD /* Roboto-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3435C7491BFE9E06004923BD /* Roboto-Black.ttf */; };
 		3435C7561BFE9E06004923BD /* Roboto-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3435C74A1BFE9E06004923BD /* Roboto-BlackItalic.ttf */; };
 		3435C7571BFE9E06004923BD /* Roboto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3435C74B1BFE9E06004923BD /* Roboto-Bold.ttf */; };
@@ -32,6 +44,7 @@
 		346F947C1C0F868C004999A8 /* CameraDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 346F947B1C0F868C004999A8 /* CameraDataManager.swift */; };
 		346F94801C0F9211004999A8 /* CameraConfirmationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 346F947F1C0F9211004999A8 /* CameraConfirmationView.xib */; };
 		346F94821C0F9225004999A8 /* CameraConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 346F94811C0F9225004999A8 /* CameraConfirmationView.swift */; };
+		346F94841C10AA32004999A8 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 346F94831C10AA32004999A8 /* ImageIO.framework */; };
 		3474728E1BFA8C6A0018B7F6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3474728D1BFA8C6A0018B7F6 /* AppDelegate.swift */; };
 		347472951BFA8C6A0018B7F6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 347472941BFA8C6A0018B7F6 /* Assets.xcassets */; };
 		347472981BFA8C6A0018B7F6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 347472961BFA8C6A0018B7F6 /* LaunchScreen.storyboard */; };
@@ -62,7 +75,6 @@
 		34C809471BFCB10100C48004 /* AlamofireObjectMapper.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 34C8093E1BFCB0C800C48004 /* AlamofireObjectMapper.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		34C809481BFCB10300C48004 /* ObjectMapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34C8093F1BFCB0C800C48004 /* ObjectMapper.framework */; };
 		34C809491BFCB10300C48004 /* ObjectMapper.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 34C8093F1BFCB0C800C48004 /* ObjectMapper.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		34C8094B1BFCD9A300C48004 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 34C8094A1BFCD9A300C48004 /* Info.plist */; };
 		34C8094D1BFCEA0400C48004 /* keys.plist in Resources */ = {isa = PBXBuildFile; fileRef = 34C8094C1BFCEA0400C48004 /* keys.plist */; };
 		34C809551BFD0F2400C48004 /* FacebookDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C809541BFD0F2400C48004 /* FacebookDataManager.swift */; };
 		34CA18201C04CB6700EC2636 /* ObjectStorageDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34CA181F1C04CB6700EC2636 /* ObjectStorageDataManager.swift */; };
@@ -106,7 +118,19 @@
 
 /* Begin PBXFileReference section */
 		11F4C7A29750E1B7B37ABAFA /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		1B0432E31C17E967007643B1 /* ProfileCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileCollectionViewCell.swift; sourceTree = "<group>"; };
+		1B0432E41C17E967007643B1 /* ProfileCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileCollectionViewCell.xib; sourceTree = "<group>"; };
+		1B057E031C17637700AC21EE /* DataManagerCalbackCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataManagerCalbackCoordinator.swift; sourceTree = "<group>"; };
+		1B057E051C17B10100AC21EE /* ProfileViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
+		1B057E071C17C03400AC21EE /* ProfileHeaderCollectionReusableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileHeaderCollectionReusableView.swift; sourceTree = "<group>"; };
+		1B057E081C17C03400AC21EE /* ProfileHeaderCollectionReusableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileHeaderCollectionReusableView.xib; sourceTree = "<group>"; };
+		1B3BA0751C0F5FBD0064C850 /* .gitkeep */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
+		1B3BA0771C0F62850064C850 /* Picture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Picture.swift; sourceTree = "<group>"; };
+		1B5555BD1C1616B000B3086E /* TabBarViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarViewModel.swift; sourceTree = "<group>"; };
 		1BC7AF5B1C0E39F100DDFD02 /* FeedViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedViewModel.swift; sourceTree = "<group>"; };
+		1BC7AF5D1C0E480800DDFD02 /* ImageFeedCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageFeedCollectionViewCell.swift; sourceTree = "<group>"; };
+		1BC7AF5E1C0E480800DDFD02 /* ImageFeedCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageFeedCollectionViewCell.xib; sourceTree = "<group>"; };
+		342E4EBA1C161FE500DC3771 /* PopulateFeedWithPhotos.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopulateFeedWithPhotos.swift; sourceTree = "<group>"; };
 		3435C7491BFE9E06004923BD /* Roboto-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Black.ttf"; sourceTree = "<group>"; };
 		3435C74A1BFE9E06004923BD /* Roboto-BlackItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-BlackItalic.ttf"; sourceTree = "<group>"; };
 		3435C74B1BFE9E06004923BD /* Roboto-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Bold.ttf"; sourceTree = "<group>"; };
@@ -131,6 +155,7 @@
 		346F947B1C0F868C004999A8 /* CameraDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraDataManager.swift; sourceTree = "<group>"; };
 		346F947F1C0F9211004999A8 /* CameraConfirmationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CameraConfirmationView.xib; sourceTree = "<group>"; };
 		346F94811C0F9225004999A8 /* CameraConfirmationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraConfirmationView.swift; sourceTree = "<group>"; };
+		346F94831C10AA32004999A8 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		3474728A1BFA8C6A0018B7F6 /* BluePic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BluePic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3474728D1BFA8C6A0018B7F6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		347472941BFA8C6A0018B7F6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -179,6 +204,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				346F94841C10AA32004999A8 /* ImageIO.framework in Frameworks */,
 				FC315DE6D7B8C71B03B95C18 /* libPods.a in Frameworks */,
 				34C809461BFCB10100C48004 /* AlamofireObjectMapper.framework in Frameworks */,
 				34C809481BFCB10300C48004 /* ObjectMapper.framework in Frameworks */,
@@ -203,6 +229,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1B3BA0741C0F5FBD0064C850 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				1B3BA0751C0F5FBD0064C850 /* .gitkeep */,
+				1B3BA0771C0F62850064C850 /* Picture.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		3435C7481BFE9E06004923BD /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
@@ -247,6 +282,7 @@
 		3474728C1BFA8C6A0018B7F6 /* BluePic */ = {
 			isa = PBXGroup;
 			children = (
+				1B3BA0741C0F5FBD0064C850 /* Models */,
 				3474728D1BFA8C6A0018B7F6 /* AppDelegate.swift */,
 				347472941BFA8C6A0018B7F6 /* Assets.xcassets */,
 				347472961BFA8C6A0018B7F6 /* LaunchScreen.storyboard */,
@@ -272,6 +308,7 @@
 				494AA0AF1BFE4CBA006FC48E /* ObjectStorageClientTests.swift */,
 				347472A41BFA8C6A0018B7F6 /* Info.plist */,
 				B3A9E7D91C063FA1002D4AEE /* CloudantSyncClientTests.swift */,
+				342E4EBA1C161FE500DC3771 /* PopulateFeedWithPhotos.swift */,
 			);
 			path = BluePicTests;
 			sourceTree = "<group>";
@@ -356,6 +393,7 @@
 				34CA181F1C04CB6700EC2636 /* ObjectStorageDataManager.swift */,
 				34C809541BFD0F2400C48004 /* FacebookDataManager.swift */,
 				346F947B1C0F868C004999A8 /* CameraDataManager.swift */,
+				1B057E031C17637700AC21EE /* DataManagerCalbackCoordinator.swift */,
 			);
 			path = DataManagers;
 			sourceTree = "<group>";
@@ -364,6 +402,8 @@
 			isa = PBXGroup;
 			children = (
 				1BC7AF5B1C0E39F100DDFD02 /* FeedViewModel.swift */,
+				1B5555BD1C1616B000B3086E /* TabBarViewModel.swift */,
+				1B057E051C17B10100AC21EE /* ProfileViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -371,8 +411,14 @@
 		34C809531BFD0CBC00C48004 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				1B0432E31C17E967007643B1 /* ProfileCollectionViewCell.swift */,
+				1B0432E41C17E967007643B1 /* ProfileCollectionViewCell.xib */,
 				346F947F1C0F9211004999A8 /* CameraConfirmationView.xib */,
 				346F94811C0F9225004999A8 /* CameraConfirmationView.swift */,
+				1BC7AF5D1C0E480800DDFD02 /* ImageFeedCollectionViewCell.swift */,
+				1BC7AF5E1C0E480800DDFD02 /* ImageFeedCollectionViewCell.xib */,
+				1B057E071C17C03400AC21EE /* ProfileHeaderCollectionReusableView.swift */,
+				1B057E081C17C03400AC21EE /* ProfileHeaderCollectionReusableView.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -395,6 +441,7 @@
 		C93A0D59BDE755BE5A1209FC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				346F94831C10AA32004999A8 /* ImageIO.framework */,
 				34C8093D1BFCB0C800C48004 /* Alamofire.framework */,
 				34C8093E1BFCB0C800C48004 /* AlamofireObjectMapper.framework */,
 				34C8093F1BFCB0C800C48004 /* ObjectMapper.framework */,
@@ -520,24 +567,27 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1B0432E61C17E967007643B1 /* ProfileCollectionViewCell.xib in Resources */,
 				3435C75F1BFE9E06004923BD /* Roboto-Thin.ttf in Resources */,
 				3435C7CB1C0368DA004923BD /* Camera.storyboard in Resources */,
 				3435C7CD1C03690F004923BD /* Profile.storyboard in Resources */,
 				3435C75C1BFE9E06004923BD /* Roboto-Medium.ttf in Resources */,
+				1B057E0A1C17C03400AC21EE /* ProfileHeaderCollectionReusableView.xib in Resources */,
 				3435C7C91C0368B1004923BD /* Feed.storyboard in Resources */,
 				3435C7581BFE9E06004923BD /* Roboto-BoldItalic.ttf in Resources */,
 				346F94801C0F9211004999A8 /* CameraConfirmationView.xib in Resources */,
 				34C8094D1BFCEA0400C48004 /* keys.plist in Resources */,
 				3435C75B1BFE9E06004923BD /* Roboto-LightItalic.ttf in Resources */,
 				3435C75D1BFE9E06004923BD /* Roboto-MediumItalic.ttf in Resources */,
-				34C8094B1BFCD9A300C48004 /* Info.plist in Resources */,
 				3435C75A1BFE9E06004923BD /* Roboto-Light.ttf in Resources */,
 				347472ED1BFA8DEF0018B7F6 /* Main.storyboard in Resources */,
 				3435C7561BFE9E06004923BD /* Roboto-BlackItalic.ttf in Resources */,
+				1B3BA0761C0F5FBD0064C850 /* .gitkeep in Resources */,
 				3435C7601BFE9E06004923BD /* Roboto-ThinItalic.ttf in Resources */,
 				347472981BFA8C6A0018B7F6 /* LaunchScreen.storyboard in Resources */,
 				347472951BFA8C6A0018B7F6 /* Assets.xcassets in Resources */,
 				3435C7591BFE9E06004923BD /* Roboto-Italic.ttf in Resources */,
+				1BC7AF601C0E480800DDFD02 /* ImageFeedCollectionViewCell.xib in Resources */,
 				3435C75E1BFE9E06004923BD /* Roboto-Regular.ttf in Resources */,
 				3435C7571BFE9E06004923BD /* Roboto-Bold.ttf in Resources */,
 				3435C7551BFE9E06004923BD /* Roboto-Black.ttf in Resources */,
@@ -613,18 +663,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1B057E041C17637700AC21EE /* DataManagerCalbackCoordinator.swift in Sources */,
 				346F94821C0F9225004999A8 /* CameraConfirmationView.swift in Sources */,
 				347472DD1BFA8DEF0018B7F6 /* DoubleExtension.swift in Sources */,
 				347472E91BFA8DEF0018B7F6 /* UILabelExtension.swift in Sources */,
 				3435C7CF1C036A60004923BD /* TabBarViewController.swift in Sources */,
 				347472DF1BFA8DEF0018B7F6 /* IntExtension.swift in Sources */,
 				347472DE1BFA8DEF0018B7F6 /* FloatExtension.swift in Sources */,
+				1BC7AF5F1C0E480800DDFD02 /* ImageFeedCollectionViewCell.swift in Sources */,
+				1B3BA0781C0F62850064C850 /* Picture.swift in Sources */,
 				347472E01BFA8DEF0018B7F6 /* NSCoderExtension.swift in Sources */,
 				347472E41BFA8DEF0018B7F6 /* UIButtonExtension.swift in Sources */,
 				347472EF1BFA8DEF0018B7F6 /* Utils.swift in Sources */,
 				346F947C1C0F868C004999A8 /* CameraDataManager.swift in Sources */,
 				347472E51BFA8DEF0018B7F6 /* UIColorExtension.swift in Sources */,
 				347472E71BFA8DEF0018B7F6 /* UIImageExtension.swift in Sources */,
+				1B0432E51C17E967007643B1 /* ProfileCollectionViewCell.swift in Sources */,
 				3435C7D91C04111F004923BD /* ProfileViewController.swift in Sources */,
 				347472E21BFA8DEF0018B7F6 /* NSDictionaryExtension.swift in Sources */,
 				3435C7D21C03E223004923BD /* CloudantSyncClient.swift in Sources */,
@@ -642,7 +696,10 @@
 				347472F11BFA8E320018B7F6 /* LoginViewController.swift in Sources */,
 				3474728E1BFA8C6A0018B7F6 /* AppDelegate.swift in Sources */,
 				3435C7D51C04110C004923BD /* FeedViewController.swift in Sources */,
+				1B057E091C17C03400AC21EE /* ProfileHeaderCollectionReusableView.swift in Sources */,
+				1B5555BE1C1616B000B3086E /* TabBarViewModel.swift in Sources */,
 				34C809551BFD0F2400C48004 /* FacebookDataManager.swift in Sources */,
+				1B057E061C17B10100AC21EE /* ProfileViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -652,6 +709,7 @@
 			files = (
 				B3A9E7DA1C063FA1002D4AEE /* CloudantSyncClientTests.swift in Sources */,
 				347472A31BFA8C6A0018B7F6 /* BluePicTests.swift in Sources */,
+				342E4EBB1C161FE500DC3771 /* PopulateFeedWithPhotos.swift in Sources */,
 				494AA0B01BFE4CBA006FC48E /* ObjectStorageClientTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -786,8 +844,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
-					"$(PROJECT_DIR)/BluePic/Controllers/ExternalLibraries",
-					"$(PROJECT_DIR)/BluePic/ExternalLibraries",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/BluePic/Configuration/Info.plist";
@@ -809,8 +865,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
-					"$(PROJECT_DIR)/BluePic/Controllers/ExternalLibraries",
-					"$(PROJECT_DIR)/BluePic/ExternalLibraries",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/BluePic/Configuration/Info.plist";
