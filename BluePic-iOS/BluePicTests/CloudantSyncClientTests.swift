@@ -28,17 +28,10 @@ class CloudantSyncClientTests: XCTestCase {
         // Create User
         let id = "4876"
         let name = "Ellen Harrison"
-        
-        let created = CloudantSyncClient.SharedInstance.createProfileDoc(id, name: name)
-        XCTAssertNotNil(created)
+        CloudantSyncClient.SharedInstance.createProfileDoc(id, name: name)
         // Check if doc with provided id exists
         let exists = CloudantSyncClient.SharedInstance.doesExist(id)
-        XCTAssertEqual(exists, true)
-        let doc = CloudantSyncClient.SharedInstance.getDoc(id)
-        XCTAssertNotNil(doc)
-        // Make sure that profile names are the same
-        let docName:String = CloudantSyncClient.SharedInstance.getProfileName(id)
-        XCTAssertEqual(docName, name)
+        XCTAssertTrue(exists)
         // Delete doc
         CloudantSyncClient.SharedInstance.deleteDoc(id)
     }
@@ -48,14 +41,11 @@ class CloudantSyncClientTests: XCTestCase {
         let id = "1039"
         let name = "Brad Tyler"
         CloudantSyncClient.SharedInstance.createProfileDoc(id, name: name)
-        // Make sure doc exists
-        var exists = CloudantSyncClient.SharedInstance.doesExist(id)
-        XCTAssertEqual(exists, true)
         // Delete User
         CloudantSyncClient.SharedInstance.deleteDoc(id)
         // Make sure doc does not exist
-        exists = CloudantSyncClient.SharedInstance.doesExist(id)
-        XCTAssertEqual(exists, false)
+        let exists = CloudantSyncClient.SharedInstance.doesExist(id)
+        XCTAssertFalse(exists)
     }
     
     // Tests creation of pictures, assigning them to a specific user, iterating through a user's pictures and finally deleting them.
@@ -161,7 +151,40 @@ class CloudantSyncClientTests: XCTestCase {
             // Put the code you want to measure the time of here.
         }
     }
-    
+}
 
+
+/**
+ * Delegate for test Replicators.
+ */
+class ReplicatorDelegate:NSObject, CDTReplicatorDelegate {
     
+    /**
+     * Called when the replicator changes state.
+     */
+    func replicatorDidChangeState(replicator:CDTReplicator) {
+        print("PUSH Replicator changed state.")
+    }
+    
+    /**
+     * Called whenever the replicator changes progress
+     */
+    func replicatorDidChangeProgress(replicator:CDTReplicator) {
+        print("PUSH Replicator changed progess.")
+    }
+    
+    /**
+     * Called when a state transition to COMPLETE or STOPPED is
+     * completed.
+     */
+    func replicatorDidComplete(replicator:CDTReplicator) {
+        print("PUSH Replicator completed.")
+    }
+    
+    /**
+     * Called when a state transition to ERROR is completed.
+     */
+    func replicatorDidError(replicator:CDTReplicator, info:NSError) {
+        print("PUSH Replicator ERROR: \(info)")
+    }
 }

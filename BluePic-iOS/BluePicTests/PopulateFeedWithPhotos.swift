@@ -18,7 +18,7 @@ class PopulateFeedWithPhotos: XCTestCase {
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
-        CloudantSyncClient.SharedInstance.dbName = Utils.getKeyFromPlist("keys", key: "cdt_db_name")
+        CloudantSyncClient.SharedInstance!.dbName = Utils.getKeyFromPlist("keys", key: "cdt_db_name")
         //imagename : Caption from asset directory
         self.imageNames = [
             "photo1": "Mountains",
@@ -41,7 +41,7 @@ class PopulateFeedWithPhotos: XCTestCase {
         // Create fake user
         let id = "1234"
         let name = "Mobile Innovation Lab"
-        CloudantSyncClient.SharedInstance.createProfileDoc(id, name: name)
+        CloudantSyncClient.SharedInstance!.createProfileDoc(id, name: name)
         // Authenticate
         ObjectStorageDataManager.SharedInstance.objectStorageClient.authenticate({() in
             print("success authenticating with object storage!")

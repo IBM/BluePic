@@ -9,11 +9,14 @@
 import UIKit
 
 
-
+// Use example:
+// DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantPullDataFailure)
 enum DataManagerNotification {
     case CloudantPullDataSuccess
     case CloudantPullDataFailure
-    case CloudantPushDataFailiure
+    case CloudantPushDataFailure
+    case CloudantCreatePictureFailure
+    case CloudantCreateProfileFailure
     case ObjectStorageAuthError
     case ObjectStorageUploadError
     case GotPastLoginCheck

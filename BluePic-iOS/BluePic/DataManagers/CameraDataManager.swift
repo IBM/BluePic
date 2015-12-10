@@ -177,9 +177,20 @@ class CameraDataManager: NSObject {
                 print("creating cloudant picture document...")
                 self.lastPhotoTakenURL = imageURL
                 print("image orientation is: \(self.lastPhotoTaken.imageOrientation.rawValue), width: \(self.lastPhotoTaken.size.width) height: \(self.lastPhotoTaken.size.height)")
+                do {
+                    try CloudantSyncClient.SharedInstance!.createPictureDoc(self.lastPhotoTakenCaption, fileName: self.lastPhotoTakenName, url: self.lastPhotoTakenURL, ownerID: FacebookDataManager.SharedInstance.fbUniqueUserID!, width: "\(self.lastPhotoTaken.size.width)", height: "\(self.lastPhotoTaken.size.height)", orientation: "\(self.lastPhotoTaken.imageOrientation.rawValue)")
+                } catch {
+                    print("uploadImageToObjectStorage ERROR: \(error)")
+                    DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantCreatePictureFailure)
+                }
                 
-                CloudantSyncClient.SharedInstance.createPictureDoc(self.lastPhotoTakenCaption, fileName: self.lastPhotoTakenName, url: self.lastPhotoTakenURL, ownerID: FacebookDataManager.SharedInstance.fbUniqueUserID!, width: "\(self.lastPhotoTaken.size.width)", height: "\(self.lastPhotoTaken.size.height)", orientation: "\(self.lastPhotoTaken.imageOrientation.rawValue)")
-                CloudantSyncClient.SharedInstance.pushToRemoteDatabase()
+                do {
+                    try CloudantSyncClient.SharedInstance!.pushToRemoteDatabase()
+                } catch {
+                    print("uploadImageToObjectStorage ERROR: \(error)")
+                    DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantPushDataFailure)
+                }
+                
             }, onFailure: { (error) in
                 print("upload to object storage failed!")
                 print("error: \(error)")
