@@ -128,6 +128,10 @@ class TabBarViewController: UITabBarController {
             self.viewModel.retryPushingCloudantData()
         }))
         
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .Cancel, handler: { (action: UIAlertAction!) in
+
+        }))
+        
         dispatch_async(dispatch_get_main_queue()) {
             self.presentViewController(alert, animated: true, completion: nil)
         }
@@ -143,6 +147,10 @@ class TabBarViewController: UITabBarController {
         
         alert.addAction(UIAlertAction(title: NSLocalizedString("Try Again", comment: ""), style: .Default, handler: { (action: UIAlertAction!) in
             self.viewModel.retryPullingCloudantData()
+        }))
+        
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .Cancel, handler: { (action: UIAlertAction!) in
+            
         }))
         
         dispatch_async(dispatch_get_main_queue()) {
@@ -162,6 +170,10 @@ class TabBarViewController: UITabBarController {
             self.viewModel.retryAuthenticatingObjectStorage()
         }))
         
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .Cancel, handler: { (action: UIAlertAction!) in
+            
+        }))
+        
         dispatch_async(dispatch_get_main_queue()) {
             self.presentViewController(alert, animated: true, completion: nil)
         }
@@ -176,6 +188,10 @@ class TabBarViewController: UITabBarController {
         
         alert.addAction(UIAlertAction(title: NSLocalizedString("Try Again", comment: ""), style: .Default, handler: { (action: UIAlertAction!) in
             CameraDataManager.SharedInstance.uploadImageToObjectStorage()
+        }))
+        
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .Cancel, handler: { (action: UIAlertAction!) in
+            
         }))
         
         dispatch_async(dispatch_get_main_queue()) {
