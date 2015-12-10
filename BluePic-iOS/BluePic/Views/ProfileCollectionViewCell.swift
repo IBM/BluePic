@@ -30,23 +30,6 @@ class ProfileCollectionViewCell: UICollectionViewCell {
         
         setImageView(url, fileName: fileName)
         
-//        if let img = image {
-//            
-//            imageView.image = img
-//            
-//            //timeSincePostedLabel.text = NSLocalizedString("1s", comment: "")
-//            
-//        }
-//        else{
-//            if let nsurl = NSURL(string: urlString){
-//            
-//                imageView.sd_setImageWithURL(nsurl, completed: { _ in
-//                
-//                
-//                
-//                })
-//            }
-//        }
         
         captionLabel.text = displayName?.uppercaseString ?? ""
         
