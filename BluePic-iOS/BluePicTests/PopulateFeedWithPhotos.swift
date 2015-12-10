@@ -104,13 +104,21 @@ class PopulateFeedWithPhotos: XCTestCase {
                     try CloudantSyncDataManager.SharedInstance!.createPictureDoc(caption, fileName: imageName, url: imageURL, ownerID: FBUserID, width: "\(image.size.width)", height: "\(image.size.height)", orientation: "\(image.imageOrientation.rawValue)")
                 } catch {
                     print(error)
+                    XCTFail("CreatePictureDoc() failed!")
+                    self.xctExpectation?.fulfill()
                 }
                 
                 imageCount-- //decrement number of images to upload remaining
                 //check if test is done (all photos uploaded)
                 if (imageCount == 0) {
-                    try CloudantSyncDataManager.SharedInstance!.pushToRemoteDatabase()
-                    self.xctExpectation?.fulfill() //test is done if all images added
+                    do {
+                        try CloudantSyncDataManager.SharedInstance!.pushToRemoteDatabase()
+                        self.xctExpectation?.fulfill() //test is done if all images added
+                    } catch {
+                        print(error)
+                        XCTFail("PushToRemoteDatabase() failed!")
+                        self.xctExpectation?.fulfill()
+                    }
                 }
             }, onFailure: { (error) in
                 print("upload to object storage failed!")
