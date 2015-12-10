@@ -8,6 +8,15 @@
 		<true/>
 		<key>NSExceptionDomains</key>
 		<dict>
+			<key>graph.facebook.com</key>
+			<dict>
+				<key>NSTemporaryExceptionMinimumTLSVersion</key>
+				<string>TLSv1.1</string>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+			</dict>
 			<key>cloudant.com</key>
 			<dict>
 				<key>NSExceptionRequiresForwardSecrecy</key>

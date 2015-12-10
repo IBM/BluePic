@@ -43,8 +43,9 @@
                         <constraint firstItem="vB3-TD-s4p" firstAttribute="centerX" secondItem="aKE-u1-Bhd" secondAttribute="centerX" id="n2t-wS-6Jn"/>
                     </constraints>
                 </view>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="photo1" translatesAutoresizingMaskIntoConstraints="NO" id="8oe-Eo-PM6">
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="8oe-Eo-PM6">
                     <rect key="frame" x="146" y="224" width="75" height="75"/>
+                    <color key="backgroundColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="75" id="clz-Gx-DIq"/>
                         <constraint firstAttribute="width" constant="75" id="o7d-6c-Ei7"/>
@@ -67,11 +68,9 @@
             <connections>
                 <outlet property="nameLabel" destination="sbe-3k-YEp" id="eD2-Mg-Gny"/>
                 <outlet property="numberOfShotsLabel" destination="vB3-TD-s4p" id="cJt-j1-dT3"/>
+                <outlet property="profilePictureImageView" destination="8oe-Eo-PM6" id="HVl-bc-JUb"/>
             </connections>
             <point key="canvasLocation" x="423.5" y="507"/>
         </collectionReusableView>
     </objects>
-    <resources>
-        <image name="photo1" width="6000" height="3375"/>
-    </resources>
 </document>

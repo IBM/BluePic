@@ -15,6 +15,7 @@ class ProfileViewModel: NSObject {
     let kNumberOfSectionsInCollectionView = 1
     
     let kCollectionViewCellInfoViewHeight : CGFloat = 60
+    let kCollectionViewCellHeightLimit : CGFloat = 470
     
     init(refreshVCCallback : (()->())){
        super.init()
@@ -102,7 +103,11 @@ class ProfileViewModel: NSObject {
             
             let ratio = height / width
             
-            let height = collectionView.frame.width * ratio
+            var height = collectionView.frame.width * ratio
+            
+            if(height > kCollectionViewCellHeightLimit){
+                height = kCollectionViewCellHeightLimit
+            }
             
             return CGSize(width: collectionView.frame.width, height: height + kCollectionViewCellInfoViewHeight)
             
@@ -148,11 +153,10 @@ class ProfileViewModel: NSObject {
         
         header = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "ProfileHeaderCollectionReusableView", forIndexPath: indexPath) as! ProfileHeaderCollectionReusableView
         
-        header.setupData(FacebookDataManager.SharedInstance.fbUserDisplayName, numberOfShots: pictureDataArray.count)
+        header.setupData(FacebookDataManager.SharedInstance.fbUserDisplayName, numberOfShots: pictureDataArray.count, profilePictureURL : FacebookDataManager.SharedInstance.getUserFacebookProfilePictureURL())
         
         return header
     }
-    
     
     
 
