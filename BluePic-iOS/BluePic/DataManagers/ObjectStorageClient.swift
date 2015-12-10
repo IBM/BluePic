@@ -164,7 +164,9 @@ class ObjectStorageClient {
                     statusCode = httpResponse.statusCode
                 }
                 print("statusCode = \(statusCode)")
-                // TODO: Verify if token has expired; if so, then re-authenticate and retry current operation
+                // For a production app, we would need to verify if the auth token has expired;
+                // if so, then the code should re-authenticate and retry the current operation
+                // For this demo app, we did not get to implement this logic.
                 
                 let statusCodeIndex = successCodes.indexOf(statusCode)
                 if (statusCodeIndex != nil) {
