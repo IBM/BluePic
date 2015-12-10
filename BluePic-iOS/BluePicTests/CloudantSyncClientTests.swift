@@ -14,7 +14,7 @@ import XCTest
  */
 class CloudantSyncClientTests: XCTestCase {
     
-    var xctExpectation:XCTestExpectation?
+    static var xctExpectation:XCTestExpectation?
     
     override func setUp() {
         super.setUp()
@@ -100,7 +100,6 @@ class CloudantSyncClientTests: XCTestCase {
         } catch {
             print("Test passed, creation of this doc SHOULD fail")
         }
-        
     }
 
     /**
@@ -116,7 +115,7 @@ class CloudantSyncClientTests: XCTestCase {
             // Create 3 pictures and set their owner id
             let displayNames = ["Keys", "Big Bend", "Yosemite"]
             let fileNames = ["keys.jpg", "bigbend.jpg", "yosemite.jpg"]
-            let urls = ["https://www.flmnh.ufl.edu/fish/SouthFlorida/images/bocachita.JPG", "http://media-cdn.tripadvisor.com/media/photo-s/02/92/12/75/sierra-del-carmen-sunset.jpg", "http://www.tenayalodge.com/img/Carousel-DiscoverYosemite_img3.jpg", ]
+            let urls = ["https://www.flmnh.ufl.edu/fish/SouthFlorida/images/bocachita.JPG", "http://media-cdn.tripadvisor.com/media/photo-s/02/92/12/75/sierra-del-carmen-sunset.jpg", "http://www.tenayalodge.com/img/Carousel-DiscoverYosemite_img3.jpg","https://www.flmnh.ufl.edu/fish/SouthFlorida/images/bocachita.JPG"]
             let widths = ["500, 200", "400"]
             let heights = ["150, 300", "100"]
             let orientations = ["0", "1", "2"]
@@ -150,8 +149,6 @@ class CloudantSyncClientTests: XCTestCase {
      * Tests order of when querying local database for ALL pictures.
      */
     func testGetAllPictures() throws {
-        
-        
         do {
             // Create Users
             let id1 = "1837"
@@ -167,7 +164,7 @@ class CloudantSyncClientTests: XCTestCase {
             // Create 3 pictures and set their owner id
             let displayNames = ["Keys", "Big Bend", "Yosemite"]
             let fileNames = ["keys.jpg", "bigbend.jpg", "yosemite.jpg"]
-            let urls = ["https://www.flmnh.ufl.edu/fish/SouthFlorida/images/bocachita.JPG", "http://media-cdn.tripadvisor.com/media/photo-s/02/92/12/75/sierra-del-carmen-sunset.jpg", "http://www.tenayalodge.com/img/Carousel-DiscoverYosemite_img3.jpg", ]
+            let urls = ["https://www.flmnh.ufl.edu/fish/SouthFlorida/images/bocachita.JPG", "http://media-cdn.tripadvisor.com/media/photo-s/02/92/12/75/sierra-del-carmen-sunset.jpg", "http://www.tenayalodge.com/img/Carousel-DiscoverYosemite_img3.jpg", "https://www.flmnh.ufl.edu/fish/SouthFlorida/images/bocachita.JPG"]
             let widths = ["500, 200", "400"]
             let heights = ["150, 300", "100"]
             let orientations = ["0", "1", "2"]
@@ -201,39 +198,127 @@ class CloudantSyncClientTests: XCTestCase {
             XCTFail()
         }
     }
+    
+    //TODO: can't do a pull in expectation handler because pull method throws an error.
+    /**
+     * Tests the push of 2 documents, deleting them locally, then pulling them and finally making sure they exist again locally.
+     */
+    func testPushNPull(){
+        do {
+            // Create User
+            let id = "7532"
+            let name = "Kenny Reid"
+            try CloudantSyncDataManager.SharedInstance!.createProfileDoc(id, name: name)
+            
+            // Create picture and set their owner id
+            let displayName = "Keys"
+            let fileName = "keys"
+            let url = "https://www.flmnh.ufl.edu/fish/SouthFlorida/images/bocachita.JPG"
+            let width = "500"
+            let height = "150"
+            let orientation = "0"
+            // Picture 1
+            try CloudantSyncDataManager.SharedInstance!.createPictureDoc(
+                displayName, fileName: fileName, url: url, ownerID: id, width: width, height: height, orientation: orientation)
+            // Push documents
+            CloudantSyncDataManager.SharedInstance!.pushDelegate = TestPushDelegate()
+            try CloudantSyncDataManager.SharedInstance!.pushToRemoteDatabase()
+            self.waitForExpectationsWithTimeout(20.0
+                , handler: { (NSError) in
+                    do {
+                        // Delete the 2 documents.
+                        try CloudantSyncDataManager.SharedInstance!.deletePicturesOfUser(id)
+                        try CloudantSyncDataManager.SharedInstance!.deleteDoc(id)
+                        // Perform PULL
+                        CloudantSyncDataManager.SharedInstance!.pullDelegate = TestPullDelegate()
+                        try CloudantSyncDataManager.SharedInstance!.pullFromRemoteDatabase()
+                        self.waitForExpectationsWithTimeout(20.0
+                            , handler: { (NSError) in
+                                XCTAssertTrue(CloudantSyncDataManager.SharedInstance!.doesExist(id))
+                                let result = CloudantSyncDataManager.SharedInstance!.getPictureObjects(id)
+                                // Check array for size
+                                XCTAssertEqual(result.count, 1)
+                            })
+                        
+                    } catch {
+                        XCTFail()
+                    }
+                })
+            
+        } catch {
+            XCTFail()
+        }
+    }
 }
 
 /**
- * Delegate for test Replicators.
+ * Delegates for test Replicators.
  */
-class TestReplicatorDelegate:NSObject, CDTReplicatorDelegate {
+class TestPullDelegate:PullDelegate{
     
     /**
      * Called when the replicator changes state.
      */
-    func replicatorDidChangeState(replicator:CDTReplicator) {
-        print("PUSH Replicator changed state.")
+    override func replicatorDidChangeState(replicator:CDTReplicator) {
+        print("Replicator changed state.")
     }
     
     /**
      * Called whenever the replicator changes progress
      */
-    func replicatorDidChangeProgress(replicator:CDTReplicator) {
-        print("PUSH Replicator changed progess.")
+    override func replicatorDidChangeProgress(replicator:CDTReplicator) {
+        print("Replicator changed progess.")
     }
     
     /**
      * Called when a state transition to COMPLETE or STOPPED is
      * completed.
      */
-    func replicatorDidComplete(replicator:CDTReplicator) {
-        print("PUSH Replicator completed.")
+    override func replicatorDidComplete(replicator:CDTReplicator) {
+        print("PULL Replicator completed.")
+        CloudantSyncClientTests.xctExpectation?.fulfill()
     }
     
     /**
      * Called when a state transition to ERROR is completed.
      */
-    func replicatorDidError(replicator:CDTReplicator, info:NSError) {
-        print("PUSH Replicator ERROR: \(info)")
+    override func replicatorDidError(replicator:CDTReplicator, info:NSError) {
+        print("Replicator ERROR: \(info)")
+        XCTFail()
     }
 }
+class TestPushDelegate:PushDelegate{
+    
+    /**
+     * Called when the replicator changes state.
+     */
+    override func replicatorDidChangeState(replicator:CDTReplicator) {
+        print("Replicator changed state.")
+    }
+    
+    /**
+     * Called whenever the replicator changes progress
+     */
+    override func replicatorDidChangeProgress(replicator:CDTReplicator) {
+        print("Replicator changed progess.")
+    }
+    
+    /**
+     * Called when a state transition to COMPLETE or STOPPED is
+     * completed.
+     */
+    override func replicatorDidComplete(replicator:CDTReplicator) {
+        print("PUSH Replicator completed.")
+        CloudantSyncClientTests.xctExpectation?.fulfill()
+    }
+    
+    /**
+     * Called when a state transition to ERROR is completed.
+     */
+    override func replicatorDidError(replicator:CDTReplicator, info:NSError) {
+        print("Replicator ERROR: \(info)")
+        XCTFail()
+    }
+}
+
+
