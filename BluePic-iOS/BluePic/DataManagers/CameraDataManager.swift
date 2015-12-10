@@ -137,6 +137,7 @@ class CameraDataManager: NSObject {
     
     
     func dismissCameraConfirmation() {
+        UIApplication.sharedApplication().statusBarHidden = false
         self.confirmationView.loadingIndicator.stopAnimating()
         self.confirmationView.endEditing(true) //dismiss keyboard first if shown
         UIView.animateWithDuration(0.4, animations: { _ in

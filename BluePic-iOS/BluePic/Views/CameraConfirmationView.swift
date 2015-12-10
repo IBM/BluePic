@@ -58,6 +58,7 @@ class CameraConfirmationView: UIView, UITextFieldDelegate {
     }
     
     func keyboardWillShow(notification:NSNotification) {
+        UIApplication.sharedApplication().statusBarHidden = true
         adjustingHeight(true, notification: notification)
     }
     
