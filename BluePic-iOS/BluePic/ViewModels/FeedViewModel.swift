@@ -18,7 +18,7 @@ class FeedViewModel: NSObject {
     
     
     let kCollectionViewCellInfoViewHeight : CGFloat = 76
-    let kCollectionViewCellHeightLimit : CGFloat = 470
+    let kCollectionViewCellHeightLimit : CGFloat = 480
     
     
     

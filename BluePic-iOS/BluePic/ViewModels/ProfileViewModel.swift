@@ -15,7 +15,7 @@ class ProfileViewModel: NSObject {
     let kNumberOfSectionsInCollectionView = 1
     
     let kCollectionViewCellInfoViewHeight : CGFloat = 60
-    let kCollectionViewCellHeightLimit : CGFloat = 470
+    let kCollectionViewCellHeightLimit : CGFloat = 480
     
     init(refreshVCCallback : (()->())){
        super.init()
