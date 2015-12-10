@@ -11,6 +11,8 @@ import Alamofire
 import ObjectMapper
 import AlamofireObjectMapper
 
+
+
 class LoginViewController: UIViewController {
 
     @IBOutlet weak var loadingIndicator: UIActivityIndicatorView!
@@ -23,100 +25,97 @@ class LoginViewController: UIViewController {
     
     @IBOutlet weak var connectingLabel: UILabel!
     
+    var viewModel: LoginViewModel!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        setupViewModel()
    
     }
+
     
-    override func viewDidAppear(animated: Bool) {
+    /**
+     Method to setup this VC's viewModel and provide it a callback method to execute
+     */
+    func setupViewModel() {
+        
+        viewModel = LoginViewModel(fbAuthCallback: fbAuthReturned)
         
     }
     
     
+    /**
+     Method to save to user defaults when user has pressed sign in later
+     
+     - parameter sender: sign in later button
+     */
     @IBAction func signInLaterTapped(sender: AnyObject) {
         NSUserDefaults.standardUserDefaults().setBool(true, forKey: "hasPressedLater")
         NSUserDefaults.standardUserDefaults().synchronize()
-        self.dismissViewControllerAnimated(true, completion: nil)
+        dismissViewControllerAnimated(true, completion: nil)
     }
 
+    
+    
+    /**
+     Method to authenticate with facebook when login is tapped
+     
+     - parameter sender: button tapped
+     */
     @IBAction func loginTapped(sender: AnyObject) {
-        self.startLoading()
-        FacebookDataManager.SharedInstance.authenticateUser({(response: FacebookDataManager.NetworkRequest) in
-            if (response == FacebookDataManager.NetworkRequest.Success) {
-                print("successfully logged into facebook with keys:")
-                if let userID = FacebookDataManager.SharedInstance.fbUniqueUserID {
-                    if let userDisplayName = FacebookDataManager.SharedInstance.fbUserDisplayName {
-                        print("\(userID)")
-                        print("\(userDisplayName)")
-                        //save that user has not pressed login later
-                        NSUserDefaults.standardUserDefaults().setBool(false, forKey: "hasPressedLater")
-                        NSUserDefaults.standardUserDefaults().synchronize()
-                        
-                        
-                        //add container once to object storage, then stop loading once completed
-                        self.createObjectStorageContainer(userID)
-                        
-                    }
-                }
-            }
-            else {
-                self.stopLoading()
-                print("failure logging into facebook")
-                self.welcomeLabel.text = "Oops, an error occurred! Try again."
-                self.facebookButton.hidden = false
-                self.signInLaterButton.hidden = false
-            }
-        })
+        startLoading()
+        viewModel.authenticateWithFacebook()
         
     }
     
     
     
-    func createObjectStorageContainer(userID: String!) {
-        print("Creating object storage container...")
-        ObjectStorageDataManager.SharedInstance.objectStorageClient.createContainer(userID, onSuccess: {(name) in
-            print("Successfully created object storage container with name \(name)") //success closure
-            //stop loading on completion
-            self.stopLoading()
-
-            //update labels
-            let userDisplayName = FacebookDataManager.SharedInstance.fbUserDisplayName!
-            let name = userDisplayName.componentsSeparatedByString(" ").first
-            self.welcomeLabel.text = "Welcome to BluePic, \(name!)!"
+    /**
+     Callback method called when facebook authentication + creating object storage container returns
+     
+     - parameter successful: value returned, either successful or not
+     */
+    func fbAuthReturned(successful: Bool!) {
+        stopLoading()
+        
+        if !successful {
+            //show error message
+            welcomeLabel.text = "Oops, an error occurred! Try again."
+            facebookButton.hidden = false
+            signInLaterButton.hidden = false
             
+        }
+        else {
             //dismiss login vc
-            self.dismissViewControllerAnimated(true, completion: nil)
-            
-            }, onFailure: {(error) in //failure closure
-                print("Facebook auth successful, but error creating Object Storage container: \(error)")
-                self.stopLoading()
-                self.welcomeLabel.text = "Oops, an error occurred! Try again."
-                self.facebookButton.hidden = false
-                self.signInLaterButton.hidden = false
-                
-        })
+            dismissViewControllerAnimated(true, completion: nil)
+        }
         
     }
     
     
-    
+    /**
+     Method to start the loading animation and setup UI for loading
+     */
     func startLoading() {
-        self.facebookButton.hidden = true
-        self.signInLaterButton.hidden = true
-        self.welcomeLabel.hidden = true
-        self.loadingIndicator.startAnimating()
-        self.loadingIndicator.hidden = false
-        self.connectingLabel.hidden = false
+        facebookButton.hidden = true
+        signInLaterButton.hidden = true
+        welcomeLabel.hidden = true
+        loadingIndicator.startAnimating()
+        loadingIndicator.hidden = false
+        connectingLabel.hidden = false
     }
     
     
-    
+    /**
+     Method to stop the loading animation and setup UI for done loading state
+     */
     func stopLoading() {
-        self.loadingIndicator.stopAnimating()
-        self.loadingIndicator.hidden = true
-        self.welcomeLabel.hidden = false
-        self.connectingLabel.hidden = true
+        loadingIndicator.stopAnimating()
+        loadingIndicator.hidden = true
+        welcomeLabel.hidden = false
+        connectingLabel.hidden = true
     }
 
     

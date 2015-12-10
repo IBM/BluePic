@@ -63,6 +63,7 @@
 		347AD21D1C18E2DC00C3B473 /* AlamofireObjectMapper.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 347AD2151C18E2D200C3B473 /* AlamofireObjectMapper.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		347AD21E1C18E2DC00C3B473 /* ObjectMapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 347AD2161C18E2D200C3B473 /* ObjectMapper.framework */; };
 		347AD21F1C18E2DC00C3B473 /* ObjectMapper.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 347AD2161C18E2D200C3B473 /* ObjectMapper.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		347AD2221C18F98600C3B473 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347AD2211C18F98600C3B473 /* LoginViewModel.swift */; };
 		34C8094D1BFCEA0400C48004 /* keys.plist in Resources */ = {isa = PBXBuildFile; fileRef = 34C8094C1BFCEA0400C48004 /* keys.plist */; };
 		34C809551BFD0F2400C48004 /* FacebookDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C809541BFD0F2400C48004 /* FacebookDataManager.swift */; };
 		34CA18201C04CB6700EC2636 /* ObjectStorageDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34CA181F1C04CB6700EC2636 /* ObjectStorageDataManager.swift */; };
@@ -164,6 +165,7 @@
 		347AD2141C18E2D200C3B473 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Alamofire.framework; sourceTree = "<group>"; };
 		347AD2151C18E2D200C3B473 /* AlamofireObjectMapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AlamofireObjectMapper.framework; sourceTree = "<group>"; };
 		347AD2161C18E2D200C3B473 /* ObjectMapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ObjectMapper.framework; sourceTree = "<group>"; };
+		347AD2211C18F98600C3B473 /* LoginViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		34C8094A1BFCD9A300C48004 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		34C8094C1BFCEA0400C48004 /* keys.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = keys.plist; sourceTree = "<group>"; };
 		34C809541BFD0F2400C48004 /* FacebookDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookDataManager.swift; sourceTree = "<group>"; };
@@ -371,6 +373,7 @@
 				1BC7AF5B1C0E39F100DDFD02 /* FeedViewModel.swift */,
 				1B5555BD1C1616B000B3086E /* TabBarViewModel.swift */,
 				1B057E051C17B10100AC21EE /* ProfileViewModel.swift */,
+				347AD2211C18F98600C3B473 /* LoginViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -644,6 +647,7 @@
 				1B057E091C17C03400AC21EE /* ProfileHeaderCollectionReusableView.swift in Sources */,
 				1B5555BE1C1616B000B3086E /* TabBarViewModel.swift in Sources */,
 				34C809551BFD0F2400C48004 /* FacebookDataManager.swift in Sources */,
+				347AD2221C18F98600C3B473 /* LoginViewModel.swift in Sources */,
 				1B057E061C17B10100AC21EE /* ProfileViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

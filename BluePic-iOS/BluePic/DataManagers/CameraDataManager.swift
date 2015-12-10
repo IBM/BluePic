@@ -46,6 +46,8 @@ class CameraDataManager: NSObject {
     
     var lastPictureObjectTaken : Picture!
     
+    let kResizeAllImagesToThisWidth = CGFloat(600)
+    
 
     
     
@@ -237,7 +239,10 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
         //show image on confirmationView, save a copy
         let takenImage = info[UIImagePickerControllerOriginalImage] as! UIImage
         print("original image width: \(takenImage.size.width) height: \(takenImage.size.height)")
-        self.lastPhotoTaken = UIImage.resizeImage(takenImage, newWidth: 520)
+        if (takenImage.size.width > kResizeAllImagesToThisWidth) { //if image too big, shrink it down
+            self.lastPhotoTaken = UIImage.resizeImage(takenImage, newWidth: kResizeAllImagesToThisWidth)
+        }
+        
         self.lastPhotoTakenWidth = self.lastPhotoTaken.size.width
         self.lastPhotoTakenHeight = self.lastPhotoTaken.size.height
         print("resized image width: \(self.lastPhotoTaken.size.width) height: \(self.lastPhotoTaken.size.height)")
