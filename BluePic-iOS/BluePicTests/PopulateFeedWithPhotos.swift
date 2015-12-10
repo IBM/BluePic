@@ -18,7 +18,7 @@ class PopulateFeedWithPhotos: XCTestCase {
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
-        CloudantSyncClient.SharedInstance!.dbName = Utils.getKeyFromPlist("keys", key: "cdt_db_name")
+        CloudantSyncDataManager.SharedInstance!.dbName = Utils.getKeyFromPlist("keys", key: "cdt_db_name")
         //imagename : Caption from asset directory
         self.imageNames = [
             "photo1": "Mountains",
@@ -42,7 +42,7 @@ class PopulateFeedWithPhotos: XCTestCase {
         let id = "1234"
         let name = "Mobile Innovation Lab"
         do {
-            try CloudantSyncClient.SharedInstance!.createProfileDoc(id, name: name)
+            try CloudantSyncDataManager.SharedInstance!.createProfileDoc(id, name: name)
         } catch {
             print("testPrePopulate ERROR: \(error)")
         }
@@ -68,7 +68,7 @@ class PopulateFeedWithPhotos: XCTestCase {
         // Push document to remote Cloudant database
         
         do {
-            try CloudantSyncClient.SharedInstance!.pushToRemoteDatabase()
+            try CloudantSyncDataManager.SharedInstance!.pushToRemoteDatabase()
         } catch {
             print("testPrePopulate ERROR: \(error)")
         }
@@ -101,7 +101,7 @@ class PopulateFeedWithPhotos: XCTestCase {
                 print("imageURL: \(imageURL)")
                 print("creating cloudant picture document...")
                 do {
-                    try CloudantSyncClient.SharedInstance!.createPictureDoc(caption, fileName: imageName, url: imageURL, ownerID: FBUserID, width: "\(image.size.width)", height: "\(image.size.height)", orientation: "\(image.imageOrientation.rawValue)")
+                    try CloudantSyncDataManager.SharedInstance!.createPictureDoc(caption, fileName: imageName, url: imageURL, ownerID: FBUserID, width: "\(image.size.width)", height: "\(image.size.height)", orientation: "\(image.imageOrientation.rawValue)")
                 } catch {
                     print(error)
                 }
@@ -109,7 +109,7 @@ class PopulateFeedWithPhotos: XCTestCase {
                 imageCount-- //decrement number of images to upload remaining
                 //check if test is done (all photos uploaded)
                 if (imageCount == 0) {
-                    try CloudantSyncClient.SharedInstance!.pushToRemoteDatabase()
+                    try CloudantSyncDataManager.SharedInstance!.pushToRemoteDatabase()
                     self.xctExpectation?.fulfill() //test is done if all images added
                 }
             }, onFailure: { (error) in

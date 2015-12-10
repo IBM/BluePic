@@ -1,5 +1,5 @@
 //
-//  CloudantSyncClient.swift
+//  CloudantSyncDataManager.swift
 //  BluePic
 //  For detailed information on the Cloudant Sync API, please see the following URL: https://github.com/cloudant/CDTDatastore
 //
@@ -21,16 +21,16 @@ enum CloudantSyncError: ErrorType {
  *  1. Perform CRUD operations on its LOCAL copy of the remote database.
  *  2. Sync with the remote database via push/pull calls.
  */
-class CloudantSyncClient {
+class CloudantSyncDataManager {
     
     // Shared instance of data manager
-    static let SharedInstance: CloudantSyncClient? = {
+    static let SharedInstance:CloudantSyncDataManager? = {
         let key = Utils.getKeyFromPlist("keys", key: "cdt_key")
         let pass = Utils.getKeyFromPlist("keys", key: "cdt_pass")
         let dbName = Utils.getKeyFromPlist("keys", key: "cdt_db_name")
         let username = Utils.getKeyFromPlist("keys", key: "cdt_username")
         do {
-            return try CloudantSyncClient(apiKey: key, apiPassword: pass, dbName: dbName, username: username)
+            return try CloudantSyncDataManager(apiKey: key, apiPassword: pass, dbName: dbName, username: username)
         } catch {
             print("CloudantSyncClient init, ERROR: \(error)")
             return nil

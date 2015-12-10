@@ -65,7 +65,7 @@ class FeedViewModel: NSObject {
     
     func repullForNewData() {
         do {
-            try CloudantSyncClient.SharedInstance!.pullFromRemoteDatabase()
+            try CloudantSyncDataManager.SharedInstance!.pullFromRemoteDatabase()
         } catch {
             print("repullForNewData ERROR: \(error)")
             DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantPullDataFailure)
@@ -74,7 +74,7 @@ class FeedViewModel: NSObject {
     
     
     func getPictureObjects(){
-        pictureDataArray = CloudantSyncClient.SharedInstance!.getPictureObjects(nil)
+        pictureDataArray = CloudantSyncDataManager.SharedInstance!.getPictureObjects(nil)
         
         
          dispatch_async(dispatch_get_main_queue()) {
