@@ -41,7 +41,12 @@ class PopulateFeedWithPhotos: XCTestCase {
         // Create fake user
         let id = "1234"
         let name = "Mobile Innovation Lab"
-        CloudantSyncClient.SharedInstance!.createProfileDoc(id, name: name)
+        do {
+            try CloudantSyncClient.SharedInstance!.createProfileDoc(id, name: name)
+        } catch {
+            print("testPrePopulate ERROR: \(error)")
+        }
+        
         // Authenticate
         ObjectStorageDataManager.SharedInstance.objectStorageClient.authenticate({() in
             print("success authenticating with object storage!")
@@ -61,7 +66,12 @@ class PopulateFeedWithPhotos: XCTestCase {
                 print("error authenticating with object storage: \(error)")
         })
         // Push document to remote Cloudant database
-        CloudantSyncClient.SharedInstance.pushToRemoteDatabase()
+        
+        do {
+            try CloudantSyncClient.SharedInstance!.pushToRemoteDatabase()
+        } catch {
+            print("testPrePopulate ERROR: \(error)")
+        }
         self.waitForExpectationsWithTimeout(100.0, handler:nil)
     }
     
@@ -90,12 +100,12 @@ class PopulateFeedWithPhotos: XCTestCase {
                 print("upload of \(imageName) to object storage succeeded.")
                 print("imageURL: \(imageURL)")
                 print("creating cloudant picture document...")
-                CloudantSyncClient.SharedInstance.createPictureDoc(caption, fileName: imageName, url: imageURL, ownerID: FBUserID, width: "\(image.size.width)", height: "\(image.size.height)", orientation: "\(image.imageOrientation.rawValue)")
+                try CloudantSyncClient.SharedInstance!.createPictureDoc(caption, fileName: imageName, url: imageURL, ownerID: FBUserID, width: "\(image.size.width)", height: "\(image.size.height)", orientation: "\(image.imageOrientation.rawValue)")
                 
                 imageCount-- //decrement number of images to upload remaining
                 //check if test is done (all photos uploaded)
                 if (imageCount == 0) {
-                    CloudantSyncClient.SharedInstance.pushToRemoteDatabaseSynchronous()
+                    try CloudantSyncClient.SharedInstance!.pushToRemoteDatabaseSynchronous()
                     self.xctExpectation?.fulfill() //test is done if all images added
                 }
             }, onFailure: { (error) in
