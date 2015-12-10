@@ -63,7 +63,7 @@ class ProfileViewModel: NSObject {
     
     
     func getPictureObjects(){
-        pictureDataArray = CloudantSyncClient.SharedInstance.getAllPictureObjectsOfOwnerId(FacebookDataManager.SharedInstance.fbUniqueUserID!)
+        pictureDataArray = CloudantSyncClient.SharedInstance!.getPictureObjects(FacebookDataManager.SharedInstance.fbUniqueUserID!)
         
         
         dispatch_async(dispatch_get_main_queue()) {
@@ -73,7 +73,12 @@ class ProfileViewModel: NSObject {
     
     
     func repullForNewData(){
-        CloudantSyncClient.SharedInstance.pullFromRemoteDatabase()
+        do {
+            try CloudantSyncClient.SharedInstance!.pullFromRemoteDatabase()
+        } catch {
+            print("repullForNewData error: \(error)")
+            DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantPullDataFailure)
+        }
     }
     
     
