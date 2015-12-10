@@ -45,13 +45,15 @@
 		<true/>
 		<key>NSExceptionDomains</key>
 		<dict>
-			<key>akamaihd.net</key>
-			<dict>
-				<key>NSIncludesSubdomains</key>
-				<true/>
-				<key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
-				<false/>
-			</dict>
+			<key>graph.facebook.com</key>
+            <dict>
+                <key>NSTemporaryExceptionMinimumTLSVersion</key>
+                <string>TLSv1.1</string>
+                <key>NSExceptionAllowsInsecureHTTPLoads</key>
+                <true/>
+                <key>NSIncludesSubdomains</key>
+                <true/>
+            </dict>
 			<key>cloudant.com</key>
 			<dict>
 				<key>NSExceptionRequiresForwardSecrecy</key>
@@ -67,6 +69,13 @@
 				<false/>
 			</dict>
 			<key>fbcdn.net</key>
+			<dict>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+				<key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
+				<false/>
+			</dict>
+			<key>akamaihd.net</key>
 			<dict>
 				<key>NSIncludesSubdomains</key>
 				<true/>

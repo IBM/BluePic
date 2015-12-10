@@ -76,7 +76,11 @@ class FeedViewModel: NSObject {
     
     
     func getPictureObjects(){
-        pictureDataArray = CloudantSyncDataManager.SharedInstance!.getPictureObjects(nil)
+        //pictureDataArray = CloudantSyncClient.SharedInstance!.getPictureObjects(nil)
+        
+        
+        pictureDataArray = CameraDataManager.SharedInstance.pictureUploadQueue + CloudantSyncDataManager.SharedInstance!.getPictureObjects(nil)
+        
         
         
          dispatch_async(dispatch_get_main_queue()) {
