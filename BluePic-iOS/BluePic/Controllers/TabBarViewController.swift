@@ -22,6 +22,7 @@ class TabBarViewController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
         viewModel = TabBarViewModel(passDataNotificationToTabBarVCCallback: handleDataNotification)
         
         self.tabBar.tintColor! = UIColor.whiteColor()
@@ -42,6 +43,8 @@ class TabBarViewController: UITabBarController {
     
     override func viewDidAppear(animated: Bool) {
         
+        //preInitViewControllers()
+        
         self.setupFeedVC()
 
         self.tryToShowLogin()
@@ -53,7 +56,6 @@ class TabBarViewController: UITabBarController {
         // Dispose of any resources that can be recreated.
     }
     
-
     
     func setupFeedVC(){
         self.feedVC = self.viewControllers![0] as! FeedViewController
@@ -61,6 +63,19 @@ class TabBarViewController: UITabBarController {
 
     }
     
+    
+    func preInitViewControllers(){
+        
+        if let viewControllers = self.viewControllers {
+            
+            for viewController in viewControllers {
+                
+                print(viewController.view)
+                
+            }
+            
+        }
+    }
     
     /**
      Add image view so no flickering occurs before showing login. Starts a simple loading animation that is dismissed when PULL from CloudantSyncClient completes

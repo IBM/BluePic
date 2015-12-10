@@ -871,6 +871,51 @@ extension NSDate {
         return dateString
         
     }
+    
+    
+    class func timeStringSinceIntervalSinceReferenceDate(timeInterval : NSTimeInterval) -> String{
+    
+        let postedDate = NSDate(timeIntervalSinceReferenceDate: timeInterval)
+
+        return offsetFrom(postedDate)
+    
+    }
+    
+    
+    
+    
+    
+    class func yearsFrom(date:NSDate) -> Int{
+        return NSCalendar.currentCalendar().components(.Year, fromDate: date, toDate: NSDate(), options: []).year
+    }
+    class func monthsFrom(date:NSDate) -> Int{
+        return NSCalendar.currentCalendar().components(.Month, fromDate: date, toDate: NSDate(), options: []).month
+    }
+    class func weeksFrom(date:NSDate) -> Int{
+        return NSCalendar.currentCalendar().components(.WeekOfYear, fromDate: date, toDate: NSDate(), options: []).weekOfYear
+    }
+    class func daysFrom(date:NSDate) -> Int{
+        return NSCalendar.currentCalendar().components(.Day, fromDate: date, toDate: NSDate(), options: []).day
+    }
+    class func hoursFrom(date:NSDate) -> Int{
+        return NSCalendar.currentCalendar().components(.Hour, fromDate: date, toDate: NSDate(), options: []).hour
+    }
+    class func minutesFrom(date:NSDate) -> Int{
+        return NSCalendar.currentCalendar().components(.Minute, fromDate: date, toDate: NSDate(), options: []).minute
+    }
+    class func secondsFrom(date:NSDate) -> Int{
+        return NSCalendar.currentCalendar().components(.Second, fromDate: date, toDate: NSDate(), options: []).second
+    }
+    class func offsetFrom(date:NSDate) -> String {
+//        if yearsFrom(date)   > 0 { return "\(yearsFrom(date))y"   }
+//        if monthsFrom(date)  > 0 { return "\(monthsFrom(date))M"  }
+        if weeksFrom(date)   > 0 { return "\(weeksFrom(date))w"   }
+        if daysFrom(date)    > 0 { return "\(daysFrom(date))d"    }
+        if hoursFrom(date)   > 0 { return "\(hoursFrom(date))h"   }
+        if minutesFrom(date) > 0 { return "\(minutesFrom(date))m" }
+        if secondsFrom(date) > 0 { return "\(secondsFrom(date))s" }
+        return "now"
+    }
 
     
     
