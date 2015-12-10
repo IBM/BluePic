@@ -64,7 +64,9 @@ class ProfileViewModel: NSObject {
     
     
     func getPictureObjects(){
-        pictureDataArray = CloudantSyncClient.SharedInstance!.getPictureObjects(FacebookDataManager.SharedInstance.fbUniqueUserID!)
+        
+         //pictureDataArray = CameraDataManager.SharedInstance.pictureUploadQueue + CloudantSyncClient.SharedInstance!.getPictureObjects(nil)
+        pictureDataArray = CameraDataManager.SharedInstance.pictureUploadQueue + CloudantSyncClient.SharedInstance!.getPictureObjects(FacebookDataManager.SharedInstance.fbUniqueUserID!)
         
         
         dispatch_async(dispatch_get_main_queue()) {

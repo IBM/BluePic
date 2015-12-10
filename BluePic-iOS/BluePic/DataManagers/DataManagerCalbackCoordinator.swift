@@ -12,8 +12,10 @@ import UIKit
 // Use example:
 // DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantPullDataFailure)
 enum DataManagerNotification {
+    
     case CloudantPullDataSuccess
     case CloudantPullDataFailure
+    case CloudantPushDataSuccess
     case CloudantPushDataFailure
     case CloudantCreatePictureFailure
     case CloudantCreateProfileFailure
@@ -34,6 +36,8 @@ class DataManagerCalbackCoordinator: NSObject {
         return manager
         
     }()
+    
+    
     
     
     private var callbacks : [((dataManagerNotification : DataManagerNotification)->())]! = []

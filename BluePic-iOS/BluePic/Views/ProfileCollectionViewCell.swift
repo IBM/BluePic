@@ -25,7 +25,7 @@ class ProfileCollectionViewCell: UICollectionViewCell {
     
     
     
-    func setupData(url : String?, image : UIImage?, displayName : String?, timeStamp: String?){
+    func setupData(url : String?, image : UIImage?, displayName : String?, timeStamp: Double?){
         
         let urlString = url ?? ""
         
@@ -33,6 +33,8 @@ class ProfileCollectionViewCell: UICollectionViewCell {
         if let img = image {
             
             imageView.image = img
+            
+            //timeSincePostedLabel.text = NSLocalizedString("1s", comment: "")
             
         }
         else{
@@ -47,6 +49,14 @@ class ProfileCollectionViewCell: UICollectionViewCell {
         }
         
         captionLabel.text = displayName?.uppercaseString ?? ""
+        
+        
+        if let tStamp = timeStamp {
+            
+            timeSincePostedLabel.text = NSDate.timeStringSinceIntervalSinceReferenceDate(tStamp)
+            
+            
+        }
         
         
     }

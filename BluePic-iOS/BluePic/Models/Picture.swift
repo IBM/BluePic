@@ -16,13 +16,15 @@ class Picture: NSObject {
     
     var displayName : String?
     
-    var timeStamp : String?
+    var timeStamp : Double?
     
     var ownerName : String?
     
     var width : CGFloat?
     
     var height : CGFloat?
+    
+    var fileName : String?
     
     let kDefaultWidthAndHeight : CGFloat = 100
     

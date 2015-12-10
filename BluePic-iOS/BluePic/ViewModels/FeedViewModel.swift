@@ -42,7 +42,8 @@ class FeedViewModel: NSObject {
             
         }
         else if(dataManagerNotification == DataManagerNotification.UserDecidedToPostPhoto){
-            addUsersLastPhotoTakenToPictureDataArrayAndRefreshCollectionView()
+            //addUsersLastPhotoTakenToPictureDataArrayAndRefreshCollectionView()
+            getPictureObjects()
         }
     }
     
@@ -75,7 +76,11 @@ class FeedViewModel: NSObject {
     
     
     func getPictureObjects(){
-        pictureDataArray = CloudantSyncClient.SharedInstance!.getPictureObjects(nil)
+        //pictureDataArray = CloudantSyncClient.SharedInstance!.getPictureObjects(nil)
+        
+        
+        pictureDataArray = CameraDataManager.SharedInstance.pictureUploadQueue + CloudantSyncClient.SharedInstance!.getPictureObjects(nil)
+        
         
         
          dispatch_async(dispatch_get_main_queue()) {
@@ -127,7 +132,14 @@ class FeedViewModel: NSObject {
         
         let picture = pictureDataArray[indexPath.row]
         
-        cell.setupData(picture.url, image: picture.image, displayName: picture.displayName, ownerName: picture.ownerName, timeStamp: picture.timeStamp)
+        cell.setupData(
+            picture.url,
+            image: picture.image,
+            displayName: picture.displayName,
+            ownerName: picture.ownerName,
+            timeStamp: picture.timeStamp,
+            fileName: picture.fileName
+        )
         
         cell.layer.shouldRasterize = true
         cell.layer.rasterizationScale = UIScreen.mainScreen().scale
