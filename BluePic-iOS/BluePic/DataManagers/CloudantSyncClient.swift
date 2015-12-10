@@ -166,7 +166,7 @@ class CloudantSyncClient {
         do {
             let retrieved = try datastore.getDocumentWithId(id)
             let name = retrieved.body["profile_name"]! as! String
-            print("Retrieved profile name: \(name)")
+            print("getProfileName called: \(name)")
             return name
         }
         catch {
