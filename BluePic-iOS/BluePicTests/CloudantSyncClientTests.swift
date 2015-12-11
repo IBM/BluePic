@@ -105,7 +105,7 @@ class CloudantSyncClientTests: XCTestCase {
     /**
      * Tests the assignment of multiple pictures to a SPECIFIC user and the order of which they are returned in when queried.
      */
-    func testUserPictures() throws {
+    func testUserPictures() {
         do {
             // Create User
             let id = "7532"
@@ -116,8 +116,8 @@ class CloudantSyncClientTests: XCTestCase {
             let displayNames = ["Keys", "Big Bend", "Yosemite"]
             let fileNames = ["keys.jpg", "bigbend.jpg", "yosemite.jpg"]
             let urls = ["https://www.flmnh.ufl.edu/fish/SouthFlorida/images/bocachita.JPG", "http://media-cdn.tripadvisor.com/media/photo-s/02/92/12/75/sierra-del-carmen-sunset.jpg", "http://www.tenayalodge.com/img/Carousel-DiscoverYosemite_img3.jpg","https://www.flmnh.ufl.edu/fish/SouthFlorida/images/bocachita.JPG"]
-            let widths = ["500, 200", "400"]
-            let heights = ["150, 300", "100"]
+            let widths = ["500", "200", "400"]
+            let heights = ["150", "300", "100"]
             let orientations = ["0", "1", "2"]
             // Picture 1
             try CloudantSyncDataManager.SharedInstance!.createPictureDoc(
@@ -132,9 +132,9 @@ class CloudantSyncClientTests: XCTestCase {
             let result = CloudantSyncDataManager.SharedInstance!.getPictureObjects(id)
             // Check array for size and order
             XCTAssertEqual(result.count, 3)
-            XCTAssertEqual(result[0].displayName, displayNames[2])
+            XCTAssertEqual(result[0].displayName, displayNames[0])
             XCTAssertEqual(result[1].displayName, displayNames[1])
-            XCTAssertEqual(result[2].displayName, displayNames[0])
+            XCTAssertEqual(result[2].displayName, displayNames[2])
             
             // Delete created user and their pictures
             try CloudantSyncDataManager.SharedInstance!.deletePicturesOfUser(id)
@@ -148,7 +148,7 @@ class CloudantSyncClientTests: XCTestCase {
     /**
      * Tests order of when querying local database for ALL pictures.
      */
-    func testGetAllPictures() throws {
+    func testGetAllPictures() {
         do {
             // Create Users
             let id1 = "1837"
@@ -164,9 +164,9 @@ class CloudantSyncClientTests: XCTestCase {
             // Create 3 pictures and set their owner id
             let displayNames = ["Keys", "Big Bend", "Yosemite"]
             let fileNames = ["keys.jpg", "bigbend.jpg", "yosemite.jpg"]
-            let urls = ["https://www.flmnh.ufl.edu/fish/SouthFlorida/images/bocachita.JPG", "http://media-cdn.tripadvisor.com/media/photo-s/02/92/12/75/sierra-del-carmen-sunset.jpg", "http://www.tenayalodge.com/img/Carousel-DiscoverYosemite_img3.jpg", "https://www.flmnh.ufl.edu/fish/SouthFlorida/images/bocachita.JPG"]
-            let widths = ["500, 200", "400"]
-            let heights = ["150, 300", "100"]
+            let urls = ["https://www.flmnh.ufl.edu/fish/SouthFlorida/images/bocachita.JPG", "http://media-cdn.tripadvisor.com/media/photo-s/02/92/12/75/sierra-del-carmen-sunset.jpg", "http://www.tenayalodge.com/img/Carousel-DiscoverYosemite_img3.jpg"]
+            let widths = ["500", "200", "400"]
+            let heights = ["150", "300", "100"]
             let orientations = ["0", "1", "2"]
             // Picture 1
             try CloudantSyncDataManager.SharedInstance!.createPictureDoc(
@@ -181,9 +181,9 @@ class CloudantSyncClientTests: XCTestCase {
             let result = CloudantSyncDataManager.SharedInstance!.getPictureObjects(nil)
             // Check array for size and order
             XCTAssertEqual(result.count, 3)
-            XCTAssertEqual(result[0].displayName, displayNames[2])
+            XCTAssertEqual(result[0].displayName, displayNames[0])
             XCTAssertEqual(result[1].displayName, displayNames[1])
-            XCTAssertEqual(result[2].displayName, displayNames[0])
+            XCTAssertEqual(result[2].displayName, displayNames[2])
             
             // Delete created users'pictures
             try CloudantSyncDataManager.SharedInstance!.deletePicturesOfUser(id1)
