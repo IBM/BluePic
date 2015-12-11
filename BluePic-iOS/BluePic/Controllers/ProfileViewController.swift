@@ -19,11 +19,14 @@ class ProfileViewController: UIViewController {
     
     var headerImageView : UIImageView!
     
+    var statusBarBackgroundView : UIView!
+    
     let kHeaderViewHeight : CGFloat = 480
     let kHeaderImageViewHeight : CGFloat = 375
-    
     let kStatusBarMagicLine : CGFloat = 100
     let kParalaxImageViewScrollRate : CGFloat = 0.50
+    let kStatusBarBackgroundViewFadeDuration : NSTimeInterval = 0.3
+    let kHeightOfProfilePictureImageView : CGFloat = 75
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,6 +37,8 @@ class ProfileViewController: UIViewController {
         setupCollectionView()
         
         setupHeaderView()
+        
+        setupStatusBarBackgroundView()
 
         // Do any additional setup after loading the view.
     }
@@ -51,6 +56,46 @@ class ProfileViewController: UIViewController {
         
     }
     
+    
+    func setupStatusBarBackgroundView(){
+        
+        let effect = UIBlurEffect(style: UIBlurEffectStyle.Light)
+        
+        let viewWithBlurredBackground = UIVisualEffectView(effect: effect)
+        viewWithBlurredBackground.frame = UIApplication.sharedApplication().statusBarFrame
+        viewWithBlurredBackground.alpha = 1.0
+        
+        statusBarBackgroundView = UIView(frame: UIApplication.sharedApplication().statusBarFrame)
+        statusBarBackgroundView .backgroundColor = UIColor.clearColor()
+        statusBarBackgroundView .alpha = 0.0
+        statusBarBackgroundView .addSubview(viewWithBlurredBackground)
+        
+        self.view.addSubview(statusBarBackgroundView)
+   
+    }
+    
+    func animateInStatusBarBackgroundView(isInOrOut : Bool){
+    
+        var alpha : CGFloat = 0.0
+        
+        if(isInOrOut == true){
+          
+            alpha = 1.0
+            
+        }
+        else{
+            
+            alpha = 0.0
+            
+        }
+        
+        UIView.animateWithDuration(kStatusBarBackgroundViewFadeDuration, animations: {
+            self.statusBarBackgroundView.alpha = alpha
+        })
+        
+    }
+    
+    
     func setupHeaderView(){
         
         headerImageView = UIImageView(frame: CGRectMake(0, 0, view.frame.width, kHeaderImageViewHeight))
@@ -59,10 +104,7 @@ class ProfileViewController: UIViewController {
         headerImageView.image = UIImage(named: "photo1")
         
         
-        
         headerImageView.clipsToBounds = true
-        
-       //headerImageView.contentMode = UIViewContentMode.ScaleAspectFill
         
         self.view.addSubview(headerImageView)
         self.view.insertSubview(headerImageView, belowSubview: collectionView)
@@ -80,11 +122,6 @@ class ProfileViewController: UIViewController {
         
         Utils.registerNibWithCollectionView("ProfileCollectionViewCell", collectionView: collectionView)
         
-//        self.refreshControl = UIRefreshControl()
-//        self.refreshControl.addTarget(self, action: "userTriggeredRefresh", forControlEvents: UIControlEvents.ValueChanged)
-//        self.refreshControl.hidden = true
-//        
-//        self.collectionView.addSubview(refreshControl)
     }
     
     
@@ -218,29 +255,38 @@ extension ProfileViewController : UIScrollViewDelegate {
     func scrollViewDidScroll(scrollView: UIScrollView) {
         
         print(scrollView.contentOffset.y)
+        checkOffSetForStatusBarBackgroundViewVisability(scrollView.contentOffset.y)
         updateImageViewFrameWithScrollViewDidScroll(scrollView.contentOffset.y)
     }
     
     /**
-     Method is called in the scrollViewDidScroll method. This method is the secret sauce to getting the image at the top to lock to the navigation bar or to get the image to stretch.
+     Method is called in the scrollViewDidScrgyoll method. This method is the secret sauce to getting the image at the top to lock to the navigation bar or to get the image to stretch.
      
      - parameter scrollViewContentOffset:
      */
     func updateImageViewFrameWithScrollViewDidScroll(scrollViewContentOffset : CGFloat) {
         
         if scrollViewContentOffset >= 0 {
-            
-            
             headerImageView.frame.origin.y = -(scrollViewContentOffset * kParalaxImageViewScrollRate)
-
-            
         } else {
-            
             headerImageView.frame = CGRectMake(0, 0, view.frame.width, kHeaderImageViewHeight - scrollViewContentOffset)
-            //underneathImageView.frame = CGRectMake(0, 0, underneathImageView.frame.size.width, kHeaderViewHeight - scrollViewContentOffset)
-            
         }
     }
+    
+    
+    func checkOffSetForStatusBarBackgroundViewVisability(scrollViewContentOffset : CGFloat){
+        
+        let magicLine = kHeaderImageViewHeight - kHeightOfProfilePictureImageView/2 - UIApplication.sharedApplication().statusBarFrame.size.height
+        
+        if(scrollViewContentOffset >= magicLine){
+            animateInStatusBarBackgroundView(true)
+        }
+        else{
+            animateInStatusBarBackgroundView(false)
+        }
+   
+    }
+    
 
 }
 
