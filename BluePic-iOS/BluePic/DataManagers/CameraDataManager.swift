@@ -247,6 +247,22 @@ class CameraDataManager: NSObject {
     }
     
     
+    
+    /**
+     Alert to be shown if photo couldn't be loaded from disk (iCloud photo stream photo not loaded, for example)
+     */
+    func showPhotoCouldntBeChosenAlert() {
+        let alert = UIAlertController(title: nil, message: NSLocalizedString("This photo couldn't be loaded. Please try a different one!", comment: ""), preferredStyle: UIAlertControllerStyle.Alert)
+        
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .Cancel, handler: { (action: UIAlertAction!) in
+            
+        }))
+        
+        dispatch_async(dispatch_get_main_queue()) {
+            self.tabVC.presentViewController(alert, animated: true, completion: nil)
+        }
+        
+    }
 
     
 
@@ -270,7 +286,7 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
         picker.dismissViewControllerAnimated(true, completion: nil)
         
         //show image on confirmationView, save a copy
-        let takenImage = info[UIImagePickerControllerOriginalImage] as! UIImage
+        if let takenImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
         print("original image width: \(takenImage.size.width) height: \(takenImage.size.height)")
         if (takenImage.size.width > kResizeAllImagesToThisWidth) { //if image too big, shrink it down
             self.lastPhotoTaken = UIImage.resizeImage(takenImage, newWidth: kResizeAllImagesToThisWidth)
@@ -288,7 +304,21 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
         dateFormatter.dateFormat = "MM-dd-yyyy_HHmmss"
         let todaysDate = NSDate()
         self.lastPhotoTakenName = dateFormatter.stringFromDate(todaysDate) + ".JPG"
+            
+        }
+        else { //if image isn't available (iCloud photo in Photo stream not loaded yet)
+            self.destroyConfirmationView()
+            picker.dismissViewControllerAnimated(true, completion: { _ in
+                
+                
+                })
+            self.showPhotoCouldntBeChosenAlert()
+            print("picker canceled - photo not available!")
+            
+        }
     }
+    
+    
     func imagePickerControllerDidCancel(picker: UIImagePickerController)
     {
         self.destroyConfirmationView()
