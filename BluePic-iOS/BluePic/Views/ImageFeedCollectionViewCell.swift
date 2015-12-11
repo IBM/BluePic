@@ -119,8 +119,6 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
             else{
                 if let nsurl = NSURL(string: urlString){
                     
-                   self.loadingImageView.image = UIImage.sd_animatedGIFNamed("bee")
-                    
                     imageView.sd_setImageWithURL(nsurl, completed: { _ in
                         
                         self.loadingView.hidden = true
@@ -133,8 +131,6 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
         else {
             //set imageView with image from url if url is valid
             if let nsurl = NSURL(string: urlString){
-                
-                self.loadingImageView.image = UIImage.sd_animatedGIFNamed("bee")
                 
                 imageView.sd_setImageWithURL(nsurl, completed: { _ in
                     
