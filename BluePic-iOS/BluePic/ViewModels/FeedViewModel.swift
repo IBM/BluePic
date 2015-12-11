@@ -8,6 +8,12 @@
 
 import UIKit
 
+enum FeedViewModelNotification {
+    case RefreshCollectionView
+    case StartLoadingAnimationForAppLaunch
+}
+
+
 
 class FeedViewModel: NSObject {
 
@@ -15,6 +21,7 @@ class FeedViewModel: NSObject {
     
     var pictureDataArray = [Picture]()
     var refreshVCCallback : (()->())?
+    var passFeedViewModelNotificationToTabBarVCCallback : ((feedViewModelNotification : FeedViewModelNotification)->())!
     
     
     let kCollectionViewCellInfoViewHeight : CGFloat = 76
@@ -22,14 +29,13 @@ class FeedViewModel: NSObject {
     
     
     
-    init(refreshCallback : (()->())){
+    init(passFeedViewModelNotificationToTabBarVCCallback : ((feedViewModelNotification : FeedViewModelNotification)->())){
         super.init()
         
-        self.refreshVCCallback = refreshCallback
+        self.passFeedViewModelNotificationToTabBarVCCallback = passFeedViewModelNotificationToTabBarVCCallback
         
         DataManagerCalbackCoordinator.SharedInstance.addCallback(handleDataManagerNotification)
         
-        //getPictureObjects()
     }
     
     
@@ -37,12 +43,13 @@ class FeedViewModel: NSObject {
     func handleDataManagerNotification(dataManagerNotification : DataManagerNotification){
         
         if(dataManagerNotification == DataManagerNotification.CloudantPullDataSuccess){
-            
-            
             getPictureObjects()
         }
         else if(dataManagerNotification == DataManagerNotification.UserDecidedToPostPhoto){
             getPictureObjects()
+        }
+        else if(dataManagerNotification == DataManagerNotification.StartLoadingAnimationForAppLaunch){
+            self.passFeedViewModelNotificationToTabBarVCCallback(feedViewModelNotification: FeedViewModelNotification.StartLoadingAnimationForAppLaunch)
         }
     }
     
@@ -77,7 +84,7 @@ class FeedViewModel: NSObject {
         pictureDataArray = CameraDataManager.SharedInstance.pictureUploadQueue + CloudantSyncDataManager.SharedInstance!.getPictureObjects(nil)
 
          dispatch_async(dispatch_get_main_queue()) {
-            self.callRefreshCallBack()
+            self.passFeedViewModelNotificationToTabBarVCCallback(feedViewModelNotification: FeedViewModelNotification.RefreshCollectionView)
         }
     }
     

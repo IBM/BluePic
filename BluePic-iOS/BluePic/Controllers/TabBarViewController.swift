@@ -30,19 +30,19 @@ class TabBarViewController: UITabBarController {
         self.addBackgroundImageView()
         
         self.delegate = self
-
+        
     }
     
     
     override func viewWillAppear(animated: Bool) {
-    
+
     }
     
     
     
     override func viewDidAppear(animated: Bool) {
         
-        self.setupFeedVC()
+        self.viewModel.tellFeedToStartLoadingAnimation()
 
         self.tryToShowLogin()
         
@@ -53,14 +53,7 @@ class TabBarViewController: UITabBarController {
         // Dispose of any resources that can be recreated.
     }
     
-    
-    func setupFeedVC(){
-        self.feedVC = self.viewControllers![0] as! FeedViewController
-        feedVC.logoImageView.image = UIImage(named: "shutter")
 
-    }
-    
-    
     func preInitViewControllers(){
         
         if let viewControllers = self.viewControllers {
@@ -213,12 +206,8 @@ class TabBarViewController: UITabBarController {
     func presentLoginVC(){
         
         let loginVC = Utils.vcWithNameFromStoryboardWithName("loginVC", storyboardName: "Main") as! LoginViewController
-        loginVC.didDismissCallback = { _ in
-            
-            
-            
-        }
-
+        
+        self.viewModel.didPresentDefaultLoginVC = true
         self.presentViewController(loginVC, animated: false, completion: { _ in
             
             self.hideBackgroundImage()
