@@ -49,8 +49,7 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
            timeSincePostedLabel.text = NSDate.timeStringSinceIntervalSinceReferenceDate(tStamp)
        
         }
-        
-        
+
     }
     
     
