@@ -29,30 +29,6 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
     
     func setupData(url : String?, image : UIImage?, displayName : String?, ownerName: String?, timeStamp: Double?, fileName : String?){
         
-        
-        print("timeStamp \(timeStamp)")
-        
-        //let urlString = url ?? ""
-        
-//        if let img = image {
-//            
-//            imageView.image = img
-//            
-//            
-//        }
-//        else{
-//            if let nsurl = NSURL(string: urlString){
-//                
-//                imageView.sd_setImageWithURL(nsurl, completed: { _ in
-//   
-//                })
-//            }
-//        }
-        
-       
-        
-//        if let img = CameraDataManager.SharedInstance.picturesTakenDuringAppSessionById[]
-        
      
         self.setImageView(url, fileName: fileName)
         
@@ -94,12 +70,10 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
                 
                 //set placeholderImage with local copy of image in cache, and try to pull image from url if url is valid
                 if let nsurl = NSURL(string: urlString){
-//                    imageView.sd_setImageWithURL(nsurl, placeholderImage: img)
                     
                     self.loadingView.hidden = true
                     
                     imageView.image = img
-                    //downloadImageWithSDWebImage(urlString, id: id)
                     
                     imageView.sd_setImageWithURL(nsurl, placeholderImage: img, completed: { result  in
                         
