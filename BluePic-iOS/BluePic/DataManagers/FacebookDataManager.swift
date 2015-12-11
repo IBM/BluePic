@@ -45,6 +45,11 @@ class FacebookDataManager: NSObject {
     /// Bool if user is authenticated with facebook
     var isLoggedIn = false
     
+    
+    let facebookProfilePictureURLPrefix = "http://graph.facebook.com/"
+    
+    let facebookProfilePictureURLPostfix = "/picture?type=large"
+    
     /**
      Custom enum for whether facebook authentication was successful or not
      
@@ -305,11 +310,11 @@ class FacebookDataManager: NSObject {
     
     func pullLatestCloudantData() {
         
-        //CloudantSyncClient.SharedInstance.setHandleAppStartUpResultCallback(handleAppStartUpResultCallback)
+        //CloudantSyncDataManager.SharedInstance.setHandleAppStartUpResultCallback(handleAppStartUpResultCallback)
         
         //First do a pull to make sure datastore is up to date
         do {
-            try CloudantSyncClient.SharedInstance!.pullFromRemoteDatabase()
+            try CloudantSyncDataManager.SharedInstance!.pullFromRemoteDatabase()
         } catch {
             print("pullLatestCloudantData ERROR: \(error)")
             DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantPullDataFailure)
@@ -325,11 +330,11 @@ class FacebookDataManager: NSObject {
     func checkIfUserExistsOnCloudantAndPushIfNeeded() {
         
         //Check if doc with fb id exists
-        if(!CloudantSyncClient.SharedInstance!.doesExist(self.fbUniqueUserID!))
+        if(!CloudantSyncDataManager.SharedInstance!.doesExist(self.fbUniqueUserID!))
         {
             do {
                 //Create profile document locally
-                try CloudantSyncClient.SharedInstance!.createProfileDoc(self.fbUniqueUserID!, name: self.fbUserDisplayName!)
+                try CloudantSyncDataManager.SharedInstance!.createProfileDoc(self.fbUniqueUserID!, name: self.fbUserDisplayName!)
             } catch {
                 print("checkIfUserExistsOnCloudantAndPushIfNeeded ERROR: \(error)")
                 DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantCreateProfileFailure)
@@ -337,13 +342,32 @@ class FacebookDataManager: NSObject {
             
             do {
                 //Push new profile document to remote database
-                try CloudantSyncClient.SharedInstance!.pushToRemoteDatabase()
+                try CloudantSyncDataManager.SharedInstance!.pushToRemoteDatabase()
             } catch {
                 print("checkIfUserExistsOnCloudantAndPushIfNeeded ERROR: \(error)")
                 DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantPushDataFailure)
             }
             
             
+        }
+        
+    }
+    
+    
+    func getUserFacebookProfilePictureURL() -> String {
+        
+        
+        if let facebookID = fbUniqueUserID {
+            
+            let profilePictureURL = facebookProfilePictureURLPrefix + facebookID + facebookProfilePictureURLPostfix
+            
+            return profilePictureURL
+        }
+        else{
+            
+            
+            
+            return ""
         }
         
     }

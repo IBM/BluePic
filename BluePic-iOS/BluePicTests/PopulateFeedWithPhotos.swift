@@ -18,7 +18,7 @@ class PopulateFeedWithPhotos: XCTestCase {
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
-        CloudantSyncClient.SharedInstance!.dbName = Utils.getKeyFromPlist("keys", key: "cdt_db_name")
+        CloudantSyncDataManager.SharedInstance!.dbName = Utils.getKeyFromPlist("keys", key: "cdt_db_name")
         //imagename : Caption from asset directory
         self.imageNames = [
             "photo1": "Mountains",
@@ -41,7 +41,12 @@ class PopulateFeedWithPhotos: XCTestCase {
         // Create fake user
         let id = "1234"
         let name = "Mobile Innovation Lab"
-        CloudantSyncClient.SharedInstance!.createProfileDoc(id, name: name)
+        do {
+            try CloudantSyncDataManager.SharedInstance!.createProfileDoc(id, name: name)
+        } catch {
+            print("testPrePopulate ERROR: \(error)")
+        }
+        
         // Authenticate
         ObjectStorageDataManager.SharedInstance.objectStorageClient.authenticate({() in
             print("success authenticating with object storage!")
@@ -61,7 +66,12 @@ class PopulateFeedWithPhotos: XCTestCase {
                 print("error authenticating with object storage: \(error)")
         })
         // Push document to remote Cloudant database
-        CloudantSyncClient.SharedInstance.pushToRemoteDatabase()
+        
+        do {
+            try CloudantSyncDataManager.SharedInstance!.pushToRemoteDatabase()
+        } catch {
+            print("testPrePopulate ERROR: \(error)")
+        }
         self.waitForExpectationsWithTimeout(100.0, handler:nil)
     }
     
@@ -90,13 +100,25 @@ class PopulateFeedWithPhotos: XCTestCase {
                 print("upload of \(imageName) to object storage succeeded.")
                 print("imageURL: \(imageURL)")
                 print("creating cloudant picture document...")
-                CloudantSyncClient.SharedInstance.createPictureDoc(caption, fileName: imageName, url: imageURL, ownerID: FBUserID, width: "\(image.size.width)", height: "\(image.size.height)", orientation: "\(image.imageOrientation.rawValue)")
+                do {
+                    try CloudantSyncDataManager.SharedInstance!.createPictureDoc(caption, fileName: imageName, url: imageURL, ownerID: FBUserID, width: "\(image.size.width)", height: "\(image.size.height)", orientation: "\(image.imageOrientation.rawValue)")
+                } catch {
+                    print(error)
+                    XCTFail("CreatePictureDoc() failed!")
+                    self.xctExpectation?.fulfill()
+                }
                 
                 imageCount-- //decrement number of images to upload remaining
                 //check if test is done (all photos uploaded)
                 if (imageCount == 0) {
-                    CloudantSyncClient.SharedInstance.pushToRemoteDatabaseSynchronous()
-                    self.xctExpectation?.fulfill() //test is done if all images added
+                    do {
+                        try CloudantSyncDataManager.SharedInstance!.pushToRemoteDatabase()
+                        self.xctExpectation?.fulfill() //test is done if all images added
+                    } catch {
+                        print(error)
+                        XCTFail("PushToRemoteDatabase() failed!")
+                        self.xctExpectation?.fulfill()
+                    }
                 }
             }, onFailure: { (error) in
                 print("upload to object storage failed!")

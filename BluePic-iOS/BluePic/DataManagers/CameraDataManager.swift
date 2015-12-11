@@ -48,6 +48,10 @@ class CameraDataManager: NSObject {
     
     let kResizeAllImagesToThisWidth = CGFloat(600)
     
+    var pictureUploadQueue : [Picture] = [Picture]()
+    
+    var picturesTakenDuringAppSessionById = [String : UIImage]()
+    
 
     
     
@@ -160,7 +164,7 @@ class CameraDataManager: NSObject {
         self.confirmationView.loadingIndicator.startAnimating()
         self.confirmationView.cancelButton.hidden = true
         self.confirmationView.postButton.hidden = true
-        self.createLastPictureObjectTaken()
+        self.createLastPictureObjectTakenAndAddToPictureUploadQueue()
         dismissCameraConfirmation()
         DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.UserDecidedToPostPhoto)
         self.uploadImageToObjectStorage()
@@ -179,14 +183,14 @@ class CameraDataManager: NSObject {
                 self.lastPhotoTakenURL = imageURL
                 print("image orientation is: \(self.lastPhotoTaken.imageOrientation.rawValue), width: \(self.lastPhotoTaken.size.width) height: \(self.lastPhotoTaken.size.height)")
                 do {
-                    try CloudantSyncClient.SharedInstance!.createPictureDoc(self.lastPhotoTakenCaption, fileName: self.lastPhotoTakenName, url: self.lastPhotoTakenURL, ownerID: FacebookDataManager.SharedInstance.fbUniqueUserID!, width: "\(self.lastPhotoTaken.size.width)", height: "\(self.lastPhotoTaken.size.height)", orientation: "\(self.lastPhotoTaken.imageOrientation.rawValue)")
+                    try CloudantSyncDataManager.SharedInstance!.createPictureDoc(self.lastPhotoTakenCaption, fileName: self.lastPhotoTakenName, url: self.lastPhotoTakenURL, ownerID: FacebookDataManager.SharedInstance.fbUniqueUserID!, width: "\(self.lastPhotoTaken.size.width)", height: "\(self.lastPhotoTaken.size.height)", orientation: "\(self.lastPhotoTaken.imageOrientation.rawValue)")
                 } catch {
                     print("uploadImageToObjectStorage ERROR: \(error)")
                     DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantCreatePictureFailure)
                 }
                 
                 do {
-                    try CloudantSyncClient.SharedInstance!.pushToRemoteDatabase()
+                    try CloudantSyncDataManager.SharedInstance!.pushToRemoteDatabase()
                 } catch {
                     print("uploadImageToObjectStorage ERROR: \(error)")
                     DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantPushDataFailure)
@@ -202,17 +206,34 @@ class CameraDataManager: NSObject {
     }
     
     
-    func createLastPictureObjectTaken(){
+    func createLastPictureObjectTakenAndAddToPictureUploadQueue(){
         
         
         lastPictureObjectTaken = Picture()
-        lastPictureObjectTaken.image = lastPhotoTaken
+        //lastPictureObjectTaken.image = lastPhotoTaken
         lastPictureObjectTaken.displayName = lastPhotoTakenCaption
         lastPictureObjectTaken.ownerName = FacebookDataManager.SharedInstance.fbUserDisplayName
         lastPictureObjectTaken.width = lastPhotoTakenWidth
         lastPictureObjectTaken.height = lastPhotoTakenHeight
+        lastPictureObjectTaken.timeStamp = NSDate.timeIntervalSinceReferenceDate()
+        lastPictureObjectTaken.fileName = lastPhotoTakenName
         
+        pictureUploadQueue.append(lastPictureObjectTaken)
         
+        if let fileName = lastPictureObjectTaken.fileName, let userID = FacebookDataManager.SharedInstance.fbUniqueUserID {
+            
+            let id = fileName + userID
+            
+            print("setting is as \(id)")
+            picturesTakenDuringAppSessionById[id] = lastPhotoTaken
+
+        }
+        
+    
+    }
+    
+    func clearPictureUploadQueue(){
+        pictureUploadQueue = []
     }
     
     

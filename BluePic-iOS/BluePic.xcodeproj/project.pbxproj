@@ -24,7 +24,7 @@
 		3435C7CB1C0368DA004923BD /* Camera.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3435C7CA1C0368DA004923BD /* Camera.storyboard */; };
 		3435C7CD1C03690F004923BD /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3435C7CC1C03690F004923BD /* Profile.storyboard */; };
 		3435C7CF1C036A60004923BD /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3435C7CE1C036A60004923BD /* TabBarViewController.swift */; };
-		3435C7D21C03E223004923BD /* CloudantSyncClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3435C7D01C03E223004923BD /* CloudantSyncClient.swift */; };
+		3435C7D21C03E223004923BD /* CloudantSyncDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3435C7D01C03E223004923BD /* CloudantSyncDataManager.swift */; };
 		3435C7D31C03E223004923BD /* ObjectStorageClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3435C7D11C03E223004923BD /* ObjectStorageClient.swift */; };
 		3435C7D51C04110C004923BD /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3435C7D41C04110C004923BD /* FeedViewController.swift */; };
 		3435C7D71C041116004923BD /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3435C7D61C041116004923BD /* CameraViewController.swift */; };
@@ -124,7 +124,7 @@
 		3435C7CA1C0368DA004923BD /* Camera.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Camera.storyboard; sourceTree = "<group>"; };
 		3435C7CC1C03690F004923BD /* Profile.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Profile.storyboard; sourceTree = "<group>"; };
 		3435C7CE1C036A60004923BD /* TabBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
-		3435C7D01C03E223004923BD /* CloudantSyncClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudantSyncClient.swift; sourceTree = "<group>"; };
+		3435C7D01C03E223004923BD /* CloudantSyncDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudantSyncDataManager.swift; sourceTree = "<group>"; };
 		3435C7D11C03E223004923BD /* ObjectStorageClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectStorageClient.swift; sourceTree = "<group>"; };
 		3435C7D41C04110C004923BD /* FeedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
 		3435C7D61C041116004923BD /* CameraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
@@ -356,7 +356,7 @@
 		34C809511BFD0CBC00C48004 /* DataManagers */ = {
 			isa = PBXGroup;
 			children = (
-				3435C7D01C03E223004923BD /* CloudantSyncClient.swift */,
+				3435C7D01C03E223004923BD /* CloudantSyncDataManager.swift */,
 				3435C7D11C03E223004923BD /* ObjectStorageClient.swift */,
 				34CA181F1C04CB6700EC2636 /* ObjectStorageDataManager.swift */,
 				34C809541BFD0F2400C48004 /* FacebookDataManager.swift */,
@@ -628,7 +628,7 @@
 				1B0432E51C17E967007643B1 /* ProfileCollectionViewCell.swift in Sources */,
 				3435C7D91C04111F004923BD /* ProfileViewController.swift in Sources */,
 				347472E21BFA8DEF0018B7F6 /* NSDictionaryExtension.swift in Sources */,
-				3435C7D21C03E223004923BD /* CloudantSyncClient.swift in Sources */,
+				3435C7D21C03E223004923BD /* CloudantSyncDataManager.swift in Sources */,
 				347472E11BFA8DEF0018B7F6 /* NSDateExtension.swift in Sources */,
 				1BC7AF5C1C0E39F100DDFD02 /* FeedViewModel.swift in Sources */,
 				347472E61BFA8DEF0018B7F6 /* UIFontExtension.swift in Sources */,
