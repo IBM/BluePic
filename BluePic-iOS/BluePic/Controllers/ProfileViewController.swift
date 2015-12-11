@@ -58,6 +58,8 @@ class ProfileViewController: UIViewController {
         
         headerImageView.image = UIImage(named: "photo1")
         
+        
+        
         headerImageView.clipsToBounds = true
         
        //headerImageView.contentMode = UIViewContentMode.ScaleAspectFill
