@@ -36,6 +36,11 @@ class PushDelegate:NSObject, CDTReplicatorDelegate {
      */
     func replicatorDidComplete(replicator:CDTReplicator) {
         print("PUSH Replicator completed.")
+        
+        
+        CameraDataManager.SharedInstance.clearPictureUploadQueue()
+        
+        DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantPushDataSuccess)
         //may need to add logic to know when done pushing to hide fb login
     }
     

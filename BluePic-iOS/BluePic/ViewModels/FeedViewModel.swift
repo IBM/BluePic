@@ -18,6 +18,7 @@ class FeedViewModel: NSObject {
     
     
     let kCollectionViewCellInfoViewHeight : CGFloat = 76
+    let kCollectionViewCellHeightLimit : CGFloat = 480
     
     
     
@@ -41,7 +42,8 @@ class FeedViewModel: NSObject {
             
         }
         else if(dataManagerNotification == DataManagerNotification.UserDecidedToPostPhoto){
-            addUsersLastPhotoTakenToPictureDataArrayAndRefreshCollectionView()
+            //addUsersLastPhotoTakenToPictureDataArrayAndRefreshCollectionView()
+            getPictureObjects()
         }
     }
     
@@ -74,7 +76,11 @@ class FeedViewModel: NSObject {
     
     
     func getPictureObjects(){
-        pictureDataArray = CloudantSyncDataManager.SharedInstance!.getPictureObjects(nil)
+        //pictureDataArray = CloudantSyncClient.SharedInstance!.getPictureObjects(nil)
+        
+        
+        pictureDataArray = CameraDataManager.SharedInstance.pictureUploadQueue + CloudantSyncDataManager.SharedInstance!.getPictureObjects(nil)
+        
         
         
          dispatch_async(dispatch_get_main_queue()) {
@@ -101,7 +107,11 @@ class FeedViewModel: NSObject {
             
             let ratio = height / width
             
-            let height = collectionView.frame.width * ratio
+            var height = collectionView.frame.width * ratio
+            
+            if(height > kCollectionViewCellHeightLimit){
+                height = kCollectionViewCellHeightLimit
+            }
             
             return CGSize(width: collectionView.frame.width, height: height + kCollectionViewCellInfoViewHeight)
             
@@ -122,7 +132,14 @@ class FeedViewModel: NSObject {
         
         let picture = pictureDataArray[indexPath.row]
         
-        cell.setupData(picture.url, image: picture.image, displayName: picture.displayName, ownerName: picture.ownerName, timeStamp: picture.timeStamp)
+        cell.setupData(
+            picture.url,
+            image: picture.image,
+            displayName: picture.displayName,
+            ownerName: picture.ownerName,
+            timeStamp: picture.timeStamp,
+            fileName: picture.fileName
+        )
         
         cell.layer.shouldRasterize = true
         cell.layer.rasterizationScale = UIScreen.mainScreen().scale

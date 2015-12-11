@@ -296,9 +296,11 @@ class CloudantSyncDataManager {
         var pictureObjects = [Picture]()
         docs.enumerateObjectsUsingBlock({ (rev, idx, stop) -> Void in
             let newPicture = Picture()
+            newPicture.fileName = rev.body["file_name"] as? String
             newPicture.url = rev.body["URL"] as? String
             newPicture.displayName = rev.body["display_name"] as? String
-            newPicture.timeStamp = rev.body["ts"] as? String
+            newPicture.timeStamp = rev.body["ts"] as? Double
+            print("newPicture timeStampe \(newPicture.timeStamp)")
             newPicture.ownerName = self.getProfileName((rev.body["ownerID"] as? String)!)
             newPicture.setWidthAndHeight(rev.body["width"] as? String, height: rev.body["height"] as? String)
             pictureObjects.append(newPicture)
@@ -332,4 +334,3 @@ class CloudantSyncDataManager {
         try pullReplicator.start()
     }
 }
-

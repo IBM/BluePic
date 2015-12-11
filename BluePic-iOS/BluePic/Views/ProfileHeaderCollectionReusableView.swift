@@ -12,8 +12,7 @@ class ProfileHeaderCollectionReusableView: UICollectionReusableView {
 
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var numberOfShotsLabel: UILabel!
-    
-    
+    @IBOutlet weak var profilePictureImageView: UIImageView!
     
     
     override func awakeFromNib() {
@@ -25,7 +24,7 @@ class ProfileHeaderCollectionReusableView: UICollectionReusableView {
     
     
     
-    func setupData(name : String?, numberOfShots : Int?){
+    func setupData(name : String?, numberOfShots : Int?, profilePictureURL : String){
     
         nameLabel.text = name?.uppercaseString ?? ""
         
@@ -34,6 +33,17 @@ class ProfileHeaderCollectionReusableView: UICollectionReusableView {
             
             numberOfShotsLabel.text = "\(shots) \(shotsString)"
         }
+        
+        
+        if let url = NSURL(string: profilePictureURL){
+        
+        
+            profilePictureImageView.sd_setImageWithURL(url)
+            
+            
+        }
+        
+        
 
     }
     

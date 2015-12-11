@@ -45,6 +45,11 @@ class FacebookDataManager: NSObject {
     /// Bool if user is authenticated with facebook
     var isLoggedIn = false
     
+    
+    let facebookProfilePictureURLPrefix = "http://graph.facebook.com/"
+    
+    let facebookProfilePictureURLPostfix = "/picture?type=large"
+    
     /**
      Custom enum for whether facebook authentication was successful or not
      
@@ -344,6 +349,25 @@ class FacebookDataManager: NSObject {
             }
             
             
+        }
+        
+    }
+    
+    
+    func getUserFacebookProfilePictureURL() -> String {
+        
+        
+        if let facebookID = fbUniqueUserID {
+            
+            let profilePictureURL = facebookProfilePictureURLPrefix + facebookID + facebookProfilePictureURLPostfix
+            
+            return profilePictureURL
+        }
+        else{
+            
+            
+            
+            return ""
         }
         
     }

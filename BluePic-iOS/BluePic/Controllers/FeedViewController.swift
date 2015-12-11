@@ -27,12 +27,16 @@ class FeedViewController: UIViewController {
         setupViewModel()
         
         logoImageView.startRotating(1.0)
-       
+  
     }
     
     override func viewDidAppear(animated: Bool) {
+
         
-        
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+ 
     }
 
     override func didReceiveMemoryWarning() {
