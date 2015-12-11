@@ -16,9 +16,6 @@
 		1B3BA0761C0F5FBD0064C850 /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = 1B3BA0751C0F5FBD0064C850 /* .gitkeep */; };
 		1B3BA0781C0F62850064C850 /* Picture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3BA0771C0F62850064C850 /* Picture.swift */; };
 		1B5555BE1C1616B000B3086E /* TabBarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B5555BD1C1616B000B3086E /* TabBarViewModel.swift */; };
-		1B578C221C1A6FF7000F6076 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B578C1F1C1A6FF7000F6076 /* LoadingView.swift */; };
-		1B578C231C1A6FF7000F6076 /* LoadingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1B578C201C1A6FF7000F6076 /* LoadingView.xib */; };
-		1B578C241C1A6FF7000F6076 /* LoadingViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B578C211C1A6FF7000F6076 /* LoadingViewManager.swift */; };
 		1B578C291C1A759C000F6076 /* bee.gif in Resources */ = {isa = PBXBuildFile; fileRef = 1B578C281C1A759C000F6076 /* bee.gif */; };
 		1BC7AF5C1C0E39F100DDFD02 /* FeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC7AF5B1C0E39F100DDFD02 /* FeedViewModel.swift */; };
 		1BC7AF5F1C0E480800DDFD02 /* ImageFeedCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC7AF5D1C0E480800DDFD02 /* ImageFeedCollectionViewCell.swift */; };
@@ -73,6 +70,7 @@
 		34CA18201C04CB6700EC2636 /* ObjectStorageDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34CA181F1C04CB6700EC2636 /* ObjectStorageDataManager.swift */; };
 		494AA0B01BFE4CBA006FC48E /* ObjectStorageClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494AA0AF1BFE4CBA006FC48E /* ObjectStorageClientTests.swift */; };
 		B3A9E7DA1C063FA1002D4AEE /* CloudantSyncClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3A9E7D91C063FA1002D4AEE /* CloudantSyncClientTests.swift */; };
+		B3C2CE981C19DC54003DAF5A /* ReplicatorDelegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C2CE971C19DC54003DAF5A /* ReplicatorDelegates.swift */; };
 		FC315DE6D7B8C71B03B95C18 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 11F4C7A29750E1B7B37ABAFA /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -120,9 +118,6 @@
 		1B3BA0751C0F5FBD0064C850 /* .gitkeep */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		1B3BA0771C0F62850064C850 /* Picture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Picture.swift; sourceTree = "<group>"; };
 		1B5555BD1C1616B000B3086E /* TabBarViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarViewModel.swift; sourceTree = "<group>"; };
-		1B578C1F1C1A6FF7000F6076 /* LoadingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
-		1B578C201C1A6FF7000F6076 /* LoadingView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingView.xib; sourceTree = "<group>"; };
-		1B578C211C1A6FF7000F6076 /* LoadingViewManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingViewManager.swift; sourceTree = "<group>"; };
 		1B578C281C1A759C000F6076 /* bee.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = bee.gif; sourceTree = "<group>"; };
 		1BC7AF5B1C0E39F100DDFD02 /* FeedViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedViewModel.swift; sourceTree = "<group>"; };
 		1BC7AF5D1C0E480800DDFD02 /* ImageFeedCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageFeedCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -182,6 +177,7 @@
 		4DF2008F9A93E25237957424 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		548428B896D4182B293AB59E /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		B3A9E7D91C063FA1002D4AEE /* CloudantSyncClientTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudantSyncClientTests.swift; sourceTree = "<group>"; };
+		B3C2CE971C19DC54003DAF5A /* ReplicatorDelegates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReplicatorDelegates.swift; sourceTree = "<group>"; };
 		BDC4B5F21BFBC77200CC1648 /* BluePic-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BluePic-Bridging-Header.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -222,16 +218,6 @@
 				1B3BA0771C0F62850064C850 /* Picture.swift */,
 			);
 			path = Models;
-			sourceTree = "<group>";
-		};
-		1B578C1E1C1A6FF7000F6076 /* LoadingView */ = {
-			isa = PBXGroup;
-			children = (
-				1B578C1F1C1A6FF7000F6076 /* LoadingView.swift */,
-				1B578C201C1A6FF7000F6076 /* LoadingView.xib */,
-				1B578C211C1A6FF7000F6076 /* LoadingViewManager.swift */,
-			);
-			path = LoadingView;
 			sourceTree = "<group>";
 		};
 		1B578C271C1A759C000F6076 /* Resources */ = {
@@ -384,6 +370,7 @@
 			isa = PBXGroup;
 			children = (
 				3435C7D01C03E223004923BD /* CloudantSyncDataManager.swift */,
+				B3C2CE971C19DC54003DAF5A /* ReplicatorDelegates.swift */,
 				3435C7D11C03E223004923BD /* ObjectStorageClient.swift */,
 				34CA181F1C04CB6700EC2636 /* ObjectStorageDataManager.swift */,
 				34C809541BFD0F2400C48004 /* FacebookDataManager.swift */,
@@ -407,7 +394,6 @@
 		34C809531BFD0CBC00C48004 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				1B578C1E1C1A6FF7000F6076 /* LoadingView */,
 				1B0432E31C17E967007643B1 /* ProfileCollectionViewCell.swift */,
 				1B0432E41C17E967007643B1 /* ProfileCollectionViewCell.xib */,
 				346F947F1C0F9211004999A8 /* CameraConfirmationView.xib */,
@@ -565,7 +551,6 @@
 				347472ED1BFA8DEF0018B7F6 /* Main.storyboard in Resources */,
 				1B3BA0761C0F5FBD0064C850 /* .gitkeep in Resources */,
 				347472981BFA8C6A0018B7F6 /* LaunchScreen.storyboard in Resources */,
-				1B578C231C1A6FF7000F6076 /* LoadingView.xib in Resources */,
 				347472951BFA8C6A0018B7F6 /* Assets.xcassets in Resources */,
 				1BC7AF601C0E480800DDFD02 /* ImageFeedCollectionViewCell.xib in Resources */,
 			);
@@ -651,11 +636,9 @@
 				1B3BA0781C0F62850064C850 /* Picture.swift in Sources */,
 				347472E01BFA8DEF0018B7F6 /* NSCoderExtension.swift in Sources */,
 				347472E41BFA8DEF0018B7F6 /* UIButtonExtension.swift in Sources */,
-				1B578C221C1A6FF7000F6076 /* LoadingView.swift in Sources */,
 				347472EF1BFA8DEF0018B7F6 /* Utils.swift in Sources */,
 				346F947C1C0F868C004999A8 /* CameraDataManager.swift in Sources */,
 				347472E51BFA8DEF0018B7F6 /* UIColorExtension.swift in Sources */,
-				1B578C241C1A6FF7000F6076 /* LoadingViewManager.swift in Sources */,
 				347472E71BFA8DEF0018B7F6 /* UIImageExtension.swift in Sources */,
 				1B0432E51C17E967007643B1 /* ProfileCollectionViewCell.swift in Sources */,
 				3435C7D91C04111F004923BD /* ProfileViewController.swift in Sources */,
@@ -663,6 +646,7 @@
 				3435C7D21C03E223004923BD /* CloudantSyncDataManager.swift in Sources */,
 				347472E11BFA8DEF0018B7F6 /* NSDateExtension.swift in Sources */,
 				1BC7AF5C1C0E39F100DDFD02 /* FeedViewModel.swift in Sources */,
+				B3C2CE981C19DC54003DAF5A /* ReplicatorDelegates.swift in Sources */,
 				347472E61BFA8DEF0018B7F6 /* UIFontExtension.swift in Sources */,
 				347472DC1BFA8DEF0018B7F6 /* CGFloatExtension.swift in Sources */,
 				347472EE1BFA8DEF0018B7F6 /* LocalizationUtils.swift in Sources */,

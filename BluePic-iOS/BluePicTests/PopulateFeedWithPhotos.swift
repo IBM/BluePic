@@ -45,6 +45,7 @@ class PopulateFeedWithPhotos: XCTestCase {
             try CloudantSyncDataManager.SharedInstance!.createProfileDoc(id, name: name)
         } catch {
             print("testPrePopulate ERROR: \(error)")
+            XCTFail()
         }
         
         // Authenticate
@@ -69,8 +70,12 @@ class PopulateFeedWithPhotos: XCTestCase {
         
         do {
             try CloudantSyncDataManager.SharedInstance!.pushToRemoteDatabase()
+            repeat {
+                NSThread.sleepForTimeInterval(1.0)
+            } while(CloudantSyncDataManager.SharedInstance!.pushReplicator.isActive())
         } catch {
             print("testPrePopulate ERROR: \(error)")
+            XCTFail()
         }
         self.waitForExpectationsWithTimeout(100.0, handler:nil)
     }
@@ -93,41 +98,41 @@ class PopulateFeedWithPhotos: XCTestCase {
             XCTAssertNotNil(image)
             
             // Upload Image
-        //push to object storage, then on success push to cloudant sync
-        ObjectStorageDataManager.SharedInstance.objectStorageClient.uploadImage(FBUserID, imageName: imageName, image: image,
-            onSuccess: { (imageURL: String) in
-                XCTAssertNotNil(imageURL)
-                print("upload of \(imageName) to object storage succeeded.")
-                print("imageURL: \(imageURL)")
-                print("creating cloudant picture document...")
-                do {
-                    try CloudantSyncDataManager.SharedInstance!.createPictureDoc(caption, fileName: imageName, url: imageURL, ownerID: FBUserID, width: "\(image.size.width)", height: "\(image.size.height)", orientation: "\(image.imageOrientation.rawValue)")
-                } catch {
-                    print(error)
-                    XCTFail("CreatePictureDoc() failed!")
-                    self.xctExpectation?.fulfill()
-                }
-                
-                imageCount-- //decrement number of images to upload remaining
-                //check if test is done (all photos uploaded)
-                if (imageCount == 0) {
+            //push to object storage, then on success push to cloudant sync
+            ObjectStorageDataManager.SharedInstance.objectStorageClient.uploadImage(FBUserID, imageName: imageName, image: image,
+                onSuccess: { (imageURL: String) in
+                    XCTAssertNotNil(imageURL)
+                    print("upload of \(imageName) to object storage succeeded.")
+                    print("imageURL: \(imageURL)")
+                    print("creating cloudant picture document...")
                     do {
-                        try CloudantSyncDataManager.SharedInstance!.pushToRemoteDatabase()
-                        self.xctExpectation?.fulfill() //test is done if all images added
+                        try CloudantSyncDataManager.SharedInstance!.createPictureDoc(caption, fileName: imageName, url: imageURL, ownerID: FBUserID, width: "\(image.size.width)", height: "\(image.size.height)", orientation: "\(image.imageOrientation.rawValue)")
                     } catch {
                         print(error)
-                        XCTFail("PushToRemoteDatabase() failed!")
+                        XCTFail("CreatePictureDoc() failed!")
                         self.xctExpectation?.fulfill()
                     }
-                }
-            }, onFailure: { (error) in
-                print("upload to object storage failed!")
-                print("error: \(error)")
-                XCTFail(error)
-                self.xctExpectation?.fulfill()
-        })
-        
-    }
+                    
+                    imageCount-- //decrement number of images to upload remaining
+                    //check if test is done (all photos uploaded)
+                    if (imageCount == 0) {
+                        do {
+                            try CloudantSyncDataManager.SharedInstance!.pushToRemoteDatabase()
+                            self.xctExpectation?.fulfill() //test is done if all images added
+                        } catch {
+                            print(error)
+                            XCTFail("PushToRemoteDatabase() failed!")
+                            self.xctExpectation?.fulfill()
+                        }
+                    }
+                }, onFailure: { (error) in
+                    print("upload to object storage failed!")
+                    print("error: \(error)")
+                    XCTFail(error)
+                    self.xctExpectation?.fulfill()
+            })
+            
+        }
     }
     
     

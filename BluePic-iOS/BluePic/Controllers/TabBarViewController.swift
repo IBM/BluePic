@@ -30,20 +30,17 @@ class TabBarViewController: UITabBarController {
         self.addBackgroundImageView()
         
         self.delegate = self
-        
-        //self.setupFeedViewModel()
+
     }
     
     
     override func viewWillAppear(animated: Bool) {
-        
+    
     }
     
     
     
     override func viewDidAppear(animated: Bool) {
-        
-        //preInitViewControllers()
         
         self.setupFeedVC()
 
@@ -90,9 +87,7 @@ class TabBarViewController: UITabBarController {
     
     
     func tryToShowLogin() {
-    
         viewModel.tryToShowLogin()
-        
     }
     
     
@@ -291,5 +286,32 @@ extension TabBarViewController: UITabBarControllerDelegate {
     }
     
     
+    
+}
+
+
+extension TabBarViewController {
+    
+    /**
+     Method to animate the tab bar
+     */
+    func animateHideTabBar() {
+        
+        let animations: ()->() = {
+            
+            let tabBar = self.tabBar
+            
+            self.tabBar.frame = CGRect(
+                x: tabBar.x,
+                y: tabBar.y + tabBar.height,
+                width: tabBar.width,
+                height: tabBar.height
+            )
+            
+        }
+        dispatch_async(dispatch_get_main_queue()) {
+        UIView.animateWithDuration(10.0, animations: animations, completion: nil)
+        }
+    }
     
 }

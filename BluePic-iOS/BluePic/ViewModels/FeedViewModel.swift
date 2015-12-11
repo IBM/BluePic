@@ -37,20 +37,16 @@ class FeedViewModel: NSObject {
     func handleDataManagerNotification(dataManagerNotification : DataManagerNotification){
         
         if(dataManagerNotification == DataManagerNotification.CloudantPullDataSuccess){
-            
             getPictureObjects()
-            
         }
         else if(dataManagerNotification == DataManagerNotification.UserDecidedToPostPhoto){
-            //addUsersLastPhotoTakenToPictureDataArrayAndRefreshCollectionView()
             getPictureObjects()
         }
     }
     
     
     func addUsersLastPhotoTakenToPictureDataArrayAndRefreshCollectionView(){
-        
-        
+
         let lastPhotoTaken = CameraDataManager.SharedInstance.lastPictureObjectTaken
         
         var lastPhotoTakenArray = [Picture]()
@@ -59,7 +55,6 @@ class FeedViewModel: NSObject {
         pictureDataArray = lastPhotoTakenArray + pictureDataArray
         
         callRefreshCallBack()
-        
     }
     
     
@@ -76,13 +71,9 @@ class FeedViewModel: NSObject {
     
     
     func getPictureObjects(){
-        //pictureDataArray = CloudantSyncClient.SharedInstance!.getPictureObjects(nil)
-        
         
         pictureDataArray = CameraDataManager.SharedInstance.pictureUploadQueue + CloudantSyncDataManager.SharedInstance!.getPictureObjects(nil)
-        
-        
-        
+
          dispatch_async(dispatch_get_main_queue()) {
             self.callRefreshCallBack()
         }

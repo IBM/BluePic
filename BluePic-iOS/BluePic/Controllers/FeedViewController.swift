@@ -12,31 +12,46 @@ class FeedViewController: UIViewController {
     
     @IBOutlet weak var logoImageView: UIImageView!
     
+    @IBOutlet weak var outerEyeImageView: UIImageView!
     @IBOutlet weak var collectionView: UICollectionView!
+    
+    @IBOutlet weak var outerEyeImageViewTopSpaceConstraint: NSLayoutConstraint!
+    
+    
+    @IBOutlet weak var collectionViewTopSpaceConstraint: NSLayoutConstraint!
     
     var viewModel : FeedViewModel!
     
     var refreshControl:UIRefreshControl!
     
+    var originalTabBarFrame : CGRect!
+    var defaultOuterEyeImageViewTopSpaceConstraintConstant : CGFloat!
+    
+    var defaultOuterEyeImageViewFrame : CGRect!
+    var defaultLogoImageViewFrame : CGRect!
+    
     let kMinimumInterItemSpacingForSectionAtIndex : CGFloat = 0
+    let kAnimationSequenceDuration : NSTimeInterval = 20.0
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupCollectionView()
         setupViewModel()
-        
+ 
         logoImageView.startRotating(1.0)
   
     }
     
     override func viewDidAppear(animated: Bool) {
-
+        super.viewDidAppear(animated)
         
     }
     
     override func viewWillAppear(animated: Bool) {
- 
+            super.viewWillAppear(animated)
+
     }
 
     override func didReceiveMemoryWarning() {
@@ -61,6 +76,7 @@ class FeedViewController: UIViewController {
         self.refreshControl = UIRefreshControl()
         self.refreshControl.addTarget(self, action: "userTriggeredRefresh", forControlEvents: UIControlEvents.ValueChanged)
         self.refreshControl.hidden = true
+        self.refreshControl.tintColor = UIColor.clearColor()
         
         self.collectionView.addSubview(refreshControl)
     }
@@ -82,18 +98,6 @@ class FeedViewController: UIViewController {
         viewModel.repullForNewData()
         
     }
-    
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
 
@@ -136,3 +140,5 @@ extension FeedViewController: UICollectionViewDelegateFlowLayout {
 
 
 }
+
+

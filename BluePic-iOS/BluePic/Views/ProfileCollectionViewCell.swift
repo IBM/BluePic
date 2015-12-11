@@ -15,6 +15,7 @@ class ProfileCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var photographerNameLabel: UILabel!
     @IBOutlet weak var timeSincePostedLabel: UILabel!
     @IBOutlet weak var moreButton: UIButton!
+    @IBOutlet weak var loadingView: UIView!
     
     
     override func awakeFromNib() {
@@ -47,6 +48,9 @@ class ProfileCollectionViewCell: UICollectionViewCell {
     
     
     func setImageView(url : String?, fileName : String?){
+        
+        self.loadingView.hidden = false
+        
         let urlString = url ?? ""
         
         
@@ -59,6 +63,8 @@ class ProfileCollectionViewCell: UICollectionViewCell {
                 //set placeholderImage with local copy of image in cache, and try to pull image from url if url is valid
                 if let nsurl = NSURL(string: urlString){
                     //                    imageView.sd_setImageWithURL(nsurl, placeholderImage: img)
+                    
+                    self.loadingView.hidden = true
                     
                     imageView.image = img
                     //downloadImageWithSDWebImage(urlString, id: id)
@@ -73,12 +79,21 @@ class ProfileCollectionViewCell: UICollectionViewCell {
                 }
                     //url is not valid, so set imageView with local copy of image in cache
                 else{
+                    
+                    self.loadingView.hidden = true
                     imageView.image = img
                 }
             }
             else{
                 if let nsurl = NSURL(string: urlString){
-                    imageView.sd_setImageWithURL(nsurl)
+                    
+                    imageView.sd_setImageWithURL(nsurl, completed: { result in
+                        
+                        if result.0 != nil{
+                            self.loadingView.hidden = true
+                        }
+                        
+                    })
                 }
             }
         }
@@ -86,7 +101,14 @@ class ProfileCollectionViewCell: UICollectionViewCell {
         else {
             //set imageView with image from url if url is valid
             if let nsurl = NSURL(string: urlString){
-                imageView.sd_setImageWithURL(nsurl)
+                
+                imageView.sd_setImageWithURL(nsurl, completed: { result in
+                    
+                    if result.0 != nil{
+                        self.loadingView.hidden = true
+                    }
+                    
+                })
             }
             
         }
