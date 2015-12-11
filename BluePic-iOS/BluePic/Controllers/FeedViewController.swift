@@ -61,6 +61,7 @@ class FeedViewController: UIViewController {
         self.refreshControl = UIRefreshControl()
         self.refreshControl.addTarget(self, action: "userTriggeredRefresh", forControlEvents: UIControlEvents.ValueChanged)
         self.refreshControl.hidden = true
+        self.refreshControl.tintColor = UIColor.clearColor()
         
         self.collectionView.addSubview(refreshControl)
     }
