@@ -79,6 +79,9 @@ class CloudantSyncClientTests: XCTestCase {
             let height = "100"
             let orientation = "0"
             try CloudantSyncDataManager.SharedInstance!.createPictureDoc(displayName, fileName: fileName, url: url, ownerID: id, width: width, height: height, orientation: orientation)
+            // Delete profile and picture
+            try CloudantSyncDataManager.SharedInstance!.deletePicturesOfUser(id)
+            try CloudantSyncDataManager.SharedInstance!.deleteDoc(id)
         } catch {
             XCTFail()
         }
