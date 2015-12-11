@@ -29,7 +29,7 @@ class FeedViewModel: NSObject {
         
         DataManagerCalbackCoordinator.SharedInstance.addCallback(handleDataManagerNotification)
         
-        getPictureObjects()
+        //getPictureObjects()
     }
     
     
@@ -37,6 +37,8 @@ class FeedViewModel: NSObject {
     func handleDataManagerNotification(dataManagerNotification : DataManagerNotification){
         
         if(dataManagerNotification == DataManagerNotification.CloudantPullDataSuccess){
+            
+            
             getPictureObjects()
         }
         else if(dataManagerNotification == DataManagerNotification.UserDecidedToPostPhoto){

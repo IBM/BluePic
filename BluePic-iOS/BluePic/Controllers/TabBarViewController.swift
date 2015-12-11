@@ -213,7 +213,14 @@ class TabBarViewController: UITabBarController {
     func presentLoginVC(){
         
         let loginVC = Utils.vcWithNameFromStoryboardWithName("loginVC", storyboardName: "Main") as! LoginViewController
+        loginVC.didDismissCallback = { _ in
+            
+            
+            
+        }
+
         self.presentViewController(loginVC, animated: false, completion: { _ in
+            
             self.hideBackgroundImage()
             print(NSLocalizedString("user needs to log into Facebook, showing login", comment: ""))
         })

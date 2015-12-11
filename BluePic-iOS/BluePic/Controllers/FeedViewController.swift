@@ -11,13 +11,10 @@ import UIKit
 class FeedViewController: UIViewController {
     
     @IBOutlet weak var logoImageView: UIImageView!
-    
+
     @IBOutlet weak var outerEyeImageView: UIImageView!
     @IBOutlet weak var collectionView: UICollectionView!
-    
     @IBOutlet weak var outerEyeImageViewTopSpaceConstraint: NSLayoutConstraint!
-    
-    
     @IBOutlet weak var collectionViewTopSpaceConstraint: NSLayoutConstraint!
     
     var viewModel : FeedViewModel!
