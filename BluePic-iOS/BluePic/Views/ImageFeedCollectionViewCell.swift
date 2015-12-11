@@ -119,9 +119,11 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
             else{
                 if let nsurl = NSURL(string: urlString){
                     
-                    imageView.sd_setImageWithURL(nsurl, completed: { _ in
+                    imageView.sd_setImageWithURL(nsurl, completed: { result in
                         
+                        if result.0 != nil{
                         self.loadingView.hidden = true
+                        }
                         
                     })
                 }
@@ -132,9 +134,11 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
             //set imageView with image from url if url is valid
             if let nsurl = NSURL(string: urlString){
                 
-                imageView.sd_setImageWithURL(nsurl, completed: { _ in
+                imageView.sd_setImageWithURL(nsurl, completed: { result in
                     
-                    self.loadingView.hidden = true
+                    if result.0 != nil{
+                        self.loadingView.hidden = true
+                    }
                     
                 })
             }

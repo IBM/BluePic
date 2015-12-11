@@ -15,7 +15,7 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SNP-0Q-2Ln">
                         <rect key="frame" x="0.0" y="304" width="398" height="60"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9yv-kJ-p3s">
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9yv-kJ-p3s">
                                 <rect key="frame" x="15" y="0.0" width="58" height="32"/>
                                 <animations/>
                                 <constraints>
@@ -72,15 +72,36 @@
                         <rect key="frame" x="0.0" y="0.0" width="398" height="304"/>
                         <animations/>
                     </imageView>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wIp-df-0eX">
+                        <rect key="frame" x="0.0" y="0.0" width="398" height="304"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bee" translatesAutoresizingMaskIntoConstraints="NO" id="3Em-Pe-N8S">
+                                <rect key="frame" x="172" y="128" width="55" height="47"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="55" id="ggG-h1-GHc"/>
+                                    <constraint firstAttribute="height" constant="47" id="n3k-xB-RbU"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.93333333333333335" green="0.93333333333333335" blue="0.93333333333333335" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="3Em-Pe-N8S" firstAttribute="centerY" secondItem="wIp-df-0eX" secondAttribute="centerY" id="WQl-eT-doc"/>
+                            <constraint firstItem="3Em-Pe-N8S" firstAttribute="centerX" secondItem="wIp-df-0eX" secondAttribute="centerX" id="vJ1-1r-Hgb"/>
+                        </constraints>
+                    </view>
                 </subviews>
                 <animations/>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
             <animations/>
             <constraints>
+                <constraint firstItem="wIp-df-0eX" firstAttribute="width" secondItem="sgl-tr-fsw" secondAttribute="width" id="8Rv-qz-68k"/>
+                <constraint firstItem="wIp-df-0eX" firstAttribute="centerX" secondItem="sgl-tr-fsw" secondAttribute="centerX" id="9Bn-h0-ZOF"/>
+                <constraint firstItem="wIp-df-0eX" firstAttribute="height" secondItem="sgl-tr-fsw" secondAttribute="height" id="Oxe-Ku-WNj"/>
                 <constraint firstAttribute="bottom" secondItem="SNP-0Q-2Ln" secondAttribute="bottom" id="SfL-Th-UH9"/>
                 <constraint firstItem="sgl-tr-fsw" firstAttribute="width" secondItem="gTV-IL-0wX" secondAttribute="width" id="TOF-pd-OQP"/>
                 <constraint firstItem="SNP-0Q-2Ln" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="TuT-Re-Xxo"/>
+                <constraint firstItem="wIp-df-0eX" firstAttribute="centerY" secondItem="sgl-tr-fsw" secondAttribute="centerY" id="dOv-sZ-wL2"/>
                 <constraint firstItem="SNP-0Q-2Ln" firstAttribute="top" secondItem="sgl-tr-fsw" secondAttribute="bottom" id="mfl-FT-tU7"/>
                 <constraint firstItem="sgl-tr-fsw" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="oa9-LD-iLN"/>
                 <constraint firstItem="SNP-0Q-2Ln" firstAttribute="width" secondItem="gTV-IL-0wX" secondAttribute="width" id="snT-DO-txQ"/>
@@ -90,6 +111,7 @@
             <connections>
                 <outlet property="captionLabel" destination="0yj-qx-X14" id="HD4-pd-HI4"/>
                 <outlet property="imageView" destination="sgl-tr-fsw" id="75h-mM-mqu"/>
+                <outlet property="loadingView" destination="wIp-df-0eX" id="YQn-gx-P52"/>
                 <outlet property="moreButton" destination="9yv-kJ-p3s" id="Z4y-sL-ubN"/>
                 <outlet property="timeSincePostedLabel" destination="YEf-nq-eTc" id="xzc-Iq-ivL"/>
             </connections>
@@ -97,6 +119,7 @@
         </collectionViewCell>
     </objects>
     <resources>
+        <image name="bee" width="360" height="210"/>
         <image name="moreIcon" width="21" height="5"/>
     </resources>
 </document>
