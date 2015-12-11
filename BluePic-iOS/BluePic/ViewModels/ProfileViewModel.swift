@@ -39,10 +39,6 @@ class ProfileViewModel: NSObject {
             addUsersLastPhotoTakenToPictureDataArrayAndRefreshCollectionView()
             
         }
-        
-        
-        
-        
     }
     
     
