@@ -45,6 +45,7 @@ class PopulateFeedWithPhotos: XCTestCase {
             try CloudantSyncDataManager.SharedInstance!.createProfileDoc(id, name: name)
         } catch {
             print("testPrePopulate ERROR: \(error)")
+            XCTFail()
         }
         
         // Authenticate
@@ -69,8 +70,12 @@ class PopulateFeedWithPhotos: XCTestCase {
         
         do {
             try CloudantSyncDataManager.SharedInstance!.pushToRemoteDatabase()
+            repeat {
+                NSThread.sleepForTimeInterval(1.0)
+            } while(CloudantSyncDataManager.SharedInstance!.pushReplicator.isActive())
         } catch {
             print("testPrePopulate ERROR: \(error)")
+            XCTFail()
         }
         self.waitForExpectationsWithTimeout(100.0, handler:nil)
     }

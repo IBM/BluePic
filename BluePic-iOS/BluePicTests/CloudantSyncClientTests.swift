@@ -14,7 +14,7 @@ import XCTest
  */
 class CloudantSyncClientTests: XCTestCase {
     
-    static var xctExpectation:XCTestExpectation?
+    var xctExpectation:XCTestExpectation?
     
     override func setUp() {
         super.setUp()
@@ -202,7 +202,7 @@ class CloudantSyncClientTests: XCTestCase {
         }
     }
     
-    //TODO: can't do a pull in expectation handler because pull method throws an error.
+    //TODO: finish implementation
     /**
      * Tests the push of 2 documents, deleting them locally, then pulling them and finally making sure they exist again locally.
      */
@@ -212,7 +212,6 @@ class CloudantSyncClientTests: XCTestCase {
 //            let id = "7532"
 //            let name = "Kenny Reid"
 //            try CloudantSyncDataManager.SharedInstance!.createProfileDoc(id, name: name)
-//            
 //            // Create picture and set their owner id
 //            let displayName = "Keys"
 //            let fileName = "keys"
@@ -223,6 +222,7 @@ class CloudantSyncClientTests: XCTestCase {
 //            // Picture 1
 //            try CloudantSyncDataManager.SharedInstance!.createPictureDoc(
 //                displayName, fileName: fileName, url: url, ownerID: id, width: width, height: height, orientation: orientation)
+//            
 //            // Push documents
 //            CloudantSyncDataManager.SharedInstance!.pushDelegate = TestPushDelegate()
 //            try CloudantSyncDataManager.SharedInstance!.pushToRemoteDatabase()
@@ -232,17 +232,6 @@ class CloudantSyncClientTests: XCTestCase {
 //                        // Delete the 2 documents.
 //                        try CloudantSyncDataManager.SharedInstance!.deletePicturesOfUser(id)
 //                        try CloudantSyncDataManager.SharedInstance!.deleteDoc(id)
-//                        // Perform PULL
-//                        CloudantSyncDataManager.SharedInstance!.pullDelegate = TestPullDelegate()
-//                        try CloudantSyncDataManager.SharedInstance!.pullFromRemoteDatabase()
-//                        self.waitForExpectationsWithTimeout(20.0
-//                            , handler: { (NSError) in
-//                                XCTAssertTrue(CloudantSyncDataManager.SharedInstance!.doesExist(id))
-//                                let result = CloudantSyncDataManager.SharedInstance!.getPictureObjects(id)
-//                                // Check array for size
-//                                XCTAssertEqual(result.count, 1)
-//                            })
-//                        
 //                    } catch {
 //                        print(error)
 //                        XCTFail()
@@ -281,7 +270,8 @@ class TestPullDelegate:PullDelegate{
      */
     override func replicatorDidComplete(replicator:CDTReplicator) {
         print("PULL Replicator completed.")
-        CloudantSyncClientTests.xctExpectation?.fulfill()
+        let t = CloudantSyncClientTests()
+        t.xctExpectation?.fulfill()
     }
     
     /**
@@ -289,6 +279,8 @@ class TestPullDelegate:PullDelegate{
      */
     override func replicatorDidError(replicator:CDTReplicator, info:NSError) {
         print("Replicator ERROR: \(info)")
+        let t = CloudantSyncClientTests()
+        t.xctExpectation?.fulfill()
         XCTFail()
     }
 }
@@ -314,7 +306,8 @@ class TestPushDelegate:PushDelegate{
      */
     override func replicatorDidComplete(replicator:CDTReplicator) {
         print("PUSH Replicator completed.")
-        CloudantSyncClientTests.xctExpectation?.fulfill()
+        let t = CloudantSyncClientTests()
+        t.xctExpectation?.fulfill()
     }
     
     /**
@@ -322,6 +315,8 @@ class TestPushDelegate:PushDelegate{
      */
     override func replicatorDidError(replicator:CDTReplicator, info:NSError) {
         print("Replicator ERROR: \(info)")
+        let t = CloudantSyncClientTests()
+        t.xctExpectation?.fulfill()
         XCTFail()
     }
 }
