@@ -26,6 +26,11 @@ class TabBarViewModel: NSObject {
     
     var feedViewModel : FeedViewModel!
     
+    var hitViewDidAppearThisManyTimes = 0
+    
+    var didPresentDefaultLoginVC = false
+    var hasSuccessFullyPulled = false
+    
     
     init(passDataNotificationToTabBarVCCallback : ((dataManagerNotification: DataManagerNotification)->())){
         super.init()
@@ -52,10 +57,21 @@ class TabBarViewModel: NSObject {
     
     func handleDataManagerNotifications(dataManagerNotification : DataManagerNotification){
         
+        if(dataManagerNotification == DataManagerNotification.CloudantPullDataSuccess){
+            hasSuccessFullyPulled = true
+        }
+        
        passDataNotificationToTabBarVCCallback(dataManagerNotification: dataManagerNotification)
-  
     }
     
+    
+    func tellFeedToStartLoadingAnimation(){
+        if(didPresentDefaultLoginVC == true && hasSuccessFullyPulled == false){
+            DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.StartLoadingAnimationForAppLaunch)
+            didPresentDefaultLoginVC = false
+        }
+        
+    }
     
 
     /**

@@ -11,47 +11,36 @@ import UIKit
 class FeedViewController: UIViewController {
     
     @IBOutlet weak var logoImageView: UIImageView!
-    
+
     @IBOutlet weak var outerEyeImageView: UIImageView!
     @IBOutlet weak var collectionView: UICollectionView!
-    
     @IBOutlet weak var outerEyeImageViewTopSpaceConstraint: NSLayoutConstraint!
-    
-    
     @IBOutlet weak var collectionViewTopSpaceConstraint: NSLayoutConstraint!
     
     var viewModel : FeedViewModel!
     
     var refreshControl:UIRefreshControl!
     
-    var originalTabBarFrame : CGRect!
-    var defaultOuterEyeImageViewTopSpaceConstraintConstant : CGFloat!
-    
-    var defaultOuterEyeImageViewFrame : CGRect!
-    var defaultLogoImageViewFrame : CGRect!
-    
     let kMinimumInterItemSpacingForSectionAtIndex : CGFloat = 0
-    let kAnimationSequenceDuration : NSTimeInterval = 20.0
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         setupCollectionView()
         setupViewModel()
  
-        logoImageView.startRotating(1.0)
-  
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        
     }
     
     override func viewWillAppear(animated: Bool) {
-            super.viewWillAppear(animated)
-
+        super.viewWillAppear(animated)
+    }
+    
+    override func viewDidLayoutSubviews() {
+    
     }
 
     override func didReceiveMemoryWarning() {
@@ -62,7 +51,7 @@ class FeedViewController: UIViewController {
     
     
     func setupViewModel(){
-        viewModel = FeedViewModel(refreshCallback: reloadDataInCollectionView)
+        viewModel = FeedViewModel(passFeedViewModelNotificationToTabBarVCCallback: handleFeedViewModelNotifications)
     }
     
     
@@ -82,10 +71,26 @@ class FeedViewController: UIViewController {
     }
     
     
+    
+    func handleFeedViewModelNotifications(feedViewModelNotification : FeedViewModelNotification){
+        
+        if(feedViewModelNotification == FeedViewModelNotification.RefreshCollectionView){
+            
+            reloadDataInCollectionView()
+        }
+        else if(feedViewModelNotification == FeedViewModelNotification.StartLoadingAnimationForAppLaunch){
+        
+            self.logoImageView.image = UIImage(named: "shutter")
+            self.logoImageView.startRotating(1)
+        }
+    }
+
+    
     func reloadDataInCollectionView(){
         
         collectionView.reloadData()
         logoImageView.stopRotating()
+        
     }
     
     
@@ -120,14 +125,6 @@ extension FeedViewController: UICollectionViewDataSource {
     
 }
 
-
-extension FeedViewController: UICollectionViewDelegate {
-    
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-            print(indexPath.row)
-    }
-    
-}
 
 
 extension FeedViewController: UICollectionViewDelegateFlowLayout {
