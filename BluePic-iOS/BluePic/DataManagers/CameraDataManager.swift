@@ -252,10 +252,10 @@ class CameraDataManager: NSObject {
      Alert to be shown if photo couldn't be loaded from disk (iCloud photo stream photo not loaded, for example)
      */
     func showPhotoCouldntBeChosenAlert() {
-        let alert = UIAlertController(title: nil, message: NSLocalizedString("This photo couldn't be loaded. Please try a different one!", comment: ""), preferredStyle: UIAlertControllerStyle.Alert)
+        let alert = UIAlertController(title: nil, message: NSLocalizedString("This photo couldn't be loaded. Please use a different one!", comment: ""), preferredStyle: UIAlertControllerStyle.Alert)
         
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .Cancel, handler: { (action: UIAlertAction!) in
-            
+        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .Default, handler: { (action: UIAlertAction!) in
+            self.openGallery()
         }))
         
         dispatch_async(dispatch_get_main_queue()) {
