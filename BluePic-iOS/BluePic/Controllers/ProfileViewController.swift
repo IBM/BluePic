@@ -253,8 +253,7 @@ extension ProfileViewController : UIScrollViewDelegate {
      - parameter scrollView:
      */
     func scrollViewDidScroll(scrollView: UIScrollView) {
-        
-        print(scrollView.contentOffset.y)
+
         checkOffSetForStatusBarBackgroundViewVisability(scrollView.contentOffset.y)
         updateImageViewFrameWithScrollViewDidScroll(scrollView.contentOffset.y)
     }
