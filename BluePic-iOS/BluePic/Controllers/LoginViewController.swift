@@ -27,7 +27,6 @@ class LoginViewController: UIViewController {
     
     var viewModel: LoginViewModel!
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -54,6 +53,8 @@ class LoginViewController: UIViewController {
     @IBAction func signInLaterTapped(sender: AnyObject) {
         NSUserDefaults.standardUserDefaults().setBool(true, forKey: "hasPressedLater")
         NSUserDefaults.standardUserDefaults().synchronize()
+        //callDidDismissCallback()
+        
         dismissViewControllerAnimated(true, completion: nil)
     }
 
@@ -119,16 +120,14 @@ class LoginViewController: UIViewController {
     }
 
     
-    
 
-
-    
-    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
 
+    
+    
 
 }
 
