@@ -101,7 +101,7 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WqC-DS-Akl">
                         <rect key="frame" x="0.0" y="0.0" width="398" height="288"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bee.gif" translatesAutoresizingMaskIntoConstraints="NO" id="w8K-Nq-f4E">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bee" translatesAutoresizingMaskIntoConstraints="NO" id="w8K-Nq-f4E">
                                 <rect key="frame" x="172" y="120" width="55" height="47"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="47" id="QVt-Z1-fTt"/>
@@ -147,7 +147,7 @@
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="bee.gif" width="360" height="210"/>
+        <image name="bee" width="360" height="210"/>
         <image name="moreIcon" width="21" height="5"/>
     </resources>
 </document>
