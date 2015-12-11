@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
     </dependencies>
@@ -98,6 +98,23 @@
                         <rect key="frame" x="0.0" y="0.0" width="398" height="288"/>
                         <animations/>
                     </imageView>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WqC-DS-Akl">
+                        <rect key="frame" x="0.0" y="0.0" width="398" height="288"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bee.gif" translatesAutoresizingMaskIntoConstraints="NO" id="w8K-Nq-f4E">
+                                <rect key="frame" x="172" y="120" width="55" height="47"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="47" id="QVt-Z1-fTt"/>
+                                    <constraint firstAttribute="width" constant="55" id="nrk-kW-zUw"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.93333333333333335" green="0.93333333333333335" blue="0.93333333333333335" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="w8K-Nq-f4E" firstAttribute="centerX" secondItem="WqC-DS-Akl" secondAttribute="centerX" id="4CE-xJ-HcO"/>
+                            <constraint firstItem="w8K-Nq-f4E" firstAttribute="centerY" secondItem="WqC-DS-Akl" secondAttribute="centerY" id="IdB-jL-gai"/>
+                        </constraints>
+                    </view>
                 </subviews>
                 <animations/>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -107,6 +124,10 @@
                 <constraint firstAttribute="bottom" secondItem="SNP-0Q-2Ln" secondAttribute="bottom" id="SfL-Th-UH9"/>
                 <constraint firstItem="sgl-tr-fsw" firstAttribute="width" secondItem="gTV-IL-0wX" secondAttribute="width" id="TOF-pd-OQP"/>
                 <constraint firstItem="SNP-0Q-2Ln" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="TuT-Re-Xxo"/>
+                <constraint firstItem="WqC-DS-Akl" firstAttribute="width" secondItem="sgl-tr-fsw" secondAttribute="width" id="YN4-NF-UOj"/>
+                <constraint firstItem="WqC-DS-Akl" firstAttribute="centerY" secondItem="sgl-tr-fsw" secondAttribute="centerY" id="aIg-8o-Vkk"/>
+                <constraint firstItem="WqC-DS-Akl" firstAttribute="centerX" secondItem="sgl-tr-fsw" secondAttribute="centerX" id="cjt-dU-YQQ"/>
+                <constraint firstItem="WqC-DS-Akl" firstAttribute="height" secondItem="sgl-tr-fsw" secondAttribute="height" id="etG-Vu-GML"/>
                 <constraint firstItem="SNP-0Q-2Ln" firstAttribute="top" secondItem="sgl-tr-fsw" secondAttribute="bottom" id="mfl-FT-tU7"/>
                 <constraint firstItem="sgl-tr-fsw" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="oa9-LD-iLN"/>
                 <constraint firstItem="SNP-0Q-2Ln" firstAttribute="width" secondItem="gTV-IL-0wX" secondAttribute="width" id="snT-DO-txQ"/>
@@ -116,6 +137,8 @@
             <connections>
                 <outlet property="captionLabel" destination="0yj-qx-X14" id="HD4-pd-HI4"/>
                 <outlet property="imageView" destination="sgl-tr-fsw" id="75h-mM-mqu"/>
+                <outlet property="loadingImageView" destination="w8K-Nq-f4E" id="Qxb-KM-mjX"/>
+                <outlet property="loadingView" destination="WqC-DS-Akl" id="Xkx-Qj-Exq"/>
                 <outlet property="moreButton" destination="9yv-kJ-p3s" id="Z4y-sL-ubN"/>
                 <outlet property="photographerNameLabel" destination="fmU-0F-Y7s" id="JY1-B1-Brg"/>
                 <outlet property="timeSincePostedLabel" destination="YEf-nq-eTc" id="xzc-Iq-ivL"/>
@@ -124,6 +147,7 @@
         </collectionViewCell>
     </objects>
     <resources>
+        <image name="bee.gif" width="360" height="210"/>
         <image name="moreIcon" width="21" height="5"/>
     </resources>
 </document>

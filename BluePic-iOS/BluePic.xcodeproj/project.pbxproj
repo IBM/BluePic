@@ -16,6 +16,10 @@
 		1B3BA0761C0F5FBD0064C850 /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = 1B3BA0751C0F5FBD0064C850 /* .gitkeep */; };
 		1B3BA0781C0F62850064C850 /* Picture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3BA0771C0F62850064C850 /* Picture.swift */; };
 		1B5555BE1C1616B000B3086E /* TabBarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B5555BD1C1616B000B3086E /* TabBarViewModel.swift */; };
+		1B578C221C1A6FF7000F6076 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B578C1F1C1A6FF7000F6076 /* LoadingView.swift */; };
+		1B578C231C1A6FF7000F6076 /* LoadingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1B578C201C1A6FF7000F6076 /* LoadingView.xib */; };
+		1B578C241C1A6FF7000F6076 /* LoadingViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B578C211C1A6FF7000F6076 /* LoadingViewManager.swift */; };
+		1B578C291C1A759C000F6076 /* bee.gif in Resources */ = {isa = PBXBuildFile; fileRef = 1B578C281C1A759C000F6076 /* bee.gif */; };
 		1BC7AF5C1C0E39F100DDFD02 /* FeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC7AF5B1C0E39F100DDFD02 /* FeedViewModel.swift */; };
 		1BC7AF5F1C0E480800DDFD02 /* ImageFeedCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC7AF5D1C0E480800DDFD02 /* ImageFeedCollectionViewCell.swift */; };
 		1BC7AF601C0E480800DDFD02 /* ImageFeedCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1BC7AF5E1C0E480800DDFD02 /* ImageFeedCollectionViewCell.xib */; };
@@ -116,6 +120,10 @@
 		1B3BA0751C0F5FBD0064C850 /* .gitkeep */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		1B3BA0771C0F62850064C850 /* Picture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Picture.swift; sourceTree = "<group>"; };
 		1B5555BD1C1616B000B3086E /* TabBarViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarViewModel.swift; sourceTree = "<group>"; };
+		1B578C1F1C1A6FF7000F6076 /* LoadingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
+		1B578C201C1A6FF7000F6076 /* LoadingView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingView.xib; sourceTree = "<group>"; };
+		1B578C211C1A6FF7000F6076 /* LoadingViewManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingViewManager.swift; sourceTree = "<group>"; };
+		1B578C281C1A759C000F6076 /* bee.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = bee.gif; sourceTree = "<group>"; };
 		1BC7AF5B1C0E39F100DDFD02 /* FeedViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedViewModel.swift; sourceTree = "<group>"; };
 		1BC7AF5D1C0E480800DDFD02 /* ImageFeedCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageFeedCollectionViewCell.swift; sourceTree = "<group>"; };
 		1BC7AF5E1C0E480800DDFD02 /* ImageFeedCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageFeedCollectionViewCell.xib; sourceTree = "<group>"; };
@@ -216,6 +224,24 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		1B578C1E1C1A6FF7000F6076 /* LoadingView */ = {
+			isa = PBXGroup;
+			children = (
+				1B578C1F1C1A6FF7000F6076 /* LoadingView.swift */,
+				1B578C201C1A6FF7000F6076 /* LoadingView.xib */,
+				1B578C211C1A6FF7000F6076 /* LoadingViewManager.swift */,
+			);
+			path = LoadingView;
+			sourceTree = "<group>";
+		};
+		1B578C271C1A759C000F6076 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				1B578C281C1A759C000F6076 /* bee.gif */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		347472811BFA8C6A0018B7F6 = {
 			isa = PBXGroup;
 			children = (
@@ -242,6 +268,7 @@
 		3474728C1BFA8C6A0018B7F6 /* BluePic */ = {
 			isa = PBXGroup;
 			children = (
+				1B578C271C1A759C000F6076 /* Resources */,
 				1B3BA0741C0F5FBD0064C850 /* Models */,
 				3474728D1BFA8C6A0018B7F6 /* AppDelegate.swift */,
 				347472941BFA8C6A0018B7F6 /* Assets.xcassets */,
@@ -381,6 +408,7 @@
 		34C809531BFD0CBC00C48004 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				1B578C1E1C1A6FF7000F6076 /* LoadingView */,
 				1B0432E31C17E967007643B1 /* ProfileCollectionViewCell.swift */,
 				1B0432E41C17E967007643B1 /* ProfileCollectionViewCell.xib */,
 				346F947F1C0F9211004999A8 /* CameraConfirmationView.xib */,
@@ -534,9 +562,11 @@
 				3435C7C91C0368B1004923BD /* Feed.storyboard in Resources */,
 				346F94801C0F9211004999A8 /* CameraConfirmationView.xib in Resources */,
 				34C8094D1BFCEA0400C48004 /* keys.plist in Resources */,
+				1B578C291C1A759C000F6076 /* bee.gif in Resources */,
 				347472ED1BFA8DEF0018B7F6 /* Main.storyboard in Resources */,
 				1B3BA0761C0F5FBD0064C850 /* .gitkeep in Resources */,
 				347472981BFA8C6A0018B7F6 /* LaunchScreen.storyboard in Resources */,
+				1B578C231C1A6FF7000F6076 /* LoadingView.xib in Resources */,
 				347472951BFA8C6A0018B7F6 /* Assets.xcassets in Resources */,
 				1BC7AF601C0E480800DDFD02 /* ImageFeedCollectionViewCell.xib in Resources */,
 			);
@@ -622,9 +652,11 @@
 				1B3BA0781C0F62850064C850 /* Picture.swift in Sources */,
 				347472E01BFA8DEF0018B7F6 /* NSCoderExtension.swift in Sources */,
 				347472E41BFA8DEF0018B7F6 /* UIButtonExtension.swift in Sources */,
+				1B578C221C1A6FF7000F6076 /* LoadingView.swift in Sources */,
 				347472EF1BFA8DEF0018B7F6 /* Utils.swift in Sources */,
 				346F947C1C0F868C004999A8 /* CameraDataManager.swift in Sources */,
 				347472E51BFA8DEF0018B7F6 /* UIColorExtension.swift in Sources */,
+				1B578C241C1A6FF7000F6076 /* LoadingViewManager.swift in Sources */,
 				347472E71BFA8DEF0018B7F6 /* UIImageExtension.swift in Sources */,
 				1B0432E51C17E967007643B1 /* ProfileCollectionViewCell.swift in Sources */,
 				3435C7D91C04111F004923BD /* ProfileViewController.swift in Sources */,

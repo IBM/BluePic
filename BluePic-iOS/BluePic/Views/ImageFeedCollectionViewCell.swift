@@ -15,6 +15,8 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var photographerNameLabel: UILabel!
     @IBOutlet weak var timeSincePostedLabel: UILabel!
     @IBOutlet weak var moreButton: UIButton!
+    @IBOutlet weak var loadingView: UIView!
+    @IBOutlet weak var loadingImageView: UIImageView!
     
     
     override func awakeFromNib() {
@@ -78,6 +80,9 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
     
     
     func setImageView(url : String?, fileName : String?){
+        
+        self.loadingView.hidden = false
+        
         let urlString = url ?? ""
         
         
@@ -90,6 +95,8 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
                 //set placeholderImage with local copy of image in cache, and try to pull image from url if url is valid
                 if let nsurl = NSURL(string: urlString){
 //                    imageView.sd_setImageWithURL(nsurl, placeholderImage: img)
+                    
+                    self.loadingView.hidden = true
                     
                     imageView.image = img
                     //downloadImageWithSDWebImage(urlString, id: id)
@@ -104,12 +111,21 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
                 }
                 //url is not valid, so set imageView with local copy of image in cache
                 else{
+                    
+                    self.loadingView.hidden = true
                     imageView.image = img
                 }
             }
             else{
                 if let nsurl = NSURL(string: urlString){
-                    imageView.sd_setImageWithURL(nsurl)
+                    
+                   self.loadingImageView.image = UIImage.sd_animatedGIFNamed("bee")
+                    
+                    imageView.sd_setImageWithURL(nsurl, completed: { _ in
+                        
+                        self.loadingView.hidden = true
+                        
+                    })
                 }
             }
         }
@@ -117,7 +133,14 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
         else {
             //set imageView with image from url if url is valid
             if let nsurl = NSURL(string: urlString){
-                imageView.sd_setImageWithURL(nsurl)
+                
+                self.loadingImageView.image = UIImage.sd_animatedGIFNamed("bee")
+                
+                imageView.sd_setImageWithURL(nsurl, completed: { _ in
+                    
+                    self.loadingView.hidden = true
+                    
+                })
             }
         
         }
