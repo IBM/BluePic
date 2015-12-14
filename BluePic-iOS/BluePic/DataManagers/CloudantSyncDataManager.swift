@@ -1,11 +1,8 @@
-//
-//  CloudantSyncDataManager.swift
-//  BluePic
-//  For detailed information on the Cloudant Sync API, please see the following URL: https://github.com/cloudant/CDTDatastore
-//
-//  Created by Rolando Asmat on 11/21/15.
-//  Copyright © 2015 MIL. All rights reserved.
-//
+/*
+Licensed Materials - Property of IBM
+© Copyright IBM Corporation 2015. All Rights Reserved.
+*/
+
 
 
 // TODO remove orientation field from documents as well as form calls on main application

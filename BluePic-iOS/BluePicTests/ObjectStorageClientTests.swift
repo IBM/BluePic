@@ -1,14 +1,14 @@
+/*
+Licensed Materials - Property of IBM
+© Copyright IBM Corporation 2015. All Rights Reserved.
+*/
+
 //
-//  ObjectStorageClientTests.swift
-//  BluePic
-//
-//  For more infor on how to write test methods that test async functionality, please see the following URLs:
+//  For more information on how to write test methods that test async functionality, please see the following URLs:
 //     http://nshipster.com/xctestcase/
 //     https://www.bignerdranch.com/blog/asynchronous-testing-with-xcode-6/
 //
-//  Created by Ricardo Olivieri on 11/17/15.
-//  Copyright © 2015 MIL. All rights reserved.
-//
+
 
 import XCTest
 @testable import BluePic

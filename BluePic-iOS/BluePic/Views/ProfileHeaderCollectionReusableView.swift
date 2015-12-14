@@ -1,10 +1,8 @@
-//
-//  ProfileHeaderCollectionReusableView.swift
-//  BluePic
-//
-//  Created by Alex Buck on 12/8/15.
-//  Copyright © 2015 MIL. All rights reserved.
-//
+/*
+Licensed Materials - Property of IBM
+© Copyright IBM Corporation 2015. All Rights Reserved.
+*/
+
 
 import UIKit
 

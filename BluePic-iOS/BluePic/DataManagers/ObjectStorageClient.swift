@@ -1,11 +1,8 @@
-//
-//  ObjectStorageClient.swift
-//  BluePic
-//  For detailed information on the Object Storage API, please see the following URL: http://developer.openstack.org/api-ref-objectstorage-v1.html
-//
-//  Created by Ricardo Olivieri on 11/17/15.
-//  Copyright © 2015 MIL. All rights reserved.
-//
+/*
+Licensed Materials - Property of IBM
+© Copyright IBM Corporation 2015. All Rights Reserved.
+*/
+
 
 import Foundation
 import Alamofire

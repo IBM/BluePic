@@ -1,10 +1,8 @@
-//
-//  ReplicatorDelegates.swift
-//  BluePic
-//
-//  Created by Rolando Asmat on 12/10/15.
-//  Copyright © 2015 MIL. All rights reserved.
-//
+/*
+Licensed Materials - Property of IBM
+© Copyright IBM Corporation 2015. All Rights Reserved.
+*/
+
 
 import Foundation
 

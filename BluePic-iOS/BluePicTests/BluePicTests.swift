@@ -1,10 +1,8 @@
-//
-//  BluePicTests.swift
-//  BluePicTests
-//
-//  Created by Nathan Hekman on 11/16/15.
-//  Copyright © 2015 MIL. All rights reserved.
-//
+/*
+Licensed Materials - Property of IBM
+© Copyright IBM Corporation 2015. All Rights Reserved.
+*/
+
 
 import XCTest
 @testable import BluePic

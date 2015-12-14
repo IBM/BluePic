@@ -400,8 +400,8 @@
 			children = (
 				1B0432E31C17E967007643B1 /* ProfileCollectionViewCell.swift */,
 				1B0432E41C17E967007643B1 /* ProfileCollectionViewCell.xib */,
-				346F947F1C0F9211004999A8 /* CameraConfirmationView.xib */,
 				346F94811C0F9225004999A8 /* CameraConfirmationView.swift */,
+				346F947F1C0F9211004999A8 /* CameraConfirmationView.xib */,
 				1BC7AF5D1C0E480800DDFD02 /* ImageFeedCollectionViewCell.swift */,
 				1BC7AF5E1C0E480800DDFD02 /* ImageFeedCollectionViewCell.xib */,
 				1B057E071C17C03400AC21EE /* ProfileHeaderCollectionReusableView.swift */,

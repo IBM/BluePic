@@ -1,10 +1,7 @@
-//
-//  CloudantSyncClientTests.swift
-//  BluePic
-//
-//  Created by Rolando Asmat on 11/25/15.
-//  Copyright © 2015 MIL. All rights reserved.
-//
+/*
+Licensed Materials - Property of IBM
+© Copyright IBM Corporation 2015. All Rights Reserved.
+*/
 
 import XCTest
 @testable import BluePic
