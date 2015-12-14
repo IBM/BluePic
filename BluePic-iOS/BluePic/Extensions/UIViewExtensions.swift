@@ -443,7 +443,7 @@ extension UIView {
 extension UIView {
     func startRotating(duration: Double = 1) {
         let kAnimationKey = "rotation"
-        
+        self.layer.removeAnimationForKey(kAnimationKey)
         if self.layer.animationForKey(kAnimationKey) == nil {
             let animate = CABasicAnimation(keyPath: "transform.rotation")
             animate.duration = duration
@@ -451,8 +451,10 @@ extension UIView {
             animate.fromValue = 0.0
             animate.toValue = Float(M_PI * 2.0)
             self.layer.addAnimation(animate, forKey: kAnimationKey)
+            
         }
     }
+    
     func stopRotating() {
         let kAnimationKey = "rotation"
         
@@ -460,6 +462,7 @@ extension UIView {
             self.layer.removeAnimationForKey(kAnimationKey)
         }
     }
+    
 }
 
 

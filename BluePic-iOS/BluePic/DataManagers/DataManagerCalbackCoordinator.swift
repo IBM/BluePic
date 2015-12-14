@@ -24,6 +24,7 @@ enum DataManagerNotification {
     case GotPastLoginCheck
     case UserNotAuthenticated
     case UserDecidedToPostPhoto
+    case StartLoadingAnimationForAppLaunch
 }
 
 

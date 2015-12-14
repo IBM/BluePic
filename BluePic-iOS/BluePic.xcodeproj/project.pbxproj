@@ -235,7 +235,6 @@
 				347472A11BFA8C6A0018B7F6 /* BluePicTests */,
 				347472AC1BFA8C6A0018B7F6 /* BluePicUITests */,
 				3474728B1BFA8C6A0018B7F6 /* Products */,
-				347AD2131C18E2A700C3B473 /* ExternalLibraries */,
 				DF6A97152FD63FCE242B5547 /* Pods */,
 				C93A0D59BDE755BE5A1209FC /* Frameworks */,
 			);
@@ -268,6 +267,7 @@
 				34C809521BFD0CBC00C48004 /* ViewModels */,
 				34C809531BFD0CBC00C48004 /* Views */,
 				347472D51BFA8DEF0018B7F6 /* Utilities */,
+				347AD2131C18E2A700C3B473 /* ExternalLibraries */,
 			);
 			path = BluePic;
 			sourceTree = "<group>";
@@ -363,8 +363,7 @@
 				347AD2151C18E2D200C3B473 /* AlamofireObjectMapper.framework */,
 				347AD2161C18E2D200C3B473 /* ObjectMapper.framework */,
 			);
-			name = ExternalLibraries;
-			path = BluePic/ExternalLibraries;
+			path = ExternalLibraries;
 			sourceTree = "<group>";
 		};
 		34C809511BFD0CBC00C48004 /* DataManagers */ = {
