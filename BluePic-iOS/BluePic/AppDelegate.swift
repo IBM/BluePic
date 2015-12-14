@@ -21,7 +21,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     
-    
+    /**
+     Method to initialize Bluemix Mobile Client Access with Facebook
+     */
     func initializeBackendForFacebookAuth() {
     //Initialize backend
     let key = Utils.getKeyFromPlist("keys", key: "backend_route")
@@ -52,6 +54,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         FBAppEvents.activateApp()
     }
+    
     
     func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?,annotation: AnyObject) -> Bool {
         return FBAppCall.handleOpenURL(url, sourceApplication:sourceApplication)

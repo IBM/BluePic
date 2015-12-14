@@ -8,13 +8,8 @@
 
 import UIKit
 
-enum UserType: Int {
-    case Regular = 0
-    case VIP = 1
-    case Admin = 2
-}
 
-
+/// Manages all facebook authentication state and calls
 class FacebookDataManager: NSObject {
     
     /// Shared instance of data manager
@@ -45,9 +40,10 @@ class FacebookDataManager: NSObject {
     /// Bool if user is authenticated with facebook
     var isLoggedIn = false
     
-    
+    /// Prefix for url needed to get user profile picture given their unique id (id goes after this)
     let facebookProfilePictureURLPrefix = "http://graph.facebook.com/"
     
+    /// Postfix for url needed to get user profile picture given their unique id (id goes before this)
     let facebookProfilePictureURLPostfix = "/picture?type=large"
     
     /**
@@ -104,7 +100,7 @@ class FacebookDataManager: NSObject {
                 //no error
             else {
                 if let identity = authManager.userIdentity {
-                    if let userID = identity["id"] as?NSString {
+                    if let userID = identity["id"] as? NSString {
                         if let userName = identity["displayName"] as? NSString {
                         
                             //save username and id to shared instance of this class
@@ -274,8 +270,6 @@ class FacebookDataManager: NSObject {
             if let userName = NSUserDefaults.standardUserDefaults().objectForKey("user_name") as? String {
                 self.fbUserDisplayName = userName
                 self.fbUniqueUserID = userID
-                //presentingVC.hideBackgroundImageAndStartLoading()
-                //handleAppStartUpResultCallback(appStartUpResult: DataManagerNotification.hideBackgroundImageAndStartLoading)
                 DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.GotPastLoginCheck)
                 print("User already logged into Facebook. Welcome back, user \(userID)!")
             }
@@ -284,18 +278,10 @@ class FacebookDataManager: NSObject {
             
             //show login if user hasn't pressed "sign in later" (first time logging in)
             if !NSUserDefaults.standardUserDefaults().boolForKey("hasPressedLater") {
-//                let loginVC = Utils.vcWithNameFromStoryboardWithName("loginVC", storyboardName: "Main") as! LoginViewController
-//                presentingVC.presentViewController(loginVC, animated: false, completion: { _ in
-//                    presentingVC.hideBackgroundImageAndStartLoading()
-//                    print("user needs to log into Facebook, showing login")
-//                })
-                //handleAppStartUpResultCallback(appStartUpResult: DataManagerNotification.hideBackgroundImageAndStartLoading)
                 DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.UserNotAuthenticated)
                 
             } else { //user pressed "sign in later"
-                //presentingVC.hideBackgroundImageAndStartLoading()
                 DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.GotPastLoginCheck)
-                //handleAppStartUpResultCallback(appStartUpResult: DataManagerNotification.hideBackgroundImageAndStartLoading)
                 
                 print("user pressed sign in later button")
                 
@@ -307,10 +293,10 @@ class FacebookDataManager: NSObject {
 
     
     
-    
+    /**
+     Method to start pulling the latest cloudant data
+     */
     func pullLatestCloudantData() {
-        
-        //CloudantSyncDataManager.SharedInstance.setHandleAppStartUpResultCallback(handleAppStartUpResultCallback)
         
         //First do a pull to make sure datastore is up to date
         do {
@@ -354,9 +340,12 @@ class FacebookDataManager: NSObject {
     }
     
     
+    /**
+     Method to return a url for the user's profile picture
+     
+     - returns: string representing the image url
+     */
     func getUserFacebookProfilePictureURL() -> String {
-        
-        
         if let facebookID = fbUniqueUserID {
             
             let profilePictureURL = facebookProfilePictureURLPrefix + facebookID + facebookProfilePictureURLPostfix
@@ -364,12 +353,8 @@ class FacebookDataManager: NSObject {
             return profilePictureURL
         }
         else{
-            
-            
-            
             return ""
         }
-        
     }
     
     

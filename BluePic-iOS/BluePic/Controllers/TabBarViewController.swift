@@ -203,6 +203,9 @@ class TabBarViewController: UITabBarController {
     }
     
     
+    /**
+     Method to show the login VC without animation
+     */
     func presentLoginVC(){
         
         let loginVC = Utils.vcWithNameFromStoryboardWithName("loginVC", storyboardName: "Main") as! LoginViewController
@@ -216,6 +219,9 @@ class TabBarViewController: UITabBarController {
    
     }
     
+    /**
+     Method to show the login VC with animation
+     */
     func presentLoginVCAnimated(){
         
         let loginVC = Utils.vcWithNameFromStoryboardWithName("loginVC", storyboardName: "Main") as! LoginViewController

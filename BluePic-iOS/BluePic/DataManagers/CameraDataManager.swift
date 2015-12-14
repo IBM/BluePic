@@ -9,6 +9,7 @@
 import UIKit
 import ImageIO
 
+/// Singleton to hold any state with showing the camera picker. Allows user to upload a photo to BluePic
 class CameraDataManager: NSObject {
 
     /// Shared instance of data manager
@@ -28,33 +29,49 @@ class CameraDataManager: NSObject {
     /// reference to the tab bar vc
     var tabVC: TabBarViewController!
     
+    /// Image picker
     var picker: UIImagePickerController!
     
+    /// ConfirmationView to be shown after selecting or taking a photo (add a caption here)
     var confirmationView: CameraConfirmationView!
     
+    /// Copy of last photo taken
     var lastPhotoTaken: UIImage!
     
+    /// Copy of name of last photo taken
     var lastPhotoTakenName: String!
     
+    /// Copy of last photo taken url
     var lastPhotoTakenURL: String!
     
+    /// Copy of last photo taken caption
     var lastPhotoTakenCaption: String!
     
+    /// Copy of width of last photo
     var lastPhotoTakenWidth : CGFloat!
     
+    /// Copy of height of last photo
     var lastPhotoTakenHeight : CGFloat!
     
+    /// Copy of last photo taken Picture Model Object
     var lastPictureObjectTaken : Picture!
     
+    /// Constant for how wide all images should be constrained to when compressing for upload (600 results in ~1.2 MB photos)
     let kResizeAllImagesToThisWidth = CGFloat(600)
     
+    /// queue for uploading photos
     var pictureUploadQueue : [Picture] = [Picture]()
     
+    /// photos that were taken during this app session
     var picturesTakenDuringAppSessionById = [String : UIImage]()
     
 
     
-    
+    /**
+     Method to show the image picker action sheet so user can choose from Photo Library or Camera
+     
+     - parameter presentingVC: tab VC to present over top of
+     */
     func showImagePickerActionSheet(presentingVC: TabBarViewController!) {
         self.tabVC = presentingVC
         self.picker = UIImagePickerController()
@@ -88,14 +105,14 @@ class CameraDataManager: NSObject {
         
         // Present the controller
         self.tabVC.presentViewController(alert, animated: true, completion: nil)
-
-
-        
         
     }
     
     
     
+    /**
+     Method called when user wants to take a photo with the camera
+     */
     func openCamera()
     {
         
@@ -114,6 +131,9 @@ class CameraDataManager: NSObject {
     }
     
     
+    /**
+     Method called when user wants to choose a photo from Photo Album for posting
+     */
     func openGallery()
     {
         picker!.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
@@ -124,6 +144,9 @@ class CameraDataManager: NSObject {
     }
     
     
+    /**
+     Method to show the camera confirmation view for adding a caption and posting
+     */
     func showCameraConfirmation() {
         self.confirmationView = CameraConfirmationView.instanceFromNib()
         self.confirmationView.frame = CGRect(x: 0, y: 0, width: self.tabVC.view.frame.width, height: self.tabVC.view.frame.height)
@@ -139,7 +162,9 @@ class CameraDataManager: NSObject {
     
     
     
-    
+    /**
+     Method to hide the confirmation view when cancelling or done uploading
+     */
     func dismissCameraConfirmation() {
         UIApplication.sharedApplication().statusBarHidden = false
         self.confirmationView.loadingIndicator.stopAnimating()
@@ -155,7 +180,9 @@ class CameraDataManager: NSObject {
         
     }
     
-    
+    /**
+     Method called when user presses "post Photo" on confirmation view
+     */
     func postPhoto() {
         self.lastPhotoTakenCaption = self.confirmationView.titleTextField.text //save caption text
         self.confirmationView.endEditing(true) //dismiss keyboard first if shown
@@ -172,6 +199,9 @@ class CameraDataManager: NSObject {
     }
     
     
+    /**
+     Method called to upload the image first to object storage, and then to cloudant sync if successful. Otherwise, show an error
+     */
     func uploadImageToObjectStorage() {
         print("uploading photo to object storage...")
         //push to object storage, then on success push to cloudant sync
@@ -206,6 +236,9 @@ class CameraDataManager: NSObject {
     }
     
     
+    /**
+     Method to create last Picture model object from taken photo data
+     */
     func createLastPictureObjectTakenAndAddToPictureUploadQueue(){
         
         
@@ -232,13 +265,18 @@ class CameraDataManager: NSObject {
     
     }
     
+    /**
+     Method to clear the photo upload queue
+     */
     func clearPictureUploadQueue(){
         pictureUploadQueue = []
     }
     
     
     
-    
+    /**
+     Method to remove the confirmation view from memory when finished with it
+     */
     func destroyConfirmationView() {
         self.confirmationView.removeKeyboardObservers()
         self.confirmationView.removeFromSuperview()

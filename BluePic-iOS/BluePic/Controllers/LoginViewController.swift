@@ -12,19 +12,25 @@ import ObjectMapper
 import AlamofireObjectMapper
 
 
-
+/// Responsible for initiating Facebook login. VC which allows user to either login later or login with Facebook
 class LoginViewController: UIViewController {
 
+    /// Loading indicator when connecting to Facebook
     @IBOutlet weak var loadingIndicator: UIActivityIndicatorView!
     
+    /// Button to allow user to dismiss login
     @IBOutlet weak var signInLaterButton: UIButton!
     
+    /// Button to allow user to sign in with Facebook
     @IBOutlet weak var facebookButton: UIButton!
     
+    /// Label to show an error if authentication is unsuccessful
     @IBOutlet weak var welcomeLabel: UILabel!
     
+    /// Label to tell user that the application is connecting with Facebook while loading
     @IBOutlet weak var connectingLabel: UILabel!
     
+    /// ViewModel for this VC, responsible for holding data and any state
     var viewModel: LoginViewModel!
     
     override func viewDidLoad() {

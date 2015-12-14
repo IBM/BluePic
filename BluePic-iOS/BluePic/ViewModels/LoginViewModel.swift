@@ -13,7 +13,13 @@ class LoginViewModel: NSObject {
     var fbAuthCallback: ((Bool!)->())!
     
     
-    
+    /**
+     Method to initialize view model with the appropriate callback
+     
+     - parameter fbAuthCallback: callback to be executed on completion of trying to authenticate with Facebook
+     
+     - returns: an instance of this view model
+     */
     init(fbAuthCallback: ((Bool!)->())) {
         super.init()
         
@@ -57,7 +63,7 @@ class LoginViewModel: NSObject {
     /**
      Method to attempt creating an object storage container and call callback upon completion (success or failure)
      
-     - parameter userID: <#userID description#>
+     - parameter userID: user id to be used for container creation
      */
     func createObjectStorageContainer(userID: String!) {
         print("Creating object storage container...")
