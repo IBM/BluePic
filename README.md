@@ -123,7 +123,7 @@ Cloudant Sync [(CDTDatastore)](https://www.ng.bluemix.net/docs/services/mobileac
 
 `CloudantSyncDataManager` was created to handle communicating between iOS and Cloudant Sync.
 
-```
+```swift
 put sample code from BluePic here -- maybe show auth, push and pull? maybe create document?
 ```
 
@@ -135,7 +135,7 @@ You can view the Cloudant database (including profile and picture documents) by 
 
 `ObjectStorageDataManager` and `ObjectStorageClient` were created based on [this link](http://developer.openstack.org/api-ref-objectstorage-v1.html) for communicating between iOS and Object Storage.
 
-```
+```swift
 put sample code from BluePic here -- maybe show auth, push and pull? maybe create container?
 ```
 
