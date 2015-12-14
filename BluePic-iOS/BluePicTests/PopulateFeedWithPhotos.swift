@@ -17,7 +17,7 @@ class PopulateFeedWithPhotos: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        // TODO: why are we setting the dbName here when it's already set?
         CloudantSyncDataManager.SharedInstance!.dbName = Utils.getKeyFromPlist("keys", key: "cdt_db_name")
         //imagename : Caption from asset directory
         self.imageNames = [
@@ -27,60 +27,62 @@ class PopulateFeedWithPhotos: XCTestCase {
     }
     
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
     
-    
-    
-    // Run this test to upload an image to object storage, create the picture document locally, and push that document to cloudant.
+    /**
+     * Run this test to prepopulate the databases with 3 pictures and 1 user.
+     */
     func testPrePopulate() {
-        
-        
-        xctExpectation = self.expectationWithDescription("Asynchronous request about to occur...")
         // Create fake user
         let id = "1234"
         let name = "Mobile Innovation Lab"
-        do {
-            try CloudantSyncDataManager.SharedInstance!.createProfileDoc(id, name: name)
-        } catch {
-            print("testPrePopulate ERROR: \(error)")
-            XCTFail()
+        
+        // Only create user if it does NOT exist
+        if ( !(CloudantSyncDataManager.SharedInstance!.doesExist(id)) ) {
+            do {
+                try CloudantSyncDataManager.SharedInstance!.createProfileDoc(id, name: name)
+            } catch {
+                print("testPrePopulate ERROR: \(error)")
+                XCTFail()
+            }
         }
         
-        // Authenticate
-        ObjectStorageDataManager.SharedInstance.objectStorageClient.authenticate({() in
-            print("success authenticating with object storage!")
-            // Create Container
-            ObjectStorageDataManager.SharedInstance.objectStorageClient.createContainer(id,
-                onSuccess: { (name: String) in
-                    print("CONTAINER CREATED")
-                    print(name)
-                    XCTAssertNotNil(name)
-                    self.postPhotoForTests(name)
-                }, onFailure: { (error) in
-                    print("error creating container: \(error)")
-                    XCTFail(error)
+        // Only prepopulate if user doesn't have any pictures
+        let result = CloudantSyncDataManager.SharedInstance!.getPictureObjects(id)
+        let num = result.count
+        if (num == 0) {
+            // User does NOT have any pictures, create images.
+            // Authenticate
+            xctExpectation = self.expectationWithDescription("Asynchronous request about to occur...")
+            ObjectStorageDataManager.SharedInstance.objectStorageClient.authenticate({() in
+                print("success authenticating with object storage!")
+                // Create Container
+                ObjectStorageDataManager.SharedInstance.objectStorageClient.createContainer(id,
+                    onSuccess: { (name: String) in
+                        print("CONTAINER CREATED")
+                        print(name)
+                        XCTAssertNotNil(name)
+                        self.postPhotoForTests(name)
+                    }, onFailure: { (error) in
+                        print("error creating container: \(error)")
+                        XCTFail(error)
+                })
+                }, onFailure: {(error) in
+                    print("error authenticating with object storage: \(error)")
             })
-            
-            }, onFailure: {(error) in
-                print("error authenticating with object storage: \(error)")
-        })
-        // Push document to remote Cloudant database
-        
-        do {
-            try CloudantSyncDataManager.SharedInstance!.pushToRemoteDatabase()
-            repeat {
-                NSThread.sleepForTimeInterval(1.0)
-            } while(CloudantSyncDataManager.SharedInstance!.pushReplicator.isActive())
-        } catch {
-            print("testPrePopulate ERROR: \(error)")
-            XCTFail()
+            // Push document to remote Cloudant database
+            do {
+                try CloudantSyncDataManager.SharedInstance!.pushToRemoteDatabase()
+            } catch {
+                print("testPrePopulate ERROR: \(error)")
+                XCTFail()
+            }
+            self.waitForExpectationsWithTimeout(100.0, handler:nil)
+        } else {
+            // User has pictures, do nothing.
         }
-        self.waitForExpectationsWithTimeout(100.0, handler:nil)
     }
-    
-    
     
     /**
      For test method for pre-populating database with images
@@ -112,7 +114,6 @@ class PopulateFeedWithPhotos: XCTestCase {
                         XCTFail("CreatePictureDoc() failed!")
                         self.xctExpectation?.fulfill()
                     }
-                    
                     imageCount-- //decrement number of images to upload remaining
                     //check if test is done (all photos uploaded)
                     if (imageCount == 0) {
@@ -131,7 +132,6 @@ class PopulateFeedWithPhotos: XCTestCase {
                     XCTFail(error)
                     self.xctExpectation?.fulfill()
             })
-            
         }
     }
     

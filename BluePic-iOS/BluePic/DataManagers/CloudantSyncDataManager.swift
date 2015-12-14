@@ -7,6 +7,8 @@
 //  Copyright © 2015 MIL. All rights reserved.
 //
 
+
+// TODO remove orientation field from documents as well as form calls on main application
 import Foundation
 
 /**
@@ -152,7 +154,6 @@ class CloudantSyncDataManager {
             print("getDoc, ERROR: \(error)")
             return nil
         }
-        
     }
     
     /**

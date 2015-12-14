@@ -10,20 +10,34 @@ import XCTest
 @testable import BluePic
 
 /**
- * Test class for the ObjectStorageClient class.
+ * Test class for the CloudantSyncDataManager class.
  */
 class CloudantSyncClientTests: XCTestCase {
     
-    var xctExpectation:XCTestExpectation?
+    let dbName = "tests_db"
     
     override func setUp() {
         super.setUp()
-        // Make sure test cases point to tests_db database.
-        CloudantSyncDataManager.SharedInstance!.dbName = "tests_db"
+        // Make sure test cases point to tests_db datastore
+        CloudantSyncDataManager.SharedInstance!.dbName = dbName
+        // Create local datastore
+        do {
+            try CloudantSyncDataManager.SharedInstance!.createLocalDatastore()
+        } catch {
+            print(error)
+            XCTFail()
+        }
     }
     
     override func tearDown() {
         super.tearDown()
+        // Delete created datastore
+        do {
+            try CloudantSyncDataManager.SharedInstance!.manager.deleteDatastoreNamed(dbName)
+        } catch {
+            print(error)
+            XCTFail()
+        }
     }
     
     /**
@@ -37,9 +51,11 @@ class CloudantSyncClientTests: XCTestCase {
             try CloudantSyncDataManager.SharedInstance!.createProfileDoc(id, name: name)
             // Make sure doc exists now
             XCTAssertTrue(CloudantSyncDataManager.SharedInstance!.doesExist(id))
-            // Delete doc
-            try CloudantSyncDataManager.SharedInstance!.deleteDoc(id)
+            // Assert on name as well
+            let doc = CloudantSyncDataManager.SharedInstance!.getDoc(id)
+            XCTAssertEqual(name, doc!.body["profile_name"] as? String)
         } catch {
+            print(error)
             XCTFail()
         }
     }
@@ -58,6 +74,7 @@ class CloudantSyncClientTests: XCTestCase {
             // Make sure doc does not exist
             XCTAssertFalse(CloudantSyncDataManager.SharedInstance!.doesExist(id))
         } catch {
+            print(error)
             XCTFail()
         }
     }
@@ -71,18 +88,25 @@ class CloudantSyncClientTests: XCTestCase {
             let id = "7532"
             let name = "Kenny Reid"
             try CloudantSyncDataManager.SharedInstance!.createProfileDoc(id, name: name)
-            // Create Picture
+            // Create Picture variables
             let displayName = "Yosemite"
             let fileName = "yosemite.jpg"
             let url = "http://www.tenayalodge.com/img/Carousel-DiscoverYosemite_img3.jpg"
             let width = "400"
             let height = "100"
             let orientation = "0"
+            let timeStamp = (NSDate.timeIntervalSinceReferenceDate()).description
+            // Create EXPECTED Picture Array
+            let expectedPictureObject = createPictureObject(fileName, url: url, displayName: displayName, timeStamp: timeStamp, ownerName: name, width: width, height: height)
+            var expectedArray = [Picture]()
+            expectedArray.append(expectedPictureObject)
+            // Create ACTUAL Picture Array
             try CloudantSyncDataManager.SharedInstance!.createPictureDoc(displayName, fileName: fileName, url: url, ownerID: id, width: width, height: height, orientation: orientation)
-            // Delete profile and picture
-            try CloudantSyncDataManager.SharedInstance!.deletePicturesOfUser(id)
-            try CloudantSyncDataManager.SharedInstance!.deleteDoc(id)
+            let actualArray = CloudantSyncDataManager.SharedInstance!.getPictureObjects(id)
+            // Compare all the fields of both picture arrays
+            comparePictureObjects(expectedArray, actual: actualArray)
         } catch {
+            print(error)
             XCTFail()
         }
     }
@@ -104,7 +128,7 @@ class CloudantSyncClientTests: XCTestCase {
             print("Test passed, creation of this doc SHOULD fail")
         }
     }
-
+    
     /**
      * Tests the assignment of multiple pictures to a SPECIFIC user and the order of which they are returned in when queried.
      */
@@ -122,28 +146,29 @@ class CloudantSyncClientTests: XCTestCase {
             let widths = ["500", "200", "400"]
             let heights = ["150", "300", "100"]
             let orientations = ["0", "1", "2"]
-            // Picture 1
+            let timeStamp = (NSDate.timeIntervalSinceReferenceDate()).description
+            // Create expected array of picture objects.
+            var expectedArray = [Picture]()
+            let expectedPictureObject1 = createPictureObject(fileNames[0], url: urls[0], displayName: displayNames[0], timeStamp: timeStamp, ownerName: name, width: widths[0], height: heights[0])
+            expectedArray.append(expectedPictureObject1)
+            let expectedPictureObject2 = createPictureObject(fileNames[1], url: urls[1], displayName: displayNames[1], timeStamp: timeStamp, ownerName: name, width: widths[1], height: heights[1])
+            expectedArray.append(expectedPictureObject2)
+            let expectedPictureObject3 = createPictureObject(fileNames[2], url: urls[2], displayName: displayNames[2], timeStamp: timeStamp, ownerName: name, width: widths[2], height: heights[2])
+            expectedArray.append(expectedPictureObject3)
+            
+            // Create actual array of picture objects.
             try CloudantSyncDataManager.SharedInstance!.createPictureDoc(
                 displayNames[2], fileName: fileNames[2], url: urls[2], ownerID: id, width: widths[2], height: heights[2], orientation: orientations[2])
-            // Picture 2
             try CloudantSyncDataManager.SharedInstance!.createPictureDoc(
                 displayNames[1], fileName: fileNames[1], url: urls[1], ownerID: id, width: widths[1], height: heights[1], orientation: orientations[1])
-            // Picture 3
             try CloudantSyncDataManager.SharedInstance!.createPictureDoc(
                 displayNames[0], fileName: fileNames[0], url: urls[0], ownerID: id, width: widths[0], height: heights[0], orientation: orientations[0])
             // Run Query to get pictures corresponding to specified user id
-            let result = CloudantSyncDataManager.SharedInstance!.getPictureObjects(id)
-            // Check array for size and order
-            XCTAssertEqual(result.count, 3)
-            XCTAssertEqual(result[0].displayName, displayNames[0])
-            XCTAssertEqual(result[1].displayName, displayNames[1])
-            XCTAssertEqual(result[2].displayName, displayNames[2])
-            
-            // Delete created user and their pictures
-            try CloudantSyncDataManager.SharedInstance!.deletePicturesOfUser(id)
-            try CloudantSyncDataManager.SharedInstance!.deleteDoc(id)
-            XCTAssertFalse(CloudantSyncDataManager.SharedInstance!.doesExist(id))
+            let actualArray = CloudantSyncDataManager.SharedInstance!.getPictureObjects(id)
+            // Compare the arrays
+            comparePictureObjects(expectedArray, actual: actualArray)
         } catch {
+            print(error)
             XCTFail()
         }
     }
@@ -167,101 +192,141 @@ class CloudantSyncClientTests: XCTestCase {
             // Create 3 pictures and set their owner id
             let displayNames = ["Keys", "Big Bend", "Yosemite"]
             let fileNames = ["keys.jpg", "bigbend.jpg", "yosemite.jpg"]
-            let urls = ["https://www.flmnh.ufl.edu/fish/SouthFlorida/images/bocachita.JPG", "http://media-cdn.tripadvisor.com/media/photo-s/02/92/12/75/sierra-del-carmen-sunset.jpg", "http://www.tenayalodge.com/img/Carousel-DiscoverYosemite_img3.jpg"]
+            let urls = ["https://www.flmnh.ufl.edu/fish/SouthFlorida/images/bocachita.JPG", "http://media-cdn.tripadvisor.com/media/photo-s/02/92/12/75/sierra-del-carmen-sunset.jpg", "http://www.tenayalodge.com/img/Carousel-DiscoverYosemite_img3.jpg","https://www.flmnh.ufl.edu/fish/SouthFlorida/images/bocachita.JPG"]
             let widths = ["500", "200", "400"]
             let heights = ["150", "300", "100"]
             let orientations = ["0", "1", "2"]
-            // Picture 1
+            let timeStamp = (NSDate.timeIntervalSinceReferenceDate()).description
+            // Create expected array of picture objects.
+            var expectedArray = [Picture]()
+            let expectedPictureObject1 = createPictureObject(fileNames[0], url: urls[0], displayName: displayNames[0], timeStamp: timeStamp, ownerName: name1, width: widths[0], height: heights[0])
+            expectedArray.append(expectedPictureObject1)
+            let expectedPictureObject2 = createPictureObject(fileNames[1], url: urls[1], displayName: displayNames[1], timeStamp: timeStamp, ownerName: name2, width: widths[1], height: heights[1])
+            expectedArray.append(expectedPictureObject2)
+            let expectedPictureObject3 = createPictureObject(fileNames[2], url: urls[2], displayName: displayNames[2], timeStamp: timeStamp, ownerName: name3, width: widths[2], height: heights[2])
+            expectedArray.append(expectedPictureObject3)
+            
+            // Create actual array of picture objects.
             try CloudantSyncDataManager.SharedInstance!.createPictureDoc(
                 displayNames[2], fileName: fileNames[2], url: urls[2], ownerID: id1, width: widths[2], height: heights[2], orientation: orientations[2])
-            // Picture 2
             try CloudantSyncDataManager.SharedInstance!.createPictureDoc(
                 displayNames[1], fileName: fileNames[1], url: urls[1], ownerID: id2, width: widths[1], height: heights[1], orientation: orientations[1])
-            // Picture 3
             try CloudantSyncDataManager.SharedInstance!.createPictureDoc(
                 displayNames[0], fileName: fileNames[0], url: urls[0], ownerID: id3, width: widths[0], height: heights[0], orientation: orientations[0])
             // Run Query to get pictures corresponding to specified user id
-            let result = CloudantSyncDataManager.SharedInstance!.getPictureObjects(nil)
-            // Check array for size and order
-            XCTAssertEqual(result.count, 3)
-            XCTAssertEqual(result[0].displayName, displayNames[0])
-            XCTAssertEqual(result[1].displayName, displayNames[1])
-            XCTAssertEqual(result[2].displayName, displayNames[2])
-            
-            // Delete created users'pictures
-            try CloudantSyncDataManager.SharedInstance!.deletePicturesOfUser(id1)
-            try CloudantSyncDataManager.SharedInstance!.deletePicturesOfUser(id2)
-            try CloudantSyncDataManager.SharedInstance!.deletePicturesOfUser(id3)
-            
-            // Delete created users
-            try CloudantSyncDataManager.SharedInstance!.deleteDoc(id1)
-            try CloudantSyncDataManager.SharedInstance!.deleteDoc(id2)
-            try CloudantSyncDataManager.SharedInstance!.deleteDoc(id3)
+            let actualArray = CloudantSyncDataManager.SharedInstance!.getPictureObjects(nil)
+            // Compare the arrays
+            comparePictureObjects(expectedArray, actual: actualArray)
         } catch {
+            print(error)
             XCTFail()
         }
     }
     
-    //TODO: finish implementation
     /**
      * Tests the push of 2 documents, deleting them locally, then pulling them and finally making sure they exist again locally.
      */
-//    func testPushNPull(){
+//    func testPushNPull() {
 //        do {
-//            // Create User
+//            // Create User and Picture documents to PUSH and then PULL
 //            let id = "7532"
 //            let name = "Kenny Reid"
 //            try CloudantSyncDataManager.SharedInstance!.createProfileDoc(id, name: name)
-//            // Create picture and set their owner id
 //            let displayName = "Keys"
 //            let fileName = "keys"
 //            let url = "https://www.flmnh.ufl.edu/fish/SouthFlorida/images/bocachita.JPG"
 //            let width = "500"
 //            let height = "150"
 //            let orientation = "0"
-//            // Picture 1
 //            try CloudantSyncDataManager.SharedInstance!.createPictureDoc(
 //                displayName, fileName: fileName, url: url, ownerID: id, width: width, height: height, orientation: orientation)
 //            
-//            // Push documents
-//            CloudantSyncDataManager.SharedInstance!.pushDelegate = TestPushDelegate()
+//            // TODO: push call does NOT push profile document, it does push the picture document, look into why?????
+//            // Push local datastore to remote database
+//            let xctExpectation = self.expectationWithDescription("Asynchronous request about to occur...")
+//            CloudantSyncDataManager.SharedInstance!.pushDelegate = TestPushDelegate(xctExpectation: xctExpectation)
 //            try CloudantSyncDataManager.SharedInstance!.pushToRemoteDatabase()
-//            self.waitForExpectationsWithTimeout(20.0
-//                , handler: { (NSError) in
-//                    do {
-//                        // Delete the 2 documents.
-//                        try CloudantSyncDataManager.SharedInstance!.deletePicturesOfUser(id)
-//                        try CloudantSyncDataManager.SharedInstance!.deleteDoc(id)
-//                    } catch {
-//                        print(error)
-//                        XCTFail()
-//                    }
-//                })
+//            self.waitForExpectationsWithTimeout(50.0,handler: nil)
 //            
+//            // Delete local copy of documents
+//            try CloudantSyncDataManager.SharedInstance!.deletePicturesOfUser(id)
+//            try CloudantSyncDataManager.SharedInstance!.deleteDoc(id)
+//            
+//            // Assert on deletion of documents
+//            XCTAssertFalse(CloudantSyncDataManager.SharedInstance!.doesExist(id))
+//            
+//            // Pull them again
+//            let xctExpectation2 = self.expectationWithDescription("Asynchronous request about to occur...")
+//            CloudantSyncDataManager.SharedInstance!.pullDelegate = TestPullDelegate(xctExpectation: xctExpectation2)
+//            try CloudantSyncDataManager.SharedInstance!.pullFromRemoteDatabase()
+//            self.waitForExpectationsWithTimeout(50.0,handler: nil)
+//            
+//            // Make sure they exist, use utility method to make sure picture doc is correct as well.
+//            XCTAssertTrue(CloudantSyncDataManager.SharedInstance!.doesExist(id))
 //        } catch {
 //            print(error)
 //            XCTFail()
 //        }
 //    }
+    
+    /**
+     * Utility method to compare 2 Picture objects.
+     */
+    func comparePictureObjects(expected:[Picture], actual:[Picture]) {
+        if (expected.count == actual.count) {
+            for index in 0...actual.count-1 {
+                XCTAssertEqual(expected[index].displayName, actual[index].displayName)
+                XCTAssertEqual(expected[index].fileName, actual[index].fileName)
+                XCTAssertEqual(expected[index].url, actual[index].url)
+                XCTAssertEqual(expected[index].width, actual[index].width)
+                XCTAssertEqual(expected[index].height, actual[index].height)
+            }
+        } else {
+            print("Expected and actual array are of different size!")
+            XCTFail()
+        }
+    }
+    
+    /**
+     * Utility method to create Picture object from parameters
+     */
+    func createPictureObject(filename:String, url:String, displayName:String, timeStamp:String, ownerName:String, width:String, height:String) -> Picture {
+        let newPicture = Picture()
+        newPicture.fileName = filename
+        newPicture.url = url
+        newPicture.displayName = displayName
+        newPicture.timeStamp = Double(timeStamp)
+        newPicture.ownerName = ownerName
+        newPicture.width = CGFloat((width as NSString).floatValue)
+        newPicture.height = CGFloat((height as NSString).floatValue)
+        return newPicture
+    }
 }
 
 /**
  * Delegates for test Replicators.
  */
-class TestPullDelegate:PullDelegate{
+
+class TestPullDelegate:PullDelegate {
+    
+    var xctExpectation:XCTestExpectation
+    
+    init(xctExpectation:XCTestExpectation) {
+        self.xctExpectation = xctExpectation
+    }
     
     /**
      * Called when the replicator changes state.
      */
     override func replicatorDidChangeState(replicator:CDTReplicator) {
-        print("Replicator changed state.")
+        print("TEST PULL Replicator changed state.")
     }
     
     /**
      * Called whenever the replicator changes progress
      */
     override func replicatorDidChangeProgress(replicator:CDTReplicator) {
-        print("Replicator changed progess.")
+        print("TEST PULL Replicator changed progess.")
     }
     
     /**
@@ -269,35 +334,40 @@ class TestPullDelegate:PullDelegate{
      * completed.
      */
     override func replicatorDidComplete(replicator:CDTReplicator) {
-        print("PULL Replicator completed.")
-        let t = CloudantSyncClientTests()
-        t.xctExpectation?.fulfill()
+        print("TEST PULL Replicator completed.")
+        self.xctExpectation.fulfill()
     }
     
     /**
      * Called when a state transition to ERROR is completed.
      */
     override func replicatorDidError(replicator:CDTReplicator, info:NSError) {
-        print("Replicator ERROR: \(info)")
-        let t = CloudantSyncClientTests()
-        t.xctExpectation?.fulfill()
+        print("TEST PULL ERROR: \(info)")
+        self.xctExpectation.fulfill()
         XCTFail()
     }
 }
-class TestPushDelegate:PushDelegate{
+
+class TestPushDelegate:PushDelegate {
+    
+    var xctExpectation:XCTestExpectation
+    
+    init(xctExpectation:XCTestExpectation) {
+        self.xctExpectation = xctExpectation
+    }
     
     /**
      * Called when the replicator changes state.
      */
     override func replicatorDidChangeState(replicator:CDTReplicator) {
-        print("Replicator changed state.")
+        print("TEST PUSH Replicator changed state.")
     }
     
     /**
      * Called whenever the replicator changes progress
      */
     override func replicatorDidChangeProgress(replicator:CDTReplicator) {
-        print("Replicator changed progess.")
+        print("TEST PUSH changed progess.")
     }
     
     /**
@@ -305,18 +375,16 @@ class TestPushDelegate:PushDelegate{
      * completed.
      */
     override func replicatorDidComplete(replicator:CDTReplicator) {
-        print("PUSH Replicator completed.")
-        let t = CloudantSyncClientTests()
-        t.xctExpectation?.fulfill()
+        print("TEST PUSH Replicator completed.")
+        self.xctExpectation.fulfill()
     }
     
     /**
      * Called when a state transition to ERROR is completed.
      */
     override func replicatorDidError(replicator:CDTReplicator, info:NSError) {
-        print("Replicator ERROR: \(info)")
-        let t = CloudantSyncClientTests()
-        t.xctExpectation?.fulfill()
+        print("TEST PUSH Replicator ERROR: \(info)")
+        self.xctExpectation.fulfill()
         XCTFail()
     }
 }
