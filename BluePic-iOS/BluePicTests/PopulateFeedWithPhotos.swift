@@ -13,12 +13,11 @@ class PopulateFeedWithPhotos: XCTestCase {
     
     var xctExpectation:XCTestExpectation?
     
+    /// Names and captions of pre-populated images
     var imageNames: [String: String]!
     
     override func setUp() {
         super.setUp()
-        // TODO: why are we setting the dbName here when it's already set?
-        CloudantSyncDataManager.SharedInstance!.dbName = Utils.getKeyFromPlist("keys", key: "cdt_db_name")
         //imagename : Caption from asset directory
         self.imageNames = [
             "photo1": "Mountains",
