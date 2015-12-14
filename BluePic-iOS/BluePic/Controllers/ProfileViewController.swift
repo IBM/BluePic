@@ -21,7 +21,8 @@ class ProfileViewController: UIViewController {
     
     var statusBarBackgroundView : UIView!
     
-    let kHeaderViewHeight : CGFloat = 480
+    //let kHeaderViewHeight : CGFloat = 480
+    let kHeaderViewInfoViewHeight : CGFloat = 105
     let kHeaderImageViewHeight : CGFloat = 375
     let kStatusBarMagicLine : CGFloat = 100
     let kParalaxImageViewScrollRate : CGFloat = 0.50
@@ -120,6 +121,9 @@ class ProfileViewController: UIViewController {
         
         Utils.registerSupplementaryElementOfKindNibWithCollectionView("ProfileHeaderCollectionReusableView", kind: UICollectionElementKindSectionHeader, collectionView: collectionView)
         
+        
+        Utils.registerNibWithCollectionView("EmptyFeedCollectionViewCell", collectionView: collectionView)
+        
         Utils.registerNibWithCollectionView("ProfileCollectionViewCell", collectionView: collectionView)
         
     }
@@ -199,15 +203,6 @@ extension ProfileViewController: UICollectionViewDataSource {
 }
 
 
-extension ProfileViewController: UICollectionViewDelegate {
-    
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        print(indexPath.row)
-    }
-    
-}
-
-
 extension ProfileViewController: UICollectionViewDelegateFlowLayout {
     
     /**
@@ -224,7 +219,7 @@ extension ProfileViewController: UICollectionViewDelegateFlowLayout {
         let collectionWidth = collectionView.frame.size.width
         
         if(section == 0){
-            return CGSizeMake(collectionWidth, kHeaderViewHeight)
+            return CGSizeMake(collectionWidth, self.view.frame.size.height/2 + kHeaderViewInfoViewHeight ) //kHeaderViewHeight
         }
         else{
             return CGSizeMake(collectionWidth, 0)
@@ -235,7 +230,12 @@ extension ProfileViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         
-        return viewModel.sizeForItemAtIndexPath(indexPath, collectionView: collectionView)
+        
+        let heightForEmptyProfileCollectionViewCell = self.view.frame.size.height - (self.view.frame.size.height/2 + kHeaderViewInfoViewHeight)
+        
+        
+    
+        return viewModel.sizeForItemAtIndexPath(indexPath, collectionView: collectionView, heightForEmptyProfileCollectionViewCell: heightForEmptyProfileCollectionViewCell)
     }
     
     

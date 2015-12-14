@@ -9,13 +9,16 @@
 import UIKit
 
 class ProfileViewModel: NSObject {
-
+    
     var pictureDataArray = [Picture]()
     var refreshVCCallback : (()->())!
-    let kNumberOfSectionsInCollectionView = 1
+    var hasRecievedDataFromCloudant = false
     
+    let kNumberOfSectionsInCollectionView = 1
     let kCollectionViewCellInfoViewHeight : CGFloat = 60
     let kCollectionViewCellHeightLimit : CGFloat = 480
+    let kEmptyFeedCollectionViewCellBufferToAllowForScrolling : CGFloat = 1
+    let kNumberOfCellsWhenUserHasNoPhotos = 1
     
     init(refreshVCCallback : (()->())){
        super.init()
@@ -61,7 +64,7 @@ class ProfileViewModel: NSObject {
     
     func getPictureObjects(){
         pictureDataArray = CloudantSyncDataManager.SharedInstance!.getPictureObjects(FacebookDataManager.SharedInstance.fbUniqueUserID!)
-        
+        hasRecievedDataFromCloudant = true
         
         dispatch_async(dispatch_get_main_queue()) {
             self.callRefreshCallBack()
@@ -87,29 +90,46 @@ class ProfileViewModel: NSObject {
     
     
     func numberOfItemsInSection(section : Int) -> Int {
-        return pictureDataArray.count
+        
+        if(pictureDataArray.count == 0 && hasRecievedDataFromCloudant == true) {
+            return kNumberOfCellsWhenUserHasNoPhotos
+        }
+        else {
+            return pictureDataArray.count
+        }
     }
     
-    func sizeForItemAtIndexPath(indexPath : NSIndexPath, collectionView : UICollectionView) -> CGSize {
-        
-        let picture = pictureDataArray[indexPath.row]
+    func sizeForItemAtIndexPath(indexPath : NSIndexPath, collectionView : UICollectionView, heightForEmptyProfileCollectionViewCell : CGFloat) -> CGSize {
         
         
-        if let width = picture.width, let height = picture.height {
+        if(pictureDataArray.count == 0) {
             
-            let ratio = height / width
+            return CGSize(width: collectionView.frame.width, height: heightForEmptyProfileCollectionViewCell + kEmptyFeedCollectionViewCellBufferToAllowForScrolling)
             
-            var height = collectionView.frame.width * ratio
-            
-            if(height > kCollectionViewCellHeightLimit){
-                height = kCollectionViewCellHeightLimit
-            }
-            
-            return CGSize(width: collectionView.frame.width, height: height + kCollectionViewCellInfoViewHeight)
             
         }
         else{
-            return CGSize(width: collectionView.frame.width, height: collectionView.frame.width + kCollectionViewCellInfoViewHeight)
+        
+            let picture = pictureDataArray[indexPath.row]
+        
+        
+            if let width = picture.width, let height = picture.height {
+            
+                let ratio = height / width
+            
+                var height = collectionView.frame.width * ratio
+            
+                if(height > kCollectionViewCellHeightLimit){
+                    height = kCollectionViewCellHeightLimit
+                }
+            
+                return CGSize(width: collectionView.frame.width, height: height + kCollectionViewCellInfoViewHeight)
+            
+            }
+            else{
+                return CGSize(width: collectionView.frame.width, height: collectionView.frame.width + kCollectionViewCellInfoViewHeight)
+        }
+            
         }
         
     }
@@ -118,23 +138,37 @@ class ProfileViewModel: NSObject {
     
     func setUpCollectionViewCell(indexPath : NSIndexPath, collectionView : UICollectionView) -> UICollectionViewCell {
         
-        let cell: ProfileCollectionViewCell
         
-        cell = collectionView.dequeueReusableCellWithReuseIdentifier("ProfileCollectionViewCell", forIndexPath: indexPath) as! ProfileCollectionViewCell
+        if(pictureDataArray.count == 0){
+            
+            let cell: EmptyFeedCollectionViewCell
+            
+            cell = collectionView.dequeueReusableCellWithReuseIdentifier("EmptyFeedCollectionViewCell", forIndexPath: indexPath) as! EmptyFeedCollectionViewCell
+            
+            return cell
+  
+        }
+        else{
         
-        let picture = pictureDataArray[indexPath.row]
+            let cell: ProfileCollectionViewCell
         
-        cell.setupData(picture.url,
-            image: picture.image,
-            displayName: picture.displayName,
-            timeStamp: picture.timeStamp,
-            fileName: picture.fileName
-        )
+            cell = collectionView.dequeueReusableCellWithReuseIdentifier("ProfileCollectionViewCell", forIndexPath: indexPath) as! ProfileCollectionViewCell
         
-        cell.layer.shouldRasterize = true
-        cell.layer.rasterizationScale = UIScreen.mainScreen().scale
+            let picture = pictureDataArray[indexPath.row]
         
-        return cell
+            cell.setupData(picture.url,
+                image: picture.image,
+                displayName: picture.displayName,
+                timeStamp: picture.timeStamp,
+                fileName: picture.fileName
+            )
+        
+            cell.layer.shouldRasterize = true
+            cell.layer.rasterizationScale = UIScreen.mainScreen().scale
+        
+            return cell
+            
+        }
         
     }
     
