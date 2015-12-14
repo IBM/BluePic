@@ -192,6 +192,22 @@ class CloudantSyncDataManager {
     }
     
     /**
+     * Creates a profile document to use in test cases.
+     *
+     * @param name Profile name for the created document.
+     */
+    func createProfileDocForTestCases(name:String) throws -> String {
+        // Create a document
+        let rev = CDTDocumentRevision()
+        rev.body = ["profile_name":name, "Type":"profile"]
+        // Save the document to the datastore
+        let createdDocument = try datastore.createDocumentFromRevision(rev)
+        let id = createdDocument.docId
+        print("Created profile doc with id: \(id)")
+        return id
+    }
+    
+    /**
      * Deletes a document.
      *
      * @param id Unique ID of the document to delete.

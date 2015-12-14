@@ -158,5 +158,4 @@ class ObjectStorageClientTests: XCTestCase {
                 self.xctExpectation?.fulfill()
         })
     }
-    
 }

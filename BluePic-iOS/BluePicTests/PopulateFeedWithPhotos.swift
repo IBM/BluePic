@@ -35,7 +35,7 @@ class PopulateFeedWithPhotos: XCTestCase {
      */
     func testPrePopulate() {
         // Create fake user
-        let id = "1234"
+        let id = "mskf8d7C-9F39-4558-9EBA-6E5474219jgr"
         let name = "Mobile Innovation Lab"
         
         // Only create user if it does NOT exist
@@ -73,12 +73,14 @@ class PopulateFeedWithPhotos: XCTestCase {
             })
             // Push document to remote Cloudant database
             do {
+                let xctExpectation1 = self.expectationWithDescription("Asynchronous request about to occur...")
+                CloudantSyncDataManager.SharedInstance!.pushDelegate = TestPushDelegate(xctExpectation: xctExpectation1)
                 try CloudantSyncDataManager.SharedInstance!.pushToRemoteDatabase()
+                self.waitForExpectationsWithTimeout(100.0,handler: nil)
             } catch {
                 print("testPrePopulate ERROR: \(error)")
                 XCTFail()
             }
-            self.waitForExpectationsWithTimeout(100.0, handler:nil)
         } else {
             // User has pictures, do nothing.
         }
@@ -134,6 +136,4 @@ class PopulateFeedWithPhotos: XCTestCase {
             })
         }
     }
-    
-    
 }

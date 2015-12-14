@@ -88,7 +88,7 @@ class CloudantSyncClientTests: XCTestCase {
             let id = "7532"
             let name = "Kenny Reid"
             try CloudantSyncDataManager.SharedInstance!.createProfileDoc(id, name: name)
-            // Create Picture variables
+            // Picture variables
             let displayName = "Yosemite"
             let fileName = "yosemite.jpg"
             let url = "http://www.tenayalodge.com/img/Carousel-DiscoverYosemite_img3.jpg"
@@ -226,51 +226,69 @@ class CloudantSyncClientTests: XCTestCase {
     /**
      * Tests the push of 2 documents, deleting them locally, then pulling them and finally making sure they exist again locally.
      */
-//    func testPushNPull() {
-//        do {
-//            // Create User and Picture documents to PUSH and then PULL
-//            let id = "7532"
-//            let name = "Kenny Reid"
-//            try CloudantSyncDataManager.SharedInstance!.createProfileDoc(id, name: name)
-//            let displayName = "Keys"
-//            let fileName = "keys"
-//            let url = "https://www.flmnh.ufl.edu/fish/SouthFlorida/images/bocachita.JPG"
-//            let width = "500"
-//            let height = "150"
-//            let orientation = "0"
-//            try CloudantSyncDataManager.SharedInstance!.createPictureDoc(
-//                displayName, fileName: fileName, url: url, ownerID: id, width: width, height: height, orientation: orientation)
-//            
-//            // TODO: push call does NOT push profile document, it does push the picture document, look into why?????
-//            // Push local datastore to remote database
-//            let xctExpectation = self.expectationWithDescription("Asynchronous request about to occur...")
-//            CloudantSyncDataManager.SharedInstance!.pushDelegate = TestPushDelegate(xctExpectation: xctExpectation)
-//            try CloudantSyncDataManager.SharedInstance!.pushToRemoteDatabase()
-//            self.waitForExpectationsWithTimeout(50.0,handler: nil)
-//            
-//            // Delete local copy of documents
-//            try CloudantSyncDataManager.SharedInstance!.deletePicturesOfUser(id)
-//            try CloudantSyncDataManager.SharedInstance!.deleteDoc(id)
-//            
-//            // Assert on deletion of documents
-//            XCTAssertFalse(CloudantSyncDataManager.SharedInstance!.doesExist(id))
-//            
-//            // Pull them again
-//            let xctExpectation2 = self.expectationWithDescription("Asynchronous request about to occur...")
-//            CloudantSyncDataManager.SharedInstance!.pullDelegate = TestPullDelegate(xctExpectation: xctExpectation2)
-//            try CloudantSyncDataManager.SharedInstance!.pullFromRemoteDatabase()
-//            self.waitForExpectationsWithTimeout(50.0,handler: nil)
-//            
-//            // Make sure they exist, use utility method to make sure picture doc is correct as well.
-//            XCTAssertTrue(CloudantSyncDataManager.SharedInstance!.doesExist(id))
-//        } catch {
-//            print(error)
-//            XCTFail()
-//        }
-//    }
+    func testPushNPull() {
+        do {
+            // Create User and Picture documents to PUSH and then PULL
+            let name = "Kenny Reid"
+            let id =  try CloudantSyncDataManager.SharedInstance!.createProfileDocForTestCases(name)
+            let displayName = "Keys"
+            let fileName = "keys"
+            let url = "https://www.flmnh.ufl.edu/fish/SouthFlorida/images/bocachita.JPG"
+            let width = "500"
+            let height = "150"
+            let orientation = "0"
+            try CloudantSyncDataManager.SharedInstance!.createPictureDoc(
+                displayName, fileName: fileName, url: url, ownerID: id, width: width, height: height, orientation: orientation)
+            let document = CloudantSyncDataManager.SharedInstance!.getDoc(id)
+            print(document)
+            // Push local datastore to remote database
+            let xctExpectation = self.expectationWithDescription("Asynchronous request about to occur...")
+            CloudantSyncDataManager.SharedInstance!.pushDelegate = TestPushDelegate(xctExpectation: xctExpectation)
+            try CloudantSyncDataManager.SharedInstance!.pushToRemoteDatabase()
+            self.waitForExpectationsWithTimeout(100.0,handler: nil)
+            
+            // Delete local copy of documents
+            try CloudantSyncDataManager.SharedInstance!.deletePicturesOfUser(id)
+            try CloudantSyncDataManager.SharedInstance!.deleteDoc(id)
+            
+            // Assert on deletion of documents
+            XCTAssertFalse(CloudantSyncDataManager.SharedInstance!.doesExist(id))
+            
+            // Recreate local datasotre
+            do {
+                try CloudantSyncDataManager.SharedInstance!.manager.deleteDatastoreNamed(dbName)
+                try CloudantSyncDataManager.SharedInstance!.createLocalDatastore()
+            } catch {
+                print(error)
+                XCTFail()
+            }
+            
+            // Pull them again
+            let xctExpectation2 = self.expectationWithDescription("Asynchronous request about to occur...")
+            CloudantSyncDataManager.SharedInstance!.pullDelegate = TestPullDelegate(xctExpectation: xctExpectation2)
+            try CloudantSyncDataManager.SharedInstance!.pullFromRemoteDatabase()
+            self.waitForExpectationsWithTimeout(100.0,handler: nil)
+            
+            // Make sure they exist, use utility method to make sure picture doc is correct as well.
+            XCTAssertTrue(CloudantSyncDataManager.SharedInstance!.doesExist(id))
+            
+            // Delete them locally again
+            try CloudantSyncDataManager.SharedInstance!.deletePicturesOfUser(id)
+            try CloudantSyncDataManager.SharedInstance!.deleteDoc(id)
+            
+            // Push deleted doc change
+            let xctExpectation3 = self.expectationWithDescription("Asynchronous request about to occur...")
+            CloudantSyncDataManager.SharedInstance!.pushDelegate = TestPushDelegate(xctExpectation: xctExpectation3)
+            try CloudantSyncDataManager.SharedInstance!.pushToRemoteDatabase()
+            self.waitForExpectationsWithTimeout(100.0,handler: nil)
+        } catch {
+            print(error)
+            XCTFail()
+        }
+    }
     
     /**
-     * Utility method to compare 2 Picture objects.
+     * Utility method to compare two Picture objects.
      */
     func comparePictureObjects(expected:[Picture], actual:[Picture]) {
         if (expected.count == actual.count) {
