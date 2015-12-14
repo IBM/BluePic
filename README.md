@@ -1,5 +1,5 @@
 # BluePic
-
+****
 
 ## Overview
 
@@ -16,6 +16,7 @@ Currently, BluePic supports Xcode 7.1.1, iOS 9+, and Swift 2.
 * `/BluePic-iOS` directory for the iOS client.
 * `/BluePic-iOS/BluePic/Configuration` directory for configuring Bluemix services keys
 * `/NodeStarterCode` directory for setup code for the Deploy to Bluemix button.
+* `/img` directory for images for this README.
 
 ## Getting Started
 
