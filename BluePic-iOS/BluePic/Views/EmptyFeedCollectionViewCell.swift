@@ -1,5 +1,5 @@
 //
-//  EmptyFeedCollectionViewCell.swift
+//  EmptyProfileCollectionViewCell.swift
 //  BluePic
 //
 //  Created by Alex Buck on 12/14/15.
@@ -14,12 +14,5 @@ class EmptyFeedCollectionViewCell: UICollectionViewCell {
         super.awakeFromNib()
         // Initialization code
     }
-    
-    
-    
-    
-    
-    
-    
 
 }

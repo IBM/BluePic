@@ -122,7 +122,7 @@ class ProfileViewController: UIViewController {
         Utils.registerSupplementaryElementOfKindNibWithCollectionView("ProfileHeaderCollectionReusableView", kind: UICollectionElementKindSectionHeader, collectionView: collectionView)
         
         
-        Utils.registerNibWithCollectionView("EmptyProfileCollectionViewCell", collectionView: collectionView)
+        Utils.registerNibWithCollectionView("EmptyFeedCollectionViewCell", collectionView: collectionView)
         
         Utils.registerNibWithCollectionView("ProfileCollectionViewCell", collectionView: collectionView)
         
@@ -198,15 +198,6 @@ extension ProfileViewController: UICollectionViewDataSource {
     
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         return viewModel.numberOfSectionsInCollectionView()
-    }
-    
-}
-
-
-extension ProfileViewController: UICollectionViewDelegate {
-    
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        print(indexPath.row)
     }
     
 }

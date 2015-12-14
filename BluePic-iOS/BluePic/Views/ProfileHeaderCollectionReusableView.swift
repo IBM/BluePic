@@ -29,9 +29,21 @@ class ProfileHeaderCollectionReusableView: UICollectionReusableView {
         nameLabel.text = name?.uppercaseString ?? ""
         
         if let shots = numberOfShots {
-            let shotsString = NSLocalizedString("Shots", comment: "")
             
-            numberOfShotsLabel.text = "\(shots) \(shotsString)"
+            if(shots > 0){
+                
+                var shotsString = ""
+            
+                if(shots == 1){
+                    shotsString = NSLocalizedString("Shot", comment: "")
+                }
+                else{
+                    shotsString = NSLocalizedString("Shots", comment: "")
+                }
+    
+                numberOfShotsLabel.text = "\(shots) \(shotsString)"
+                
+            }
         }
         
         

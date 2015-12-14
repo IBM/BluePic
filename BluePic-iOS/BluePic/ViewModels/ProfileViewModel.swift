@@ -12,10 +12,13 @@ class ProfileViewModel: NSObject {
     
     var pictureDataArray = [Picture]()
     var refreshVCCallback : (()->())!
-    let kNumberOfSectionsInCollectionView = 1
+    var hasRecievedDataFromCloudant = false
     
+    let kNumberOfSectionsInCollectionView = 1
     let kCollectionViewCellInfoViewHeight : CGFloat = 60
     let kCollectionViewCellHeightLimit : CGFloat = 480
+    let kEmptyFeedCollectionViewCellBufferToAllowForScrolling : CGFloat = 1
+    let kNumberOfCellsWhenUserHasNoPhotos = 1
     
     init(refreshVCCallback : (()->())){
        super.init()
@@ -61,7 +64,7 @@ class ProfileViewModel: NSObject {
     
     func getPictureObjects(){
         pictureDataArray = CloudantSyncDataManager.SharedInstance!.getPictureObjects(FacebookDataManager.SharedInstance.fbUniqueUserID!)
-        
+        hasRecievedDataFromCloudant = true
         
         dispatch_async(dispatch_get_main_queue()) {
             self.callRefreshCallBack()
@@ -88,11 +91,11 @@ class ProfileViewModel: NSObject {
     
     func numberOfItemsInSection(section : Int) -> Int {
         
-        if(pictureDataArray.count > 0) {
-            return pictureDataArray.count
+        if(pictureDataArray.count == 0 && hasRecievedDataFromCloudant == true) {
+            return kNumberOfCellsWhenUserHasNoPhotos
         }
         else {
-            return 1
+            return pictureDataArray.count
         }
     }
     
@@ -101,7 +104,7 @@ class ProfileViewModel: NSObject {
         
         if(pictureDataArray.count == 0) {
             
-            return CGSize(width: collectionView.frame.width, height: heightForEmptyProfileCollectionViewCell)
+            return CGSize(width: collectionView.frame.width, height: heightForEmptyProfileCollectionViewCell + kEmptyFeedCollectionViewCellBufferToAllowForScrolling)
             
             
         }
@@ -138,9 +141,9 @@ class ProfileViewModel: NSObject {
         
         if(pictureDataArray.count == 0){
             
-            let cell: EmptyProfileCollectionViewCell
+            let cell: EmptyFeedCollectionViewCell
             
-            cell = collectionView.dequeueReusableCellWithReuseIdentifier("EmptyProfileCollectionViewCell", forIndexPath: indexPath) as! EmptyProfileCollectionViewCell
+            cell = collectionView.dequeueReusableCellWithReuseIdentifier("EmptyFeedCollectionViewCell", forIndexPath: indexPath) as! EmptyFeedCollectionViewCell
             
             return cell
   

@@ -26,8 +26,6 @@ class Picture: NSObject {
     
     var fileName : String?
     
-    var isEmptyPicture = false
-    
     let kDefaultWidthAndHeight : CGFloat = 100
     
     

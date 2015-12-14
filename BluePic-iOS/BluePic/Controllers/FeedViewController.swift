@@ -60,6 +60,8 @@ class FeedViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         
+        Utils.registerNibWithCollectionView("EmptyFeedCollectionViewCell", collectionView: collectionView)
+        
         Utils.registerNibWithCollectionView("ImageFeedCollectionViewCell", collectionView: collectionView)
         
         self.refreshControl = UIRefreshControl()
@@ -133,9 +135,7 @@ extension FeedViewController: UICollectionViewDelegateFlowLayout {
 
         return viewModel.sizeForItemAtIndexPath(indexPath, collectionView: collectionView)
     }
-
-
-
+    
 }
 
 
