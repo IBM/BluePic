@@ -20,7 +20,7 @@ Currently, BluePic supports Xcode 7.1.1, iOS 9+, and Swift 2.
 
 ## Getting Started
 
-### 1. Generating Bluemix Services
+### 1. Generate Bluemix Services
 Click the Deploy to Bluemix button in order to create an application on your personal Bluemix account that's already set up with the required services.
 
 The button will also create a DevOps Services project and link it to the newly created application.
@@ -69,7 +69,7 @@ The following architecture is utilized for BluePic. For authentication, Mobile C
 
 ![alt text](img/architecture.PNG "architecture")
 
-### Mobile Client Access Facebook Authentication
+### 1. Mobile Client Access Facebook Authentication
 [Bluemix Mobile Client Access Facebook Authentication](https://www.ng.bluemix.net/docs/services/mobileaccess/gettingstarted/ios/index.html) is used for logging into BluePic. 
 
 The `FacebookDataManager` under the `BluePic-iOS/BluePic/DataManagers` directory handles most of the code responsible for Facebook authentication. To start using Bluemix Facebook Authentication, it must first be configured on app launch, and we do this in the `didFinishLaunchingWithOptions()` method of `AppDelegate.swift` by calling the method below.
@@ -117,9 +117,36 @@ Now that the Facebook and Bluemix frameworks are configured, you can actually tr
         
     }
 ```
-The code above either continues with requesting a Facebook token if successful, or throws an error if a network error occurs. Once a unique user id is granted, it is saved along with the user display name in the `SharedInstance` property of the `FacebookDataManager` and also saved to NSUserDefaults so the logged-in state is maintained for future app launches.
+The `self.checkAuthenticationConfig()` method call in the code above will try to present the native iOS 9 Safari Facebook Login Modal. The code above either continues with requesting a Facebook token if the login credentials were correct from the user, or throws an error if not correct or the user cancels.
 
-### Cloudant Sync (CDTDatastore)
+After the user finishes inputting their credentials, the unique user id is received and saved in the `getAuthToken()` method of the `FacebookDataManager`. There, an IMFAuthorizationManager requests authorization by calling the `obtainAuthorizationHeaderWithCompletionHandler()` method, resulting in a success or failure. 
+
+The successful closure of `getAuthToken()` is shown below, where the user display name and unique id are saved to the `sharedInstance` property of the `FacebookDataManager`, as well as saved to NSUserDefaults to keep track of log-in status in future app launches.
+
+```swift
+if let userID = identity["id"] as? NSString {
+                        if let userName = identity["displayName"] as? NSString {
+                        
+                            //save username and id to shared instance of this class
+                            self.fbUniqueUserID = userID as String
+                            self.fbUserDisplayName = userName as String
+                        
+                            //set user logged in
+                            self.isLoggedIn = true
+                            
+                            //save user id and name for future app launches
+                            NSUserDefaults.standardUserDefaults().setObject(userID, forKey: "user_id")
+                            NSUserDefaults.standardUserDefaults().setObject(userName, forKey: "user_name")
+                            NSUserDefaults.standardUserDefaults().synchronize()
+                            
+                            print("Got facebook auth token for user \(userName) with id \(userID)")
+                            
+                            callback(networkRequest: NetworkRequest.Success)
+                        }
+                    }
+```
+
+### 2. Cloudant Sync (CDTDatastore)
 Cloudant Sync [(CDTDatastore)](https://www.ng.bluemix.net/docs/services/mobileaccess/gettingstarted/ios/index.html) is used in BluePic for profile and picture metadata storage.
 
 `CloudantSyncDataManager` was created to handle communicating between iOS and Cloudant Sync.
@@ -131,7 +158,7 @@ put sample code from BluePic here -- maybe show auth, push and pull? maybe creat
 You can view the Cloudant database (including profile and picture documents) by navigating to your Cloudant NoSQL DB service instance on the Bluemix Dashboard.
 
 
-### Object Storage
+### 3. Object Storage
 [Object Storage](https://console.ng.bluemix.net/catalog/services/object-storage/) is used in BluePic for hosting images.
 
 `ObjectStorageDataManager` and `ObjectStorageClient` were created based on [this link](http://developer.openstack.org/api-ref-objectstorage-v1.html) for communicating between iOS and Object Storage.
