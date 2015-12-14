@@ -13,7 +13,9 @@ BluePic is a sample application for iOS that shows how quickly and simple it is 
 Currently, BluePic supports Xcode 7.1.1, iOS 9+, and Swift 2.
 
 ## Project Structure
-//show where things are located, including the Configuration folder with the .plist files
+* `/BluePic-iOS` directory for the iOS client.
+* `/BluePic-iOS/BluePic/Configuration` directory for configuring Bluemix services keys
+* `/NodeStarterCode` directory for setup code for the Deploy to Bluemix button.
 
 ## Getting Started
 
@@ -25,13 +27,27 @@ The button will also create a DevOps Services project and link it to the newly c
 [![Deploy to Bluemix](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy?repository=https://github.com/rolandoasmat/MyBluemixApp.git)
 
 ### 2. Create an application instance on Facebook
-In order to authenticate, you must create an application instance on Facebook's website and connect it to your Bluemix app's Mobile Client Access by following [these instructions](https://www.ng.bluemix.net/docs/services/mobileaccess/security/facebook/t_fb_config.html). Make sure you are viewing the sample code in Swift by selecting the drop down at the top right of that page.
+In order to authenticate, you must create an application instance on Facebook's website and connect it to your Bluemix app's Mobile Client Access by following the first two steps of [these instructions](https://www.ng.bluemix.net/docs/services/mobileaccess/security/facebook/t_fb_config.html). Make sure you are viewing the sample code in Swift by selecting the drop down at the top right of that page. 
+
+![alt text](img/fb_info.PNG "info.plist")
+
+Basically, you need to create an app on your [Facebook Developers Portal](https://developers.facebook.com/quickstarts/?platform=ios). Then, replace the `FacebookAppID`, `FacebookDisplayName`, and `URL types` keys with your values in the `info.plist` under the `BluePic-iOS/BluePic/Configuration` directory.
 
 ### 3. Connect BluePic to your Bluemix Account
-//user then needs to put the keys generated into info.plist and keys.plist
+Next, take your specific keys for Mobile Client Access (labeled **2** in the figure below), Cloudant NoSQL DB (**1** below), and Object Storage (**3** below) from the Bluemix Dashboard, and copy them into `keys.plist` under the `BluePic-iOS/BluePic/Configuration` directory.
+
+![alt text](img/keys.PNG "keys.plist")
 
 ### 4. Optional - Pre-populate Feed with Stock Photos
-//show how to run the prepopulate photos test
+Once BluePic is configured, you should be able to upload photos and see them appear on the feed and profile. However, initially your feed will be empty. If you would like to pre-populate your feed with 3 images, simply do the following:
+
+1. With the BluePic Xcode project open, show the Test Navigator by clicking the 4th icon from the right of the Navigator (toolbar frame on the left side)
+![alt text](img/populate_feed.PNG "populate feed")
+
+1. Run the test called PopulateFeedWithPhotos which should be grayed out (disabled by default when tests are run) by right clicking it and clicking **Test "PopulateFeedWithPhotos"**.
+
+1. The test should complete successfully. Launch BluePic again, and you should see 3 images added by user "Mobile Innovation Lab" on the feed.
+
 
 
 ## Using BluePic
@@ -47,33 +63,83 @@ BluePic was designed so that anyone can quickly launch the app and view photos p
 ### View Profile
 
 
-## Bluemix Services Implemented
+## Architecture/Bluemix Services Implementation
+The following architecture is utilized for BluePic. For authentication, Mobile Client Access with Facebook Authentication is implemented. For profile and photo metadata, the Cloudant SDK is integrated. Finally, to actually store user photos and host them in a container, Object Storage is utilized.
+
+![alt text](img/architecture.PNG "architecture")
+
 ### Mobile Client Access Facebook Authentication
-[Bluemix Mobile Client Access Facebook Authentication](https://www.ng.bluemix.net/docs/services/mobileaccess/gettingstarted/ios/index.html) is used for logging into BluePic. It's necessary to also create an application instance on Facebook's website and connect it to your Bluemix app's Mobile Client Access by following [these instructions](https://www.ng.bluemix.net/docs/services/mobileaccess/security/facebook/t_fb_config.html). Make sure you are viewing the sample code in Swift by selecting the drop down at the top right of that page. You will need to replace your AppID with the one in BluePic's `info.plist`. 
+[Bluemix Mobile Client Access Facebook Authentication](https://www.ng.bluemix.net/docs/services/mobileaccess/gettingstarted/ios/index.html) is used for logging into BluePic. 
 
-The `FacebookDataManager` handles the code responsible for Facebook authentication.
+The `FacebookDataManager` under the `BluePic-iOS/BluePic/DataManagers` directory handles most of the code responsible for Facebook authentication. To start using Bluemix Facebook Authentication, it must first be configured on app launch, and we do this in the `didFinishLaunchingWithOptions()` method of `AppDelegate.swift` by calling the method below.
 
-//put sample code from BluePic here!
+```swift
+func initializeBackendForFacebookAuth() {
+    //Initialize backend
+    let key = Utils.getKeyFromPlist("keys", key: "backend_route")
+    let guid = Utils.getKeyFromPlist("keys", key: "GUID")
+    IMFClient.sharedInstance().initializeWithBackendRoute(key, backendGUID: guid);
+    
+    //Initialize FB
+    IMFFacebookAuthenticationHandler.sharedInstance().registerWithDefaultDelegate()
+    
+    }
+```
+
+Also in the App Delegate, two other methods must be overridden to activate Facebook Authentication, as shown below:
+
+```swift
+func applicationDidBecomeActive(application: UIApplication) {
+    FBAppEvents.activateApp()
+    }
+      
+func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?,annotation: AnyObject) -> Bool {
+        return FBAppCall.handleOpenURL(url, sourceApplication:sourceApplication)
+    }
+```
+
+Now that the Facebook and Bluemix frameworks are configured, you can actually try authenticating to receive a unique identifier for a user. The `FacebookDataManager` deals with authenticating and keeping track of user's credentials in a SharedInstance (singleton). The method below starts the process of showing a native Facebook login to the user when he/she presses the **SIGN IN WITH FACEBOOK** button on the `LoginViewController`.
+
+```swift
+/**
+     Method to auth user using Facebook SDK
+     
+     - parameter callback: Success or Failure
+     */
+    func authenticateUser(callback : ((networkRequest : NetworkRequest) -> ())){
+        if (self.checkIMFClient() && self.checkAuthenticationConfig()) {
+            self.getAuthToken(callback) //this will in turn present FB login
+        }
+        else{
+            callback(networkRequest: NetworkRequest.Failure)
+        }
+        
+    }
+```
+The code above either continues with requesting a Facebook token if successful, or throws an error if a network error occurs. Once a unique user id is granted, it is saved along with the user display name in the `SharedInstance` property of the `FacebookDataManager` and also saved to NSUserDefaults so the logged-in state is maintained for future app launches.
 
 ### Cloudant Sync (CDTDatastore)
-Cloudant Sync [(CDTDatastore)](https://www.ng.bluemix.net/docs/services/mobileaccess/gettingstarted/ios/index.html) is used in BluePic for profile and picture metadata storage. Make sure to replace your Cloudant keys with the keys found in BluePics' `keys.plist` to connect the application to your Bluemix account. 
-
+Cloudant Sync [(CDTDatastore)](https://www.ng.bluemix.net/docs/services/mobileaccess/gettingstarted/ios/index.html) is used in BluePic for profile and picture metadata storage.
 
 `CloudantSyncDataManager` was created to handle communicating between iOS and Cloudant Sync.
 
-//put sample code from BluePic here!
+```
+put sample code from BluePic here -- maybe show auth, push and pull? maybe create document?
+```
 
 You can view the Cloudant database (including profile and picture documents) by navigating to your Cloudant NoSQL DB service instance on the Bluemix Dashboard.
 
 
 ### Object Storage
-[Object Storage](https://console.ng.bluemix.net/catalog/services/object-storage/) is used in BluePic for hosting images. Make sure to replace your Cloudant keys with the keys found in BluePics' `keys.plist` to connect the application to your Bluemix account. You can also view any data on the backend database by navigating to the service on your Bluemix Dashboard.
+[Object Storage](https://console.ng.bluemix.net/catalog/services/object-storage/) is used in BluePic for hosting images.
 
 `ObjectStorageDataManager` and `ObjectStorageClient` were created based on [this link](http://developer.openstack.org/api-ref-objectstorage-v1.html) for communicating between iOS and Object Storage.
 
-//put sample code from BluePic here!
+```
+put sample code from BluePic here -- maybe show auth, push and pull? maybe create container?
+```
 
-You can view the Object Storage database (including all photos uploaded) by navigating to your Cloudant NoSQL DB service instance on the Bluemix Dashboard.
+You can view the Object Storage database (including all photos uploaded) by navigating to your Object Storage service instance on the Bluemix Dashboard.
 
 
 ## Architecture Forethought
