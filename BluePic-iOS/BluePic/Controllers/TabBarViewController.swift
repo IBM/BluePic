@@ -147,7 +147,7 @@ class TabBarViewController: UITabBarController {
         let alert = UIAlertController(title: nil, message: NSLocalizedString("Oops! An error occurred downloading Cloudant data.", comment: ""), preferredStyle: UIAlertControllerStyle.Alert)
         
         alert.addAction(UIAlertAction(title: NSLocalizedString("Try Again", comment: ""), style: .Default, handler: { (action: UIAlertAction!) in
-            self.viewModel.retryPullingCloudantData()
+            self.viewModel.retryPullingCloudantData() 
         }))
         
         alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .Cancel, handler: { (action: UIAlertAction!) in

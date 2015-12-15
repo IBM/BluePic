@@ -50,7 +50,6 @@ class DataManagerCalbackCoordinator: NSObject {
     
 
     
-    
     func sendNotification(dataManagerNotification : DataManagerNotification){
         
         for callback in callbacks {

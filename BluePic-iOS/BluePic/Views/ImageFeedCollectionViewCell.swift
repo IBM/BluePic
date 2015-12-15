@@ -76,7 +76,7 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
                         
                         //clear camera data cache since we will be using sdWebImage's cache from now on
                         if result.0 != nil{
-                            CameraDataManager.SharedInstance.picturesTakenDuringAppSessionById[id] = nil
+                            //CameraDataManager.SharedInstance.picturesTakenDuringAppSessionById[id] = nil
                         }
                     })
                 }

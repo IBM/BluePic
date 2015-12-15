@@ -76,6 +76,8 @@ class PullDelegate:NSObject, CDTReplicatorDelegate {
      * completed.
      */
     func replicatorDidComplete(replicator:CDTReplicator) {
+        CloudantSyncDataManager.SharedInstance?.isPullingFromCloudantAlready = false
+        
         print("PULL Replicator completed.")
         DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantPullDataSuccess)
     }

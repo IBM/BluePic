@@ -327,6 +327,9 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
         if (takenImage.size.width > kResizeAllImagesToThisWidth) { //if image too big, shrink it down
             self.lastPhotoTaken = UIImage.resizeImage(takenImage, newWidth: kResizeAllImagesToThisWidth)
         }
+        else {
+            self.lastPhotoTaken = takenImage
+        }
         
         self.lastPhotoTakenWidth = self.lastPhotoTaken.size.width
         self.lastPhotoTakenHeight = self.lastPhotoTaken.size.height
