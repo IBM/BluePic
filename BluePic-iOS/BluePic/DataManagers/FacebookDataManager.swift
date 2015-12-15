@@ -236,10 +236,8 @@ class FacebookDataManager: NSObject {
                     self.showLoginIfUserNotAuthenticated()
                 }, onFailure: {(error) in
                     print("error authenticating with object storage: \(error)")
-                    //presentingVC.showObjectStorageErrorAlert()
                     
                     DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.ObjectStorageAuthError)
-                    //handleAppStartUpResultCallback(appStartUpResult: DataManagerNotification.showObjectStorageErrorAlert)
             })
         }
         else { //if already authenticated with object storage, just try to show facebook login

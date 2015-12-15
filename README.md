@@ -166,7 +166,10 @@ Cloudant Sync [(CDTDatastore)](https://www.ng.bluemix.net/docs/services/mobileac
 put sample code from BluePic here -- maybe show auth, push and pull? maybe create document?
 ```
 
-You can view the Cloudant database (including profile and picture documents) by navigating to your Cloudant NoSQL DB service instance on the Bluemix Dashboard.
+You can view the Cloudant database (including profile and picture documents) by navigating to your Cloudant NoSQL DB service instance on the Bluemix Dashboard. To do this, navigate to your Bluemix Dashboard by clicking **Dashboard** on the top of your Bluemix home page (**#1** in the image below). Then, click the **Cloudant NoSQL DB** service to view the record of images uploaded to each container (**#2** in the image below)
+
+<p align="center">
+<img src="img/cloudant_sync.PNG"  alt="Drawing" height=550 border=0 /></p>
 
 <br>
 ### 3. Object Storage
@@ -174,11 +177,65 @@ You can view the Cloudant database (including profile and picture documents) by 
 
 `ObjectStorageDataManager` and `ObjectStorageClient` were created based on [this link](http://developer.openstack.org/api-ref-objectstorage-v1.html) for communicating between iOS and Object Storage.
 
+Before uploading photos, it is necessary to authenticate with Object Storage by calling `ObjectStorageDataManager.SharedInstance.objectStorageClient.authenticate()` which returns either a success or failure, shown below in the `FacebookDataManager`.
+
 ```swift
-put sample code from BluePic here -- maybe show auth, push and pull? maybe create container?
+ObjectStorageDataManager.SharedInstance.objectStorageClient.authenticate({() in
+                    print("success authenticating with object storage!")
+                    self.showLoginIfUserNotAuthenticated()
+                }, onFailure: {(error) in
+                    print("error authenticating with object storage: \(error)")
+                    DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.ObjectStorageAuthError)
+            })
 ```
 
-You can view the Object Storage database (including all photos uploaded) by navigating to your Object Storage service instance on the Bluemix Dashboard.
+Next, you must create a container on Object Storage for uploading photos to. The method below in the `LoginViewModel` creates a container for later uploading photos to.
+
+```swift
+/**
+     Method to attempt creating an object storage container and call callback upon completion (success or failure)
+     
+     - parameter userID: user id to be used for container creation
+     */
+    func createObjectStorageContainer(userID: String!) {
+        print("Creating object storage container...")
+        ObjectStorageDataManager.SharedInstance.objectStorageClient.createContainer(userID, onSuccess: {(name) in
+            print("Successfully created object storage container with name \(name)") //success closure
+            self.fbAuthCallback(true)
+            }, onFailure: {(error) in //failure closure
+                print("Facebook auth successful, but error creating Object Storage container: \(error)")
+                self.fbAuthCallback(false)
+        })
+        
+    }
+```
+
+Finally, you can upload an image to Object Storage by utilizing code similar to the method below in the `CameraDataManager`
+
+```swift
+    /**
+     Method called to upload the image to object storage
+     */
+    func uploadImageToObjectStorage() {
+        print("uploading photo to object storage...")
+        //push to object storage
+        ObjectStorageDataManager.SharedInstance.objectStorageClient.uploadImage(FacebookDataManager.SharedInstance.fbUniqueUserID!, imageName: self.lastPhotoTakenName, image: self.lastPhotoTaken,
+            onSuccess: { (imageURL: String) in
+                print("upload to object storage succeeded.")
+                print("imageURL: \(imageURL)")
+            }, onFailure: { (error) in
+                print("upload to object storage failed!")
+                print("error: \(error)")
+				DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.ObjectStorageUploadError)
+        })
+    }
+```
+
+You can view the Object Storage database (including all photos uploaded) by navigating to your Object Storage service instance on the Bluemix Dashboard. To do this, navigate to your Bluemix Dashboard by clicking **Dashboard** on the top of your Bluemix home page (**#1** in the image below). Then, click the **Object Storage** service to view the record of images uploaded to each container (**#2** in the image below)
+
+<p align="center">
+<img src="img/object_storage.PNG"  alt="Drawing" height=550 border=0 /></p>
+
 
 <br>
 ## Architecture Forethought
