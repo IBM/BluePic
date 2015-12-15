@@ -38,8 +38,8 @@ In order to authenticate, you must create an application instance on Facebook's 
 Basically, you need to create an app on your [Facebook Developers Portal](https://developers.facebook.com/quickstarts/?platform=ios). Then, replace the `FacebookAppID`, `FacebookDisplayName`, and `URL types` keys with your values in the `info.plist` under the `BluePic-iOS/BluePic/Configuration` directory.
 
 <br>
-### 3. Connect BluePic to your Bluemix Account
-Next, take your specific keys for Cloudant NoSQL DB (**1** below), Mobile Client Access (labeled **2** in the figure below), and Object Storage (**3** below) from the Bluemix Application Dashboard, and copy them into `keys.plist` located in the `BluePic-iOS/BluePic/Configuration` directory.
+### 3. Connect BluePic to your Bluemix account
+Navigate to your application in the Bluemix Dashboard. Next, take your specific keys for Cloudant NoSQL DB (**1** below), Mobile Client Access (labeled **2** in the figure below), and Object Storage (**3** below) from the Bluemix Application Dashboard, and copy them into `keys.plist` located in the `BluePic-iOS/BluePic/Configuration` directory.
 <p align="center">
 <img src="img/bluemix_credentials.PNG"  alt="Drawing" height=500 border=0 /></p>
 <p align="center">Bluemix Application Dashboard</p>
@@ -49,7 +49,7 @@ Next, take your specific keys for Cloudant NoSQL DB (**1** below), Mobile Client
 <p align="center">keys.plist</p>
 
 <br>
-### 4. Optional - Pre-populate Feed with Stock Photos
+### 4. Optional - pre-populate feed with stock photos
 Once BluePic is configured, you should be able to upload photos and see them appear on the feed and profile. However, initially your feed will be empty. If you would like to pre-populate your feed with 3 images, simply do the following:
 
 1. With the BluePic Xcode project open, show the Test Navigator by clicking the 4th icon from the right of the Navigator (toolbar frame on the left side)
