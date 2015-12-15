@@ -25,8 +25,9 @@ Currently, BluePic supports Xcode 7.1.1, iOS 9+, and Swift 2. Designed for iPhon
 
 ### 1. Generate Bluemix Services
 Click the Deploy to Bluemix button in order to create a Bluemix application in your account (it will prompt you to create one if you don't have one). It will automatically initialize all of the required services to run the application.
-
-[![Deploy to Bluemix](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy?repository=https://github.com/rolandoasmat/MyBluemixApp.git)
+<p align="center">
+<a href="https://bluemix.net/deploy?repository=https://github.com/rolandoasmat/MyBluemixApp.git"> <img src="https://bluemix.net/deploy/button.png" alt="Deploy to Bluemix"></a>
+</p>
 
 If desired, update the app name, region, organization or space of the application (default parameters should work). Click DEPLOY.
 <p align="center">
