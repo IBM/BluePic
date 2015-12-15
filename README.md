@@ -32,7 +32,7 @@ Upon success you should see:
 <img src="img/deploy_button_success.PNG"  alt="Drawing" height=400 border=0 /></p>
 <p align="center">Figure 2: Deploy success page.</p>
 
-Note: If deploying to Bluemix fails, make sure to manually delete the failed application on the Bluemix Dashboard as well as the crated project on DevOps services (formerly known as JazzHub) before trying again.
+Note: If deploying to Bluemix fails, make sure to manually delete the failed application on the Bluemix Dashboard as well as the created project on DevOps services (formerly known as JazzHub) before trying again.
 
 
 On your dashboard the application should then become accessible:
