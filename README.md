@@ -1,5 +1,4 @@
 # BluePic
-****
 <br>
 ## Overview
 
