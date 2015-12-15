@@ -56,6 +56,28 @@ Navigate to your application in the Bluemix Dashboard. Next, take your specific 
 <img src="img/bluemix_credentials.PNG"  alt="Drawing" height=500 border=0 /></p>
 <p align="center">Figure 5. Application overview page.</p>
 
+The mapping from Bluemix Credentials to Key/Value pair is the following: 
+
+Cloudant NoSQL DB
+
+* cdt_username: "username"
+* cdt_db\_name: Create a dabatase from the Cloudant Dashboard and put the name of created database here. 
+* cdt_key: Generate an API KEY from the Cloudant Dashboard by clicking "Generate API Key" in the permissions tab of any database. Make sure to add Writer and Replicator permissions as well. Note the displayed password.
+* cdt_pass: Enter the password of the API Key here. 
+
+Mobile Client Access
+
+* backend_route: List on the top of the Application Overview page, next to the "Routes:" label. 
+* GUID: "clientId"
+
+Object Storage
+
+* obj_stg\_public\_url: 
+* obj_stg\_password: 
+* obj_stg\_user\_id:
+* obj_stg\_project\_id: "projectId"
+* obj_stg\_auth\_url: "auth\_url"
+
 <p align="center">
 <img src="img/keys.PNG"  alt="Drawing" height=250 border=0 /></p>
 <p align="center">Figure 6. BluePic-iOS/BluePic/Configuration directory.</p>
@@ -67,6 +89,7 @@ Once BluePic is configured, you should be able to upload photos and see them app
 1. With the BluePic Xcode project open, show the Test Navigator by clicking the 4th icon from the right of the Navigator (toolbar frame on the left side)
 <p align="center">
 <img src="img/populate_feed.PNG"  alt="Drawing" height=400 border=0 /></p>
+<p align="center">Figure 7. PopulateFeedWithPhotos test case.</p>
 
 1. Run the test called PopulateFeedWithPhotos which should be grayed out (disabled by default when tests are run) by right clicking it and clicking **Test "PopulateFeedWithPhotos"**.
 
@@ -80,24 +103,28 @@ BluePic was designed so that anyone can quickly launch the app and view photos p
 
 <p align="center">
 <img src="img/login.PNG"  alt="Drawing" height=550 border=0 /></p>
+<p align="center">Figure 8. Welcome page.</p>
 
 ### View Feed
 The feed (first tab) shows all the latest photos posted to the BluePic community (regardless if logged in or not).
 
 <p align="center">
 <img src="img/feed.PNG"  alt="Drawing" height=550 border=0 /></p>
+<p align="center">Figure 9. Main feed view.</p>
 
 ### Post a Photo
 Posting to the BluePic community is easy. Tap the middle tab in the tab bar and choose to either Choose a photo from the Camera Roll or Take a photo using the device's camera. You can then give the photo a caption before posting.
 
 <p align="center">
 <img src="img/post.PNG"  alt="Drawing" height=550 border=0 /></p>
+<p align="center">Figure 10. Posting a photo.</p>
 
 ### View Profile
 By tapping the third tab, you can view your profile. This shows your Facebook profile photo, lists how many photos you've posted, and shows all the photos you've posted to BluePic.
 
 <p align="center">
 <img src="img/profile.PNG"  alt="Drawing" height=550 border=0 /></p>
+<p align="center">Figure 11. Profile feed.</p>
 
 <br>
 ## Project Structure
@@ -112,6 +139,7 @@ The following architecture is utilized for BluePic. For authentication, Mobile C
 
 <p align="center">
 <img src="img/architecture.PNG"  alt="Drawing" height=350 border=0 /></p>
+<p align="center">Figure 12. BluePic Architecture Diagram.</p>
 
 ### 1. Mobile Client Access Facebook Authentication
 [Bluemix Mobile Client Access Facebook Authentication](https://www.ng.bluemix.net/docs/services/mobileaccess/gettingstarted/ios/index.html) is used for logging into BluePic. 
@@ -204,6 +232,7 @@ You can view the Cloudant database (including profile and picture documents) by 
 
 <p align="center">
 <img src="img/cloudant_sync.PNG"  alt="Drawing" height=550 border=0 /></p>
+<p align="center">Figure 13. Cloudant NoSQL service.</p>
 
 <br>
 ### 3. Object Storage
@@ -269,7 +298,7 @@ You can view the Object Storage database (including all photos uploaded) by navi
 
 <p align="center">
 <img src="img/object_storage.PNG"  alt="Drawing" height=550 border=0 /></p>
-
+<p align="center">Figure 14. Object Storage service.</p>
 
 <br>
 ## Architecture Forethought
