@@ -24,9 +24,24 @@ Currently, BluePic supports Xcode 7.1.1, iOS 9+, and Swift 2. Designed for iPhon
 ## Getting Started
 
 ### 1. Generate Bluemix Services
-Click the Deploy to Bluemix button in order to create a Bluemix application on your account. It will automatically be set up with the required services. A DevOps Services project will also be created.
+Click the Deploy to Bluemix button in order to create a Bluemix application in your account (it will prompt you to create one if you don't have one). It will automatically initialize all of the required services to run the application.
 
 [![Deploy to Bluemix](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy?repository=https://github.com/rolandoasmat/MyBluemixApp.git)
+
+If desired, update the app name, region, organization or space of the application (default parameters should work). Click DEPLOY.
+<p align="center">
+<img src="img/deploy_button_params.PNG"  alt="Drawing" height=400 border=0 /></p>
+<p align="center">Figure 1: Parameters to deploy a Bluemix application.</p>
+
+Upon success you should see:
+<p align="center">
+<img src="img/deploy_button_success.PNG"  alt="Drawing" height=400 border=0 /></p>
+<p align="center">Figure 2: Deploy success page.</p>
+
+On your dashboard the application should then become accessible:
+<p align="center">
+<img src="img/dashboard_application.PNG"  alt="Drawing" height=400 border=0 /></p>
+<p align="center">Figure 3: Bluemix dashboard.</p>
 
 <br>
 ### 2. Create an application instance on Facebook
@@ -34,22 +49,24 @@ In order to authenticate, you must create an application instance on Facebook's 
 
 <p align="center">
 <img src="img/fb_info.PNG"  alt="Drawing" height=150 border=0 /></p>
+<p align="center">Figure 4. Info.plist file.</p>
 
-Basically, you need to create an app on your [Facebook Developers Portal](https://developers.facebook.com/quickstarts/?platform=ios). Then, replace the `FacebookAppID`, `FacebookDisplayName`, and `URL types` keys with your values in the `info.plist` under the `BluePic-iOS/BluePic/Configuration` directory.
+You need to create an app on your [Facebook Developers Portal](https://developers.facebook.com/quickstarts/?platform=ios). Then, replace the `FacebookAppID`, `FacebookDisplayName`, and `URL types` keys with your values in the `info.plist` under the `BluePic-iOS/BluePic/Configuration` directory.
 
 <br>
-### 3. Connect BluePic to your Bluemix account
+### 3. Connect BluePic to your Bluemix Account
 Navigate to your application in the Bluemix Dashboard. Next, take your specific keys for Cloudant NoSQL DB (**1** below), Mobile Client Access (labeled **2** in the figure below), and Object Storage (**3** below) from the Bluemix Application Dashboard, and copy them into `keys.plist` located in the `BluePic-iOS/BluePic/Configuration` directory.
+
 <p align="center">
 <img src="img/bluemix_credentials.PNG"  alt="Drawing" height=500 border=0 /></p>
-<p align="center">Bluemix Application Dashboard</p>
+<p align="center">Figure 5. Application overview page.</p>
 
 <p align="center">
 <img src="img/keys.PNG"  alt="Drawing" height=250 border=0 /></p>
-<p align="center">keys.plist</p>
+<p align="center">Figure 6. BluePic-iOS/BluePic/Configuration directory.</p>
 
 <br>
-### 4. Optional - pre-populate feed with stock photos
+### 4. Optional - Pre-populate Feed with Stock Photos
 Once BluePic is configured, you should be able to upload photos and see them appear on the feed and profile. However, initially your feed will be empty. If you would like to pre-populate your feed with 3 images, simply do the following:
 
 1. With the BluePic Xcode project open, show the Test Navigator by clicking the 4th icon from the right of the Navigator (toolbar frame on the left side)
@@ -182,7 +199,7 @@ Cloudant Sync [(CDTDatastore)](https://www.ng.bluemix.net/docs/services/mobileac
 put sample code from BluePic here -- maybe show auth, push and pull? maybe create document?
 ```
 
-You can view the Cloudant database (including profile and picture documents) by navigating to your Cloudant NoSQL DB service instance on the Bluemix Dashboard. To do this, navigate to your Bluemix Dashboard by clicking **Dashboard** on the top of your Bluemix home page (**#1** in the image below). Select your application. Then, click the **Cloudant NoSQL DB** service to view the record of images uploaded to each container (**#2** in the image below)
+You can view the Cloudant database (including profile and picture documents) by navigating to your Cloudant NoSQL DB service instance on the Bluemix Dashboard. To do this, navigate to your Bluemix Dashboard by clicking **Dashboard** on the top of your Bluemix home page (**#1** in the image below). Then, click the **Cloudant NoSQL DB** service to view the record of images uploaded to each container (**#2** in the image below)
 
 <p align="center">
 <img src="img/cloudant_sync.PNG"  alt="Drawing" height=550 border=0 /></p>
@@ -242,12 +259,12 @@ Finally, you can upload an image to Object Storage by utilizing code similar to 
             }, onFailure: { (error) in
                 print("upload to object storage failed!")
                 print("error: \(error)")
-				DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.ObjectStorageUploadError)
+                DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.ObjectStorageUploadError)
         })
     }
 ```
 
-You can view the Object Storage database (including all photos uploaded) by navigating to your Object Storage service instance on the Bluemix Dashboard. To do this, navigate to your Bluemix Dashboard by clicking **Dashboard** on the top of your Bluemix home page (**#1** in the image below). Select your application. Then, click the **Object Storage** service to view the record of images uploaded to each container (**#2** in the image below)
+You can view the Object Storage database (including all photos uploaded) by navigating to your Object Storage service instance on the Bluemix Dashboard. To do this, navigate to your Bluemix Dashboard by clicking **Dashboard** on the top of your Bluemix home page (**#1** in the image below). Then, click the **Object Storage** service to view the record of images uploaded to each container (**#2** in the image below)
 
 <p align="center">
 <img src="img/object_storage.PNG"  alt="Drawing" height=550 border=0 /></p>
