@@ -14,13 +14,6 @@ BluePic is a sample application for iOS that shows how quickly and simple it is 
 Currently, BluePic supports Xcode 7.1.1, iOS 9+, and Swift 2. Designed for iPhone, compatible with iPad.
 
 <br>
-## Project Structure
-* `/BluePic-iOS` directory for the iOS client.
-* `/BluePic-iOS/BluePic/Configuration` directory for configuring Bluemix services keys
-* `/NodeStarterCode` directory for the server artifact that is deployed to Bluemix.
-* `/img` directory for images for this README.
-
-<br>
 ## Getting Started
 
 ### 1. Create Bluemix Application and Services
@@ -38,6 +31,9 @@ Upon success you should see:
 <p align="center">
 <img src="img/deploy_button_success.PNG"  alt="Drawing" height=400 border=0 /></p>
 <p align="center">Figure 2: Deploy success page.</p>
+
+Note: If deploying to Bluemix fails, make sure to manually delete the failed application on the Bluemix Dashboard as well as the crated project on DevOps services (formerly known as JazzHub) before trying again.
+
 
 On your dashboard the application should then become accessible:
 <p align="center">
@@ -77,7 +73,6 @@ Once BluePic is configured, you should be able to upload photos and see them app
 1. The test should complete successfully. Launch BluePic again, and you should see 3 images added by user "Mobile Innovation Lab" on the feed.
 
 <br>
-
 ## Using BluePic
 
 ### Facebook Login
@@ -103,6 +98,13 @@ By tapping the third tab, you can view your profile. This shows your Facebook pr
 
 <p align="center">
 <img src="img/profile.PNG"  alt="Drawing" height=550 border=0 /></p>
+
+<br>
+## Project Structure
+* `/BluePic-iOS` directory for the iOS client.
+* `/BluePic-iOS/BluePic/Configuration` directory for configuring Bluemix services keys
+* `/NodeStarterCode` directory for the server artifact that is deployed to Bluemix.
+* `/img` directory for images for this README.
 
 <br>
 ## Architecture/Bluemix Services Implementation
