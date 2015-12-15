@@ -46,7 +46,7 @@ Next, take your specific keys for Cloudant NoSQL DB (**1** below), Mobile Client
 
 <p align="center">
 <img src="img/keys.PNG"  alt="Drawing" height=250 border=0 /></p>
-<p align="center">BluePic-iOS/BluePic/Configuration directory</p>
+<p align="center">keys.plist</p>
 
 <br>
 ### 4. Optional - Pre-populate Feed with Stock Photos
@@ -182,7 +182,7 @@ Cloudant Sync [(CDTDatastore)](https://www.ng.bluemix.net/docs/services/mobileac
 put sample code from BluePic here -- maybe show auth, push and pull? maybe create document?
 ```
 
-You can view the Cloudant database (including profile and picture documents) by navigating to your Cloudant NoSQL DB service instance on the Bluemix Dashboard. To do this, navigate to your Bluemix Dashboard by clicking **Dashboard** on the top of your Bluemix home page (**#1** in the image below). Then, click the **Cloudant NoSQL DB** service to view the record of images uploaded to each container (**#2** in the image below)
+You can view the Cloudant database (including profile and picture documents) by navigating to your Cloudant NoSQL DB service instance on the Bluemix Dashboard. To do this, navigate to your Bluemix Dashboard by clicking **Dashboard** on the top of your Bluemix home page (**#1** in the image below). Select your application. Then, click the **Cloudant NoSQL DB** service to view the record of images uploaded to each container (**#2** in the image below)
 
 <p align="center">
 <img src="img/cloudant_sync.PNG"  alt="Drawing" height=550 border=0 /></p>
@@ -247,7 +247,7 @@ Finally, you can upload an image to Object Storage by utilizing code similar to 
     }
 ```
 
-You can view the Object Storage database (including all photos uploaded) by navigating to your Object Storage service instance on the Bluemix Dashboard. To do this, navigate to your Bluemix Dashboard by clicking **Dashboard** on the top of your Bluemix home page (**#1** in the image below). Then, click the **Object Storage** service to view the record of images uploaded to each container (**#2** in the image below)
+You can view the Object Storage database (including all photos uploaded) by navigating to your Object Storage service instance on the Bluemix Dashboard. To do this, navigate to your Bluemix Dashboard by clicking **Dashboard** on the top of your Bluemix home page (**#1** in the image below). Select your application. Then, click the **Object Storage** service to view the record of images uploaded to each container (**#2** in the image below)
 
 <p align="center">
 <img src="img/object_storage.PNG"  alt="Drawing" height=550 border=0 /></p>
