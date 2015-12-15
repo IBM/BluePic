@@ -301,6 +301,13 @@ class CameraDataManager: NSObject {
     }
 
     
+    /**
+     Method to rotate image taken if necessary
+     
+     - parameter imageToRotate: UIImage!
+     
+     - returns: UIImage1
+     */
     func rotateImageIfNecessary(imageToRotate: UIImage!) -> UIImage! {
         let imageOrientation = imageToRotate.imageOrientation.rawValue
         switch imageOrientation {
@@ -315,9 +322,6 @@ class CameraDataManager: NSObject {
         default:
             return imageToRotate.imageRotatedByDegrees(0, flip: false)
         }
-        
-        
-        
     }
 
     
@@ -327,14 +331,10 @@ class CameraDataManager: NSObject {
 }
 
 
-extension CameraDataManager: UIAlertViewDelegate {
-    
-    
-    
-}
-
-
 extension CameraDataManager: UIImagePickerControllerDelegate {
+    
+    
+    
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject])
     {
         picker.dismissViewControllerAnimated(true, completion: nil)

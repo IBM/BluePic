@@ -6,16 +6,14 @@ Licensed Materials - Property of IBM
 
 import UIKit
 
+
+//
 enum FeedViewModelNotification {
     case RefreshCollectionView
     case StartLoadingAnimationForAppLaunch
 }
 
-
-
 class FeedViewModel: NSObject {
-
-    let kNumberOfSectionsInCollectionView = 1
     
     var pictureDataArray = [Picture]()
     var refreshVCCallback : (()->())?
@@ -26,9 +24,16 @@ class FeedViewModel: NSObject {
     let kCollectionViewCellHeightLimit : CGFloat = 480
     let kEmptyFeedCollectionViewCellBufferToAllowForScrolling : CGFloat = 1
     let kNumberOfCellsWhenUserHasNoPhotos = 1
+    let kNumberOfSectionsInCollectionView = 1
     
     
-    
+    /**
+     Method called upon init. It sets a callback to inform the VC of new noti
+     
+     - parameter passFeedViewModelNotificationToTabBarVCCallback: ((feedViewModelNotification : FeedViewModelNotification)->())
+     
+     - returns:
+     */
     init(passFeedViewModelNotificationToTabBarVCCallback : ((feedViewModelNotification : FeedViewModelNotification)->())){
         super.init()
         
@@ -39,7 +44,11 @@ class FeedViewModel: NSObject {
     }
     
     
-    
+    /**
+     Method called when there are new DataManager notifications
+     
+     - parameter dataManagerNotification: DataMangerNotification
+     */
     func handleDataManagerNotification(dataManagerNotification : DataManagerNotification){
         
         if(dataManagerNotification == DataManagerNotification.CloudantPullDataSuccess){
@@ -52,23 +61,11 @@ class FeedViewModel: NSObject {
             self.passFeedViewModelNotificationToTabBarVCCallback(feedViewModelNotification: FeedViewModelNotification.StartLoadingAnimationForAppLaunch)
         }
     }
-    
-    
-    func addUsersLastPhotoTakenToPictureDataArrayAndRefreshCollectionView(){
 
-        let lastPhotoTaken = CameraDataManager.SharedInstance.lastPictureObjectTaken
-        
-        var lastPhotoTakenArray = [Picture]()
-        lastPhotoTakenArray.append(lastPhotoTaken)
-        
-        pictureDataArray = lastPhotoTakenArray + pictureDataArray
-        
-        callRefreshCallBack()
-    }
     
-    
-    
-    
+    /**
+     Method asks cloudant to pull for new data
+     */
     func repullForNewData() {
         do {
             try CloudantSyncDataManager.SharedInstance!.pullFromRemoteDatabase()
@@ -79,6 +76,9 @@ class FeedViewModel: NSObject {
     }
     
     
+    /**
+     Method synchronously asks cloudant for new data. It sets the pictureDataArray to be a combination of the local pictureUploadQueue images + images receives from cloudant/objectDataStore
+     */
     func getPictureObjects(){
         pictureDataArray = CameraDataManager.SharedInstance.pictureUploadQueue + CloudantSyncDataManager.SharedInstance!.getPictureObjects(nil)
         hasRecievedDataFromCloudant = true
@@ -88,12 +88,22 @@ class FeedViewModel: NSObject {
         }
     }
     
-    
+    /**
+     Method returns the number of sections in the collection view
+     
+     - returns: Int
+     */
     func numberOfSectionsInCollectionView() -> Int {
         return kNumberOfSectionsInCollectionView
     }
     
-    
+    /**
+     Method returns the number of items in a section
+     
+     - parameter section: Int
+     
+     - returns: Int
+     */
     func numberOfItemsInSection(section : Int) -> Int {
         
         if(pictureDataArray.count == 0 && hasRecievedDataFromCloudant == true){
@@ -104,8 +114,16 @@ class FeedViewModel: NSObject {
         }
     }
     
+    
+    /**
+     Method returns the size for item at index path
+     
+     - parameter indexPath: NSIndexPath
+     - parameter collectionView: UICollectionViewcell
+     
+     - returns: CGSize
+     */
     func sizeForItemAtIndexPath(indexPath : NSIndexPath, collectionView : UICollectionView) -> CGSize {
-        
         
         if(pictureDataArray.count == 0){
             
@@ -138,7 +156,14 @@ class FeedViewModel: NSObject {
     }
     
     
-    
+    /**
+     Method sets up the collection view for indexPath. If the the pictureDataArray is 0, then it shows the EmptyFeedCollectionViewCell
+     
+     - parameter indexPath:      indexPath
+     - parameter collectionView: UICollectionView
+     
+     - returns: UICollectionViewCell
+     */
     func setUpCollectionViewCell(indexPath : NSIndexPath, collectionView : UICollectionView) -> UICollectionViewCell {
         
         
@@ -177,6 +202,9 @@ class FeedViewModel: NSObject {
         
     }
     
+    /**
+     Method tells the view controller to refresh its collectionView
+     */
     func callRefreshCallBack(){
         if let callback = refreshVCCallback {
             callback()

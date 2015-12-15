@@ -37,10 +37,14 @@ class DataManagerCalbackCoordinator: NSObject {
     }()
     
     
-    
-    
     private var callbacks : [((dataManagerNotification : DataManagerNotification)->())]! = []
     
+    
+    /**
+     Method adds a callback method to callback array
+     
+     - parameter callback: ((dataManagerNotification : DataManagerNotification)->())
+     */
     func addCallback(callback : ((dataManagerNotification : DataManagerNotification)->())){
         
         callbacks.append(callback)
@@ -49,7 +53,11 @@ class DataManagerCalbackCoordinator: NSObject {
     
     
 
-    
+    /**
+     Method sends notifications to the callback methods of the callbacks array
+     
+     - parameter dataManagerNotification: DatsManagerNotification
+     */
     func sendNotification(dataManagerNotification : DataManagerNotification){
         
         for callback in callbacks {

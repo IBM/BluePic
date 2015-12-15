@@ -18,6 +18,14 @@ class ProfileViewModel: NSObject {
     let kEmptyFeedCollectionViewCellBufferToAllowForScrolling : CGFloat = 1
     let kNumberOfCellsWhenUserHasNoPhotos = 1
     
+    
+    /**
+     Method called upon init, it sets up the callback to refresh the profile collection view
+     
+     - parameter refreshVCCallback: (()->())
+     
+     - returns:
+     */
     init(refreshVCCallback : (()->())){
        super.init()
         
@@ -31,7 +39,11 @@ class ProfileViewModel: NSObject {
     }
     
 
-    
+    /**
+     Method handles notifications when there are DataManagerNotifications, it passes DataManagerNotifications to the Profile VC
+     
+     - parameter dataManagerNotification: DataManagerNotification
+     */
     func handleDataManagerNotifications(dataManagerNotification : DataManagerNotification){
         
         
@@ -40,11 +52,14 @@ class ProfileViewModel: NSObject {
             addUsersLastPhotoTakenToPictureDataArrayAndRefreshCollectionView()
             
         }
+        
     }
     
     
+    /**
+     Method adds a locally stored version of the image the user just posted to the pictureDataArray
+     */
     func addUsersLastPhotoTakenToPictureDataArrayAndRefreshCollectionView(){
-        
         
         let lastPhotoTaken = CameraDataManager.SharedInstance.lastPictureObjectTaken
         
@@ -59,7 +74,9 @@ class ProfileViewModel: NSObject {
     
     
     
-    
+    /**
+     Method gets the picture dataA
+     */
     func getPictureObjects(){
         pictureDataArray = CloudantSyncDataManager.SharedInstance!.getPictureObjects(FacebookDataManager.SharedInstance.fbUniqueUserID!)
         hasRecievedDataFromCloudant = true

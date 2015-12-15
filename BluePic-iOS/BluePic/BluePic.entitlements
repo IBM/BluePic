@@ -4,8 +4,8 @@
 <dict>
 	<key>keychain-access-groups</key>
 	<array>
-		<string>$(AppIdentifierPrefix)worklight.group</string>
 		<string>$(AppIdentifierPrefix)com.ibm.cio.be.BluePic</string>
+		<string>$(AppIdentifierPrefix)worklight.group</string>
 	</array>
 </dict>
 </plist>
