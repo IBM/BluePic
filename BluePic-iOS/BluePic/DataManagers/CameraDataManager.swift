@@ -249,6 +249,7 @@ class CameraDataManager: NSObject {
         lastPictureObjectTaken.timeStamp = NSDate.timeIntervalSinceReferenceDate()
         lastPictureObjectTaken.fileName = lastPhotoTakenName
         lastPictureObjectTaken.orientation = String(lastPhotoTaken.imageOrientation.rawValue)
+        print(lastPictureObjectTaken.orientation)
         
         pictureUploadQueue.append(lastPictureObjectTaken)
         
@@ -331,6 +332,9 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
         else {
             self.lastPhotoTaken = takenImage
         }
+            
+            //rotate image if necessary
+            
         
         self.lastPhotoTakenWidth = self.lastPhotoTaken.size.width
         self.lastPhotoTakenHeight = self.lastPhotoTaken.size.height

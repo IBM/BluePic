@@ -30,7 +30,7 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
      
         self.setImageView(url, fileName: fileName)
         
-        self.setImageOrientation(orientation)
+        //self.setImageOrientation(orientation)
 
         
         captionLabel.text = displayName?.uppercaseString ?? ""
@@ -126,8 +126,11 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
         if let orient = orientation {
         
             if let orientationInt = Int(orient) {
+                 print("orientation in method is \(orientationInt)")
             
                 switch orientationInt {
+                    
+                   
                     
                     case 0: //Up
                         self.imageView.transform = CGAffineTransformMakeRotation(0)
