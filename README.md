@@ -1,5 +1,5 @@
 # BluePic
-<br>
+
 ## Overview
 
 BluePic is a sample application for iOS that shows how quickly and simple it is to get started developing with IBM Bluemix services. It is a photo sharing application that allows you to take photos and upload them to a server.
