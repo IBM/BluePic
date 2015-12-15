@@ -46,7 +46,7 @@ Next, take your specific keys for Cloudant NoSQL DB (**1** below), Mobile Client
 
 <p align="center">
 <img src="img/keys.PNG"  alt="Drawing" height=250 border=0 /></p>
-<p align="center">BluePic-iOS/BluePic/Configuration directory</p>
+<p align="center">keys.plist</p>
 
 <br>
 ### 4. Optional - Pre-populate Feed with Stock Photos
