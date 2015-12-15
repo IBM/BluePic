@@ -11,7 +11,6 @@ import UIKit
 // DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantPullDataFailure)
 enum DataManagerNotification {
     
-    case CloudantPullDidChangeState
     case CloudantPullDataSuccess
     case CloudantPullDataFailure
     case CloudantPushDataSuccess
