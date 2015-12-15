@@ -11,15 +11,11 @@ class ProfileViewController: UIViewController {
     
     @IBOutlet weak var collectionView: UICollectionView!
     
-    
     var viewModel : ProfileViewModel!
     var refreshControl: UIRefreshControl!
-    
     var headerImageView : UIImageView!
-    
     var statusBarBackgroundView : UIView!
-    
-    //let kHeaderViewHeight : CGFloat = 480
+
     let kHeaderViewInfoViewHeight : CGFloat = 105
     let kHeaderImageViewHeight : CGFloat = 375
     let kStatusBarMagicLine : CGFloat = 100
@@ -27,9 +23,12 @@ class ProfileViewController: UIViewController {
     let kStatusBarBackgroundViewFadeDuration : NSTimeInterval = 0.3
     let kHeightOfProfilePictureImageView : CGFloat = 75
 
+    
+    /**
+     Method called upon view did load. It sets up the view model, sets up the colleciton view, sets up the head view, and sets up the status bar background view
+     */
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         
         setupViewModel()
         
@@ -42,20 +41,28 @@ class ProfileViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
 
+    /**
+     Method called when the app receives a memory warning from the OS
+     */
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
     
+    /**
+     Method called sets up the viewModel and passes it a method to call when there is new data and we need to reload the collection view
+     */
     func setupViewModel(){
         
         viewModel = ProfileViewModel(refreshVCCallback: reloadDataInCollectionView)
         
-        
     }
     
     
+    /**
+     Method sets up the status bar background view
+     */
     func setupStatusBarBackgroundView(){
         
         let effect = UIBlurEffect(style: UIBlurEffectStyle.Light)
@@ -73,6 +80,11 @@ class ProfileViewController: UIViewController {
    
     }
     
+    /**
+     Method animates in the status bar background view
+     
+     - parameter isInOrOut: Bool
+     */
     func animateInStatusBarBackgroundView(isInOrOut : Bool){
     
         var alpha : CGFloat = 0.0
@@ -95,6 +107,9 @@ class ProfileViewController: UIViewController {
     }
     
     
+    /**
+    Method sets up the header view with initial properties
+     */
     func setupHeaderView(){
         
         headerImageView = UIImageView(frame: CGRectMake(0, 0, view.frame.width, kHeaderImageViewHeight))
@@ -112,6 +127,9 @@ class ProfileViewController: UIViewController {
     }
     
     
+    /**
+     Method sets up the collection view with initial properties
+     */
     func setupCollectionView(){
         
         collectionView.delegate = self
@@ -127,35 +145,14 @@ class ProfileViewController: UIViewController {
     }
     
     
-    func userTriggeredRefresh(){
-        
-        
-        self.refreshControl.endRefreshing()
-        
-        viewModel.repullForNewData()
-        
-    }
-    
-    
+    /**
+     Method reloads the data in the collection view
+     */
     func reloadDataInCollectionView(){
         
         collectionView.reloadData()
         
-        
     }
-    
-    
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
 
@@ -183,17 +180,37 @@ extension ProfileViewController: UICollectionViewDataSource {
     
     
     
-    
+    /**
+     Method sets up the cell for item at indexPath by asking the view model to set up the cell for item at indexPath
+     
+     - parameter collectionView: UICollectionView
+     - parameter indexPath:      NSIndexPath
+     
+     - returns: UICollectionViewCell
+     */
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         return viewModel.setUpCollectionViewCell(indexPath, collectionView : collectionView)
     }
     
-    
+    /**
+     Method sets the number of items in a section by asking the view model for the number of items in the section
+     
+     - parameter collectionView: UICollectionView
+     - parameter section:        Int
+     
+     - returns: Int
+     */
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel.numberOfItemsInSection(section)
     }
     
-    
+    /**
+     Method sets the number of sections in the collection view by asking the view model for the number of sections in the collection view
+     
+     - parameter collectionView: UIcollectionView
+     
+     - returns: Int
+     */
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         return viewModel.numberOfSectionsInCollectionView()
     }
@@ -226,17 +243,22 @@ extension ProfileViewController: UICollectionViewDelegateFlowLayout {
     }
     
     
+    /**
+     Method
+     
+     - parameter collectionView:       UICollectionview
+     - parameter collectionViewLayout: UICollectionviewLayout
+     - parameter indexPath:            NSIndexPath
+     
+     - returns: CGSize
+     */
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        
         
         let heightForEmptyProfileCollectionViewCell = self.view.frame.size.height - (self.view.frame.size.height/2 + kHeaderViewInfoViewHeight)
         
-        
-    
         return viewModel.sizeForItemAtIndexPath(indexPath, collectionView: collectionView, heightForEmptyProfileCollectionViewCell: heightForEmptyProfileCollectionViewCell)
     }
-    
-    
+
     
 }
 
@@ -257,7 +279,7 @@ extension ProfileViewController : UIScrollViewDelegate {
     }
     
     /**
-     Method is called in the scrollViewDidScrgyoll method. This method is the secret sauce to getting the image at the top to lock to the navigation bar or to get the image to stretch.
+     Method is called in the scrollViewDidScroll method. It allows for paralax scrolling or the image view to stretch.
      
      - parameter scrollViewContentOffset:
      */
@@ -270,7 +292,11 @@ extension ProfileViewController : UIScrollViewDelegate {
         }
     }
     
-    
+    /**
+     Method sets the status bar to be a frosted class effect when the profile image touches the status bar
+     
+     - parameter scrollViewContentOffset: CGFloat
+     */
     func checkOffSetForStatusBarBackgroundViewVisability(scrollViewContentOffset : CGFloat){
         
         let magicLine = kHeaderImageViewHeight - kHeightOfProfilePictureImageView/2 - UIApplication.sharedApplication().statusBarFrame.size.height

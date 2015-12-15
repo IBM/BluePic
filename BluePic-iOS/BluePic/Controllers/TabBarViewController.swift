@@ -16,7 +16,9 @@ class TabBarViewController: UITabBarController {
     var viewModel : TabBarViewModel!
     
     
-
+    /**
+     Method called upon view did load. It creates an instance of the TabBarViewModel, sets the tabBar tint color, adds a background image view, and sets its delegate
+     */
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -32,12 +34,11 @@ class TabBarViewController: UITabBarController {
     }
     
     
-    override func viewWillAppear(animated: Bool) {
-
-    }
-    
-    
-    
+    /**
+     Method called upon view did appear. It tells the feed to start the loading animation and it trys to show login
+     
+     - parameter animated: Bool
+     */
     override func viewDidAppear(animated: Bool) {
         
         self.viewModel.tellFeedToStartLoadingAnimation()
@@ -46,27 +47,18 @@ class TabBarViewController: UITabBarController {
         
     }
 
+    
+    /**
+     Method called as a callback from the OS when the app recieves a memory warning from the OS
+     */
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-
-    func preInitViewControllers(){
-        
-        if let viewControllers = self.viewControllers {
-            
-            for viewController in viewControllers {
-                
-                print(viewController.view)
-                
-            }
-            
-        }
-    }
     
     /**
-     Add image view so no flickering occurs before showing login. Starts a simple loading animation that is dismissed when PULL from CloudantSyncClient completes
+     Method adds image view so no flickering occurs before showing login. Starts a simple loading animation that is dismissed when PULL from CloudantSyncClient completes
      */
     func addBackgroundImageView() {
         self.backgroundImageView = UIImageView(frame: self.view.frame)
@@ -76,12 +68,19 @@ class TabBarViewController: UITabBarController {
         
     }
     
-    
+    /**
+     Method trys to show the login by asking the viewModel to try to show login
+     */
     func tryToShowLogin() {
         viewModel.tryToShowLogin()
     }
     
     
+    /**
+     Method handles DataManagerNotifications passed to the view controller from its viewModel
+     
+     - parameter dataManagerNotification: DataManagerNotification
+     */
     func handleDataNotification(dataManagerNotification : DataManagerNotification){
         
         if(dataManagerNotification == DataManagerNotification.GotPastLoginCheck){
@@ -109,6 +108,9 @@ class TabBarViewController: UITabBarController {
     }
     
     
+    /**
+     Method hides the background image
+     */
     func hideBackgroundImage() {
         
         //hide temp background image used to prevent flash animation
