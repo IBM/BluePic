@@ -2,7 +2,7 @@
 
 ## Overview
 
-BluePic is a sample application for iOS that shows how quickly and simple it is to get started developing with IBM Bluemix services. It is a photo sharing application that allows you to take photos and upload them to a server.
+BluePic is a sample application for iOS that shows how quickly and simple it is to get started developing with IBM Bluemix services. It is a photo sharing application that allows you to take photos and share them with anyone in the BluePic community.
 
 <br>
 ## About IBM Bluemix
@@ -17,16 +17,14 @@ Currently, BluePic supports Xcode 7.1.1, iOS 9+, and Swift 2. Designed for iPhon
 ## Project Structure
 * `/BluePic-iOS` directory for the iOS client.
 * `/BluePic-iOS/BluePic/Configuration` directory for configuring Bluemix services keys
-* `/NodeStarterCode` directory for setup code for the Deploy to Bluemix button.
+* `/NodeStarterCode` directory for the server artifact that is deployed to Bluemix.
 * `/img` directory for images for this README.
 
 <br>
 ## Getting Started
 
 ### 1. Generate Bluemix Services
-Click the Deploy to Bluemix button in order to create an application on your personal Bluemix account that's already set up with the required services.
-
-The button will also create a DevOps Services project and link it to the newly created application.
+Click the Deploy to Bluemix button in order to create a Bluemix application on your account. It will automatically be set up with the required services. A DevOps Services project will also be created.
 
 [![Deploy to Bluemix](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy?repository=https://github.com/rolandoasmat/MyBluemixApp.git)
 
@@ -41,10 +39,14 @@ Basically, you need to create an app on your [Facebook Developers Portal](https:
 
 <br>
 ### 3. Connect BluePic to your Bluemix Account
-Next, take your specific keys for Mobile Client Access (labeled **2** in the figure below), Cloudant NoSQL DB (**1** below), and Object Storage (**3** below) from the Bluemix Dashboard, and copy them into `keys.plist` under the `BluePic-iOS/BluePic/Configuration` directory.
+Next, take your specific keys for Cloudant NoSQL DB (**1** below), Mobile Client Access (labeled **2** in the figure below), and Object Storage (**3** below) from the Bluemix Application Dashboard, and copy them into `keys.plist` located in the `BluePic-iOS/BluePic/Configuration` directory.
+<p align="center">
+<img src="img/bluemix_credentials.PNG"  alt="Drawing" height=500 border=0 /></p>
+<p align="center">Bluemix Application Dashboard</p>
 
 <p align="center">
 <img src="img/keys.PNG"  alt="Drawing" height=250 border=0 /></p>
+<p align="center">BluePic-iOS/BluePic/Configuration directory</p>
 
 <br>
 ### 4. Optional - Pre-populate Feed with Stock Photos

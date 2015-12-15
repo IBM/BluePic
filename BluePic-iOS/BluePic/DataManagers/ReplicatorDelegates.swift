@@ -3,7 +3,6 @@ Licensed Materials - Property of IBM
 © Copyright IBM Corporation 2015. All Rights Reserved.
 */
 
-
 import Foundation
 
 /**
@@ -13,10 +12,9 @@ class PushDelegate:NSObject, CDTReplicatorDelegate {
     
     //var handleAppStartUpResultCallback : ((dataManagerNotification : DataManagerNotification)->())!
     
-    
     /**
-    * Called when the replicator changes state.
-    */
+     * Called when the replicator changes state.
+     */
     func replicatorDidChangeState(replicator:CDTReplicator) {
         print("PUSH Replicator changed state.")
     }
@@ -34,10 +32,7 @@ class PushDelegate:NSObject, CDTReplicatorDelegate {
      */
     func replicatorDidComplete(replicator:CDTReplicator) {
         print("PUSH Replicator completed.")
-        
-        
         CameraDataManager.SharedInstance.clearPictureUploadQueue()
-        
         DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantPushDataSuccess)
         //may need to add logic to know when done pushing to hide fb login
     }
