@@ -11,7 +11,7 @@ BluePic is a sample application for iOS that shows how quickly and simple it is 
 
 <br>
 ## Requirements
-Currently, BluePic supports Xcode 7.1.1, iOS 9+, and Swift 2.
+Currently, BluePic supports Xcode 7.1.1, iOS 9+, and Swift 2. Designed for iPhone, compatible with iPad.
 
 <br>
 ## Project Structure
@@ -61,16 +61,30 @@ Once BluePic is configured, you should be able to upload photos and see them app
 <br>
 
 ## Using BluePic
-//show main features of the app
 
 ### Facebook Login
 BluePic was designed so that anyone can quickly launch the app and view photos posted without needing to log in. However, to view the profile or post photos, the user can easily login with his/her Facebook account. This is only used for a unique user id, as well as to display the user's profile photo.
 
+<p align="center">
+<img src="img/login.PNG"  alt="Drawing" height=550 border=0 /></p>
+
 ### View Feed
+The feed (first tab) shows all the latest photos posted to the BluePic community (regardless if logged in or not).
+
+<p align="center">
+<img src="img/feed.PNG"  alt="Drawing" height=550 border=0 /></p>
 
 ### Post a Photo
+Posting to the BluePic community is easy. Tap the middle tab in the tab bar and choose to either Choose a photo from the Camera Roll or Take a photo using the device's camera. You can then give the photo a caption before posting.
+
+<p align="center">
+<img src="img/post.PNG"  alt="Drawing" height=550 border=0 /></p>
 
 ### View Profile
+By tapping the third tab, you can view your profile. This shows your Facebook profile photo, lists how many photos you've posted, and shows all the photos you've posted to BluePic.
+
+<p align="center">
+<img src="img/profile.PNG"  alt="Drawing" height=550 border=0 /></p>
 
 <br>
 ## Architecture/Bluemix Services Implementation
