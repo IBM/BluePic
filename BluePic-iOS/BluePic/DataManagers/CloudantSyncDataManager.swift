@@ -3,9 +3,6 @@ Licensed Materials - Property of IBM
 © Copyright IBM Corporation 2015. All Rights Reserved.
 */
 
-
-
-// TODO remove orientation field from documents as well as form calls on main application
 import Foundation
 
 /**
@@ -327,9 +324,9 @@ class CloudantSyncDataManager {
      */
      
      /**
-     * This method will create a new Replicator object and push any new docs/updates on the local datastore to the remote database.
-     * This is a asynchronous call and will run on a separate replication thread.
-     */
+      * This method will create a new Replicator object and push any new docs/updates on the local datastore to the remote database.
+      * This is a asynchronous call and will run on a separate replication thread.
+      */
     func pushToRemoteDatabase() throws {
         //Initialize replicator
         try createPushReplicator()
