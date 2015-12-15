@@ -41,7 +41,7 @@ Basically, you need to create an app on your [Facebook Developers Portal](https:
 ### 3. Connect BluePic to your Bluemix Account
 Next, take your specific keys for Cloudant NoSQL DB (**1** below), Mobile Client Access (labeled **2** in the figure below), and Object Storage (**3** below) from the Bluemix Application Dashboard, and copy them into `keys.plist` located in the `BluePic-iOS/BluePic/Configuration` directory.
 <p align="center">
-<img src="img/bluemix_credentials.PNG"  alt="Drawing" height=250 border=0 /></p>
+<img src="img/bluemix_credentials.PNG"  alt="Drawing" height=500 border=0 /></p>
 <p align="center">Bluemix Application Dashboard</p>
 
 <p align="center">
