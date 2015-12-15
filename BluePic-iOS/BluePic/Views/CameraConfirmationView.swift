@@ -26,7 +26,6 @@ class CameraConfirmationView: UIView, UITextFieldDelegate {
     /// Loading indicator while uploading
     @IBOutlet weak var loadingIndicator: UIActivityIndicatorView!
     
-    
     /// Reference to the original frame
     var originalFrame: CGRect!
 

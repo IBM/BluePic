@@ -23,7 +23,15 @@ class ProfileCollectionViewCell: UICollectionViewCell {
     }
     
     
-    
+    /**
+     Method sets up the data for the profile collection view cell
+     
+     - parameter url:         String?
+     - parameter image:       UIImage?
+     - parameter displayName: String?
+     - parameter timeStamp:   Double?
+     - parameter fileName:    String?
+     */
     func setupData(url : String?, image : UIImage?, displayName : String?, timeStamp: Double?, fileName : String?){
         
         
@@ -36,14 +44,17 @@ class ProfileCollectionViewCell: UICollectionViewCell {
             
             timeSincePostedLabel.text = NSDate.timeStringSinceIntervalSinceReferenceDate(tStamp)
             
-            
         }
-        
         
     }
     
     
-    
+    /**
+     Method sets up the image view with an image from the given URL or an image stored locally
+     
+     - parameter url:      String?
+     - parameter fileName: String?
+     */
     func setImageView(url : String?, fileName : String?){
         
         self.loadingView.hidden = false

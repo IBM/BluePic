@@ -75,7 +75,7 @@ class ProfileViewModel: NSObject {
     
     
     /**
-     Method gets the picture dataA
+     Method gets the picture objects from cloudant based on the facebook unique user id. When this completes it tells the profile view controller to refresh its collection view
      */
     func getPictureObjects(){
         pictureDataArray = CloudantSyncDataManager.SharedInstance!.getPictureObjects(FacebookDataManager.SharedInstance.fbUniqueUserID!)
@@ -86,7 +86,9 @@ class ProfileViewModel: NSObject {
         }
     }
     
-    
+    /**
+     method repulls for new data from cloudant
+     */
     func repullForNewData(){
         do {
             try CloudantSyncDataManager.SharedInstance!.pullFromRemoteDatabase()
@@ -98,12 +100,23 @@ class ProfileViewModel: NSObject {
     
     
     
-    
+    /**
+     Method returns the number of sections in the collection view
+     
+     - returns: Int
+     */
     func numberOfSectionsInCollectionView() -> Int {
         return kNumberOfSectionsInCollectionView
     }
     
     
+    /**
+     Method returns the number of items in a section
+     
+     - parameter section: Int
+     
+     - returns: Int
+     */
     func numberOfItemsInSection(section : Int) -> Int {
         
         if(pictureDataArray.count == 0 && hasRecievedDataFromCloudant == true) {
@@ -114,14 +127,23 @@ class ProfileViewModel: NSObject {
         }
     }
     
+    
+    /**
+     Method returns the size for item at indexPath
+     
+     - parameter indexPath:                               NSIndexPath
+     - parameter collectionView:                          UICollectionView
+     - parameter heightForEmptyProfileCollectionViewCell: CGFloat
+     
+     - returns: CGSize
+     */
     func sizeForItemAtIndexPath(indexPath : NSIndexPath, collectionView : UICollectionView, heightForEmptyProfileCollectionViewCell : CGFloat) -> CGSize {
         
         
         if(pictureDataArray.count == 0) {
             
             return CGSize(width: collectionView.frame.width, height: heightForEmptyProfileCollectionViewCell + kEmptyFeedCollectionViewCellBufferToAllowForScrolling)
-            
-            
+    
         }
         else{
         
@@ -150,7 +172,14 @@ class ProfileViewModel: NSObject {
     }
     
     
-    
+    /**
+     Method sets up the collection view cell for indexPath. If the pictureDataArray.count is equal to 0 then we return an instance EmptyfeedCollectionviewCell
+     
+     - parameter indexPath:      NSIndexPath
+     - parameter collectionView: UICollectionViewCell
+     
+     - returns: UICollectionViewCell
+     */
     func setUpCollectionViewCell(indexPath : NSIndexPath, collectionView : UICollectionView) -> UICollectionViewCell {
         
         
@@ -210,7 +239,9 @@ class ProfileViewModel: NSObject {
     
     
 
-    
+    /**
+     Method tells the profile view controller to reload its collectionView
+     */
     func callRefreshCallBack(){
         if let callback = refreshVCCallback {
             callback()

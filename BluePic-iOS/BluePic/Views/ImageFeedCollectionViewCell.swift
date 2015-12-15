@@ -24,9 +24,17 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
     }
     
     
-    
+    /**
+     Method sets up the data for the image feed cell
+     
+     - parameter url:         String?
+     - parameter image:       UIImage?
+     - parameter displayName: String?
+     - parameter ownerName:   String?
+     - parameter timeStamp:   Double?
+     - parameter fileName:    String?
+     */
     func setupData(url : String?, image : UIImage?, displayName : String?, ownerName: String?, timeStamp: Double?, fileName : String?){
-        
      
         self.setImageView(url, fileName: fileName)
 
@@ -39,8 +47,6 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
         }
         photographerNameLabel.text = ownerNameString
         
-        
-        
         if let tStamp = timeStamp {
          
            timeSincePostedLabel.text = NSDate.timeStringSinceIntervalSinceReferenceDate(tStamp)
@@ -50,7 +56,12 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
     }
     
     
-    
+    /**
+     Method sets up the image view with the url provided or a local verion of the image
+     
+     - parameter url:      String?
+     - parameter fileName: String?
+     */
     func setImageView(url : String?, fileName : String?){
         
         self.loadingView.hidden = false

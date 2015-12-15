@@ -18,10 +18,13 @@ class ProfileHeaderCollectionReusableView: UICollectionReusableView {
         // Initialization code
     }
     
-    
-    
-    
-    
+    /**
+    Method sets up the data of the profileHeaderCollectionReusableView
+     
+     - parameter name:              String?
+     - parameter numberOfShots:     Int?
+     - parameter profilePictureURL: String
+     */
     func setupData(name : String?, numberOfShots : Int?, profilePictureURL : String){
     
         nameLabel.text = name?.uppercaseString ?? ""
@@ -44,17 +47,12 @@ class ProfileHeaderCollectionReusableView: UICollectionReusableView {
             }
         }
         
-        
         if let url = NSURL(string: profilePictureURL){
-        
         
             profilePictureImageView.sd_setImageWithURL(url)
             
-            
         }
-        
-        
-
+    
     }
     
     
