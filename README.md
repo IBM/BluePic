@@ -34,7 +34,8 @@ The button will also create a DevOps Services project and link it to the newly c
 ### 2. Create an application instance on Facebook
 In order to authenticate, you must create an application instance on Facebook's website and connect it to your Bluemix app's Mobile Client Access by following the first two steps of [these instructions](https://www.ng.bluemix.net/docs/services/mobileaccess/security/facebook/t_fb_config.html). Make sure you are viewing the sample code in Swift by selecting the drop down at the top right of that page. 
 
-![alt text](img/fb_info.PNG "info.plist")
+<p align="center">
+<img src="img/fb_info.PNG"  alt="Drawing" height=150 border=0 /></p>
 
 Basically, you need to create an app on your [Facebook Developers Portal](https://developers.facebook.com/quickstarts/?platform=ios). Then, replace the `FacebookAppID`, `FacebookDisplayName`, and `URL types` keys with your values in the `info.plist` under the `BluePic-iOS/BluePic/Configuration` directory.
 
@@ -42,14 +43,16 @@ Basically, you need to create an app on your [Facebook Developers Portal](https:
 ### 3. Connect BluePic to your Bluemix Account
 Next, take your specific keys for Mobile Client Access (labeled **2** in the figure below), Cloudant NoSQL DB (**1** below), and Object Storage (**3** below) from the Bluemix Dashboard, and copy them into `keys.plist` under the `BluePic-iOS/BluePic/Configuration` directory.
 
-![alt text](img/keys.PNG "keys.plist")
+<p align="center">
+<img src="img/keys.PNG"  alt="Drawing" height=250 border=0 /></p>
 
 <br>
 ### 4. Optional - Pre-populate Feed with Stock Photos
 Once BluePic is configured, you should be able to upload photos and see them appear on the feed and profile. However, initially your feed will be empty. If you would like to pre-populate your feed with 3 images, simply do the following:
 
 1. With the BluePic Xcode project open, show the Test Navigator by clicking the 4th icon from the right of the Navigator (toolbar frame on the left side)
-![alt text](img/populate_feed.PNG "populate feed")
+<p align="center">
+<img src="img/populate_feed.PNG"  alt="Drawing" height=400 border=0 /></p>
 
 1. Run the test called PopulateFeedWithPhotos which should be grayed out (disabled by default when tests are run) by right clicking it and clicking **Test "PopulateFeedWithPhotos"**.
 
@@ -73,7 +76,8 @@ BluePic was designed so that anyone can quickly launch the app and view photos p
 ## Architecture/Bluemix Services Implementation
 The following architecture is utilized for BluePic. For authentication, Mobile Client Access with Facebook Authentication is implemented. For profile and photo metadata, the Cloudant SDK is integrated. Finally, to actually store user photos and host them in a container, Object Storage is utilized.
 
-![alt text](img/architecture.PNG "architecture")
+<p align="center">
+<img src="img/architecture.PNG"  alt="Drawing" height=350 border=0 /></p>
 
 ### 1. Mobile Client Access Facebook Authentication
 [Bluemix Mobile Client Access Facebook Authentication](https://www.ng.bluemix.net/docs/services/mobileaccess/gettingstarted/ios/index.html) is used for logging into BluePic. 
