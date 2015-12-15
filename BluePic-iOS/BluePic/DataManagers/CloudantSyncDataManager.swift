@@ -49,6 +49,7 @@ class CloudantSyncDataManager {
     var datastore:CDTDatastore!
     var pushReplicator:CDTReplicator!
     var pullReplicator:CDTReplicator!
+    var isPullingFromCloudantAlready = false
     
     /**
      * Constructor for singleton.
@@ -316,6 +317,7 @@ class CloudantSyncDataManager {
             newPicture.timeStamp = rev.body["ts"] as? Double
             newPicture.ownerName = self.getProfileName((rev.body["ownerID"] as? String)!)
             newPicture.setWidthAndHeight(rev.body["width"] as? String, height: rev.body["height"] as? String)
+            newPicture.orientation = rev.body["orientation"] as? String
             pictureObjects.append(newPicture)
         })
         return pictureObjects
@@ -341,9 +343,12 @@ class CloudantSyncDataManager {
      * This is a asynchronous call and will run on a separate replication thread.
      */
     func pullFromRemoteDatabase() throws {
-        //Initialize replicator
-        try createPullReplicator()
-        //Start the replicator
-        try pullReplicator.start()
+        if(isPullingFromCloudantAlready == false){
+            isPullingFromCloudantAlready = true
+            //Initialize replicator
+            try createPullReplicator()
+            //Start the replicator
+            try pullReplicator.start()
+        }
     }
 }

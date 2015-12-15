@@ -248,6 +248,8 @@ class CameraDataManager: NSObject {
         lastPictureObjectTaken.height = lastPhotoTakenHeight
         lastPictureObjectTaken.timeStamp = NSDate.timeIntervalSinceReferenceDate()
         lastPictureObjectTaken.fileName = lastPhotoTakenName
+        lastPictureObjectTaken.orientation = String(lastPhotoTaken.imageOrientation.rawValue)
+        print(lastPictureObjectTaken.orientation)
         
         pictureUploadQueue.append(lastPictureObjectTaken)
         
@@ -327,6 +329,12 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
         if (takenImage.size.width > kResizeAllImagesToThisWidth) { //if image too big, shrink it down
             self.lastPhotoTaken = UIImage.resizeImage(takenImage, newWidth: kResizeAllImagesToThisWidth)
         }
+        else {
+            self.lastPhotoTaken = takenImage
+        }
+            
+            //rotate image if necessary
+            
         
         self.lastPhotoTakenWidth = self.lastPhotoTaken.size.width
         self.lastPhotoTakenHeight = self.lastPhotoTaken.size.height
