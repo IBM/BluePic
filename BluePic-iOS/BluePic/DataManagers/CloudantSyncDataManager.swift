@@ -339,12 +339,9 @@ class CloudantSyncDataManager {
      * This is a asynchronous call and will run on a separate replication thread.
      */
     func pullFromRemoteDatabase() throws {
-        if(isPullingFromCloudantAlready == false){
-            isPullingFromCloudantAlready = true
             //Initialize replicator
             try createPullReplicator()
             //Start the replicator
             try pullReplicator.start()
-        }
     }
 }
