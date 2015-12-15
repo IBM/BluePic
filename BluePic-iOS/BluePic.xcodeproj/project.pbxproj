@@ -173,6 +173,7 @@
 		347AD2151C18E2D200C3B473 /* AlamofireObjectMapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AlamofireObjectMapper.framework; sourceTree = "<group>"; };
 		347AD2161C18E2D200C3B473 /* ObjectMapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ObjectMapper.framework; sourceTree = "<group>"; };
 		347AD2211C18F98600C3B473 /* LoginViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		347E276C1C1F9CD10089EC3D /* BluePic.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = BluePic.entitlements; sourceTree = "<group>"; };
 		34C8094A1BFCD9A300C48004 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		34C8094C1BFCEA0400C48004 /* keys.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = keys.plist; sourceTree = "<group>"; };
 		34C809541BFD0F2400C48004 /* FacebookDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookDataManager.swift; sourceTree = "<group>"; };
@@ -257,6 +258,7 @@
 		3474728C1BFA8C6A0018B7F6 /* BluePic */ = {
 			isa = PBXGroup;
 			children = (
+				347E276C1C1F9CD10089EC3D /* BluePic.entitlements */,
 				1B578C271C1A759C000F6076 /* Resources */,
 				1B3BA0741C0F5FBD0064C850 /* Models */,
 				3474728D1BFA8C6A0018B7F6 /* AppDelegate.swift */,
@@ -510,6 +512,12 @@
 				TargetAttributes = {
 					347472891BFA8C6A0018B7F6 = {
 						CreatedOnToolsVersion = 7.1.1;
+						DevelopmentTeam = PP64RT7P8Z;
+						SystemCapabilities = {
+							com.apple.Keychain = {
+								enabled = 1;
+							};
+						};
 					};
 					3474729D1BFA8C6A0018B7F6 = {
 						CreatedOnToolsVersion = 7.1.1;
@@ -813,6 +821,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = BluePic/BluePic.entitlements;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -835,6 +844,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = BluePic/BluePic.entitlements;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
