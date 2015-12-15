@@ -25,11 +25,13 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
     
     
     
-    func setupData(url : String?, image : UIImage?, displayName : String?, ownerName: String?, timeStamp: Double?, fileName : String?){
+    func setupData(url : String?, image : UIImage?, displayName : String?, ownerName: String?, timeStamp: Double?, fileName : String?, orientation: String?){
         
      
         self.setImageView(url, fileName: fileName)
         
+        self.setImageOrientation(orientation)
+
         
         captionLabel.text = displayName?.uppercaseString ?? ""
         
@@ -76,6 +78,7 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
                         
                         //clear camera data cache since we will be using sdWebImage's cache from now on
                         if result.0 != nil{
+                            
                             //CameraDataManager.SharedInstance.picturesTakenDuringAppSessionById[id] = nil
                         }
                     })
@@ -116,6 +119,37 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
         
         }
     }
+    
+    
+    func setImageOrientation(orientation : String?){
+
+        if let orient = orientation {
+        
+            if let orientationInt = Int(orient) {
+            
+                switch orientationInt {
+                    
+                    case 0: //Up
+                        self.imageView.transform = CGAffineTransformMakeRotation(0)
+                    case 1: //Down
+                        self.imageView.transform = CGAffineTransformMakeRotation(CGFloat(M_PI))
+                    case 2: //Left
+                        self.imageView.transform = CGAffineTransformMakeRotation(CGFloat(3 * M_PI_2))
+                    case 3: //Right
+                        self.imageView.transform = CGAffineTransformMakeRotation(CGFloat(M_PI_2))
+                    default:
+                        self.imageView.transform = CGAffineTransformMakeRotation(0)
+                }
+            }
+        }
+        
+        
+    }
+    
+    
+    
+    
+    
     
 
 }

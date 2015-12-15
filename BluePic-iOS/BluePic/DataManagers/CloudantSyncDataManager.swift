@@ -317,6 +317,7 @@ class CloudantSyncDataManager {
             newPicture.timeStamp = rev.body["ts"] as? Double
             newPicture.ownerName = self.getProfileName((rev.body["ownerID"] as? String)!)
             newPicture.setWidthAndHeight(rev.body["width"] as? String, height: rev.body["height"] as? String)
+            newPicture.orientation = rev.body["orientation"] as? String
             pictureObjects.append(newPicture)
         })
         return pictureObjects

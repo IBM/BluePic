@@ -248,6 +248,7 @@ class CameraDataManager: NSObject {
         lastPictureObjectTaken.height = lastPhotoTakenHeight
         lastPictureObjectTaken.timeStamp = NSDate.timeIntervalSinceReferenceDate()
         lastPictureObjectTaken.fileName = lastPhotoTakenName
+        lastPictureObjectTaken.orientation = String(lastPhotoTaken.imageOrientation.rawValue)
         
         pictureUploadQueue.append(lastPictureObjectTaken)
         
