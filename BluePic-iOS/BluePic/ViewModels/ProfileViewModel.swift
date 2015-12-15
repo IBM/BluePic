@@ -158,8 +158,7 @@ class ProfileViewModel: NSObject {
                 image: picture.image,
                 displayName: picture.displayName,
                 timeStamp: picture.timeStamp,
-                fileName: picture.fileName,
-                orientation: picture.orientation
+                fileName: picture.fileName
             )
         
             cell.layer.shouldRasterize = true

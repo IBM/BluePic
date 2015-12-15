@@ -165,8 +165,7 @@ class FeedViewModel: NSObject {
                 displayName: picture.displayName,
                 ownerName: picture.ownerName,
                 timeStamp: picture.timeStamp,
-                fileName: picture.fileName,
-                orientation: picture.orientation
+                fileName: picture.fileName
             )
         
             cell.layer.shouldRasterize = true

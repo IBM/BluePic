@@ -248,8 +248,6 @@ class CameraDataManager: NSObject {
         lastPictureObjectTaken.height = lastPhotoTakenHeight
         lastPictureObjectTaken.timeStamp = NSDate.timeIntervalSinceReferenceDate()
         lastPictureObjectTaken.fileName = lastPhotoTakenName
-        lastPictureObjectTaken.orientation = String(lastPhotoTaken.imageOrientation.rawValue)
-        print(lastPictureObjectTaken.orientation)
         
         pictureUploadQueue.append(lastPictureObjectTaken)
         
@@ -303,6 +301,24 @@ class CameraDataManager: NSObject {
     }
 
     
+    func rotateImageIfNecessary(imageToRotate: UIImage!) -> UIImage! {
+        let imageOrientation = imageToRotate.imageOrientation.rawValue
+        switch imageOrientation {
+        case 0: //Up
+            return imageToRotate.imageRotatedByDegrees(0, flip: false)
+        case 1: //Down
+            return imageToRotate.imageRotatedByDegrees(180, flip: false)
+        case 2: //Left
+            return imageToRotate.imageRotatedByDegrees(270, flip: false)
+        case 3: //Right
+            return imageToRotate.imageRotatedByDegrees(90, flip: false)
+        default:
+            return imageToRotate.imageRotatedByDegrees(0, flip: false)
+        }
+        
+        
+        
+    }
 
     
     
@@ -333,8 +349,8 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
             self.lastPhotoTaken = takenImage
         }
             
-            //rotate image if necessary
-            
+        //rotate image if necessary
+        self.lastPhotoTaken = self.rotateImageIfNecessary(self.lastPhotoTaken)
         
         self.lastPhotoTakenWidth = self.lastPhotoTaken.size.width
         self.lastPhotoTakenHeight = self.lastPhotoTaken.size.height
