@@ -46,7 +46,6 @@ class CloudantSyncDataManager {
     var datastore:CDTDatastore!
     var pushReplicator:CDTReplicator!
     var pullReplicator:CDTReplicator!
-    var isPullingFromCloudantAlready = false
     
     /**
      * Constructor for singleton.
