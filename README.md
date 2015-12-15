@@ -23,13 +23,13 @@ Currently, BluePic supports Xcode 7.1.1, iOS 9+, and Swift 2. Designed for iPhon
 <br>
 ## Getting Started
 
-### 1. Generate Bluemix Services
+### 1. Create Bluemix Application and Services
 Click the Deploy to Bluemix button in order to create a Bluemix application in your account (it will prompt you to create one if you don't have one). It will automatically initialize all of the required services to run the application.
 <p align="center">
 <a href="https://bluemix.net/deploy?repository=https://github.com/rolandoasmat/MyBluemixApp.git"> <img src="https://bluemix.net/deploy/button.png" alt="Deploy to Bluemix"></a>
 </p>
 
-If desired, update the app name, region, organization or space of the application (default parameters should work). Click DEPLOY.
+If desired, update the app name, region, organization or space of the application (default parameters work). Click DEPLOY.
 <p align="center">
 <img src="img/deploy_button_params.PNG"  alt="Drawing" height=400 border=0 /></p>
 <p align="center">Figure 1: Parameters to deploy a Bluemix application.</p>
@@ -51,8 +51,6 @@ In order to authenticate, you must create an application instance on Facebook's 
 <p align="center">
 <img src="img/fb_info.PNG"  alt="Drawing" height=150 border=0 /></p>
 <p align="center">Figure 4. Info.plist file.</p>
-
-You need to create an app on your [Facebook Developers Portal](https://developers.facebook.com/quickstarts/?platform=ios). Then, replace the `FacebookAppID`, `FacebookDisplayName`, and `URL types` keys with your values in the `info.plist` under the `BluePic-iOS/BluePic/Configuration` directory.
 
 <br>
 ### 3. Connect BluePic to your Bluemix Account
