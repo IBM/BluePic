@@ -61,6 +61,7 @@ class PullDelegate:NSObject, CDTReplicatorDelegate {
      * Called when the replicator changes state.
      */
     func replicatorDidChangeState(replicator:CDTReplicator) {
+        
         print("PULL Replicator changed state.")
     }
     

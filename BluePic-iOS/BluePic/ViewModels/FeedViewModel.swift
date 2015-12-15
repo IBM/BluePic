@@ -21,6 +21,7 @@ class FeedViewModel: NSObject {
     var refreshVCCallback : (()->())?
     var passFeedViewModelNotificationToTabBarVCCallback : ((feedViewModelNotification : FeedViewModelNotification)->())!
     var hasRecievedDataFromCloudant = false
+    private var isPullingFromCloudantAlready = false
     
     let kCollectionViewCellInfoViewHeight : CGFloat = 76
     let kCollectionViewCellHeightLimit : CGFloat = 480
@@ -43,7 +44,11 @@ class FeedViewModel: NSObject {
     func handleDataManagerNotification(dataManagerNotification : DataManagerNotification){
         
         if(dataManagerNotification == DataManagerNotification.CloudantPullDataSuccess){
+            isPullingFromCloudantAlready = false
             getPictureObjects()
+        }
+        else if(dataManagerNotification == DataManagerNotification.CloudantPullDidChangeState){
+            isPullingFromCloudantAlready = true
         }
         else if(dataManagerNotification == DataManagerNotification.UserDecidedToPostPhoto){
             getPictureObjects()
@@ -67,14 +72,16 @@ class FeedViewModel: NSObject {
     }
     
     
-    
+
     
     func repullForNewData() {
-        do {
-            try CloudantSyncDataManager.SharedInstance!.pullFromRemoteDatabase()
-        } catch {
-            print("repullForNewData ERROR: \(error)")
-            DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantPullDataFailure)
+        if(isPullingFromCloudantAlready == false){
+            do {
+                try CloudantSyncDataManager.SharedInstance!.pullFromRemoteDatabase()
+            } catch {
+                print("repullForNewData ERROR: \(error)")
+                DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantPullDataFailure)
+            }
         }
     }
     
