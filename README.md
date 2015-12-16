@@ -76,11 +76,11 @@ Mobile Client Access (marked **2** above)
 
 Object Storage (marked **3** above)
 
-Download and install the Cloud Foundry CLI here and run the following command
+Download and install the [Cloud Foundry CLI](https://github.com/cloudfoundry/cli/releases) and run the following command
 
 `cf service-key 'Object Storage-rz' object-storage-bluepic-key`
 
-From it it will return several keys.
+It will return several keys.
 
 * obj_stg\_public\_url: "auth\_url" from CF CLI command. 
 * obj_stg\_password: "password" from CF CLI command.
