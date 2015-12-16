@@ -150,12 +150,12 @@ class FacebookDataManager: NSObject {
         let route = imfClient.backendRoute
         let guid = imfClient.backendGUID
         
-        if (route == nil || route.length == 0) {
+        if (route == nil || route.characters.count == 0) {
             print ("Invalid Route.\n Check applicationRoute in appdelegate")
             return false
         }
         
-        if (guid == nil || guid.length == 0) {
+        if (guid == nil || guid.characters.count == 0) {
             print ("Invalid GUID.\n Check applicationId in appdelegate")
             return false
         }
