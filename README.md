@@ -264,7 +264,7 @@ Function to create a Profile document:
     }
 ```
 
-Synching with a remote database is done by performing two main operations: push and pull. 
+Synching with a remote database is done by performing two main operations: push and pull. Below is an example of how we perform push.
 
 ```swift
     /**
