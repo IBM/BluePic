@@ -19,7 +19,7 @@ enum CloudantSyncError: ErrorType {
  */
 class CloudantSyncDataManager {
     
-    // Shared instance of data manager
+    // Shared instance of data manager.
     static let SharedInstance:CloudantSyncDataManager? = {
         let key = Utils.getKeyFromPlist("keys", key: "cdt_key")
         let pass = Utils.getKeyFromPlist("keys", key: "cdt_pass")
@@ -34,7 +34,7 @@ class CloudantSyncDataManager {
     }()
     
     /**
-     * Instance variables
+     * Instance variables.
      */
     var dbName:String  // Name of remote database, also used to create local datastore.
     var username:String  // Username from BlueMix service credentials section. ONLY used to construst the database's URL, NOT for authentication purposes.
@@ -57,11 +57,11 @@ class CloudantSyncDataManager {
         self.username = username
         self.pushDelegate = PushDelegate()
         self.pullDelegate = PullDelegate()
-        // Create local datastore
+        // Create local datastore.
         try createLocalDatastore()
-        // Initialize the push replicator
+        // Initialize the push replicator.
         try createPushReplicator()
-        // Initialize the pull replicator
+        // Initialize the pull replicator.
         try createPullReplicator()
     }
     
@@ -81,10 +81,10 @@ class CloudantSyncDataManager {
      * Creates a new Push Replicator and stores it in pushReplicator instance variable.
      */
     func createPushReplicator() throws {
-        //Initialize replicators
+        // Initialize replicators.
         let replicatorFactory = CDTReplicatorFactory(datastoreManager: manager)
         let remoteDatabaseURL = generateURL()
-        // Push Replicate from the local to remote database
+        // Push Replicate from the local to remote database.
         let pushReplication = CDTPushReplication(source: datastore, target: remoteDatabaseURL)
         self.pushReplicator =  try replicatorFactory.oneWay(pushReplication)
         self.pushReplicator.delegate = pushDelegate;
@@ -94,10 +94,10 @@ class CloudantSyncDataManager {
      * Creates a new Pull Replicator and stores it in pullReplicator instance variable.
      */
     func createPullReplicator() throws {
-        //Initialize replicators
+        // Initialize replicators.
         let replicatorFactory = CDTReplicatorFactory(datastoreManager: manager)
         let remoteDatabaseURL = generateURL()
-        // Pull Replicate from remote database to the local
+        // Pull Replicate from remote database to the local.
         let pullReplication = CDTPullReplication(source: remoteDatabaseURL, target: datastore)
         self.pullReplicator =  try replicatorFactory.oneWay(pullReplication)
         self.pullReplicator.delegate = pullDelegate;
@@ -180,10 +180,10 @@ class CloudantSyncDataManager {
      * @param name Profile name for the created document.
      */
     func createProfileDoc(id:String, name:String) throws -> Void {
-        // Create a document
+        // Create a document.
         let rev = CDTDocumentRevision(docId: id)
         rev.body = ["profile_name":name, "Type":"profile"]
-        // Save the document to the datastore
+        // Save the document to the datastore.
         try datastore.createDocumentFromRevision(rev)
         print("Created profile doc with id: \(id)")
     }
@@ -194,10 +194,10 @@ class CloudantSyncDataManager {
      * @param name Profile name for the created document.
      */
     func createProfileDocForTestCases(name:String) throws -> String {
-        // Create a document
+        // Create a document.
         let rev = CDTDocumentRevision()
         rev.body = ["profile_name":name, "Type":"profile"]
-        // Save the document to the datastore
+        // Save the document to the datastore.
         let createdDocument = try datastore.createDocumentFromRevision(rev)
         let id = createdDocument.docId
         print("Created profile doc with id: \(id)")
@@ -210,7 +210,7 @@ class CloudantSyncDataManager {
      * @param id Unique ID of the document to delete.
      */
     func deleteDoc(id:String) throws -> Void {
-        // Delete document
+        // Delete document.
         try datastore.deleteDocumentWithId(id)
         print("Deleted doc with id: \(id)")
     }
@@ -221,15 +221,15 @@ class CloudantSyncDataManager {
      * @param id Unique ID of the user.
      */
     func deletePicturesOfUser(id:String) throws -> Void {
-        // Define query to run
+        // Define query to run.
         let query = [
             "ownerID" : id,
             "Type" : "picture"
         ]
-        // Run query and get a CDTQResultSet object
+        // Run query and get a CDTQResultSet object.
         let docs = datastore.find(query)
         let idArray = docs.documentIds
-        // Delete documents
+        // Delete documents.
         for id in idArray {
             try deleteDoc(id as! String)
         }
@@ -244,9 +244,8 @@ class CloudantSyncDataManager {
      * @param ownerID ID of the profile doc this picture belongs to.
      * @param width Width of the picture, in points.
      * @param height Height of the picture, in points.
-     * @param orientation The orientation of the picture takes, this is the raw value.
      */
-    func createPictureDoc(displayName:String, fileName:String, url:String, ownerID:String, width:String, height:String, orientation:String) throws -> Void {
+    func createPictureDoc(displayName:String, fileName:String, url:String, ownerID:String, width:String, height:String) throws -> Void {
         if(doesExist(ownerID)) {
             let ts = NSDate.timeIntervalSinceReferenceDate()
             let rev = CDTDocumentRevision()
@@ -257,7 +256,6 @@ class CloudantSyncDataManager {
                 "ts":ts,
                 "width":width,
                 "height":height,
-                "orientation":orientation,
                 "Type":"picture"]
             try datastore.createDocumentFromRevision(rev)
             print("Created picture doc with display name: \(displayName)")
@@ -277,9 +275,9 @@ class CloudantSyncDataManager {
      * @return Array of Picture objects.
      */
     func getPictureObjects(id :String?) -> [Picture] {
-        // Create index for sort method to use
+        // Create index for sort method to use.
         datastore.ensureIndexed(["ts"], withName: "timestamps")
-        // Create sort document
+        // Create sort document.
         let sortDocument = [["ts":"desc"]]
         var query:[NSObject:AnyObject]!
         if (id != nil) {
@@ -289,12 +287,12 @@ class CloudantSyncDataManager {
                 "Type" : "picture"
             ]
         } else {
-            // Nil was passed in.
+            // nil was passed in.
             query = [
                 "Type" : "picture"
             ]
         }
-        // Run query and get a CDTQResultSet object
+        // Run query and get a CDTQResultSet object.
         let result = datastore.find(query, skip: 0, limit: 0, fields: nil, sort: sortDocument)
         return createPictureObjects(result)
     }
@@ -330,9 +328,9 @@ class CloudantSyncDataManager {
       * This is a asynchronous call and will run on a separate replication thread.
       */
     func pushToRemoteDatabase() throws {
-        //Initialize replicator
+        //Initialize replicator.
         try createPushReplicator()
-        //Start the replicator
+        //Start the replicator.
         try self.pushReplicator.start()
     }
     
@@ -341,9 +339,9 @@ class CloudantSyncDataManager {
      * This is a asynchronous call and will run on a separate replication thread.
      */
     func pullFromRemoteDatabase() throws {
-        //Initialize replicator
+        //Initialize replicator.
         try createPullReplicator()
-        //Start the replicator
+        //Start the replicator.
         try pullReplicator.start()
     }
 }

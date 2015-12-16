@@ -106,7 +106,7 @@ class PopulateFeedWithPhotos: XCTestCase {
                     print("imageURL: \(imageURL)")
                     print("creating cloudant picture document...")
                     do {
-                        try CloudantSyncDataManager.SharedInstance!.createPictureDoc(caption, fileName: imageName, url: imageURL, ownerID: FBUserID, width: "\(image.size.width)", height: "\(image.size.height)", orientation: "\(image.imageOrientation.rawValue)")
+                        try CloudantSyncDataManager.SharedInstance!.createPictureDoc(caption, fileName: imageName, url: imageURL, ownerID: FBUserID, width: "\(image.size.width)", height: "\(image.size.height)")
                     } catch {
                         print(error)
                         XCTFail("CreatePictureDoc() failed!")

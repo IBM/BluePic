@@ -10,8 +10,6 @@ import Foundation
  */
 class PushDelegate:NSObject, CDTReplicatorDelegate {
     
-    //var handleAppStartUpResultCallback : ((dataManagerNotification : DataManagerNotification)->())!
-    
     /**
      * Called when the replicator changes state.
      */
@@ -20,7 +18,7 @@ class PushDelegate:NSObject, CDTReplicatorDelegate {
     }
     
     /**
-     * Called whenever the replicator changes progress
+     * Called whenever the replicator changes progress.
      */
     func replicatorDidChangeProgress(replicator:CDTReplicator) {
         print("PUSH Replicator changed progess.")
@@ -34,7 +32,6 @@ class PushDelegate:NSObject, CDTReplicatorDelegate {
         print("PUSH Replicator completed.")
         CameraDataManager.SharedInstance.clearPictureUploadQueue()
         DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantPushDataSuccess)
-        //may need to add logic to know when done pushing to hide fb login
     }
     
     /**

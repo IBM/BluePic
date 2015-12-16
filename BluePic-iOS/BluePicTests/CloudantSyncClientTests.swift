@@ -91,14 +91,13 @@ class CloudantSyncClientTests: XCTestCase {
             let url = "http://www.tenayalodge.com/img/Carousel-DiscoverYosemite_img3.jpg"
             let width = "400"
             let height = "100"
-            let orientation = "0"
             let timeStamp = (NSDate.timeIntervalSinceReferenceDate()).description
             // Create EXPECTED Picture Array
             let expectedPictureObject = createPictureObject(fileName, url: url, displayName: displayName, timeStamp: timeStamp, ownerName: name, width: width, height: height)
             var expectedArray = [Picture]()
             expectedArray.append(expectedPictureObject)
             // Create ACTUAL Picture Array
-            try CloudantSyncDataManager.SharedInstance!.createPictureDoc(displayName, fileName: fileName, url: url, ownerID: id, width: width, height: height, orientation: orientation)
+            try CloudantSyncDataManager.SharedInstance!.createPictureDoc(displayName, fileName: fileName, url: url, ownerID: id, width: width, height: height)
             let actualArray = CloudantSyncDataManager.SharedInstance!.getPictureObjects(id)
             // Compare all the fields of both picture arrays
             comparePictureObjects(expectedArray, actual: actualArray)
@@ -119,8 +118,7 @@ class CloudantSyncClientTests: XCTestCase {
             let url = "http://www.tenayalodge.com/img/Carousel-DiscoverYosemite_img3.jpg"
             let width = "400"
             let height = "100"
-            let orientation = "0"
-            try CloudantSyncDataManager.SharedInstance!.createPictureDoc(displayName, fileName: fileName, url: url, ownerID: "", width: width, height: height, orientation: orientation)
+            try CloudantSyncDataManager.SharedInstance!.createPictureDoc(displayName, fileName: fileName, url: url, ownerID: "", width: width, height: height)
         } catch {
             print("Test passed, creation of this doc SHOULD fail")
         }
@@ -142,7 +140,6 @@ class CloudantSyncClientTests: XCTestCase {
             let urls = ["https://www.flmnh.ufl.edu/fish/SouthFlorida/images/bocachita.JPG", "http://media-cdn.tripadvisor.com/media/photo-s/02/92/12/75/sierra-del-carmen-sunset.jpg", "http://www.tenayalodge.com/img/Carousel-DiscoverYosemite_img3.jpg","https://www.flmnh.ufl.edu/fish/SouthFlorida/images/bocachita.JPG"]
             let widths = ["500", "200", "400"]
             let heights = ["150", "300", "100"]
-            let orientations = ["0", "1", "2"]
             let timeStamp = (NSDate.timeIntervalSinceReferenceDate()).description
             // Create expected array of picture objects.
             var expectedArray = [Picture]()
@@ -155,11 +152,11 @@ class CloudantSyncClientTests: XCTestCase {
             
             // Create actual array of picture objects.
             try CloudantSyncDataManager.SharedInstance!.createPictureDoc(
-                displayNames[2], fileName: fileNames[2], url: urls[2], ownerID: id, width: widths[2], height: heights[2], orientation: orientations[2])
+                displayNames[2], fileName: fileNames[2], url: urls[2], ownerID: id, width: widths[2], height: heights[2])
             try CloudantSyncDataManager.SharedInstance!.createPictureDoc(
-                displayNames[1], fileName: fileNames[1], url: urls[1], ownerID: id, width: widths[1], height: heights[1], orientation: orientations[1])
+                displayNames[1], fileName: fileNames[1], url: urls[1], ownerID: id, width: widths[1], height: heights[1])
             try CloudantSyncDataManager.SharedInstance!.createPictureDoc(
-                displayNames[0], fileName: fileNames[0], url: urls[0], ownerID: id, width: widths[0], height: heights[0], orientation: orientations[0])
+                displayNames[0], fileName: fileNames[0], url: urls[0], ownerID: id, width: widths[0], height: heights[0])
             // Run Query to get pictures corresponding to specified user id
             let actualArray = CloudantSyncDataManager.SharedInstance!.getPictureObjects(id)
             // Compare the arrays
@@ -192,7 +189,6 @@ class CloudantSyncClientTests: XCTestCase {
             let urls = ["https://www.flmnh.ufl.edu/fish/SouthFlorida/images/bocachita.JPG", "http://media-cdn.tripadvisor.com/media/photo-s/02/92/12/75/sierra-del-carmen-sunset.jpg", "http://www.tenayalodge.com/img/Carousel-DiscoverYosemite_img3.jpg","https://www.flmnh.ufl.edu/fish/SouthFlorida/images/bocachita.JPG"]
             let widths = ["500", "200", "400"]
             let heights = ["150", "300", "100"]
-            let orientations = ["0", "1", "2"]
             let timeStamp = (NSDate.timeIntervalSinceReferenceDate()).description
             // Create expected array of picture objects.
             var expectedArray = [Picture]()
@@ -205,11 +201,11 @@ class CloudantSyncClientTests: XCTestCase {
             
             // Create actual array of picture objects.
             try CloudantSyncDataManager.SharedInstance!.createPictureDoc(
-                displayNames[2], fileName: fileNames[2], url: urls[2], ownerID: id1, width: widths[2], height: heights[2], orientation: orientations[2])
+                displayNames[2], fileName: fileNames[2], url: urls[2], ownerID: id1, width: widths[2], height: heights[2])
             try CloudantSyncDataManager.SharedInstance!.createPictureDoc(
-                displayNames[1], fileName: fileNames[1], url: urls[1], ownerID: id2, width: widths[1], height: heights[1], orientation: orientations[1])
+                displayNames[1], fileName: fileNames[1], url: urls[1], ownerID: id2, width: widths[1], height: heights[1])
             try CloudantSyncDataManager.SharedInstance!.createPictureDoc(
-                displayNames[0], fileName: fileNames[0], url: urls[0], ownerID: id3, width: widths[0], height: heights[0], orientation: orientations[0])
+                displayNames[0], fileName: fileNames[0], url: urls[0], ownerID: id3, width: widths[0], height: heights[0])
             // Run Query to get pictures corresponding to specified user id
             let actualArray = CloudantSyncDataManager.SharedInstance!.getPictureObjects(nil)
             // Compare the arrays
@@ -233,9 +229,8 @@ class CloudantSyncClientTests: XCTestCase {
             let url = "https://www.flmnh.ufl.edu/fish/SouthFlorida/images/bocachita.JPG"
             let width = "500"
             let height = "150"
-            let orientation = "0"
             try CloudantSyncDataManager.SharedInstance!.createPictureDoc(
-                displayName, fileName: fileName, url: url, ownerID: id, width: width, height: height, orientation: orientation)
+                displayName, fileName: fileName, url: url, ownerID: id, width: width, height: height)
             let document = CloudantSyncDataManager.SharedInstance!.getDoc(id)
             print(document)
             // Push local datastore to remote database

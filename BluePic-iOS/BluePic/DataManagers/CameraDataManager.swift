@@ -211,7 +211,7 @@ class CameraDataManager: NSObject {
                 self.lastPhotoTakenURL = imageURL
                 print("image orientation is: \(self.lastPhotoTaken.imageOrientation.rawValue), width: \(self.lastPhotoTaken.size.width) height: \(self.lastPhotoTaken.size.height)")
                 do {
-                    try CloudantSyncDataManager.SharedInstance!.createPictureDoc(self.lastPhotoTakenCaption, fileName: self.lastPhotoTakenName, url: self.lastPhotoTakenURL, ownerID: FacebookDataManager.SharedInstance.fbUniqueUserID!, width: "\(self.lastPhotoTaken.size.width)", height: "\(self.lastPhotoTaken.size.height)", orientation: "\(self.lastPhotoTaken.imageOrientation.rawValue)")
+                    try CloudantSyncDataManager.SharedInstance!.createPictureDoc(self.lastPhotoTakenCaption, fileName: self.lastPhotoTakenName, url: self.lastPhotoTakenURL, ownerID: FacebookDataManager.SharedInstance.fbUniqueUserID!, width: "\(self.lastPhotoTaken.size.width)", height: "\(self.lastPhotoTaken.size.height)")
                 } catch {
                     print("uploadImageToObjectStorage ERROR: \(error)")
                     DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantCreatePictureFailure)
