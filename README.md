@@ -8,7 +8,7 @@ BluePic is a sample application for iOS that shows you how to connect your mobil
 * [Getting Started](#getting-started)
 * [Using BluePic](#using-bluepic)
 * [Project Structure](#project-structure)
-* [Architecture/Bluemix Services Implementation](#architecture/nluemix-services-implementation)
+* [Architecture/Bluemix Services Implementation](#architecture/bluemix-services-implementation)
 * [Architecture Forethought](#architecture-forethought)
 * [License](#license)
 
