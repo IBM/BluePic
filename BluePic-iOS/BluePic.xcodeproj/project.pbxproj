@@ -40,11 +40,6 @@
 		347472981BFA8C6A0018B7F6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 347472961BFA8C6A0018B7F6 /* LaunchScreen.storyboard */; };
 		347472A31BFA8C6A0018B7F6 /* BluePicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347472A21BFA8C6A0018B7F6 /* BluePicTests.swift */; };
 		347472AE1BFA8C6A0018B7F6 /* BluePicUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347472AD1BFA8C6A0018B7F6 /* BluePicUITests.swift */; };
-		347472DC1BFA8DEF0018B7F6 /* CGFloatExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347472C01BFA8DEF0018B7F6 /* CGFloatExtension.swift */; };
-		347472DD1BFA8DEF0018B7F6 /* DoubleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347472C11BFA8DEF0018B7F6 /* DoubleExtension.swift */; };
-		347472DE1BFA8DEF0018B7F6 /* FloatExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347472C21BFA8DEF0018B7F6 /* FloatExtension.swift */; };
-		347472DF1BFA8DEF0018B7F6 /* IntExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347472C31BFA8DEF0018B7F6 /* IntExtension.swift */; };
-		347472E01BFA8DEF0018B7F6 /* NSCoderExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347472C41BFA8DEF0018B7F6 /* NSCoderExtension.swift */; };
 		347472E11BFA8DEF0018B7F6 /* NSDateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347472C51BFA8DEF0018B7F6 /* NSDateExtension.swift */; };
 		347472E71BFA8DEF0018B7F6 /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347472CB1BFA8DEF0018B7F6 /* UIImageExtension.swift */; };
 		347472EA1BFA8DEF0018B7F6 /* UIViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347472CE1BFA8DEF0018B7F6 /* UIViewExtensions.swift */; };
@@ -141,11 +136,6 @@
 		347472A91BFA8C6A0018B7F6 /* BluePicUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BluePicUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		347472AD1BFA8C6A0018B7F6 /* BluePicUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluePicUITests.swift; sourceTree = "<group>"; };
 		347472AF1BFA8C6A0018B7F6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		347472C01BFA8DEF0018B7F6 /* CGFloatExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGFloatExtension.swift; sourceTree = "<group>"; };
-		347472C11BFA8DEF0018B7F6 /* DoubleExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DoubleExtension.swift; sourceTree = "<group>"; };
-		347472C21BFA8DEF0018B7F6 /* FloatExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatExtension.swift; sourceTree = "<group>"; };
-		347472C31BFA8DEF0018B7F6 /* IntExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntExtension.swift; sourceTree = "<group>"; };
-		347472C41BFA8DEF0018B7F6 /* NSCoderExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSCoderExtension.swift; sourceTree = "<group>"; };
 		347472C51BFA8DEF0018B7F6 /* NSDateExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSDateExtension.swift; sourceTree = "<group>"; };
 		347472CB1BFA8DEF0018B7F6 /* UIImageExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
 		347472CE1BFA8DEF0018B7F6 /* UIViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewExtensions.swift; sourceTree = "<group>"; };
@@ -306,11 +296,6 @@
 		347472BF1BFA8DEF0018B7F6 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				347472C01BFA8DEF0018B7F6 /* CGFloatExtension.swift */,
-				347472C11BFA8DEF0018B7F6 /* DoubleExtension.swift */,
-				347472C21BFA8DEF0018B7F6 /* FloatExtension.swift */,
-				347472C31BFA8DEF0018B7F6 /* IntExtension.swift */,
-				347472C41BFA8DEF0018B7F6 /* NSCoderExtension.swift */,
 				347472C51BFA8DEF0018B7F6 /* NSDateExtension.swift */,
 				347472CB1BFA8DEF0018B7F6 /* UIImageExtension.swift */,
 				347472CE1BFA8DEF0018B7F6 /* UIViewExtensions.swift */,
@@ -617,14 +602,10 @@
 			files = (
 				1B057E041C17637700AC21EE /* DataManagerCalbackCoordinator.swift in Sources */,
 				346F94821C0F9225004999A8 /* CameraConfirmationView.swift in Sources */,
-				347472DD1BFA8DEF0018B7F6 /* DoubleExtension.swift in Sources */,
 				3435C7CF1C036A60004923BD /* TabBarViewController.swift in Sources */,
-				347472DF1BFA8DEF0018B7F6 /* IntExtension.swift in Sources */,
-				347472DE1BFA8DEF0018B7F6 /* FloatExtension.swift in Sources */,
 				1B2DC2531C1F360D00B4E77B /* EmptyFeedCollectionViewCell.swift in Sources */,
 				1BC7AF5F1C0E480800DDFD02 /* ImageFeedCollectionViewCell.swift in Sources */,
 				1B3BA0781C0F62850064C850 /* Picture.swift in Sources */,
-				347472E01BFA8DEF0018B7F6 /* NSCoderExtension.swift in Sources */,
 				347472EF1BFA8DEF0018B7F6 /* Utils.swift in Sources */,
 				346F947C1C0F868C004999A8 /* CameraDataManager.swift in Sources */,
 				347472E71BFA8DEF0018B7F6 /* UIImageExtension.swift in Sources */,
@@ -634,7 +615,6 @@
 				347472E11BFA8DEF0018B7F6 /* NSDateExtension.swift in Sources */,
 				1BC7AF5C1C0E39F100DDFD02 /* FeedViewModel.swift in Sources */,
 				B3C2CE981C19DC54003DAF5A /* ReplicatorDelegates.swift in Sources */,
-				347472DC1BFA8DEF0018B7F6 /* CGFloatExtension.swift in Sources */,
 				347472EE1BFA8DEF0018B7F6 /* LocalizationUtils.swift in Sources */,
 				3435C7D71C041116004923BD /* CameraViewController.swift in Sources */,
 				3435C7D31C03E223004923BD /* ObjectStorageClient.swift in Sources */,
