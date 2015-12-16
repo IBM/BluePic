@@ -52,8 +52,6 @@
 		347472E51BFA8DEF0018B7F6 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347472C91BFA8DEF0018B7F6 /* UIColorExtension.swift */; };
 		347472E61BFA8DEF0018B7F6 /* UIFontExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347472CA1BFA8DEF0018B7F6 /* UIFontExtension.swift */; };
 		347472E71BFA8DEF0018B7F6 /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347472CB1BFA8DEF0018B7F6 /* UIImageExtension.swift */; };
-		347472E81BFA8DEF0018B7F6 /* UIImageViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347472CC1BFA8DEF0018B7F6 /* UIImageViewExtension.swift */; };
-		347472E91BFA8DEF0018B7F6 /* UILabelExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347472CD1BFA8DEF0018B7F6 /* UILabelExtension.swift */; };
 		347472EA1BFA8DEF0018B7F6 /* UIViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347472CE1BFA8DEF0018B7F6 /* UIViewExtensions.swift */; };
 		347472ED1BFA8DEF0018B7F6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 347472D31BFA8DEF0018B7F6 /* Main.storyboard */; };
 		347472EE1BFA8DEF0018B7F6 /* LocalizationUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347472D61BFA8DEF0018B7F6 /* LocalizationUtils.swift */; };
@@ -160,8 +158,6 @@
 		347472C91BFA8DEF0018B7F6 /* UIColorExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
 		347472CA1BFA8DEF0018B7F6 /* UIFontExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIFontExtension.swift; sourceTree = "<group>"; };
 		347472CB1BFA8DEF0018B7F6 /* UIImageExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
-		347472CC1BFA8DEF0018B7F6 /* UIImageViewExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageViewExtension.swift; sourceTree = "<group>"; };
-		347472CD1BFA8DEF0018B7F6 /* UILabelExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UILabelExtension.swift; sourceTree = "<group>"; };
 		347472CE1BFA8DEF0018B7F6 /* UIViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewExtensions.swift; sourceTree = "<group>"; };
 		347472D31BFA8DEF0018B7F6 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		347472D61BFA8DEF0018B7F6 /* LocalizationUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalizationUtils.swift; sourceTree = "<group>"; };
@@ -332,8 +328,6 @@
 				347472C91BFA8DEF0018B7F6 /* UIColorExtension.swift */,
 				347472CA1BFA8DEF0018B7F6 /* UIFontExtension.swift */,
 				347472CB1BFA8DEF0018B7F6 /* UIImageExtension.swift */,
-				347472CC1BFA8DEF0018B7F6 /* UIImageViewExtension.swift */,
-				347472CD1BFA8DEF0018B7F6 /* UILabelExtension.swift */,
 				347472CE1BFA8DEF0018B7F6 /* UIViewExtensions.swift */,
 			);
 			path = Extensions;
@@ -639,7 +633,6 @@
 				1B057E041C17637700AC21EE /* DataManagerCalbackCoordinator.swift in Sources */,
 				346F94821C0F9225004999A8 /* CameraConfirmationView.swift in Sources */,
 				347472DD1BFA8DEF0018B7F6 /* DoubleExtension.swift in Sources */,
-				347472E91BFA8DEF0018B7F6 /* UILabelExtension.swift in Sources */,
 				3435C7CF1C036A60004923BD /* TabBarViewController.swift in Sources */,
 				347472DF1BFA8DEF0018B7F6 /* IntExtension.swift in Sources */,
 				347472DE1BFA8DEF0018B7F6 /* FloatExtension.swift in Sources */,
@@ -665,7 +658,6 @@
 				3435C7D71C041116004923BD /* CameraViewController.swift in Sources */,
 				3435C7D31C03E223004923BD /* ObjectStorageClient.swift in Sources */,
 				347472E31BFA8DEF0018B7F6 /* StringExtension.swift in Sources */,
-				347472E81BFA8DEF0018B7F6 /* UIImageViewExtension.swift in Sources */,
 				347472EA1BFA8DEF0018B7F6 /* UIViewExtensions.swift in Sources */,
 				34CA18201C04CB6700EC2636 /* ObjectStorageDataManager.swift in Sources */,
 				347472F11BFA8E320018B7F6 /* LoginViewController.swift in Sources */,
