@@ -36,16 +36,6 @@ extension NSDate {
     private func components() -> NSDateComponents  {
         return NSDate.components(fromDate: self)!
     }
-    
-
-    /**
-     Method returns a localizd string of the current date
-     
-     - returns: String
-     */
-    func localizedStringTime()->String {
-            return NSDateFormatter.localizedStringFromDate(self, dateStyle: NSDateFormatterStyle.NoStyle, timeStyle: NSDateFormatterStyle.ShortStyle)
-    }
 
     
     /**

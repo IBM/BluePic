@@ -44,7 +44,6 @@
 		347472E71BFA8DEF0018B7F6 /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347472CB1BFA8DEF0018B7F6 /* UIImageExtension.swift */; };
 		347472EA1BFA8DEF0018B7F6 /* UIViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347472CE1BFA8DEF0018B7F6 /* UIViewExtensions.swift */; };
 		347472ED1BFA8DEF0018B7F6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 347472D31BFA8DEF0018B7F6 /* Main.storyboard */; };
-		347472EE1BFA8DEF0018B7F6 /* LocalizationUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347472D61BFA8DEF0018B7F6 /* LocalizationUtils.swift */; };
 		347472EF1BFA8DEF0018B7F6 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347472D71BFA8DEF0018B7F6 /* Utils.swift */; };
 		347472F11BFA8E320018B7F6 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347472F01BFA8E320018B7F6 /* LoginViewController.swift */; };
 		347AD21A1C18E2DC00C3B473 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 347AD2141C18E2D200C3B473 /* Alamofire.framework */; };
@@ -140,7 +139,6 @@
 		347472CB1BFA8DEF0018B7F6 /* UIImageExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
 		347472CE1BFA8DEF0018B7F6 /* UIViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewExtensions.swift; sourceTree = "<group>"; };
 		347472D31BFA8DEF0018B7F6 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
-		347472D61BFA8DEF0018B7F6 /* LocalizationUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalizationUtils.swift; sourceTree = "<group>"; };
 		347472D71BFA8DEF0018B7F6 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		347472F01BFA8E320018B7F6 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		347AD2141C18E2D200C3B473 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Alamofire.framework; sourceTree = "<group>"; };
@@ -317,7 +315,6 @@
 		347472D51BFA8DEF0018B7F6 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				347472D61BFA8DEF0018B7F6 /* LocalizationUtils.swift */,
 				347472D71BFA8DEF0018B7F6 /* Utils.swift */,
 			);
 			path = Utilities;
@@ -615,7 +612,6 @@
 				347472E11BFA8DEF0018B7F6 /* NSDateExtension.swift in Sources */,
 				1BC7AF5C1C0E39F100DDFD02 /* FeedViewModel.swift in Sources */,
 				B3C2CE981C19DC54003DAF5A /* ReplicatorDelegates.swift in Sources */,
-				347472EE1BFA8DEF0018B7F6 /* LocalizationUtils.swift in Sources */,
 				3435C7D71C041116004923BD /* CameraViewController.swift in Sources */,
 				3435C7D31C03E223004923BD /* ObjectStorageClient.swift in Sources */,
 				347472EA1BFA8DEF0018B7F6 /* UIViewExtensions.swift in Sources */,
