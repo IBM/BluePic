@@ -28,7 +28,7 @@ Currently, BluePic supports Xcode 7.1.1, iOS 9+, and Swift 2. Designed for iPhon
 ## Getting Started
 
 ### 1. Create Bluemix Application and Services
-Click the Deploy to Bluemix button in order to create a Bluemix application in your account (it will prompt you to create one if you don't have one). It will automatically initialize all of the required services to run the application.
+Click the Deploy to Bluemix button below. It will create a Bluemix application in your account (it will prompt you to create one if you don't have one) and initialize the required services.
 <p align="center">
 <a href="https://bluemix.net/deploy?repository=https://github.com/rolandoasmat/MyBluemixApp.git"> <img src="https://bluemix.net/deploy/button.png" alt="Deploy to Bluemix"></a>
 </p>
@@ -73,7 +73,7 @@ The app has to be configured with certain credentials from each of the three Blu
 
 Cloudant NoSQL DB (marked **1** above)
 
-* cdt_username: "username" from corresponding credentials section.
+* cdt_username: "username" from corresponding credentials section, see Figure 6.
 * cdt_db\_name: Create a dabatase from the Cloudant Dashboard and put the name of created database here.  
 * cdt_key: Generate an API KEY from the Cloudant Dashboard by clicking "Generate API Key" in the permissions tab of any database. Make sure to add Writer and Replicator permissions as well. Note the displayed password.
 * cdt_pass: Enter the password of the API Key here.
@@ -98,8 +98,8 @@ Cloudant NoSQL DB (marked **1** above)
 
 Mobile Client Access (marked **2** above)
 
-* backend_route: List on the top of the Application Overview page, next to the "Routes:" label. 
-* GUID: "clientId" from corresponding credentials section.
+* backend_route: List on the top of the Application Overview page, next to the "Routes:" label, see Figure 6. 
+* GUID: "clientId" from corresponding credentials section, see Figure 6.
 
 Object Storage (marked **3** above)
 
@@ -112,8 +112,8 @@ It will return several keys.
 * obj_stg\_public\_url: "auth\_url" from CF CLI command. 
 * obj_stg\_password: "password" from CF CLI command.
 * obj_stg\_user\_id: "userId" from CF CLI command.
-* obj_stg\_project\_id: "projectId" from corresponding credentials section.
-* obj_stg\_auth\_url: "auth\_url" from corresponding credentials section.
+* obj_stg\_project\_id: "projectId" from corresponding credentials section, see Figure 6.
+* obj_stg\_auth\_url: "auth\_url" from corresponding credentials section, see Figure 6.
 
 <br>
 ### 4. Pre-populate Feed with Stock Photos (Optional)
