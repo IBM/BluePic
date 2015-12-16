@@ -10,7 +10,7 @@ BluePic is a sample application for iOS that shows you how to connect your mobil
 
 [Bluemix™](https://developer.ibm.com/sso/bmregistration?lang=en_US&ca=dw-_-bluemix-_-cl-bluemixfoundry-_-article) is the latest cloud offering from IBM®. It enables organizations and developers to quickly and easily create, deploy, and manage applications on the cloud. Bluemix is an implementation of IBM's Open Cloud Architecture based on [Cloud Foundry](https://www.cloudfoundry.org/), an open source Platform as a Service (PaaS). Bluemix delivers enterprise-level services that can easily integrate with your cloud applications without you needing to know how to install or configure them.
 
-In Bluemix you should be aware that the “application” the gets created and deployed in Bluemix refers to a  server component plus Bluemix services needed. It is not the mobile application that gets deployed, this will become clear as you go through the Getting Started guide. 
+In Bluemix you should be aware that often the term “Application” is used to refer to a server component and its Bluemix services needed. It is this server component that gets deployed to Bluemix. It is not the mobile application that gets deployed, this will become clear as you go through the Getting Started guide. 
 
 <br>
 ## Requirements
