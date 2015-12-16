@@ -8,7 +8,7 @@ BluePic is a sample application for iOS that shows you how to connect your mobil
 <br>
 ## About IBM Bluemix
 
-[Bluemix™](https://developer.ibm.com/sso/bmregistration?lang=en_US&ca=dw-_-bluemix-_-cl-bluemixfoundry-_-article) is the latest cloud offering from IBM®. It enables organizations and developers to quickly and easily create, deploy, and manage applications on the cloud. Bluemix is an implementation of IBM's Open Cloud Architecture based on Cloud Foundry, an open source Platform as a Service (PaaS). Bluemix delivers enterprise-level services that can easily integrate with your cloud applications without you needing to know how to install or configure them.
+[Bluemix™](https://developer.ibm.com/sso/bmregistration?lang=en_US&ca=dw-_-bluemix-_-cl-bluemixfoundry-_-article) is the latest cloud offering from IBM®. It enables organizations and developers to quickly and easily create, deploy, and manage applications on the cloud. Bluemix is an implementation of IBM's Open Cloud Architecture based on [Cloud Foundry](https://www.cloudfoundry.org/), an open source Platform as a Service (PaaS). Bluemix delivers enterprise-level services that can easily integrate with your cloud applications without you needing to know how to install or configure them.
 
 <br>
 ## Requirements
@@ -84,7 +84,7 @@ Object Storage
 <p align="center">Figure 6. BluePic-iOS/BluePic/Configuration directory.</p>
 
 <br>
-### 4. Optional - Pre-populate Feed with Stock Photos
+### 4. Pre-populate Feed with Stock Photos (Optional)
 Once BluePic is configured, you should be able to upload photos and see them appear on the feed and profile. However, initially your feed will be empty. If you would like to pre-populate your feed with 3 images, simply do the following:
 
 1. With the BluePic Xcode project open, show the Test Navigator by clicking the 4th icon from the right of the Navigator (toolbar frame on the left side)
@@ -130,13 +130,13 @@ By tapping the third tab, you can view your profile. This shows your Facebook pr
 <br>
 ## Project Structure
 * `/BluePic-iOS` directory for the iOS client.
-* `/BluePic-iOS/BluePic/Configuration` directory for configuring Bluemix services keys
+* `/BluePic-iOS/BluePic/Configuration` directory for configuring Bluemix services keys.
 * `/NodeStarterCode` directory for the server artifact that is deployed to Bluemix.
 * `/img` directory for images for this README.
 
 <br>
 ## Architecture/Bluemix Services Implementation
-The following architecture is utilized for BluePic. For authentication, Mobile Client Access with Facebook Authentication is implemented. For profile and photo metadata, the Cloudant SDK is integrated. Finally, to actually store user photos and host them in a container, Object Storage is utilized.
+The following architecture is utilized for BluePic. For authentication, Mobile Client Access with Facebook Authentication is implemented. For profile and photo metadata, the Cloudant SDK is integrated. Finally, for photo storage and hosting, Object Storage is utilized.
 
 <p align="center">
 <img src="img/architecture.PNG"  alt="Drawing" height=350 border=0 /></p>
