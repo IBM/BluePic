@@ -64,9 +64,10 @@ The app has to be configured with certain credentials from each of the three Blu
 Cloudant NoSQL DB (marked **1** above)
 
 * cdt_username: "username" from corresponding credentials section.
-* cdt_db\_name: Create a dabatase from the Cloudant Dashboard and put the name of created database here. 
+* cdt_db\_name: Create a dabatase from the Cloudant Dashboard and put the name of created database here.  
 * cdt_key: Generate an API KEY from the Cloudant Dashboard by clicking "Generate API Key" in the permissions tab of any database. Make sure to add Writer and Replicator permissions as well. Note the displayed password.
-* cdt_pass: Enter the password of the API Key here. 
+* cdt_pass: Enter the password of the API Key here.
+* cdt_tests\_db\_name: Create a dabatase for the test cases to run in, put that name here. Once created go to "Permissions" tab, under "Share Database" put the API KEY from above, again ensure it has Writer and Replicator permissions. 
 
 Mobile Client Access (marked **2** above)
 
