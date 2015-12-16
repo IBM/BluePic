@@ -35,12 +35,12 @@ Click the Deploy to Bluemix button in order to create a Bluemix application in y
 
 If desired, update the app name, region, organization or space of the application (default parameters work). Click DEPLOY.
 <p align="center">
-<img src="img/deploy_button_params.PNG"  alt="Drawing" height=400 border=0 /></p>
+<img src="img/deploy_button_params.PNG"  alt="Drawing" width=300 border=0 /></p>
 <p align="center">Figure 1: Parameters to deploy a Bluemix application.</p>
 
 Upon success you should see:
 <p align="center">
-<img src="img/deploy_button_success.PNG"  alt="Drawing" height=400 border=0 /></p>
+<img src="img/deploy_button_success.PNG"  alt="Drawing" width=300 border=0 /></p>
 <p align="center">Figure 2: Deploy success page.</p>
 
 Note: If deploying to Bluemix fails, make sure to manually delete the failed application on the Bluemix Dashboard as well as the created project on DevOps services (formerly known as JazzHub) before trying again.
@@ -48,7 +48,7 @@ Note: If deploying to Bluemix fails, make sure to manually delete the failed app
 
 On your dashboard the application should then become accessible:
 <p align="center">
-<img src="img/dashboard_application.PNG"  alt="Drawing" height=400 border=0 /></p>
+<img src="img/dashboard_application.PNG"  alt="Drawing" height=300 border=0 /></p>
 <p align="center">Figure 3: Bluemix dashboard.</p>
 
 <br>
@@ -64,11 +64,11 @@ In order to authenticate, you must create an application instance on Facebook's 
 The app has to be configured with certain credentials from each of the three Bluemix services. The file `keys.plist` located in the `BluePic-iOS/BluePic/Configuration` directory must be updated with the following credentials.
 
 <p align="center">
-<img src="img/keys.PNG"  alt="Drawing" height=250 border=0 /></p>
+<img src="img/keys.PNG"  alt="Drawing" width=500 border=0 /></p>
 <p align="center">Figure 5. keys.plist located in the BluePic-iOS/BluePic/Configuration directory.</p>
 
 <p align="center">
-<img src="img/bluemix_credentials.PNG"  alt="Drawing" height=500 border=0 /></p>
+<img src="img/bluemix_credentials.PNG"  alt="Drawing" width=500 border=0 /></p>
 <p align="center">Figure 6. Application overview page, marked with credentials location.</p>
 
 Cloudant NoSQL DB (marked **1** above)
