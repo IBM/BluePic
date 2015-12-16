@@ -228,7 +228,7 @@ if let userID = identity["id"] as? NSString {
 
 <br>
 ### 2. Cloudant Sync (CDTDatastore)
-Cloudant Sync [(CDTDatastore)](https://www.ng.bluemix.net/docs/services/mobileaccess/gettingstarted/ios/index.html) enables you to create a single local database for every user. The app simply replicates and syncs a copy of the remote database in Cloudant with its local copy on their phone or tablet. If there’s no network connection, the app runs off the local database on the device. In BluePic we have two types of documents: profile and picture. Note that we only store the metadata for pictures, the actual image is stored in the Object Storage Bluemix service. The `CloudantSyncDataManager` class was created to handle communication between iOS and Cloudant Sync.
+Cloudant Sync [(CDTDatastore)](https://github.com/cloudant/CDTDatastore) enables you to create a single local database for every user. The app simply replicates and syncs a copy of the remote database in Cloudant with its local copy on their phone or tablet. If there’s no network connection, the app runs off the local database on the device. In BluePic we have two types of documents: profile and picture. Note that we only store the metadata for pictures, the actual image is stored in the Object Storage Bluemix service. The `CloudantSyncDataManager` class was created to handle communication between iOS and Cloudant Sync.
 
 Creating a local datastore:
 
