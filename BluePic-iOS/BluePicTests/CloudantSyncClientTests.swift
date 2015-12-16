@@ -11,7 +11,7 @@ import XCTest
  */
 class CloudantSyncClientTests: XCTestCase {
     
-    let dbName = "tests_db"
+    let dbName = Utils.getKeyFromPlist("keys", key: "cdt_tests_db_name")
     
     override func setUp() {
         super.setUp()

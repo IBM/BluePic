@@ -51,37 +51,41 @@ In order to authenticate, you must create an application instance on Facebook's 
 
 <br>
 ### 3. Connect BluePic to your Bluemix Account
-Navigate to your application in the Bluemix Dashboard. Next, take your specific keys for Cloudant NoSQL DB (**1** below), Mobile Client Access (labeled **2** in the figure below), and Object Storage (**3** below) from the Application Overview, and copy them into `keys.plist` located in the `BluePic-iOS/BluePic/Configuration` directory.
+The app has to be configured with certain credentials from each of the three Bluemix services. The file `keys.plist` located in the `BluePic-iOS/BluePic/Configuration` directory must be updated with the following credentials.
+
+<p align="center">
+<img src="img/keys.PNG"  alt="Drawing" height=250 border=0 /></p>
+<p align="center">Figure 5. keys.plist located in the BluePic-iOS/BluePic/Configuration directory.</p>
 
 <p align="center">
 <img src="img/bluemix_credentials.PNG"  alt="Drawing" height=500 border=0 /></p>
-<p align="center">Figure 5. Application overview page.</p>
+<p align="center">Figure 6. Application overview page, marked with credentials location.</p>
 
-The mapping from Bluemix Credentials to Key/Value pair is the following: 
+Cloudant NoSQL DB (marked **1** above)
 
-Cloudant NoSQL DB
-
-* cdt_username: "username"
+* cdt_username: "username" from corresponding credentials section.
 * cdt_db\_name: Create a dabatase from the Cloudant Dashboard and put the name of created database here. 
 * cdt_key: Generate an API KEY from the Cloudant Dashboard by clicking "Generate API Key" in the permissions tab of any database. Make sure to add Writer and Replicator permissions as well. Note the displayed password.
 * cdt_pass: Enter the password of the API Key here. 
 
-Mobile Client Access
+Mobile Client Access (marked **2** above)
 
 * backend_route: List on the top of the Application Overview page, next to the "Routes:" label. 
-* GUID: "clientId"
+* GUID: "clientId" from corresponding credentials section.
 
-Object Storage
+Object Storage (marked **3** above)
 
-* obj_stg\_public\_url: 
-* obj_stg\_password: 
-* obj_stg\_user\_id:
-* obj_stg\_project\_id: "projectId"
-* obj_stg\_auth\_url: "auth\_url"
+Download and install the Cloud Foundry CLI here and run the following command
 
-<p align="center">
-<img src="img/keys.PNG"  alt="Drawing" height=250 border=0 /></p>
-<p align="center">Figure 6. BluePic-iOS/BluePic/Configuration directory.</p>
+`cf service-key 'Object Storage-rz' object-storage-bluepic-key`
+
+From it it will return several keys.
+
+* obj_stg\_public\_url: "auth\_url" from CF CLI command. 
+* obj_stg\_password: "password" from CF CLI command.
+* obj_stg\_user\_id: "userId" from CF CLI command.
+* obj_stg\_project\_id: "projectId" from corresponding credentials section.
+* obj_stg\_auth\_url: "auth\_url" from corresponding credentials section.
 
 <br>
 ### 4. Pre-populate Feed with Stock Photos (Optional)

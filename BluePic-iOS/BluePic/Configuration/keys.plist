@@ -6,10 +6,12 @@
 	<string>e1ad23d5-4602-46ff-ad38-6e692ff0c1dd-bluemix</string>
 	<key>cdt_db_name</key>
 	<string>my_db</string>
-	<key>cdt_pass</key>
-	<string>e22cda58e40afb28d7614e9e57272fcc1d27d946</string>
+	<key>cdt_tests_db_name</key>
+	<string>tests_db</string>
 	<key>cdt_key</key>
 	<string>heresclyinglownstindbadv</string>
+	<key>cdt_pass</key>
+	<string>e22cda58e40afb28d7614e9e57272fcc1d27d946</string>
 	<key>backend_route</key>
 	<string>http://BluePic-II.mybluemix.net</string>
 	<key>GUID</key>
