@@ -226,14 +226,77 @@ if let userID = identity["id"] as? NSString {
 
 <br>
 ### 2. Cloudant Sync (CDTDatastore)
-Cloudant Sync [(CDTDatastore)](https://www.ng.bluemix.net/docs/services/mobileaccess/gettingstarted/ios/index.html) is used in BluePic for profile and picture metadata storage.
+Cloudant Sync [(CDTDatastore)](https://www.ng.bluemix.net/docs/services/mobileaccess/gettingstarted/ios/index.html) enables you to create a single local database for every user. The app simply replicates and syncs a copy of the remote database in Cloudant with its local copy on their phone or tablet. If there’s no network connection, the app runs off the local database on the device. In BluePic we have two types of documents: profile and picture. Note that we only store the metadata for pictures, the actual image is stored in the Object Storage Bluemix service. The `CloudantSyncDataManager` class was created to handle communication between iOS and Cloudant Sync.
 
-`CloudantSyncDataManager` was created to handle communicating between iOS and Cloudant Sync.
+Creating a local datastore:
 
 ```swift
-put sample code from BluePic here -- maybe show auth, push and pull? maybe create document?
+    /**
+     * Creates a local datastore with the specific name stored in dbName instance variable.
+     */
+    func createLocalDatastore() throws {
+        let fileManager = NSFileManager.defaultManager()
+        let documentsDir = fileManager.URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).last!
+        let storeURL = documentsDir.URLByAppendingPathComponent("cloudant-sync-datastore")
+        let path = storeURL.path
+        self.manager = try CDTDatastoreManager(directory: path)
+        self.datastore = try manager.datastoreNamed(dbName)
+    }
+```
+Function to create a Profile document:
+
+```swift
+    /**
+     * Creates a profile document.
+     *
+     * @param id Unique ID the created document to have.
+     * @param name Profile name for the created document.
+     */
+    func createProfileDoc(id:String, name:String) throws -> Void {
+        // Create a document
+        let rev = CDTDocumentRevision(docId: id)
+        rev.body = ["profile_name":name, "Type":"profile"]
+        // Save the document to the datastore
+        try datastore.createDocumentFromRevision(rev)
+        print("Created profile doc with id: \(id)")
+    }
 ```
 
+Synching with a remote database is done by performing two main operations: push and pull. 
+
+```swift
+    /**
+      * This method will create a new Replicator object and push any new docs/updates on the local datastore to the remote database.
+      * This is a asynchronous call and will run on a separate replication thread.
+      */
+    func pushToRemoteDatabase() throws {
+        //Initialize replicator
+        try createPushReplicator()
+        //Start the replicator
+        try self.pushReplicator.start()
+    }
+    
+    /**
+     * Creates a new Push Replicator and stores it in pushReplicator instance variable.
+     */
+    func createPushReplicator() throws {
+        //Initialize replicators
+        let replicatorFactory = CDTReplicatorFactory(datastoreManager: manager)
+        let remoteDatabaseURL = generateURL()
+        // Push Replicate from the local to remote database
+        let pushReplication = CDTPushReplication(source: datastore, target: remoteDatabaseURL)
+        self.pushReplicator =  try replicatorFactory.oneWay(pushReplication)
+        self.pushReplicator.delegate = pushDelegate;
+    }
+    
+    /**
+     * Creates the URL of the remote database from instance variables.
+     */
+    private func generateURL() -> NSURL {
+        let stringURL = "https://\(apiKey):\(apiPassword)@\(username).cloudant.com/\(dbName)"
+        return NSURL(string: stringURL)!
+    }
+```
 You can view the Cloudant database (including profile and picture documents) by navigating to your Cloudant NoSQL DB service instance on the Bluemix Dashboard. To do this, navigate to your Bluemix Dashboard by clicking **Dashboard** on the top of your Bluemix home page (**#1** in the image below). Then, click the **Cloudant NoSQL DB** service to view the record of images uploaded to each container (**#2** in the image below)
 
 <p align="center">

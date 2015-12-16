@@ -103,6 +103,9 @@ class CloudantSyncDataManager {
         self.pullReplicator.delegate = pullDelegate;
     }
     
+    /**
+     * Creates the URL of the remote database from instance variables.
+     */
     private func generateURL() -> NSURL {
         let stringURL = "https://\(apiKey):\(apiPassword)@\(username).cloudant.com/\(dbName)"
         return NSURL(string: stringURL)!
