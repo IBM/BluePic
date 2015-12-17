@@ -1,10 +1,7 @@
-///*
-//
-//Licensed Materials - Property of IBM
-//© Copyright IBM Corporation 2015. All Rights Reserved.
-//
-//UIViewExtension.swift
-//MIL iOS Reusable Assets
+/*
+Licensed Materials - Property of IBM
+© Copyright IBM Corporation 2015. All Rights Reserved.
+*/
 
 
 import CoreFoundation
