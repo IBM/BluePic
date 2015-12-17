@@ -7,17 +7,29 @@ Licensed Materials - Property of IBM
 import UIKit
 
 class FeedViewController: UIViewController {
-    
-    @IBOutlet weak var logoImageView: UIImageView!
 
+    //represents the inner cicle that spins within the navigation bar on top
+    @IBOutlet weak var logoImageView: UIImageView!
+    
+    //represents the outer eye of the inner cicle that spins
     @IBOutlet weak var outerEyeImageView: UIImageView!
+    
+    //collection view that displays the images in the feed
     @IBOutlet weak var collectionView: UICollectionView!
+    
+    //constraint outlet for the outer eye image view's top space
     @IBOutlet weak var outerEyeImageViewTopSpaceConstraint: NSLayoutConstraint!
+    
+    //constraint outlet for the collection view's top space
     @IBOutlet weak var collectionViewTopSpaceConstraint: NSLayoutConstraint!
     
+    //view model of the Feed View controller. It will keep track of state and handle data for this view controller
     var viewModel : FeedViewModel!
+    
+    //Allows for pull down to refresh
     var refreshControl:UIRefreshControl!
     
+    //Defines the minimum spacing between cells in the collection view
     let kMinimumInterItemSpacingForSectionAtIndex : CGFloat = 0
     
     
@@ -37,12 +49,11 @@ class FeedViewController: UIViewController {
      */
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     
     /**
-     Method sets up the view model
+     Method sets up the view model, passes the callback we want ot be called when there are notifications from the feed view model
      */
     func setupViewModel(){
         viewModel = FeedViewModel(passFeedViewModelNotificationToTabBarVCCallback: handleFeedViewModelNotifications)

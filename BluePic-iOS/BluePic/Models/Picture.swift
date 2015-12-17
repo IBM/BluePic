@@ -1,34 +1,23 @@
-//
-//  Picture.swift
-//  BluePic
-//
-//  Created by Alex Buck on 12/2/15.
-//  Copyright © 2015 MIL. All rights reserved.
-//
+/*
+Licensed Materials - Property of IBM
+© Copyright IBM Corporation 2015. All Rights Reserved.
+*/
 
 import UIKit
 
 class Picture: NSObject {
 
     var url : String?
-    
     var image : UIImage?
-    
     var displayName : String?
-    
     var timeStamp : Double?
-    
     var ownerName : String?
-    
     var width : CGFloat?
-    
     var height : CGFloat?
-    
     var fileName : String?
     
     let kDefaultWidthAndHeight : CGFloat = 100
-    
-    
+
     
     func setWidthAndHeight(width : String?, height : String?){
         
@@ -43,9 +32,6 @@ class Picture: NSObject {
                 self.height = CGFloat((h as NSString).floatValue)
             }
         }
-        
-  
     }
-    
     
 }

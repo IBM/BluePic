@@ -11,7 +11,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
+    
+    /**
+     Method called when app finishes up launching. In this case we initialize Bluemix Mobile Client Access with Facebook
+     
+     - parameter application:   UIApplication.
+     - parameter launchOptions: [NSObject: Anyobject]?
+     
+     - returns: Bool
+     */
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         self.initializeBackendForFacebookAuth()
                 
@@ -23,13 +31,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
      Method to initialize Bluemix Mobile Client Access with Facebook
      */
     func initializeBackendForFacebookAuth() {
-    //Initialize backend
-    let key = Utils.getKeyFromPlist("keys", key: "backend_route")
-    let guid = Utils.getKeyFromPlist("keys", key: "GUID")
-    IMFClient.sharedInstance().initializeWithBackendRoute(key, backendGUID: guid);
+        //Initialize backend
+        let key = Utils.getKeyFromPlist("keys", key: "backend_route")
+        let guid = Utils.getKeyFromPlist("keys", key: "GUID")
+        IMFClient.sharedInstance().initializeWithBackendRoute(key, backendGUID: guid);
     
-    //Initialize FB
-    IMFFacebookAuthenticationHandler.sharedInstance().registerWithDefaultDelegate()
+        //Initialize Facebook
+        IMFFacebookAuthenticationHandler.sharedInstance().registerWithDefaultDelegate()
     
     }
 
@@ -54,9 +62,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     
+    /**
+     Method handles opening a facebook url for facebook login
+     
+     - parameter application:       UIApplication
+     - parameter url:               NSURL
+     - parameter sourceApplication: String?
+     - parameter annotation:        AnyObject
+     
+     - returns: Bool
+     */
     func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?,annotation: AnyObject) -> Bool {
         return FBAppCall.handleOpenURL(url, sourceApplication:sourceApplication)
     }
+    
     
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.

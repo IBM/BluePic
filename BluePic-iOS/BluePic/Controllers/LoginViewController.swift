@@ -5,9 +5,6 @@ Licensed Materials - Property of IBM
 
 
 import UIKit
-import Alamofire
-import ObjectMapper
-import AlamofireObjectMapper
 
 
 /// Responsible for initiating Facebook login. VC which allows user to either login later or login with Facebook
@@ -31,6 +28,10 @@ class LoginViewController: UIViewController {
     /// ViewModel for this VC, responsible for holding data and any state
     var viewModel: LoginViewModel!
     
+    
+    /**
+     Method called upon view did load. In this case we set up the view model.
+     */
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -57,12 +58,10 @@ class LoginViewController: UIViewController {
     @IBAction func signInLaterTapped(sender: AnyObject) {
         NSUserDefaults.standardUserDefaults().setBool(true, forKey: "hasPressedLater")
         NSUserDefaults.standardUserDefaults().synchronize()
-        //callDidDismissCallback()
         
         dismissViewControllerAnimated(true, completion: nil)
     }
 
-    
     
     /**
      Method to authenticate with facebook when login is tapped
@@ -74,7 +73,6 @@ class LoginViewController: UIViewController {
         viewModel.authenticateWithFacebook()
         
     }
-    
     
     
     /**
@@ -96,7 +94,6 @@ class LoginViewController: UIViewController {
             //dismiss login vc
             dismissViewControllerAnimated(true, completion: nil)
         }
-        
     }
     
     
@@ -124,14 +121,12 @@ class LoginViewController: UIViewController {
     }
 
     
-
+    /**
+     Method is called when the app receives a memory warning from the OS
+     */
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
     
-    
-
 }
-

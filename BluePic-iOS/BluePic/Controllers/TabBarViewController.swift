@@ -11,8 +11,7 @@ class TabBarViewController: UITabBarController {
     /// Image view to temporarily cover feed and content so it doesn't appear to flash when showing login screen
     var backgroundImageView: UIImageView!
     
-    var feedVC: FeedViewController!
-    
+    // A view model that will keep state and do all the data handling for the TabBarViewController
     var viewModel : TabBarViewModel!
     
     
@@ -21,7 +20,6 @@ class TabBarViewController: UITabBarController {
      */
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         
         viewModel = TabBarViewModel(passDataNotificationToTabBarVCCallback: handleDataNotification)
         
@@ -53,7 +51,6 @@ class TabBarViewController: UITabBarController {
      */
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     
@@ -61,10 +58,10 @@ class TabBarViewController: UITabBarController {
      Method adds image view so no flickering occurs before showing login. Starts a simple loading animation that is dismissed when PULL from CloudantSyncClient completes
      */
     func addBackgroundImageView() {
+        
         self.backgroundImageView = UIImageView(frame: self.view.frame)
         self.backgroundImageView.image = UIImage(named: "login_background")
         self.view.addSubview(self.backgroundImageView)
-        
         
     }
     
@@ -182,6 +179,7 @@ class TabBarViewController: UITabBarController {
         }
     }
     
+    
     /**
      Method to show the error alert and asks user if they would like to retry pushing to object storage
      */
@@ -231,16 +229,6 @@ class TabBarViewController: UITabBarController {
         })
         
     }
-    
-    
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
 
 
 }
@@ -248,6 +236,14 @@ class TabBarViewController: UITabBarController {
 
 extension TabBarViewController: UITabBarControllerDelegate {
     
+    /**
+     Method is called right when the user selects a tab. It expects a return value that tells the TabBarViewController whether it should select that tab or not. In this case we check if the user has pressed the sign in later option in on the login VC. If the user has pressed the sign in later option, then we present the Login View Controller when the user presses the profile or camera tab. Else we show those tabs as normal.
+     
+     - parameter tabBarController: UITabBarController
+     - parameter viewController:   UIViewController
+     
+     - returns: Bool
+     */
     func tabBarController(tabBarController: UITabBarController, shouldSelectViewController viewController: UIViewController) -> Bool {
         if let _ = viewController as? CameraViewController { //if camera tab is selected, show camera picker
             return checkIfUserPressedSignInLater(true)
@@ -259,6 +255,7 @@ extension TabBarViewController: UITabBarControllerDelegate {
             return true
         }
     }
+    
     
     /**
      Check if user has pressed sign in later button previously, and if he/she has, will show login if user taps camera or profile
@@ -283,8 +280,7 @@ extension TabBarViewController: UITabBarControllerDelegate {
                 return true
             }
         }
-        
-        
+    
     }
     
     

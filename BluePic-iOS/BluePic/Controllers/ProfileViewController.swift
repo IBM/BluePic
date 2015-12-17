@@ -8,19 +8,31 @@ import UIKit
 
 class ProfileViewController: UIViewController {
     
-    
+    //the collection view that displays images for the user
     @IBOutlet weak var collectionView: UICollectionView!
     
+    //view model that will keep state and handle data for the ProfileViewController
     var viewModel : ProfileViewModel!
-    var refreshControl: UIRefreshControl!
+    
+    //this is the header view that represents the user's "cover photo" at the top of the view
     var headerImageView : UIImageView!
+    
+    //view that is shown when the status bar starts to overlap with the user's profile picture
     var statusBarBackgroundView : UIView!
 
+    //constant represents the height of the "info view" - the view that says the user's name and number of photos
     let kHeaderViewInfoViewHeight : CGFloat = 105
+    
+    //constant that represents the height of the image view that represents the user's "cover photo"
     let kHeaderImageViewHeight : CGFloat = 375
-    let kStatusBarMagicLine : CGFloat = 100
+    
+    //constant that represents the rate that the scroll view scrolls
     let kParalaxImageViewScrollRate : CGFloat = 0.50
+    
+    //constant that represents the duration it takes to fade the statusBarBackgroundView in
     let kStatusBarBackgroundViewFadeDuration : NSTimeInterval = 0.3
+    
+    //constant that represents the height of the profile picture image view
     let kHeightOfProfilePictureImageView : CGFloat = 75
 
     
@@ -38,15 +50,15 @@ class ProfileViewController: UIViewController {
         
         setupStatusBarBackgroundView()
 
-        // Do any additional setup after loading the view.
     }
 
+    
     /**
      Method called when the app receives a memory warning from the OS
      */
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+  
     }
     
     
@@ -80,6 +92,7 @@ class ProfileViewController: UIViewController {
    
     }
     
+    
     /**
      Method animates in the status bar background view
      
@@ -90,14 +103,10 @@ class ProfileViewController: UIViewController {
         var alpha : CGFloat = 0.0
         
         if(isInOrOut == true){
-          
             alpha = 1.0
-            
         }
         else{
-            
             alpha = 0.0
-            
         }
         
         UIView.animateWithDuration(kStatusBarBackgroundViewFadeDuration, animations: {
@@ -113,17 +122,16 @@ class ProfileViewController: UIViewController {
     func setupHeaderView(){
         
         headerImageView = UIImageView(frame: CGRectMake(0, 0, view.frame.width, kHeaderImageViewHeight))
+        
         headerImageView.contentMode = UIViewContentMode.ScaleAspectFill
         
         headerImageView.image = UIImage(named: "photo1")
-        
         
         headerImageView.clipsToBounds = true
         
         self.view.addSubview(headerImageView)
         self.view.insertSubview(headerImageView, belowSubview: collectionView)
         
-    
     }
     
     
@@ -192,6 +200,7 @@ extension ProfileViewController: UICollectionViewDataSource {
         return viewModel.setUpCollectionViewCell(indexPath, collectionView : collectionView)
     }
     
+    
     /**
      Method sets the number of items in a section by asking the view model for the number of items in the section
      
@@ -203,6 +212,7 @@ extension ProfileViewController: UICollectionViewDataSource {
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel.numberOfItemsInSection(section)
     }
+    
     
     /**
      Method sets the number of sections in the collection view by asking the view model for the number of sections in the collection view
@@ -309,7 +319,6 @@ extension ProfileViewController : UIScrollViewDelegate {
         }
    
     }
-    
 
 }
 
