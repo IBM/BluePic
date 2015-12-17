@@ -53,7 +53,7 @@
 		10556D6E978DEE0AEC3580D0246D5C9A /* CDTEncryptionKeychainUtils+AES.m in Sources */ = {isa = PBXBuildFile; fileRef = E29D4ABB14F59FC47CB53C1749BB0096 /* CDTEncryptionKeychainUtils+AES.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		1066DF0100BC4E079199C0825BCD1074 /* FBTask.h in Headers */ = {isa = PBXBuildFile; fileRef = D56628F1604AEA262AE8D1EFC3FF6777 /* FBTask.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		106D9D0D4B052CDD0537612EA00311A8 /* FBSessionLoginStrategyParams.m in Sources */ = {isa = PBXBuildFile; fileRef = 08AAA35FF2FEF50F3ED7EBF74472C9A9 /* FBSessionLoginStrategyParams.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc -w -Xanalyzer -analyzer-disable-all-checks"; }; };
-		11C8CC13940C8DC1F5AD1B147CE4808D /* CDTAbstractReplication.m in Sources */ = {isa = PBXBuildFile; fileRef = A0D1F20E3B0314EFB21C1EFC5E831677 /* CDTAbstractReplication.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
+		11C8CC13940C8DC1F5AD1B147CE4808D /* CDTAbstractReplication.m in Sources */ = {isa = PBXBuildFile; fileRef = A0D1F20E3B0314EFB21C1EFC5E831677 /* CDTAbstractReplication.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks -Wnullability-completeness"; }; };
 		11D239EF0008B857A922C65C34FD4BE9 /* FBSessionSystemLoginStategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 774A831A43DCD8C6D18D6382ED8B59F2 /* FBSessionSystemLoginStategy.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc -w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		11DE4F55B09312AEE86C3EE70DB9A8EE /* FBSessionAuthLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9B2301A064D305D00581D46AD42874 /* FBSessionAuthLogger.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc -w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		12D4BF5F8785937DA809F9D90E6FB565 /* BFMeasurementEvent_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 7EEAB6277EAE3B8BE7E4FE81DE2CEA4A /* BFMeasurementEvent_Internal.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -458,7 +458,7 @@
 		BEEAE2157299BFF6F661CDD7CE50868A /* FBGraphObjectTableDataSource.h in Headers */ = {isa = PBXBuildFile; fileRef = 57382047922394CC8E19BFEF4E201827 /* FBGraphObjectTableDataSource.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		BF839C27F5E09D775A4F53C14307D5A8 /* CDTEncryptionKeychainUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = E23B5D43E3856156A374F270365D83F0 /* CDTEncryptionKeychainUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BFB6446DCCB0D3270EE314FF0F162CFB /* CDTDatastoreManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9022DF229630DDE2A981C8F40D8C844E /* CDTDatastoreManager.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
-		C0D10A80A9F10E669B3686428B26DF49 /* CDTDatastore-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DAC2F5A165A36A0A7F78DD9CC3FB8C5 /* CDTDatastore-dummy.m */; };
+		C0D10A80A9F10E669B3686428B26DF49 /* CDTDatastore-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DAC2F5A165A36A0A7F78DD9CC3FB8C5 /* CDTDatastore-dummy.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		C13ACE9C5F2EFC7F2358259CA1B46FCD /* FBAccessTokenData+Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 566FD8ABD0B395E7492281D09E02E214 /* FBAccessTokenData+Internal.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		C185087D22928F2484E579EB23CC03D8 /* CDTEncryptionKeychainConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = 71F1E8BD17C67DB8058EDE71477FDD70 /* CDTEncryptionKeychainConstants.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C1EF37C4FFDF21274C13FD9E6B02E622 /* CDTChangedObserver.h in Headers */ = {isa = PBXBuildFile; fileRef = 1B8995A186749AFB10658292B817A57E /* CDTChangedObserver.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -3283,8 +3283,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 912DDA61DA70071377B67DB36787AD34 /* CDTDatastore.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_PREFIX_HEADER = "Target Support Files/CDTDatastore/CDTDatastore-prefix.pch";
+				GCC_WARN_ABOUT_POINTER_SIGNEDNESS = NO;
+				GCC_WARN_INHIBIT_ALL_WARNINGS = NO;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "";
@@ -3428,8 +3431,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 912DDA61DA70071377B67DB36787AD34 /* CDTDatastore.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_PREFIX_HEADER = "Target Support Files/CDTDatastore/CDTDatastore-prefix.pch";
+				GCC_WARN_ABOUT_POINTER_SIGNEDNESS = NO;
+				GCC_WARN_INHIBIT_ALL_WARNINGS = NO;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				OTHER_LDFLAGS = "";

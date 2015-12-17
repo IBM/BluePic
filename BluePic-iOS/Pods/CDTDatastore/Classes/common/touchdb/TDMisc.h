@@ -69,7 +69,7 @@ NSURL* TDAppendToURL(NSURL* baseURL, NSString* toAppend);
  
  If the NSURL does not have a password it returns NSURL -absoluteString. Otherwise, the string will 
  be of the form 'https://*****\@host:port/path?query#fragment' */
-#pragma clang diagnostic pop
+//#pragma clang diagnostic pop
 NSString* TDCleanURLtoString(NSURL* url);
 
 /** Filter block, used in replication. */

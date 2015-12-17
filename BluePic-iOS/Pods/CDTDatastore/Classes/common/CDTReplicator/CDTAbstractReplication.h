@@ -18,7 +18,12 @@
 
 @class CDTDatastore;
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wnullability-completeness"
+
 extern NSString* const CDTReplicationErrorDomain;
+
+#pragma clang diagnostic pop
 
 /**
  * Replication errors.
@@ -126,7 +131,11 @@ typedef NS_ENUM(NSInteger, CDTReplicationErrors) {
 
 
 */
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wnullability-completeness"
 @property (nonatomic, copy) NSDictionary* optionalHeaders;
+#pragma clang diagnostic pop
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -141,8 +150,11 @@ NS_ASSUME_NONNULL_END
 /**
  Returns the default "User-Agent" header value used in HTTP requests made during replication.
 */
-+ (NSString*)defaultUserAgentHTTPHeader;
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wnullability-completeness"
++ (NSString*)defaultUserAgentHTTPHeader;
+#pragma clang diagnostic pop
 /*
  ---------------------------------------------------------------------------------------
  The following methods should not be accessed by a user of this class or the subclasses.
@@ -162,8 +174,11 @@ NS_ASSUME_NONNULL_END
      classes override this method.
 
  */
-- (NSDictionary*)dictionaryForReplicatorDocument:(NSError* __autoreleasing*)error;
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wnullability-completeness"
+- (NSDictionary*)dictionaryForReplicatorDocument:(NSError* __autoreleasing*)error;
+#pragma clang diagnostic pop
 /** Checks the content and format of the remoteDatastore URL to ensure that it uses a proper
  protocol (http or https) and has both a username and password (or neither).
 
@@ -173,6 +188,9 @@ NS_ASSUME_NONNULL_END
  @return YES on valid URL.
 
  */
-- (BOOL)validateRemoteDatastoreURL:(NSURL*)url error:(NSError* __autoreleasing*)error;
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wnullability-completeness"
+- (BOOL)validateRemoteDatastoreURL:(NSURL*)url error:(NSError* __autoreleasing*)error;
+#pragma clang diagnostic pop
 @end
