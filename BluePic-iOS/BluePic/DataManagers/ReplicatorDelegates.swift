@@ -79,6 +79,5 @@ class PullDelegate:NSObject, CDTReplicatorDelegate {
         print("PULL Replicator ERROR: \(info)")
         DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantPullDataFailure)
     }
-    
 }
 

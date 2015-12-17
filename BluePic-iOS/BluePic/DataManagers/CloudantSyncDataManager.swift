@@ -115,7 +115,7 @@ class CloudantSyncDataManager {
      * CRUD OPERATIONS
      */
      
-     /**
+    /**
      * Checks whether document with passed in id exists.
      *
      * @param id This is the unique ID of a document stored in the local datastore.
@@ -322,10 +322,10 @@ class CloudantSyncDataManager {
      * PUSH and PULL network calls.
      */
      
-     /**
-      * This method will create a new Replicator object and push any new docs/updates on the local datastore to the remote database.
-      * This is a asynchronous call and will run on a separate replication thread.
-      */
+    /**
+     * This method will create a new Replicator object and push any new docs/updates on the local datastore to the remote database.
+     * This is a asynchronous call and will run on a separate replication thread.
+     */
     func pushToRemoteDatabase() throws {
         //Initialize replicator.
         try createPushReplicator()

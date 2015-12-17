@@ -7,7 +7,7 @@ Licensed Materials - Property of IBM
 import UIKit
 
 
-//
+
 enum FeedViewModelNotification {
     case RefreshCollectionView
     case StartLoadingAnimationForAppLaunch
