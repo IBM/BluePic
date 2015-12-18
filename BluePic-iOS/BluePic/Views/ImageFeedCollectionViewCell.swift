@@ -8,19 +8,30 @@ import UIKit
 
 class ImageFeedCollectionViewCell: UICollectionViewCell {
     
+    
+    //image view used to display image
     @IBOutlet weak var imageView: UIImageView!
+    
+    //label used to display the photos caption
     @IBOutlet weak var captionLabel: UILabel!
+    
+    //label used to display the photographer's name
     @IBOutlet weak var photographerNameLabel: UILabel!
+    
+    //label that displays the amount of time since the photo was taken
     @IBOutlet weak var timeSincePostedLabel: UILabel!
+    
+    //button that triggers the options display for a photo (currently hidden and not in use)
     @IBOutlet weak var moreButton: UIButton!
+    
+    //the view that is shown while we wait for the image to download and display
     @IBOutlet weak var loadingView: UIView!
-    @IBOutlet weak var loadingImageView: UIImageView!
+    
+    
     
     
     override func awakeFromNib() {
         super.awakeFromNib()
-    
-        // Initialization code
     }
     
     
