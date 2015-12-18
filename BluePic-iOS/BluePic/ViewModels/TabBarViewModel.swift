@@ -4,16 +4,18 @@ Licensed Materials - Property of IBM
 */
 
 
-
-
 class TabBarViewModel: NSObject {
 
     /// Boolean if showLoginScreen() has been called yet this app launch (should only try to show login once)
     var hasTriedToPresentLoginThisAppLaunch = false
+    
+    //callback that allows the tab bar view model to send DataManagerNotifications to the tab bar VC
     var passDataNotificationToTabBarVCCallback : ((dataManagerNotification : DataManagerNotification)->())!
-    var feedViewModel : FeedViewModel!
-    var hitViewDidAppearThisManyTimes = 0
+    
+    //state variable that keeps track of if we've already presented the default logic vc, used to help make sure we are showing the loading animation at the right time
     var didPresentDefaultLoginVC = false
+    
+    //state variable that keeps track of if we've successfully pulled data yet, used to help make sure we are showing the loading animation at the right time
     var hasSuccessFullyPulled = false
     
     
@@ -118,7 +120,6 @@ class TabBarViewModel: NSObject {
             FacebookDataManager.SharedInstance.tryToShowLoginScreen()
             
         }
-        
     }
   
 }

@@ -135,9 +135,7 @@ class CameraConfirmationView: UIView, UITextFieldDelegate {
                 self.frame = self.originalFrame
 
             })
-            
         }
-        
     }
     
 

@@ -56,7 +56,7 @@ class FeedViewController: UIViewController {
      Method sets up the view model, passes the callback we want ot be called when there are notifications from the feed view model
      */
     func setupViewModel(){
-        viewModel = FeedViewModel(passFeedViewModelNotificationToTabBarVCCallback: handleFeedViewModelNotifications)
+        viewModel = FeedViewModel(passFeedViewModelNotificationToFeedVCCallback: handleFeedViewModelNotifications)
     }
     
     

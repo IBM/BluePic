@@ -8,6 +8,8 @@ import UIKit
 
 class LoginViewModel: NSObject {
     
+    
+    //callback used to inform the LoginViewController whether facebook authentication was a success or not
     var fbAuthCallback: ((Bool!)->())!
     
     
@@ -22,7 +24,6 @@ class LoginViewModel: NSObject {
         super.init()
         
         self.fbAuthCallback = fbAuthCallback
-        
         
     }
     
@@ -54,7 +55,6 @@ class LoginViewModel: NSObject {
 
             }
         })
- 
     }
     
     
@@ -72,7 +72,6 @@ class LoginViewModel: NSObject {
                 print("Facebook auth successful, but error creating Object Storage container: \(error)")
                 self.fbAuthCallback(false)
         })
-        
     }
     
 

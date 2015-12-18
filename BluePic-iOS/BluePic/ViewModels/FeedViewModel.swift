@@ -6,25 +6,46 @@ Licensed Materials - Property of IBM
 
 import UIKit
 
-
-
+//used to inform the Feed View Controller of notifications
 enum FeedViewModelNotification {
+    
+    //called when there is new data in the pictureDataArray, used to tell the Feed VC to refresh it's data in the collection view
     case RefreshCollectionView
+    
+    //called when in the view did appear of the tab vc
     case StartLoadingAnimationForAppLaunch
 }
 
 class FeedViewModel: NSObject {
     
+    //array that holds all the picture data objects we used to populate the Feed VC's collection view
     var pictureDataArray = [Picture]()
+    
+    //callback used to inform the Feed VC when there is new data and to refresh its collection view
     var refreshVCCallback : (()->())?
-    var passFeedViewModelNotificationToTabBarVCCallback : ((feedViewModelNotification : FeedViewModelNotification)->())!
+    
+    //callback used to inform the Feed VC of notifications from its view model
+    var passFeedViewModelNotificationToFeedVCCallback : ((feedViewModelNotification : FeedViewModelNotification)->())!
+    
+    //state variable used to keep track if we have received data from cloudant yet
     var hasRecievedDataFromCloudant = false
+    
+    //state variable to keep of if we are current pulling from cloudant. This is to prevent a user to pull down to refresh while it is already refreshing
     private var isPullingFromCloudantAlready = false
     
+    //constant that represents the height of the info view in the collection view cell that shows the photos caption and photographer name
     let kCollectionViewCellInfoViewHeight : CGFloat = 76
+    
+    //constant that represents the limit of how tall a collection view cell's height can be
     let kCollectionViewCellHeightLimit : CGFloat = 480
+    
+    //constant that represents a value added to the height of the EmptyFeedCollectionViewCell when its given a size in the sizeForItemAtIndexPath method, this value allows the collection view to scroll
     let kEmptyFeedCollectionViewCellBufferToAllowForScrolling : CGFloat = 1
+    
+    //constant that defines the number of cells there is when the user has no photos
     let kNumberOfCellsWhenUserHasNoPhotos = 1
+    
+    //constant that defines the number of sections there are in the collection view
     let kNumberOfSectionsInCollectionView = 1
     
     
@@ -35,10 +56,10 @@ class FeedViewModel: NSObject {
      
      - returns:
      */
-    init(passFeedViewModelNotificationToTabBarVCCallback : ((feedViewModelNotification : FeedViewModelNotification)->())){
+    init(passFeedViewModelNotificationToFeedVCCallback : ((feedViewModelNotification : FeedViewModelNotification)->())){
         super.init()
         
-        self.passFeedViewModelNotificationToTabBarVCCallback = passFeedViewModelNotificationToTabBarVCCallback
+        self.passFeedViewModelNotificationToFeedVCCallback = passFeedViewModelNotificationToFeedVCCallback
         
         DataManagerCalbackCoordinator.SharedInstance.addCallback(handleDataManagerNotification)
         
@@ -60,7 +81,7 @@ class FeedViewModel: NSObject {
             getPictureObjects()
         }
         else if(dataManagerNotification == DataManagerNotification.StartLoadingAnimationForAppLaunch){
-            self.passFeedViewModelNotificationToTabBarVCCallback(feedViewModelNotification: FeedViewModelNotification.StartLoadingAnimationForAppLaunch)
+            self.passFeedViewModelNotificationToFeedVCCallback(feedViewModelNotification: FeedViewModelNotification.StartLoadingAnimationForAppLaunch)
         }
     }
 
@@ -90,9 +111,10 @@ class FeedViewModel: NSObject {
         hasRecievedDataFromCloudant = true
 
          dispatch_async(dispatch_get_main_queue()) {
-            self.passFeedViewModelNotificationToTabBarVCCallback(feedViewModelNotification: FeedViewModelNotification.RefreshCollectionView)
+            self.passFeedViewModelNotificationToFeedVCCallback(feedViewModelNotification: FeedViewModelNotification.RefreshCollectionView)
         }
     }
+    
     
     /**
      Method returns the number of sections in the collection view
@@ -102,6 +124,7 @@ class FeedViewModel: NSObject {
     func numberOfSectionsInCollectionView() -> Int {
         return kNumberOfSectionsInCollectionView
     }
+    
     
     /**
      Method returns the number of items in a section
@@ -140,7 +163,6 @@ class FeedViewModel: NSObject {
         
             let picture = pictureDataArray[indexPath.row]
         
-        
             if let width = picture.width, let height = picture.height {
             
                 let ratio = height / width
@@ -158,7 +180,6 @@ class FeedViewModel: NSObject {
                 return CGSize(width: collectionView.frame.width, height: collectionView.frame.width + kCollectionViewCellInfoViewHeight)
             }
         }
-
     }
     
     

@@ -8,14 +8,21 @@ import UIKit
 
 class ProfileHeaderCollectionReusableView: UICollectionReusableView {
 
+    //label displays the name of the user
     @IBOutlet weak var nameLabel: UILabel!
+    
+    //label displays the numebr of shots the user has taken
     @IBOutlet weak var numberOfShotsLabel: UILabel!
+    
+    //image view displays the user's facebook profile picture
     @IBOutlet weak var profilePictureImageView: UIImageView!
     
     
+    /**
+     Method is called when the view wakes from nib
+     */
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
     }
     
     /**
