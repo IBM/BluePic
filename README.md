@@ -71,37 +71,20 @@ The app has to be configured with certain credentials from each of the three Blu
 <img src="img/bluemix_credentials.PNG"  alt="Drawing" width=500 border=0 /></p>
 <p align="center">Figure 6. Application overview page, marked with credentials location.</p>
 
-Cloudant NoSQL DB (marked **1** above)
+#### Cloudant NoSQL DB (marked 1 above)
 
 * cdt_username: "username" from corresponding credentials section, see Figure 6.
 * cdt_db\_name: Create a dabatase from the Cloudant Dashboard and put the name of created database here.  
 * cdt_key: Generate an API KEY from the Cloudant Dashboard by clicking "Generate API Key" in the permissions tab of any database. Make sure to add Writer and Replicator permissions as well. Note the displayed password.
 * cdt_pass: Enter the password of the API Key here.
 * cdt_tests\_db\_name: Create a dabatase for the test cases to run in, put that name here. Once created go to "Permissions" tab, under "Share Database" put the API KEY from above, again ensure it has Writer and Replicator permissions.
-* Add the following to your application's info.plist:
 
-```
-<key>NSAppTransportSecurity</key>
-<dict>
-    <key>NSExceptionDomains</key>
-    <dict>
-        <key>cloudant.com</key>
-        <dict>
-            <key>NSIncludesSubdomains</key>
-            <true/>
-            <key>NSExceptionRequiresForwardSecrecy</key>
-            <false/>
-        </dict>
-    </dict>
-</dict>
-``` 
-
-Mobile Client Access (marked **2** above)
+#### Mobile Client Access (marked 2 above)
 
 * backend_route: List on the top of the Application Overview page, next to the "Routes:" label, see Figure 6. 
 * GUID: "clientId" from corresponding credentials section, see Figure 6.
 
-Object Storage (marked **3** above)
+#### Object Storage (marked 3 above)
 
 Download and install the [Cloud Foundry CLI](https://github.com/cloudfoundry/cli/releases) and run the following command
 
