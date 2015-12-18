@@ -53,7 +53,7 @@ On your dashboard the application should then become accessible:
 
 <br>
 ### 2. Create an application instance on Facebook
-In order to authenticate, you must create an application instance on Facebook's website and connect it to your Bluemix app's Mobile Client Access by following the first two steps of [these instructions](https://www.ng.bluemix.net/docs/services/mobileaccess/security/facebook/t_fb_config.html). Make sure you are viewing the sample code in Swift by selecting the drop down at the top right of that page. 
+In order to authenticate, you must create an application instance on Facebook's website and connect it to your Bluemix app's Mobile Client Access by following the first two steps of [these instructions](https://www.ng.bluemix.net/docs/services/mobileaccess/security/facebook/t_fb_config.html). By default, this link shows you instructions for Android, make sure you view the instruction steps for Swift by selecting the drop down at the top right of the page. 
 
 <p align="center">
 <img src="img/fb_info.PNG"  alt="Drawing" height=150 border=0 /></p>
@@ -132,7 +132,7 @@ Once BluePic is configured, you should be able to upload photos and see them app
 ## Using BluePic
 
 ### Facebook Login
-BluePic was designed so that anyone can quickly launch the app and view photos posted without needing to log in. However, to view the profile or post photos, the user can easily login with his/her Facebook account. This is only used for a unique user id, as well as to display the user's profile photo.
+BluePic was designed so that anyone can quickly launch the app and view photos posted without needing to log in. However, to view the profile or post photos, the user can easily login with his/her Facebook account. This is only used for a unique user id, the user's full name, as well as to display the user's profile photo.
 
 <p align="center">
 <img src="img/login.PNG"  alt="Drawing" height=550 border=0 /></p>
