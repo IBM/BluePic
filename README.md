@@ -46,26 +46,40 @@ Upon success you should see:
 Note: If deploying to Bluemix fails, make sure to manually delete the failed application on the Bluemix Dashboard as well as the created project on DevOps services (formerly known as JazzHub) before trying again.
 
 
-On your dashboard the application should then become accessible:
+Next go to your dashboard by clicking the dashboard link on the top of the page. On your dashboard the application should then become accessible:
 <p align="center">
 <img src="img/dashboard_application.PNG"  alt="Drawing" height=300 border=0 /></p>
 <p align="center">Figure 3: Bluemix dashboard.</p>
 
 <br>
 ### 2. Create an application instance on Facebook
-In order to authenticate, you must create an application instance on Facebook's website and connect it to your Bluemix app's Mobile Client Access by following the first two steps of [these instructions](https://www.ng.bluemix.net/docs/services/mobileaccess/security/facebook/t_fb_config.html). By default, this link shows you instructions for Android, make sure you view the instruction steps for Swift by selecting the drop down at the top right of the page. 
+In order to have the app authenticate with Facebook, you must create an application instance on Facebook's website and connect it to your Bluemix app's Mobile Client Access.
 
+1. To create an application instance on Facebook's website, first go to [Facebook's Quick Start for iOS](https://developers.facebook.com/quickstarts/?platform=ios) page. Type 	`BluePic` as the name of your new Facebook app and click the `Create New Facebook App ID` button.
+
+1. On the screen that follows, in the `Configure your info.plist` section under `step 2`, copy that information into your `info.plist` file. You can find the `info.plist` file in Configuration folder of the xcode project. If you have trouble finding the `CFBundleURLType` key, note that xcode changes the `CFBundleURLType` key to `URL types` when the key is entered. Your `info.plist` file should now look like this:
 <p align="center">
 <img src="img/fb_info.PNG"  alt="Drawing" height=150 border=0 /></p>
 <p align="center">Figure 4. Info.plist file.</p>
 
-<br>
+1. Next scroll to the bottom of the quick start page where it says `Supply us with your Bundle Identifier` and enter the app's bundle identifier. To find the bundle identifer in the Xcode project you can do the following: 
+	* Make sure the project navigator folder icon is selected in the top left of xcode. Select the BluePic project at the top of the file structure and then select the BluePic target. Under the identity section, you should see a text field for the bundle identifier that is empty. You can make the bundle identifier anything you want, `com.BluePic` for example.
+1. Once you you entered the bundle ID on the Facebook quick start page, click `next`. Thats it for the Facebook quick start setup!
+1. Next go back to your Bluemix dashboard, under services click `BluePic-AdvancedMobileAccess`. On the page that shows click the `Set Up Authentication` button and then click `Facebook`. Enter your Facebook app ID you gathered from step 2 and press next. 
+
+Thats it for all the Facebook login setup. The rest of the Facebook authentication steps are already setup in the BluePic Xcode project!
+
+
+
+
 ### 3. Connect BluePic to your Bluemix Account
-The app has to be configured with certain credentials from each of the three Bluemix services. The file `keys.plist` located in the `BluePic-iOS/BluePic/Configuration` directory must be updated with the following credentials.
+The app has to be configured with certain credentials from each of the three Bluemix services. The file `keys.plist` located in the `Configuration` directory of the BluePic Xcode project must be updated with the following credentials:
 
 <p align="center">
 <img src="img/keys.PNG"  alt="Drawing" width=500 border=0 /></p>
 <p align="center">Figure 5. keys.plist located in the BluePic-iOS/BluePic/Configuration directory.</p>
+
+To Begin, click on your BluePic application in the Application section of your Bluemix Dashboard. You should then see the following screen:
 
 <p align="center">
 <img src="img/bluemix_credentials.PNG"  alt="Drawing" width=500 border=0 /></p>
@@ -401,7 +415,7 @@ You can view the Object Storage database (including all photos uploaded) by navi
 
 For BluePic, we used a simple architecture where there is no middle tier component between the mobile app and the storage components (e.g. Cloudant) on the server. To roll out BluePic to a production environment, a few architectural changes should be made.
 
-Cloudant Sync requires a complete replica of the database on each mobile client. This may not be feasible for apps with large databases. Under such scenarios, instead of leveraging Cloudant Sync, the REST API provided by Cloudant could be used to perform CRUD and query operations against the remote Cloudant instance. Having said this, the Cloudant team is planning to introduce new capabilities [in 2016] for Cloudant Sync that should securely replicate subsets of a large remote database onto devices. Though replicating subsets of records can be done today with Cloudant Sync, doing so with large databases where only a small subset of records should be replicated can introduce performance problems. New functionality that is expected to be delivered next year by the Cloudant team should address such performance issues. 
+Cloudant Sync requires a complete replica of the database on each mobile client. This may not be feasible for apps with large databases. Under such scenarios, instead of leveraging Cloudant Sync, the REST API provided by Cloudant could be used to perform CRUD and query operations against the remote Cloudant instance.  Though replicating subsets of records can be done today with Cloudant Sync, doing so with large databases where only a small subset of records should be replicated can introduce performance problems.
 
 Using Cloudant Sync without an additional middle tier component between the mobile app and the database requires the mobile code to know the username and password for accessing the Cloudant database. This will lead to security breaches if someone gets their hands on those credentials. Hence, security could be a reason for having all database operations go first through a middleware component (e.g. Liberty, Node.js) to verify that only authenticated and authorized users of the app can perform such operations. In this architecture, the credentials to access the database are only known by the middleware component.
 
