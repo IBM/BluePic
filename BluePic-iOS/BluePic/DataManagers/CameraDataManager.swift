@@ -239,9 +239,7 @@ class CameraDataManager: NSObject {
      */
     func createLastPictureObjectTakenAndAddToPictureUploadQueue(){
         
-        
         lastPictureObjectTaken = Picture()
-        //lastPictureObjectTaken.image = lastPhotoTaken
         lastPictureObjectTaken.displayName = lastPhotoTakenCaption
         lastPictureObjectTaken.ownerName = FacebookDataManager.SharedInstance.fbUserDisplayName
         lastPictureObjectTaken.width = lastPhotoTakenWidth
@@ -264,7 +262,7 @@ class CameraDataManager: NSObject {
     }
     
     /**
-     Method to clear the photo upload queue
+     Method to clear the photo upload queue (used when cloudant sync has successfully pushed)
      */
     func clearPictureUploadQueue(){
         pictureUploadQueue = []

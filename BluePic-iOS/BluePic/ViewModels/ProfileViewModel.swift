@@ -8,14 +8,28 @@ import UIKit
 
 class ProfileViewModel: NSObject {
     
+    //array that holds all that pictures that are displayed in the collection view
     var pictureDataArray = [Picture]()
+    
+    //callback used to tell the ProfileViewController when to refresh its collection view
     var refreshVCCallback : (()->())!
+    
+    //state variable to keep try of if the view model has receieved data from cloudant yet
     var hasRecievedDataFromCloudant = false
     
+    //constant that represents the number of sections in the collection view
     let kNumberOfSectionsInCollectionView = 1
+    
+    //constant that represents the height of the info view that says the user's name and number of photos
     let kCollectionViewCellInfoViewHeight : CGFloat = 60
+    
+    //constant that represents the limit of how big the colection view cell height can be
     let kCollectionViewCellHeightLimit : CGFloat = 480
+    
+    //constant that represents a value added to the height of the EmptyFeedCollectionViewCell when its given a size in the sizeForItemAtIndexPath method
     let kEmptyFeedCollectionViewCellBufferToAllowForScrolling : CGFloat = 1
+    
+    //constant that represents the number of cells in the collection view when there is no photos
     let kNumberOfCellsWhenUserHasNoPhotos = 1
     
     
@@ -31,7 +45,6 @@ class ProfileViewModel: NSObject {
         
         self.refreshVCCallback  = refreshVCCallback
         
-        
         DataManagerCalbackCoordinator.SharedInstance.addCallback(handleDataManagerNotifications)
         
         getPictureObjects()
@@ -45,7 +58,6 @@ class ProfileViewModel: NSObject {
      - parameter dataManagerNotification: DataManagerNotification
      */
     func handleDataManagerNotifications(dataManagerNotification : DataManagerNotification){
-        
         
         if (dataManagerNotification == DataManagerNotification.UserDecidedToPostPhoto){
             
@@ -139,11 +151,9 @@ class ProfileViewModel: NSObject {
      */
     func sizeForItemAtIndexPath(indexPath : NSIndexPath, collectionView : UICollectionView, heightForEmptyProfileCollectionViewCell : CGFloat) -> CGSize {
         
-        
         if(pictureDataArray.count == 0) {
             
             return CGSize(width: collectionView.frame.width, height: heightForEmptyProfileCollectionViewCell + kEmptyFeedCollectionViewCellBufferToAllowForScrolling)
-    
         }
         else{
         
@@ -165,10 +175,8 @@ class ProfileViewModel: NSObject {
             }
             else{
                 return CGSize(width: collectionView.frame.width, height: collectionView.frame.width + kCollectionViewCellInfoViewHeight)
+            }
         }
-            
-        }
-        
     }
     
     
@@ -181,7 +189,6 @@ class ProfileViewModel: NSObject {
      - returns: UICollectionViewCell
      */
     func setUpCollectionViewCell(indexPath : NSIndexPath, collectionView : UICollectionView) -> UICollectionViewCell {
-        
         
         if(pictureDataArray.count == 0){
             
@@ -213,7 +220,6 @@ class ProfileViewModel: NSObject {
             return cell
             
         }
-        
     }
     
     
