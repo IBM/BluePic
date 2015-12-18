@@ -61,8 +61,83 @@ class ProfileCollectionViewCell: UICollectionViewCell {
     }
     
     
+//    /**
+//     Method sets up the image view with an image from the given URL or an image stored locally
+//     
+//     - parameter url:      String?
+//     - parameter fileName: String?
+//     */
+//    func setImageView(url : String?, fileName : String?){
+//        
+//        self.loadingView.hidden = false
+//        
+//        let urlString = url ?? ""
+//        
+//        
+//        //unwrap fileName and facebook user id to be safe
+//        if let fName = fileName, let userID = FacebookDataManager.SharedInstance.fbUniqueUserID {
+//            let id = fName + userID
+//            
+//            if let img = CameraDataManager.SharedInstance.picturesTakenDuringAppSessionById[id] {
+//                
+//                //set placeholderImage with local copy of image in cache, and try to pull image from url if url is valid
+//                if let nsurl = NSURL(string: urlString){
+//                    //                    imageView.sd_setImageWithURL(nsurl, placeholderImage: img)
+//                    
+//                    self.loadingView.hidden = true
+//                    
+//                    imageView.image = img
+//                    //downloadImageWithSDWebImage(urlString, id: id)
+//                    
+//                    imageView.sd_setImageWithURL(nsurl, placeholderImage: img, completed: { result  in
+//                        
+//                        //clear camera data cache since we will be using sdWebImage's cache from now on
+//                        if result.0 != nil{
+//                            //CameraDataManager.SharedInstance.picturesTakenDuringAppSessionById[id] = nil
+//                        }
+//                    })
+//                }
+//                    //url is not valid, so set imageView with local copy of image in cache
+//                else{
+//                    
+//                    self.loadingView.hidden = true
+//                    imageView.image = img
+//                }
+//            }
+//            else{
+//                if let nsurl = NSURL(string: urlString){
+//                    
+//                    imageView.sd_setImageWithURL(nsurl, completed: { result in
+//                        
+//                        if result.0 != nil{
+//                            self.loadingView.hidden = true
+//                        }
+//                        
+//                    })
+//                }
+//            }
+//        }
+//            //fileName or facebook user id were nil
+//        else {
+//            //set imageView with image from url if url is valid
+//            if let nsurl = NSURL(string: urlString){
+//                
+//                imageView.sd_setImageWithURL(nsurl, completed: { result in
+//                    
+//                    if result.0 != nil{
+//                        self.loadingView.hidden = true
+//                    }
+//                    
+//                })
+//            }
+//            
+//        }
+//    }
+    
+    
+    
     /**
-     Method sets up the image view with an image from the given URL or an image stored locally
+     Method sets up the image view with the url provided or a locally cached verion of the image
      
      - parameter url:      String?
      - parameter fileName: String?
@@ -71,68 +146,111 @@ class ProfileCollectionViewCell: UICollectionViewCell {
         
         self.loadingView.hidden = false
         
-        let urlString = url ?? ""
+        //first try to set image view with locally cached image (from a photo the user has posted during the app session)
+        let locallyCachedImage = self.tryToSetImageViewWithLocallyCachedImage(fileName)
         
+        //then try to set the imageView with a url, using the locally cached image as the placeholder (if there is one)
+        self.tryToSetImageViewWithURL(url, placeHolderImage: locallyCachedImage)
         
-        //unwrap fileName and facebook user id to be safe
+    }
+    
+    
+    
+    /**
+     Method trys to set the image view with a locally cached image if there is one and then returns the locally cached image
+     
+     - parameter fileName: String?
+     
+     - returns: UIImage?
+     */
+    private func tryToSetImageViewWithLocallyCachedImage(fileName : String?) -> UIImage?{
+        
+        //check if file name and facebook user id aren't nil
         if let fName = fileName, let userID = FacebookDataManager.SharedInstance.fbUniqueUserID {
+            
+            //generate id which is a concatenation of the file name and facebook user id
             let id = fName + userID
             
+            //check to see if there is an image cached in the camera data manager's picturesTakenDuringAppSessionById cache
             if let img = CameraDataManager.SharedInstance.picturesTakenDuringAppSessionById[id] {
                 
-                //set placeholderImage with local copy of image in cache, and try to pull image from url if url is valid
-                if let nsurl = NSURL(string: urlString){
-                    //                    imageView.sd_setImageWithURL(nsurl, placeholderImage: img)
-                    
-                    self.loadingView.hidden = true
-                    
-                    imageView.image = img
-                    //downloadImageWithSDWebImage(urlString, id: id)
-                    
-                    imageView.sd_setImageWithURL(nsurl, placeholderImage: img, completed: { result  in
-                        
-                        //clear camera data cache since we will be using sdWebImage's cache from now on
-                        if result.0 != nil{
-                            //CameraDataManager.SharedInstance.picturesTakenDuringAppSessionById[id] = nil
-                        }
-                    })
-                }
-                    //url is not valid, so set imageView with local copy of image in cache
-                else{
-                    
-                    self.loadingView.hidden = true
-                    imageView.image = img
-                }
-            }
-            else{
-                if let nsurl = NSURL(string: urlString){
-                    
-                    imageView.sd_setImageWithURL(nsurl, completed: { result in
-                        
-                        if result.0 != nil{
-                            self.loadingView.hidden = true
-                        }
-                        
-                    })
-                }
+                //hide loading placeholder view
+                self.loadingView.hidden = true
+                
+                //set image view's image to locally cached image
+                imageView.image = img
+                
+                return img
             }
         }
-            //fileName or facebook user id were nil
-        else {
-            //set imageView with image from url if url is valid
+        
+        return nil
+    }
+    
+    
+    
+    /**
+     Method trys to set the image view with a url to an image and sets the placeholder to a locally cached image if its not nil
+     
+     - parameter url:              String?
+     - parameter placeHolderImage: UIImage?
+     */
+    private func tryToSetImageViewWithURL(url : String?, placeHolderImage : UIImage?){
+        
+        let urlString = url ?? ""
+        
+        //check if string is empty, if it is, then its not a valid url
+        if(urlString != ""){
+            
+            //check if we can turn the string into a valid NSURL
             if let nsurl = NSURL(string: urlString){
                 
-                imageView.sd_setImageWithURL(nsurl, completed: { result in
-                    
-                    if result.0 != nil{
-                        self.loadingView.hidden = true
-                    }
-                    
-                })
+                //if placeHolderImage parameter isn't nil, then set image with URL and use placeholder image
+                if let image = placeHolderImage {
+                    setImageViewWithURLAndPlaceHolderImage(nsurl, placeHolderImage: image)
+                }
+                    //else dont use placeholder image and
+                else{
+                    setImageViewWithURL(nsurl)
+                }
             }
-            
         }
     }
+    
+    
+    /**
+     Method sets the imageView with a url to an image and uses a locally cached image
+     
+     - parameter url:              NSURL
+     - parameter placeHolderImage: UIImage
+     */
+    private func setImageViewWithURLAndPlaceHolderImage(url : NSURL, placeHolderImage : UIImage){
+        
+        imageView.sd_setImageWithURL(url, placeholderImage: placeHolderImage, completed: { result in
+            
+            if result.0 != nil {
+                self.loadingView.hidden = true
+            }
+            
+        })
+    }
+    
+    
+    /**
+     Method sets the imageView with a url to an image using no placeholder
+     
+     - parameter url: NSURL
+     */
+    private func setImageViewWithURL(url : NSURL){
+        imageView.sd_setImageWithURL(url, completed: { result in
+            
+            if result.0 != nil{
+                self.loadingView.hidden = true
+            }
+            
+        })
+    }
+
     
 
 }
