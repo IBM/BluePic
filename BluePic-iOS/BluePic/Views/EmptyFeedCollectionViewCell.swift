@@ -8,6 +8,9 @@ import UIKit
 
 class EmptyFeedCollectionViewCell: UICollectionViewCell {
 
+    /**
+     Method is called when the view wakes from nib
+     */
     override func awakeFromNib() {
         super.awakeFromNib()
     }

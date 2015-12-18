@@ -27,9 +27,10 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
     //the view that is shown while we wait for the image to download and display
     @IBOutlet weak var loadingView: UIView!
     
-    
-    
-    
+
+    /**
+     Method is called when the view wakes from nib
+     */
     override func awakeFromNib() {
         super.awakeFromNib()
     }
