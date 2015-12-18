@@ -244,7 +244,7 @@ extension ProfileViewController: UICollectionViewDelegateFlowLayout {
         let collectionWidth = collectionView.frame.size.width
         
         if(section == 0){
-            return CGSizeMake(collectionWidth, self.view.frame.size.height/2 + kHeaderViewInfoViewHeight ) //kHeaderViewHeight
+            return CGSizeMake(collectionWidth, self.view.frame.size.height/2 + kHeaderViewInfoViewHeight) //kHeaderViewHeight
         }
         else{
             return CGSizeMake(collectionWidth, 0)
@@ -309,7 +309,9 @@ extension ProfileViewController : UIScrollViewDelegate {
      */
     func checkOffSetForStatusBarBackgroundViewVisability(scrollViewContentOffset : CGFloat){
         
-        let magicLine = kHeaderImageViewHeight - kHeightOfProfilePictureImageView/2 - UIApplication.sharedApplication().statusBarFrame.size.height
+        let headerImageViewHeight = self.view.frame.size.height/2
+        
+        let magicLine = headerImageViewHeight - kHeightOfProfilePictureImageView/2 - UIApplication.sharedApplication().statusBarFrame.size.height
         
         if(scrollViewContentOffset >= magicLine){
             animateInStatusBarBackgroundView(true)
