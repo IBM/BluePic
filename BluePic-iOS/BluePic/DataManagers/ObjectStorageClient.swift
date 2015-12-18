@@ -56,9 +56,7 @@ class ObjectStorageClient {
         mutableURLRequest.setValue("application/json; charset=UTF-8", forHTTPHeaderField: "Content-Type")
         let jsonPayload = "{ \"auth\": { \"identity\": { \"methods\": [ \"password\" ], \"password\": { \"user\": { \"id\": \"\(userId)\", \"password\": \"\(password)\" } } }, \"scope\": { \"project\": { \"id\": \"\(projectId)\" } } } }"
         
-        //print("jsonPayload = \(jsonPayload)")
         mutableURLRequest.HTTPBody = jsonPayload.dataUsingEncoding(NSUTF8StringEncoding)
-        //mutableURLRequest.HTTPBody = try NSJSONSerialization.dataWithJSONObject(jsonPayload, options: NSJSONWritingOptions())
         
         self.executeCall(mutableURLRequest, successCodes: [201],
             onSuccess: { (responseHeaders) in
@@ -208,7 +206,6 @@ class ObjectStorageClient {
      */
     func uploadImage(containerName: String, imageName: String, image: UIImage,
         onSuccess: (imageURL: String) -> Void, onFailure: (error: String) -> Void) {
-            // http://stackoverflow.com/questions/8564833/ios-upload-image-and-text-using-http-post
             let imageData = UIImagePNGRepresentation(image)
             let imageURL = "\(publicURL)/\(containerName)/\(imageName)"
             let nsURL = NSURL(string: imageURL)!
