@@ -46,96 +46,20 @@ class ProfileCollectionViewCell: UICollectionViewCell {
      */
     func setupData(url : String?, image : UIImage?, displayName : String?, timeStamp: Double?, fileName : String?){
         
-        
+        //set the image view's image
         setImageView(url, fileName: fileName)
         
+        //label that displays the photos caption
         captionLabel.text = displayName?.uppercaseString ?? ""
         
-        
+        //set the time since posted label's text
         if let tStamp = timeStamp {
-            
             timeSincePostedLabel.text = NSDate.timeStringSinceIntervalSinceReferenceDate(tStamp)
-            
         }
         
     }
     
-    
-//    /**
-//     Method sets up the image view with an image from the given URL or an image stored locally
-//     
-//     - parameter url:      String?
-//     - parameter fileName: String?
-//     */
-//    func setImageView(url : String?, fileName : String?){
-//        
-//        self.loadingView.hidden = false
-//        
-//        let urlString = url ?? ""
-//        
-//        
-//        //unwrap fileName and facebook user id to be safe
-//        if let fName = fileName, let userID = FacebookDataManager.SharedInstance.fbUniqueUserID {
-//            let id = fName + userID
-//            
-//            if let img = CameraDataManager.SharedInstance.picturesTakenDuringAppSessionById[id] {
-//                
-//                //set placeholderImage with local copy of image in cache, and try to pull image from url if url is valid
-//                if let nsurl = NSURL(string: urlString){
-//                    //                    imageView.sd_setImageWithURL(nsurl, placeholderImage: img)
-//                    
-//                    self.loadingView.hidden = true
-//                    
-//                    imageView.image = img
-//                    //downloadImageWithSDWebImage(urlString, id: id)
-//                    
-//                    imageView.sd_setImageWithURL(nsurl, placeholderImage: img, completed: { result  in
-//                        
-//                        //clear camera data cache since we will be using sdWebImage's cache from now on
-//                        if result.0 != nil{
-//                            //CameraDataManager.SharedInstance.picturesTakenDuringAppSessionById[id] = nil
-//                        }
-//                    })
-//                }
-//                    //url is not valid, so set imageView with local copy of image in cache
-//                else{
-//                    
-//                    self.loadingView.hidden = true
-//                    imageView.image = img
-//                }
-//            }
-//            else{
-//                if let nsurl = NSURL(string: urlString){
-//                    
-//                    imageView.sd_setImageWithURL(nsurl, completed: { result in
-//                        
-//                        if result.0 != nil{
-//                            self.loadingView.hidden = true
-//                        }
-//                        
-//                    })
-//                }
-//            }
-//        }
-//            //fileName or facebook user id were nil
-//        else {
-//            //set imageView with image from url if url is valid
-//            if let nsurl = NSURL(string: urlString){
-//                
-//                imageView.sd_setImageWithURL(nsurl, completed: { result in
-//                    
-//                    if result.0 != nil{
-//                        self.loadingView.hidden = true
-//                    }
-//                    
-//                })
-//            }
-//            
-//        }
-//    }
-    
-    
-    
+
     /**
      Method sets up the image view with the url provided or a locally cached verion of the image
      
