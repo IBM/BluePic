@@ -20,13 +20,13 @@ class ProfileViewModel: NSObject {
     //constant that represents the number of sections in the collection view
     let kNumberOfSectionsInCollectionView = 1
     
-    //constant that represents the height of the info view that says the user's name and number of photos
+    //constant that represents the height of the info view in the collection view cell that shows the photos caption and photographer name
     let kCollectionViewCellInfoViewHeight : CGFloat = 60
     
     //constant that represents the limit of how big the colection view cell height can be
     let kCollectionViewCellHeightLimit : CGFloat = 480
     
-    //constant that represents a value added to the height of the EmptyFeedCollectionViewCell when its given a size in the sizeForItemAtIndexPath method
+    //constant that represents a value added to the height of the EmptyFeedCollectionViewCell when its given a size in the sizeForItemAtIndexPath method, this value allows the collection view to scroll
     let kEmptyFeedCollectionViewCellBufferToAllowForScrolling : CGFloat = 1
     
     //constant that represents the number of cells in the collection view when there is no photos
