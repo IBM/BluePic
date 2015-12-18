@@ -3,6 +3,7 @@
 <p align="center">
 <img src="img/banner.jpg"  alt="Drawing" border=0 /></p>
 
+<br>
 # BluePic
 
 BluePic is a sample application for iOS that shows you how to connect your mobile application with IBM Bluemix services. It is a photo sharing app that allows you to take photos, upload them and share them with the BluePic community.
