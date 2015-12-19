@@ -71,9 +71,13 @@ class ProfileViewModel: NSObject {
     func handleDataManagerNotifications(dataManagerNotification : DataManagerNotification){
         
         if (dataManagerNotification == DataManagerNotification.UserDecidedToPostPhoto){
-            
-            addUsersLastPhotoTakenToPictureDataArrayAndRefreshCollectionView()
-            
+            getPictureObjects()
+        }
+        if (dataManagerNotification == DataManagerNotification.CloudantPullDataSuccess){
+            getPictureObjects()
+        }
+        else if(dataManagerNotification == DataManagerNotification.CloudantDeletePictureDocSuccess){
+            getPictureObjects()
         }
         
     }

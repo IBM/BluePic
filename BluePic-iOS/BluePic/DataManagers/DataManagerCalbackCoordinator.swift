@@ -41,6 +41,9 @@ enum DataManagerNotification {
     //called when cloudant fails to create a profile
     case CloudantCreateProfileFailure
     
+    //called when a picture doc is deleted from cloudant
+    case CloudantDeletePictureDocSuccess
+    
     //called when there was an object storage auth error
     case ObjectStorageAuthError
     

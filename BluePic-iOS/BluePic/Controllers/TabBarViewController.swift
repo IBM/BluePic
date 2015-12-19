@@ -204,6 +204,8 @@ class TabBarViewController: UITabBarController {
         
         alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .Cancel, handler: { (action: UIAlertAction!) in
             
+            CameraDataManager.SharedInstance.cancelUploadingPictureToObjectStorage()
+            
         }))
         
         dispatch_async(dispatch_get_main_queue()) {

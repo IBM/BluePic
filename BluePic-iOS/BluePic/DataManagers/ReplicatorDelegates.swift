@@ -41,7 +41,6 @@ class PushDelegate:NSObject, CDTReplicatorDelegate {
      */
     func replicatorDidComplete(replicator:CDTReplicator) {
         print("PUSH Replicator completed.")
-        CameraDataManager.SharedInstance.clearPictureUploadQueue()
         DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantPushDataSuccess)
     }
     

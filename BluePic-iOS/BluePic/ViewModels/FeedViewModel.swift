@@ -93,6 +93,9 @@ class FeedViewModel: NSObject {
         else if(dataManagerNotification == DataManagerNotification.StartLoadingAnimationForAppLaunch){
             self.passFeedViewModelNotificationToFeedVCCallback(feedViewModelNotification: FeedViewModelNotification.StartLoadingAnimationForAppLaunch)
         }
+        else if(dataManagerNotification == DataManagerNotification.CloudantDeletePictureDocSuccess){
+            getPictureObjects()
+        }
     }
 
     
@@ -117,7 +120,7 @@ class FeedViewModel: NSObject {
      Method synchronously asks cloudant for new data. It sets the pictureDataArray to be a combination of the local pictureUploadQueue images + images receives from cloudant/objectDataStore
      */
     func getPictureObjects(){
-        pictureDataArray = CameraDataManager.SharedInstance.pictureUploadQueue + CloudantSyncDataManager.SharedInstance!.getPictureObjects(nil)
+        pictureDataArray = CloudantSyncDataManager.SharedInstance!.getPictureObjects(nil)
         hasRecievedDataFromCloudant = true
 
          dispatch_async(dispatch_get_main_queue()) {
