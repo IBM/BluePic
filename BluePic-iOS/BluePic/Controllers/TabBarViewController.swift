@@ -181,10 +181,6 @@ class TabBarViewController: UITabBarController {
             self.viewModel.retryAuthenticatingObjectStorage()
         }))
         
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .Cancel, handler: { (action: UIAlertAction!) in
-            
-        }))
-        
         dispatch_async(dispatch_get_main_queue()) {
             self.presentViewController(alert, animated: true, completion: nil)
         }
@@ -221,7 +217,6 @@ class TabBarViewController: UITabBarController {
         
         let loginVC = Utils.vcWithNameFromStoryboardWithName("loginVC", storyboardName: "Main") as! LoginViewController
         
-        self.viewModel.didPresentDefaultLoginVC = true
         self.presentViewController(loginVC, animated: false, completion: { _ in
             
             self.hideBackgroundImage()
@@ -229,6 +224,7 @@ class TabBarViewController: UITabBarController {
         })
    
     }
+    
     
     /**
      Method to show the login VC with animation
