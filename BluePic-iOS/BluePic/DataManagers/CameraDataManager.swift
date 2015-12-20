@@ -74,6 +74,9 @@ class CameraDataManager: NSObject {
     var picturesTakenDuringAppSessionById = [String : UIImage]()
     
     
+    var pictureUploadQueue : [Picture] = []
+    
+    
     /**
      Method to show the image picker action sheet so user can choose from Photo Library or Camera
      
@@ -184,6 +187,16 @@ class CameraDataManager: NSObject {
                 print("picker dismissed from confirmation view.")
         })
     
+    }
+    
+    
+    func addPhotoToPictureUploadQueue(){
+        
+        
+        
+        
+        
+        
     }
     
     
