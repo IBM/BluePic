@@ -55,6 +55,8 @@ class CameraConfirmationView: UIView, UITextFieldDelegate {
         self.setupView()
         self.addKeyboardObservers()
         
+        
+        //titleTextField.resignFirstResponder()
     
     }
     

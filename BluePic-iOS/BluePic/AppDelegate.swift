@@ -33,8 +33,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
      */
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         self.initializeBackendForFacebookAuth()
-                
+        
+        preLoadKeyboardToPrevantLaggyKeyboardInCameraConfirmationScreen()
+        
         return true
+    }
+    
+    
+    /**
+     Method preloads keyboard to prevant the keybaord on the camera confirmation screen to be laggy when touching the text field for the first time
+     */
+    func preLoadKeyboardToPrevantLaggyKeyboardInCameraConfirmationScreen(){
+        
+        let lagFreeField = UITextField()
+        self.window?.addSubview(lagFreeField)
+        lagFreeField.becomeFirstResponder()
+        lagFreeField.resignFirstResponder()
+        lagFreeField.removeFromSuperview()
+        
     }
     
     
