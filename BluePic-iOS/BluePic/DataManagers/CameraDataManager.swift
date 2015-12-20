@@ -227,10 +227,11 @@ class CameraDataManager: NSObject {
                 do {
                     if let doc = self.lastPictureTakenCDTDocumentRevision {
                         try CloudantSyncDataManager.SharedInstance!.addURLToPictureDoc(self.lastPhotoTakenURL, pictureDoc: doc)
+                        DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantUpdatePictureDocWithURLSuccess)
                     }
                 } catch {
                     print("uploadImageToObjectStorage ERROR: \(error)")
-                    DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantCreatePictureFailure)
+                    DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantUpdatePictureDocWithURLFailure)
                 }
                 
                 do {

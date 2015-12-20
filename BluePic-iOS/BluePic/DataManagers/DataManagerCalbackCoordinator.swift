@@ -44,6 +44,12 @@ enum DataManagerNotification {
     //called when a picture doc is deleted from cloudant
     case CloudantDeletePictureDocSuccess
     
+    //called when the cloudant picture doc was successfully updated with the url from object storage
+    case CloudantUpdatePictureDocWithURLSuccess
+    
+    //called when the cloudant picture doc failed to be updated with the url from object storage
+    case CloudantUpdatePictureDocWithURLFailure
+    
     //called when there was an object storage auth error
     case ObjectStorageAuthError
     

@@ -96,6 +96,9 @@ class FeedViewModel: NSObject {
         else if(dataManagerNotification == DataManagerNotification.CloudantDeletePictureDocSuccess){
             getPictureObjects()
         }
+        else if(dataManagerNotification == DataManagerNotification.CloudantUpdatePictureDocWithURLSuccess){
+            getPictureObjects()
+        }
     }
 
     
