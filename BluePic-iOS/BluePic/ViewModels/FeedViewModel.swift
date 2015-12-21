@@ -52,6 +52,7 @@ class FeedViewModel: NSObject {
     //constant that represents the height of the info view in the collection view cell that shows the photos caption and photographer name
     let kCollectionViewCellInfoViewHeight : CGFloat = 76
     
+    //constant that represents the height of the picture upload queue image feed collection view cell
     let kPictureUploadCollectionViewCellHeight : CGFloat = 60
     
     //constant that represents the limit of how tall a collection view cell's height can be
@@ -163,10 +164,11 @@ class FeedViewModel: NSObject {
      - returns: Int
      */
     func numberOfItemsInSection(section : Int) -> Int {
-        
+        //if the section is 0, then it depends on how many items are in the picture upload queue
         if(section == 0){
             return CameraDataManager.SharedInstance.pictureUploadQueue.count
         }
+        // if the section is 1, then it depends how many items are in the pictureDataArray
         else{
             if(pictureDataArray.count == 0 && hasRecievedDataFromCloudant == true){
                 return kNumberOfCellsWhenUserHasNoPhotos
@@ -176,6 +178,7 @@ class FeedViewModel: NSObject {
             }
         }
     }
+    
     
     
     /**
@@ -188,16 +191,21 @@ class FeedViewModel: NSObject {
      */
     func sizeForItemAtIndexPath(indexPath : NSIndexPath, collectionView : UICollectionView) -> CGSize {
         
+        //Section 0 corresponds to showing picture upload queue image feed collection view cells. These cells show when there are pictures in the picture upload queue of the camera data manager
         if(indexPath.section == 0){
             return CGSize(width: collectionView.frame.width, height: kPictureUploadCollectionViewCellHeight)
         }
-        else{
-        
-            if(pictureDataArray.count == 0){
             
+        //section 1 corresponds to either the empty feed collection view cell or the standard image feed collection view cell depending on how many images are in the picture data array
+        else{
+            
+            //return size for empty feed collection view cell
+            if(pictureDataArray.count == 0){
+
                 return CGSize(width: collectionView.frame.width, height: collectionView.frame.height + kEmptyFeedCollectionViewCellBufferToAllowForScrolling)
                 
             }
+            //return size for image feed collection view cell
             else{
         
                 let picture = pictureDataArray[indexPath.row]
@@ -219,9 +227,7 @@ class FeedViewModel: NSObject {
                     return CGSize(width: collectionView.frame.width, height: collectionView.frame.width + kCollectionViewCellInfoViewHeight)
                 }
             }
-        
         }
-        
     }
     
     
@@ -235,6 +241,7 @@ class FeedViewModel: NSObject {
      */
     func setUpCollectionViewCell(indexPath : NSIndexPath, collectionView : UICollectionView) -> UICollectionViewCell {
         
+         //Section 0 corresponds to showing picture upload queue image feed collection view cells. These cells show when there are pictures in the picture upload queue of the camera data manager
         if(indexPath.section == 0){
             
             let cell : PictureUploadQueueImageFeedCollectionViewCell
@@ -249,7 +256,10 @@ class FeedViewModel: NSObject {
             return cell
 
         }
+        //section 1 corresponds to either the empty feed collection view cell or the standard image feed collection view cell depending on how many images are in the picture data array
         else{
+            
+            //return EmptyFeedCollectionViewCell
             if(pictureDataArray.count == 0){
             
                 let cell : EmptyFeedCollectionViewCell
@@ -259,6 +269,7 @@ class FeedViewModel: NSObject {
                 return cell
             
             }
+            //return ImageFeedCollectionViewCell
             else{
         
                 let cell: ImageFeedCollectionViewCell
@@ -281,7 +292,7 @@ class FeedViewModel: NSObject {
         
                 return cell
             
-        }
+            }
         }
         
     }
@@ -294,9 +305,5 @@ class FeedViewModel: NSObject {
             callback()
         }
     }
-
-    
-    
     
 }
-
