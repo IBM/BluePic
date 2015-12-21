@@ -148,6 +148,9 @@ class FeedViewController: UIViewController {
     }
     
     
+    /**
+     Method will only allow the loading animation of the eye to stop if the picture upload queue is empty. This is because if the picture upload queue has picture in it, then we want to ensure the eye continues to spin until all the photos in the picture upload queue have finished uploading
+     */
     func tryToStopLoadingAnimation(){
         
         if(CameraDataManager.SharedInstance.pictureUploadQueue.count == 0){
@@ -156,8 +159,6 @@ class FeedViewController: UIViewController {
             
         } 
     }
-    
-    
 
 }
 
