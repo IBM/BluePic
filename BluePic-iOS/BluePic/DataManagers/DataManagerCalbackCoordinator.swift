@@ -41,17 +41,10 @@ enum DataManagerNotification {
     //called when cloudant fails to create a profile
     case CloudantCreateProfileFailure
     
-    //called when a picture doc is deleted from cloudant
-    case CloudantDeletePictureDocSuccess
-    
+    //called when the user chooses to cancel uploading picture to object storage/cloudant when there is a failure uploading to object storage
     case UserCanceledUploadingPhotos
-
-    //called when the cloudant picture doc was successfully updated with the url from object storage
-    case CloudantUpdatePictureDocWithURLSuccess
     
-    //called when the cloudant picture doc failed to be updated with the url from object storage
-    case CloudantUpdatePictureDocWithURLFailure
-    
+    //called when object storage successfully uploaded a picture and the picture was added to cloudant sync successfully
     case ObjectStorageUploadImageAndCloudantCreatePictureDocSuccess
     
     //called when there was an object storage auth error

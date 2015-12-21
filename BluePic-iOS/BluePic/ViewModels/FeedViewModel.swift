@@ -106,9 +106,6 @@ class FeedViewModel: NSObject {
         else if(dataManagerNotification == DataManagerNotification.UserCanceledUploadingPhotos){
             getPictureObjects()
         }
-        else if(dataManagerNotification == DataManagerNotification.CloudantUpdatePictureDocWithURLSuccess){
-            getPictureObjects()
-        }
         else if(dataManagerNotification == DataManagerNotification.ObjectStorageUploadImageAndCloudantCreatePictureDocSuccess){
             self.passFeedViewModelNotificationToFeedVCCallback(feedViewModelNotification: FeedViewModelNotification.UploadingPhotoFinished)
             getPictureObjects()
