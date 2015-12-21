@@ -12,6 +12,7 @@ class PictureUploadQueueImageFeedCollectionViewCell: UICollectionViewCell {
 
     @IBOutlet weak var imageView: UIImageView!
     
+    @IBOutlet weak var captionLabel: UILabel!
     
     
     override func awakeFromNib() {
@@ -22,10 +23,17 @@ class PictureUploadQueueImageFeedCollectionViewCell: UICollectionViewCell {
     
     
     
-    func setupData(image : UIImage?){
+    func setupData(image : UIImage?, caption : String?){
         
         
+        if let img = image {
+            
+           imageView.image = img
+            
+        }
         
+        //set the captionLabel's text
+        captionLabel.text = caption ?? ""
         
     }
     

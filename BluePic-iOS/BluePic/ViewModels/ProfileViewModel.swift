@@ -76,7 +76,7 @@ class ProfileViewModel: NSObject {
         if (dataManagerNotification == DataManagerNotification.CloudantPullDataSuccess){
             getPictureObjects()
         }
-        else if(dataManagerNotification == DataManagerNotification.CloudantDeletePictureDocSuccess){
+        else if(dataManagerNotification == DataManagerNotification.ObjectStorageUploadImageAndCloudantCreatePictureDocSuccess){
             getPictureObjects()
         }
         

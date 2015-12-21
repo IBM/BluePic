@@ -62,7 +62,7 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
         self.setImageView(url, fileName: fileName)
 
         //set the captionLabel's text
-        captionLabel.text = displayName?.uppercaseString ?? ""
+        captionLabel.text = displayName ?? ""
         
         //set the photographerNameLabel's text
         var ownerNameString = ""

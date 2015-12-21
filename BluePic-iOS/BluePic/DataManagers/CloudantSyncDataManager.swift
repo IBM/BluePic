@@ -255,7 +255,7 @@ class CloudantSyncDataManager {
      * @param width Width of the picture, in points.
      * @param height Height of the picture, in points.
      */
-    func createPictureDoc(displayName:String, fileName:String, url:String, ownerID:String, width:String, height:String) throws -> CDTDocumentRevision {
+    func createPictureDoc(displayName:String, fileName:String, url:String, ownerID:String, width:String, height:String) throws -> Void {
         if(doesExist(ownerID)) {
             let ts = NSDate.timeIntervalSinceReferenceDate()
             let rev = CDTDocumentRevision()
@@ -267,54 +267,12 @@ class CloudantSyncDataManager {
                 "width":width,
                 "height":height,
                 "Type":"picture"]
-            let pictureDoc = try datastore.createDocumentFromRevision(rev)
+            try datastore.createDocumentFromRevision(rev)
             print("Created picture doc with display name: \(displayName)")
-            return pictureDoc
         } else {
             print("Passed in owner id does NOT exist: \(ownerID)")
             throw CloudantSyncError.DocDoesNotExist
         }
-    }
-    
-    
-    /**
-     Method deletes the pictureDoc CDTDocumentRevision parameter from cloudant sync
-     
-     - parameter pictureDoc: CDTDocumentRevision
-     
-     - throws: CloudantSyncError.DocDoesNotExist
-     */
-    func deletePictureDoc(pictureDoc :CDTDocumentRevision) throws -> Bool {
-        do{
-            try datastore.deleteDocumentFromRevision(pictureDoc)
-            return true
-        }
-        catch {
-            print("error updating picture doc")
-            throw CloudantSyncError.DocDoesNotExist
-        }
-    }
-    
-    
-    /**
-     Method updates a picture document with a url string
-     
-     - parameter url:        String
-     - parameter pictureDoc: CDTDocumentRevision?
-     
-     - throws: CloudantSyncError.DocDoesNotExist
-     */
-    func addURLToPictureDoc(url : String, pictureDoc : CDTDocumentRevision) throws -> Void{
-
-            pictureDoc.body["URL"] = url
-        
-            do{
-                try datastore.updateDocumentFromRevision(pictureDoc)
-            }
-            catch {
-                print("error updating picture doc")
-                throw CloudantSyncError.DocDoesNotExist
-            }
     }
     
     

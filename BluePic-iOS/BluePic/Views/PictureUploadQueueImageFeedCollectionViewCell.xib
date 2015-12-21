@@ -6,43 +6,70 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="PictureUploadQueueImageFeedCollectionViewCell" customModule="BluePic" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="414" height="73"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="PictureUploadQueueImageFeedCollectionViewCell" id="gTV-IL-0wX" customClass="PictureUploadQueueImageFeedCollectionViewCell" customModule="BluePic" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="76"/>
             <autoresizingMask key="autoresizingMask"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                <rect key="frame" x="0.0" y="0.0" width="414" height="73"/>
+                <rect key="frame" x="0.0" y="0.0" width="414" height="76"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="wOA-xT-A4T">
-                        <rect key="frame" x="14" y="17" width="40" height="40"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="wOA-xT-A4T">
+                        <rect key="frame" x="14" y="18" width="40" height="40"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="40" id="ATl-IQ-Xm9"/>
-                            <constraint firstAttribute="height" constant="40" id="nHO-a2-ccb"/>
+                            <constraint firstAttribute="width" constant="40" id="iAq-5z-MWt"/>
+                            <constraint firstAttribute="height" constant="40" id="yBi-Xy-TXv"/>
                         </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                <real key="value" value="20"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Posting..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hYy-GP-Vsf">
-                        <rect key="frame" x="68" y="26" width="78" height="21"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ajv-gH-Hae">
+                        <rect key="frame" x="68" y="29" width="303" height="21"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="21" id="05l-BZ-m90"/>
-                            <constraint firstAttribute="width" constant="78" id="e5X-Hm-ZIM"/>
+                            <constraint firstAttribute="height" constant="21" id="4sS-jp-BdG"/>
+                            <constraint firstAttribute="width" constant="303" id="qBJ-cZ-iDF"/>
                         </constraints>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
+                        <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Posting" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hYy-GP-Vsf">
+                        <rect key="frame" x="68" y="11" width="94" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="21" id="Hua-aG-Oj6"/>
+                            <constraint firstAttribute="width" constant="94" id="kgR-hs-Hfp"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
+                        <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
+            <color key="backgroundColor" red="0.93333333333333335" green="0.93333333333333335" blue="0.93333333333333335" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
-                <constraint firstItem="hYy-GP-Vsf" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="7U8-hf-78z"/>
-                <constraint firstItem="wOA-xT-A4T" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="GS5-NG-lwa"/>
-                <constraint firstItem="hYy-GP-Vsf" firstAttribute="leading" secondItem="wOA-xT-A4T" secondAttribute="trailing" constant="14" id="npd-EE-uxD"/>
-                <constraint firstItem="wOA-xT-A4T" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="14" id="wjq-FI-w5g"/>
+                <constraint firstItem="ajv-gH-Hae" firstAttribute="leading" secondItem="wOA-xT-A4T" secondAttribute="trailing" constant="14" id="8B2-C2-Z7j"/>
+                <constraint firstItem="wOA-xT-A4T" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="14" id="9bc-1q-KQE"/>
+                <constraint firstItem="wOA-xT-A4T" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="NLu-lp-ZNc"/>
+                <constraint firstItem="hYy-GP-Vsf" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="XdC-BF-nUv"/>
+                <constraint firstItem="ajv-gH-Hae" firstAttribute="top" secondItem="hYy-GP-Vsf" secondAttribute="bottom" constant="-3" id="iuT-t2-Tvv"/>
+                <constraint firstItem="hYy-GP-Vsf" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="11" id="puf-DN-5y4"/>
+                <constraint firstItem="hYy-GP-Vsf" firstAttribute="leading" secondItem="wOA-xT-A4T" secondAttribute="trailing" constant="14" id="rhD-hQ-cgw"/>
+                <constraint firstItem="ajv-gH-Hae" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="zgj-Is-vom"/>
             </constraints>
             <size key="customSize" width="414" height="73"/>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="XdC-BF-nUv"/>
+                    <exclude reference="zgj-Is-vom"/>
+                </mask>
+            </variation>
             <connections>
+                <outlet property="captionLabel" destination="ajv-gH-Hae" id="UHf-XI-ySg"/>
                 <outlet property="imageView" destination="wOA-xT-A4T" id="nic-HU-2v1"/>
             </connections>
-            <point key="canvasLocation" x="444" y="421.5"/>
+            <point key="canvasLocation" x="444" y="421"/>
         </collectionViewCell>
     </objects>
 </document>

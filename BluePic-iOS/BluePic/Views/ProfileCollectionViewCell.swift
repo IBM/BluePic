@@ -61,7 +61,7 @@ class ProfileCollectionViewCell: UICollectionViewCell {
         setImageView(url, fileName: fileName)
         
         //label that displays the photos caption
-        captionLabel.text = displayName?.uppercaseString ?? ""
+        captionLabel.text = displayName ?? ""
         
         //set the time since posted label's text
         if let tStamp = timeStamp {

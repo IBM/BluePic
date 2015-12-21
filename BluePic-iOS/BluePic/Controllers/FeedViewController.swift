@@ -83,6 +83,8 @@ class FeedViewController: UIViewController {
         
         Utils.registerNibWithCollectionView("ImageFeedCollectionViewCell", collectionView: collectionView)
         
+        Utils.registerNibWithCollectionView("PictureUploadQueueImageFeedCollectionViewCell", collectionView: collectionView)
+        
         self.refreshControl = UIRefreshControl()
         self.refreshControl.addTarget(self, action: "userTriggeredRefresh", forControlEvents: UIControlEvents.ValueChanged)
         self.refreshControl.hidden = true
@@ -108,6 +110,16 @@ class FeedViewController: UIViewController {
             self.logoImageView.image = UIImage(named: "shutter")
             self.logoImageView.startRotating(1)
         }
+        else if(feedViewModelNotification == FeedViewModelNotification.UploadingPhotoStarted){
+            
+            dispatch_async(dispatch_get_main_queue()) {
+                self.logoImageView.startRotating(1)
+            }
+        }
+        else if(feedViewModelNotification == FeedViewModelNotification.UploadingPhotoFinished){
+            self.logoImageView.stopRotating()
+        }
+        
     }
 
     
@@ -117,8 +129,9 @@ class FeedViewController: UIViewController {
     func reloadDataInCollectionView(){
         
         collectionView.reloadData()
-        logoImageView.stopRotating()
+        tryToStopLoadingAnimation()
         
+        self.collectionView.setContentOffset(CGPoint.zero, animated: true)
     }
     
     
@@ -133,6 +146,18 @@ class FeedViewController: UIViewController {
         viewModel.repullForNewData()
         
     }
+    
+    
+    func tryToStopLoadingAnimation(){
+        
+        if(CameraDataManager.SharedInstance.pictureUploadQueue.count == 0){
+            
+            logoImageView.stopRotating()
+            
+        } 
+    }
+    
+    
 
 }
 
