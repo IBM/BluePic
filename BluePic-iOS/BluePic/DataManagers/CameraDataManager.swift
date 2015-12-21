@@ -435,39 +435,43 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
         
         //show image on confirmationView, save a copy
         if let takenImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
-        print("original image width: \(takenImage.size.width) height: \(takenImage.size.height)")
-        if (takenImage.size.width > kResizeAllImagesToThisWidth) { //if image too big, shrink it down
-            self.lastPhotoTaken = UIImage.resizeImage(takenImage, newWidth: kResizeAllImagesToThisWidth)
-        }
-        else {
-            self.lastPhotoTaken = takenImage
-        }
+            print("original image width: \(takenImage.size.width) height: \(takenImage.size.height)")
+            if (takenImage.size.width > kResizeAllImagesToThisWidth) { //if image too big, shrink it down
+                self.lastPhotoTaken = UIImage.resizeImage(takenImage, newWidth: kResizeAllImagesToThisWidth)
+            }
+            else {
+                self.lastPhotoTaken = takenImage
+            }
             
-        //rotate image if necessary
-        self.lastPhotoTaken = self.rotateImageIfNecessary(self.lastPhotoTaken)
+            //rotate image if necessary and then save photo
+            self.lastPhotoTaken = self.rotateImageIfNecessary(self.lastPhotoTaken)
         
-        self.lastPhotoTakenWidth = self.lastPhotoTaken.size.width
-        self.lastPhotoTakenHeight = self.lastPhotoTaken.size.height
-        print("resized image width: \(self.lastPhotoTaken.size.width) height: \(self.lastPhotoTaken.size.height)")
-        self.confirmationView.photoImageView.image = self.lastPhotoTaken
-        
-        //save name of image as current date and time
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "MM-dd-yyyy_HHmmss"
-        let todaysDate = NSDate()
-        self.lastPhotoTakenName = dateFormatter.stringFromDate(todaysDate) + ".JPG"
+            //save width and height of photo
+            self.lastPhotoTakenWidth = self.lastPhotoTaken.size.width
+            self.lastPhotoTakenHeight = self.lastPhotoTaken.size.height
+            print("resized image width: \(self.lastPhotoTaken.size.width) height: \(self.lastPhotoTaken.size.height)")
             
-        }
-        else { //if image isn't available (iCloud photo in Photo stream not loaded yet)
-            self.destroyConfirmationView()
-            picker.dismissViewControllerAnimated(true, completion: { _ in
+            //set the confirmation view's photoImageView with the photo just chosen/taken
+            self.confirmationView.photoImageView.image = self.lastPhotoTaken
+        
+            //save name of image as current date and time
+            let dateFormatter = NSDateFormatter()
+            dateFormatter.dateFormat = "MM-dd-yyyy_HHmmss"
+            let todaysDate = NSDate()
+            self.lastPhotoTakenName = dateFormatter.stringFromDate(todaysDate) + ".JPG"
+            
+            }
+            //if image isn't available (iCloud photo in Photo stream not loaded yet)
+            else { 
+                self.destroyConfirmationView()
+                picker.dismissViewControllerAnimated(true, completion: { _ in
                 
                 
-                })
-            self.showPhotoCouldntBeChosenAlert()
-            print("picker canceled - photo not available!")
+                    })
+                self.showPhotoCouldntBeChosenAlert()
+                print("picker canceled - photo not available!")
             
-        }
+            }
     }
     
     
