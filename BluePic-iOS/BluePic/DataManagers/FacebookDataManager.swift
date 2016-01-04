@@ -239,22 +239,22 @@ class FacebookDataManager: NSObject {
      - parameter presentingVC: tab bar VC to show error alert if it occurs
      */
     func tryToShowLoginScreen() {
-        //authenticate with object storage every time opening app, try to show facebook login once completed
-        if (!ObjectStorageDataManager.SharedInstance.objectStorageClient.isAuthenticated()) { //try to authenticate if not authenticated
-            print("Attempting to authenticate with Object storage...")
-            ObjectStorageDataManager.SharedInstance.objectStorageClient.authenticate({() in
-                    print("success authenticating with object storage!")
-                    self.showLoginIfUserNotAuthenticated()
-                }, onFailure: {(error) in
-                    print("error authenticating with object storage: \(error)")
-                    DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.ObjectStorageAuthError)
-            })
-        }
-        else { //if already authenticated with object storage, just try to show facebook login
+//        //authenticate with object storage every time opening app, try to show facebook login once completed
+//        if (!ObjectStorageDataManager.SharedInstance.objectStorageClient.isAuthenticated()) { //try to authenticate if not authenticated
+//            print("Attempting to authenticate with Object storage...")
+//            ObjectStorageDataManager.SharedInstance.objectStorageClient.authenticate({() in
+//                    print("success authenticating with object storage!")
+//                    self.showLoginIfUserNotAuthenticated()
+//                }, onFailure: {(error) in
+//                    print("error authenticating with object storage: \(error)")
+//                    DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.ObjectStorageAuthError)
+//            })
+//        }
+//        else { //if already authenticated with object storage, just try to show facebook login
             print("Object storage already authenticated somehow!")
             self.showLoginIfUserNotAuthenticated()
             
-        }
+//        }
    
     }
     
@@ -268,7 +268,15 @@ class FacebookDataManager: NSObject {
     func showLoginIfUserNotAuthenticated() {
         //start pulling from cloudant sync (will automatically hide loading when successful)
         print("Pulling latest cloudant data...")
-        self.pullLatestCloudantData()
+      //  self.pullLatestCloudantData()
+        PhotosDataManager.getFeedData() {(pictures, error) in
+            if let error = error {
+                DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.PhotosListFailure(error))
+            }
+            else {
+                DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.PhotosListSuccess(pictures!))
+            }
+        }
         
         //check if user is already authenticated previously
         print("Checking if user is authenticated with facebook...")
@@ -281,7 +289,7 @@ class FacebookDataManager: NSObject {
             }
         }
         else { //user not authenticated
-            
+        
             //show login if user hasn't pressed "sign in later" (first time logging in)
             if !NSUserDefaults.standardUserDefaults().boolForKey("hasPressedLater") {
                 DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.UserNotAuthenticated)
@@ -292,7 +300,7 @@ class FacebookDataManager: NSObject {
                 print("user pressed sign in later button")
                 
             }
-        }
+       }
         
     }
     

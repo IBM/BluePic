@@ -265,7 +265,8 @@ class CameraDataManager: NSObject {
     func uploadImageToObjectStorage(picture : Picture) {
         print("uploading photo to object storage...")
         
-        ObjectStorageDataManager.SharedInstance.objectStorageClient.uploadImage(FacebookDataManager.SharedInstance.fbUniqueUserID!, imageName: picture.fileName!, image: picture.image!,
+//        ObjectStorageDataManager.SharedInstance.objectStorageClient.uploadImage(FacebookDataManager.SharedInstance.fbUniqueUserID!, imageName: picture.fileName!, image: picture.image!,
+        PhotosDataManager.uploadPicture(FacebookDataManager.SharedInstance.fbUniqueUserID!,  picture: picture,
             onSuccess: { (imageURL: String) in
                 print("upload to object storage succeeded.")
                 print("imageURL: \(imageURL)")
@@ -284,7 +285,7 @@ class CameraDataManager: NSObject {
                 DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.ObjectStorageUploadImageAndCloudantCreatePictureDocSuccess)
                 
                 //try to push new changes to cloudant sync if there are no more picture in the picture upload queue
-                self.tryToPushToCloudantSync()
+               // self.tryToPushToCloudantSync()
                 
                 //if there are more pictures in the picture upload queue, continue on to upload those pictures following the same process.
                 self.uploadPhotosIfThereAreAnyLeftInTheQueue()

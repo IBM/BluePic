@@ -64,6 +64,18 @@ enum DataManagerNotification {
     
     //called when the app stargts up 
     case StartLoadingAnimationForAppLaunch
+
+    case PhotosListSuccess([Picture])
+    
+    case PhotosListFailure(String)
+    
+    case PhotosGetSuccess
+
+    case PhotosGetFailure
+    
+    case PhotosUploadSuccess
+    
+    case PhotosUploadFailure
 }
 
 

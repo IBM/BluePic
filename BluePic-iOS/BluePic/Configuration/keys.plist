@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>cdt_username</key>
-	<string>e1ad23d5-4602-46ff-ad38-6e692ff0c1dd-bluemix</string>
+	<string>2bb3566f-ea0f-499c-ba2c-1e7317cd7ffe-bluemix</string>
 	<key>cdt_db_name</key>
 	<string>my_db</string>
 	<key>cdt_tests_db_name</key>
@@ -13,18 +13,18 @@
 	<key>cdt_pass</key>
 	<string>e22cda58e40afb28d7614e9e57272fcc1d27d946</string>
 	<key>backend_route</key>
-	<string>http://BluePic-II.mybluemix.net</string>
+	<string>http://MyBluemixApp-irar-1135.mybluemix.net</string>
 	<key>GUID</key>
-	<string>5d311129-1878-4d48-a29e-8f97f48bb460</string>
+	<string>ae91cf20-87fe-4604-83a1-0ce87526fe48</string>
 	<key>obj_stg_public_url</key>
-	<string>https://dal.objectstorage.open.softlayer.com/v1/AUTH_dd1ceb19680948119774a6d2f08057c2</string>
+	<string>https://identity.open.softlayer.com/</string>
 	<key>obj_stg_password</key>
-	<string>wqQ^0=MEs.0=2Yuk</string>
+	<string>D.uy0d.(nzY4wzdF</string>
 	<key>obj_stg_user_id</key>
-	<string>f7de00fe33404786857f90c1c73d255d</string>
+	<string>543ce3a9b50c414082d35358bc185ccc</string>
 	<key>obj_stg_project_id</key>
-	<string>dd1ceb19680948119774a6d2f08057c2</string>
+	<string>cf1063b0d5b440e4a999ec4ad9fd875e</string>
 	<key>obj_stg_auth_url</key>
-	<string>https://identity.open.softlayer.com/v3/auth/tokens</string>
+	<string>https://identity.open.softlayer.com/</string>
 </dict>
 </plist>

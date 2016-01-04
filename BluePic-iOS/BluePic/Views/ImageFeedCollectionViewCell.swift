@@ -147,7 +147,7 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
             
             //check if we can turn the string into a valid NSURL
             if let nsurl = NSURL(string: urlString){
-                
+ 
                 //if placeHolderImage parameter isn't nil, then set image with URL and use placeholder image
                 if let image = placeHolderImage {
                     setImageViewWithURLAndPlaceHolderImage(nsurl, placeHolderImage: image)
@@ -185,13 +185,30 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
      - parameter url: NSURL
      */
     private func setImageViewWithURL(url : NSURL){
-        imageView.sd_setImageWithURL(url, completed: { result in
-            
-            if result.0 != nil{
+        
+        PhotosDataManager.getPicture(url.description,
+            onSuccess: { (pic) in
                 self.loadingView.hidden = true
-            }
-            
-        })
+                self.imageView.image = UIImage(data: pic)
+            },
+            onFailure: { (error) in
+                print("Error: \(error)")
+            })
+        
+        
+//        print("In setImageViewWithURL with: \(url)")
+//        imageView.sd_setImageWithURL(url/* (NSURL(string: "http://all-free-download.com/free-photos/flower.html"))!*/, completed: { result in
+//            
+//            print("In setImageViewWithURL callback ")
+//            if result.0 != nil{
+//                self.loadingView.hidden = true
+//                print("In setImageViewWithURL callback !=nil")
+//            }
+//            else if let err = result.1 {
+//                print("Error: \(err)")
+//            }
+//            
+//        })
     }
     
 

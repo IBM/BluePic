@@ -19,7 +19,7 @@ import UIKit
 
 
 /// Responsible for initiating Facebook login. VC which allows user to either login later or login with Facebook
-class LoginViewController: UIViewController {
+class LoginViewController: UIViewController, LoginControllerDelegate {
 
     /// Loading indicator when connecting to Facebook
     @IBOutlet weak var loadingIndicator: UIActivityIndicatorView!
@@ -39,6 +39,10 @@ class LoginViewController: UIViewController {
     /// ViewModel for this VC, responsible for holding data and any state
     var viewModel: LoginViewModel!
     
+    
+    var loginController: BaseLoginController?
+    var appearingFirstTime = true
+
     
     /**
      Method called upon view did load. In this case we set up the view model.
@@ -81,11 +85,74 @@ class LoginViewController: UIViewController {
      */
     @IBAction func loginTapped(sender: AnyObject) {
         startLoading()
-        viewModel.authenticateWithFacebook()
-        
+        //viewModel.authenticateWithFacebook()
+        openLoginController()
     }
     
     
+    func openLoginController() {
+       // let currentDummyLogin = NSUserDefaults.standardUserDefaults().boolForKey("dummyLogin")
+       // let loginControllerIdentifier = currentDummyLogin ? "LoginDummyController" : "LoginController"
+        let storyboard = UIStoryboard(name: "Login", bundle: nil)
+        loginController = (storyboard.instantiateViewControllerWithIdentifier("LoginDummyController") as! BaseLoginController)
+        loginController!.delegate = self
+        presentViewController(loginController!, animated: true, completion: {
+           // self.selectedIndex = 0
+        })
+    }
+    
+    
+    func closeLoginController() {
+        if let lc = loginController {
+            lc.dismissViewControllerAnimated(true, completion: {
+                self.loginController = nil
+            })
+        }
+    }
+    
+    
+    func signedInAs(userName: String) {
+//        if let d = data {
+//            d.didSignInWithUserId(userName, withAuthToken: userName, withAccountName: "")
+//            setDataInTabs()
+//            d.sync()
+//        }
+//        if userName.isEmpty {
+//            welcomeLabel.text = "Oops, an error occurred! Try again."
+//            facebookButton.hidden = false
+//            signInLaterButton.hidden = false
+//        }
+//        else {
+//            //dismiss login vc
+//            dismissViewControllerAnimated(true, completion: nil)
+//        }
+
+        stopLoading()
+        FacebookDataManager.SharedInstance.fbAppID = "bluepic"
+        FacebookDataManager.SharedInstance.fbAppDisplayName = "demo"
+        FacebookDataManager.SharedInstance.fbUserDisplayName = "demo"
+        FacebookDataManager.SharedInstance.fbUniqueUserID = "demo"
+        FacebookDataManager.SharedInstance.isLoggedIn = true
+        NSUserDefaults.standardUserDefaults().setObject("demo", forKey: "user_id")
+        NSUserDefaults.standardUserDefaults().setObject("demo", forKey: "user_name")
+       // NSUserDefaults.standardUserDefaults().synchronize()
+
+
+        NSUserDefaults.standardUserDefaults().setBool(false, forKey: "hasPressedLater")
+        NSUserDefaults.standardUserDefaults().synchronize()
+
+        closeLoginController() // >????????
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    
+//    func signedOut() {
+//        if let d = data {
+//            d.didSignOut()
+//        }
+//        openLoginController()
+//    }
+
     /**
      Callback method called when facebook authentication + creating object storage container returns
      

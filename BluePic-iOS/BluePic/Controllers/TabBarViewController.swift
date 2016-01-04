@@ -91,26 +91,20 @@ class TabBarViewController: UITabBarController {
      */
     func handleDataNotification(dataManagerNotification : DataManagerNotification){
         
-        if(dataManagerNotification == DataManagerNotification.GotPastLoginCheck){
+        switch dataManagerNotification {
+        case .GotPastLoginCheck:
             hideBackgroundImage()
-        }
-        else if(dataManagerNotification == DataManagerNotification.ObjectStorageAuthError){
+        case .ObjectStorageAuthError:
             showObjectStorageAuthErrorAlert()
-        }
-        else if(dataManagerNotification == DataManagerNotification.ObjectStorageUploadError){
+        case .ObjectStorageUploadError:
             showObjectStorageUploadErrorAlert()
-        }
-        else if(dataManagerNotification == DataManagerNotification.UserNotAuthenticated){
+        case .UserNotAuthenticated:
             presentLoginVC()
-        }
-        else if(dataManagerNotification == DataManagerNotification.CloudantPushDataFailure){
+        case .CloudantPushDataFailure:
             showCloudantPushingErrorAlert()
-        }
-        else if(dataManagerNotification == DataManagerNotification.CloudantPullDataFailure){
+        case .CloudantPullDataFailure:
             showCloudantPullingErrorAlert()
-        }
-        else if(dataManagerNotification == DataManagerNotification.UserNotAuthenticated){
-            presentLoginVC()
+        default: break
         }
         
     }

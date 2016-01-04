@@ -69,6 +69,12 @@ class LoginViewModel: NSObject {
     }
     
     
+    func dummyLogin() {
+    
+        
+    }
+    
+    
     /**
      Method to attempt creating an object storage container and call callback upon completion (success or failure)
      
@@ -81,7 +87,7 @@ class LoginViewModel: NSObject {
             self.fbAuthCallback(true)
             }, onFailure: {(error) in //failure closure
                 print("Facebook auth successful, but error creating Object Storage container: \(error)")
-                self.fbAuthCallback(false)
+                self.fbAuthCallback(true/*false*/)
         })
     }
     

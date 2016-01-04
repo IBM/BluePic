@@ -92,23 +92,36 @@ class FeedViewModel: NSObject {
      */
     func handleDataManagerNotification(dataManagerNotification : DataManagerNotification){
         
-        if(dataManagerNotification == DataManagerNotification.CloudantPullDataSuccess){
+        switch dataManagerNotification {
+        case .CloudantPullDataSuccess:
             isPullingFromCloudantAlready = false
             getPictureObjects()
-        }
-        else if(dataManagerNotification == DataManagerNotification.UserDecidedToPostPhoto){
+            
+        case .UserDecidedToPostPhoto:
             self.passFeedViewModelNotificationToFeedVCCallback(feedViewModelNotification: FeedViewModelNotification.UploadingPhotoStarted)
             getPictureObjects()
-        }
-        else if(dataManagerNotification == DataManagerNotification.StartLoadingAnimationForAppLaunch){
+            
+        case .StartLoadingAnimationForAppLaunch:
             self.passFeedViewModelNotificationToFeedVCCallback(feedViewModelNotification: FeedViewModelNotification.StartLoadingAnimationForAppLaunch)
-        }
-        else if(dataManagerNotification == DataManagerNotification.UserCanceledUploadingPhotos){
+            
+        case .UserCanceledUploadingPhotos:
             getPictureObjects()
-        }
-        else if(dataManagerNotification == DataManagerNotification.ObjectStorageUploadImageAndCloudantCreatePictureDocSuccess){
+            
+        case .ObjectStorageUploadImageAndCloudantCreatePictureDocSuccess:
             self.passFeedViewModelNotificationToFeedVCCallback(feedViewModelNotification: FeedViewModelNotification.UploadingPhotoFinished)
             getPictureObjects()
+            
+        case .PhotosListSuccess(let pictures):
+            pictureDataArray = pictures
+            hasRecievedDataFromCloudant = true
+            
+            dispatch_async(dispatch_get_main_queue()) {
+                self.passFeedViewModelNotificationToFeedVCCallback(feedViewModelNotification: FeedViewModelNotification.RefreshCollectionView)
+            }
+            
+       // TODO? case .CouchDBPullDataFailure(let error)
+
+        default: break
         }
     }
 

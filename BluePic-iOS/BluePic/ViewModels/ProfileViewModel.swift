@@ -70,14 +70,14 @@ class ProfileViewModel: NSObject {
      */
     func handleDataManagerNotifications(dataManagerNotification : DataManagerNotification){
         
-        if (dataManagerNotification == DataManagerNotification.UserDecidedToPostPhoto){
+        switch dataManagerNotification {
+        case .UserDecidedToPostPhoto:
             getPictureObjects()
-        }
-        if (dataManagerNotification == DataManagerNotification.CloudantPullDataSuccess){
+        case .CloudantPullDataSuccess:
             getPictureObjects()
-        }
-        else if(dataManagerNotification == DataManagerNotification.ObjectStorageUploadImageAndCloudantCreatePictureDocSuccess){
+        case .ObjectStorageUploadImageAndCloudantCreatePictureDocSuccess:
             getPictureObjects()
+        default: break
         }
         
     }

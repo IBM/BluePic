@@ -65,8 +65,10 @@ class TabBarViewModel: NSObject {
      */
     func handleDataManagerNotifications(dataManagerNotification : DataManagerNotification){
         
-        if(dataManagerNotification == DataManagerNotification.CloudantPullDataSuccess){
+        switch dataManagerNotification {
+        case .CloudantPullDataSuccess:
             hasSuccessFullyPulled = true
+        default: break
         }
         
        passDataNotificationToTabBarVCCallback(dataManagerNotification: dataManagerNotification)
