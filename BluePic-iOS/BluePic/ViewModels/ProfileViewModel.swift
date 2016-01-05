@@ -107,7 +107,7 @@ class ProfileViewModel: NSObject {
     func getPictureObjects(){
       //  pictureDataArray = CloudantSyncDataManager.SharedInstance!.getPictureObjects(FacebookDataManager.SharedInstance.fbUniqueUserID!)
         
-        PhotosDataManager.getFeedData() {(pictures, error) in
+        PhotosDataManager.getFeedData(FacebookDataManager.SharedInstance.fbUniqueUserID!) {(pictures, error) in
             if let error = error {
                 DataManagerCalbackCoordinator.SharedInstance.sendNotification(.PhotosListFailure(error))
             }
@@ -115,12 +115,11 @@ class ProfileViewModel: NSObject {
                 self.pictureDataArray = pictures!
                 self.hasRecievedDataFromCloudant = true
                 print("Success in profile getPictureObjects")
-            }
-        }
-        
+                dispatch_async(dispatch_get_main_queue()) {
+                    self.callRefreshCallBack()
+                }
 
-        dispatch_async(dispatch_get_main_queue()) {
-            self.callRefreshCallBack()
+            }
         }
     }
     
@@ -128,7 +127,7 @@ class ProfileViewModel: NSObject {
      method repulls for new data from cloudant
      */
     func repullForNewData(){
-        PhotosDataManager.getFeedData() {(pictures, error) in
+        PhotosDataManager.getFeedData(FacebookDataManager.SharedInstance.fbUniqueUserID!) {(pictures, error) in
             if let error = error {
                 DataManagerCalbackCoordinator.SharedInstance.sendNotification(.PhotosListFailure(error))
             }
