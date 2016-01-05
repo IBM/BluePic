@@ -14,7 +14,7 @@ import Alamofire
 class PhotosDataManager {
 
     static var host = "localhost"
-    static var port = 7000//8090
+    static var port = 8090
     
     static var localPictures = [Picture]()
     static var dbPictures = [Picture]()

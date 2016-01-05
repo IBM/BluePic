@@ -15,6 +15,10 @@ import Foundation
 func parsePhotosList (list: JSON) -> JSON {
     var photos = [JSON]()
     let listLength = Int(list["total_rows"].number!)
+    if listLength == 0 {
+        let empty = [[String:String]]()
+        return JSON(empty)
+    }
     for index in 0...(listLength - 1) {
         let photoId = list["rows"][index]["id"].stringValue
         let date = list["rows"][index]["key"].stringValue

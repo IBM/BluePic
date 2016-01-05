@@ -132,12 +132,16 @@ class FeedViewModel: NSObject {
     func repullForNewData() {
         if(isPullingFromCloudantAlready == false){
             isPullingFromCloudantAlready = true
-            do {
-                try CloudantSyncDataManager.SharedInstance!.pullFromRemoteDatabase()
-            } catch {
-                isPullingFromCloudantAlready = false
-                print("repullForNewData ERROR: \(error)")
-                DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantPullDataFailure)
+            PhotosDataManager.getFeedData() {(pictures, error) in
+                self.isPullingFromCloudantAlready = false
+                if let error = error {
+                    print("repullForNewData ERROR: \(error)")
+                    DataManagerCalbackCoordinator.SharedInstance.sendNotification(.PhotosListFailure(error))
+                    self.isPullingFromCloudantAlready = false
+                }
+                else {
+                    DataManagerCalbackCoordinator.SharedInstance.sendNotification(.PhotosListSuccess(pictures!))
+                }
             }
         }
     }
