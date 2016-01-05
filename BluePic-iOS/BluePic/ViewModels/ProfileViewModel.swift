@@ -105,9 +105,20 @@ class ProfileViewModel: NSObject {
      Method gets the picture objects from cloudant based on the facebook unique user id. When this completes it tells the profile view controller to refresh its collection view
      */
     func getPictureObjects(){
-        pictureDataArray = CloudantSyncDataManager.SharedInstance!.getPictureObjects(FacebookDataManager.SharedInstance.fbUniqueUserID!)
-        hasRecievedDataFromCloudant = true
+      //  pictureDataArray = CloudantSyncDataManager.SharedInstance!.getPictureObjects(FacebookDataManager.SharedInstance.fbUniqueUserID!)
         
+        PhotosDataManager.getFeedData() {(pictures, error) in
+            if let error = error {
+                DataManagerCalbackCoordinator.SharedInstance.sendNotification(.PhotosListFailure(error))
+            }
+            else {
+                self.pictureDataArray = pictures!
+                self.hasRecievedDataFromCloudant = true
+                print("Success in profile getPictureObjects")
+            }
+        }
+        
+
         dispatch_async(dispatch_get_main_queue()) {
             self.callRefreshCallBack()
         }
@@ -117,12 +128,23 @@ class ProfileViewModel: NSObject {
      method repulls for new data from cloudant
      */
     func repullForNewData(){
-        do {
-            try CloudantSyncDataManager.SharedInstance!.pullFromRemoteDatabase()
-        } catch {
-            print("repullForNewData error: \(error)")
-            DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantPullDataFailure)
+        PhotosDataManager.getFeedData() {(pictures, error) in
+            if let error = error {
+                DataManagerCalbackCoordinator.SharedInstance.sendNotification(.PhotosListFailure(error))
+            }
+            else {
+                DataManagerCalbackCoordinator.SharedInstance.sendNotification(.PhotosListSuccess(pictures!))
+                print("Success in profile repullForNewData")
+            }
         }
+        
+//
+//        do {
+//            try CloudantSyncDataManager.SharedInstance!.pullFromRemoteDatabase()
+//        } catch {
+//            print("repullForNewData error: \(error)")
+//            DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantPullDataFailure)
+//        }
     }
     
     

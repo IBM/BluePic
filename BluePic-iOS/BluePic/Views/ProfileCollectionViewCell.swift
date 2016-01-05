@@ -177,13 +177,24 @@ class ProfileCollectionViewCell: UICollectionViewCell {
      - parameter url: NSURL
      */
     private func setImageViewWithURL(url : NSURL){
-        imageView.sd_setImageWithURL(url, completed: { result in
-            
-            if result.0 != nil{
+//        imageView.sd_setImageWithURL(url, completed: { result in
+//            
+//            if result.0 != nil{
+//                self.loadingView.hidden = true
+//            }
+//            
+//        })
+        print("In profile setImageViewWithURL url: ", url)
+        PhotosDataManager.getPicture(url.description,
+            onSuccess: { (pic) in
                 self.loadingView.hidden = true
-            }
-            
+                self.imageView.image = UIImage(data: pic)
+                print("Success In profile setImageViewWithURL url: ", url)
+            },
+            onFailure: { (error) in
+                print("Error: \(error)")
         })
+
     }
 
     
