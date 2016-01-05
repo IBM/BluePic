@@ -16,6 +16,14 @@ class PhotosDataManager {
     static var host = "localhost"
     static var port = 7000//8090
     
+    static var localPictures = [Picture]()
+    static var dbPictures = [Picture]()
+    
+    
+    class func getPictureObjects() -> [Picture] {
+        return localPictures + dbPictures
+    }
+    
     class func getFeedData (callback: ([Picture]?, String?) -> ()) {
         sendRequest(
             onSuccess: { (photos) in
@@ -28,6 +36,7 @@ class PhotosDataManager {
                     newPicture.ownerName = photo["owner"]
                     pictureObjects.append(newPicture)
                 }
+                dbPictures = pictureObjects
                 callback(pictureObjects, nil)
         },
             onFailure: { (error) in
@@ -91,11 +100,14 @@ class PhotosDataManager {
         }
     }
     
-    class func uploadPicture(owner: String, picture: Picture, onSuccess:  (imageURL: String) -> Void, onFailure: (error: String) -> Void) {
-        var title = ""
-        if let displayName = picture.displayName {
+    class func uploadPicture(owner: String, picture: Picture, onSuccess:  () -> Void, onFailure: (error: String) -> Void) {
+        var title = "Untitled"
+        if let displayName = picture.displayName where displayName.characters.count != 0 {
             title = displayName
+            print ("title: \(title) displayName: \(picture.displayName!)")
         }
+        
+        print ("title: \(title)")
 
         let imageData = UIImageJPEGRepresentation(picture.image!, 1.0)
         let nsURL = NSURL(string: "http://\(PhotosDataManager.host):\(PhotosDataManager.port)/photos/\(FacebookDataManager.SharedInstance.fbUniqueUserID!)/\(title)/\(picture.fileName!)")!
@@ -110,12 +122,18 @@ class PhotosDataManager {
         Alamofire.request(mutableURLRequest).responseJSON {response in
             switch response.result {
             case .Success(let JSON):
-                print("Success with JSON: \(JSON)")
-                if let body = JSON as? [String:String] {
-                    onSuccess(imageURL: body["picturePath"]!)
+                print("upload: Success with JSON: \(JSON)")
+                if let photo = JSON as? [String:String] {
+                    let newPicture = Picture()
+                    newPicture.url = photo["picturePath"]
+                    newPicture.displayName = photo["title"]
+                    newPicture.timeStamp = createTimeStamp(photo["date"]!)
+                    newPicture.ownerName = photo["owner"]
+                    dbPictures.append(newPicture)
+                    onSuccess()
                 }
                 else {
-                    onFailure(error: "Failed to read response Json body")
+                    onFailure(error: "upload: Failed to read response Json body")
                 }
                 
             case .Failure(let error):

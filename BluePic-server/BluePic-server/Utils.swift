@@ -31,7 +31,7 @@ func parsePhotosList (list: JSON) -> JSON {
     return JSON(photos)
 }
 
-func createPhotoDocument (owner: String?, title: String?, photoName: String?) -> (JSON?, String?) {
+func createPhotoDocument (owner: String?, title: String?, photoName: String?) -> ([String:AnyObject]?, String?) {
     if owner == nil || photoName == nil {
         return (nil, nil)
     }
@@ -45,10 +45,19 @@ func createPhotoDocument (owner: String?, title: String?, photoName: String?) ->
     dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
     let dateString = dateFormatter.stringFromDate(NSDate())
     
-    let doc = JSON(["owner": owner!, "title": (title == nil ? "" : title!), "date": dateString, "inFeed": true, "type": "photo"])
+    let doc : [String:AnyObject] = ["owner": owner!, "title": (title == nil ? "" : title!), "date": dateString, "inFeed": true, "type": "photo"]
     
     
     print("type: \(contentType), doc: \(doc)")
     
     return (doc, contentType)
+}
+
+func createUploadReply (fromDocument document: [String:AnyObject], id: String, photoName: String) -> JSON {
+    var result = [String:String]()
+    result["picturePath"] = "\(id)/\(photoName)"
+    result["owner"] = document["owner"] as? String
+    result["date"] = document["date"] as? String
+    result["title"] = document["title"] as? String
+    return JSON(result)
 }

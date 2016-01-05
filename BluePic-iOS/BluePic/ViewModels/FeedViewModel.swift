@@ -107,7 +107,8 @@ class FeedViewModel: NSObject {
         case .UserCanceledUploadingPhotos:
             getPictureObjects()
             
-        case .ObjectStorageUploadImageAndCloudantCreatePictureDocSuccess:
+        //case .ObjectStorageUploadImageAndCloudantCreatePictureDocSuccess:
+        case .PhotosUploadSuccess:
             self.passFeedViewModelNotificationToFeedVCCallback(feedViewModelNotification: FeedViewModelNotification.UploadingPhotoFinished)
             getPictureObjects()
             
@@ -116,10 +117,9 @@ class FeedViewModel: NSObject {
             hasRecievedDataFromCloudant = true
             
             dispatch_async(dispatch_get_main_queue()) {
-                self.passFeedViewModelNotificationToFeedVCCallback(feedViewModelNotification: FeedViewModelNotification.RefreshCollectionView)
+                self.passFeedViewModelNotificationToFeedVCCallback(feedViewModelNotification: .RefreshCollectionView)
             }
             
-       // TODO? case .CouchDBPullDataFailure(let error)
 
         default: break
         }
@@ -147,11 +147,19 @@ class FeedViewModel: NSObject {
      Method synchronously asks cloudant for new data. It sets the pictureDataArray to be a combination of the local pictureUploadQueue images + images receives from cloudant/objectDataStore
      */
     func getPictureObjects(){
-        pictureDataArray = CloudantSyncDataManager.SharedInstance!.getPictureObjects(nil)
-        hasRecievedDataFromCloudant = true
-
-         dispatch_async(dispatch_get_main_queue()) {
-            self.passFeedViewModelNotificationToFeedVCCallback(feedViewModelNotification: FeedViewModelNotification.RefreshCollectionView)
+        PhotosDataManager.getFeedData() {(pictures, error) in
+            if let error = error {
+                DataManagerCalbackCoordinator.SharedInstance.sendNotification(.PhotosListFailure(error))
+            }
+            else {
+                self.pictureDataArray = pictures!
+                self.hasRecievedDataFromCloudant = true
+                
+                dispatch_async(dispatch_get_main_queue()) {
+                    self.passFeedViewModelNotificationToFeedVCCallback(feedViewModelNotification: FeedViewModelNotification.RefreshCollectionView)
+                }
+                
+            }
         }
     }
     

@@ -267,22 +267,22 @@ class CameraDataManager: NSObject {
         
 //        ObjectStorageDataManager.SharedInstance.objectStorageClient.uploadImage(FacebookDataManager.SharedInstance.fbUniqueUserID!, imageName: picture.fileName!, image: picture.image!,
         PhotosDataManager.uploadPicture(FacebookDataManager.SharedInstance.fbUniqueUserID!,  picture: picture,
-            onSuccess: { (imageURL: String) in
-                print("upload to object storage succeeded.")
-                print("imageURL: \(imageURL)")
+            onSuccess: { () in
+//                print("upload to object storage succeeded.")
+//                print("imageURL: \(imageURL)")
                 
                 //update picture object with new image url received from on success from Object Storage
-                picture.url = imageURL
+                //picture = newPictureObject
                 
                 //create the picture document with Cloudant Sync
-                print("creating cloudant picture document...")
-                self.createPictureDoc(picture)
+                //print("creating cloudant picture document...")
+                //self.createPictureDoc(picture)
                 
                 //Once picture has been added to Cloudant Sync, remove this picture from our picture upload queue
                 self.removePictureFromPictureUploadQueue(picture)
                 
                 //tell view models that we have successfully uploading the picture to object storage and added the picture to cloudant sync
-                DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.ObjectStorageUploadImageAndCloudantCreatePictureDocSuccess)
+                DataManagerCalbackCoordinator.SharedInstance.sendNotification(.PhotosUploadSuccess)//ObjectStorageUploadImageAndCloudantCreatePictureDocSuccess)
                 
                 //try to push new changes to cloudant sync if there are no more picture in the picture upload queue
                // self.tryToPushToCloudantSync()

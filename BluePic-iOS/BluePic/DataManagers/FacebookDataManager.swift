@@ -271,10 +271,10 @@ class FacebookDataManager: NSObject {
       //  self.pullLatestCloudantData()
         PhotosDataManager.getFeedData() {(pictures, error) in
             if let error = error {
-                DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.PhotosListFailure(error))
+                DataManagerCalbackCoordinator.SharedInstance.sendNotification(.PhotosListFailure(error))
             }
             else {
-                DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.PhotosListSuccess(pictures!))
+                DataManagerCalbackCoordinator.SharedInstance.sendNotification(.PhotosListSuccess(pictures!))
             }
         }
         

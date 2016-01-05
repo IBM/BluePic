@@ -106,7 +106,7 @@ router.post("/photos/:owner/:title/:photoname") { (request: RouterRequest, respo
         
         print("creating doc on db")
         
-        database.create(document) { (id, revision, doc, error) in
+        database.create(JSON(document)) { (id, revision, doc, error) in
             guard  error == nil  else {
                 response.error = error
                 next()
@@ -123,8 +123,8 @@ router.post("/photos/:owner/:title/:photoname") { (request: RouterRequest, respo
                     }
                     if let photoDoc = photoDoc {
                         do {
-                            print("picturePath: id=\(id) name = \(photoName!)")
-                            try response.status(HttpStatusCode.OK).sendJson(JSON(["picturePath": "\(id)/\(photoName!)"])).end()
+                            let reply = createUploadReply(fromDocument: document, id: id, photoName: photoName!)
+                            try response.status(HttpStatusCode.OK).sendJson(reply).end()
                         }
                         catch {
                             response.error = NSError(domain: "SwiftBluePic", code: 1, userInfo: [NSLocalizedDescriptionKey:"Internal error"])
