@@ -36,18 +36,18 @@ class PhotosDataManager {
                 print("Success with JSON: \(JSON)")
                 if let photos = JSON as? [[String:String]] {
                     var pictureObjects = [Picture]()
-                    for photo in photos {if (owner == "" || photo["owner"] == owner) {
-                        let newPicture = Picture()
-                        newPicture.url = photo["picturePath"]
-                        newPicture.displayName = photo["title"]
-                        newPicture.timeStamp = createTimeStamp(photo["date"]!)
-                        newPicture.ownerName = photo["owner"]
-                        pictureObjects.append(newPicture)
+                    for photo in photos {
+                        if (owner == "" || photo["owner"] == owner) {
+                            let newPicture = Picture()
+                            newPicture.url = photo["picturePath"]
+                            newPicture.displayName = photo["title"]
+                            newPicture.timeStamp = createTimeStamp(photo["date"]!)
+                            newPicture.ownerName = photo["owner"]
+                            pictureObjects.append(newPicture)
                         }
                     }
                     dbPictures = pictureObjects
-                    callback(pictureObjects, nil)
-                    
+                    callback(pictureObjects, nil)                    
                 }
                 else {
                     callback(nil, "Failed to read response Json body")

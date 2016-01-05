@@ -71,12 +71,16 @@ class ProfileViewModel: NSObject {
     func handleDataManagerNotifications(dataManagerNotification : DataManagerNotification){
         
         switch dataManagerNotification {
-        case .UserDecidedToPostPhoto:
-            getPictureObjects()
+       // case .UserDecidedToPostPhoto:
+           // getPictureObjects()
         case .CloudantPullDataSuccess:
             getPictureObjects()
         case .ObjectStorageUploadImageAndCloudantCreatePictureDocSuccess:
             getPictureObjects()
+        case .PhotosUploadSuccess:
+            getPictureObjects()
+            
+   
         default: break
         }
         
@@ -97,6 +101,7 @@ class ProfileViewModel: NSObject {
         
         callRefreshCallBack()
         
+        print(">>>addUsersLastPhotoTakenToPictureDataArrayAndRefreshCollectionView")
     }
     
     
@@ -106,7 +111,7 @@ class ProfileViewModel: NSObject {
      */
     func getPictureObjects(){
       //  pictureDataArray = CloudantSyncDataManager.SharedInstance!.getPictureObjects(FacebookDataManager.SharedInstance.fbUniqueUserID!)
-        
+        print("getting pictures for profile")
         PhotosDataManager.getFeedData(FacebookDataManager.SharedInstance.fbUniqueUserID!) {(pictures, error) in
             if let error = error {
                 DataManagerCalbackCoordinator.SharedInstance.sendNotification(.PhotosListFailure(error))
@@ -127,6 +132,7 @@ class ProfileViewModel: NSObject {
      method repulls for new data from cloudant
      */
     func repullForNewData(){
+        print("pulling latest data for profile")
         PhotosDataManager.getFeedData(FacebookDataManager.SharedInstance.fbUniqueUserID!) {(pictures, error) in
             if let error = error {
                 DataManagerCalbackCoordinator.SharedInstance.sendNotification(.PhotosListFailure(error))

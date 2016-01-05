@@ -267,7 +267,7 @@ class FacebookDataManager: NSObject {
      */
     func showLoginIfUserNotAuthenticated() {
         //start pulling from cloudant sync (will automatically hide loading when successful)
-        print("Pulling latest cloudant data...")
+        print("Pulling latest photo data...")
       //  self.pullLatestCloudantData()
         PhotosDataManager.getFeedData() {(pictures, error) in
             if let error = error {
