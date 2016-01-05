@@ -91,6 +91,8 @@ class FeedViewController: UIViewController {
         self.refreshControl.tintColor = UIColor.clearColor()
         
         self.collectionView.addSubview(refreshControl)
+        
+        self.collectionView.alwaysBounceVertical = true
     }
     
     
