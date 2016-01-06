@@ -129,12 +129,12 @@ class LoginViewController: UIViewController, LoginControllerDelegate {
 
         stopLoading()
         FacebookDataManager.SharedInstance.fbAppID = "bluepic"
-        FacebookDataManager.SharedInstance.fbAppDisplayName = "demo"
-        FacebookDataManager.SharedInstance.fbUserDisplayName = "demo"
-        FacebookDataManager.SharedInstance.fbUniqueUserID = "demo"
+        FacebookDataManager.SharedInstance.fbAppDisplayName = userName
+        FacebookDataManager.SharedInstance.fbUserDisplayName = userName
+        FacebookDataManager.SharedInstance.fbUniqueUserID = userName
         FacebookDataManager.SharedInstance.isLoggedIn = true
-        NSUserDefaults.standardUserDefaults().setObject("demo", forKey: "user_id")
-        NSUserDefaults.standardUserDefaults().setObject("demo", forKey: "user_name")
+        NSUserDefaults.standardUserDefaults().setObject(userName, forKey: "user_id")
+        NSUserDefaults.standardUserDefaults().setObject(userName, forKey: "user_name")
        // NSUserDefaults.standardUserDefaults().synchronize()
 
 

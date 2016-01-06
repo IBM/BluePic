@@ -13,11 +13,13 @@ import Alamofire
 
 class PhotosDataManager {
     
-    static var host = "localhost"
+    static var host = "irar-mac.haifa.ibm.com"//"localhost"
     static var port = 8090
     
     static var localPictures = [Picture]()
     static var dbPictures = [Picture]()
+    
+    
     
     
     class func getPictureObjects() -> [Picture] {
