@@ -66,29 +66,33 @@ func createUploadReply (fromDocument document: [String:AnyObject], id: String, p
     return JSON(result)
 }
 
-func getCouchDBConfiguration () -> ([String:AnyObject]?, JSON?) {
+func getCouchDBConfiguration () -> [String:AnyObject]? {
     
 // In order to be able to access CouchDB through external address, go to 127.0.0.1:5984/_utils/config.html, httpd section and change bind_address to 0.0.0.0, and restart couchdb.
     
 // Requires export CONFIG_DIR = ...
 //    if let configDir = NSString(UTF8String: getenv("CONFIG_DIR")) as? String,
-//    let configData = NSData(contentsOfFile: configDir + "./couchDbConfig.json")
+//    let configData = NSData(contentsOfFile: configDir + "./config.json")
     
-       if let configData = NSData(contentsOfFile: "./couchDbConfig.json") {
-            let configJson = JSON(data:configData)
-            if let ipAddress = configJson["ipAddress"].string,
-                let port = configJson["port"].number,
-                let dbName = configJson["db"].string {
-                    var config: [String:AnyObject] = ["ipAddress" : ipAddress, "port": port, "db": dbName]
-                    var designJSON: JSON?
-                    if let design = configJson["design"].dictionary,
-                        let designName = design["name"]!.string,
-                        let designBody = design["body"] {
-                            config["designName"] = designName
-                            designJSON = designBody
-                    }
-                    return (config, designJSON)
-            }
+    if let configData = NSData(contentsOfFile: "./config.json") {
+        let configJson = JSON(data:configData)
+        if let ipAddress = configJson["couchDbIpAddress"].string,
+            let port = configJson["couchDbPort"].number,
+            let dbName = configJson["couchDbDbName"].string {
+                return ["ipAddress" : ipAddress, "port": port, "db": dbName]
+        }
     }
-    return (nil, nil)
+    return nil
+}
+
+func getDesign () -> (String?, JSON?) {
+
+    let designDoc = JSON(["_id" : "_design/photos",
+        "views" : [
+            "sortedByDate" : [
+                "map" : "function(doc) {if (doc.type == 'photo' && doc.title && doc.date && doc.owner) { emit(doc.date, {title: doc.title, owner: doc.owner, attachments: doc._attachments});}}"
+            ]
+        ]
+        ])
+    return ("photos", designDoc)
 }
