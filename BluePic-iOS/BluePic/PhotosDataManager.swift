@@ -13,22 +13,25 @@ import Alamofire
 
 class PhotosDataManager {
     
-    static var host = "irar-mac.haifa.ibm.com"//"localhost"
-    static var port = 8090
+    private let host = "irar-mac.haifa.ibm.com"
+    private let port = 7000//8090
     
-    static var localPictures = [Picture]()
-    static var dbPictures = [Picture]()
+//    static var localPictures = [Picture]()
+//    static var dbPictures = [Picture]()
+//    
     
+    static let SharedInstance:PhotosDataManager = {
+        return PhotosDataManager()
+    }()
+
     
+//    class func getPictureObjects() -> [Picture] {
+//        return localPictures + dbPictures
+//    }
+//    
     
-    
-    class func getPictureObjects() -> [Picture] {
-        return localPictures + dbPictures
-    }
-    
-    
-    class func getFeedData (owner: String = "", callback: ([Picture]?, String?) -> ()) {
-        let nsURL = NSURL(string: "http://\(PhotosDataManager.host):\(PhotosDataManager.port)/photos")!
+    func getFeedData (owner: String = "", callback: ([Picture]?, String?) -> ()) {
+        let nsURL = NSURL(string: "http://\(host):\(port)/photos")!
         let mutableURLRequest = NSMutableURLRequest(URL: nsURL)
         mutableURLRequest.HTTPMethod = "GET"
         
@@ -43,12 +46,12 @@ class PhotosDataManager {
                             let newPicture = Picture()
                             newPicture.url = photo["picturePath"]
                             newPicture.displayName = photo["title"]
-                            newPicture.timeStamp = createTimeStamp(photo["date"]!)
+                            newPicture.timeStamp = self.createTimeStamp(photo["date"]!)
                             newPicture.ownerName = photo["owner"]
                             pictureObjects.append(newPicture)
                         }
                     }
-                    dbPictures = pictureObjects
+                    //dbPictures = pictureObjects
                     callback(pictureObjects, nil)                    
                 }
                 else {
@@ -63,7 +66,7 @@ class PhotosDataManager {
     }
     
     
-    class private func createTimeStamp(dateString: String) -> Double {
+    private func createTimeStamp(dateString: String) -> Double {
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
         if let date = dateFormatter.dateFromString(dateString) {
@@ -75,7 +78,7 @@ class PhotosDataManager {
     }
     
     
-    class func getPicture (url: String, onSuccess: (pic: NSData) -> Void, onFailure: (error: String) -> Void) {
+    func getPicture (url: String, onSuccess: (pic: NSData) -> Void, onFailure: (error: String) -> Void) {
         if let nsURL = NSURL(string: "http://\(host):\(port)/photos/\(url)") {
             print("Bringing picture from db - TODO: caching?")
             let mutableURLRequest = NSMutableURLRequest(URL: nsURL)
@@ -97,7 +100,7 @@ class PhotosDataManager {
     }
     
     
-    class func uploadPicture(owner: String, picture: Picture, onSuccess:  () -> Void, onFailure: (error: String) -> Void) {
+    func uploadPicture(owner: String, picture: Picture, onSuccess:  () -> Void, onFailure: (error: String) -> Void) {
         var title = "Untitled"
         if let displayName = picture.displayName where displayName.characters.count != 0 {
             title = displayName
@@ -107,7 +110,7 @@ class PhotosDataManager {
         print ("title: \(title)")
         
         let imageData = UIImageJPEGRepresentation(picture.image!, 1.0)
-        let nsURL = NSURL(string: "http://\(PhotosDataManager.host):\(PhotosDataManager.port)/photos/\(FacebookDataManager.SharedInstance.fbUniqueUserID!)/\(title)/\(picture.fileName!)")!
+        let nsURL = NSURL(string: "http://\(host):\(port)/photos/\(FacebookDataManager.SharedInstance.fbUniqueUserID!)/\(title)/\(picture.fileName!)")!
         let mutableURLRequest = NSMutableURLRequest(URL: nsURL)
         mutableURLRequest.HTTPMethod = "POST"
         mutableURLRequest.addValue("image/jpeg", forHTTPHeaderField: "Content-Type")
@@ -124,9 +127,9 @@ class PhotosDataManager {
                     let newPicture = Picture()
                     newPicture.url = photo["picturePath"]
                     newPicture.displayName = photo["title"]
-                    newPicture.timeStamp = createTimeStamp(photo["date"]!)
+                    newPicture.timeStamp = self.createTimeStamp(photo["date"]!)
                     newPicture.ownerName = photo["owner"]
-                    dbPictures.append(newPicture)
+                  //  dbPictures.append(newPicture)
                     onSuccess()
                 }
                 else {

@@ -266,7 +266,7 @@ class CameraDataManager: NSObject {
         print("uploading photo to object storage...")
         
 //        ObjectStorageDataManager.SharedInstance.objectStorageClient.uploadImage(FacebookDataManager.SharedInstance.fbUniqueUserID!, imageName: picture.fileName!, image: picture.image!,
-        PhotosDataManager.uploadPicture(FacebookDataManager.SharedInstance.fbUniqueUserID!,  picture: picture,
+        PhotosDataManager.SharedInstance.uploadPicture(FacebookDataManager.SharedInstance.fbUniqueUserID!,  picture: picture,
             onSuccess: { () in
 //                print("upload to object storage succeeded.")
 //                print("imageURL: \(imageURL)")

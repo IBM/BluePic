@@ -269,7 +269,7 @@ class FacebookDataManager: NSObject {
         //start pulling from cloudant sync (will automatically hide loading when successful)
         print("Pulling latest photo data...")
       //  self.pullLatestCloudantData()
-        PhotosDataManager.getFeedData() {(pictures, error) in
+        PhotosDataManager.SharedInstance.getFeedData() {(pictures, error) in
             if let error = error {
                 DataManagerCalbackCoordinator.SharedInstance.sendNotification(.PhotosListFailure(error))
             }

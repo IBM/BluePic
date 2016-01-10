@@ -186,7 +186,7 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
      */
     private func setImageViewWithURL(url : NSURL){
         
-        PhotosDataManager.getPicture(url.description,
+        PhotosDataManager.SharedInstance.getPicture(url.description,
             onSuccess: { (pic) in
                 self.loadingView.hidden = true
                 self.imageView.image = UIImage(data: pic)

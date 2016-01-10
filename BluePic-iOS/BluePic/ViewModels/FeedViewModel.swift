@@ -133,7 +133,7 @@ class FeedViewModel: NSObject {
         if(isPullingFromCloudantAlready == false){
             isPullingFromCloudantAlready = true
             print("pulling latest data for feed")
-            PhotosDataManager.getFeedData() {(pictures, error) in
+            PhotosDataManager.SharedInstance.getFeedData() {(pictures, error) in
                 self.isPullingFromCloudantAlready = false
                 if let error = error {
                     print("repullForNewData ERROR: \(error)")
@@ -153,7 +153,7 @@ class FeedViewModel: NSObject {
      */
     func getPictureObjects(){
         print("getting pictures for feed")
-        PhotosDataManager.getFeedData() {(pictures, error) in
+        PhotosDataManager.SharedInstance.getFeedData() {(pictures, error) in
             if let error = error {
                 DataManagerCalbackCoordinator.SharedInstance.sendNotification(.PhotosListFailure(error))
             }
