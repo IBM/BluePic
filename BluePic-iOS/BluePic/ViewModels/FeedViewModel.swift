@@ -93,10 +93,6 @@ class FeedViewModel: NSObject {
     func handleDataManagerNotification(dataManagerNotification : DataManagerNotification){
         
         switch dataManagerNotification {
-        case .CloudantPullDataSuccess:
-            isPullingFromCloudantAlready = false
-            getPictureObjects()
-            
         case .UserDecidedToPostPhoto:
             self.passFeedViewModelNotificationToFeedVCCallback(feedViewModelNotification: FeedViewModelNotification.UploadingPhotoStarted)
             //getPictureObjects()
@@ -107,7 +103,6 @@ class FeedViewModel: NSObject {
         case .UserCanceledUploadingPhotos:
             getPictureObjects()
             
-        //case .ObjectStorageUploadImageAndCloudantCreatePictureDocSuccess:
         case .PhotosUploadSuccess:
             self.passFeedViewModelNotificationToFeedVCCallback(feedViewModelNotification: FeedViewModelNotification.UploadingPhotoFinished)
             getPictureObjects()

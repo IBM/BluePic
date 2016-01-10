@@ -54,9 +54,7 @@ class LoginViewModel: NSObject {
                         NSUserDefaults.standardUserDefaults().setBool(false, forKey: "hasPressedLater")
                         NSUserDefaults.standardUserDefaults().synchronize()
                         
-                        //add container once to object storage
-                        self.createObjectStorageContainer(userID)
-                        
+                      
                     }
                 }
             }
@@ -74,22 +72,4 @@ class LoginViewModel: NSObject {
         
     }
     
-    
-    /**
-     Method to attempt creating an object storage container and call callback upon completion (success or failure)
-     
-     - parameter userID: user id to be used for container creation
-     */
-    func createObjectStorageContainer(userID: String!) {
-        print("Creating object storage container...")
-        ObjectStorageDataManager.SharedInstance.objectStorageClient.createContainer(userID, onSuccess: {(name) in
-            print("Successfully created object storage container with name \(name)") //success closure
-            self.fbAuthCallback(true)
-            }, onFailure: {(error) in //failure closure
-                print("Facebook auth successful, but error creating Object Storage container: \(error)")
-                self.fbAuthCallback(true/*false*/)
-        })
-    }
-    
-
 }

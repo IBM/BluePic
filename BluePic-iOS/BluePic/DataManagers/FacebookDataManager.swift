@@ -127,7 +127,7 @@ class FacebookDataManager: NSObject {
                         
                             print("Got facebook auth token for user \(userName) with id \(userID)")
                             
-                            self.checkIfUserExistsOnCloudantAndPushIfNeeded()
+  //                          self.checkIfUserExistsOnCloudantAndPushIfNeeded()
                             
                             callback(networkRequest: NetworkRequest.Success)
                         }
@@ -307,53 +307,53 @@ class FacebookDataManager: NSObject {
 
     
     
-    /**
-     Method to start pulling the latest cloudant data
-     */
-    func pullLatestCloudantData() {
-        
-        //First do a pull to make sure datastore is up to date
-        do {
-            try CloudantSyncDataManager.SharedInstance!.pullFromRemoteDatabase()
-        } catch {
-            print("pullLatestCloudantData ERROR: \(error)")
-            DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantPullDataFailure)
-        }
-        
-        
-    }
-    
-    
-    /**
-     Query CloudantSync to see if id exists, and push to database if needed. Will wait until pull replicator is finished to execute
-     */
-    func checkIfUserExistsOnCloudantAndPushIfNeeded() {
-        
-        //Check if doc with fb id exists
-        if(!CloudantSyncDataManager.SharedInstance!.doesExist(self.fbUniqueUserID!))
-        {
-            do {
-                //Create profile document locally
-                try CloudantSyncDataManager.SharedInstance!.createProfileDoc(self.fbUniqueUserID!, name: self.fbUserDisplayName!)
-            } catch {
-                print("checkIfUserExistsOnCloudantAndPushIfNeeded ERROR: \(error)")
-                DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantCreateProfileFailure)
-            }
-            
-            do {
-                //Push new profile document to remote database
-                try CloudantSyncDataManager.SharedInstance!.pushToRemoteDatabase()
-            } catch {
-                print("checkIfUserExistsOnCloudantAndPushIfNeeded ERROR: \(error)")
-                DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantPushDataFailure)
-            }
-            
-            
-        }
-        
-    }
-    
-    
+//    /**
+//     Method to start pulling the latest cloudant data
+//     */
+//    func pullLatestCloudantData() {
+//        
+//        //First do a pull to make sure datastore is up to date
+//        do {
+//            try CloudantSyncDataManager.SharedInstance!.pullFromRemoteDatabase()
+//        } catch {
+//            print("pullLatestCloudantData ERROR: \(error)")
+//            DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantPullDataFailure)
+//        }
+//        
+//        
+//    }
+//    
+//    
+//    /**
+//     Query CloudantSync to see if id exists, and push to database if needed. Will wait until pull replicator is finished to execute
+//     */
+//    func checkIfUserExistsOnCloudantAndPushIfNeeded() {
+//        
+//        //Check if doc with fb id exists
+//        if(!CloudantSyncDataManager.SharedInstance!.doesExist(self.fbUniqueUserID!))
+//        {
+//            do {
+//                //Create profile document locally
+//                try CloudantSyncDataManager.SharedInstance!.createProfileDoc(self.fbUniqueUserID!, name: self.fbUserDisplayName!)
+//            } catch {
+//                print("checkIfUserExistsOnCloudantAndPushIfNeeded ERROR: \(error)")
+//                DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantCreateProfileFailure)
+//            }
+//            
+//            do {
+//                //Push new profile document to remote database
+//                try CloudantSyncDataManager.SharedInstance!.pushToRemoteDatabase()
+//            } catch {
+//                print("checkIfUserExistsOnCloudantAndPushIfNeeded ERROR: \(error)")
+//                DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantPushDataFailure)
+//            }
+//            
+//            
+//        }
+//        
+//    }
+//    
+//    
     /**
      Method to return a url for the user's profile picture
      

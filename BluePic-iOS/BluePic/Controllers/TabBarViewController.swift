@@ -94,16 +94,12 @@ class TabBarViewController: UITabBarController {
         switch dataManagerNotification {
         case .GotPastLoginCheck:
             hideBackgroundImage()
-        case .ObjectStorageAuthError:
-            showObjectStorageAuthErrorAlert()
-        case .ObjectStorageUploadError:
-            showObjectStorageUploadErrorAlert()
+        case .PhotosUploadFailure:
+            showUploadErrorAlert()
         case .UserNotAuthenticated:
             presentLoginVC()
-        case .CloudantPushDataFailure:
-            showCloudantPushingErrorAlert()
-        case .CloudantPullDataFailure:
-            showCloudantPullingErrorAlert()
+        case .PhotosListFailure:
+            showFeedErrorAlert()
         default: break
         }
         
@@ -123,35 +119,14 @@ class TabBarViewController: UITabBarController {
     
     
     /**
-     Method to show the error alert and asks user if they would like to retry cloudant data pushing
+     Method to show the error alert and asks user if they would like to retry getting feed data
      */
-    func showCloudantPushingErrorAlert() {
+    func showFeedErrorAlert() {
         
-        let alert = UIAlertController(title: nil, message: NSLocalizedString("Oops! An error occurred uploading to Cloudant.", comment: ""), preferredStyle: UIAlertControllerStyle.Alert)
+        let alert = UIAlertController(title: nil, message: NSLocalizedString("Oops! An error occurred downloading photos.", comment: ""), preferredStyle: UIAlertControllerStyle.Alert)
         
         alert.addAction(UIAlertAction(title: NSLocalizedString("Try Again", comment: ""), style: .Default, handler: { (action: UIAlertAction!) in
-            self.viewModel.retryPushingCloudantData()
-        }))
-        
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .Cancel, handler: { (action: UIAlertAction!) in
-
-        }))
-        
-        dispatch_async(dispatch_get_main_queue()) {
-            self.presentViewController(alert, animated: true, completion: nil)
-        }
-    }
-    
-    
-    /**
-     Method to show the error alert and asks user if they would like to retry cloudant data pulling
-     */
-    func showCloudantPullingErrorAlert() {
-        
-        let alert = UIAlertController(title: nil, message: NSLocalizedString("Oops! An error occurred downloading Cloudant data.", comment: ""), preferredStyle: UIAlertControllerStyle.Alert)
-        
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Try Again", comment: ""), style: .Default, handler: { (action: UIAlertAction!) in
-            self.viewModel.retryPullingCloudantData() 
+            self.viewModel.retryPullingFeedData() 
         }))
         
         alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .Cancel, handler: { (action: UIAlertAction!) in
@@ -162,31 +137,14 @@ class TabBarViewController: UITabBarController {
             self.presentViewController(alert, animated: true, completion: nil)
         }
     }
-    
-    
-    /**
-     Method to show the error alert and asks user if they would like to retry object storage authentication
-     */
-    func showObjectStorageAuthErrorAlert() {
-        
-        let alert = UIAlertController(title: nil, message: NSLocalizedString("Oops! An error occurred authenticating with Object Storage.", comment: ""), preferredStyle: UIAlertControllerStyle.Alert)
-        
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Try Again", comment: ""), style: .Default, handler: { (action: UIAlertAction!) in
-            self.viewModel.retryAuthenticatingObjectStorage()
-        }))
-        
-        dispatch_async(dispatch_get_main_queue()) {
-            self.presentViewController(alert, animated: true, completion: nil)
-        }
-    }
-    
+
     
     /**
      Method to show the error alert and asks user if they would like to retry pushing to object storage
      */
-    func showObjectStorageUploadErrorAlert() {
+    func showUploadErrorAlert() {
         
-        let alert = UIAlertController(title: nil, message: NSLocalizedString("Oops! An error occurred uploading to Object Storage.", comment: ""), preferredStyle: UIAlertControllerStyle.Alert)
+        let alert = UIAlertController(title: nil, message: NSLocalizedString("Oops! An error occurred uploading photo.", comment: ""), preferredStyle: UIAlertControllerStyle.Alert)
         
         alert.addAction(UIAlertAction(title: NSLocalizedString("Try Again", comment: ""), style: .Default, handler: { (action: UIAlertAction!) in
            CameraDataManager.SharedInstance.uploadPhotosIfThereAreAnyLeftInTheQueue()

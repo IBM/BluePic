@@ -189,7 +189,7 @@ class CameraDataManager: NSObject {
         DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.UserDecidedToPostPhoto)
         
         //try upploading the image to object storage
-        tryToUploadImageToObjectStorage(picture)
+        tryToUploadImage(picture)
     }
     
     
@@ -251,10 +251,10 @@ class CameraDataManager: NSObject {
      
      - parameter picture: Picture
      */
-    func tryToUploadImageToObjectStorage(picture : Picture){
+    func tryToUploadImage(picture : Picture){
         
         if(pictureUploadQueue.count == 1){
-            uploadImageToObjectStorage(picture)
+            uploadImage(picture)
         }
     }
     
@@ -262,60 +262,29 @@ class CameraDataManager: NSObject {
     /**
      Method called to push image to object storage, on sucuess create picture document with url from object storage and push to cloudant sync if there are no more picture in the queue, else try uploading the rest of the photos in the queue
      */
-    func uploadImageToObjectStorage(picture : Picture) {
-        print("uploading photo to object storage...")
+    func uploadImage(picture : Picture) {
+        print("uploading photo...")
         
-//        ObjectStorageDataManager.SharedInstance.objectStorageClient.uploadImage(FacebookDataManager.SharedInstance.fbUniqueUserID!, imageName: picture.fileName!, image: picture.image!,
         PhotosDataManager.SharedInstance.uploadPicture(FacebookDataManager.SharedInstance.fbUniqueUserID!,  picture: picture,
             onSuccess: { () in
-//                print("upload to object storage succeeded.")
-//                print("imageURL: \(imageURL)")
-                
-                //update picture object with new image url received from on success from Object Storage
-                //picture = newPictureObject
-                
-                //create the picture document with Cloudant Sync
-                //print("creating cloudant picture document...")
-                //self.createPictureDoc(picture)
-                
+                    print("upload to succeeded.")
+               
                 //Once picture has been added to Cloudant Sync, remove this picture from our picture upload queue
                 self.removePictureFromPictureUploadQueue(picture)
                 
-                //tell view models that we have successfully uploading the picture to object storage and added the picture to cloudant sync
-                DataManagerCalbackCoordinator.SharedInstance.sendNotification(.PhotosUploadSuccess)//ObjectStorageUploadImageAndCloudantCreatePictureDocSuccess)
-                
-                //try to push new changes to cloudant sync if there are no more picture in the picture upload queue
-               // self.tryToPushToCloudantSync()
+                //tell view models that we have successfully uploaded the picture
+                DataManagerCalbackCoordinator.SharedInstance.sendNotification(.PhotosUploadSuccess)
                 
                 //if there are more pictures in the picture upload queue, continue on to upload those pictures following the same process.
                 self.uploadPhotosIfThereAreAnyLeftInTheQueue()
                 
-                
             }, onFailure: { (error) in
                 print("upload to object storage failed!")
                 print("error: \(error)")
-                DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.ObjectStorageUploadError)
+                DataManagerCalbackCoordinator.SharedInstance.sendNotification(.PhotosUploadFailure)
         })
     }
 
-    
-    /**
-     Method creates a picture doc before trying to upload to object storage
-     
-     - returns: CDTDocumentRevision?
-     */
-    func createPictureDoc(picture : Picture) {
-        do {
-            try CloudantSyncDataManager.SharedInstance!.createPictureDoc(picture.displayName!, fileName: picture.fileName!, url: picture.url!, ownerID: FacebookDataManager.SharedInstance.fbUniqueUserID!, width: "\(picture.width!)", height: "\(picture.height!)")
-            
-        } catch {
-            print("cloudantCreatePictureFailure ERROR: \(error)")
-            DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantCreatePictureFailure)
-        }
-    }
-
-    
-    
     /**
      Method removes the picture parameter from the picture upload queue
      
@@ -327,21 +296,6 @@ class CameraDataManager: NSObject {
         
     }
     
-    
-    /**
-     Method will push the recent changes to cloudant sync if there are no more photos left in the picture upload queue
-     */
-    func tryToPushToCloudantSync(){
-        if(pictureUploadQueue.count == 0){
-            do {
-                try CloudantSyncDataManager.SharedInstance!.pushToRemoteDatabase()
-            } catch {
-                print("uploadImageToObjectStorage ERROR: \(error)")
-                DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantPushDataFailure)
-            }
-        }
-    }
-
 
     
     /**
@@ -350,7 +304,7 @@ class CameraDataManager: NSObject {
     func uploadPhotosIfThereAreAnyLeftInTheQueue(){
         
         if(pictureUploadQueue.count > 0){
-            uploadImageToObjectStorage(pictureUploadQueue[0])
+            uploadImage(pictureUploadQueue[0])
         }
     }
     
@@ -362,7 +316,7 @@ class CameraDataManager: NSObject {
         
         pictureUploadQueue = []
         
-        DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.UserCanceledUploadingPhotos)
+        DataManagerCalbackCoordinator.SharedInstance.sendNotification(.UserCanceledUploadingPhotos)
         
     }
     

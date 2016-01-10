@@ -71,16 +71,8 @@ class ProfileViewModel: NSObject {
     func handleDataManagerNotifications(dataManagerNotification : DataManagerNotification){
         
         switch dataManagerNotification {
-       // case .UserDecidedToPostPhoto:
-           // getPictureObjects()
-        case .CloudantPullDataSuccess:
-            getPictureObjects()
-        case .ObjectStorageUploadImageAndCloudantCreatePictureDocSuccess:
-            getPictureObjects()
         case .PhotosUploadSuccess:
             getPictureObjects()
-            
-   
         default: break
         }
         
@@ -110,7 +102,6 @@ class ProfileViewModel: NSObject {
      Method gets the picture objects from cloudant based on the facebook unique user id. When this completes it tells the profile view controller to refresh its collection view
      */
     func getPictureObjects(){
-      //  pictureDataArray = CloudantSyncDataManager.SharedInstance!.getPictureObjects(FacebookDataManager.SharedInstance.fbUniqueUserID!)
         print("getting pictures for profile")
         PhotosDataManager.SharedInstance.getFeedData(FacebookDataManager.SharedInstance.fbUniqueUserID!) {(pictures, error) in
             if let error = error {
@@ -142,15 +133,7 @@ class ProfileViewModel: NSObject {
                 print("Success in profile repullForNewData")
             }
         }
-        
-//
-//        do {
-//            try CloudantSyncDataManager.SharedInstance!.pullFromRemoteDatabase()
-//        } catch {
-//            print("repullForNewData error: \(error)")
-//            DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantPullDataFailure)
-//        }
-    }
+     }
     
     
     

@@ -20,38 +20,11 @@ import UIKit
 
 //Used for notifiying view models when there are state updates from data managers
 //Use example:
-//DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantPullDataFailure)
+//DataManagerCalbackCoordinator.SharedInstance.sendNotification(.PhotosUploadSuccess)
 enum DataManagerNotification {
-    
-    //called when cloudant successfully pulls data
-    case CloudantPullDataSuccess
-    
-    //called when cloudant fails at pulling data
-    case CloudantPullDataFailure
-    
-    //called when cloudant successfully pushes data
-    case CloudantPushDataSuccess
-    
-    //called when cloudant fails at pushing data
-    case CloudantPushDataFailure
-    
-    //called when cloudant fails to create a picture
-    case CloudantCreatePictureFailure
-    
-    //called when cloudant fails to create a profile
-    case CloudantCreateProfileFailure
     
     //called when the user chooses to cancel uploading picture to object storage/cloudant when there is a failure uploading to object storage
     case UserCanceledUploadingPhotos
-    
-    //called when object storage successfully uploaded a picture and the picture was added to cloudant sync successfully
-    case ObjectStorageUploadImageAndCloudantCreatePictureDocSuccess
-    
-    //called when there was an object storage auth error
-    case ObjectStorageAuthError
-    
-    //called when there was an object storage upload error
-    case ObjectStorageUploadError
     
     //called when the app gets past the login check
     case GotPastLoginCheck
@@ -65,16 +38,16 @@ enum DataManagerNotification {
     //called when the app stargts up 
     case StartLoadingAnimationForAppLaunch
 
+    // called when photos are pulled successfuly
     case PhotosListSuccess([Picture])
     
+    // called when there is an error in pulling of photos
     case PhotosListFailure(String)
     
-    case PhotosGetSuccess
-
-    case PhotosGetFailure
-    
+    // called when photos are uploaded successfuly
     case PhotosUploadSuccess
     
+    // called when there is an error in photo uploading
     case PhotosUploadFailure
 }
 

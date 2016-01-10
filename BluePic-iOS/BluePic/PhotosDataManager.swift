@@ -14,21 +14,11 @@ import Alamofire
 class PhotosDataManager {
     
     private let host = "irar-mac.haifa.ibm.com"
-    private let port = 7000//8090
-    
-//    static var localPictures = [Picture]()
-//    static var dbPictures = [Picture]()
-//    
+    private let port = 8090
     
     static let SharedInstance:PhotosDataManager = {
         return PhotosDataManager()
     }()
-
-    
-//    class func getPictureObjects() -> [Picture] {
-//        return localPictures + dbPictures
-//    }
-//    
     
     func getFeedData (owner: String = "", callback: ([Picture]?, String?) -> ()) {
         let nsURL = NSURL(string: "http://\(host):\(port)/photos")!
@@ -51,8 +41,7 @@ class PhotosDataManager {
                             pictureObjects.append(newPicture)
                         }
                     }
-                    //dbPictures = pictureObjects
-                    callback(pictureObjects, nil)                    
+                    callback(pictureObjects, nil)
                 }
                 else {
                     callback(nil, "Failed to read response Json body")
@@ -74,7 +63,7 @@ class PhotosDataManager {
         }
         else {
             return 0
-        }        
+        }
     }
     
     
@@ -129,7 +118,6 @@ class PhotosDataManager {
                     newPicture.displayName = photo["title"]
                     newPicture.timeStamp = self.createTimeStamp(photo["date"]!)
                     newPicture.ownerName = photo["owner"]
-                  //  dbPictures.append(newPicture)
                     onSuccess()
                 }
                 else {
@@ -142,4 +130,4 @@ class PhotosDataManager {
             }
         }
     }
- }
+}
