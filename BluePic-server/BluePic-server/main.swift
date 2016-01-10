@@ -19,6 +19,11 @@ import Foundation
 let router = Router()
 var database: CouchDB?
 
+// FOR NOW until we have a web based Admin UI
+let server = CouchDBServer(ipAddress: "localhost", port: 5984)
+database = server.db("swift-bluepic")
+//
+
 
 router.post("/admin/setup") { (request: RouterRequest, response: RouterResponse, next: ()->Void) in
     let (configuration, design) = getCouchDBConfiguration()
