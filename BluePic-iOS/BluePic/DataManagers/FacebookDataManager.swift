@@ -266,9 +266,8 @@ class FacebookDataManager: NSObject {
      - parameter presentingVC: tab bar VC to present login VC on
      */
     func showLoginIfUserNotAuthenticated() {
-        //start pulling from cloudant sync (will automatically hide loading when successful)
+        // start pulling photos (will automatically hide loading when successful)
         print("Pulling latest photo data...")
-      //  self.pullLatestCloudantData()
         PhotosDataManager.SharedInstance.getFeedData() {(pictures, error) in
             if let error = error {
                 DataManagerCalbackCoordinator.SharedInstance.sendNotification(.PhotosListFailure(error))
@@ -305,55 +304,6 @@ class FacebookDataManager: NSObject {
     }
     
 
-    
-    
-//    /**
-//     Method to start pulling the latest cloudant data
-//     */
-//    func pullLatestCloudantData() {
-//        
-//        //First do a pull to make sure datastore is up to date
-//        do {
-//            try CloudantSyncDataManager.SharedInstance!.pullFromRemoteDatabase()
-//        } catch {
-//            print("pullLatestCloudantData ERROR: \(error)")
-//            DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantPullDataFailure)
-//        }
-//        
-//        
-//    }
-//    
-//    
-//    /**
-//     Query CloudantSync to see if id exists, and push to database if needed. Will wait until pull replicator is finished to execute
-//     */
-//    func checkIfUserExistsOnCloudantAndPushIfNeeded() {
-//        
-//        //Check if doc with fb id exists
-//        if(!CloudantSyncDataManager.SharedInstance!.doesExist(self.fbUniqueUserID!))
-//        {
-//            do {
-//                //Create profile document locally
-//                try CloudantSyncDataManager.SharedInstance!.createProfileDoc(self.fbUniqueUserID!, name: self.fbUserDisplayName!)
-//            } catch {
-//                print("checkIfUserExistsOnCloudantAndPushIfNeeded ERROR: \(error)")
-//                DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantCreateProfileFailure)
-//            }
-//            
-//            do {
-//                //Push new profile document to remote database
-//                try CloudantSyncDataManager.SharedInstance!.pushToRemoteDatabase()
-//            } catch {
-//                print("checkIfUserExistsOnCloudantAndPushIfNeeded ERROR: \(error)")
-//                DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantPushDataFailure)
-//            }
-//            
-//            
-//        }
-//        
-//    }
-//    
-//    
     /**
      Method to return a url for the user's profile picture
      

@@ -25,8 +25,18 @@ database = server.db("swift-bluepic")
 //
 
 
+router.get("/connect") { (request: RouterRequest, response: RouterResponse, next: ()->Void) in
+    do {
+        try response.status(HttpStatusCode.OK).end()
+    }
+    catch {
+        response.error = NSError(domain: "SwiftBluePic", code: 1, userInfo: [NSLocalizedDescriptionKey:"Internal error"])
+    }
+    
+    next()
+}
+
 router.post("/admin/setup") { (request: RouterRequest, response: RouterResponse, next: ()->Void) in
-        
     if let configuration = getCouchDBConfiguration() {
         let server = CouchDBServer(ipAddress: configuration["ipAddress"] as! String, port: Int16(configuration["port"]!.integerValue))
         let dbName = configuration["db"] as! String

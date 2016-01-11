@@ -73,6 +73,9 @@ class ProfileViewModel: NSObject {
         switch dataManagerNotification {
         case .PhotosUploadSuccess:
             getPictureObjects()
+        case .ServerConnectionSuccess:
+            getPictureObjects()
+
         default: break
         }
         

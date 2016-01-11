@@ -68,6 +68,8 @@ class TabBarViewModel: NSObject {
         switch dataManagerNotification {
         case .PhotosListSuccess:
             hasSuccessFullyPulled = true
+        case .ServerConnectionSuccess:
+            retryPullingFeedData()
         default: break
         }
         

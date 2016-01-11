@@ -38,8 +38,7 @@ class TabBarViewController: UITabBarController {
         
         self.addBackgroundImageView()
         
-        self.delegate = self
-        
+        self.delegate = self        
     }
     
     
@@ -52,8 +51,7 @@ class TabBarViewController: UITabBarController {
         
         self.viewModel.tellFeedToStartLoadingAnimation()
 
-        self.tryToShowLogin()
-        
+        self.checkServerConnection()
     }
 
     
@@ -100,6 +98,12 @@ class TabBarViewController: UITabBarController {
             presentLoginVC()
         case .PhotosListFailure:
             showFeedErrorAlert()
+        case .ServerConnectionFailure(let message):
+            presentServerAlert(message)
+        case .ServerConnectionSuccess:
+            tryToShowLogin()
+            selectedIndex = 0 // switch to feed tab
+            
         default: break
         }
         
@@ -117,7 +121,38 @@ class TabBarViewController: UITabBarController {
         
     }
     
-    
+    func checkServerConnection () {
+        if let serverUrl = NSUserDefaults.standardUserDefaults().stringForKey(Utils.PREFERENCE_SERVER) {
+            PhotosDataManager.SharedInstance.connect(serverUrl) { error in
+                if let _ = error {
+                    self.presentServerAlert("Bad server URL: " + serverUrl)
+                }
+                else {
+                    DataManagerCalbackCoordinator.SharedInstance.sendNotification(.ServerConnectionSuccess)
+                }
+            }
+        }
+        else {
+            presentServerAlert("Server is not set")
+        }
+        
+    }
+
+    func presentServerAlert (message: String) {
+        let alert = UIAlertController(title: nil, message: NSLocalizedString(message, comment: ""), preferredStyle: UIAlertControllerStyle.Alert)
+        
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .Cancel, handler: { (action: UIAlertAction!) in
+            
+        }))
+        
+        dispatch_async(dispatch_get_main_queue()) {
+            self.presentViewController(alert, animated: true, completion: nil)
+        }
+        hideBackgroundImage()
+        selectedIndex = 3 // switch to settings tab
+        
+    }
+
     /**
      Method to show the error alert and asks user if they would like to retry getting feed data
      */

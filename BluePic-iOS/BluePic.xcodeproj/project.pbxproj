@@ -56,6 +56,9 @@
 		34C8094D1BFCEA0400C48004 /* keys.plist in Resources */ = {isa = PBXBuildFile; fileRef = 34C8094C1BFCEA0400C48004 /* keys.plist */; };
 		34C809551BFD0F2400C48004 /* FacebookDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C809541BFD0F2400C48004 /* FacebookDataManager.swift */; };
 		494AA0B01BFE4CBA006FC48E /* ObjectStorageClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494AA0AF1BFE4CBA006FC48E /* ObjectStorageClientTests.swift */; };
+		A22599A61C42791F00A72115 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A22599A51C42791F00A72115 /* Settings.storyboard */; };
+		A22599A81C42793300A72115 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A22599A71C42793300A72115 /* SettingsViewController.swift */; };
+		A22599AB1C427CF000A72115 /* SettingsConnectivityCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A22599A91C427CF000A72115 /* SettingsConnectivityCell.swift */; };
 		A234C3241C39078400E15B90 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A234C3221C39078400E15B90 /* Login.storyboard */; };
 		A234C3251C39078400E15B90 /* LoginDummyController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A234C3231C39078400E15B90 /* LoginDummyController.swift */; };
 		A234C32B1C390B0800E15B90 /* BaseLoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A234C3291C390B0800E15B90 /* BaseLoginController.swift */; };
@@ -155,6 +158,9 @@
 		494AA0AF1BFE4CBA006FC48E /* ObjectStorageClientTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectStorageClientTests.swift; sourceTree = "<group>"; };
 		4DF2008F9A93E25237957424 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		548428B896D4182B293AB59E /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		A22599A51C42791F00A72115 /* Settings.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
+		A22599A71C42793300A72115 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		A22599A91C427CF000A72115 /* SettingsConnectivityCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsConnectivityCell.swift; sourceTree = "<group>"; };
 		A234C3221C39078400E15B90 /* Login.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Login.storyboard; path = Login/Login.storyboard; sourceTree = "<group>"; };
 		A234C3231C39078400E15B90 /* LoginDummyController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginDummyController.swift; path = Login/LoginDummyController.swift; sourceTree = "<group>"; };
 		A234C3291C390B0800E15B90 /* BaseLoginController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BaseLoginController.swift; path = Login/BaseLoginController.swift; sourceTree = "<group>"; };
@@ -290,6 +296,8 @@
 		347472BD1BFA8DEF0018B7F6 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				A22599A91C427CF000A72115 /* SettingsConnectivityCell.swift */,
+				A22599A71C42793300A72115 /* SettingsViewController.swift */,
 				3435C7CE1C036A60004923BD /* TabBarViewController.swift */,
 				347472F01BFA8E320018B7F6 /* LoginViewController.swift */,
 				3435C7D41C04110C004923BD /* FeedViewController.swift */,
@@ -316,6 +324,7 @@
 				3435C7C81C0368B1004923BD /* Feed.storyboard */,
 				3435C7CA1C0368DA004923BD /* Camera.storyboard */,
 				3435C7CC1C03690F004923BD /* Profile.storyboard */,
+				A22599A51C42791F00A72115 /* Settings.storyboard */,
 			);
 			path = Storyboards;
 			sourceTree = "<group>";
@@ -530,6 +539,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1B2DC2541C1F360D00B4E77B /* EmptyFeedCollectionViewCell.xib in Resources */,
+				A22599A61C42791F00A72115 /* Settings.storyboard in Resources */,
 				1B0432E61C17E967007643B1 /* ProfileCollectionViewCell.xib in Resources */,
 				1B6132171C270DD300B57231 /* PictureUploadQueueImageFeedCollectionViewCell.xib in Resources */,
 				3435C7CB1C0368DA004923BD /* Camera.storyboard in Resources */,
@@ -625,11 +635,13 @@
 				1B3BA0781C0F62850064C850 /* Picture.swift in Sources */,
 				347472EF1BFA8DEF0018B7F6 /* Utils.swift in Sources */,
 				346F947C1C0F868C004999A8 /* CameraDataManager.swift in Sources */,
+				A22599AB1C427CF000A72115 /* SettingsConnectivityCell.swift in Sources */,
 				347472E71BFA8DEF0018B7F6 /* UIImageExtension.swift in Sources */,
 				A234C32B1C390B0800E15B90 /* BaseLoginController.swift in Sources */,
 				1B0432E51C17E967007643B1 /* ProfileCollectionViewCell.swift in Sources */,
 				3435C7D91C04111F004923BD /* ProfileViewController.swift in Sources */,
 				A234C3251C39078400E15B90 /* LoginDummyController.swift in Sources */,
+				A22599A81C42793300A72115 /* SettingsViewController.swift in Sources */,
 				347472E11BFA8DEF0018B7F6 /* NSDateExtension.swift in Sources */,
 				A2A8F0F81C3277E900C73B61 /* PhotosDataManager.swift in Sources */,
 				1BC7AF5C1C0E39F100DDFD02 /* FeedViewModel.swift in Sources */,

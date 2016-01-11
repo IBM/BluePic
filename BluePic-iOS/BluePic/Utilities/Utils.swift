@@ -19,7 +19,8 @@ import UIKit
 
 class Utils: NSObject {
     
-    
+    static let PREFERENCE_SERVER = "server"
+  
     /**
      Method gets a key from a plist, both specified in parameters
      

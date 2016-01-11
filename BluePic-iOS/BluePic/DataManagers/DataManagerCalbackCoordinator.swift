@@ -35,7 +35,7 @@ enum DataManagerNotification {
     //called when the user decides to post a photo
     case UserDecidedToPostPhoto
     
-    //called when the app stargts up 
+    //called when the app starts up 
     case StartLoadingAnimationForAppLaunch
 
     // called when photos are pulled successfuly
@@ -49,6 +49,10 @@ enum DataManagerNotification {
     
     // called when there is an error in photo uploading
     case PhotosUploadFailure
+    
+    case ServerConnectionSuccess
+    
+    case ServerConnectionFailure(String)
 }
 
 

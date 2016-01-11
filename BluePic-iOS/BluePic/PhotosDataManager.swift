@@ -13,15 +13,44 @@ import Alamofire
 
 class PhotosDataManager {
     
-    private let host = "irar-mac.haifa.ibm.com"
-    private let port = 8090
+//    private let host = "irar-mac.haifa.ibm.com"
+//    private let port = 8090
+    
+    var serverUrl = ""
     
     static let SharedInstance:PhotosDataManager = {
         return PhotosDataManager()
     }()
     
+    func connect (serverUrl: String, callback: (String?) -> ()) {
+        print("IN CONNECT to ", serverUrl)
+        self.serverUrl = serverUrl
+        let nsURL = NSURL(string: "http://\(serverUrl)/connect")!
+        let mutableURLRequest = NSMutableURLRequest(URL: nsURL)
+        mutableURLRequest.HTTPMethod = "GET"
+        
+        Alamofire.request(mutableURLRequest).responseJSON {response in
+            // Get http response status code
+            var statusCode:Int = 0
+            if let httpResponse = response.response {
+                statusCode = httpResponse.statusCode
+            }
+            print("statusCode = \(statusCode)")
+            // For a production app, we would need to verify if the auth token has expired;
+            // if so, then the code should re-authenticate and retry the current operation
+            // For this demo app, we did not get to implement this logic.
+            
+            if (statusCode == 200) {
+                callback(nil)
+            }
+            else {
+                callback("Bad response from the server")
+            }
+        }
+    }
+    
     func getFeedData (owner: String = "", callback: ([Picture]?, String?) -> ()) {
-        let nsURL = NSURL(string: "http://\(host):\(port)/photos")!
+        let nsURL = NSURL(string: "http://\(serverUrl)/photos")!
         let mutableURLRequest = NSMutableURLRequest(URL: nsURL)
         mutableURLRequest.HTTPMethod = "GET"
         
@@ -68,7 +97,7 @@ class PhotosDataManager {
     
     
     func getPicture (url: String, onSuccess: (pic: NSData) -> Void, onFailure: (error: String) -> Void) {
-        if let nsURL = NSURL(string: "http://\(host):\(port)/photos/\(url)") {
+        if let nsURL = NSURL(string: "http://\(serverUrl)/photos/\(url)") {
             print("Bringing picture from db - TODO: caching?")
             let mutableURLRequest = NSMutableURLRequest(URL: nsURL)
             mutableURLRequest.HTTPMethod = "GET"
@@ -99,7 +128,7 @@ class PhotosDataManager {
         print ("title: \(title)")
         
         let imageData = UIImageJPEGRepresentation(picture.image!, 1.0)
-        let nsURL = NSURL(string: "http://\(host):\(port)/photos/\(FacebookDataManager.SharedInstance.fbUniqueUserID!)/\(title)/\(picture.fileName!)")!
+        let nsURL = NSURL(string: "http://\(serverUrl)/photos/\(FacebookDataManager.SharedInstance.fbUniqueUserID!)/\(title)/\(picture.fileName!)")!
         let mutableURLRequest = NSMutableURLRequest(URL: nsURL)
         mutableURLRequest.HTTPMethod = "POST"
         mutableURLRequest.addValue("image/jpeg", forHTTPHeaderField: "Content-Type")
