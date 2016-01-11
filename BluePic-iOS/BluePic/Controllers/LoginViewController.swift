@@ -143,8 +143,33 @@ class LoginViewController: UIViewController, LoginControllerDelegate {
 
         closeLoginController() // >????????
         dismissViewControllerAnimated(true, completion: nil)
+        
+        if let serverUrl = NSUserDefaults.standardUserDefaults().stringForKey(Utils.PREFERENCE_SERVER) {
+            PhotosDataManager.SharedInstance.connect(serverUrl) { error in
+                if let _ = error {
+                    self.presentServerAlert("Bad Cusina server URL: " + serverUrl)
+                }
+            }
+        }
+        else {
+            presentServerAlert("Cusina server is not set")
+        }
+       
+        
+
     }
     
+    func presentServerAlert (message: String) {
+        let alert = UIAlertController(title: nil, message: NSLocalizedString(message, comment: ""), preferredStyle: UIAlertControllerStyle.Alert)
+        
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .Cancel, handler: { (action: UIAlertAction!) in
+            
+        }))
+        
+        dispatch_async(dispatch_get_main_queue()) {
+            self.presentViewController(alert, animated: true, completion: nil)
+        }
+    }
     
 //    func signedOut() {
 //        if let d = data {
