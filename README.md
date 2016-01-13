@@ -7,24 +7,31 @@ SwiftBluePic is a sample application for iOS that shows you how to connect your 
 ## Table of Contents
 * [Requirements](#requirements)
 * [Getting Started](#getting-started)
-* [Using BluePic](#using-bluepic)
+* [Using SwiftBluePic](#using-bluepic)
 * [Project Structure](#project-structure)
 * [Architecture](#architecture/bluemix-services-implementation)
 * [License](#license)
 
-<br>
 ## Requirements
 [Phoenix](https://github.ibm.com/ibmswift/Phoenix), [CouchDB](http://couchdb.apache.org/)
 
-<br>
 ## Getting Started
 
-### 1. Install CouchDB
+#### 1. Install CouchDB
 Follow [these instructions](https://wiki.apache.org/couchdb/Installation).
 
-<br>
-### 2. Configure and run BluePic-server
-1. Change `BluePic-server/config.json` to your CouchDB location:
+#### 2. Clone the Swift-Bluepic Git repository
+```
+cd <some directory>
+git clone git@github.ibm.com:ibmswift/Swift-BluePic.git
+```
+
+#### 3. Configure the BluePic-server
+Update in the `BluePic-server/config.json` file in your cloned repository:
+    1. The CouchDB server's IP address and port
+    2. The name of the CouchDB database you want to use
+
+As in the following example:
 ```json
 {
   "couchDbIpAddress": "<CouchDB IP Address>",
@@ -32,20 +39,26 @@ Follow [these instructions](https://wiki.apache.org/couchdb/Installation).
   "couchDbDbName": "swift-bluepic"
 }
 ```
-1. In `BluePic-server` directory run
+
+#### 4. Build the BluePic-server
+In `BluePic-server` directory of the cloned repository run
 ```
 swift build
+```
+
+#### 5. Run the BluePic-server
+In `BluePic-server` directory of the cloned repository run
+```
 .build/debug/BluePic-server
 ```
 
-1. For now, until we don't have a web based admin UI, you will need to run
+#### 6. Setup the CouchDB database
+For now, until we have a web based admin UI, you will need to run
 ```
  curl -X POST http://localhost:8090/admin/setup
- ```
+```
 
-<br>
-
-## Using BluePic
+## Using SwiftBluePic
 
 ### Facebook Login
 BluePic was designed so that anyone can quickly launch the app and view photos posted without needing to log in. However, to view the profile or post photos, the user can easily login with his/her Facebook account. This is only used for a unique user id, the user's full name, as well as to display the user's profile photo.
