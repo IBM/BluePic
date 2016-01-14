@@ -18,7 +18,7 @@ import Foundation
 
 let configuration = getCouchDBConfiguration()
 guard  configuration != nil  else {
-    print("Failed to read the configuration file!!")
+    print("Failed to read the configuration file!")
     exit(1)
 }
 
@@ -170,14 +170,13 @@ router.get("/photos/:docid/:photoid") { (request: RouterRequest, response: Route
 }
 
 
-router.post("/photos/:owner/:title/:photoname") { (request: RouterRequest, response: RouterResponse, next: ()->Void) in
-    let owner = request.params["owner"]
+router.post("/photos/:ownerId/:ownerName/:title/:photoname") { (request: RouterRequest, response: RouterResponse, next: ()->Void) in
+    let ownerId = request.params["ownerId"]
+    let ownerName = request.params["ownerName"]
     let title = request.params["title"]
     let photoName = request.params["photoname"]
-    let (document, contentType) = createPhotoDocument(owner, title: title, photoName: photoName)
+    let (document, contentType) = createPhotoDocument(ownerId, ownerName: ownerName, title: title, photoName: photoName)
     var image: NSData?
-        
-    print("post photo")
         
     do {
         try image = BodyParser.readBodyData(request)
@@ -185,14 +184,10 @@ router.post("/photos/:owner/:title/:photoname") { (request: RouterRequest, respo
     catch {
         response.error = NSError(domain: "SwiftBluePic", code: 1, userInfo: [NSLocalizedDescriptionKey:"Invalid photo"])
         next()
+        return
     }
         
-    print("got image")
-        
     if let document = document, let contentType = contentType {
-            
-        print("creating doc on db")
-            
         database.create(JSON(document)) { (id, revision, doc, error) in
             guard  error == nil  else {
                 response.error = error!
@@ -201,7 +196,6 @@ router.post("/photos/:owner/:title/:photoname") { (request: RouterRequest, respo
             }
                 
             if let doc = doc, let id = id, let revision = revision {
-                print("image size \(image!.length)")
                 database.createAttachment(id, docRevison: revision, attachmentName: photoName!, attachmentData: image!, contentType: contentType) { (rev, photoDoc, error) in
                     guard  error == nil  else {
                         response.error = error!
@@ -220,12 +214,13 @@ router.post("/photos/:owner/:title/:photoname") { (request: RouterRequest, respo
                     else {
                         response.error = NSError(domain: "SwiftBluePic", code: 1, userInfo: [NSLocalizedDescriptionKey:"Internal error"])
                     }
+                    next()
                 }
             }
             else {
                 response.error = NSError(domain: "SwiftBluePic", code: 1, userInfo: [NSLocalizedDescriptionKey:"Internal error"])
-            }
-            next()
+                next()
+            }            
         }
     }
     else {

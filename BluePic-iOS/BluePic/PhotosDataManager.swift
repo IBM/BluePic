@@ -12,10 +12,7 @@ import Alamofire
 
 
 class PhotosDataManager {
-    
-//    private let host = "irar-mac.haifa.ibm.com"
-//    private let port = 8090
-    
+
     var serverUrl = ""
     
     static let SharedInstance:PhotosDataManager = {
@@ -23,63 +20,67 @@ class PhotosDataManager {
     }()
     
     func connect (serverUrl: String, callback: (String?) -> ()) {
-        print("IN CONNECT to ", serverUrl)
+        print("connecting to server ", serverUrl)
         self.serverUrl = serverUrl
-        let nsURL = NSURL(string: "http://\(serverUrl)/connect")!
-        let mutableURLRequest = NSMutableURLRequest(URL: nsURL)
-        mutableURLRequest.HTTPMethod = "GET"
-        
-        Alamofire.request(mutableURLRequest).responseJSON {response in
-            // Get http response status code
-            var statusCode:Int = 0
-            if let httpResponse = response.response {
-                statusCode = httpResponse.statusCode
-            }
-            print("statusCode = \(statusCode)")
-            // For a production app, we would need to verify if the auth token has expired;
-            // if so, then the code should re-authenticate and retry the current operation
-            // For this demo app, we did not get to implement this logic.
+        if let nsURL = NSURL(string: "http://\(serverUrl)/connect") {
+            let mutableURLRequest = NSMutableURLRequest(URL: nsURL)
+            mutableURLRequest.HTTPMethod = "GET"
             
-            if (statusCode == 200) {
-                callback(nil)
+            Alamofire.request(mutableURLRequest).responseJSON {response in
+                // Get http response status code
+                var statusCode:Int = 0
+                if let httpResponse = response.response {
+                    statusCode = httpResponse.statusCode
+                }
+                print("statusCode = \(statusCode)")
+                if (statusCode == 200) {
+                    callback(nil)
+                }
+                else {
+                    callback("Bad response from the server")
+                }
             }
-            else {
-                callback("Bad response from the server")
-            }
+        }
+        else {
+            callback("Bad server URL")
         }
     }
     
-    func getFeedData (owner: String = "", callback: ([Picture]?, String?) -> ()) {
-        let nsURL = NSURL(string: "http://\(serverUrl)/photos")!
-        let mutableURLRequest = NSMutableURLRequest(URL: nsURL)
-        mutableURLRequest.HTTPMethod = "GET"
-        
-        Alamofire.request(mutableURLRequest).responseJSON {response in
-            switch response.result {
-            case .Success(let JSON):
-                print("Success with JSON: \(JSON)")
-                if let photos = JSON as? [[String:String]] {
-                    var pictureObjects = [Picture]()
-                    for photo in photos {
-                        if (owner == "" || photo["owner"] == owner) {
-                            let newPicture = Picture()
-                            newPicture.url = photo["picturePath"]
-                            newPicture.displayName = photo["title"]
-                            newPicture.timeStamp = self.createTimeStamp(photo["date"]!)
-                            newPicture.ownerName = photo["owner"]
-                            pictureObjects.append(newPicture)
+    func getFeedData (ownerId: String = "", callback: ([Picture]?, String?) -> ()) {
+        if let nsURL = NSURL(string: "http://\(serverUrl)/photos") {
+            let mutableURLRequest = NSMutableURLRequest(URL: nsURL)
+            mutableURLRequest.HTTPMethod = "GET"
+            
+            Alamofire.request(mutableURLRequest).responseJSON {response in
+                switch response.result {
+                case .Success(let JSON):
+                    print("Success with JSON: \(JSON)")
+                    if let photos = JSON as? [[String:String]] {
+                        var pictureObjects = [Picture]()
+                        for photo in photos {
+                            if (ownerId == "" || photo["ownerId"] == ownerId) {
+                                let newPicture = Picture()
+                                newPicture.url = photo["picturePath"]
+                                newPicture.displayName = photo["title"]
+                                newPicture.timeStamp = self.createTimeStamp(photo["date"]!)
+                                newPicture.ownerName = photo["ownerName"]
+                                pictureObjects.append(newPicture)
+                            }
                         }
+                        callback(pictureObjects, nil)
                     }
-                    callback(pictureObjects, nil)
+                    else {
+                        callback(nil, "Failed to read response Json body")
+                    }
+                    
+                case .Failure(let error):
+                    print("Request failed with error: \(error)")
+                    callback(nil, error.description)
                 }
-                else {
-                    callback(nil, "Failed to read response Json body")
-                }
-                
-            case .Failure(let error):
-                print("Request failed with error: \(error)")
-                callback(nil, error.description)
             }
+        }
+        else {
+            callback(nil, "Bad server URL")
         }
     }
     
@@ -112,7 +113,6 @@ class PhotosDataManager {
                     print("Request failed with error: \(error)")
                     onFailure(error: error.description)
                 }
-                
             }
         }
     }
@@ -122,41 +122,45 @@ class PhotosDataManager {
         var title = "Untitled"
         if let displayName = picture.displayName where displayName.characters.count != 0 {
             title = displayName
-            print ("title: \(title) displayName: \(picture.displayName!)")
         }
-        
-        print ("title: \(title)")
-        
+               
         let imageData = UIImageJPEGRepresentation(picture.image!, 1.0)
-        let nsURL = NSURL(string: "http://\(serverUrl)/photos/\(FacebookDataManager.SharedInstance.fbUniqueUserID!)/\(title)/\(picture.fileName!)")!
-        let mutableURLRequest = NSMutableURLRequest(URL: nsURL)
-        mutableURLRequest.HTTPMethod = "POST"
-        mutableURLRequest.addValue("image/jpeg", forHTTPHeaderField: "Content-Type")
-        mutableURLRequest.HTTPBody = imageData
-        
-        
-        print("uploading photo: \(nsURL)")
-        
-        Alamofire.request(mutableURLRequest).responseJSON {response in
-            switch response.result {
-            case .Success(let JSON):
-                print("upload: Success with JSON: \(JSON)")
-                if let photo = JSON as? [String:String] {
-                    let newPicture = Picture()
-                    newPicture.url = photo["picturePath"]
-                    newPicture.displayName = photo["title"]
-                    newPicture.timeStamp = self.createTimeStamp(photo["date"]!)
-                    newPicture.ownerName = photo["owner"]
-                    onSuccess()
+        let userName = Utils.escapeUrl(FacebookDataManager.SharedInstance.fbUserDisplayName!)
+        let url = "http://\(serverUrl)/photos/\(FacebookDataManager.SharedInstance.fbUniqueUserID!)/\(userName)/\(title)/\(picture.fileName!)"
+        if let nsURL = NSURL(string: url) {
+            let mutableURLRequest = NSMutableURLRequest(URL: nsURL)
+            mutableURLRequest.HTTPMethod = "POST"
+            mutableURLRequest.addValue("image/jpeg", forHTTPHeaderField: "Content-Type")
+            mutableURLRequest.HTTPBody = imageData
+            
+            
+            print("uploading photo: \(nsURL)")
+            
+            Alamofire.request(mutableURLRequest).responseJSON {response in
+                switch response.result {
+                case .Success(let JSON):
+                    print("upload: Success with JSON: \(JSON)")
+                    if let photo = JSON as? [String:String] {
+                        let newPicture = Picture()
+                        newPicture.url = photo["picturePath"]
+                        newPicture.displayName = photo["title"]
+                        newPicture.timeStamp = self.createTimeStamp(photo["date"]!)
+                        newPicture.ownerName = photo["ownerName"]
+                        newPicture.ownerId = photo["ownerId"]
+                        onSuccess()
+                    }
+                    else {
+                        onFailure(error: "upload: Failed to read response Json body")
+                    }
+                    
+                case .Failure(let error):
+                    print("Request failed with error: \(error)")
+                    onFailure(error: error.description)
                 }
-                else {
-                    onFailure(error: "upload: Failed to read response Json body")
-                }
-                
-            case .Failure(let error):
-                print("Request failed with error: \(error)")
-                onFailure(error: error.description)
             }
+        }
+        else {
+            print("Bad URL: ", url)
         }
     }
 }

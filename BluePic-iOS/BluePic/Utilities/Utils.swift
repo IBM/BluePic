@@ -117,4 +117,15 @@ class Utils: NSObject {
     }
     
     
+    private static let allowedCharacterSet =  NSCharacterSet(charactersInString:"\"#%/<>?@\\^`{|} ").invertedSet
+    
+    class func escapeUrl(url: String) -> String {
+        if let escaped = url.stringByAddingPercentEncodingWithAllowedCharacters(allowedCharacterSet) {
+            return escaped
+        }
+        return url
+    }
+    
+    
+
 }
