@@ -13,5 +13,5 @@ class BaseLoginController : UIViewController {
 }
 
 protocol LoginControllerDelegate: class {
-    func signedInAs(userName: String, id: String) -> Void
+    func signedInAs(userName: String) -> Void
 }

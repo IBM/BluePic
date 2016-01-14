@@ -19,7 +19,7 @@ import UIKit
 
 
 /// Responsible for initiating Facebook login. VC which allows user to either login later or login with Facebook
-class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
+class LoginViewController: UIViewController, LoginControllerDelegate {
 
     /// Loading indicator when connecting to Facebook
     @IBOutlet weak var loadingIndicator: UIActivityIndicatorView!
@@ -28,7 +28,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     @IBOutlet weak var signInLaterButton: UIButton!
     
     /// Button to allow user to sign in with Facebook
-    @IBOutlet weak var fbLoginButton: FBSDKLoginButton!
+    @IBOutlet weak var facebookButton: UIButton!
     
     /// Label to show an error if authentication is unsuccessful
     @IBOutlet weak var welcomeLabel: UILabel!
@@ -36,6 +36,11 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     /// Label to tell user that the application is connecting with Facebook while loading
     @IBOutlet weak var connectingLabel: UILabel!
     
+    /// ViewModel for this VC, responsible for holding data and any state
+    var viewModel: LoginViewModel!
+    
+    
+    var loginController: BaseLoginController?
     var appearingFirstTime = true
 
     
@@ -45,12 +50,20 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Facebook Sign-In
-        self.fbLoginButton.delegate = self
-        self.fbLoginButton.readPermissions = ["public_profile", "email"]
+        setupViewModel()
    
     }
 
+    
+    /**
+     Method to setup this VC's viewModel and provide it a callback method to execute
+     */
+    func setupViewModel() {
+        
+        viewModel = LoginViewModel(fbAuthCallback: fbAuthReturned)
+        
+    }
+    
     
     /**
      Method to save to user defaults when user has pressed sign in later
@@ -72,53 +85,63 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
      */
     @IBAction func loginTapped(sender: AnyObject) {
         startLoading()
-        startLoading()
+        //viewModel.authenticateWithFacebook()
+        openLoginController()
     }
     
     
-    func loginButton(loginButton: FBSDKLoginButton!, didCompleteWithResult result: FBSDKLoginManagerLoginResult!, error: NSError!) {
+    func openLoginController() {
+       // let currentDummyLogin = NSUserDefaults.standardUserDefaults().boolForKey("dummyLogin")
+       // let loginControllerIdentifier = currentDummyLogin ? "LoginDummyController" : "LoginController"
+        let storyboard = UIStoryboard(name: "Login", bundle: nil)
+        loginController = (storyboard.instantiateViewControllerWithIdentifier("LoginDummyController") as! BaseLoginController)
+        loginController!.delegate = self
+        presentViewController(loginController!, animated: true, completion: {
+           // self.selectedIndex = 0
+        })
+    }
+    
+    
+    func closeLoginController() {
+        if let lc = loginController {
+            lc.dismissViewControllerAnimated(true, completion: {
+                self.loginController = nil
+            })
+        }
+    }
+    
+    
+    func signedInAs(userName: String) {
+//        if let d = data {
+//            d.didSignInWithUserId(userName, withAuthToken: userName, withAccountName: "")
+//            setDataInTabs()
+//            d.sync()
+//        }
+//        if userName.isEmpty {
+//            welcomeLabel.text = "Oops, an error occurred! Try again."
+//            facebookButton.hidden = false
+//            signInLaterButton.hidden = false
+//        }
+//        else {
+//            //dismiss login vc
+//            dismissViewControllerAnimated(true, completion: nil)
+//        }
+
         stopLoading()
-        
-        if error != nil {
-            print("Unable to authenticate with Facebook")
-        }
-        else if result.isCancelled {
-            print("Facebook authentication cancelled")
-        }
-        else {
-            let graphRequest = FBSDKGraphRequest(graphPath: "me", parameters: nil)
-            graphRequest.startWithCompletionHandler() { connection, result, error in
-                if error != nil {
-                    print("Unable to get Facebook user info: \(error)")
-                }
-                else {
-                    print("result: \(result)")
-                    let fbId = result.valueForKey("id") as! String
-                    print("User ID is: \(fbId)")
-                    let fbName = result.valueForKey("name") as! String
-                    print("User Name is: \(fbName)")
-                    self.signedInAs(fbName, id: fbId)
-                }
-            }
-        }
-    }
-
-    func loginButtonDidLogOut(loginButton: FBSDKLoginButton!) {
-    }
-
-    
-    func signedInAs(userName: String, id: String) {
-        FacebookDataManager.SharedInstance.fbAppID = "swiftbluepic"
-        FacebookDataManager.SharedInstance.fbAppDisplayName = "swiftbluepic"
+        FacebookDataManager.SharedInstance.fbAppID = "bluepic"
+        FacebookDataManager.SharedInstance.fbAppDisplayName = userName
         FacebookDataManager.SharedInstance.fbUserDisplayName = userName
-        FacebookDataManager.SharedInstance.fbUniqueUserID = id
+        FacebookDataManager.SharedInstance.fbUniqueUserID = userName
         FacebookDataManager.SharedInstance.isLoggedIn = true
-        NSUserDefaults.standardUserDefaults().setObject(id, forKey: "user_id")
+        NSUserDefaults.standardUserDefaults().setObject(userName, forKey: "user_id")
         NSUserDefaults.standardUserDefaults().setObject(userName, forKey: "user_name")
- 
+       // NSUserDefaults.standardUserDefaults().synchronize()
+
+
         NSUserDefaults.standardUserDefaults().setBool(false, forKey: "hasPressedLater")
         NSUserDefaults.standardUserDefaults().synchronize()
 
+        closeLoginController() 
         dismissViewControllerAnimated(true, completion: nil)
     }
     
@@ -130,12 +153,33 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
 //        openLoginController()
 //    }
 
+    /**
+     Callback method called when facebook authentication + creating object storage container returns
+     
+     - parameter successful: value returned, either successful or not
+     */
+    func fbAuthReturned(successful: Bool!) {
+        stopLoading()
+        
+        if !successful {
+            //show error message
+            welcomeLabel.text = "Oops, an error occurred! Try again."
+            facebookButton.hidden = false
+            signInLaterButton.hidden = false
+            
+        }
+        else {
+            //dismiss login vc
+            dismissViewControllerAnimated(true, completion: nil)
+        }
+    }
+    
     
     /**
      Method to start the loading animation and setup UI for loading
      */
     func startLoading() {
-        fbLoginButton.hidden = true
+        facebookButton.hidden = true
         signInLaterButton.hidden = true
         welcomeLabel.hidden = true
         loadingIndicator.startAnimating()

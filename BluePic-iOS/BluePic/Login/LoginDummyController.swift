@@ -211,7 +211,7 @@ class LoginDummyController: BaseLoginController, UITextFieldDelegate {
                 User.sharedInstance.type = User.UserType.Dummy
                 r.callback(nil)
                 if let d = delegate {
-                    d.signedInAs(r.userName, id: r.userName)
+                    d.signedInAs(r.userName)
                 }
             }
             else {

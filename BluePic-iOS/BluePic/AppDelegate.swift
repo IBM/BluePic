@@ -32,8 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
      - returns: Bool
      */
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        
-        FBSDKLoginButton.self
+        self.initializeBackendForFacebookAuth()
         
         preLoadKeyboardToPrevantLaggyKeyboardInCameraConfirmationScreen()
         
@@ -55,6 +54,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     
+    /**
+     Method to initialize Bluemix Mobile Client Access with Facebook
+     */
+    func initializeBackendForFacebookAuth() {
+        //Initialize backend
+        let key = Utils.getKeyFromPlist("keys", key: "backend_route")
+        let guid = Utils.getKeyFromPlist("keys", key: "GUID")
+        IMFClient.sharedInstance().initializeWithBackendRoute(key, backendGUID: guid);
+    
+        //Initialize Facebook
+        IMFFacebookAuthenticationHandler.sharedInstance().registerWithDefaultDelegate()
+    
+    }
+
+
     func applicationWillResignActive(application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
@@ -71,7 +85,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-      //  FBAppEvents.activateApp()
+        FBAppEvents.activateApp()
     }
     
     
@@ -86,11 +100,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
      - returns: Bool
      */
     func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?,annotation: AnyObject) -> Bool {
-       // return FBAppCall.handleOpenURL(url, sourceApplication:sourceApplication)
-        return
-            FBSDKApplicationDelegate.sharedInstance().application(application, openURL: url, sourceApplication: sourceApplication, annotation: annotation)
-//                ||
-//                GPPURLHandler.handleURL(url, sourceApplication: sourceApplication, annotation: annotation)
+        return FBAppCall.handleOpenURL(url, sourceApplication:sourceApplication)
     }
     
     

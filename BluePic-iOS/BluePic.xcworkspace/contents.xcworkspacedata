@@ -2,12 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:/Users/irar/workspace/Swift-BluePic/BluePic-iOS/BluePic.xcodeproj">
+      location = "group:BluePic.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">
-   </FileRef>
-   <FileRef
-      location = "group:BluePic.xcodeproj">
    </FileRef>
 </Workspace>

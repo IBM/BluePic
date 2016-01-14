@@ -51,16 +51,61 @@
                                 </constraints>
                                 <color key="color" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </activityIndicatorView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome to SwiftBluePic" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cIW-Ou-STz">
-                                <rect key="frame" x="135" y="175" width="331" height="36"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JA3-DV-7dk">
+                                <rect key="frame" x="182" y="218" width="236" height="112"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="331" id="YMB-Xq-LqD"/>
-                                    <constraint firstAttribute="height" constant="36" id="g3J-Gq-moa"/>
+                                    <constraint firstAttribute="height" constant="112" id="GaN-o4-7vS"/>
+                                    <constraint firstAttribute="width" constant="236" id="eyR-Rk-Nvp"/>
+                                </constraints>
+                                <attributedString key="attributedText">
+                                    <fragment>
+                                        <string key="content">BluePic is an amazing app for taking
+pictures and sharing them to the BluePic community. BluePic is 
+also built on IBM Bluemix services.</string>
+                                        <attributes>
+                                            <color key="NSColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <font key="NSFont" metaFont="system" size="14"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineHeightMultiple="1.5" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome to BluePic" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cIW-Ou-STz">
+                                <rect key="frame" x="167" y="175" width="267" height="35"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="267" id="YMB-Xq-LqD"/>
+                                    <constraint firstAttribute="height" constant="35" id="g3J-Gq-moa"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wjw-Zr-PRg">
+                                <rect key="frame" x="15" y="603" width="570" height="44"/>
+                                <color key="backgroundColor" red="0.0" green="0.56862745098039214" blue="0.91764705882352937" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="eKN-Rv-bz3"/>
+                                    <constraint firstAttribute="width" constant="345" id="ngh-7T-lfh"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <state key="normal" title="SIGN IN WITH FACEBOOK">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="5.5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="ngh-7T-lfh"/>
+                                    </mask>
+                                </variation>
+                                <connections>
+                                    <action selector="loginTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Y2u-3b-aAA"/>
+                                </connections>
+                            </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="loginlogo" translatesAutoresizingMaskIntoConstraints="NO" id="OyD-TT-jb1">
                                 <rect key="frame" x="264" y="68" width="74" height="70"/>
                                 <constraints>
@@ -109,68 +154,45 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JA3-DV-7dk">
-                                <rect key="frame" x="166" y="219" width="271" height="112"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="112" id="GaN-o4-7vS"/>
-                                    <constraint firstAttribute="width" constant="271" id="eyR-Rk-Nvp"/>
-                                </constraints>
-                                <attributedString key="attributedText">
-                                    <fragment>
-                                        <string key="content">SwiftBluePic is an amazing app for taking
-pictures and sharing them to the SwiftBluePic community. </string>
-                                        <attributes>
-                                            <color key="NSColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <font key="NSFont" metaFont="system" size="14"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineHeightMultiple="1.5" tighteningFactorForTruncation="0.0"/>
-                                        </attributes>
-                                    </fragment>
-                                </attributedString>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xvc-eo-SFq" userLabel="FBLoginButton" customClass="FBSDKLoginButton">
-                                <rect key="frame" x="200" y="597" width="200" height="44"/>
-                                <color key="backgroundColor" white="0.37" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="44" id="PTE-p5-TLv"/>
-                                    <constraint firstAttribute="width" constant="200" id="yXy-sv-sAR"/>
-                                </constraints>
-                                <connections>
-                                    <action selector="loginTapped:" destination="BYZ-38-t0r" eventType="valueChanged" id="Dhc-lo-35G"/>
-                                </connections>
-                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="Wjw-Zr-PRg" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="0R1-rU-8sk"/>
                             <constraint firstAttribute="bottomMargin" secondItem="LMk-mW-Kmu" secondAttribute="bottom" constant="78" id="1D8-BC-AUx"/>
-                            <constraint firstItem="JA3-DV-7dk" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" constant="219" id="4Gc-mR-BBA"/>
+                            <constraint firstItem="JA3-DV-7dk" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" constant="218" id="4Gc-mR-BBA"/>
                             <constraint firstAttribute="bottomMargin" secondItem="neQ-m5-2vk" secondAttribute="bottom" constant="78" id="5XF-wZ-oHn"/>
                             <constraint firstItem="g2J-LJ-jge" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" constant="1" id="8Vb-3w-1iR"/>
                             <constraint firstItem="OyD-TT-jb1" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" constant="68" id="9Mx-VI-8DS"/>
                             <constraint firstAttribute="bottomMargin" secondItem="g2J-LJ-jge" secondAttribute="bottom" constant="33" id="BrA-Mg-9yT"/>
+                            <constraint firstItem="Wjw-Zr-PRg" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="15" id="F9G-Z6-Oyr"/>
                             <constraint firstAttribute="bottomMargin" secondItem="gtv-K7-hIk" secondAttribute="bottom" constant="123" id="JOd-X9-MNN"/>
                             <constraint firstItem="ANO-Gs-Tk5" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" id="Jlx-8C-0GH"/>
                             <constraint firstItem="cIW-Ou-STz" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" constant="175" id="PQt-gW-VB2"/>
-                            <constraint firstItem="Xvc-eo-SFq" firstAttribute="centerX" secondItem="neQ-m5-2vk" secondAttribute="centerX" id="Pxd-1x-4z9"/>
+                            <constraint firstAttribute="trailing" secondItem="Wjw-Zr-PRg" secondAttribute="trailing" constant="15" id="QIj-7S-Qit"/>
                             <constraint firstItem="gtv-K7-hIk" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" constant="0.5" id="TUv-VN-qfh"/>
                             <constraint firstItem="cIW-Ou-STz" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="WCY-Kg-EIr"/>
-                            <constraint firstItem="Xvc-eo-SFq" firstAttribute="top" secondItem="LMk-mW-Kmu" secondAttribute="bottom" constant="8" symbolic="YES" id="Xdl-po-UaW"/>
                             <constraint firstItem="ANO-Gs-Tk5" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="Yk1-eN-7XX"/>
                             <constraint firstItem="neQ-m5-2vk" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="coA-y2-fHJ"/>
                             <constraint firstItem="ANO-Gs-Tk5" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="kF3-0n-p2V"/>
                             <constraint firstItem="Hia-oq-hEM" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" constant="348" id="lG5-9M-mkA"/>
-                            <constraint firstItem="JA3-DV-7dk" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" constant="1.5" id="loP-gA-4Md"/>
+                            <constraint firstItem="JA3-DV-7dk" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="loP-gA-4Md"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="Wjw-Zr-PRg" secondAttribute="bottom" constant="20" id="oV2-H7-clG"/>
                             <constraint firstItem="LMk-mW-Kmu" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" constant="1.5" id="okh-xK-xRG"/>
                             <constraint firstItem="OyD-TT-jb1" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" constant="1" id="s7Y-kb-Ucf"/>
                             <constraint firstItem="ANO-Gs-Tk5" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="y6k-qc-rXf"/>
                             <constraint firstItem="Hia-oq-hEM" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="z3S-M2-DO0"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="0R1-rU-8sk"/>
+                            </mask>
+                        </variation>
                     </view>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="600" height="667"/>
                     <connections>
                         <outlet property="connectingLabel" destination="LMk-mW-Kmu" id="GaH-SG-lzf"/>
-                        <outlet property="fbLoginButton" destination="Xvc-eo-SFq" id="cAM-fC-8F6"/>
+                        <outlet property="facebookButton" destination="Wjw-Zr-PRg" id="JWS-FC-pxj"/>
                         <outlet property="loadingIndicator" destination="g2J-LJ-jge" id="ghq-Sm-EkT"/>
                         <outlet property="signInLaterButton" destination="neQ-m5-2vk" id="gFO-gx-1eF"/>
                         <outlet property="welcomeLabel" destination="gtv-K7-hIk" id="qUd-Ih-I6b"/>
