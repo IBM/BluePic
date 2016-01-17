@@ -24,19 +24,20 @@ func parsePhotosList (list: JSON) -> JSON {
         let date = list["rows"][index]["key"].stringValue
         let data = list["rows"][index]["value"].dictionaryValue
         let title = data["title"]!.stringValue
-        let owner = data["owner"]!.stringValue
+        let ownerId = data["ownerId"]!.stringValue
+        let ownerName = data["ownerName"]!.stringValue
         let attachments = data["attachments"]!.dictionaryValue
         let attachmentName = ([String](attachments.keys))[0]
             
-        let photo = JSON(["title": title,  "date": date, "owner": owner, "picturePath": "\(photoId)/\(attachmentName)"])
+        let photo = JSON(["title": title,  "date": date, "ownerId": ownerId, "ownerName": ownerName, "picturePath": "\(photoId)/\(attachmentName)"])
         photos.append(photo)
         
     }
     return JSON(photos)
 }
 
-func createPhotoDocument (owner: String?, title: String?, photoName: String?) -> ([String:AnyObject]?, String?) {
-    if owner == nil || photoName == nil {
+func createPhotoDocument (ownerId: String?, ownerName: String?, title: String?, photoName: String?) -> ([String:AnyObject]?, String?) {
+    if ownerId == nil || ownerName == nil || photoName == nil {
         return (nil, nil)
     }
     
@@ -49,7 +50,7 @@ func createPhotoDocument (owner: String?, title: String?, photoName: String?) ->
     dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
     let dateString = dateFormatter.stringFromDate(NSDate())
     
-    let doc : [String:AnyObject] = ["owner": owner!, "title": (title == nil ? "" : title!), "date": dateString, "inFeed": true, "type": "photo"]
+    let doc : [String:AnyObject] = ["ownerId": ownerId!, "ownerName": ownerName!.stringByReplacingOccurrencesOfString("%20", withString: " "), "title": (title == nil ? "" : title!), "date": dateString, "inFeed": true, "type": "photo"]
     
     
     print("type: \(contentType), doc: \(doc)")
@@ -60,7 +61,8 @@ func createPhotoDocument (owner: String?, title: String?, photoName: String?) ->
 func createUploadReply (fromDocument document: [String:AnyObject], id: String, photoName: String) -> JSON {
     var result = [String:String]()
     result["picturePath"] = "\(id)/\(photoName)"
-    result["owner"] = document["owner"] as? String
+    result["ownerId"] = document["ownerId"] as? String
+    result["ownerName"] = document["ownerName"] as? String
     result["date"] = document["date"] as? String
     result["title"] = document["title"] as? String
     return JSON(result)
@@ -90,7 +92,7 @@ func getDesign () -> (String?, JSON?) {
     let designDoc = JSON(["_id" : "_design/photos",
         "views" : [
             "sortedByDate" : [
-                "map" : "function(doc) {if (doc.type == 'photo' && doc.title && doc.date && doc.owner) { emit(doc.date, {title: doc.title, owner: doc.owner, attachments: doc._attachments});}}"
+                "map" : "function(doc) {if (doc.type == 'photo' && doc.title && doc.date && doc.ownerId && doc.ownerName) { emit(doc.date, {title: doc.title, ownerId: doc.ownerId, ownerName: doc.ownerName, attachments: doc._attachments});}}"
             ]
         ]
         ])

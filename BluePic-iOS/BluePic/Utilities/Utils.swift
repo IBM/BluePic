@@ -116,5 +116,13 @@ class Utils: NSObject {
         collectionView.registerNib(nib, forSupplementaryViewOfKind: kind, withReuseIdentifier: nibName)
     }
     
+    private static let allowedCharacterSet =  NSCharacterSet(charactersInString:"\"#%/<>?@\\^`{|} ").invertedSet
+    
+    class func escapeUrl(url: String) -> String {
+        if let escaped = url.stringByAddingPercentEncodingWithAllowedCharacters(allowedCharacterSet) {
+            return escaped
+        }
+        return url
+    }
     
 }

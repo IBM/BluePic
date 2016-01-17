@@ -22,6 +22,7 @@ class Picture: NSObject {
     var image : UIImage?
     var displayName : String?
     var timeStamp : Double?
+    var ownerId : String?
     var ownerName : String?
     var width : CGFloat?
     var height : CGFloat?

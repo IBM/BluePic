@@ -26,7 +26,6 @@ class FacebookDataManager: NSObject {
         
         var manager = FacebookDataManager()
         
-        
         return manager
         
     }()
@@ -81,13 +80,13 @@ class FacebookDataManager: NSObject {
 //        }
 //        
 //    }
-//    
-//    
-//    /**
-//     Method to get authentication token from Facebook SDK
-//     
-//     - parameter callback: Success or Failure
-//     */
+    
+    
+    /**
+     Method to get authentication token from Facebook SDK
+     
+     - parameter callback: Success or Failure
+     */
 //    func getAuthToken(callback : ((networkRequest: NetworkRequest) -> ())) {
 //       let authManager = IMFAuthorizationManager.sharedInstance()
 //        authManager.obtainAuthorizationHeaderWithCompletionHandler( {(response: IMFResponse?, error: NSError?) in
@@ -149,27 +148,27 @@ class FacebookDataManager: NSObject {
 //            })
 //        
 //    }
-//    
-//    
+    
+    
 //    /**
 //     Method to check to make sure IMFClient is valid (route and GUID)
 //     
 //     - returns: true or false if valid or not
 //     */
 //    func checkIMFClient() -> Bool {
-//        let imfClient = IMFClient.sharedInstance()
-//        let route = imfClient.backendRoute
-//        let guid = imfClient.backendGUID
-//        
-//        if (route == nil || route.characters.count == 0) {
-//            print ("Invalid Route.\n Check applicationRoute in appdelegate")
-//            return false
-//        }
-//        
-//        if (guid == nil || guid.characters.count == 0) {
-//            print ("Invalid GUID.\n Check applicationId in appdelegate")
-//            return false
-//        }
+////        let imfClient = IMFClient.sharedInstance()
+////        let route = imfClient.backendRoute
+////        let guid = imfClient.backendGUID
+////        
+////        if (route == nil || route.characters.count == 0) {
+////            print ("Invalid Route.\n Check applicationRoute in appdelegate")
+////            return false
+////        }
+////        
+////        if (guid == nil || guid.characters.count == 0) {
+////            print ("Invalid GUID.\n Check applicationId in appdelegate")
+////            return false
+////        }
 //        return true
 //        
 //    }
@@ -231,31 +230,13 @@ class FacebookDataManager: NSObject {
 //        return true;
 //    }
 //    
-    
+//    
     
     /**
-     Method will try to first authenticate with Object storage. If successful, wil try to show login screen if not authenticated with Facebook. If failure, will retry authentication with object storage
-     
-     - parameter presentingVC: tab bar VC to show error alert if it occurs
-     */
+     Method will try to show login screen if not authenticated with Facebook.
+    */
     func tryToShowLoginScreen() {
-//        //authenticate with object storage every time opening app, try to show facebook login once completed
-//        if (!ObjectStorageDataManager.SharedInstance.objectStorageClient.isAuthenticated()) { //try to authenticate if not authenticated
-//            print("Attempting to authenticate with Object storage...")
-//            ObjectStorageDataManager.SharedInstance.objectStorageClient.authenticate({() in
-//                    print("success authenticating with object storage!")
-//                    self.showLoginIfUserNotAuthenticated()
-//                }, onFailure: {(error) in
-//                    print("error authenticating with object storage: \(error)")
-//                    DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.ObjectStorageAuthError)
-//            })
-//        }
-//        else { //if already authenticated with object storage, just try to show facebook login
-            print("Object storage already authenticated somehow!")
-            self.showLoginIfUserNotAuthenticated()
-            
-//        }
-   
+        self.showLoginIfUserNotAuthenticated()
     }
     
     
@@ -284,7 +265,7 @@ class FacebookDataManager: NSObject {
                 self.fbUserDisplayName = userName
                 self.fbUniqueUserID = userID
                 DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.GotPastLoginCheck)
-                print("User already logged into Facebook. Welcome back, user \(userID)!")
+                print("User already logged into Facebook. Welcome back, user \(userName)!")
             }
         }
         else { //user not authenticated
