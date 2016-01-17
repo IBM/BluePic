@@ -45,20 +45,13 @@ router.get("/connect") { (request: RouterRequest, response: RouterResponse, next
 router.post("/admin/setup") { (request: RouterRequest, response: RouterResponse, next: ()->Void) in
     server.dbExists(dbName) { (exists, error) in
         guard  error == nil  else {
-            print(error!)
             response.error = error!
             next()
             return
         }
             
         if exists == true {
-            do {
-                try response.status(HttpStatusCode.OK).end()
-            }
-            catch {
-                response.error = NSError(domain: "SwiftBluePic", code: 1, userInfo: [NSLocalizedDescriptionKey:"Internal error"])
-            }
-
+            respond(response, withStatus: HttpStatusCode.OK, orSetError: "Internal error")
             next()
         }
         else {
@@ -80,13 +73,8 @@ router.post("/admin/setup") { (request: RouterRequest, response: RouterResponse,
                             }
                                 
                             if let document = document {
-                                do {
-                                    try response.status(HttpStatusCode.OK).end()
-                                }
-                                catch {
-                                    response.error = NSError(domain: "SwiftBluePic", code: 1, userInfo: [NSLocalizedDescriptionKey:"Internal error"])
-                                    }
-                                }
+                                respond(response, withStatus: HttpStatusCode.OK, orSetError: "Internal error")
+                            }
                             else {
                                 response.error = NSError(domain: "SwiftBluePic", code: 1, userInfo: [NSLocalizedDescriptionKey:"Internal error"])
                             }
@@ -120,12 +108,7 @@ router.get("/photos") { (request: RouterRequest, response: RouterResponse, next:
         }
             
         if let document = document {
-            do {
-                try response.status(HttpStatusCode.OK).sendJson(parsePhotosList(document)).end()
-            }
-            catch {
-                response.error = NSError(domain: "SwiftBluePic", code: 1, userInfo: [NSLocalizedDescriptionKey:"Internal error"])
-            }
+            respond(response, withJSON: parsePhotosList(document), withStatus: HttpStatusCode.OK, orSetError: "Internal error")
         }
         else {
             response.error = NSError(domain: "SwiftBluePic", code: 1, userInfo: [NSLocalizedDescriptionKey:"View not found"])
@@ -147,15 +130,7 @@ router.get("/photos/:docid/:photoid") { (request: RouterRequest, response: Route
             }
                 
             if let photo = photo {
-                if let contentType = contentType {
-                    response.setHeader("Content-Type", value: contentType)
-                }
-                do {
-                    try response.status(HttpStatusCode.OK).end(photo)
-                }
-                catch {
-                    response.error = NSError(domain: "SwiftBluePic", code: 1, userInfo: [NSLocalizedDescriptionKey:"Internal error"])
-                }
+                respond(response, withData: photo, withContentType: contentType, withStatus: HttpStatusCode.OK, orSetError: "Internal error")
             }
             else {
                 response.error = NSError(domain: "SwiftBluePic", code: 1, userInfo: [NSLocalizedDescriptionKey:"Photo not found"])
@@ -171,23 +146,20 @@ router.get("/photos/:docid/:photoid") { (request: RouterRequest, response: Route
 
 
 router.post("/photos/:ownerId/:ownerName/:title/:photoname") { (request: RouterRequest, response: RouterResponse, next: ()->Void) in
-    let ownerId = request.params["ownerId"]
-    let ownerName = request.params["ownerName"]
-    let title = request.params["title"]
-    let photoName = request.params["photoname"]
-    let (document, contentType) = createPhotoDocument(ownerId, ownerName: ownerName, title: title, photoName: photoName)
-    var image: NSData?
-        
-    do {
-        try image = BodyParser.readBodyData(request)
-    }
-    catch {
-        response.error = NSError(domain: "SwiftBluePic", code: 1, userInfo: [NSLocalizedDescriptionKey:"Invalid photo"])
-        next()
-        return
-    }
-        
+    let (document, contentType) = createPhotoDocument(request)
     if let document = document, let contentType = contentType {
+        var image: NSData?
+        var photoName = request.params["photoname"]!
+        
+        do {
+            try image = BodyParser.readBodyData(request)
+        }
+        catch {
+            response.error = NSError(domain: "SwiftBluePic", code: 1, userInfo: [NSLocalizedDescriptionKey:"Invalid photo"])
+            next()
+            return
+        }
+
         database.create(JSON(document)) { (id, revision, doc, error) in
             guard  error == nil  else {
                 response.error = error!
@@ -196,20 +168,15 @@ router.post("/photos/:ownerId/:ownerName/:title/:photoname") { (request: RouterR
             }
                 
             if let doc = doc, let id = id, let revision = revision {
-                database.createAttachment(id, docRevison: revision, attachmentName: photoName!, attachmentData: image!, contentType: contentType) { (rev, photoDoc, error) in
+                database.createAttachment(id, docRevison: revision, attachmentName: photoName, attachmentData: image!, contentType: contentType) { (rev, photoDoc, error) in
                     guard  error == nil  else {
                         response.error = error!
                         next()
                         return
                     }
                     if let photoDoc = photoDoc {
-                        do {
-                            let reply = createUploadReply(fromDocument: document, id: id, photoName: photoName!)
-                            try response.status(HttpStatusCode.OK).sendJson(reply).end()
-                        }
-                        catch {
-                            response.error = NSError(domain: "SwiftBluePic", code: 1, userInfo: [NSLocalizedDescriptionKey:"Internal error"])
-                        }
+                        let reply = createUploadReply(fromDocument: document, id: id, photoName: photoName)
+                        respond(response, withJSON: reply, withStatus: HttpStatusCode.OK, orSetError: "Internal error")
                     }
                     else {
                         response.error = NSError(domain: "SwiftBluePic", code: 1, userInfo: [NSLocalizedDescriptionKey:"Internal error"])

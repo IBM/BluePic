@@ -7,6 +7,7 @@
 //
 
 import router
+import net
 
 import SwiftyJSON
 
@@ -36,7 +37,12 @@ func parsePhotosList (list: JSON) -> JSON {
     return JSON(photos)
 }
 
-func createPhotoDocument (ownerId: String?, ownerName: String?, title: String?, photoName: String?) -> ([String:AnyObject]?, String?) {
+func createPhotoDocument (request: RouterRequest) -> ([String:AnyObject]?, String?) {
+    let ownerId = request.params["ownerId"]
+    let ownerName = request.params["ownerName"]
+    let title = request.params["title"]
+    let photoName = request.params["photoname"]
+    
     if ownerId == nil || ownerName == nil || photoName == nil {
         return (nil, nil)
     }
@@ -44,16 +50,11 @@ func createPhotoDocument (ownerId: String?, ownerName: String?, title: String?, 
     let ext = photoName!.componentsSeparatedByString(".")[1].lowercaseString
     let contentType = ContentType.contentTypeForExtension(ext)
 
-    print("photoName: \(photoName), ext: \(ext)")
-
     let dateFormatter = NSDateFormatter()
     dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
     let dateString = dateFormatter.stringFromDate(NSDate())
     
     let doc : [String:AnyObject] = ["ownerId": ownerId!, "ownerName": ownerName!.stringByReplacingOccurrencesOfString("%20", withString: " "), "title": (title == nil ? "" : title!), "date": dateString, "inFeed": true, "type": "photo"]
-    
-    
-    print("type: \(contentType), doc: \(doc)")
     
     return (doc, contentType)
 }
@@ -98,3 +99,36 @@ func getDesign () -> (String?, JSON?) {
         ])
     return ("photos", designDoc)
 }
+
+
+func respond(response: RouterResponse, withStatus status: HttpStatusCode, orSetError errorMessage: String) {
+    do {
+        try response.status(status).end()
+    }
+    catch {
+        response.error = NSError(domain: "SwiftBluePic", code: 1, userInfo: [NSLocalizedDescriptionKey:errorMessage])
+    }
+}
+
+func respond(response: RouterResponse, withJSON json: JSON, withStatus status: HttpStatusCode, orSetError errorMessage: String) {
+    do {
+        try response.status(status).sendJson(json).end()
+    }
+    catch {
+        response.error = NSError(domain: "SwiftBluePic", code: 1, userInfo: [NSLocalizedDescriptionKey:errorMessage])
+    }
+}
+
+func respond(response: RouterResponse, withData data: NSData, withContentType contentType: String?, withStatus status: HttpStatusCode, orSetError errorMessage: String) {
+    if let contentType = contentType {
+        response.setHeader("Content-Type", value: contentType)
+    }
+    do {
+        try response.status(HttpStatusCode.OK).end(data)
+    }
+    catch {
+        response.error = NSError(domain: "SwiftBluePic", code: 1, userInfo: [NSLocalizedDescriptionKey:errorMessage])
+    }
+}
+
+
