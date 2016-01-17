@@ -13,63 +13,63 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  **/
-
-
-import UIKit
-
-class LoginViewModel: NSObject {
-    
-    
-    //callback used to inform the LoginViewController whether facebook authentication was a success or not
-    var fbAuthCallback: ((Bool!)->())!
-    
-    
-    /**
-     Method to initialize view model with the appropriate callback
-     
-     - parameter fbAuthCallback: callback to be executed on completion of trying to authenticate with Facebook
-     
-     - returns: an instance of this view model
-     */
-    init(fbAuthCallback: ((Bool!)->())) {
-        super.init()
-        
-        self.fbAuthCallback = fbAuthCallback
-        
-    }
-    
-    
-    /**
-     Method to attempt authenticating with Facebook and call the callback if failure, otherwise will continue to object storage container creation
-     */
-    func authenticateWithFacebook() {
-        FacebookDataManager.SharedInstance.authenticateUser({(response: FacebookDataManager.NetworkRequest) in
-            if (response == FacebookDataManager.NetworkRequest.Success) {
-                print("successfully logged into facebook with keys:")
-                if let userID = FacebookDataManager.SharedInstance.fbUniqueUserID {
-                    if let userDisplayName = FacebookDataManager.SharedInstance.fbUserDisplayName {
-                        print("\(userID)")
-                        print("\(userDisplayName)")
-                        //save that user has not pressed login later
-                        NSUserDefaults.standardUserDefaults().setBool(false, forKey: "hasPressedLater")
-                        NSUserDefaults.standardUserDefaults().synchronize()
-                        
-                      
-                    }
-                }
-            }
-            else {
-                print("failure logging into facebook")
-                self.fbAuthCallback(false)
-
-            }
-        })
-    }
-    
-    
-    func dummyLogin() {
-    
-        
-    }
-    
-}
+//
+//
+//import UIKit
+//
+//class LoginViewModel: NSObject {
+//    
+//    
+//    //callback used to inform the LoginViewController whether facebook authentication was a success or not
+//    var fbAuthCallback: ((Bool!)->())!
+//    
+//    
+//    /**
+//     Method to initialize view model with the appropriate callback
+//     
+//     - parameter fbAuthCallback: callback to be executed on completion of trying to authenticate with Facebook
+//     
+//     - returns: an instance of this view model
+//     */
+//    init(fbAuthCallback: ((Bool!)->())) {
+//        super.init()
+//        
+//        self.fbAuthCallback = fbAuthCallback
+//        
+//    }
+//    
+//    
+//    /**
+//     Method to attempt authenticating with Facebook and call the callback if failure, otherwise will continue to object storage container creation
+//     */
+//    func authenticateWithFacebook() {
+//        FacebookDataManager.SharedInstance.authenticateUser({(response: FacebookDataManager.NetworkRequest) in
+//            if (response == FacebookDataManager.NetworkRequest.Success) {
+//                print("successfully logged into facebook with keys:")
+//                if let userID = FacebookDataManager.SharedInstance.fbUniqueUserID {
+//                    if let userDisplayName = FacebookDataManager.SharedInstance.fbUserDisplayName {
+//                        print("\(userID)")
+//                        print("\(userDisplayName)")
+//                        //save that user has not pressed login later
+//                        NSUserDefaults.standardUserDefaults().setBool(false, forKey: "hasPressedLater")
+//                        NSUserDefaults.standardUserDefaults().synchronize()
+//                        
+//                      
+//                    }
+//                }
+//            }
+//            else {
+//                print("failure logging into facebook")
+//                self.fbAuthCallback(false)
+//
+//            }
+//        })
+//    }
+//    
+//    
+//    func dummyLogin() {
+//    
+//        
+//    }
+//    
+//}

@@ -32,7 +32,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
      - returns: Bool
      */
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        self.initializeBackendForFacebookAuth()
         
         preLoadKeyboardToPrevantLaggyKeyboardInCameraConfirmationScreen()
         
@@ -52,22 +51,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         lagFreeField.removeFromSuperview()
         
     }
-    
-    
-    /**
-     Method to initialize Bluemix Mobile Client Access with Facebook
-     */
-    func initializeBackendForFacebookAuth() {
-        //Initialize backend
-        let key = Utils.getKeyFromPlist("keys", key: "backend_route")
-        let guid = Utils.getKeyFromPlist("keys", key: "GUID")
-        IMFClient.sharedInstance().initializeWithBackendRoute(key, backendGUID: guid);
-    
-        //Initialize Facebook
-        IMFFacebookAuthenticationHandler.sharedInstance().registerWithDefaultDelegate()
-    
-    }
-
 
     func applicationWillResignActive(application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -85,25 +68,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-        FBAppEvents.activateApp()
     }
     
     
-    /**
-     Method handles opening a facebook url for facebook login
-     
-     - parameter application:       UIApplication
-     - parameter url:               NSURL
-     - parameter sourceApplication: String?
-     - parameter annotation:        AnyObject
-     
-     - returns: Bool
-     */
-    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?,annotation: AnyObject) -> Bool {
-        return FBAppCall.handleOpenURL(url, sourceApplication:sourceApplication)
-    }
-    
-    
+//    /**
+//     Method handles opening a facebook url for facebook login
+//     
+//     - parameter application:       UIApplication
+//     - parameter url:               NSURL
+//     - parameter sourceApplication: String?
+//     - parameter annotation:        AnyObject
+//     
+//     - returns: Bool
+//     */
+//    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?,annotation: AnyObject) -> Bool {
+// //       return FBAppCall.handleOpenURL(url, sourceApplication:sourceApplication)
+////        return
+//    }
+//    
+//    
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }

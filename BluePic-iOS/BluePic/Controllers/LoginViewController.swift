@@ -36,10 +36,6 @@ class LoginViewController: UIViewController, LoginControllerDelegate {
     /// Label to tell user that the application is connecting with Facebook while loading
     @IBOutlet weak var connectingLabel: UILabel!
     
-    /// ViewModel for this VC, responsible for holding data and any state
-    var viewModel: LoginViewModel!
-    
-    
     var loginController: BaseLoginController?
     var appearingFirstTime = true
 
@@ -49,21 +45,8 @@ class LoginViewController: UIViewController, LoginControllerDelegate {
      */
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        setupViewModel()
-   
     }
 
-    
-    /**
-     Method to setup this VC's viewModel and provide it a callback method to execute
-     */
-    func setupViewModel() {
-        
-        viewModel = LoginViewModel(fbAuthCallback: fbAuthReturned)
-        
-    }
-    
     
     /**
      Method to save to user defaults when user has pressed sign in later
