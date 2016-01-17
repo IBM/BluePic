@@ -126,7 +126,7 @@
 		346F947F1C0F9211004999A8 /* CameraConfirmationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CameraConfirmationView.xib; sourceTree = "<group>"; };
 		346F94811C0F9225004999A8 /* CameraConfirmationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraConfirmationView.swift; sourceTree = "<group>"; };
 		346F94831C10AA32004999A8 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
-		3474728A1BFA8C6A0018B7F6 /* BluePic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BluePic.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3474728A1BFA8C6A0018B7F6 /* SwiftBluePic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftBluePic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3474728D1BFA8C6A0018B7F6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		347472941BFA8C6A0018B7F6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		347472971BFA8C6A0018B7F6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -221,7 +221,7 @@
 		3474728B1BFA8C6A0018B7F6 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				3474728A1BFA8C6A0018B7F6 /* BluePic.app */,
+				3474728A1BFA8C6A0018B7F6 /* SwiftBluePic.app */,
 				3474729E1BFA8C6A0018B7F6 /* BluePicTests.xctest */,
 				347472A91BFA8C6A0018B7F6 /* BluePicUITests.xctest */,
 			);
@@ -404,9 +404,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		347472891BFA8C6A0018B7F6 /* BluePic */ = {
+		347472891BFA8C6A0018B7F6 /* SwiftBluePic */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 347472B21BFA8C6A0018B7F6 /* Build configuration list for PBXNativeTarget "BluePic" */;
+			buildConfigurationList = 347472B21BFA8C6A0018B7F6 /* Build configuration list for PBXNativeTarget "SwiftBluePic" */;
 			buildPhases = (
 				DDE8EE5846F7AE80F5D83272 /* Check Pods Manifest.lock */,
 				347472861BFA8C6A0018B7F6 /* Sources */,
@@ -420,9 +420,9 @@
 			);
 			dependencies = (
 			);
-			name = BluePic;
+			name = SwiftBluePic;
 			productName = BluePic;
-			productReference = 3474728A1BFA8C6A0018B7F6 /* BluePic.app */;
+			productReference = 3474728A1BFA8C6A0018B7F6 /* SwiftBluePic.app */;
 			productType = "com.apple.product-type.application";
 		};
 		3474729D1BFA8C6A0018B7F6 /* BluePicTests */ = {
@@ -503,7 +503,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				347472891BFA8C6A0018B7F6 /* BluePic */,
+				347472891BFA8C6A0018B7F6 /* SwiftBluePic */,
 				3474729D1BFA8C6A0018B7F6 /* BluePicTests */,
 				347472A81BFA8C6A0018B7F6 /* BluePicUITests */,
 			);
@@ -655,12 +655,12 @@
 /* Begin PBXTargetDependency section */
 		347472A01BFA8C6A0018B7F6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 347472891BFA8C6A0018B7F6 /* BluePic */;
+			target = 347472891BFA8C6A0018B7F6 /* SwiftBluePic */;
 			targetProxy = 3474729F1BFA8C6A0018B7F6 /* PBXContainerItemProxy */;
 		};
 		347472AB1BFA8C6A0018B7F6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 347472891BFA8C6A0018B7F6 /* BluePic */;
+			target = 347472891BFA8C6A0018B7F6 /* SwiftBluePic */;
 			targetProxy = 347472AA1BFA8C6A0018B7F6 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -874,7 +874,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		347472B21BFA8C6A0018B7F6 /* Build configuration list for PBXNativeTarget "BluePic" */ = {
+		347472B21BFA8C6A0018B7F6 /* Build configuration list for PBXNativeTarget "SwiftBluePic" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				347472B31BFA8C6A0018B7F6 /* Debug */,

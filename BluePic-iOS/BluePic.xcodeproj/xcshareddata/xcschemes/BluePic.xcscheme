@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "347472891BFA8C6A0018B7F6"
-               BuildableName = "BluePic.app"
-               BlueprintName = "BluePic"
+               BuildableName = "SwiftBluePic.app"
+               BlueprintName = "SwiftBluePic"
                ReferencedContainer = "container:BluePic.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -58,8 +58,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "347472891BFA8C6A0018B7F6"
-            BuildableName = "BluePic.app"
-            BlueprintName = "BluePic"
+            BuildableName = "SwiftBluePic.app"
+            BlueprintName = "SwiftBluePic"
             ReferencedContainer = "container:BluePic.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -81,8 +81,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "347472891BFA8C6A0018B7F6"
-            BuildableName = "BluePic.app"
-            BlueprintName = "BluePic"
+            BuildableName = "SwiftBluePic.app"
+            BlueprintName = "SwiftBluePic"
             ReferencedContainer = "container:BluePic.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -100,8 +100,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "347472891BFA8C6A0018B7F6"
-            BuildableName = "BluePic.app"
-            BlueprintName = "BluePic"
+            BuildableName = "SwiftBluePic.app"
+            BlueprintName = "SwiftBluePic"
             ReferencedContainer = "container:BluePic.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
