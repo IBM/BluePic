@@ -100,10 +100,11 @@ class TabBarViewController: UITabBarController {
             showFeedErrorAlert()
         case .ServerConnectionFailure(let message):
             presentServerAlert(message)
-        case .ServerConnectionSuccess:
+        case .ServerConnectionChecked:
             tryToShowLogin()
             selectedIndex = 0 // switch to feed tab
-            
+        case .ServerConnectionSuccess:
+            selectedIndex = 0 // switch to feed tab
         default: break
         }
         
@@ -128,7 +129,7 @@ class TabBarViewController: UITabBarController {
                     self.presentServerAlert("Bad server URL: " + serverUrl)
                 }
                 else {
-                    DataManagerCalbackCoordinator.SharedInstance.sendNotification(.ServerConnectionSuccess)
+                    DataManagerCalbackCoordinator.SharedInstance.sendNotification(.ServerConnectionChecked)
                 }
             }
         }

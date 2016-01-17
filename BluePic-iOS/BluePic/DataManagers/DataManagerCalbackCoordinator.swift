@@ -50,8 +50,13 @@ enum DataManagerNotification {
     // called when there is an error in photo uploading
     case PhotosUploadFailure
     
+    // called in the case of successfull attempt to connect to the server after its location in settings was changed
     case ServerConnectionSuccess
     
+    // called in the case of successfull check of connection to the server
+    case ServerConnectionChecked
+    
+    // called when an attempt to connect to the server fails
     case ServerConnectionFailure(String)
 }
 
