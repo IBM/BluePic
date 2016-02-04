@@ -46,7 +46,7 @@
 			isa = PBXGroup;
 			children = (
 				A2A8F0F31C31692400C73B61 /* Package.swift */,
-				A2A8F0EB1C3168AF00C73B61 /* BluePic-server */,
+				A2A8F0EB1C3168AF00C73B61 /* SwiftBluePic-server */,
 				A2A8F0EA1C3168AF00C73B61 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -59,13 +59,13 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		A2A8F0EB1C3168AF00C73B61 /* BluePic-server */ = {
+		A2A8F0EB1C3168AF00C73B61 /* SwiftBluePic-server */ = {
 			isa = PBXGroup;
 			children = (
 				A2A8F0EC1C3168AF00C73B61 /* main.swift */,
 				A242B7001C351AD200AFB4AE /* Utils.swift */,
 			);
-			path = "BluePic-server";
+			path = "SwiftBluePic-server";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -103,7 +103,7 @@
 					};
 				};
 			};
-			buildConfigurationList = A2A8F0E41C3168AF00C73B61 /* Build configuration list for PBXProject "BluePic-server" */;
+			buildConfigurationList = A2A8F0E41C3168AF00C73B61 /* Build configuration list for PBXProject "SwiftBluePic-server" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -231,7 +231,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		A2A8F0E41C3168AF00C73B61 /* Build configuration list for PBXProject "BluePic-server" */ = {
+		A2A8F0E41C3168AF00C73B61 /* Build configuration list for PBXProject "SwiftBluePic-server" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A2A8F0EE1C3168AF00C73B61 /* Debug */,

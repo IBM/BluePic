@@ -9,8 +9,10 @@
 import PackageDescription
 
 let package = Package(
-    name: "BluePic-server",
-          dependencies: [ .Package(url: "git@github.ibm.com:ibmswift/Phoenix.git", majorVersion: 0),
-    ]
+    name: "SwiftBluePic-server",
+          dependencies: [
+               .Package(url: "git@github.ibm.com:ibmswift/Phoenix.git", majorVersion: 0),
+               .Package(url: "git@github.ibm.com:ibmswift/PhoenixCouchDB.git", majorVersion: 0)
+          ]
 )
 

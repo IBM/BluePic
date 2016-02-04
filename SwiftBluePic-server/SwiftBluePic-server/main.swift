@@ -10,11 +10,14 @@ import router
 import sys
 import net
 
-import SwiftCouchDB
+import CouchDB
+import HeliumLogger
 
 import SwiftyJSON
 
 import Foundation
+
+Log.logger = BasicLogger()
 
 let configuration = getCouchDBConfiguration()
 guard  configuration != nil  else {
@@ -23,11 +26,11 @@ guard  configuration != nil  else {
 }
 
 
-let server = CouchDBServer(ipAddress: configuration!["ipAddress"] as! String,
-                           port: Int16(configuration!["port"]!.integerValue))
+let connectionProperties = configuration!["connectionProperties"] as! ConnectionProperties
+let dbClient = CouchDBClient(connectionProperties: connectionProperties)
 let dbName = configuration!["db"] as! String
 
-let database = server.db(dbName)
+let database = dbClient.database(dbName)
 
 let router = Router()
 
@@ -43,7 +46,7 @@ router.get("/connect") { (request: RouterRequest, response: RouterResponse, next
 }
 
 router.post("/admin/setup") { (request: RouterRequest, response: RouterResponse, next: ()->Void) in
-    server.dbExists(dbName) { (exists, error) in
+    dbClient.dbExists(dbName) { (exists, error) in
         guard  error == nil  else {
             response.error = error!
             next()
@@ -55,7 +58,7 @@ router.post("/admin/setup") { (request: RouterRequest, response: RouterResponse,
             next()
         }
         else {
-            server.createDB(dbName) { (db, error) in
+            dbClient.createDB(dbName) { (db, error) in
                 guard  error == nil  else {
                     response.error = error!
                     next()
@@ -197,7 +200,7 @@ router.post("/photos/:ownerId/:ownerName/:title/:photoname") { (request: RouterR
 }
 
 
-router.listen(8090)
+let server = HttpServer.listen(8090, delegate: router)
 
 Server.run()
 

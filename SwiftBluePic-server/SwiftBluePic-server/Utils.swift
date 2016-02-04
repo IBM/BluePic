@@ -6,6 +6,7 @@
 //  Copyright © 2015 IBM. All rights reserved.
 //
 
+import CouchDB
 import router
 import net
 
@@ -82,7 +83,10 @@ func getCouchDBConfiguration () -> [String:AnyObject]? {
         if let ipAddress = configJson["couchDbIpAddress"].string,
             let port = configJson["couchDbPort"].number,
             let dbName = configJson["couchDbDbName"].string {
-                return ["ipAddress" : ipAddress, "port": port, "db": dbName]
+                return [
+                    "connectionProperties": ConnectionProperties(hostName: ipAddress, port: Int16(port.integerValue), secured: false),
+                    "db": dbName
+                ]
         }
     }
     return nil
