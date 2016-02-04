@@ -210,8 +210,8 @@
 			isa = PBXGroup;
 			children = (
 				3474728C1BFA8C6A0018B7F6 /* SwiftBluePic */,
-				347472A11BFA8C6A0018B7F6 /* BluePicTests */,
-				347472AC1BFA8C6A0018B7F6 /* BluePicUITests */,
+				347472A11BFA8C6A0018B7F6 /* SwiftBluePicTests */,
+				347472AC1BFA8C6A0018B7F6 /* SwiftBluePicUITests */,
 				3474728B1BFA8C6A0018B7F6 /* Products */,
 				DF6A97152FD63FCE242B5547 /* Pods */,
 				C93A0D59BDE755BE5A1209FC /* Frameworks */,
@@ -252,7 +252,7 @@
 			path = SwiftBluePic;
 			sourceTree = "<group>";
 		};
-		347472A11BFA8C6A0018B7F6 /* BluePicTests */ = {
+		347472A11BFA8C6A0018B7F6 /* SwiftBluePicTests */ = {
 			isa = PBXGroup;
 			children = (
 				347472A21BFA8C6A0018B7F6 /* BluePicTests.swift */,
@@ -261,16 +261,16 @@
 				B3A9E7D91C063FA1002D4AEE /* CloudantSyncClientTests.swift */,
 				342E4EBA1C161FE500DC3771 /* PopulateFeedWithPhotos.swift */,
 			);
-			path = BluePicTests;
+			path = SwiftBluePicTests;
 			sourceTree = "<group>";
 		};
-		347472AC1BFA8C6A0018B7F6 /* BluePicUITests */ = {
+		347472AC1BFA8C6A0018B7F6 /* SwiftBluePicUITests */ = {
 			isa = PBXGroup;
 			children = (
 				347472AD1BFA8C6A0018B7F6 /* BluePicUITests.swift */,
 				347472AF1BFA8C6A0018B7F6 /* Info.plist */,
 			);
-			path = BluePicUITests;
+			path = SwiftBluePicUITests;
 			sourceTree = "<group>";
 		};
 		347472BB1BFA8DEF0018B7F6 /* Configuration */ = {
