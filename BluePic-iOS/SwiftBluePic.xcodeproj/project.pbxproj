@@ -130,10 +130,10 @@
 		3474728D1BFA8C6A0018B7F6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		347472941BFA8C6A0018B7F6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		347472971BFA8C6A0018B7F6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		3474729E1BFA8C6A0018B7F6 /* BluePicTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BluePicTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		3474729E1BFA8C6A0018B7F6 /* SwiftBluePicTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftBluePicTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		347472A21BFA8C6A0018B7F6 /* BluePicTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluePicTests.swift; sourceTree = "<group>"; };
 		347472A41BFA8C6A0018B7F6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		347472A91BFA8C6A0018B7F6 /* BluePicUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BluePicUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		347472A91BFA8C6A0018B7F6 /* SwiftBluePicUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftBluePicUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		347472AD1BFA8C6A0018B7F6 /* BluePicUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluePicUITests.swift; sourceTree = "<group>"; };
 		347472AF1BFA8C6A0018B7F6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		347472C51BFA8DEF0018B7F6 /* NSDateExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSDateExtension.swift; sourceTree = "<group>"; };
@@ -145,7 +145,7 @@
 		347AD2141C18E2D200C3B473 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Alamofire.framework; sourceTree = "<group>"; };
 		347AD2151C18E2D200C3B473 /* AlamofireObjectMapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AlamofireObjectMapper.framework; sourceTree = "<group>"; };
 		347AD2161C18E2D200C3B473 /* ObjectMapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ObjectMapper.framework; sourceTree = "<group>"; };
-		347E276C1C1F9CD10089EC3D /* BluePic.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = BluePic.entitlements; sourceTree = "<group>"; };
+		347E276C1C1F9CD10089EC3D /* SwiftBluePic.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = SwiftBluePic.entitlements; sourceTree = "<group>"; };
 		34C8094A1BFCD9A300C48004 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		34C8094C1BFCEA0400C48004 /* keys.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = keys.plist; sourceTree = "<group>"; };
 		34C809541BFD0F2400C48004 /* FacebookDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookDataManager.swift; sourceTree = "<group>"; };
@@ -209,7 +209,7 @@
 		347472811BFA8C6A0018B7F6 = {
 			isa = PBXGroup;
 			children = (
-				3474728C1BFA8C6A0018B7F6 /* BluePic */,
+				3474728C1BFA8C6A0018B7F6 /* SwiftBluePic */,
 				347472A11BFA8C6A0018B7F6 /* BluePicTests */,
 				347472AC1BFA8C6A0018B7F6 /* BluePicUITests */,
 				3474728B1BFA8C6A0018B7F6 /* Products */,
@@ -222,16 +222,16 @@
 			isa = PBXGroup;
 			children = (
 				3474728A1BFA8C6A0018B7F6 /* SwiftBluePic.app */,
-				3474729E1BFA8C6A0018B7F6 /* BluePicTests.xctest */,
-				347472A91BFA8C6A0018B7F6 /* BluePicUITests.xctest */,
+				3474729E1BFA8C6A0018B7F6 /* SwiftBluePicTests.xctest */,
+				347472A91BFA8C6A0018B7F6 /* SwiftBluePicUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		3474728C1BFA8C6A0018B7F6 /* BluePic */ = {
+		3474728C1BFA8C6A0018B7F6 /* SwiftBluePic */ = {
 			isa = PBXGroup;
 			children = (
-				347E276C1C1F9CD10089EC3D /* BluePic.entitlements */,
+				347E276C1C1F9CD10089EC3D /* SwiftBluePic.entitlements */,
 				1B578C271C1A759C000F6076 /* Resources */,
 				1B3BA0741C0F5FBD0064C850 /* Models */,
 				3474728D1BFA8C6A0018B7F6 /* AppDelegate.swift */,
@@ -249,6 +249,7 @@
 				347AD2131C18E2A700C3B473 /* ExternalLibraries */,
 				A2A8F0F71C3277E900C73B61 /* PhotosDataManager.swift */,
 			);
+			name = SwiftBluePic;
 			path = BluePic;
 			sourceTree = "<group>";
 		};
@@ -425,9 +426,9 @@
 			productReference = 3474728A1BFA8C6A0018B7F6 /* SwiftBluePic.app */;
 			productType = "com.apple.product-type.application";
 		};
-		3474729D1BFA8C6A0018B7F6 /* BluePicTests */ = {
+		3474729D1BFA8C6A0018B7F6 /* SwiftBluePicTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 347472B51BFA8C6A0018B7F6 /* Build configuration list for PBXNativeTarget "BluePicTests" */;
+			buildConfigurationList = 347472B51BFA8C6A0018B7F6 /* Build configuration list for PBXNativeTarget "SwiftBluePicTests" */;
 			buildPhases = (
 				3474729A1BFA8C6A0018B7F6 /* Sources */,
 				3474729B1BFA8C6A0018B7F6 /* Frameworks */,
@@ -438,14 +439,14 @@
 			dependencies = (
 				347472A01BFA8C6A0018B7F6 /* PBXTargetDependency */,
 			);
-			name = BluePicTests;
+			name = SwiftBluePicTests;
 			productName = BluePicTests;
-			productReference = 3474729E1BFA8C6A0018B7F6 /* BluePicTests.xctest */;
+			productReference = 3474729E1BFA8C6A0018B7F6 /* SwiftBluePicTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		347472A81BFA8C6A0018B7F6 /* BluePicUITests */ = {
+		347472A81BFA8C6A0018B7F6 /* SwiftBluePicUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 347472B81BFA8C6A0018B7F6 /* Build configuration list for PBXNativeTarget "BluePicUITests" */;
+			buildConfigurationList = 347472B81BFA8C6A0018B7F6 /* Build configuration list for PBXNativeTarget "SwiftBluePicUITests" */;
 			buildPhases = (
 				347472A51BFA8C6A0018B7F6 /* Sources */,
 				347472A61BFA8C6A0018B7F6 /* Frameworks */,
@@ -456,9 +457,9 @@
 			dependencies = (
 				347472AB1BFA8C6A0018B7F6 /* PBXTargetDependency */,
 			);
-			name = BluePicUITests;
+			name = SwiftBluePicUITests;
 			productName = BluePicUITests;
-			productReference = 347472A91BFA8C6A0018B7F6 /* BluePicUITests.xctest */;
+			productReference = 347472A91BFA8C6A0018B7F6 /* SwiftBluePicUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -473,7 +474,7 @@
 				TargetAttributes = {
 					347472891BFA8C6A0018B7F6 = {
 						CreatedOnToolsVersion = 7.1.1;
-						DevelopmentTeam = 48J7UTWH5D;
+						DevelopmentTeam = 76CMF53Q35;
 						SystemCapabilities = {
 							com.apple.Keychain = {
 								enabled = 1;
@@ -490,7 +491,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 347472851BFA8C6A0018B7F6 /* Build configuration list for PBXProject "BluePic" */;
+			buildConfigurationList = 347472851BFA8C6A0018B7F6 /* Build configuration list for PBXProject "SwiftBluePic" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -504,8 +505,8 @@
 			projectRoot = "";
 			targets = (
 				347472891BFA8C6A0018B7F6 /* SwiftBluePic */,
-				3474729D1BFA8C6A0018B7F6 /* BluePicTests */,
-				347472A81BFA8C6A0018B7F6 /* BluePicUITests */,
+				3474729D1BFA8C6A0018B7F6 /* SwiftBluePicTests */,
+				347472A81BFA8C6A0018B7F6 /* SwiftBluePicUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -769,7 +770,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = BluePic/BluePic.entitlements;
+				CODE_SIGN_ENTITLEMENTS = BluePic/SwiftBluePic.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -781,7 +782,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/BluePic/Configuration/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.ibm.cio.be.BluePic.swift;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ibm.cio.be.SwiftBluePic.swift;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "BluePic/SupportingFiles/BluePic-Bridging-Header.h";
@@ -795,7 +796,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = BluePic/BluePic.entitlements;
+				CODE_SIGN_ENTITLEMENTS = BluePic/SwiftBluePic.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -807,7 +808,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/BluePic/Configuration/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.ibm.cio.be.BluePic.swift;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ibm.cio.be.SwiftBluePic.swift;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "BluePic/SupportingFiles/BluePic-Bridging-Header.h";
@@ -822,7 +823,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mil.ibm.BluePicTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BluePic.app/BluePic";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SwiftBluePic.app/SwiftBluePic";
 			};
 			name = Debug;
 		};
@@ -834,7 +835,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mil.ibm.BluePicTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BluePic.app/BluePic";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SwiftBluePic.app/SwiftBluePic";
 			};
 			name = Release;
 		};
@@ -865,7 +866,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		347472851BFA8C6A0018B7F6 /* Build configuration list for PBXProject "BluePic" */ = {
+		347472851BFA8C6A0018B7F6 /* Build configuration list for PBXProject "SwiftBluePic" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				347472B01BFA8C6A0018B7F6 /* Debug */,
@@ -883,7 +884,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		347472B51BFA8C6A0018B7F6 /* Build configuration list for PBXNativeTarget "BluePicTests" */ = {
+		347472B51BFA8C6A0018B7F6 /* Build configuration list for PBXNativeTarget "SwiftBluePicTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				347472B61BFA8C6A0018B7F6 /* Debug */,
@@ -892,7 +893,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		347472B81BFA8C6A0018B7F6 /* Build configuration list for PBXNativeTarget "BluePicUITests" */ = {
+		347472B81BFA8C6A0018B7F6 /* Build configuration list for PBXNativeTarget "SwiftBluePicUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				347472B91BFA8C6A0018B7F6 /* Debug */,
