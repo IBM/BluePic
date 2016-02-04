@@ -38,8 +38,8 @@
 		3474728E1BFA8C6A0018B7F6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3474728D1BFA8C6A0018B7F6 /* AppDelegate.swift */; };
 		347472951BFA8C6A0018B7F6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 347472941BFA8C6A0018B7F6 /* Assets.xcassets */; };
 		347472981BFA8C6A0018B7F6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 347472961BFA8C6A0018B7F6 /* LaunchScreen.storyboard */; };
-		347472A31BFA8C6A0018B7F6 /* BluePicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347472A21BFA8C6A0018B7F6 /* BluePicTests.swift */; };
-		347472AE1BFA8C6A0018B7F6 /* BluePicUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347472AD1BFA8C6A0018B7F6 /* BluePicUITests.swift */; };
+		347472A31BFA8C6A0018B7F6 /* SwiftBluePicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347472A21BFA8C6A0018B7F6 /* SwiftBluePicTests.swift */; };
+		347472AE1BFA8C6A0018B7F6 /* SwiftBluePicUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347472AD1BFA8C6A0018B7F6 /* SwiftBluePicUITests.swift */; };
 		347472E11BFA8DEF0018B7F6 /* NSDateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347472C51BFA8DEF0018B7F6 /* NSDateExtension.swift */; };
 		347472E71BFA8DEF0018B7F6 /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347472CB1BFA8DEF0018B7F6 /* UIImageExtension.swift */; };
 		347472EA1BFA8DEF0018B7F6 /* UIViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347472CE1BFA8DEF0018B7F6 /* UIViewExtensions.swift */; };
@@ -131,10 +131,10 @@
 		347472941BFA8C6A0018B7F6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		347472971BFA8C6A0018B7F6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3474729E1BFA8C6A0018B7F6 /* SwiftBluePicTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftBluePicTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		347472A21BFA8C6A0018B7F6 /* BluePicTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluePicTests.swift; sourceTree = "<group>"; };
+		347472A21BFA8C6A0018B7F6 /* SwiftBluePicTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftBluePicTests.swift; sourceTree = "<group>"; };
 		347472A41BFA8C6A0018B7F6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		347472A91BFA8C6A0018B7F6 /* SwiftBluePicUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftBluePicUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		347472AD1BFA8C6A0018B7F6 /* BluePicUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluePicUITests.swift; sourceTree = "<group>"; };
+		347472AD1BFA8C6A0018B7F6 /* SwiftBluePicUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftBluePicUITests.swift; sourceTree = "<group>"; };
 		347472AF1BFA8C6A0018B7F6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		347472C51BFA8DEF0018B7F6 /* NSDateExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSDateExtension.swift; sourceTree = "<group>"; };
 		347472CB1BFA8DEF0018B7F6 /* UIImageExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
@@ -255,7 +255,7 @@
 		347472A11BFA8C6A0018B7F6 /* SwiftBluePicTests */ = {
 			isa = PBXGroup;
 			children = (
-				347472A21BFA8C6A0018B7F6 /* BluePicTests.swift */,
+				347472A21BFA8C6A0018B7F6 /* SwiftBluePicTests.swift */,
 				494AA0AF1BFE4CBA006FC48E /* ObjectStorageClientTests.swift */,
 				347472A41BFA8C6A0018B7F6 /* Info.plist */,
 				B3A9E7D91C063FA1002D4AEE /* CloudantSyncClientTests.swift */,
@@ -267,7 +267,7 @@
 		347472AC1BFA8C6A0018B7F6 /* SwiftBluePicUITests */ = {
 			isa = PBXGroup;
 			children = (
-				347472AD1BFA8C6A0018B7F6 /* BluePicUITests.swift */,
+				347472AD1BFA8C6A0018B7F6 /* SwiftBluePicUITests.swift */,
 				347472AF1BFA8C6A0018B7F6 /* Info.plist */,
 			);
 			path = SwiftBluePicUITests;
@@ -636,7 +636,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B3A9E7DA1C063FA1002D4AEE /* CloudantSyncClientTests.swift in Sources */,
-				347472A31BFA8C6A0018B7F6 /* BluePicTests.swift in Sources */,
+				347472A31BFA8C6A0018B7F6 /* SwiftBluePicTests.swift in Sources */,
 				342E4EBB1C161FE500DC3771 /* PopulateFeedWithPhotos.swift in Sources */,
 				494AA0B01BFE4CBA006FC48E /* ObjectStorageClientTests.swift in Sources */,
 			);
@@ -646,7 +646,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				347472AE1BFA8C6A0018B7F6 /* BluePicUITests.swift in Sources */,
+				347472AE1BFA8C6A0018B7F6 /* SwiftBluePicUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
