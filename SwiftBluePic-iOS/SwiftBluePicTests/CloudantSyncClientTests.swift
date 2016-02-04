@@ -15,7 +15,7 @@
  **/
 
 import XCTest
-@testable import BluePic
+@testable import SwiftBluePic
 
 /**
  * Test class for the CloudantSyncDataManager class.

@@ -16,9 +16,9 @@
 
 
 import XCTest
-@testable import BluePic
+@testable import SwiftBluePic
 
-class BluePicTests: XCTestCase {
+class SwiftBluePicTests: XCTestCase {
     
     override func setUp() {
         super.setUp()

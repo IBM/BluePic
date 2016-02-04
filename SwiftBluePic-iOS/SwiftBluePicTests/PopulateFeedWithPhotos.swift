@@ -14,7 +14,7 @@
  * limitations under the License.
  **/
 
-@testable import BluePic
+@testable import SwiftBluePic
 import XCTest
 
 class PopulateFeedWithPhotos: XCTestCase {

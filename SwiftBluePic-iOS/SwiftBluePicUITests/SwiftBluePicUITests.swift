@@ -16,7 +16,7 @@
 
 import XCTest
 
-class BluePicUITests: XCTestCase {
+class SwiftBluePicUITests: XCTestCase {
         
     override func setUp() {
         super.setUp()
