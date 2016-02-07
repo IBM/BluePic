@@ -11,8 +11,8 @@ import PackageDescription
 let package = Package(
     name: "SwiftBluePic-server",
           dependencies: [
-               .Package(url: "git@github.ibm.com:ibmswift/Phoenix.git", majorVersion: 0),
-               .Package(url: "git@github.ibm.com:ibmswift/PhoenixCouchDB.git", majorVersion: 0)
+               .Package(url: "https://github.com/IBM-Swift/Kitura-router.git", majorVersion: 1),
+               .Package(url: "https://github.com/IBM-Swift/Kitura-CouchDB.git", majorVersion: 1)
           ]
 )
 
