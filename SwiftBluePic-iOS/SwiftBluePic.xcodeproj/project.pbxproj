@@ -776,7 +776,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
-					"$(PROJECT_DIR)/BluePic/ExternalLibraries",
+					"$(PROJECT_DIR)/SwiftBluePic/ExternalLibraries",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/SwiftBluePic/Configuration/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -802,7 +802,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
-					"$(PROJECT_DIR)/BluePic/ExternalLibraries",
+					"$(PROJECT_DIR)/SwiftBluePic/ExternalLibraries",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/SwiftBluePic/Configuration/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
