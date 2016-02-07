@@ -42,6 +42,7 @@ class PopulateFeedWithPhotos: XCTestCase {
      */
     func testPrePopulate() {
         // Create fake user
+        /*
         let id = "mskf8d7C-9F39-4558-9EBA-6E5474219jgr"
         let name = "Mobile Innovation Lab"
         
@@ -91,12 +92,14 @@ class PopulateFeedWithPhotos: XCTestCase {
         } else {
             // User has pictures, do nothing.
         }
+        */
     }
     
     /**
      For test method for pre-populating database with images
      */
     func postPhotoForTests(FBUserID: String!) {
+        /*
         print("uploading photo to object storage...")
         var imageCount = self.imageNames.count //keep track of how many images left to upload
         
@@ -142,5 +145,6 @@ class PopulateFeedWithPhotos: XCTestCase {
                     self.xctExpectation?.fulfill()
             })
         }
+        */
     }
 }
