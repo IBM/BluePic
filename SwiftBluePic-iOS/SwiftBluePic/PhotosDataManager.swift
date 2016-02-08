@@ -123,6 +123,7 @@ class PhotosDataManager {
         if let displayName = picture.displayName where displayName.characters.count != 0 {
             title = displayName
         }
+        title = Utils.escapeUrl(title)
                
         let imageData = UIImageJPEGRepresentation(picture.image!, 1.0)
         let userName = Utils.escapeUrl(FacebookDataManager.SharedInstance.fbUserDisplayName!)

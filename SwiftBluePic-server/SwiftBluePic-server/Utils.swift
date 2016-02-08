@@ -40,13 +40,16 @@ func parsePhotosList (list: JSON) -> JSON {
 
 func createPhotoDocument (request: RouterRequest) -> ([String:AnyObject]?, String?) {
     let ownerId = request.params["ownerId"]
-    let ownerName = request.params["ownerName"]
-    let title = request.params["title"]
+    var ownerName = request.params["ownerName"]
+    var title = request.params["title"]
     let photoName = request.params["photoname"]
     
     if ownerId == nil || ownerName == nil || photoName == nil {
         return (nil, nil)
     }
+
+    ownerName = ownerName!.stringByReplacingOccurrencesOfString("%20", withString: " ")
+    title = title?.stringByReplacingOccurrencesOfString("%20", withString: " ") ?? ""
     
     let ext = photoName!.componentsSeparatedByString(".")[1].lowercaseString
     let contentType = ContentType.contentTypeForExtension(ext)
@@ -55,7 +58,7 @@ func createPhotoDocument (request: RouterRequest) -> ([String:AnyObject]?, Strin
     dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
     let dateString = dateFormatter.stringFromDate(NSDate())
     
-    let doc : [String:AnyObject] = ["ownerId": ownerId!, "ownerName": ownerName!.stringByReplacingOccurrencesOfString("%20", withString: " "), "title": (title == nil ? "" : title!), "date": dateString, "inFeed": true, "type": "photo"]
+    let doc : [String:AnyObject] = ["ownerId": ownerId!, "ownerName": ownerName!, "title": title!, "date": dateString, "inFeed": true, "type": "photo"]
     
     return (doc, contentType)
 }
