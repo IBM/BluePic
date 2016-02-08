@@ -59,7 +59,7 @@ func createPhotoDocument (request: RouterRequest) -> ([String:AnyObject]?, Strin
     dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
     let dateString = dateFormatter.stringFromDate(NSDate()).bridge()
     
-    let doc : [String:AnyObject] = ["ownerId": ownerId!.bridge(), "ownerName": ownerName!, "title": title!.bridge(), "date": dateString, "inFeed": NSNumber(bool: true), "type": NSString(string:"photo")]
+    let doc : [String:AnyObject] = ["ownerId": ownerId!.bridge(), "ownerName": ownerName!.bridge(), "title": title!.bridge(), "date": dateString, "inFeed": NSNumber(bool: true), "type": NSString(string:"photo")]
     
     return (doc, contentType)
 }
