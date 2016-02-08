@@ -28,7 +28,7 @@ guard  configuration != nil  else {
 
 let connectionProperties = configuration!["connectionProperties"] as! ConnectionProperties
 let dbClient = CouchDBClient(connectionProperties: connectionProperties)
-let dbName = configuration!["db"] as! String
+let dbName = (configuration!["db"] as! NSString).bridge()
 
 let database = dbClient.database(dbName)
 

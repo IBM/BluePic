@@ -9,6 +9,7 @@
 import CouchDB
 import router
 import net
+import sys
 
 import SwiftyJSON
 
@@ -56,9 +57,9 @@ func createPhotoDocument (request: RouterRequest) -> ([String:AnyObject]?, Strin
 
     let dateFormatter = NSDateFormatter()
     dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
-    let dateString = dateFormatter.stringFromDate(NSDate())
+    let dateString = dateFormatter.stringFromDate(NSDate()).bridge()
     
-    let doc : [String:AnyObject] = ["ownerId": ownerId!, "ownerName": ownerName!, "title": title!, "date": dateString, "inFeed": true, "type": "photo"]
+    let doc : [String:AnyObject] = ["ownerId": ownerId!.bridge(), "ownerName": ownerName!, "title": title!.bridge(), "date": dateString, "inFeed": NSNumber(bool: true), "type": NSString(string:"photo")]
     
     return (doc, contentType)
 }
@@ -88,7 +89,7 @@ func getCouchDBConfiguration () -> [String:AnyObject]? {
             let dbName = configJson["couchDbDbName"].string {
                 return [
                     "connectionProperties": ConnectionProperties(hostName: ipAddress, port: Int16(port.integerValue), secured: false),
-                    "db": dbName
+                    "db": dbName.bridge()
                 ]
         }
     }
