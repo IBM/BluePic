@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3F2EC31C1C69E1AD0070FCCE /* Admin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2EC31B1C69E1AD0070FCCE /* Admin.swift */; };
+		3F2EC31E1C6A53680070FCCE /* Photos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2EC31D1C6A53680070FCCE /* Photos.swift */; };
 		A242B7011C351AD200AFB4AE /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A242B7001C351AD200AFB4AE /* Utils.swift */; };
 		A2A8F0ED1C3168AF00C73B61 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A8F0EC1C3168AF00C73B61 /* main.swift */; };
 		A2A8F0F41C31692400C73B61 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A8F0F31C31692400C73B61 /* Package.swift */; };
@@ -27,6 +28,8 @@
 
 /* Begin PBXFileReference section */
 		3F2EC31B1C69E1AD0070FCCE /* Admin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Admin.swift; sourceTree = "<group>"; };
+		3F2EC31D1C6A53680070FCCE /* Photos.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Photos.swift; sourceTree = "<group>"; };
+		3F2EC31F1C6A577C0070FCCE /* config.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = config.json; sourceTree = "<group>"; };
 		A242B7001C351AD200AFB4AE /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		A2A8F0E91C3168AF00C73B61 /* BluePic-server */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "BluePic-server"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2A8F0EC1C3168AF00C73B61 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
@@ -48,6 +51,7 @@
 			isa = PBXGroup;
 			children = (
 				A2A8F0F31C31692400C73B61 /* Package.swift */,
+				3F2EC31F1C6A577C0070FCCE /* config.json */,
 				A2A8F0EB1C3168AF00C73B61 /* SwiftBluePic-server */,
 				A2A8F0EA1C3168AF00C73B61 /* Products */,
 			);
@@ -67,6 +71,7 @@
 				A2A8F0EC1C3168AF00C73B61 /* main.swift */,
 				A242B7001C351AD200AFB4AE /* Utils.swift */,
 				3F2EC31B1C69E1AD0070FCCE /* Admin.swift */,
+				3F2EC31D1C6A53680070FCCE /* Photos.swift */,
 			);
 			path = "SwiftBluePic-server";
 			sourceTree = "<group>";
@@ -131,6 +136,7 @@
 				A2A8F0F41C31692400C73B61 /* Package.swift in Sources */,
 				A2A8F0ED1C3168AF00C73B61 /* main.swift in Sources */,
 				A242B7011C351AD200AFB4AE /* Utils.swift in Sources */,
+				3F2EC31E1C6A53680070FCCE /* Photos.swift in Sources */,
 				3F2EC31C1C69E1AD0070FCCE /* Admin.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
