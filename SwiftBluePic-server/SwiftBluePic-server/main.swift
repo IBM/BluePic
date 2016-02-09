@@ -7,8 +7,8 @@
 //
 
 import router
-import sys
 import net
+import sys
 
 import CouchDB
 import HeliumLogger
@@ -19,124 +19,48 @@ import Foundation
 
 Log.logger = BasicLogger()
 
-let configuration = getCouchDBConfiguration()
-guard  configuration != nil  else {
-    print("Failed to read the configuration file!")
-    exit(1)
-}
+let (connectionProperties, dbName, redisHost, redisPort) = getConfiguration()
 
-
-let connectionProperties = configuration!["connectionProperties"] as! ConnectionProperties
 let dbClient = CouchDBClient(connectionProperties: connectionProperties)
-let dbName = (configuration!["db"] as! NSString).bridge()
 
 let database = dbClient.database(dbName)
 
 let router = Router()
 
-router.get("/connect") { (request: RouterRequest, response: RouterResponse, next: ()->Void) in
-    do {
-        try response.status(HttpStatusCode.OK).end()
-    }
-    catch {
-        response.error = NSError(domain: "SwiftBluePic", code: 1, userInfo: [NSLocalizedDescriptionKey:"Internal error"])
-    }
-    
-    next()
-}
+setupAdmin()
 
-router.post("/admin/setup") { (request: RouterRequest, response: RouterResponse, next: ()->Void) in
-    dbClient.dbExists(dbName) { (exists, error) in
-        guard  error == nil  else {
-            response.error = error!
-            next()
-            return
-        }
-            
-        if exists == true {
-            respond(response, withStatus: HttpStatusCode.OK, orSetError: "Internal error")
-            next()
-        }
-        else {
-            dbClient.createDB(dbName) { (db, error) in
-                guard  error == nil  else {
-                    response.error = error!
-                    next()
-                    return
-                }
-                    
-                if let db = db {
-                    let (designName, design) = getDesign()
-                    if let design = design, let designName = designName {
-                        database.createDesign (designName, document: design) { (document, error) in
-                            guard  error == nil  else {
-                                response.error = error!
-                                next()
-                                return
-                            }
-                                
-                            if let document = document {
-                                respond(response, withStatus: HttpStatusCode.OK, orSetError: "Internal error")
-                            }
-                            else {
-                                response.error = NSError(domain: "SwiftBluePic", code: 1, userInfo: [NSLocalizedDescriptionKey:"Internal error"])
-                            }
-                            next()
-                        }
-                    }
-                    else {
-                        next()
-                    }
-                }
-                else {
-                    response.error = NSError(domain: "SwiftBluePic", code: 1, userInfo: [NSLocalizedDescriptionKey:"Internal error"])
-                    next()
-                }
-            }
-        }
-    }
-}
 
-    
-    
 router.use("/photos/*", middleware: BodyParser())
 
 
-router.get("/photos") { (request: RouterRequest, response: RouterResponse, next: ()->Void) in
+router.get("/photos") { _, response, next in
     database.queryByView("sortedByDate", ofDesign: "photos", usingParameters: [.Descending(true)]) { (document, error) in
-        guard  error == nil  else {
-            response.error = error!
-            next()
-            return
-        }
-            
-        if let document = document {
-            respond(response, withJSON: parsePhotosList(document), withStatus: HttpStatusCode.OK, orSetError: "Internal error")
+        if  let document = document where error == nil  {
+            do {
+                try response.status(HttpStatusCode.OK).sendJson(parsePhotosList(document)).end()
+            }
+            catch {
+                Log.error("Failed to send response to client")
+            }
         }
         else {
-            response.error = NSError(domain: "SwiftBluePic", code: 1, userInfo: [NSLocalizedDescriptionKey:"View not found"])
+            response.error = error ?? NSError(domain: "SwiftBluePic", code: 1, userInfo: [NSLocalizedDescriptionKey:"View not found"])
         }
         next()
     }
 }
 
 
-router.get("/photos/:docid/:photoid") { (request: RouterRequest, response: RouterResponse, next: ()->Void) in
+router.get("/photos/:docid/:photoid") { request, response, next in
     let docId = request.params["docid"]
     let attachmentName = request.params["photoid"]
     if docId != nil && attachmentName != nil {
         database.retrieveAttachment(docId!, attachmentName: attachmentName!) { (photo, error, contentType) in
-            guard  error == nil  else {
-                response.error = error!
-                next()
-                return
-            }
-                
-            if let photo = photo {
-                respond(response, withData: photo, withContentType: contentType, withStatus: HttpStatusCode.OK, orSetError: "Internal error")
+            if  let photo = photo where error == nil  {
+                respond(response, withData: photo, withContentType: contentType, withStatus: HttpStatusCode.OK)
             }
             else {
-                response.error = NSError(domain: "SwiftBluePic", code: 1, userInfo: [NSLocalizedDescriptionKey:"Photo not found"])
+                response.error = error  ??  NSError(domain: "SwiftBluePic", code: 1, userInfo: [NSLocalizedDescriptionKey:"Photo not found"])
             }
             next()
         }
@@ -148,7 +72,7 @@ router.get("/photos/:docid/:photoid") { (request: RouterRequest, response: Route
 }
 
 
-router.post("/photos/:ownerId/:ownerName/:title/:photoname") { (request: RouterRequest, response: RouterResponse, next: ()->Void) in
+router.post("/photos/:ownerId/:ownerName/:title/:photoname") { request, response, next in
     let (document, contentType) = createPhotoDocument(request)
     if let document = document, let contentType = contentType {
         var image: NSData?
@@ -164,31 +88,20 @@ router.post("/photos/:ownerId/:ownerName/:title/:photoname") { (request: RouterR
         }
 
         database.create(JSON(document)) { (id, revision, doc, error) in
-            guard  error == nil  else {
-                response.error = error!
-                next()
-                return
-            }
-                
-            if let doc = doc, let id = id, let revision = revision {
+            if let doc = doc, let id = id, let revision = revision where error == nil {
                 database.createAttachment(id, docRevison: revision, attachmentName: photoName, attachmentData: image!, contentType: contentType) { (rev, photoDoc, error) in
-                    guard  error == nil  else {
-                        response.error = error!
-                        next()
-                        return
-                    }
-                    if let photoDoc = photoDoc {
+                    if let photoDoc = photoDoc where error == nil  {
                         let reply = createUploadReply(fromDocument: document, id: id, photoName: photoName)
-                        respond(response, withJSON: reply, withStatus: HttpStatusCode.OK, orSetError: "Internal error")
+                        respond(response, withJSON: reply, withStatus: HttpStatusCode.OK)
                     }
                     else {
-                        response.error = NSError(domain: "SwiftBluePic", code: 1, userInfo: [NSLocalizedDescriptionKey:"Internal error"])
+                        response.error = error  ??  NSError(domain: "SwiftBluePic", code: 1, userInfo: [NSLocalizedDescriptionKey:"Internal error"])
                     }
                     next()
                 }
             }
             else {
-                response.error = NSError(domain: "SwiftBluePic", code: 1, userInfo: [NSLocalizedDescriptionKey:"Internal error"])
+                response.error = error ?? NSError(domain: "SwiftBluePic", code: 1, userInfo: [NSLocalizedDescriptionKey:"Internal error"])
                 next()
             }            
         }

@@ -9,7 +9,7 @@
 import CouchDB
 import router
 import net
-import sys
+import HeliumLogger
 
 import SwiftyJSON
 
@@ -74,7 +74,7 @@ func createUploadReply (fromDocument document: [String:AnyObject], id: String, p
     return JSON(result)
 }
 
-func getCouchDBConfiguration () -> [String:AnyObject]? {
+func getConfiguration () -> (ConnectionProperties, String, String, Int) {
     
 // In order to be able to access CouchDB through external address, go to 127.0.0.1:5984/_utils/config.html, httpd section and change bind_address to 0.0.0.0, and restart couchdb.
     
@@ -87,13 +87,13 @@ func getCouchDBConfiguration () -> [String:AnyObject]? {
         if let ipAddress = configJson["couchDbIpAddress"].string,
             let port = configJson["couchDbPort"].number,
             let dbName = configJson["couchDbDbName"].string {
-                return [
-                    "connectionProperties": ConnectionProperties(hostName: ipAddress, port: Int16(port.integerValue), secured: false),
-                    "db": dbName.bridge()
-                ]
+                return (ConnectionProperties(hostName: ipAddress, port: Int16(port.integerValue), secured: false),
+                    dbName,
+                    "", 0)
         }
     }
-    return nil
+    print("Failed to read the configuration file!")
+    exit(1)
 }
 
 func getDesign () -> (String?, JSON?) {
@@ -109,33 +109,33 @@ func getDesign () -> (String?, JSON?) {
 }
 
 
-func respond(response: RouterResponse, withStatus status: HttpStatusCode, orSetError errorMessage: String) {
+func respond(response: RouterResponse, withStatus status: HttpStatusCode) {
     do {
         try response.status(status).end()
     }
     catch {
-        response.error = NSError(domain: "SwiftBluePic", code: 1, userInfo: [NSLocalizedDescriptionKey:errorMessage])
+        Log.error("Failed to send response to client")
     }
 }
 
-func respond(response: RouterResponse, withJSON json: JSON, withStatus status: HttpStatusCode, orSetError errorMessage: String) {
+func respond(response: RouterResponse, withJSON json: JSON, withStatus status: HttpStatusCode) {
     do {
         try response.status(status).sendJson(json).end()
     }
     catch {
-        response.error = NSError(domain: "SwiftBluePic", code: 1, userInfo: [NSLocalizedDescriptionKey:errorMessage])
+        Log.error("Failed to send response to client")
     }
 }
 
-func respond(response: RouterResponse, withData data: NSData, withContentType contentType: String?, withStatus status: HttpStatusCode, orSetError errorMessage: String) {
+func respond(response: RouterResponse, withData data: NSData, withContentType contentType: String?, withStatus status: HttpStatusCode) {
     if let contentType = contentType {
         response.setHeader("Content-Type", value: contentType)
     }
     do {
-        try response.status(HttpStatusCode.OK).end(data)
+        try response.status(status).end(data)
     }
     catch {
-        response.error = NSError(domain: "SwiftBluePic", code: 1, userInfo: [NSLocalizedDescriptionKey:errorMessage])
+        Log.error("Failed to send response to client")
     }
 }
 
