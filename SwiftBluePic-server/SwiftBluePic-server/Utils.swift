@@ -74,7 +74,7 @@ func createUploadReply (fromDocument document: [String:AnyObject], id: String, p
     return JSON(result)
 }
 
-func getConfiguration () -> (ConnectionProperties, String, String, Int) {
+func getConfiguration () -> (ConnectionProperties, String, String, Int32) {
     
 // In order to be able to access CouchDB through external address, go to 127.0.0.1:5984/_utils/config.html, httpd section and change bind_address to 0.0.0.0, and restart couchdb.
     
@@ -86,10 +86,12 @@ func getConfiguration () -> (ConnectionProperties, String, String, Int) {
         let configJson = JSON(data:configData)
         if let ipAddress = configJson["couchDbIpAddress"].string,
             let port = configJson["couchDbPort"].number,
-            let dbName = configJson["couchDbDbName"].string {
+            let dbName = configJson["couchDbDbName"].string,
+            let redisHost = configJson["redisIpAddress"].string,
+            let redisPort = configJson["redisPort"].number {
                 return (ConnectionProperties(hostName: ipAddress, port: Int16(port.integerValue), secured: false),
                     dbName,
-                    "", 0)
+                    redisHost, Int32(redisPort.integerValue))
         }
     }
     print("Failed to read the configuration file!")
