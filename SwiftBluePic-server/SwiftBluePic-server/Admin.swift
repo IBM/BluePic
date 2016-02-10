@@ -11,7 +11,7 @@ import sys
 import net
 
 import CouchDB
-import HeliumLogger
+import LoggerAPI
 
 import SwiftyJSON
 

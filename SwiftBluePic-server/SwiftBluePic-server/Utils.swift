@@ -9,7 +9,7 @@
 import CouchDB
 import router
 import net
-import HeliumLogger
+import LoggerAPI
 
 import SwiftyJSON
 

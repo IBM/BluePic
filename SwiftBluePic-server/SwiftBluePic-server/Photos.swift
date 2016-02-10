@@ -12,7 +12,7 @@ import sys
 
 import CouchDB
 import SwiftRedis
-import HeliumLogger
+import LoggerAPI
 
 import SwiftyJSON
 

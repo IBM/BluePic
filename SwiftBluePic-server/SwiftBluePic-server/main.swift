@@ -12,13 +12,14 @@ import sys
 
 import CouchDB
 import SwiftRedis
+import LoggerAPI
 import HeliumLogger
 
 import SwiftyJSON
 
 import Foundation
 
-Log.logger = BasicLogger()
+Log.logger = HeliumLogger()
 
 let (connectionProperties, dbName, redisHost, redisPort) = getConfiguration()
 
