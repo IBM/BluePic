@@ -1,10 +1,3 @@
-//
-//  main.swift
-//  BluePic-server
-//
-//  Created by Ira Rosen on 28/12/15.
-//  Copyright © 2015 IBM. All rights reserved.
-//
 
 import router
 import net
