@@ -19,21 +19,26 @@ Kitura BluePic is a sample application for iOS that shows you how to connect you
 
 ## Getting Started
 
-#### 1. Install CouchDB
+#### 1. Install CouchDB and Redis
 Follow [these instructions](https://wiki.apache.org/couchdb/Installation).
 
+[Download Redis](http://redis.io/)
+
 #### 2. Clone the Kitura-Bluepic Git repository
-```
+
+```bash
 cd <some directory>
-git clone git@github.ibm.com:ibmswift/Swift-BluePic.git
+git clone https://github.com/IBM-Swift/Kitura-BluePic
 ```
 
 #### 3. Configure the BluePic-server
+
 Update in the `BluePic-server/config.json` file in your cloned repository:
     1. The CouchDB server's IP address and port
     2. The name of the CouchDB database you want to use
 
 As in the following example:
+
 ```json
 {
   "couchDbIpAddress": "<CouchDB IP Address>",
@@ -43,13 +48,21 @@ As in the following example:
 ```
 
 #### 4. Build the BluePic-server
+
+To build the BluePic server, you need to have your environment set up to build Kitura applications.
+
+[Getting started with Kitura](https://github.com/IBM-Swift/Kitura)
+
 In `BluePic-server` directory of the cloned repository run
-```
+
+```bash
 swift build
 ```
 
 #### 5. Run the BluePic-server
+
 In `BluePic-server` directory of the cloned repository run
+
 ```
 .build/debug/BluePic-server
 ```
