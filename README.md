@@ -1,10 +1,9 @@
-<br>
-#SwiftBluePic
+#Kitura-BluePic
 
-SwiftBluePic is a sample application for iOS that shows you how to connect your mobile application with Phoenix server written in Swift. SwiftBluePic is based on [BluePic](./Original-README.md) app. It is a photo sharing app that allows you to take photos, upload them and share them with the BluePic community.
+Kitura-BluePic is a sample application for iOS that shows you how to connect your mobile application with Phoenix server written in Swift. Kitura-BluePic is based on [BluePic](./Original-README.md) app. It is a photo sharing app that allows you to take photos, upload them and share them with the BluePic community.
 
-<br>
 ## Table of Contents
+
 * [Requirements](#requirements)
 * [Getting Started](#getting-started)
 * [Using SwiftBluePic](#using-bluepic)
