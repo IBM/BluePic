@@ -49,7 +49,10 @@ func setupPhotos() {
         if docId != nil && attachmentName != nil {
             database.retrieveAttachment(docId!, attachmentName: attachmentName!) { (photo, error, contentType) in
                 if  let photo = photo where error == nil  {
-                    respond(response, withData: photo, withContentType: contentType, withStatus: HttpStatusCode.OK)
+                    if let contentType = contentType {
+                        response.setHeader("Content-Type", value: contentType)
+                    }
+                    response.status(HttpStatusCode.OK).sendData(photo)
                 }
                 else {
                     response.error = error  ??  NSError(domain: "SwiftBluePic", code: 1, userInfo: [NSLocalizedDescriptionKey:"Photo not found"])
@@ -84,7 +87,7 @@ func setupPhotos() {
                     database.createAttachment(id, docRevison: revision, attachmentName: photoName, attachmentData: image!, contentType: contentType) { (rev, photoDoc, error) in
                         if let _ = photoDoc where error == nil  {
                             let reply = createUploadReply(fromDocument: document, id: id, photoName: photoName)
-                            respond(response, withJSON: reply, withStatus: HttpStatusCode.OK)
+                            response.status(HttpStatusCode.OK).sendJson(reply)
                         }
                         else {
                             response.error = error  ??  NSError(domain: "SwiftBluePic", code: 1, userInfo: [NSLocalizedDescriptionKey:"Internal error"])

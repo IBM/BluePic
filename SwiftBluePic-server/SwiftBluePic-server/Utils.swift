@@ -110,35 +110,3 @@ func getDesign () -> (String?, JSON?) {
     return ("photos", designDoc)
 }
 
-
-func respond(response: RouterResponse, withStatus status: HttpStatusCode) {
-    do {
-        try response.status(status).end()
-    }
-    catch {
-        Log.error("Failed to send response to client")
-    }
-}
-
-func respond(response: RouterResponse, withJSON json: JSON, withStatus status: HttpStatusCode) {
-    do {
-        try response.status(status).sendJson(json).end()
-    }
-    catch {
-        Log.error("Failed to send response to client")
-    }
-}
-
-func respond(response: RouterResponse, withData data: NSData, withContentType contentType: String?, withStatus status: HttpStatusCode) {
-    if let contentType = contentType {
-        response.setHeader("Content-Type", value: contentType)
-    }
-    do {
-        try response.status(status).end(data)
-    }
-    catch {
-        Log.error("Failed to send response to client")
-    }
-}
-
-
