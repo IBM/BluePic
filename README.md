@@ -1,6 +1,6 @@
-#Kitura-BluePic
+#Kitura BluePic
 
-Kitura-BluePic is a sample application for iOS that shows you how to connect your mobile application with Phoenix server written in Swift. Kitura-BluePic is based on [BluePic](./Original-README.md) app. It is a photo sharing app that allows you to take photos, upload them and share them with the BluePic community.
+Kitura BluePic is a sample application for iOS that shows you how to connect your mobile application with Phoenix server written in Swift. Kitura BluePic is based on [BluePic](./Original-README.md) app. It is a photo sharing app that allows you to take photos, upload them and share them with the BluePic community.
 
 ## Table of Contents
 
@@ -12,14 +12,17 @@ Kitura-BluePic is a sample application for iOS that shows you how to connect you
 * [License](#license)
 
 ## Requirements
-[Phoenix](https://github.ibm.com/ibmswift/Phoenix), [CouchDB](http://couchdb.apache.org/)
+
+- [Kitura](https://github.com/IBM-Swift/Kitura)
+- [Kitura CouchDB](http://couchdb.apache.org/)
+- [Kitura Redis](https://github.com/IBM-Swift/Kitura-redis)
 
 ## Getting Started
 
 #### 1. Install CouchDB
 Follow [these instructions](https://wiki.apache.org/couchdb/Installation).
 
-#### 2. Clone the Swift-Bluepic Git repository
+#### 2. Clone the Kitura-Bluepic Git repository
 ```
 cd <some directory>
 git clone git@github.ibm.com:ibmswift/Swift-BluePic.git
