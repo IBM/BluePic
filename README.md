@@ -13,16 +13,16 @@ Kitura BluePic is a sample application for iOS that shows you how to connect you
 
 ## Requirements
 
-- [Kitura](https://github.com/IBM-Swift/Kitura)
-- [Kitura CouchDB](http://couchdb.apache.org/)
+- [Kitura](https://github.com/IBM-Swift/Kitura-BluePic)
+- [Kitura CouchDB](https://github.com/IBM-Swift/Kitura-CouchDB)
 - [Kitura Redis](https://github.com/IBM-Swift/Kitura-redis)
 
 ## Getting Started
 
 #### 1. Install CouchDB and Redis
-Follow [these instructions](https://wiki.apache.org/couchdb/Installation).
+[CouchDB installation instructions](https://wiki.apache.org/couchdb/Installation).
 
-[Download Redis](http://redis.io/)
+[Redis installation instructions](http://redis.io/download).
 
 #### 2. Clone the Kitura-Bluepic Git repository
 
@@ -31,11 +31,12 @@ cd <some directory>
 git clone https://github.com/IBM-Swift/Kitura-BluePic
 ```
 
-#### 3. Configure the BluePic-server
+#### 3. Configure the SwiftBluePic-server
 
-Update in the `BluePic-server/config.json` file in your cloned repository:
-    1. The CouchDB server's IP address and port
-    2. The name of the CouchDB database you want to use
+Update in the `SwiftBluePic-server/config.json` file in your cloned repository:
+
+1. The CouchDB server's IP address and port
+2. The name of the CouchDB database you want to use
 
 As in the following example:
 
@@ -47,24 +48,25 @@ As in the following example:
 }
 ```
 
-#### 4. Build the BluePic-server
+#### 4. Build the SwiftBluePic-server
 
-To build the BluePic server, you need to have your environment set up to build Kitura applications.
+To build the SwiftBluePic-server, you need to have your environment set up to build Kitura applications.
 
 [Getting started with Kitura](https://github.com/IBM-Swift/Kitura)
 
-In `BluePic-server` directory of the cloned repository run
+In `SwiftBluePic-server` directory of the cloned repository run
 
 ```bash
 swift build
+make
 ```
 
-#### 5. Run the BluePic-server
+#### 5. Run the SwiftBluePic-server
 
-In `BluePic-server` directory of the cloned repository run
+In `SwiftBluePic-server` directory of the cloned repository run
 
 ```
-.build/debug/BluePic-server
+.build/debug/SwiftBluePic-server
 ```
 
 #### 6. Setup the CouchDB database
@@ -76,31 +78,30 @@ For now, until we have a web based admin UI, you will need to run
 ## Using SwiftBluePic
 
 ### Facebook Login
-BluePic was designed so that anyone can quickly launch the app and view photos posted without needing to log in. However, to view the profile or post photos, the user can easily login with his/her Facebook account. This is only used for a unique user id, the user's full name, as well as to display the user's profile photo.
+SwiftBluePic was designed so that anyone can quickly launch the app and view photos posted without needing to log in. However, to view the profile or post photos, the user can easily login with his/her Facebook account. This is only used for a unique user id, the user's full name, as well as to display the user's profile photo.
 
 <p align="center">
-<img src="img/login.PNG"  alt="Drawing" height=550 border=0 /></p>
+<img src="img/SwiftBluePic-screen.jpg"  alt="Drawing" height=550 border=0 /></p>
 <p align="center">Figure 1. Welcome page.</p>
 
 <br>
-At the moment only "dummy" login is implemented.
 
 ### View Feed
-The feed (first tab) shows all the latest photos posted to the BluePic community (regardless if logged in or not).
+The feed (first tab) shows all the latest photos posted to the SwiftBluePic community (regardless if logged in or not).
 
 <p align="center">
 <img src="img/feed.PNG"  alt="Drawing" height=550 border=0 /></p>
 <p align="center">Figure 2. Main feed view.</p>
 
 ### Post a Photo
-Posting to the BluePic community is easy. Tap the middle tab in the tab bar and choose to either Choose a photo from the Camera Roll or Take a photo using the device's camera. You can then give the photo a caption before posting.
+Posting to the SwiftBluePic community is easy. Tap the middle tab in the tab bar and choose to either Choose a photo from the Camera Roll or Take a photo using the device's camera. You can then give the photo a caption before posting.
 
 <p align="center">
 <img src="img/post.PNG"  alt="Drawing" height=550 border=0 /></p>
 <p align="center">Figure 3. Posting a photo.</p>
 
 ### View Profile
-By tapping the third tab, you can view your profile. This shows your Facebook profile photo, lists how many photos you've posted, and shows all the photos you've posted to BluePic.
+By tapping the third tab, you can view your profile. This shows your Facebook profile photo, lists how many photos you've posted, and shows all the photos you've posted to SwiftBluePic.
 
 <p align="center">
 <img src="img/profile.PNG"  alt="Drawing" height=550 border=0 /></p>
@@ -108,8 +109,8 @@ By tapping the third tab, you can view your profile. This shows your Facebook pr
 
 <br>
 ## Project Structure
-* `/BluePic-iOS` directory for the iOS client.
-* `/BluePic-server` directory for the BluePic-server.
+* `/SwiftBluePic-iOS` directory for the iOS client.
+* `/SwiftBluePic-server` directory for the SwiftBluePic-server.
 * `/img` directory for images for this README.
 
 <br>
