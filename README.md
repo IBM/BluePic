@@ -1,14 +1,14 @@
 #Kitura BluePic
 
-Kitura BluePic is a sample application for iOS that shows you how to connect your mobile application with Phoenix server written in Swift. Kitura BluePic is based on [BluePic](./Original-README.md) app. It is a photo sharing app that allows you to take photos, upload them and share them with the BluePic community.
+Kitura BluePic is a sample application for iOS that shows you how to connect your mobile application with Kitura server written in Swift. Kitura BluePic is based on [BluePic](./Original-README.md) app. It is a photo sharing app that allows you to take photos, upload them and share them with the SwiftBluePic community.
 
 ## Table of Contents
 
 * [Requirements](#requirements)
 * [Getting Started](#getting-started)
-* [Using SwiftBluePic](#using-bluepic)
+* [Using SwiftBluePic](#using-kitura-bluepic)
 * [Project Structure](#project-structure)
-* [Architecture](#architecture/bluemix-services-implementation)
+* [Architecture](#architecture)
 * [License](#license)
 
 ## Requirements
@@ -75,7 +75,7 @@ For now, until we have a web based admin UI, you will need to run
  curl -X POST http://localhost:8090/admin/setup
 ```
 
-## Using SwiftBluePic
+## Using Kitura BluePic
 
 ### Facebook Login
 SwiftBluePic was designed so that anyone can quickly launch the app and view photos posted without needing to log in. However, to view the profile or post photos, the user can easily login with his/her Facebook account. This is only used for a unique user id, the user's full name, as well as to display the user's profile photo.
@@ -117,7 +117,7 @@ By tapping the third tab, you can view your profile. This shows your Facebook pr
 ## Architecture
 
 <p align="center">
-<img src="img/Swift-BluePic.jpg"  alt="Drawing" height=350 border=0 /></p>
+<img src="img/Swift-BluePic.jpg"  alt="Drawing" height=400 border=0 /></p>
 <p align="center">Figure 5. Swift-BluePic Architecture Diagram.</p>
 
 
