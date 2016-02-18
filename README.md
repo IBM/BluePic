@@ -6,7 +6,7 @@ Kitura BluePic is a sample application for iOS that shows you how to connect you
 
 * [Requirements](#requirements)
 * [Getting Started](#getting-started)
-* [Using SwiftBluePic](#using-kitura-bluepic)
+* [Using Kitura BluePic](#using-kitura-bluepic)
 * [Project Structure](#project-structure)
 * [Architecture](#architecture)
 * [License](#license)
