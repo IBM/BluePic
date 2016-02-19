@@ -5,14 +5,7 @@ platform :ios, '9.0'
 # ignore all warnings from all pods
 inhibit_all_warnings!
 
-#pod 'Alamofire', '~> 3.0'
-#pod 'AlamofireObjectMapper', '~> 2.0'
-
-#pod 'CDTDatastore'
-
-#pod 'IMFFacebookAuthentication'
-
 pod 'SDWebImage', '~>3.7'
 
 pod 'FBSDKLoginKit'
-#pod 'google-plus-ios-sdk'
+
