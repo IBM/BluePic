@@ -52,7 +52,6 @@
 		347AD21D1C18E2DC00C3B473 /* AlamofireObjectMapper.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 347AD2151C18E2D200C3B473 /* AlamofireObjectMapper.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		347AD21E1C18E2DC00C3B473 /* ObjectMapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 347AD2161C18E2D200C3B473 /* ObjectMapper.framework */; };
 		347AD21F1C18E2DC00C3B473 /* ObjectMapper.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 347AD2161C18E2D200C3B473 /* ObjectMapper.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		34C8094D1BFCEA0400C48004 /* keys.plist in Resources */ = {isa = PBXBuildFile; fileRef = 34C8094C1BFCEA0400C48004 /* keys.plist */; };
 		34C809551BFD0F2400C48004 /* FacebookDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C809541BFD0F2400C48004 /* FacebookDataManager.swift */; };
 		494AA0B01BFE4CBA006FC48E /* ObjectStorageClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494AA0AF1BFE4CBA006FC48E /* ObjectStorageClientTests.swift */; };
 		A22599A61C42791F00A72115 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A22599A51C42791F00A72115 /* Settings.storyboard */; };
@@ -147,7 +146,6 @@
 		347AD2161C18E2D200C3B473 /* ObjectMapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ObjectMapper.framework; sourceTree = "<group>"; };
 		347E276C1C1F9CD10089EC3D /* SwiftBluePic.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = SwiftBluePic.entitlements; sourceTree = "<group>"; };
 		34C8094A1BFCD9A300C48004 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		34C8094C1BFCEA0400C48004 /* keys.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = keys.plist; sourceTree = "<group>"; };
 		34C809541BFD0F2400C48004 /* FacebookDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookDataManager.swift; sourceTree = "<group>"; };
 		494AA0AF1BFE4CBA006FC48E /* ObjectStorageClientTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectStorageClientTests.swift; sourceTree = "<group>"; };
 		4DF2008F9A93E25237957424 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
@@ -276,7 +274,6 @@
 		347472BB1BFA8DEF0018B7F6 /* Configuration */ = {
 			isa = PBXGroup;
 			children = (
-				34C8094C1BFCEA0400C48004 /* keys.plist */,
 				34C8094A1BFCD9A300C48004 /* Info.plist */,
 			);
 			path = Configuration;
@@ -524,7 +521,6 @@
 				1B057E0A1C17C03400AC21EE /* ProfileHeaderCollectionReusableView.xib in Resources */,
 				3435C7C91C0368B1004923BD /* Feed.storyboard in Resources */,
 				346F94801C0F9211004999A8 /* CameraConfirmationView.xib in Resources */,
-				34C8094D1BFCEA0400C48004 /* keys.plist in Resources */,
 				347472ED1BFA8DEF0018B7F6 /* Main.storyboard in Resources */,
 				1B3BA0761C0F5FBD0064C850 /* .gitkeep in Resources */,
 				347472981BFA8C6A0018B7F6 /* LaunchScreen.storyboard in Resources */,
