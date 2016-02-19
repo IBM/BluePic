@@ -144,7 +144,7 @@
 		347AD2141C18E2D200C3B473 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Alamofire.framework; sourceTree = "<group>"; };
 		347AD2151C18E2D200C3B473 /* AlamofireObjectMapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AlamofireObjectMapper.framework; sourceTree = "<group>"; };
 		347AD2161C18E2D200C3B473 /* ObjectMapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ObjectMapper.framework; sourceTree = "<group>"; };
-		347E276C1C1F9CD10089EC3D /* SwiftBluePic.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = SwiftBluePic.entitlements; sourceTree = "<group>"; };
+		347E276C1C1F9CD10089EC3D /* KituraBluePic.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = KituraBluePic.entitlements; sourceTree = "<group>"; };
 		34C8094A1BFCD9A300C48004 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		34C809541BFD0F2400C48004 /* FacebookDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookDataManager.swift; sourceTree = "<group>"; };
 		494AA0AF1BFE4CBA006FC48E /* ObjectStorageClientTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectStorageClientTests.swift; sourceTree = "<group>"; };
@@ -155,7 +155,7 @@
 		A22599A91C427CF000A72115 /* SettingsConnectivityCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsConnectivityCell.swift; sourceTree = "<group>"; };
 		A2A8F0F71C3277E900C73B61 /* PhotosDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotosDataManager.swift; sourceTree = "<group>"; };
 		B3A9E7D91C063FA1002D4AEE /* CloudantSyncClientTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudantSyncClientTests.swift; sourceTree = "<group>"; };
-		BDC4B5F21BFBC77200CC1648 /* SwiftBluePic-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SwiftBluePic-Bridging-Header.h"; sourceTree = "<group>"; };
+		BDC4B5F21BFBC77200CC1648 /* KituraBluePic-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "KituraBluePic-Bridging-Header.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -229,7 +229,7 @@
 		3474728C1BFA8C6A0018B7F6 /* KituraBluePic */ = {
 			isa = PBXGroup;
 			children = (
-				347E276C1C1F9CD10089EC3D /* SwiftBluePic.entitlements */,
+				347E276C1C1F9CD10089EC3D /* KituraBluePic.entitlements */,
 				1B578C271C1A759C000F6076 /* Resources */,
 				1B3BA0741C0F5FBD0064C850 /* Models */,
 				3474728D1BFA8C6A0018B7F6 /* AppDelegate.swift */,
@@ -375,7 +375,7 @@
 		34F6972B1BFB8E6C00A2D2EC /* SupportingFiles */ = {
 			isa = PBXGroup;
 			children = (
-				BDC4B5F21BFBC77200CC1648 /* SwiftBluePic-Bridging-Header.h */,
+				BDC4B5F21BFBC77200CC1648 /* KituraBluePic-Bridging-Header.h */,
 			);
 			path = SupportingFiles;
 			sourceTree = "<group>";
@@ -765,22 +765,22 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = SwiftBluePic/SwiftBluePic.entitlements;
+				CODE_SIGN_ENTITLEMENTS = KituraBluePic/KituraBluePic.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
-					"$(PROJECT_DIR)/SwiftBluePic/ExternalLibraries",
+					"$(PROJECT_DIR)/KituraBluePic/ExternalLibraries",
 				);
-				INFOPLIST_FILE = "$(SRCROOT)/SwiftBluePic/Configuration/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/KituraBluePic/Configuration/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.ibm.cio.be.SwiftBluePic.swift;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ibm.cio.be.KituraBluePic.swift;
 				PRODUCT_NAME = KituraBluePic;
 				PROVISIONING_PROFILE = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "SwiftBluePic/SupportingFiles/SwiftBluePic-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "KituraBluePic/SupportingFiles/KituraBluePic-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -791,22 +791,22 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = SwiftBluePic/SwiftBluePic.entitlements;
+				CODE_SIGN_ENTITLEMENTS = KituraBluePic/KituraBluePic.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
-					"$(PROJECT_DIR)/SwiftBluePic/ExternalLibraries",
+					"$(PROJECT_DIR)/KituraBluePic/ExternalLibraries",
 				);
-				INFOPLIST_FILE = "$(SRCROOT)/SwiftBluePic/Configuration/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/KituraBluePic/Configuration/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.ibm.cio.be.SwiftBluePic.swift;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ibm.cio.be.KituraBluePic.swift;
 				PRODUCT_NAME = KituraBluePic;
 				PROVISIONING_PROFILE = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "SwiftBluePic/SupportingFiles/SwiftBluePic-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "KituraBluePic/SupportingFiles/KituraBluePic-Bridging-Header.h";
 			};
 			name = Release;
 		};
