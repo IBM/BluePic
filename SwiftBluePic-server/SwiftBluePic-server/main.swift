@@ -14,9 +14,9 @@
  * limitations under the License.
  **/
 
-import router
-import net
-import sys
+import KituraRouter
+import KituraNet
+import KituraSys
 
 import CouchDB
 import SwiftRedis

@@ -14,9 +14,9 @@
  * limitations under the License.
  **/
 
-import router
-import sys
-import net
+import KituraRouter
+import KituraSys
+import KituraNet
 
 import CouchDB
 import LoggerAPI

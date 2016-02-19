@@ -15,8 +15,11 @@
  **/
 
 import CouchDB
-import router
-import net
+
+import KituraRouter
+import KituraNet
+import KituraSys
+
 import LoggerAPI
 
 import SwiftyJSON
