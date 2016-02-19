@@ -2,7 +2,7 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:SwiftBluePic.xcodeproj">
+      location = "group:/Users/Robert/MIL/PhoenixProject/Swift-BluePic/KituraBluePic-iOS/KituraBluePic.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">

@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "347472891BFA8C6A0018B7F6"
-               BuildableName = "SwiftBluePic.app"
-               BlueprintName = "SwiftBluePic"
-               ReferencedContainer = "container:SwiftBluePic.xcodeproj">
+               BuildableName = "KituraBluePic.app"
+               BlueprintName = "KituraBluePic"
+               ReferencedContainer = "container:KituraBluePic.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "3474729D1BFA8C6A0018B7F6"
-               BuildableName = "SwiftBluePicTests.xctest"
-               BlueprintName = "SwiftBluePicTests"
-               ReferencedContainer = "container:SwiftBluePic.xcodeproj">
+               BuildableName = "KituraBluePic.xctest"
+               BlueprintName = "KituraBluePicTests"
+               ReferencedContainer = "container:KituraBluePic.xcodeproj">
             </BuildableReference>
             <SkippedTests>
                <Test
@@ -48,9 +48,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "347472A81BFA8C6A0018B7F6"
-               BuildableName = "SwiftBluePicUITests.xctest"
-               BlueprintName = "SwiftBluePicUITests"
-               ReferencedContainer = "container:SwiftBluePic.xcodeproj">
+               BuildableName = "KituraBluePic.xctest"
+               BlueprintName = "KituraBluePicUITests"
+               ReferencedContainer = "container:KituraBluePic.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -58,9 +58,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "347472891BFA8C6A0018B7F6"
-            BuildableName = "SwiftBluePic.app"
-            BlueprintName = "SwiftBluePic"
-            ReferencedContainer = "container:SwiftBluePic.xcodeproj">
+            BuildableName = "KituraBluePic.app"
+            BlueprintName = "KituraBluePic"
+            ReferencedContainer = "container:KituraBluePic.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -81,9 +81,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "347472891BFA8C6A0018B7F6"
-            BuildableName = "SwiftBluePic.app"
-            BlueprintName = "SwiftBluePic"
-            ReferencedContainer = "container:SwiftBluePic.xcodeproj">
+            BuildableName = "KituraBluePic.app"
+            BlueprintName = "KituraBluePic"
+            ReferencedContainer = "container:KituraBluePic.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -100,9 +100,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "347472891BFA8C6A0018B7F6"
-            BuildableName = "SwiftBluePic.app"
-            BlueprintName = "SwiftBluePic"
-            ReferencedContainer = "container:SwiftBluePic.xcodeproj">
+            BuildableName = "KituraBluePic.app"
+            BlueprintName = "KituraBluePic"
+            ReferencedContainer = "container:KituraBluePic.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
