@@ -31,7 +31,7 @@
 		3F2EC31D1C6A53680070FCCE /* Photos.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Photos.swift; sourceTree = "<group>"; };
 		3F2EC31F1C6A577C0070FCCE /* config.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = config.json; sourceTree = "<group>"; };
 		A242B7001C351AD200AFB4AE /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
-		A2A8F0E91C3168AF00C73B61 /* BluePic-server */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "BluePic-server"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A2A8F0E91C3168AF00C73B61 /* KituraBluePic-server */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "KituraBluePic-server"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2A8F0EC1C3168AF00C73B61 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		A2A8F0F31C31692400C73B61 /* Package.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -52,7 +52,7 @@
 			children = (
 				A2A8F0F31C31692400C73B61 /* Package.swift */,
 				3F2EC31F1C6A577C0070FCCE /* config.json */,
-				A2A8F0EB1C3168AF00C73B61 /* SwiftBluePic-server */,
+				A2A8F0EB1C3168AF00C73B61 /* KituraBluePic-server */,
 				A2A8F0EA1C3168AF00C73B61 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -60,12 +60,12 @@
 		A2A8F0EA1C3168AF00C73B61 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A2A8F0E91C3168AF00C73B61 /* BluePic-server */,
+				A2A8F0E91C3168AF00C73B61 /* KituraBluePic-server */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		A2A8F0EB1C3168AF00C73B61 /* SwiftBluePic-server */ = {
+		A2A8F0EB1C3168AF00C73B61 /* KituraBluePic-server */ = {
 			isa = PBXGroup;
 			children = (
 				A2A8F0EC1C3168AF00C73B61 /* main.swift */,
@@ -73,15 +73,15 @@
 				3F2EC31B1C69E1AD0070FCCE /* Admin.swift */,
 				3F2EC31D1C6A53680070FCCE /* Photos.swift */,
 			);
-			path = "SwiftBluePic-server";
+			path = "KituraBluePic-server";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		A2A8F0E81C3168AF00C73B61 /* BluePic-server */ = {
+		A2A8F0E81C3168AF00C73B61 /* KituraBluePic-server */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A2A8F0F01C3168AF00C73B61 /* Build configuration list for PBXNativeTarget "BluePic-server" */;
+			buildConfigurationList = A2A8F0F01C3168AF00C73B61 /* Build configuration list for PBXNativeTarget "KituraBluePic-server" */;
 			buildPhases = (
 				A2A8F0E51C3168AF00C73B61 /* Sources */,
 				A2A8F0E61C3168AF00C73B61 /* Frameworks */,
@@ -91,9 +91,9 @@
 			);
 			dependencies = (
 			);
-			name = "BluePic-server";
+			name = "KituraBluePic-server";
 			productName = "BluePic-server";
-			productReference = A2A8F0E91C3168AF00C73B61 /* BluePic-server */;
+			productReference = A2A8F0E91C3168AF00C73B61 /* KituraBluePic-server */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -111,7 +111,7 @@
 					};
 				};
 			};
-			buildConfigurationList = A2A8F0E41C3168AF00C73B61 /* Build configuration list for PBXProject "SwiftBluePic-server" */;
+			buildConfigurationList = A2A8F0E41C3168AF00C73B61 /* Build configuration list for PBXProject "KituraBluePic-server" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -123,7 +123,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A2A8F0E81C3168AF00C73B61 /* BluePic-server */,
+				A2A8F0E81C3168AF00C73B61 /* KituraBluePic-server */,
 			);
 		};
 /* End PBXProject section */
@@ -241,7 +241,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		A2A8F0E41C3168AF00C73B61 /* Build configuration list for PBXProject "SwiftBluePic-server" */ = {
+		A2A8F0E41C3168AF00C73B61 /* Build configuration list for PBXProject "KituraBluePic-server" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A2A8F0EE1C3168AF00C73B61 /* Debug */,
@@ -250,7 +250,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A2A8F0F01C3168AF00C73B61 /* Build configuration list for PBXNativeTarget "BluePic-server" */ = {
+		A2A8F0F01C3168AF00C73B61 /* Build configuration list for PBXNativeTarget "KituraBluePic-server" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A2A8F0F11C3168AF00C73B61 /* Debug */,
