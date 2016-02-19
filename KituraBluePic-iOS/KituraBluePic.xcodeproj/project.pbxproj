@@ -210,7 +210,7 @@
 			isa = PBXGroup;
 			children = (
 				3474728C1BFA8C6A0018B7F6 /* KituraBluePic */,
-				347472A11BFA8C6A0018B7F6 /* SwiftBluePicTests */,
+				347472A11BFA8C6A0018B7F6 /* KituraBluePicTests */,
 				347472AC1BFA8C6A0018B7F6 /* SwiftBluePicUITests */,
 				3474728B1BFA8C6A0018B7F6 /* Products */,
 				DF6A97152FD63FCE242B5547 /* Pods */,
@@ -252,7 +252,7 @@
 			path = KituraBluePic;
 			sourceTree = "<group>";
 		};
-		347472A11BFA8C6A0018B7F6 /* SwiftBluePicTests */ = {
+		347472A11BFA8C6A0018B7F6 /* KituraBluePicTests */ = {
 			isa = PBXGroup;
 			children = (
 				347472A21BFA8C6A0018B7F6 /* SwiftBluePicTests.swift */,
@@ -261,6 +261,7 @@
 				B3A9E7D91C063FA1002D4AEE /* CloudantSyncClientTests.swift */,
 				342E4EBA1C161FE500DC3771 /* PopulateFeedWithPhotos.swift */,
 			);
+			name = KituraBluePicTests;
 			path = SwiftBluePicTests;
 			sourceTree = "<group>";
 		};
