@@ -211,7 +211,7 @@
 			children = (
 				3474728C1BFA8C6A0018B7F6 /* KituraBluePic */,
 				347472A11BFA8C6A0018B7F6 /* KituraBluePicTests */,
-				347472AC1BFA8C6A0018B7F6 /* SwiftBluePicUITests */,
+				347472AC1BFA8C6A0018B7F6 /* KituraBluePicUITests */,
 				3474728B1BFA8C6A0018B7F6 /* Products */,
 				DF6A97152FD63FCE242B5547 /* Pods */,
 				C93A0D59BDE755BE5A1209FC /* Frameworks */,
@@ -264,13 +264,13 @@
 			path = KituraBluePicTests;
 			sourceTree = "<group>";
 		};
-		347472AC1BFA8C6A0018B7F6 /* SwiftBluePicUITests */ = {
+		347472AC1BFA8C6A0018B7F6 /* KituraBluePicUITests */ = {
 			isa = PBXGroup;
 			children = (
 				347472AD1BFA8C6A0018B7F6 /* SwiftBluePicUITests.swift */,
 				347472AF1BFA8C6A0018B7F6 /* Info.plist */,
 			);
-			path = SwiftBluePicUITests;
+			path = KituraBluePicUITests;
 			sourceTree = "<group>";
 		};
 		347472BB1BFA8DEF0018B7F6 /* Configuration */ = {
