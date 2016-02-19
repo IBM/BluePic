@@ -107,8 +107,8 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
 
     
     func signedInAs(userName: String, id: String) {
-        FacebookDataManager.SharedInstance.fbAppID = "swiftbluepic"
-        FacebookDataManager.SharedInstance.fbAppDisplayName = "swiftbluepic"
+        FacebookDataManager.SharedInstance.fbAppID = "kiturabluepic"
+        FacebookDataManager.SharedInstance.fbAppDisplayName = "kiturabluepic"
         FacebookDataManager.SharedInstance.fbUserDisplayName = userName
         FacebookDataManager.SharedInstance.fbUniqueUserID = id
         FacebookDataManager.SharedInstance.isLoggedIn = true

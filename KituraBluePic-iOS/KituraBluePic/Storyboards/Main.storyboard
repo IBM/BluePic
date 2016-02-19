@@ -8,7 +8,7 @@
         <!--Tab Bar View Controller-->
         <scene sceneID="buh-Yt-C7i">
             <objects>
-                <tabBarController id="8AK-xM-BIZ" customClass="TabBarViewController" customModule="SwiftBluePic" customModuleProvider="target" sceneMemberID="viewController">
+                <tabBarController id="8AK-xM-BIZ" customClass="TabBarViewController" customModule="KituraBluePic" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBar key="tabBar" contentMode="scaleToFill" translucent="NO" id="163-n0-olj">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -31,7 +31,7 @@
         <!--Login View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController storyboardIdentifier="loginVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="BYZ-38-t0r" customClass="LoginViewController" customModule="SwiftBluePic" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="loginVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="BYZ-38-t0r" customClass="LoginViewController" customModule="KituraBluePic" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -51,10 +51,10 @@
                                 </constraints>
                                 <color key="color" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </activityIndicatorView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome to SwiftBluePic" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cIW-Ou-STz">
-                                <rect key="frame" x="135" y="175" width="331" height="36"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome to KituraBluePic" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cIW-Ou-STz">
+                                <rect key="frame" x="134.5" y="175" width="343" height="36"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="331" id="YMB-Xq-LqD"/>
+                                    <constraint firstAttribute="width" constant="343" id="YMB-Xq-LqD"/>
                                     <constraint firstAttribute="height" constant="36" id="g3J-Gq-moa"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
@@ -110,15 +110,15 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JA3-DV-7dk">
-                                <rect key="frame" x="166" y="219" width="271" height="112"/>
+                                <rect key="frame" x="166" y="219" width="275" height="112"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="112" id="GaN-o4-7vS"/>
-                                    <constraint firstAttribute="width" constant="271" id="eyR-Rk-Nvp"/>
+                                    <constraint firstAttribute="width" constant="275" id="eyR-Rk-Nvp"/>
                                 </constraints>
                                 <attributedString key="attributedText">
                                     <fragment>
-                                        <string key="content">SwiftBluePic is an amazing app for taking
-pictures and sharing them to the SwiftBluePic community. </string>
+                                        <string key="content">KituraBluePic is an amazing app for taking
+pictures and sharing them to the KituraBluePic community. </string>
                                         <attributes>
                                             <color key="NSColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <font key="NSFont" metaFont="system" size="14"/>
@@ -153,13 +153,13 @@ pictures and sharing them to the SwiftBluePic community. </string>
                             <constraint firstItem="cIW-Ou-STz" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" constant="175" id="PQt-gW-VB2"/>
                             <constraint firstItem="Xvc-eo-SFq" firstAttribute="centerX" secondItem="neQ-m5-2vk" secondAttribute="centerX" id="Pxd-1x-4z9"/>
                             <constraint firstItem="gtv-K7-hIk" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" constant="0.5" id="TUv-VN-qfh"/>
-                            <constraint firstItem="cIW-Ou-STz" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="WCY-Kg-EIr"/>
+                            <constraint firstItem="cIW-Ou-STz" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" constant="6" id="WCY-Kg-EIr"/>
                             <constraint firstItem="Xvc-eo-SFq" firstAttribute="top" secondItem="LMk-mW-Kmu" secondAttribute="bottom" constant="8" symbolic="YES" id="Xdl-po-UaW"/>
                             <constraint firstItem="ANO-Gs-Tk5" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="Yk1-eN-7XX"/>
                             <constraint firstItem="neQ-m5-2vk" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="coA-y2-fHJ"/>
                             <constraint firstItem="ANO-Gs-Tk5" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="kF3-0n-p2V"/>
                             <constraint firstItem="Hia-oq-hEM" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" constant="348" id="lG5-9M-mkA"/>
-                            <constraint firstItem="JA3-DV-7dk" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" constant="1.5" id="loP-gA-4Md"/>
+                            <constraint firstItem="JA3-DV-7dk" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" constant="3.5" id="loP-gA-4Md"/>
                             <constraint firstItem="LMk-mW-Kmu" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" constant="1.5" id="okh-xK-xRG"/>
                             <constraint firstItem="OyD-TT-jb1" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" constant="1" id="s7Y-kb-Ucf"/>
                             <constraint firstItem="ANO-Gs-Tk5" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="y6k-qc-rXf"/>

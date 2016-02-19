@@ -32,7 +32,7 @@
 	<key>FacebookAppID</key>
 	<string>797529663725643</string>
 	<key>FacebookDisplayName</key>
-	<string>SwiftBluePic</string>
+	<string>KituraBluePic</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>fbauth2</string>
