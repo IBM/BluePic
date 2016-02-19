@@ -261,8 +261,7 @@
 				B3A9E7D91C063FA1002D4AEE /* CloudantSyncClientTests.swift */,
 				342E4EBA1C161FE500DC3771 /* PopulateFeedWithPhotos.swift */,
 			);
-			name = KituraBluePicTests;
-			path = SwiftBluePicTests;
+			path = KituraBluePicTests;
 			sourceTree = "<group>";
 		};
 		347472AC1BFA8C6A0018B7F6 /* SwiftBluePicUITests */ = {
