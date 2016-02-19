@@ -209,7 +209,7 @@
 		347472811BFA8C6A0018B7F6 = {
 			isa = PBXGroup;
 			children = (
-				3474728C1BFA8C6A0018B7F6 /* SwiftBluePic */,
+				3474728C1BFA8C6A0018B7F6 /* KituraBluePic */,
 				347472A11BFA8C6A0018B7F6 /* SwiftBluePicTests */,
 				347472AC1BFA8C6A0018B7F6 /* SwiftBluePicUITests */,
 				3474728B1BFA8C6A0018B7F6 /* Products */,
@@ -228,7 +228,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		3474728C1BFA8C6A0018B7F6 /* SwiftBluePic */ = {
+		3474728C1BFA8C6A0018B7F6 /* KituraBluePic */ = {
 			isa = PBXGroup;
 			children = (
 				347E276C1C1F9CD10089EC3D /* SwiftBluePic.entitlements */,
@@ -249,7 +249,7 @@
 				347AD2131C18E2A700C3B473 /* ExternalLibraries */,
 				A2A8F0F71C3277E900C73B61 /* PhotosDataManager.swift */,
 			);
-			path = SwiftBluePic;
+			path = KituraBluePic;
 			sourceTree = "<group>";
 		};
 		347472A11BFA8C6A0018B7F6 /* SwiftBluePicTests */ = {
