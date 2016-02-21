@@ -84,7 +84,7 @@ For now, until we have a web based admin UI, you will need to run
 Kitura BluePic was designed so that anyone can quickly launch the app and view photos posted without needing to log in. However, to view the profile or post photos, the user can easily login with his/her Facebook account. This is only used for a unique user id, the user's full name, as well as to display the user's profile photo.
 
 <p align="center">
-<img src="img/KituraBluePic-screen.jpg"  alt="Drawing" height=550 border=0 /></p>
+<img src="img/KituraBluePic.jpg"  alt="Drawing" height=550 border=0 /></p>
 <p align="center">Figure 1. Welcome page.</p>
 
 <br>
@@ -117,15 +117,15 @@ By tapping the third tab, you can view your profile. This shows your Facebook pr
 ## Project Structure
 
 * `/KituraBluePic-iOS` directory for the iOS client.
-* `/KituraBluePic-server` directory for the SwiftBluePic-server.
+* `/KituraBluePic-server` directory for the KituraBluePic-server.
 * `/img` directory for images for this README.
 
 
 ## Architecture
 
 <p align="center">
-<img src="img/Swift-BluePic.jpg"  alt="Drawing" height=400 border=0 /></p>
-<p align="center">Figure 5. Swift-BluePic Architecture Diagram.</p>
+<img src="img/KituraBluePic-architecture.jpg"  alt="Drawing" height=400 border=0 /></p>
+<p align="center">Figure 5. Kitura-BluePic Architecture Diagram.</p>
 
 
 ## License
