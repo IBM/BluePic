@@ -77,6 +77,21 @@ For now, until we have a web based admin UI, you will need to run
  curl -X POST http://localhost:8090/admin/setup
 ```
 
+#### 7. Create an application instance on Facebook
+In order to have the app authenticate with Facebook, you must create an application instance on Facebook's website.
+
+1. To create an application instance on Facebook's website, first go to [Facebook's Quick Start for iOS](https://developers.facebook.com/quickstarts/?platform=ios) page. Type 	`KituraBluePic` as the name of your new Facebook app and click the `Create New Facebook App ID` button.
+
+1. On the screen that follows, in the `Configure your info.plist` section under `step 2`, copy the information into your `info.plist` file. You can find the `info.plist` file in `Configuration` folder of the Xcode project. If you have trouble finding the `CFBundleURLType` key, note that Xcode changes the `CFBundleURLType` key to `URL types` when the key is entered. Your `info.plist` file should now look like this:
+<p align="center">
+<img src="img/infoplist.PNG"  alt="Drawing" height=150 border=0 /></p>
+<p align="center">Figure 4. Info.plist file.</p>
+
+1. Next scroll to the bottom of the quick start page where it says `Supply us with your Bundle Identifier` and enter the app's bundle identifier. To find the bundle identifier in the Xcode project you can do the following:
+	* Make sure the project navigator folder icon is selected in the top left of Xcode. Select the KituraBluePic project at the top of the file structure and then select the KituraBluePic target. Under the identity section, you should see a text field for the bundle identifier that is empty. You can make the bundle identifier anything you want, `com.KituraBluePic` for example.
+1. Once you entered the bundle ID on the Facebook quick start page, click `next`. That's it for the Facebook quick start setup.
+
+
 ## Using Kitura BluePic
 
 ### Facebook Login
@@ -125,7 +140,7 @@ By tapping the third tab, you can view your profile. This shows your Facebook pr
 
 <p align="center">
 <img src="img/KituraBluePic-architecture.jpg"  alt="Drawing" height=400 border=0 /></p>
-<p align="center">Figure 5. Kitura-BluePic Architecture Diagram.</p>
+<p align="center">Figure 5. Kitura BluePic Architecture Diagram.</p>
 
 
 ## License
