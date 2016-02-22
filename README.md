@@ -84,7 +84,7 @@ In order to have the app authenticate with Facebook, you must create an applicat
 
 1. On the screen that follows, in the `Configure your info.plist` section under `step 2`, copy the information into your `info.plist` file. You can find the `info.plist` file in `Configuration` folder of the Xcode project. If you have trouble finding the `CFBundleURLType` key, note that Xcode changes the `CFBundleURLType` key to `URL types` when the key is entered. Your `info.plist` file should now look like this:
 <p align="center">
-<img src="img/infoplist.PNG"  alt="Drawing" height=150 border=0 /></p>
+<img src="img/infoplist.png"  alt="Drawing" height=150 border=0 /></p>
 <p align="center">Figure 4. Info.plist file.</p>
 
 1. Next scroll to the bottom of the quick start page where it says `Supply us with your Bundle Identifier` and enter the app's bundle identifier. To find the bundle identifier in the Xcode project you can do the following:
