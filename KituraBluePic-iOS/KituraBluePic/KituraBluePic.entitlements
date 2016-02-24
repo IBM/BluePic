@@ -4,7 +4,7 @@
 <dict>
 	<key>keychain-access-groups</key>
 	<array>
-		<string>$(AppIdentifierPrefix)com.ibm.cio.be.SwiftBluePic</string>
+		<string>$(AppIdentifierPrefix)com.ibm.cio.be.KituraBluePic</string>
 		<string>$(AppIdentifierPrefix)worklight.group</string>
 	</array>
 </dict>
