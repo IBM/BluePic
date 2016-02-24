@@ -26,6 +26,19 @@ import SwiftyJSON
 
 import Foundation
 
+
+///
+/// Because bridging is not complete in Linux, we must use Any objects for dictionaries
+/// instead of AnyObject. The main branch SwiftyJSON takes as input AnyObject, however
+/// our patched version for Linux accepts Any.
+///
+#if os(OSX)
+    typealias JSONDictionary = [String: AnyObject]
+#else
+    typealias JSONDictionary = [String: Any]
+#endif
+
+
 func parsePhotosList (list: JSON) -> JSON {
     var photos = [JSON]()
     let listLength = Int(list["total_rows"].number!)
@@ -50,7 +63,7 @@ func parsePhotosList (list: JSON) -> JSON {
     return JSON(photos)
 }
 
-func createPhotoDocument (request: RouterRequest) -> ([String:AnyObject]?, String?) {
+func createPhotoDocument (request: RouterRequest) -> (JSONDictionary?, String?) {
     let ownerId = request.params["ownerId"]
     var ownerName = request.params["ownerName"]
     var title = request.params["title"]
@@ -66,16 +79,15 @@ func createPhotoDocument (request: RouterRequest) -> ([String:AnyObject]?, Strin
     let ext = photoName!.componentsSeparatedByString(".")[1].lowercaseString
     let contentType = ContentType.contentTypeForExtension(ext)
 
-    let dateFormatter = NSDateFormatter()
-    dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
-    let dateString = dateFormatter.stringFromDate(NSDate()).bridge()
+    let tempDateString = NSDate().descriptionWithLocale(nil).bridge()
+    let dateString = tempDateString.substringToIndex(10) + "T" + tempDateString.substringWithRange(NSMakeRange(11, 8))
     
-    let doc : [String:AnyObject] = ["ownerId": ownerId!.bridge(), "ownerName": ownerName!.bridge(), "title": title!.bridge(), "date": dateString, "inFeed": NSNumber(bool: true), "type": NSString(string:"photo")]
+    let doc : JSONDictionary = ["ownerId": ownerId!, "ownerName": ownerName!, "title": title!, "date": dateString, "inFeed": true, "type": "photo"]
     
     return (doc, contentType)
 }
 
-func createUploadReply (fromDocument document: [String:AnyObject], id: String, photoName: String) -> JSON {
+func createUploadReply (fromDocument document: JSONDictionary, id: String, photoName: String) -> JSON {
     var result = [String:String]()
     result["picturePath"] = "\(id)/\(photoName)"
     result["ownerId"] = document["ownerId"] as? String
