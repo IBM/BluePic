@@ -82,7 +82,6 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
             print("Unable to authenticate with Facebook")
         }
         else if result.isCancelled {
-            print("Facebook authentication cancelled")
         }
         else {
             let graphRequest = FBSDKGraphRequest(graphPath: "me", parameters: nil)
@@ -91,11 +90,8 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
                     print("Unable to get Facebook user info: \(error)")
                 }
                 else {
-                    print("result: \(result)")
                     let fbId = result.valueForKey("id") as! String
-                    print("User ID is: \(fbId)")
                     let fbName = result.valueForKey("name") as! String
-                    print("User Name is: \(fbName)")
                     self.signedInAs(fbName, id: fbId)
                 }
             }

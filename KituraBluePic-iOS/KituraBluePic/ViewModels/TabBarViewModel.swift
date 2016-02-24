@@ -94,7 +94,6 @@ class TabBarViewModel: NSObject {
     func retryPullingFeedData() {
         PhotosDataManager.SharedInstance.getFeedData() {(pictures, error) in
             if let error = error {
-                print("retryPullingFeedData ERROR: \(error)")
                 DataManagerCalbackCoordinator.SharedInstance.sendNotification(.PhotosListFailure(error))
             }
             else {
@@ -102,7 +101,6 @@ class TabBarViewModel: NSObject {
             }
         }
         dispatch_async(dispatch_get_main_queue()) {
-            print("Retrying to pull feed data")
             
             FacebookDataManager.SharedInstance.tryToShowLoginScreen()
             

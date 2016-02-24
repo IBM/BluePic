@@ -20,7 +20,6 @@ class PhotosDataManager {
     }()
     
     func connect (serverUrl: String, callback: (String?) -> ()) {
-        print("connecting to server ", serverUrl)
         self.serverUrl = serverUrl
         if let nsURL = NSURL(string: "http://\(serverUrl)/connect") {
             let mutableURLRequest = NSMutableURLRequest(URL: nsURL)
@@ -32,7 +31,6 @@ class PhotosDataManager {
                 if let httpResponse = response.response {
                     statusCode = httpResponse.statusCode
                 }
-                print("statusCode = \(statusCode)")
                 if (statusCode == 200) {
                     callback(nil)
                 }
@@ -99,14 +97,12 @@ class PhotosDataManager {
     
     func getPicture (url: String, onSuccess: (pic: NSData) -> Void, onFailure: (error: String) -> Void) {
         if let nsURL = NSURL(string: "http://\(serverUrl)/photos/\(url)") {
-            print("Bringing picture from db - TODO: caching?")
             let mutableURLRequest = NSMutableURLRequest(URL: nsURL)
             mutableURLRequest.HTTPMethod = "GET"
             
             Alamofire.request(mutableURLRequest).responseData{response in
                 switch response.result {
                 case .Success(let data):
-                    print("Success with data")
                     onSuccess(pic: data)
                     
                 case .Failure(let error):
@@ -135,12 +131,9 @@ class PhotosDataManager {
             mutableURLRequest.HTTPBody = imageData
             
             
-            print("uploading photo: \(nsURL)")
-            
             Alamofire.request(mutableURLRequest).responseJSON {response in
                 switch response.result {
                 case .Success(let JSON):
-                    print("upload: Success with JSON: \(JSON)")
                     if let photo = JSON as? [String:String] {
                         let newPicture = Picture()
                         newPicture.url = photo["picturePath"]

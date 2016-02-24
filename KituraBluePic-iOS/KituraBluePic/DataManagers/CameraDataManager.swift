@@ -202,7 +202,6 @@ class CameraDataManager: NSObject {
             
             let id = fileName + userID
             
-            print("setting is as \(id)")
             picturesTakenDuringAppSessionById[id] = lastPhotoTaken
             
         }
@@ -240,7 +239,6 @@ class CameraDataManager: NSObject {
             }, completion: { _ in
                 self.destroyConfirmationView()
                 self.tabVC.view.userInteractionEnabled = true
-                print("picker dismissed from confirmation view.")
         })
         
     }
@@ -263,11 +261,9 @@ class CameraDataManager: NSObject {
      Method called to push image to object storage, on sucuess create picture document with url from object storage and push to cloudant sync if there are no more picture in the queue, else try uploading the rest of the photos in the queue
      */
     func uploadImage(picture : Picture) {
-        print("uploading photo...")
         
         PhotosDataManager.SharedInstance.uploadPicture(FacebookDataManager.SharedInstance.fbUniqueUserID!,  picture: picture,
             onSuccess: { () in
-                    print("upload to succeeded.")
                
                 //Once picture has been added to Cloudant Sync, remove this picture from our picture upload queue
                 self.removePictureFromPictureUploadQueue(picture)
@@ -279,7 +275,7 @@ class CameraDataManager: NSObject {
                 self.uploadPhotosIfThereAreAnyLeftInTheQueue()
                 
             }, onFailure: { (error) in
-                print("upload to object storage failed!")
+                print("upload of picture failed!")
                 print("error: \(error)")
                 DataManagerCalbackCoordinator.SharedInstance.sendNotification(.PhotosUploadFailure)
         })
@@ -390,7 +386,6 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
         
         //show image on confirmationView, save a copy
         if let takenImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
-            print("original image width: \(takenImage.size.width) height: \(takenImage.size.height)")
             if (takenImage.size.width > kResizeAllImagesToThisWidth) { //if image too big, shrink it down
                 self.lastPhotoTaken = UIImage.resizeImage(takenImage, newWidth: kResizeAllImagesToThisWidth)
             }
@@ -404,7 +399,6 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
             //save width and height of photo
             self.lastPhotoTakenWidth = self.lastPhotoTaken.size.width
             self.lastPhotoTakenHeight = self.lastPhotoTaken.size.height
-            print("resized image width: \(self.lastPhotoTaken.size.width) height: \(self.lastPhotoTaken.size.height)")
             
             //set the confirmation view's photoImageView with the photo just chosen/taken
             self.confirmationView.photoImageView.image = self.lastPhotoTaken
@@ -424,7 +418,6 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
                 
                     })
                 self.showPhotoCouldntBeChosenAlert()
-                print("picker canceled - photo not available!")
             
             }
     }
@@ -440,7 +433,6 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
         self.destroyConfirmationView()
         picker.dismissViewControllerAnimated(true, completion: nil)
         
-        print("picker canceled.")
     }
     
     

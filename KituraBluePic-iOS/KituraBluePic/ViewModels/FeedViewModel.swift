@@ -127,7 +127,6 @@ class FeedViewModel: NSObject {
     func repullForNewData() {
         if(isPullingFromCloudantAlready == false){
             isPullingFromCloudantAlready = true
-            print("pulling latest data for feed")
             PhotosDataManager.SharedInstance.getFeedData() {(pictures, error) in
                 self.isPullingFromCloudantAlready = false
                 if let error = error {
@@ -147,7 +146,6 @@ class FeedViewModel: NSObject {
      Method synchronously asks cloudant for new data. It sets the pictureDataArray to be a combination of the local pictureUploadQueue images + images receives from cloudant/objectDataStore
      */
     func getPictureObjects(){
-        print("getting pictures for feed")
         PhotosDataManager.SharedInstance.getFeedData() {(pictures, error) in
             if let error = error {
                 DataManagerCalbackCoordinator.SharedInstance.sendNotification(.PhotosListFailure(error))

@@ -194,21 +194,6 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
             onFailure: { (error) in
                 print("Error: \(error)")
             })
-        
-        
-//        print("In setImageViewWithURL with: \(url)")
-//        imageView.sd_setImageWithURL(url/* (NSURL(string: "http://all-free-download.com/free-photos/flower.html"))!*/, completed: { result in
-//            
-//            print("In setImageViewWithURL callback ")
-//            if result.0 != nil{
-//                self.loadingView.hidden = true
-//                print("In setImageViewWithURL callback !=nil")
-//            }
-//            else if let err = result.1 {
-//                print("Error: \(err)")
-//            }
-//            
-//        })
     }
     
 
