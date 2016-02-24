@@ -120,14 +120,19 @@ private func updatePhotoListsFetchedCounter() {
     let multi = redis.multi()
     multi.incr("PhotoListsFetched")
     multi.expire("PhotoListsFetched", inTime: Double(1440*60))
-    multi.exec() {response in
-        if  let responses = response.asArray,
-                    _ = responses[0].asInteger,
-                    _ = responses[1].asInteger {
-            // All is OK
-        }
-        else {
-            Log.error("Failed to increment PhotoListsFetched counter")
+    redisQueue.queueSync() {
+        multi.exec() {response in
+            if  let responses = response.asArray,
+                        _ = responses[0].asInteger,
+                        _ = responses[1].asInteger {
+                // All is OK
+            }
+            else {
+                Log.error("Failed to increment PhotoListsFetched counter")
+            }
         }
     }
 }
+
+let redisQueue = Queue(type: .SERIAL, label: "RedisQueue")
+
