@@ -17,11 +17,11 @@
 import PackageDescription
 
 let package = Package(
-    name: "SwiftBluePic-server",
+    name: "KituraBluePic-server",
           dependencies: [
-               .Package(url: "git@github.com:IBM-Swift/Kitura-router.git", majorVersion: 0),
-               .Package(url: "git@github.com:IBM-Swift/Kitura-CouchDB.git", majorVersion: 0),
-               .Package(url: "git@github.com:IBM-Swift/Kitura-redis.git", majorVersion: 0),
+               .Package(url: "https://github.com/IBM-Swift/Kitura-router.git", versions: Version(0,2,0)..<Version(0,3,0)),
+               .Package(url: "https://github.com/IBM-Swift/Kitura-CouchDB.git", versions: Version(0,2,0)..<Version(0,3,0)),
+               .Package(url: "https://github.com/IBM-Swift/Kitura-redis.git", versions: Version(0,2,0)..<Version(0,3,0)),
           ]
 )
 
