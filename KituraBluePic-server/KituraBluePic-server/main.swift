@@ -22,6 +22,8 @@ import CouchDB
 import SwiftRedis
 import LoggerAPI
 import HeliumLogger
+import Credentials
+import CredentialsFacebookToken
 
 import SwiftyJSON
 
@@ -42,6 +44,10 @@ redis.connect(redisHost, port: redisPort) {error in
         Log.error("Failed to connect to Redis server at \(redisHost):\(redisPort). Error=\(error.localizedDescription)")
     }
 }
+
+let fbCredentials = CredentialsFacebookToken()
+let credentials = Credentials()
+credentials.register(fbCredentials)
 
 setupAdmin()
 

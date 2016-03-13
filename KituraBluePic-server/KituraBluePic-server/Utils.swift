@@ -21,6 +21,7 @@ import KituraNet
 import KituraSys
 
 import LoggerAPI
+import Credentials
 
 import SwiftyJSON
 
@@ -64,27 +65,28 @@ func parsePhotosList (list: JSON) -> JSON {
 }
 
 func createPhotoDocument (request: RouterRequest) -> (JSONDictionary?, String?) {
-    let ownerId = request.params["ownerId"]
-    var ownerName = request.params["ownerName"]
     var title = request.params["title"]
     let photoName = request.params["photoname"]
     
-    if ownerId == nil || ownerName == nil || photoName == nil {
+    if let profile = request.userInfo["profile"] as? UserProfile where photoName != nil {
+        let ownerId = profile.id
+        let ownerName = profile.name.stringByReplacingOccurrencesOfString("%20", withString: " ")
+
+        let ext = photoName!.componentsSeparatedByString(".")[1].lowercaseString
+        let contentType = ContentType.contentTypeForExtension(ext)
+        
+        let tempDateString = NSDate().descriptionWithLocale(nil).bridge()
+        let dateString = tempDateString.substringToIndex(10) + "T" + tempDateString.substringWithRange(NSMakeRange(11, 8))
+        
+        title = title?.stringByReplacingOccurrencesOfString("%20", withString: " ") ?? ""
+        
+        let doc : JSONDictionary = ["ownerId": ownerId, "ownerName": ownerName, "title": title!, "date": dateString, "inFeed": true, "type": "photo"]
+        
+        return (doc, contentType)
+    }
+    else {
         return (nil, nil)
     }
-
-    ownerName = ownerName!.stringByReplacingOccurrencesOfString("%20", withString: " ")
-    title = title?.stringByReplacingOccurrencesOfString("%20", withString: " ") ?? ""
-    
-    let ext = photoName!.componentsSeparatedByString(".")[1].lowercaseString
-    let contentType = ContentType.contentTypeForExtension(ext)
-
-    let tempDateString = NSDate().descriptionWithLocale(nil).bridge()
-    let dateString = tempDateString.substringToIndex(10) + "T" + tempDateString.substringWithRange(NSMakeRange(11, 8))
-    
-    let doc : JSONDictionary = ["ownerId": ownerId!, "ownerName": ownerName!, "title": title!, "date": dateString, "inFeed": true, "type": "photo"]
-    
-    return (doc, contentType)
 }
 
 func createUploadReply (fromDocument document: JSONDictionary, id: String, photoName: String) -> JSON {

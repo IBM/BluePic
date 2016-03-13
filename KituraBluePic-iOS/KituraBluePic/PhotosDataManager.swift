@@ -130,14 +130,16 @@ class PhotosDataManager {
         title = Utils.escapeUrl(title)
                
         let imageData = UIImageJPEGRepresentation(picture.image!, 1.0)
-        let userName = Utils.escapeUrl(FacebookDataManager.SharedInstance.fbUserDisplayName!)
-        let url = "http://\(serverUrl)/photos/\(FacebookDataManager.SharedInstance.fbUniqueUserID!)/\(userName)/\(title)/\(picture.fileName!)"
+        let url = "http://\(serverUrl)/photos/\(title)/\(picture.fileName!)"
+
         if let nsURL = NSURL(string: url) {
             let mutableURLRequest = NSMutableURLRequest(URL: nsURL)
             mutableURLRequest.HTTPMethod = "POST"
             mutableURLRequest.addValue("image/jpeg", forHTTPHeaderField: "Content-Type")
             mutableURLRequest.HTTPBody = imageData
             
+            mutableURLRequest.addValue(FBSDKAccessToken.currentAccessToken().tokenString, forHTTPHeaderField: "access_token")
+            mutableURLRequest.addValue("facebook", forHTTPHeaderField: "X-token-type")            
             
             Alamofire.request(mutableURLRequest).responseJSON {response in
                 switch response.result {
