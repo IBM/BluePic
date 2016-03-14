@@ -18,57 +18,44 @@
 import UIKit
 
 
-/// Manages all facebook authentication state and calls
-class FacebookDataManager: NSObject {
-    
-    /// Shared instance of data manager
-    static let SharedInstance: FacebookDataManager = {
-        
-        var manager = FacebookDataManager()
-        
+/// Manages all user authentication state and calls
+class UserManager: NSObject {
+
+    enum UserAuthenticationState {
+        case SignedInWithFacebook
+        case SignedOut
+    }
+
+    /// Shared instance of user manager
+    static let SharedInstance: UserManager = {
+        var manager = UserManager()
         return manager
-        
     }()
     
-
+    
     private override init() {} //This prevents others from using the default '()' initializer for this class.
-
-    /// Facebook app ID
-    var fbAppID: String?
     
-    /// Display name for the app on Facebook
-    var fbAppDisplayName: String?
+    /// Display name for user
+    var userDisplayName: String?
     
-    /// Display name for user on Facebook
-    var fbUserDisplayName: String?
+    /// Unique user ID
+    var uniqueUserID: String?
     
-    /// Unique user ID given from Facebook API
-    var fbUniqueUserID: String?
+    /// User's authentication state
+    var userAuthenticationState = UserAuthenticationState.SignedOut
     
-    /// Bool if user is authenticated with facebook
-    var isLoggedIn = false
     
+    /// Facebook
     /// Prefix for url needed to get user profile picture given their unique id (id goes after this)
     let facebookProfilePictureURLPrefix = "http://graph.facebook.com/"
     
     /// Postfix for url needed to get user profile picture given their unique id (id goes before this)
     let facebookProfilePictureURLPostfix = "/picture?type=large"
     
-    /**
-     Custom enum for whether facebook authentication was successful or not
-     
-     - Success: successful
-     - Failure: failure to connect
-     */
-    enum NetworkRequest {
-        case Success
-        case Failure
-    }
     
-
     /**
-     Method will try to show login screen if not authenticated with Facebook.
-    */
+     Method will try to show login screen if not authenticated.
+     */
     func tryToShowLoginScreen() {
         self.showLoginIfUserNotAuthenticated()
     }
@@ -76,7 +63,7 @@ class FacebookDataManager: NSObject {
     
     
     /**
-     Method will pull down latest cloudant data, and try to show login screen if user is not authenticated nor has pressed "sign in later" button
+     Method will pull down latest data, and try to show login screen if user is not authenticated nor has pressed "sign in later" button
      
      - parameter presentingVC: tab bar VC to present login VC on
      */
@@ -94,57 +81,73 @@ class FacebookDataManager: NSObject {
         //check if user is already authenticated previously
         if let userID = NSUserDefaults.standardUserDefaults().objectForKey("user_id") as? String {
             if let userName = NSUserDefaults.standardUserDefaults().objectForKey("user_name") as? String {
-                self.fbUserDisplayName = userName
-                self.fbUniqueUserID = userID
+                self.userDisplayName = userName
+                self.uniqueUserID = userID
                 DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.GotPastLoginCheck)
             }
         }
         else { //user not authenticated
-        
+            
             //show login if user hasn't pressed "sign in later" (first time logging in)
             if !NSUserDefaults.standardUserDefaults().boolForKey("hasPressedLater") {
                 DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.UserNotAuthenticated)
                 
             } else { //user pressed "sign in later"
-                DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.GotPastLoginCheck)
-                
+                DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.GotPastLoginCheck)                
             }
-       }
+        }
         
     }
     
-
+    
     /**
      Method to return a url for the user's profile picture
      
      - returns: string representing the image url
      */
-    func getUserFacebookProfilePictureURL() -> String {
-        if let facebookID = fbUniqueUserID {
-            
-            let profilePictureURL = facebookProfilePictureURLPrefix + facebookID + facebookProfilePictureURLPostfix
-            
-            return profilePictureURL
+    func getUserProfilePictureURL() -> String {
+        if userAuthenticationState == .SignedInWithFacebook {
+            return getUserFacebookProfilePictureURL()
         }
         else{
             return ""
         }
     }
     
+    /**
+     Method to return a url for the user's profile picture
+     
+     - returns: string representing the image url
+     */
+    private func getUserFacebookProfilePictureURL() -> String {
+        if let facebookID = uniqueUserID {
+            let profilePictureURL = facebookProfilePictureURLPrefix + facebookID + facebookProfilePictureURLPostfix
+            return profilePictureURL
+        }
+        else{
+            return ""
+        }
+    }
+
     
     func signOut() {
-        FBSDKLoginManager().logOut()
-        
-        fbUserDisplayName = nil
-        fbUniqueUserID = nil
-        isLoggedIn = false
+        userDisplayName = nil
+        uniqueUserID = nil
+        if userAuthenticationState == .SignedInWithFacebook {
+            signOutFromFacebook()
+        }
+        userAuthenticationState = .SignedOut
         NSUserDefaults.standardUserDefaults().removeObjectForKey("user_id")
         NSUserDefaults.standardUserDefaults().removeObjectForKey("user_name")
         NSUserDefaults.standardUserDefaults().synchronize()
 
         DataManagerCalbackCoordinator.SharedInstance.sendNotification(.UserSignedOut)
+
     }
     
-    
+    private func signOutFromFacebook() {
+        FBSDKLoginManager().logOut()
+    }
+
     
 }

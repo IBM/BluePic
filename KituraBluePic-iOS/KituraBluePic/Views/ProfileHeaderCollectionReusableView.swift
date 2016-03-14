@@ -75,7 +75,7 @@ class ProfileHeaderCollectionReusableView: UICollectionReusableView {
     }
     
     @IBAction func signOutAction(sender: UIButton) {
-        FacebookDataManager.SharedInstance.signOut()
+        UserManager.SharedInstance.signOut()
     }
     
 }

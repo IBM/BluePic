@@ -45,7 +45,7 @@ class TabBarViewModel: NSObject {
     
     
     /**
-     Method tells the FacebookDataManager to tryToShowLoginScreen
+     Method tells the UserManager to tryToShowLoginScreen
      */
     func tryToShowLogin(){
         
@@ -53,7 +53,7 @@ class TabBarViewModel: NSObject {
            
             hasTriedToPresentLoginThisAppLaunch = true
             
-            FacebookDataManager.SharedInstance.tryToShowLoginScreen()
+            UserManager.SharedInstance.tryToShowLoginScreen()
         }
     }
     
@@ -102,7 +102,7 @@ class TabBarViewModel: NSObject {
         }
         dispatch_async(dispatch_get_main_queue()) {
             
-            FacebookDataManager.SharedInstance.tryToShowLoginScreen()
+            UserManager.SharedInstance.tryToShowLoginScreen()
             
         }
     }

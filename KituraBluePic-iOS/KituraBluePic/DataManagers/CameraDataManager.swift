@@ -198,7 +198,7 @@ class CameraDataManager: NSObject {
      */
     func addPhotoToPictureTakenDuringAppSessionByIdDictionary(){
         
-        if let fileName = lastPhotoTakenName, let userID = FacebookDataManager.SharedInstance.fbUniqueUserID {
+        if let fileName = lastPhotoTakenName, let userID = UserManager.SharedInstance.uniqueUserID {
             
             let id = fileName + userID
             
@@ -216,7 +216,7 @@ class CameraDataManager: NSObject {
         let newPicture = Picture()
         newPicture.image = lastPhotoTaken
         newPicture.displayName = lastPhotoTakenCaption
-        newPicture.ownerName = FacebookDataManager.SharedInstance.fbUserDisplayName
+        newPicture.ownerName = UserManager.SharedInstance.userDisplayName
         newPicture.width = lastPhotoTakenWidth
         newPicture.height = lastPhotoTakenHeight
         newPicture.timeStamp = NSDate.timeIntervalSinceReferenceDate()
@@ -262,7 +262,7 @@ class CameraDataManager: NSObject {
      */
     func uploadImage(picture : Picture) {
         
-        PhotosDataManager.SharedInstance.uploadPicture(FacebookDataManager.SharedInstance.fbUniqueUserID!,  picture: picture,
+        PhotosDataManager.SharedInstance.uploadPicture(UserManager.SharedInstance.uniqueUserID!,  picture: picture,
             onSuccess: { () in
                
                 //Once picture has been added to Cloudant Sync, remove this picture from our picture upload queue

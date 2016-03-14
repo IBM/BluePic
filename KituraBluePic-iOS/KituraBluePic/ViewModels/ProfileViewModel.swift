@@ -103,7 +103,7 @@ class ProfileViewModel: NSObject {
      Method gets the picture objects from cloudant based on the facebook unique user id. When this completes it tells the profile view controller to refresh its collection view
      */
     func getPictureObjects(){
-        PhotosDataManager.SharedInstance.getFeedData(FacebookDataManager.SharedInstance.fbUniqueUserID!) {(pictures, error) in
+        PhotosDataManager.SharedInstance.getFeedData(UserManager.SharedInstance.uniqueUserID!) {(pictures, error) in
             if let error = error {
                 DataManagerCalbackCoordinator.SharedInstance.sendNotification(.PhotosListFailure(error))
             }
@@ -122,7 +122,7 @@ class ProfileViewModel: NSObject {
      method repulls for new data from cloudant
      */
     func repullForNewData(){
-        PhotosDataManager.SharedInstance.getFeedData(FacebookDataManager.SharedInstance.fbUniqueUserID!) {(pictures, error) in
+        PhotosDataManager.SharedInstance.getFeedData(UserManager.SharedInstance.uniqueUserID!) {(pictures, error) in
             if let error = error {
                 DataManagerCalbackCoordinator.SharedInstance.sendNotification(.PhotosListFailure(error))
             }
@@ -260,7 +260,7 @@ class ProfileViewModel: NSObject {
         
         header = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "ProfileHeaderCollectionReusableView", forIndexPath: indexPath) as! ProfileHeaderCollectionReusableView
         
-        header.setupData(FacebookDataManager.SharedInstance.fbUserDisplayName, numberOfShots: pictureDataArray.count, profilePictureURL : FacebookDataManager.SharedInstance.getUserFacebookProfilePictureURL())
+        header.setupData(UserManager.SharedInstance.userDisplayName, numberOfShots: pictureDataArray.count, profilePictureURL : UserManager.SharedInstance.getUserProfilePictureURL())
         
         return header
     }

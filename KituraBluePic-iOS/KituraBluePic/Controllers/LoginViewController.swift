@@ -95,7 +95,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
                     print("User Name is: \(fbName)")
                     if(FBSDKAccessToken.currentAccessToken() != nil) {
                         print("Facebook access token string: ", FBSDKAccessToken.currentAccessToken().tokenString)
-                        self.signedInAs(fbName, id: fbId)
+                        self.signedInAs(fbName, id: fbId, userState: .SignedInWithFacebook)
                     } else {
                         print("Unable to get Facebook access token")
                     }
@@ -108,12 +108,10 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     }
 
     
-    func signedInAs(userName: String, id: String) {
-        FacebookDataManager.SharedInstance.fbAppID = "kiturabluepic"
-        FacebookDataManager.SharedInstance.fbAppDisplayName = "kiturabluepic"
-        FacebookDataManager.SharedInstance.fbUserDisplayName = userName
-        FacebookDataManager.SharedInstance.fbUniqueUserID = id
-        FacebookDataManager.SharedInstance.isLoggedIn = true
+    func signedInAs(userName: String, id: String, userState: UserManager.UserAuthenticationState) {
+        UserManager.SharedInstance.userDisplayName = userName
+        UserManager.SharedInstance.uniqueUserID = id
+        UserManager.SharedInstance.userAuthenticationState = userState
         NSUserDefaults.standardUserDefaults().setObject(id, forKey: "user_id")
         NSUserDefaults.standardUserDefaults().setObject(userName, forKey: "user_name")
  
@@ -123,14 +121,6 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         dismissViewControllerAnimated(true, completion: nil)
     }
     
-    
-//    func signedOut() {
-//        if let d = data {
-//            d.didSignOut()
-//        }
-//        openLoginController()
-//    }
-
     
     /**
      Method to start the loading animation and setup UI for loading

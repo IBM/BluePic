@@ -51,7 +51,7 @@
 		347AD21D1C18E2DC00C3B473 /* AlamofireObjectMapper.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 347AD2151C18E2D200C3B473 /* AlamofireObjectMapper.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		347AD21E1C18E2DC00C3B473 /* ObjectMapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 347AD2161C18E2D200C3B473 /* ObjectMapper.framework */; };
 		347AD21F1C18E2DC00C3B473 /* ObjectMapper.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 347AD2161C18E2D200C3B473 /* ObjectMapper.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		34C809551BFD0F2400C48004 /* FacebookDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C809541BFD0F2400C48004 /* FacebookDataManager.swift */; };
+		A20BB5B51C96E416008B49B9 /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20BB5B41C96E416008B49B9 /* UserManager.swift */; };
 		A22599A61C42791F00A72115 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A22599A51C42791F00A72115 /* Settings.storyboard */; };
 		A22599A81C42793300A72115 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A22599A71C42793300A72115 /* SettingsViewController.swift */; };
 		A22599AB1C427CF000A72115 /* SettingsConnectivityCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A22599A91C427CF000A72115 /* SettingsConnectivityCell.swift */; };
@@ -142,9 +142,9 @@
 		347AD2161C18E2D200C3B473 /* ObjectMapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ObjectMapper.framework; sourceTree = "<group>"; };
 		347E276C1C1F9CD10089EC3D /* KituraBluePic.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = KituraBluePic.entitlements; sourceTree = "<group>"; };
 		34C8094A1BFCD9A300C48004 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		34C809541BFD0F2400C48004 /* FacebookDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookDataManager.swift; sourceTree = "<group>"; };
 		4DF2008F9A93E25237957424 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		548428B896D4182B293AB59E /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		A20BB5B41C96E416008B49B9 /* UserManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
 		A22599A51C42791F00A72115 /* Settings.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
 		A22599A71C42793300A72115 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		A22599A91C427CF000A72115 /* SettingsConnectivityCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsConnectivityCell.swift; sourceTree = "<group>"; };
@@ -327,7 +327,7 @@
 		34C809511BFD0CBC00C48004 /* DataManagers */ = {
 			isa = PBXGroup;
 			children = (
-				34C809541BFD0F2400C48004 /* FacebookDataManager.swift */,
+				A20BB5B41C96E416008B49B9 /* UserManager.swift */,
 				346F947B1C0F868C004999A8 /* CameraDataManager.swift */,
 				1B057E031C17637700AC21EE /* DataManagerCalbackCoordinator.swift */,
 			);
@@ -607,12 +607,12 @@
 				1BC7AF5C1C0E39F100DDFD02 /* FeedViewModel.swift in Sources */,
 				3435C7D71C041116004923BD /* CameraViewController.swift in Sources */,
 				347472EA1BFA8DEF0018B7F6 /* UIViewExtensions.swift in Sources */,
+				A20BB5B51C96E416008B49B9 /* UserManager.swift in Sources */,
 				347472F11BFA8E320018B7F6 /* LoginViewController.swift in Sources */,
 				3474728E1BFA8C6A0018B7F6 /* AppDelegate.swift in Sources */,
 				3435C7D51C04110C004923BD /* FeedViewController.swift in Sources */,
 				1B057E091C17C03400AC21EE /* ProfileHeaderCollectionReusableView.swift in Sources */,
 				1B5555BE1C1616B000B3086E /* TabBarViewModel.swift in Sources */,
-				34C809551BFD0F2400C48004 /* FacebookDataManager.swift in Sources */,
 				1B6132161C270DD300B57231 /* PictureUploadQueueImageFeedCollectionViewCell.swift in Sources */,
 				1B057E061C17B10100AC21EE /* ProfileViewModel.swift in Sources */,
 			);
