@@ -28,6 +28,7 @@ class ProfileHeaderCollectionReusableView: UICollectionReusableView {
     //image view displays the user's facebook profile picture
     @IBOutlet weak var profilePictureImageView: UIImageView!
     
+    @IBOutlet weak var signOutButton: UIButton!
     
     /**
      Method is called when the view wakes from nib
@@ -73,5 +74,8 @@ class ProfileHeaderCollectionReusableView: UICollectionReusableView {
     
     }
     
+    @IBAction func signOutAction(sender: UIButton) {
+        FacebookDataManager.SharedInstance.signOut()
+    }
     
 }

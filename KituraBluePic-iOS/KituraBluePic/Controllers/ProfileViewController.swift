@@ -140,7 +140,6 @@ class ProfileViewController: UIViewController {
         
         headerImageView.clipsToBounds = true
         
-        self.view.addSubview(headerImageView)
         self.view.insertSubview(headerImageView, belowSubview: collectionView)
         
     }

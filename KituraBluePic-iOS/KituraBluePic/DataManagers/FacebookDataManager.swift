@@ -132,5 +132,19 @@ class FacebookDataManager: NSObject {
     }
     
     
+    func signOut() {
+        FBSDKLoginManager().logOut()
+        
+        fbUserDisplayName = nil
+        fbUniqueUserID = nil
+        isLoggedIn = false
+        NSUserDefaults.standardUserDefaults().removeObjectForKey("user_id")
+        NSUserDefaults.standardUserDefaults().removeObjectForKey("user_name")
+        NSUserDefaults.standardUserDefaults().synchronize()
+
+        DataManagerCalbackCoordinator.SharedInstance.sendNotification(.UserSignedOut)
+    }
+    
+    
     
 }

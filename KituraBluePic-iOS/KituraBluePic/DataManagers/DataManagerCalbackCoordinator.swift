@@ -58,6 +58,8 @@ enum DataManagerNotification {
     
     // called when an attempt to connect to the server fails
     case ServerConnectionFailure(String)
+    
+    case UserSignedOut
 }
 
 

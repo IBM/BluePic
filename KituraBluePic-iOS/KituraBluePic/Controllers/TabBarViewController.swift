@@ -105,6 +105,9 @@ class TabBarViewController: UITabBarController {
             selectedIndex = 0 // switch to feed tab
         case .ServerConnectionSuccess:
             selectedIndex = 0 // switch to feed tab
+        case .UserSignedOut:
+            presentLoginVCAnimated()
+           
         default: break
         }
         
