@@ -92,9 +92,9 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
                 else {
                     let fbId = result.valueForKey("id") as! String
                     let fbName = result.valueForKey("name") as! String
-                    print("User Name is: \(fbName)")
+                    //print("User Name is: \(fbName)")
                     if(FBSDKAccessToken.currentAccessToken() != nil) {
-                        print("Facebook access token string: ", FBSDKAccessToken.currentAccessToken().tokenString)
+                        //print("Facebook access token string: ", FBSDKAccessToken.currentAccessToken().tokenString)
                         self.signedInAs(fbName, id: fbId, userState: .SignedInWithFacebook)
                     } else {
                         print("Unable to get Facebook access token")

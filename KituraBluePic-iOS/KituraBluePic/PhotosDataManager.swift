@@ -60,7 +60,7 @@ class PhotosDataManager {
             Alamofire.request(mutableURLRequest).responseJSON {response in
                 switch response.result {
                 case .Success(let JSON):
-                    print("Success with JSON: \(JSON)")
+                    //print("Success with JSON: \(JSON)")
                     if let photos = JSON as? [[String:String]] {
                         var pictureObjects = [Picture]()
                         for photo in photos {
