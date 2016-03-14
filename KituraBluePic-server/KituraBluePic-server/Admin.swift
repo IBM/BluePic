@@ -14,7 +14,7 @@
  * limitations under the License.
  **/
 
-import KituraRouter
+import Kitura
 import KituraSys
 import KituraNet
 

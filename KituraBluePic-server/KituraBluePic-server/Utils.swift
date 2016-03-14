@@ -16,7 +16,7 @@
 
 import CouchDB
 
-import KituraRouter
+import Kitura
 import KituraNet
 import KituraSys
 
