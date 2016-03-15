@@ -114,7 +114,8 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         UserManager.SharedInstance.userAuthenticationState = userState
         NSUserDefaults.standardUserDefaults().setObject(id, forKey: "user_id")
         NSUserDefaults.standardUserDefaults().setObject(userName, forKey: "user_name")
- 
+        NSUserDefaults.standardUserDefaults().setObject(userState.rawValue,forKey: "signedInWith")
+
         NSUserDefaults.standardUserDefaults().setBool(false, forKey: "hasPressedLater")
         NSUserDefaults.standardUserDefaults().synchronize()
 

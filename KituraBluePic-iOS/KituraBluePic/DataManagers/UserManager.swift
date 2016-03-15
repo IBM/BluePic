@@ -21,7 +21,7 @@ import UIKit
 /// Manages all user authentication state and calls
 class UserManager: NSObject {
 
-    enum UserAuthenticationState {
+    enum UserAuthenticationState : String {
         case SignedInWithFacebook
         case SignedOut
     }
@@ -79,21 +79,24 @@ class UserManager: NSObject {
         }
         
         //check if user is already authenticated previously
-        if let userID = NSUserDefaults.standardUserDefaults().objectForKey("user_id") as? String {
-            if let userName = NSUserDefaults.standardUserDefaults().objectForKey("user_name") as? String {
-                self.userDisplayName = userName
-                self.uniqueUserID = userID
-                DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.GotPastLoginCheck)
-            }
+        if let userID = NSUserDefaults.standardUserDefaults().objectForKey("user_id") as? String,
+            let userName = NSUserDefaults.standardUserDefaults().objectForKey("user_name") as? String,
+            let signedInWith = NSUserDefaults.standardUserDefaults().objectForKey("signedInWith") as? String {
+                userDisplayName = userName
+                uniqueUserID = userID
+                userAuthenticationState = UserAuthenticationState(rawValue: signedInWith)!
+                
+                DataManagerCalbackCoordinator.SharedInstance.sendNotification(.GotPastLoginCheck)
         }
         else { //user not authenticated
             
             //show login if user hasn't pressed "sign in later" (first time logging in)
             if !NSUserDefaults.standardUserDefaults().boolForKey("hasPressedLater") {
-                DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.UserNotAuthenticated)
+                DataManagerCalbackCoordinator.SharedInstance.sendNotification(.UserNotAuthenticated)
                 
-            } else { //user pressed "sign in later"
-                DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.GotPastLoginCheck)                
+            }
+            else { //user pressed "sign in later"
+                DataManagerCalbackCoordinator.SharedInstance.sendNotification(.GotPastLoginCheck)
             }
         }
         
@@ -139,6 +142,7 @@ class UserManager: NSObject {
         userAuthenticationState = .SignedOut
         NSUserDefaults.standardUserDefaults().removeObjectForKey("user_id")
         NSUserDefaults.standardUserDefaults().removeObjectForKey("user_name")
+        NSUserDefaults.standardUserDefaults().setObject(String(UserAuthenticationState.SignedOut), forKey: "signedInWith")
         NSUserDefaults.standardUserDefaults().synchronize()
 
         DataManagerCalbackCoordinator.SharedInstance.sendNotification(.UserSignedOut)
