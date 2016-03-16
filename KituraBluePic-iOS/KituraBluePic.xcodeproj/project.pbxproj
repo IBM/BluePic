@@ -765,7 +765,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/KituraBluePic/Configuration/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.ibm.cio.be.KituraBluePic.swift;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ibm.cio.be.KituraBluepic;
 				PRODUCT_NAME = KituraBluePic;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "KituraBluePic/SupportingFiles/KituraBluePic-Bridging-Header.h";
@@ -791,7 +791,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/KituraBluePic/Configuration/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.ibm.cio.be.KituraBluePic.swift;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ibm.cio.be.KituraBluepic;
 				PRODUCT_NAME = KituraBluePic;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "KituraBluePic/SupportingFiles/KituraBluePic-Bridging-Header.h";
