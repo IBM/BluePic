@@ -36,8 +36,8 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     /// Label to tell user that the application is connecting with Facebook while loading
     @IBOutlet weak var connectingLabel: UILabel!
     
-    var appearingFirstTime = true
-
+    @IBOutlet weak var signInButton: UIButton!
+    
     
     /**
      Method called upon view did load. In this case we set up the view model.
@@ -46,9 +46,10 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         super.viewDidLoad()
         
         // Facebook Sign-In
-        self.fbLoginButton.delegate = self
-        self.fbLoginButton.readPermissions = ["public_profile", "email"]
-        self.fbLoginButton.loginBehavior = FBSDKLoginBehavior.SystemAccount
+        fbLoginButton.hidden = true
+        fbLoginButton.delegate = self
+        fbLoginButton.readPermissions = ["public_profile", "email"]
+        fbLoginButton.loginBehavior = FBSDKLoginBehavior.SystemAccount
     }
 
     
@@ -146,6 +147,11 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         connectingLabel.hidden = true
     }
 
+    @IBAction func signIn(sender: UIButton) {
+        signInButton.hidden = true
+        fbLoginButton.hidden = false
+        fbLoginButton.setNeedsLayout()
+    }
     
     /**
      Method is called when the app receives a memory warning from the OS

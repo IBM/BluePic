@@ -93,7 +93,6 @@ class UserManager: NSObject {
             //show login if user hasn't pressed "sign in later" (first time logging in)
             if !NSUserDefaults.standardUserDefaults().boolForKey("hasPressedLater") {
                 DataManagerCalbackCoordinator.SharedInstance.sendNotification(.UserNotAuthenticated)
-                
             }
             else { //user pressed "sign in later"
                 DataManagerCalbackCoordinator.SharedInstance.sendNotification(.GotPastLoginCheck)
