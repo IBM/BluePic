@@ -48,7 +48,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         // Facebook Sign-In
         self.fbLoginButton.delegate = self
         self.fbLoginButton.readPermissions = ["public_profile", "email"]
-   
+        self.fbLoginButton.loginBehavior = FBSDKLoginBehavior.SystemAccount
     }
 
     
@@ -79,7 +79,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         stopLoading()
         
         if error != nil {
-            print("Unable to authenticate with Facebook")
+            print("Unable to authenticate with Facebook. Error=\(error!.localizedDescription)")
         }
         else if result.isCancelled {
         }
@@ -87,7 +87,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
             let graphRequest = FBSDKGraphRequest(graphPath: "me", parameters: ["fields": ""])
             graphRequest.startWithCompletionHandler() { connection, result, error in
                 if error != nil {
-                    print("Unable to get Facebook user info: \(error)")
+                    print("Unable to get Facebook user info: \(error!.localizedDescription)")
                 }
                 else {
                     let fbId = result.valueForKey("id") as! String
