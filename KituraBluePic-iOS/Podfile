@@ -1,6 +1,6 @@
 source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '9.0'
-#use_frameworks!
+use_frameworks!
 
 # ignore all warnings from all pods
 inhibit_all_warnings!
@@ -9,5 +9,7 @@ pod 'SDWebImage', '~>3.7'
 
 pod 'FBSDKLoginKit'
 
-#pod 'Google/SignIn'
+pod 'AlamofireObjectMapper', '~> 2.0'
+
+pod 'Alamofire', '~> 3.0'
 
