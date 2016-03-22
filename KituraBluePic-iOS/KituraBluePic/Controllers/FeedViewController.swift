@@ -86,7 +86,7 @@ class FeedViewController: UIViewController {
         Utils.registerNibWithCollectionView("PictureUploadQueueImageFeedCollectionViewCell", collectionView: collectionView)
         
         self.refreshControl = UIRefreshControl()
-        self.refreshControl.addTarget(self, action: "userTriggeredRefresh", forControlEvents: UIControlEvents.ValueChanged)
+        self.refreshControl.addTarget(self, action: #selector(userTriggeredRefresh), forControlEvents: UIControlEvents.ValueChanged)
         self.refreshControl.hidden = true
         self.refreshControl.tintColor = UIColor.clearColor()
         

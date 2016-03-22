@@ -160,8 +160,8 @@ class CameraDataManager: NSObject {
         self.confirmationView.originalFrame = self.confirmationView.frame
         
         //set up button actions
-        self.confirmationView.cancelButton.addTarget(self, action: "dismissCameraConfirmation", forControlEvents: .TouchUpInside)
-        self.confirmationView.postButton.addTarget(self, action: "postPhoto", forControlEvents: .TouchUpInside)
+        self.confirmationView.cancelButton.addTarget(self, action: #selector(dismissCameraConfirmation), forControlEvents: .TouchUpInside)
+        self.confirmationView.postButton.addTarget(self, action: #selector(postPhoto), forControlEvents: .TouchUpInside)
         
         //show view
         self.tabVC.view.addSubview(self.confirmationView)
