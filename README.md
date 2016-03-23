@@ -13,6 +13,7 @@ Kitura BluePic is a sample application for iOS that shows you how to connect you
 
 ## Requirements
 
+- XCode 7.3
 - [Kitura](https://github.com/IBM-Swift/Kitura-BluePic)
 - [Kitura CouchDB](https://github.com/IBM-Swift/Kitura-CouchDB)
 - [Kitura Redis](https://github.com/IBM-Swift/Kitura-redis)
@@ -59,7 +60,6 @@ To build the KituraBluePic-server, you need to have your environment set up to b
 In `KituraBluePic-server` directory of the cloned repository run
 
 ```bash
-swift build
 make
 ```
 
@@ -67,17 +67,31 @@ make
 
 In `KituraBluePic-server` directory of the cloned repository run
 
-```
+```bash
 .build/debug/KituraBluePic-server
 ```
 
 #### 6. Setup the CouchDB database
 For now, until we have a web based admin UI, you will need to run
-```
+```bash
  curl -X POST http://localhost:8090/admin/setup
 ```
 
-#### 7. Create an application instance on Facebook
+#### 7. Installing needed CocoaPods
+
+1. If needed install CocoaPods by running:
+```bash
+sudo gem install cocoapods
+```
+
+2. Go to the KituraBluePic-iOS directory and run
+```bash
+pod install
+```
+
+**Note:** When opening the KituraBluePic project in XCode, always open the Workspace (KituraBluePic.xcworkspace) as with any project that uses CocoaPods.
+
+#### 8. Create an application instance on Facebook
 In order to have the app authenticate with Facebook, you must create an application instance on Facebook's website.
 
 1. To create an application instance on Facebook's website, first go to [Facebook's Quick Start for iOS](https://developers.facebook.com/quickstarts/?platform=ios) page. Type 	`KituraBluePic` as the name of your new Facebook app and click the `Create New Facebook App ID` button.
@@ -88,9 +102,8 @@ In order to have the app authenticate with Facebook, you must create an applicat
 <p align="center">Figure 4. Info.plist file.</p>
 
 1. Next scroll to the bottom of the quick start page where it says `Supply us with your Bundle Identifier` and enter the app's bundle identifier. To find the bundle identifier in the Xcode project you can do the following:
-	* Make sure the project navigator folder icon is selected in the top left of Xcode. Select the KituraBluePic project at the top of the file structure and then select the KituraBluePic target. Under the identity section, you should see a text field for the bundle identifier that is empty. You can make the bundle identifier anything you want, `com.KituraBluePic` for example.
+    * Make sure the project navigator folder icon is selected in the top left of Xcode. Select the KituraBluePic project at the top of the file structure and then select the KituraBluePic target. Under the identity section, you should see a text field for the bundle identifier that is empty. You can make the bundle identifier anything you want, `com.KituraBluePic` for example.
 1. Once you entered the bundle ID on the Facebook quick start page, click `next`. That's it for the Facebook quick start setup.
-
 
 ## Using Kitura BluePic
 
