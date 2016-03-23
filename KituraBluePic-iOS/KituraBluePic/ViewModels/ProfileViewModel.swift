@@ -75,7 +75,8 @@ class ProfileViewModel: NSObject {
             getPictureObjects()
         case .ServerConnectionSuccess:
             getPictureObjects()
-
+        case .UserSignedIn:
+            getPictureObjects()
         default: break
         }
         

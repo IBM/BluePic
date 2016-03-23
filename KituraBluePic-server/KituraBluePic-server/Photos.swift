@@ -29,8 +29,10 @@ import Foundation
 
 /// Setup the handlers for the Photo APIs
 func setupPhotos() {
-    router.use("/photos/*", middleware: BodyParser())
-        
+    router.all("/photos/*", middleware: BodyParser())
+    
+    router.post("/photos/:title/:photoname", middleware: credentials)
+    
     router.get("/photos") { _, response, next in
         database.queryByView("sortedByDate", ofDesign: "photos", usingParameters: [.Descending(true)]) { (document, error) in
             if  let document = document where error == nil  {
@@ -72,9 +74,7 @@ func setupPhotos() {
             next()
         }
     }
-    
-    
-    router.post("/photos/:title/:photoname", handler: credentials.authenticate(fbCredentials.name, options: [:]))
+        
     
     router.post("/photos/:title/:photoname") { request, response, next in
         let (document, contentType) = createPhotoDocument(request)

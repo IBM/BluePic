@@ -19,7 +19,7 @@ import UIKit
 
 
 /// Responsible for initiating Facebook login. VC which allows user to either login later or login with Facebook
-class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
+class LoginViewController: UIViewController, FBSDKLoginButtonDelegate, GIDSignInUIDelegate, GIDSignInDelegate {
 
     /// Loading indicator when connecting to Facebook
     @IBOutlet weak var loadingIndicator: UIActivityIndicatorView!
@@ -39,6 +39,9 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     @IBOutlet weak var signInButton: UIButton!
     
     
+    @IBOutlet weak var googleLoginButton: GIDSignInButton!
+     
+  
     /**
      Method called upon view did load. In this case we set up the view model.
      */
@@ -50,6 +53,17 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         fbLoginButton.delegate = self
         fbLoginButton.readPermissions = ["public_profile", "email"]
         fbLoginButton.loginBehavior = FBSDKLoginBehavior.SystemAccount
+        
+        // Google
+        googleLoginButton.hidden = true
+        GIDSignIn.sharedInstance().uiDelegate = self
+        GIDSignIn.sharedInstance().delegate = self
+        googleLoginButton.colorScheme = GIDSignInButtonColorScheme.Dark
+        
+        if UserManager.SharedInstance.userAuthenticationState == .SignedInWithGoogle && UserManager.SharedInstance.googleUser == nil {
+            startLoading("Connecting to Google")
+            GIDSignIn.sharedInstance().signInSilently()
+        }
     }
 
     
@@ -72,10 +86,10 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
      - parameter sender: button tapped
      */
     @IBAction func loginTapped(sender: AnyObject) {
-        startLoading()
+        startLoading("connecting to Facebook")
     }
     
-    
+    // Facebook
     func loginButton(loginButton: FBSDKLoginButton!, didCompleteWithResult result: FBSDKLoginManagerLoginResult!, error: NSError!) {
         stopLoading()
         
@@ -109,6 +123,25 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     }
 
     
+    // Google
+    func signIn(signIn: GIDSignIn!, didSignInForUser user: GIDGoogleUser!, withError error: NSError!) {
+        if error != nil {
+            print("Unable to get Google user info: \(error!.localizedDescription)")
+        }
+        else {
+            let userId = user.userID
+            let name = user.profile.name
+            UserManager.SharedInstance.googleUser = user
+            self.signedInAs(name, id: userId, userState: .SignedInWithGoogle)
+        }
+    }
+    
+    func signIn(signIn: GIDSignIn!, didDisconnectWithUser user:GIDGoogleUser!, withError error: NSError!) {
+            // Perform any operations when the user disconnects from app here.
+            // ...
+    }
+    
+
     func signedInAs(userName: String, id: String, userState: UserManager.UserAuthenticationState) {
         UserManager.SharedInstance.userDisplayName = userName
         UserManager.SharedInstance.uniqueUserID = id
@@ -116,9 +149,11 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         NSUserDefaults.standardUserDefaults().setObject(id, forKey: "user_id")
         NSUserDefaults.standardUserDefaults().setObject(userName, forKey: "user_name")
         NSUserDefaults.standardUserDefaults().setObject(userState.rawValue,forKey: "signedInWith")
-
+        
         NSUserDefaults.standardUserDefaults().setBool(false, forKey: "hasPressedLater")
         NSUserDefaults.standardUserDefaults().synchronize()
+        
+        DataManagerCalbackCoordinator.SharedInstance.sendNotification(.UserSignedIn)
 
         dismissViewControllerAnimated(true, completion: nil)
     }
@@ -127,12 +162,14 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     /**
      Method to start the loading animation and setup UI for loading
      */
-    func startLoading() {
+    func startLoading(connectingMessage: String) {
         fbLoginButton.hidden = true
         signInLaterButton.hidden = true
+        signInButton.hidden = true
         welcomeLabel.hidden = true
         loadingIndicator.startAnimating()
         loadingIndicator.hidden = false
+        connectingLabel.text = connectingMessage
         connectingLabel.hidden = false
     }
     
@@ -151,6 +188,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         signInButton.hidden = true
         fbLoginButton.hidden = false
         fbLoginButton.setNeedsLayout()
+        googleLoginButton.hidden = false
     }
     
     /**
@@ -160,5 +198,4 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         super.didReceiveMemoryWarning()
     }
 
-    
 }

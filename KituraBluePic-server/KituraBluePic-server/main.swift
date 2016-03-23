@@ -24,6 +24,7 @@ import LoggerAPI
 import HeliumLogger
 import Credentials
 import CredentialsFacebookToken
+import CredentialsGoogleToken
 
 import SwiftyJSON
 
@@ -46,8 +47,10 @@ redis.connect(redisHost, port: redisPort) {error in
 }
 
 let fbCredentials = CredentialsFacebookToken()
+let googleCredentials = CredentialsGoogleToken()
 let credentials = Credentials()
 credentials.register(fbCredentials)
+credentials.register(googleCredentials)
 
 setupAdmin()
 

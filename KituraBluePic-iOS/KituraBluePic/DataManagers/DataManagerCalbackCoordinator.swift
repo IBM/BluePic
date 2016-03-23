@@ -60,6 +60,9 @@ enum DataManagerNotification {
     case ServerConnectionFailure(String)
     
     case UserSignedOut
+    
+    case UserSignedIn
+    
 }
 
 

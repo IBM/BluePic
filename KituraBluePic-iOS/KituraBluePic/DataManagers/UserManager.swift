@@ -23,6 +23,7 @@ class UserManager: NSObject {
 
     enum UserAuthenticationState : String {
         case SignedInWithFacebook
+        case SignedInWithGoogle
         case SignedOut
     }
 
@@ -44,6 +45,8 @@ class UserManager: NSObject {
     /// User's authentication state
     var userAuthenticationState = UserAuthenticationState.SignedOut
     
+    /// User object received from Google after signing in
+    var googleUser: GIDGoogleUser?
     
     /// Facebook
     /// Prefix for url needed to get user profile picture given their unique id (id goes after this)
@@ -52,6 +55,7 @@ class UserManager: NSObject {
     /// Postfix for url needed to get user profile picture given their unique id (id goes before this)
     let facebookProfilePictureURLPostfix = "/picture?type=large"
     
+
     
     /**
      Method will try to show login screen if not authenticated.
@@ -82,11 +86,15 @@ class UserManager: NSObject {
         if let userID = NSUserDefaults.standardUserDefaults().objectForKey("user_id") as? String,
             let userName = NSUserDefaults.standardUserDefaults().objectForKey("user_name") as? String,
             let signedInWith = NSUserDefaults.standardUserDefaults().objectForKey("signedInWith") as? String {
-                userDisplayName = userName
-                uniqueUserID = userID
                 userAuthenticationState = UserAuthenticationState(rawValue: signedInWith)!
-                
-                DataManagerCalbackCoordinator.SharedInstance.sendNotification(.GotPastLoginCheck)
+                switch userAuthenticationState {
+                case .SignedInWithFacebook:
+                    userDisplayName = userName
+                    uniqueUserID = userID
+                    DataManagerCalbackCoordinator.SharedInstance.sendNotification(.GotPastLoginCheck)
+                default:
+                    DataManagerCalbackCoordinator.SharedInstance.sendNotification(.UserNotAuthenticated)
+                }
         }
         else { //user not authenticated
             
@@ -108,16 +116,18 @@ class UserManager: NSObject {
      - returns: string representing the image url
      */
     func getUserProfilePictureURL() -> String {
-        if userAuthenticationState == .SignedInWithFacebook {
+        switch userAuthenticationState {
+        case .SignedInWithFacebook:
             return getUserFacebookProfilePictureURL()
-        }
-        else{
+        case .SignedInWithGoogle:
+            return getUserGoogleProfilePictureURL()
+        case .SignedOut:
             return ""
         }
     }
     
     /**
-     Method to return a url for the user's profile picture
+     Method to return a url for the user's profile picture for Facebook
      
      - returns: string representing the image url
      */
@@ -126,7 +136,22 @@ class UserManager: NSObject {
             let profilePictureURL = facebookProfilePictureURLPrefix + facebookID + facebookProfilePictureURLPostfix
             return profilePictureURL
         }
-        else{
+        else {
+            return ""
+        }
+    }
+
+    
+    /**
+     Method to return a url for the user's profile picture for Google
+     
+     - returns: string representing the image url
+     */
+    private func getUserGoogleProfilePictureURL() -> String {        
+        if  let user = googleUser where user.profile.hasImage {
+            return user.profile.imageURLWithDimension(100)!.absoluteString
+        }
+        else {
             return ""
         }
     }
@@ -135,9 +160,15 @@ class UserManager: NSObject {
     func signOut() {
         userDisplayName = nil
         uniqueUserID = nil
-        if userAuthenticationState == .SignedInWithFacebook {
-            signOutFromFacebook()
+        googleUser = nil
+        switch userAuthenticationState {
+        case .SignedInWithFacebook:
+            FBSDKLoginManager().logOut()
+        case .SignedInWithGoogle:
+            GIDSignIn.sharedInstance().signOut()
+        default: break
         }
+        
         userAuthenticationState = .SignedOut
         NSUserDefaults.standardUserDefaults().removeObjectForKey("user_id")
         NSUserDefaults.standardUserDefaults().removeObjectForKey("user_name")
@@ -147,10 +178,5 @@ class UserManager: NSObject {
         DataManagerCalbackCoordinator.SharedInstance.sendNotification(.UserSignedOut)
 
     }
-    
-    private func signOutFromFacebook() {
-        FBSDKLoginManager().logOut()
-    }
-
-    
+        
 }

@@ -52,6 +52,7 @@
 		347AD21D1C18E2DC00C3B473 /* AlamofireObjectMapper.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 347AD2151C18E2D200C3B473 /* AlamofireObjectMapper.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		347AD21E1C18E2DC00C3B473 /* ObjectMapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 347AD2161C18E2D200C3B473 /* ObjectMapper.framework */; };
 		347AD21F1C18E2DC00C3B473 /* ObjectMapper.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 347AD2161C18E2D200C3B473 /* ObjectMapper.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A209B2BB1C9A94D500D01D85 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A209B2BA1C9A94D500D01D85 /* GoogleService-Info.plist */; };
 		A20BB5B51C96E416008B49B9 /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20BB5B41C96E416008B49B9 /* UserManager.swift */; };
 		A22599A61C42791F00A72115 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A22599A51C42791F00A72115 /* Settings.storyboard */; };
 		A22599A81C42793300A72115 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A22599A71C42793300A72115 /* SettingsViewController.swift */; };
@@ -143,6 +144,7 @@
 		34C8094A1BFCD9A300C48004 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4DF2008F9A93E25237957424 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		548428B896D4182B293AB59E /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		A209B2BA1C9A94D500D01D85 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A20BB5B41C96E416008B49B9 /* UserManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
 		A22599A51C42791F00A72115 /* Settings.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
 		A22599A71C42793300A72115 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -265,6 +267,7 @@
 		347472BB1BFA8DEF0018B7F6 /* Configuration */ = {
 			isa = PBXGroup;
 			children = (
+				A209B2BA1C9A94D500D01D85 /* GoogleService-Info.plist */,
 				34C8094A1BFCD9A300C48004 /* Info.plist */,
 			);
 			path = Configuration;
@@ -505,6 +508,7 @@
 			files = (
 				1B2DC2541C1F360D00B4E77B /* EmptyFeedCollectionViewCell.xib in Resources */,
 				A22599A61C42791F00A72115 /* Settings.storyboard in Resources */,
+				A209B2BB1C9A94D500D01D85 /* GoogleService-Info.plist in Resources */,
 				1B0432E61C17E967007643B1 /* ProfileCollectionViewCell.xib in Resources */,
 				1B6132171C270DD300B57231 /* PictureUploadQueueImageFeedCollectionViewCell.xib in Resources */,
 				3435C7CB1C0368DA004923BD /* Camera.storyboard in Resources */,

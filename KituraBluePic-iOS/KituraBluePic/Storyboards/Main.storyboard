@@ -65,7 +65,7 @@
                                 </constraints>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="neQ-m5-2vk">
-                                <rect key="frame" x="249" y="606" width="101" height="29"/>
+                                <rect key="frame" x="249" y="611" width="101" height="29"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="101" id="LaB-Ay-BXh"/>
                                 </constraints>
@@ -113,18 +113,18 @@ pictures and sharing them to the KituraBluePic community. </string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xvc-eo-SFq" userLabel="FBLoginButton" customClass="FBSDKLoginButton">
-                                <rect key="frame" x="200" y="545" width="200" height="44"/>
-                                <color key="backgroundColor" white="0.37" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="203" y="485" width="194" height="44"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="XWU-Km-M9a"/>
-                                    <constraint firstAttribute="width" constant="200" id="wQA-QL-C1p"/>
+                                    <constraint firstAttribute="width" constant="194" id="wQA-QL-C1p"/>
                                 </constraints>
                                 <connections>
                                     <action selector="loginTapped:" destination="BYZ-38-t0r" eventType="valueChanged" id="Dhc-lo-35G"/>
                                 </connections>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="95a-zj-J5d" userLabel="Sign In">
-                                <rect key="frame" x="240" y="552" width="120" height="30"/>
+                                <rect key="frame" x="240" y="555" width="120" height="30"/>
                                 <color key="backgroundColor" red="0.46903111347282689" green="0.71959629084699894" blue="1" alpha="0.67736037234042556" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="120" id="aaJ-A5-aeg"/>
@@ -137,28 +137,41 @@ pictures and sharing them to the KituraBluePic community. </string>
                                     <action selector="signIn:" destination="BYZ-38-t0r" eventType="touchUpInside" id="dnA-9K-COO"/>
                                 </connections>
                             </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2uY-Xz-0wW" userLabel="GoogleLoginButton" customClass="GIDSignInButton">
+                                <rect key="frame" x="200" y="548" width="200" height="44"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="MhY-NI-xmJ"/>
+                                </constraints>
+                                <connections>
+                                    <action selector="loginTapped:" destination="BYZ-38-t0r" eventType="valueChanged" id="Pvg-QH-8N5"/>
+                                </connections>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="Xvc-eo-SFq" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="3yJ-oa-N3h"/>
                             <constraint firstItem="JA3-DV-7dk" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" constant="219" id="4Gc-mR-BBA"/>
+                            <constraint firstItem="2uY-Xz-0wW" firstAttribute="centerX" secondItem="95a-zj-J5d" secondAttribute="centerX" id="5fO-JV-GgX"/>
                             <constraint firstItem="kbc-F9-DYE" firstAttribute="trailing" secondItem="gtv-K7-hIk" secondAttribute="trailing" id="7uQ-71-WKB"/>
                             <constraint firstItem="OyD-TT-jb1" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" constant="68" id="9Mx-VI-8DS"/>
                             <constraint firstItem="h0t-oU-Q29" firstAttribute="centerX" secondItem="kbc-F9-DYE" secondAttribute="centerX" id="FAl-Hy-RFh"/>
-                            <constraint firstItem="95a-zj-J5d" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="532" id="GTc-Ag-Qdf"/>
+                            <constraint firstItem="95a-zj-J5d" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="535" id="GTc-Ag-Qdf"/>
                             <constraint firstAttribute="bottomMargin" secondItem="gtv-K7-hIk" secondAttribute="bottom" constant="123" id="JOd-X9-MNN"/>
                             <constraint firstItem="ANO-Gs-Tk5" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" id="Jlx-8C-0GH"/>
-                            <constraint firstItem="Xvc-eo-SFq" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="525" id="LiH-vR-gQI"/>
+                            <constraint firstItem="Xvc-eo-SFq" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="465" id="LiH-vR-gQI"/>
                             <constraint firstItem="gtv-K7-hIk" firstAttribute="top" secondItem="h0t-oU-Q29" secondAttribute="bottom" constant="29" id="OIx-FR-SeV"/>
                             <constraint firstItem="cIW-Ou-STz" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" constant="175" id="PQt-gW-VB2"/>
                             <constraint firstItem="95a-zj-J5d" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="QQe-4v-Bqs"/>
                             <constraint firstItem="gtv-K7-hIk" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" constant="0.5" id="TUv-VN-qfh"/>
                             <constraint firstItem="cIW-Ou-STz" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" constant="6" id="WCY-Kg-EIr"/>
                             <constraint firstItem="ANO-Gs-Tk5" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="Yk1-eN-7XX"/>
-                            <constraint firstItem="neQ-m5-2vk" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="586" id="gNZ-6P-gWk"/>
+                            <constraint firstItem="2uY-Xz-0wW" firstAttribute="width" secondItem="Xvc-eo-SFq" secondAttribute="width" constant="6" id="fmI-Id-cLD"/>
+                            <constraint firstItem="neQ-m5-2vk" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="591" id="gNZ-6P-gWk"/>
                             <constraint firstItem="ANO-Gs-Tk5" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="kF3-0n-p2V"/>
                             <constraint firstItem="JA3-DV-7dk" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" constant="3.5" id="loP-gA-4Md"/>
                             <constraint firstItem="neQ-m5-2vk" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="nYn-YS-4L8"/>
+                            <constraint firstItem="2uY-Xz-0wW" firstAttribute="centerY" secondItem="95a-zj-J5d" secondAttribute="centerY" id="qIh-z3-PlN"/>
                             <constraint firstItem="h0t-oU-Q29" firstAttribute="top" secondItem="kbc-F9-DYE" secondAttribute="bottom" constant="6" id="r5L-BP-FvS"/>
                             <constraint firstItem="OyD-TT-jb1" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" constant="1" id="s7Y-kb-Ucf"/>
                             <constraint firstItem="kbc-F9-DYE" firstAttribute="leading" secondItem="JA3-DV-7dk" secondAttribute="leading" id="vlU-c8-dxv"/>
@@ -170,6 +183,7 @@ pictures and sharing them to the KituraBluePic community. </string>
                     <connections>
                         <outlet property="connectingLabel" destination="kbc-F9-DYE" id="Ts9-80-Swv"/>
                         <outlet property="fbLoginButton" destination="Xvc-eo-SFq" id="WPi-0i-JLa"/>
+                        <outlet property="googleLoginButton" destination="2uY-Xz-0wW" id="242-nj-pab"/>
                         <outlet property="loadingIndicator" destination="h0t-oU-Q29" id="KDf-xP-VcR"/>
                         <outlet property="signInButton" destination="95a-zj-J5d" id="rQD-7B-s0a"/>
                         <outlet property="signInLaterButton" destination="neQ-m5-2vk" id="gFO-gx-1eF"/>

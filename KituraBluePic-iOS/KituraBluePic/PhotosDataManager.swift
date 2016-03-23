@@ -121,7 +121,7 @@ class PhotosDataManager {
         }
     }
     
-    
+
     func uploadPicture(owner: String, picture: Picture, onSuccess:  () -> Void, onFailure: (error: String) -> Void) {
         var title = "Untitled"
         if let displayName = picture.displayName where displayName.characters.count != 0 {
@@ -138,33 +138,55 @@ class PhotosDataManager {
             mutableURLRequest.addValue("image/jpeg", forHTTPHeaderField: "Content-Type")
             mutableURLRequest.HTTPBody = imageData
             
-            mutableURLRequest.addValue(FBSDKAccessToken.currentAccessToken().tokenString, forHTTPHeaderField: "access_token")
-            mutableURLRequest.addValue("facebook", forHTTPHeaderField: "X-token-type")            
-            
-            Alamofire.request(mutableURLRequest).responseJSON {response in
-                switch response.result {
-                case .Success(let JSON):
-                    if let photo = JSON as? [String:String] {
-                        let newPicture = Picture()
-                        newPicture.url = photo["picturePath"]
-                        newPicture.displayName = photo["title"]
-                        newPicture.timeStamp = self.createTimeStamp(photo["date"]!)
-                        newPicture.ownerName = photo["ownerName"]
-                        newPicture.ownerId = photo["ownerId"]
-                        onSuccess()
+            switch UserManager.SharedInstance.userAuthenticationState {
+            case .SignedInWithFacebook:
+                mutableURLRequest.addValue(FBSDKAccessToken.currentAccessToken().tokenString, forHTTPHeaderField: "access_token")
+                mutableURLRequest.addValue("FacebookToken", forHTTPHeaderField: "X-token-type")
+                self.sendRequest(mutableURLRequest, onSuccess: onSuccess, onFailure: onFailure)
+            case .SignedInWithGoogle:
+                UserManager.SharedInstance.googleUser?.authentication.getTokensWithHandler({ (auth, error) in
+                    if (error != nil) {
+                        print("Failed to get Google access token: ", error!.localizedDescription)
                     }
                     else {
-                        onFailure(error: "upload: Failed to read response Json body")
+                        mutableURLRequest.addValue(auth.accessToken, forHTTPHeaderField: "access_token")
+                        mutableURLRequest.addValue("GoogleToken", forHTTPHeaderField: "X-token-type")
+                        self.sendRequest(mutableURLRequest, onSuccess: onSuccess, onFailure: onFailure)
                     }
-                    
-                case .Failure(let error):
-                    print("Request failed with error: \(error)")
-                    onFailure(error: error.description)
-                }
+                })
+            case .SignedOut: break
             }
+            
+            
+            
         }
         else {
             print("Bad URL: ", url)
         }
+    }
+    
+    func sendRequest (mutableURLRequest: NSMutableURLRequest, onSuccess:  () -> Void, onFailure: (error: String) -> Void) {
+        Alamofire.request(mutableURLRequest).responseJSON {response in
+            switch response.result {
+            case .Success(let JSON):
+                if let photo = JSON as? [String:String] {
+                    let newPicture = Picture()
+                    newPicture.url = photo["picturePath"]
+                    newPicture.displayName = photo["title"]
+                    newPicture.timeStamp = self.createTimeStamp(photo["date"]!)
+                    newPicture.ownerName = photo["ownerName"]
+                    newPicture.ownerId = photo["ownerId"]
+                    onSuccess()
+                }
+                else {
+                    onFailure(error: "upload: Failed to read response Json body")
+                }
+                
+            case .Failure(let error):
+                print("Request failed with error: \(error)")
+                onFailure(error: error.description)
+            }
+        }
+
     }
 }

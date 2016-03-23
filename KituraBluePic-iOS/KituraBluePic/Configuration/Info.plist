@@ -23,6 +23,18 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
+				<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>&lt;Google REVERSED_CLIENT_ID&gt;</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
 				<string>fb&lt;Facebook App ID&gt;</string>
 			</array>
 		</dict>
