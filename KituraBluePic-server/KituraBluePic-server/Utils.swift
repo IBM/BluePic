@@ -56,7 +56,7 @@ func parsePhotosList (list: JSON) -> JSON {
         let ownerName = data["ownerName"]!.stringValue
         let attachments = data["attachments"]!.dictionaryValue
         let attachmentName = ([String](attachments.keys))[0]
-            
+        
         let photo = JSON(["title": title,  "date": date, "ownerId": ownerId, "ownerName": ownerName, "picturePath": "\(photoId)/\(attachmentName)"])
         photos.append(photo)
         
@@ -68,25 +68,32 @@ func createPhotoDocument (request: RouterRequest) -> (JSONDictionary?, String?) 
     var title = request.params["title"]
     let photoName = request.params["photoname"]
     
-    if let profile = request.userInfo["profile"] as? UserProfile where photoName != nil {
+    if let profile = request.userProfile where photoName != nil {
         let ownerId = profile.id
-        let ownerName = profile.name.stringByReplacingOccurrencesOfString("%20", withString: " ")
-
-        let ext = photoName!.componentsSeparatedByString(".")[1].lowercaseString
-        let contentType = ContentType.contentTypeForExtension(ext)
-        
-        let tempDateString = NSDate().descriptionWithLocale(nil).bridge()
-        let dateString = tempDateString.substringToIndex(10) + "T" + tempDateString.substringWithRange(NSMakeRange(11, 8))
-        
-        title = title?.stringByReplacingOccurrencesOfString("%20", withString: " ") ?? ""
-        
-        let doc : JSONDictionary = ["ownerId": ownerId, "ownerName": ownerName, "title": title!, "date": dateString, "inFeed": true, "type": "photo"]
-        
-        return (doc, contentType)
+        #if os(Linux)
+            let ownerName = profile.displayName.stringByReplacingOccurrencesOfString("%20", withString: " ")
+            let ext = photoName!.componentsSeparatedByString(".")[1].lowercased()
+        #else
+            let ownerName = profile.displayName.replacingOccurrences(of: "%20", with: " ")            
+            let ext = photoName!.componentsSeparated(by: ".")[1].lowercased()
+        #endif
+        if let contentType = ContentType.contentTypeForExtension(ext) {
+            #if os(Linux)
+                let tempDateString = NSDate().descriptionWithLocale(nil).bridge()
+                let dateString = tempDateString.substringToIndex(10) + "T" + tempDateString.substringWithRange(NSMakeRange(11, 8))
+                title = title?.stringByReplacingOccurrencesOfString("%20", withString: " ") ?? ""
+            #else
+                let tempDateString = NSDate().description(withLocale: nil).bridge()
+                let dateString = tempDateString.substring(to: 10) + "T" + tempDateString.substring(with:NSMakeRange(11, 8))
+                title = title?.replacingOccurrences(of: "%20", with: " ") ?? ""
+            #endif
+            let doc : JSONDictionary = ["ownerId": ownerId, "ownerName": ownerName, "title": title!, "date": dateString, "inFeed": true, "type": "photo"]
+            
+            return (doc, contentType)
+        }
     }
-    else {
-        return (nil, nil)
-    }
+    
+    return (nil, nil)
 }
 
 func createUploadReply (fromDocument document: JSONDictionary, id: String, photoName: String) -> JSON {
@@ -101,11 +108,11 @@ func createUploadReply (fromDocument document: JSONDictionary, id: String, photo
 
 func getConfiguration () -> (ConnectionProperties, String, String, Int32) {
     
-// In order to be able to access CouchDB through external address, go to 127.0.0.1:5984/_utils/config.html, httpd section and change bind_address to 0.0.0.0, and restart couchdb.
+    // In order to be able to access CouchDB through external address, go to 127.0.0.1:5984/_utils/config.html, httpd section and change bind_address to 0.0.0.0, and restart couchdb.
     
-// Requires export CONFIG_DIR = ...
-//    if let configDir = NSString(UTF8String: getenv("CONFIG_DIR")) as? String,
-//    let configData = NSData(contentsOfFile: configDir + "./config.json")
+    // Requires export CONFIG_DIR = ...
+    //    if let configDir = NSString(UTF8String: getenv("CONFIG_DIR")) as? String,
+    //    let configData = NSData(contentsOfFile: configDir + "./config.json")
     
     if let configData = NSData(contentsOfFile: "./config.json") {
         let configJson = JSON(data:configData)
@@ -114,7 +121,7 @@ func getConfiguration () -> (ConnectionProperties, String, String, Int32) {
             let dbName = configJson["couchDbDbName"].string,
             let redisHost = configJson["redisIpAddress"].string,
             let redisPort = configJson["redisPort"].number {
-                return (ConnectionProperties(hostName: ipAddress, port: Int16(port.integerValue), secured: false),
+            return (ConnectionProperties(hostName: ipAddress, port: Int16(port.integerValue), secured: false),
                     dbName,
                     redisHost, Int32(redisPort.integerValue))
         }
@@ -124,14 +131,15 @@ func getConfiguration () -> (ConnectionProperties, String, String, Int32) {
 }
 
 func getDesign () -> (String?, JSON?) {
-
-    let designDoc = JSON(["_id" : "_design/photos",
-        "views" : [
+    let designDoc : JSONDictionary =
+        ["_id" : "_design/photos",
+         "views" : [
             "sortedByDate" : [
                 "map" : "function(doc) {if (doc.type == 'photo' && doc.title && doc.date && doc.ownerId && doc.ownerName) { emit(doc.date, {title: doc.title, ownerId: doc.ownerId, ownerName: doc.ownerName, attachments: doc._attachments});}}"
+                ]
             ]
         ]
-        ])
-    return ("photos", designDoc)
+    
+    return ("photos", JSON(designDoc))
 }
 
