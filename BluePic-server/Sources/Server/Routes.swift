@@ -24,7 +24,7 @@ import LoggerAPI
 import SwiftyJSON
 
 // Setup the handlers for the Photo APIs
-func definePhotoRoutes() {
+func defineRoutes() {
 
   router.all("/photos/*", middleware: BodyParser())
 

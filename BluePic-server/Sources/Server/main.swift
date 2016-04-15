@@ -40,10 +40,9 @@ import SwiftyJSON
 // Logger
 Log.logger = HeliumLogger()
 
-// Create router instance
+// Define "global" variables for module
 let router = Router()
-
-// Define database variable
+let config: Configuration
 let database: Database
 
 // Create authentication credentials middlewares
@@ -54,14 +53,13 @@ credentials.register(fbCredentials)
 credentials.register(googleCredentials)
 
 do {
-  // Get Configuration object (and properties)
-  let config = try Configuration()
+  // Create Configuration object
+  config = try Configuration()
   let dbClient = CouchDBClient(connectionProperties: config.couchDBConnProps)
   database = dbClient.database(config.couchDBName)
 
-  // Define photo routes
-  //definePhotoRoutes(router, credentials: credentials, database: database)
-  definePhotoRoutes()
+  // Define routes
+  defineRoutes()
 
   // Start server...
   let server = HttpServer.listen(8090, delegate: router)
