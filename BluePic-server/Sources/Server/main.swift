@@ -37,31 +37,36 @@ import SwiftyJSON
     typealias JSONDictionary = [String: Any]
 #endif
 
-do {
-  // Logger
-  Log.logger = HeliumLogger()
+// Logger
+Log.logger = HeliumLogger()
 
+// Create router instance
+let router = Router()
+
+// Define database variable
+let database: Database
+
+// Create authentication credentials middlewares
+let fbCredentials = CredentialsFacebookToken()
+let googleCredentials = CredentialsGoogleToken()
+let credentials = Credentials()
+credentials.register(fbCredentials)
+credentials.register(googleCredentials)
+
+do {
   // Get Configuration object (and properties)
   let config = try Configuration()
   let dbClient = CouchDBClient(connectionProperties: config.couchDBConnProps)
-  let database = dbClient.database(config.couchDBName)
+  database = dbClient.database(config.couchDBName)
 
-  // Create router instance
-  let router = Router()
-
-  // Create authentication credentials middlewares
-  let fbCredentials = CredentialsFacebookToken()
-  let googleCredentials = CredentialsGoogleToken()
-  let credentials = Credentials()
-  credentials.register(fbCredentials)
-  credentials.register(googleCredentials)
-
-  // Define routes
-  definePhotoRoutes(router, credentials: credentials, database: database)
+  // Define photo routes
+  //definePhotoRoutes(router, credentials: credentials, database: database)
+  definePhotoRoutes()
 
   // Start server...
   let server = HttpServer.listen(8090, delegate: router)
   Server.run()
 } catch Configuration.Error.IO {
   Log.error("Oops, something went wrong... Server did not start!")
+  exit(1)
 }
