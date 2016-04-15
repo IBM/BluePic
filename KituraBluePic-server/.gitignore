@@ -1,0 +1,4 @@
+.build/*
+Packages/*
+KituraBluePic-server.xcodeproj/xcuserdata/*
+KituraBluePic-server.xcodeproj/project.xcworkspace/xcuserdata/*
