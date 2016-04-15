@@ -38,8 +38,7 @@ func defineRoutes() {
         catch {
           Log.error("Failed to send response to client.")
         }
-      }
-      else {
+      } else {
         response.error = error ?? NSError(domain: "SwiftBluePic", code: 1, userInfo: [NSLocalizedDescriptionKey: "View not found"])
       }
       next()
@@ -60,8 +59,7 @@ func defineRoutes() {
           response.setHeader("Content-Type", value: contentType)
         }
         response.status(HttpStatusCode.OK).sendData(photo)
-      }
-      else {
+      } else {
         response.error = error ?? NSError(domain: "SwiftBluePic", code: 1, userInfo: [NSLocalizedDescriptionKey: "Photo not found"])
       }
       next()
@@ -94,8 +92,7 @@ func defineRoutes() {
           next()
         }
       }
-    }
-    catch {
+    } catch {
       response.error = NSError(domain: "SwiftBluePic", code: 1, userInfo: [NSLocalizedDescriptionKey:"Invalid photo"])
       next()
       return
