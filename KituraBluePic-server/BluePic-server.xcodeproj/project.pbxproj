@@ -17,7 +17,7 @@
             productRefGroup = ____Products_;
             projectDirPath = '';
             projectRoot = '';
-            targets = (______Target_LoggerAPI, ______Target_KituraSys, ______Target_Socket, ______Target_KituraNet, ______Target_SwiftyJSON, ______Target_KituraTemplateEngine, ______Target_Kitura, ______Target_KituraTestSuite, ______Target_netTestSuite, ______Target_HeliumLogger, ______Target_CouchDB, ______Target_CouchDBSample, ______Target_CouchDBTestSuite, ______Target_SwiftRedis, ______Target_SwiftRedisTestSuite, ______Target_Credentials, ______Target_CredentialsFacebookToken, ______Target_CredentialsGoogleToken, ______Target_KituraBluePicserver);
+            targets = (______Target_LoggerAPI, ______Target_KituraSys, ______Target_Socket, ______Target_KituraNet, ______Target_SwiftyJSON, ______Target_KituraTemplateEngine, ______Target_Kitura, ______Target_KituraTestSuite, ______Target_netTestSuite, ______Target_HeliumLogger, ______Target_CouchDB, ______Target_CouchDBSample, ______Target_CouchDBTestSuite, ______Target_SwiftRedis, ______Target_SwiftRedisTestSuite, ______Target_Credentials, ______Target_CredentialsFacebookToken, ______Target_CredentialsGoogleToken, ______Target_Server);
         };
         '__PBXFileRef_Package.swift' = {
             isa = PBXFileReference;
@@ -1805,107 +1805,107 @@
             isa = PBXTargetDependency;
             target = ______Target_CredentialsGoogleToken;
         };
-        _______Group_KituraBluePicserver = {
+        _______Group_Server = {
             isa = PBXGroup;
-            name = KituraBluePic-server;
-            path = 'KituraBluePic-server';
+            name = Server;
+            path = 'Sources/Server';
             sourceTree = '<group>';
-            children = ('__PBXFileRef_KituraBluePic-server/Admin.swift', '__PBXFileRef_KituraBluePic-server/main.swift', '__PBXFileRef_KituraBluePic-server/Photos.swift', '__PBXFileRef_KituraBluePic-server/Utils.swift');
+            children = ('__PBXFileRef_Sources/Server/Admin.swift', '__PBXFileRef_Sources/Server/main.swift', '__PBXFileRef_Sources/Server/Photos.swift', '__PBXFileRef_Sources/Server/Utils.swift');
         };
-        '__PBXFileRef_KituraBluePic-server/Admin.swift' = {
+        '__PBXFileRef_Sources/Server/Admin.swift' = {
             isa = PBXFileReference;
             lastKnownFileType = sourcecode.swift;
             name = 'Admin.swift';
             sourceTree = '<group>';
         };
-        '__PBXFileRef_KituraBluePic-server/main.swift' = {
+        '__PBXFileRef_Sources/Server/main.swift' = {
             isa = PBXFileReference;
             lastKnownFileType = sourcecode.swift;
             name = 'main.swift';
             sourceTree = '<group>';
         };
-        '__PBXFileRef_KituraBluePic-server/Photos.swift' = {
+        '__PBXFileRef_Sources/Server/Photos.swift' = {
             isa = PBXFileReference;
             lastKnownFileType = sourcecode.swift;
             name = 'Photos.swift';
             sourceTree = '<group>';
         };
-        '__PBXFileRef_KituraBluePic-server/Utils.swift' = {
+        '__PBXFileRef_Sources/Server/Utils.swift' = {
             isa = PBXFileReference;
             lastKnownFileType = sourcecode.swift;
             name = 'Utils.swift';
             sourceTree = '<group>';
         };
-        ______Target_KituraBluePicserver = {
+        ______Target_Server = {
             isa = PBXNativeTarget;
-            buildConfigurationList = _______Confs_KituraBluePicserver;
-            buildPhases = (CompilePhase_KituraBluePicserver, ___LinkPhase_KituraBluePicserver);
+            buildConfigurationList = _______Confs_Server;
+            buildPhases = (CompilePhase_Server, ___LinkPhase_Server);
             buildRules = ();
             dependencies = (__Dependency_CHttpParser, __Dependency_CCurl, __Dependency_Socket, __Dependency_Credentials, __Dependency_KituraSys, __Dependency_CHiredis, __Dependency_HeliumLogger, __Dependency_KituraTemplateEngine, __Dependency_SwiftyJSON, __Dependency_LoggerAPI, __Dependency_KituraNet, __Dependency_CredentialsGoogleToken, __Dependency_CredentialsFacebookToken, __Dependency_SwiftRedis, __Dependency_CouchDB, __Dependency_Kitura);
-            name = KituraBluePic-server;
-            productName = KituraBluePicserver;
-            productReference = _____Product_KituraBluePicserver;
+            name = Server;
+            productName = Server;
+            productReference = _____Product_Server;
             productType = 'com.apple.product-type.tool';
         };
-        _____Product_KituraBluePicserver = {
+        _____Product_Server = {
             isa = PBXFileReference;
             explicitFileType = 'compiled.mach-o.executable';
-            path = 'KituraBluePic-server';
+            path = 'Server';
             sourceTree = BUILT_PRODUCTS_DIR;
         };
-        CompilePhase_KituraBluePicserver = {
+        CompilePhase_Server = {
             isa = PBXSourcesBuildPhase;
-            files = ('__src_cc_ref_KituraBluePic-server/Admin.swift', '__src_cc_ref_KituraBluePic-server/main.swift', '__src_cc_ref_KituraBluePic-server/Photos.swift', '__src_cc_ref_KituraBluePic-server/Utils.swift');
+            files = ('__src_cc_ref_Sources/Server/Admin.swift', '__src_cc_ref_Sources/Server/main.swift', '__src_cc_ref_Sources/Server/Photos.swift', '__src_cc_ref_Sources/Server/Utils.swift');
             runOnlyForDeploymentPostprocessing = 0;
         };
-        ___LinkPhase_KituraBluePicserver = {
+        ___LinkPhase_Server = {
             isa = PBXFrameworksBuildPhase;
             files = (_LinkFileRef_CHttpParser, _LinkFileRef_CCurl, _LinkFileRef_Socket, _LinkFileRef_Credentials, _LinkFileRef_KituraSys, _LinkFileRef_CHiredis, _LinkFileRef_HeliumLogger, _LinkFileRef_KituraTemplateEngine, _LinkFileRef_SwiftyJSON, _LinkFileRef_LoggerAPI, _LinkFileRef_KituraNet, _LinkFileRef_CredentialsGoogleToken, _LinkFileRef_CredentialsFacebookToken, _LinkFileRef_SwiftRedis, _LinkFileRef_CouchDB, _LinkFileRef_Kitura);
             runOnlyForDeploymentPostprocessing = 0;
         };
-        '__src_cc_ref_KituraBluePic-server/Admin.swift' = {
+        '__src_cc_ref_Sources/Server/Admin.swift' = {
             isa = PBXBuildFile;
-            fileRef = '__PBXFileRef_KituraBluePic-server/Admin.swift';
+            fileRef = '__PBXFileRef_Sources/Server/Admin.swift';
         };
-        '__src_cc_ref_KituraBluePic-server/main.swift' = {
+        '__src_cc_ref_Sources/Server/main.swift' = {
             isa = PBXBuildFile;
-            fileRef = '__PBXFileRef_KituraBluePic-server/main.swift';
+            fileRef = '__PBXFileRef_Sources/Server/main.swift';
         };
-        '__src_cc_ref_KituraBluePic-server/Photos.swift' = {
+        '__src_cc_ref_Sources/Server/Photos.swift' = {
             isa = PBXBuildFile;
-            fileRef = '__PBXFileRef_KituraBluePic-server/Photos.swift';
+            fileRef = '__PBXFileRef_Sources/Server/Photos.swift';
         };
-        '__src_cc_ref_KituraBluePic-server/Utils.swift' = {
+        '__src_cc_ref_Sources/Server/Utils.swift' = {
             isa = PBXBuildFile;
-            fileRef = '__PBXFileRef_KituraBluePic-server/Utils.swift';
+            fileRef = '__PBXFileRef_Sources/Server/Utils.swift';
         };
-        _LinkFileRef_KituraBluePicserver = {
+        _LinkFileRef_Server = {
             isa = PBXBuildFile;
-            fileRef = _____Product_KituraBluePicserver;
+            fileRef = _____Product_Server;
         };
-        _______Confs_KituraBluePicserver = {
+        _______Confs_Server = {
             isa = XCConfigurationList;
-            buildConfigurations = (___DebugConf_KituraBluePicserver, _ReleaseConf_KituraBluePicserver);
+            buildConfigurations = (___DebugConf_Server, _ReleaseConf_Server);
             defaultConfigurationIsVisible = 0;
             defaultConfigurationName = Debug;
         };
-        ___DebugConf_KituraBluePicserver = {
+        ___DebugConf_Server = {
             isa = XCBuildConfiguration;
-            buildSettings = { LD_RUNPATH_SEARCH_PATHS = '$(TOOLCHAIN_DIR)/usr/lib/swift/macosx'; PRODUCT_MODULE_NAME = KituraBluePicserver; OTHER_SWIFT_FLAGS = -DXcode; COMBINE_HIDPI_IMAGES = YES; MACOSX_DEPLOYMENT_TARGET = '10.10'; SWIFT_FORCE_STATIC_LINK_STDLIB = NO; SWIFT_FORCE_DYNAMIC_LINK_STDLIB = YES; SWIFT_OPTIMIZATION_LEVEL = -Onone; PRODUCT_NAME = '$(TARGET_NAME)'; };
+            buildSettings = { LD_RUNPATH_SEARCH_PATHS = '$(TOOLCHAIN_DIR)/usr/lib/swift/macosx'; PRODUCT_MODULE_NAME = Server; OTHER_SWIFT_FLAGS = -DXcode; COMBINE_HIDPI_IMAGES = YES; MACOSX_DEPLOYMENT_TARGET = '10.10'; SWIFT_FORCE_STATIC_LINK_STDLIB = NO; SWIFT_FORCE_DYNAMIC_LINK_STDLIB = YES; SWIFT_OPTIMIZATION_LEVEL = -Onone; PRODUCT_NAME = '$(TARGET_NAME)'; };
             name = Debug;
         };
-        _ReleaseConf_KituraBluePicserver = {
+        _ReleaseConf_Server = {
             isa = XCBuildConfiguration;
-            buildSettings = { LD_RUNPATH_SEARCH_PATHS = '$(TOOLCHAIN_DIR)/usr/lib/swift/macosx'; PRODUCT_MODULE_NAME = KituraBluePicserver; OTHER_SWIFT_FLAGS = -DXcode; COMBINE_HIDPI_IMAGES = YES; MACOSX_DEPLOYMENT_TARGET = '10.10'; SWIFT_FORCE_STATIC_LINK_STDLIB = NO; SWIFT_FORCE_DYNAMIC_LINK_STDLIB = YES; PRODUCT_NAME = '$(TARGET_NAME)'; };
+            buildSettings = { LD_RUNPATH_SEARCH_PATHS = '$(TOOLCHAIN_DIR)/usr/lib/swift/macosx'; PRODUCT_MODULE_NAME = Server; OTHER_SWIFT_FLAGS = -DXcode; COMBINE_HIDPI_IMAGES = YES; MACOSX_DEPLOYMENT_TARGET = '10.10'; SWIFT_FORCE_STATIC_LINK_STDLIB = NO; SWIFT_FORCE_DYNAMIC_LINK_STDLIB = YES; PRODUCT_NAME = '$(TARGET_NAME)'; };
             name = Release;
         };
-        __Dependency_KituraBluePicserver = {
+        __Dependency_Server = {
             isa = PBXTargetDependency;
-            target = ______Target_KituraBluePicserver;
+            target = ______Target_Server;
         };
         _____Sources_ = {
             isa = PBXGroup;
-            children = (_______Group_LoggerAPI, _______Group_KituraSys, _______Group_Socket, _______Group_KituraNet, _______Group_SwiftyJSON, _______Group_KituraTemplateEngine, _______Group_Kitura, _______Group_HeliumLogger, _______Group_CouchDB, _______Group_CouchDBSample, _______Group_SwiftRedis, _______Group_Credentials, _______Group_CredentialsFacebookToken, _______Group_CredentialsGoogleToken, _______Group_KituraBluePicserver);
+            children = (_______Group_LoggerAPI, _______Group_KituraSys, _______Group_Socket, _______Group_KituraNet, _______Group_SwiftyJSON, _______Group_KituraTemplateEngine, _______Group_Kitura, _______Group_HeliumLogger, _______Group_CouchDB, _______Group_CouchDBSample, _______Group_SwiftRedis, _______Group_Credentials, _______Group_CredentialsFacebookToken, _______Group_CredentialsGoogleToken, _______Group_Server);
             name = Sources;
             sourceTree = '<group>';
         };
@@ -1929,7 +1929,7 @@
         };
         ____Products_ = {
             isa = PBXGroup;
-            children = (TestProducts_, _____Product_LoggerAPI, _____Product_KituraSys, _____Product_Socket, _____Product_KituraNet, _____Product_SwiftyJSON, _____Product_KituraTemplateEngine, _____Product_Kitura, _____Product_HeliumLogger, _____Product_CouchDB, _____Product_CouchDBSample, _____Product_SwiftRedis, _____Product_Credentials, _____Product_CredentialsFacebookToken, _____Product_CredentialsGoogleToken, _____Product_KituraBluePicserver);
+            children = (TestProducts_, _____Product_LoggerAPI, _____Product_KituraSys, _____Product_Socket, _____Product_KituraNet, _____Product_SwiftyJSON, _____Product_KituraTemplateEngine, _____Product_Kitura, _____Product_HeliumLogger, _____Product_CouchDB, _____Product_CouchDBSample, _____Product_SwiftRedis, _____Product_Credentials, _____Product_CredentialsFacebookToken, _____Product_CredentialsGoogleToken, _____Product_Server);
             name = Products;
             sourceTree = '<group>';
         };

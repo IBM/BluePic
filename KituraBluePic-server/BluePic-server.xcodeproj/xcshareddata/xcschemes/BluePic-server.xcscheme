@@ -8,7 +8,7 @@
           BlueprintIdentifier = "______Target_LoggerAPI"
           BuildableName = "libLoggerAPI.dylib"
           BlueprintName = "LoggerAPI"
-          ReferencedContainer = "container:KituraBluePic-server.xcodeproj">
+          ReferencedContainer = "container:BluePic-server.xcodeproj">
         </BuildableReference>
       </BuildActionEntry>
       <BuildActionEntry buildForTesting = "YES" buildForRunning = "YES" buildForProfiling = "YES" buildForArchiving = "YES" buildForAnalyzing = "YES">
@@ -17,7 +17,7 @@
           BlueprintIdentifier = "______Target_KituraSys"
           BuildableName = "libKituraSys.dylib"
           BlueprintName = "KituraSys"
-          ReferencedContainer = "container:KituraBluePic-server.xcodeproj">
+          ReferencedContainer = "container:BluePic-server.xcodeproj">
         </BuildableReference>
       </BuildActionEntry>
       <BuildActionEntry buildForTesting = "YES" buildForRunning = "YES" buildForProfiling = "YES" buildForArchiving = "YES" buildForAnalyzing = "YES">
@@ -26,7 +26,7 @@
           BlueprintIdentifier = "______Target_Socket"
           BuildableName = "libSocket.dylib"
           BlueprintName = "Socket"
-          ReferencedContainer = "container:KituraBluePic-server.xcodeproj">
+          ReferencedContainer = "container:BluePic-server.xcodeproj">
         </BuildableReference>
       </BuildActionEntry>
       <BuildActionEntry buildForTesting = "YES" buildForRunning = "YES" buildForProfiling = "YES" buildForArchiving = "YES" buildForAnalyzing = "YES">
@@ -35,7 +35,7 @@
           BlueprintIdentifier = "______Target_KituraNet"
           BuildableName = "libKituraNet.dylib"
           BlueprintName = "KituraNet"
-          ReferencedContainer = "container:KituraBluePic-server.xcodeproj">
+          ReferencedContainer = "container:BluePic-server.xcodeproj">
         </BuildableReference>
       </BuildActionEntry>
       <BuildActionEntry buildForTesting = "YES" buildForRunning = "YES" buildForProfiling = "YES" buildForArchiving = "YES" buildForAnalyzing = "YES">
@@ -44,7 +44,7 @@
           BlueprintIdentifier = "______Target_SwiftyJSON"
           BuildableName = "libSwiftyJSON.dylib"
           BlueprintName = "SwiftyJSON"
-          ReferencedContainer = "container:KituraBluePic-server.xcodeproj">
+          ReferencedContainer = "container:BluePic-server.xcodeproj">
         </BuildableReference>
       </BuildActionEntry>
       <BuildActionEntry buildForTesting = "YES" buildForRunning = "YES" buildForProfiling = "YES" buildForArchiving = "YES" buildForAnalyzing = "YES">
@@ -53,7 +53,7 @@
           BlueprintIdentifier = "______Target_KituraTemplateEngine"
           BuildableName = "libKituraTemplateEngine.dylib"
           BlueprintName = "Kitura-TemplateEngine"
-          ReferencedContainer = "container:KituraBluePic-server.xcodeproj">
+          ReferencedContainer = "container:BluePic-server.xcodeproj">
         </BuildableReference>
       </BuildActionEntry>
       <BuildActionEntry buildForTesting = "YES" buildForRunning = "YES" buildForProfiling = "YES" buildForArchiving = "YES" buildForAnalyzing = "YES">
@@ -62,7 +62,7 @@
           BlueprintIdentifier = "______Target_Kitura"
           BuildableName = "libKitura.dylib"
           BlueprintName = "Kitura"
-          ReferencedContainer = "container:KituraBluePic-server.xcodeproj">
+          ReferencedContainer = "container:BluePic-server.xcodeproj">
         </BuildableReference>
       </BuildActionEntry>
       <BuildActionEntry buildForTesting = "YES" buildForRunning = "YES" buildForProfiling = "YES" buildForArchiving = "YES" buildForAnalyzing = "YES">
@@ -71,7 +71,7 @@
           BlueprintIdentifier = "______Target_HeliumLogger"
           BuildableName = "libHeliumLogger.dylib"
           BlueprintName = "HeliumLogger"
-          ReferencedContainer = "container:KituraBluePic-server.xcodeproj">
+          ReferencedContainer = "container:BluePic-server.xcodeproj">
         </BuildableReference>
       </BuildActionEntry>
       <BuildActionEntry buildForTesting = "YES" buildForRunning = "YES" buildForProfiling = "YES" buildForArchiving = "YES" buildForAnalyzing = "YES">
@@ -80,7 +80,7 @@
           BlueprintIdentifier = "______Target_CouchDB"
           BuildableName = "libCouchDB.dylib"
           BlueprintName = "CouchDB"
-          ReferencedContainer = "container:KituraBluePic-server.xcodeproj">
+          ReferencedContainer = "container:BluePic-server.xcodeproj">
         </BuildableReference>
       </BuildActionEntry>
       <BuildActionEntry buildForTesting = "YES" buildForRunning = "YES" buildForProfiling = "YES" buildForArchiving = "YES" buildForAnalyzing = "YES">
@@ -89,7 +89,7 @@
           BlueprintIdentifier = "______Target_CouchDBSample"
           BuildableName = "CouchDBSample"
           BlueprintName = "CouchDBSample"
-          ReferencedContainer = "container:KituraBluePic-server.xcodeproj">
+          ReferencedContainer = "container:BluePic-server.xcodeproj">
         </BuildableReference>
       </BuildActionEntry>
       <BuildActionEntry buildForTesting = "YES" buildForRunning = "YES" buildForProfiling = "YES" buildForArchiving = "YES" buildForAnalyzing = "YES">
@@ -98,7 +98,7 @@
           BlueprintIdentifier = "______Target_SwiftRedis"
           BuildableName = "libSwiftRedis.dylib"
           BlueprintName = "SwiftRedis"
-          ReferencedContainer = "container:KituraBluePic-server.xcodeproj">
+          ReferencedContainer = "container:BluePic-server.xcodeproj">
         </BuildableReference>
       </BuildActionEntry>
       <BuildActionEntry buildForTesting = "YES" buildForRunning = "YES" buildForProfiling = "YES" buildForArchiving = "YES" buildForAnalyzing = "YES">
@@ -107,7 +107,7 @@
           BlueprintIdentifier = "______Target_Credentials"
           BuildableName = "libCredentials.dylib"
           BlueprintName = "Credentials"
-          ReferencedContainer = "container:KituraBluePic-server.xcodeproj">
+          ReferencedContainer = "container:BluePic-server.xcodeproj">
         </BuildableReference>
       </BuildActionEntry>
       <BuildActionEntry buildForTesting = "YES" buildForRunning = "YES" buildForProfiling = "YES" buildForArchiving = "YES" buildForAnalyzing = "YES">
@@ -116,7 +116,7 @@
           BlueprintIdentifier = "______Target_CredentialsFacebookToken"
           BuildableName = "libCredentialsFacebookToken.dylib"
           BlueprintName = "CredentialsFacebookToken"
-          ReferencedContainer = "container:KituraBluePic-server.xcodeproj">
+          ReferencedContainer = "container:BluePic-server.xcodeproj">
         </BuildableReference>
       </BuildActionEntry>
       <BuildActionEntry buildForTesting = "YES" buildForRunning = "YES" buildForProfiling = "YES" buildForArchiving = "YES" buildForAnalyzing = "YES">
@@ -125,16 +125,16 @@
           BlueprintIdentifier = "______Target_CredentialsGoogleToken"
           BuildableName = "libCredentialsGoogleToken.dylib"
           BlueprintName = "CredentialsGoogleToken"
-          ReferencedContainer = "container:KituraBluePic-server.xcodeproj">
+          ReferencedContainer = "container:BluePic-server.xcodeproj">
         </BuildableReference>
       </BuildActionEntry>
       <BuildActionEntry buildForTesting = "YES" buildForRunning = "YES" buildForProfiling = "YES" buildForArchiving = "YES" buildForAnalyzing = "YES">
         <BuildableReference
           BuildableIdentifier = "primary"
-          BlueprintIdentifier = "______Target_KituraBluePicserver"
-          BuildableName = "KituraBluePic-server"
-          BlueprintName = "KituraBluePic-server"
-          ReferencedContainer = "container:KituraBluePic-server.xcodeproj">
+          BlueprintIdentifier = "______Target_Server"
+          BuildableName = "Server"
+          BlueprintName = "Server"
+          ReferencedContainer = "container:BluePic-server.xcodeproj">
         </BuildableReference>
       </BuildActionEntry>
     </BuildActionEntries>
@@ -152,7 +152,7 @@
         BlueprintIdentifier = "______Target_KituraTestSuite"
         BuildableName = "KituraTestSuite.xctest"
         BlueprintName = "Kitura.testsuite"
-        ReferencedContainer = "container:KituraBluePic-server.xcodeproj">
+        ReferencedContainer = "container:BluePic-server.xcodeproj">
       </BuildableReference>
     </TestableReference>
     <TestableReference
@@ -162,7 +162,7 @@
         BlueprintIdentifier = "______Target_netTestSuite"
         BuildableName = "netTestSuite.xctest"
         BlueprintName = "net.testsuite"
-        ReferencedContainer = "container:KituraBluePic-server.xcodeproj">
+        ReferencedContainer = "container:BluePic-server.xcodeproj">
       </BuildableReference>
     </TestableReference>
     <TestableReference
@@ -172,7 +172,7 @@
         BlueprintIdentifier = "______Target_CouchDBTestSuite"
         BuildableName = "CouchDBTestSuite.xctest"
         BlueprintName = "CouchDB.testsuite"
-        ReferencedContainer = "container:KituraBluePic-server.xcodeproj">
+        ReferencedContainer = "container:BluePic-server.xcodeproj">
       </BuildableReference>
     </TestableReference>
     <TestableReference
@@ -182,7 +182,7 @@
         BlueprintIdentifier = "______Target_SwiftRedisTestSuite"
         BuildableName = "SwiftRedisTestSuite.xctest"
         BlueprintName = "SwiftRedis.testsuite"
-        ReferencedContainer = "container:KituraBluePic-server.xcodeproj">
+        ReferencedContainer = "container:BluePic-server.xcodeproj">
       </BuildableReference>
     </TestableReference>
     </Testables>
