@@ -69,41 +69,36 @@ func defineRoutes() {
   }
 
   router.post("/photos/:title/:photoname") { request, response, next in
-    let (document, contentType) = createPhotoDocument(request)
-    if let document = document, let contentType = contentType {
-      var image: NSData?
-      let photoName = request.params["photoname"]!
-      do {
-        try image = BodyParser.readBodyData(request)
-      }
-      catch {
-        response.error = NSError(domain: "SwiftBluePic", code: 1, userInfo: [NSLocalizedDescriptionKey:"Invalid photo"])
-        next()
-        return
-      }
+    let (doc, docType) = createPhotoDocument(request)
+    guard let document = doc, let contentType = docType else {
+      response.error = NSError(domain: "SwiftBluePic", code: 1, userInfo: [NSLocalizedDescriptionKey: "Invalid photo"])
+      next()
+      return
+    }
 
+    do {
+      let image = try BodyParser.readBodyData(request)
       database.create(JSON(document)) { (id, revision, doc, error) in
-        if let _ = doc, let id = id, let revision = revision where error == nil {
-          database.createAttachment(id, docRevison: revision, attachmentName: photoName, attachmentData: image!, contentType: contentType) { (rev, photoDoc, error) in
-            if let _ = photoDoc where error == nil  {
+        if let photoName = request.params["photoname"], let _ = doc, let id = id, let revision = revision where error == nil {
+          database.createAttachment(id, docRevison: revision, attachmentName: photoName, attachmentData: image, contentType: contentType) { (rev, photoDoc, error) in
+            if let _ = photoDoc where error == nil {
               let reply = createUploadReply(fromDocument: document, id: id, photoName: photoName)
               response.status(HttpStatusCode.OK).sendJson(reply)
-            }
-            else {
+            } else {
               response.error = error  ??  NSError(domain: "SwiftBluePic", code: 1, userInfo: [NSLocalizedDescriptionKey: "Internal error"])
             }
             next()
           }
-        }
-        else {
+        } else {
           response.error = error ?? NSError(domain: "SwiftBluePic", code: 1, userInfo: [NSLocalizedDescriptionKey: "Internal error"])
           next()
         }
       }
     }
-    else {
-      response.error = NSError(domain: "SwiftBluePic", code: 1, userInfo: [NSLocalizedDescriptionKey: "Invalid photo"])
+    catch {
+      response.error = NSError(domain: "SwiftBluePic", code: 1, userInfo: [NSLocalizedDescriptionKey:"Invalid photo"])
       next()
+      return
     }
   }
 }
