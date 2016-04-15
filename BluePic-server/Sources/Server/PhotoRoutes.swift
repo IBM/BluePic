@@ -18,12 +18,15 @@ import Foundation
 import Kitura
 import KituraNet
 import KituraSys
+import Credentials
 import CouchDB
 import LoggerAPI
 import SwiftyJSON
 
 // Setup the handlers for the Photo APIs
-func definePhotoRoutes(router: Router) {
+func definePhotoRoutes(router: Router, credentials: Credentials, database: Database) {
+  let photoUtils = PhotoUtils()
+
     router.all("/photos/*", middleware: BodyParser())
 
     router.post("/photos/:title/:photoname", middleware: credentials)
@@ -32,7 +35,7 @@ func definePhotoRoutes(router: Router) {
         database.queryByView("sortedByDate", ofDesign: "photos", usingParameters: [.Descending(true)]) { (document, error) in
             if  let document = document where error == nil  {
                 do {
-                    try response.status(HttpStatusCode.OK).sendJson(parsePhotosList(document)).end()
+                    try response.status(HttpStatusCode.OK).sendJson(photoUtils.parsePhotosList(document)).end()
                 }
                 catch {
                     Log.error("Failed to send response to client")
@@ -69,7 +72,7 @@ func definePhotoRoutes(router: Router) {
     }
 
     router.post("/photos/:title/:photoname") { request, response, next in
-        let (document, contentType) = createPhotoDocument(request)
+        let (document, contentType) = photoUtils.createPhotoDocument(request)
         if let document = document, let contentType = contentType {
             var image: NSData?
             let photoName = request.params["photoname"]!
@@ -87,7 +90,7 @@ func definePhotoRoutes(router: Router) {
                 if let _ = doc, let id = id, let revision = revision where error == nil {
                     database.createAttachment(id, docRevison: revision, attachmentName: photoName, attachmentData: image!, contentType: contentType) { (rev, photoDoc, error) in
                         if let _ = photoDoc where error == nil  {
-                            let reply = createUploadReply(fromDocument: document, id: id, photoName: photoName)
+                            let reply = photoUtils.createUploadReply(fromDocument: document, id: id, photoName: photoName)
                             response.status(HttpStatusCode.OK).sendJson(reply)
                         }
                         else {

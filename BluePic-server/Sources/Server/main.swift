@@ -26,25 +26,42 @@ import CredentialsFacebookToken
 import CredentialsGoogleToken
 import SwiftyJSON
 
-// Logger
-Log.logger = HeliumLogger()
+///
+/// Because bridging is not complete in Linux, we must use Any objects for dictionaries
+/// instead of AnyObject. The main branch SwiftyJSON takes as input AnyObject, however
+/// our patched version for Linux accepts Any.
+///
+#if os(OSX)
+    typealias JSONDictionary = [String: AnyObject]
+#else
+    typealias JSONDictionary = [String: Any]
+#endif
 
-let (connectionProperties, dbName) = getConfiguration()
+do {
+  // Logger
+  Log.logger = HeliumLogger()
 
-let dbClient = CouchDBClient(connectionProperties: connectionProperties)
-let database = dbClient.database(dbName)
+  // Get Configuration object (and properties)
+  let config = try Configuration()
+  let dbClient = CouchDBClient(connectionProperties: config.couchDBConnProps)
+  let database = dbClient.database(config.couchDBName)
 
-let router = Router()
-let fbCredentials = CredentialsFacebookToken()
-let googleCredentials = CredentialsGoogleToken()
-let credentials = Credentials()
-credentials.register(fbCredentials)
-credentials.register(googleCredentials)
+  // Create router instance
+  let router = Router()
 
-// Define routes
-//setupAdmin() // We probably don't need these admin routes
-definePhotoRoutes(router)
+  // Create authentication credentials middlewares
+  let fbCredentials = CredentialsFacebookToken()
+  let googleCredentials = CredentialsGoogleToken()
+  let credentials = Credentials()
+  credentials.register(fbCredentials)
+  credentials.register(googleCredentials)
 
-let server = HttpServer.listen(8090, delegate: router)
+  // Define routes
+  definePhotoRoutes(router, credentials: credentials, database: database)
 
-Server.run()
+  // Start server...
+  let server = HttpServer.listen(8090, delegate: router)
+  Server.run()
+} catch Configuration.Error.IO {
+  Log.error("Oops, something went wrong... Server did not start!")
+}
