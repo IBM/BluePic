@@ -47,24 +47,23 @@ func defineRoutes() {
   }
 
   router.get("/photos/:docid/:photoid") { request, response, next in
-    let docId = request.params["docid"]
-    let attachmentName = request.params["photoid"]
-    if docId != nil && attachmentName != nil {
-      database.retrieveAttachment(docId!, attachmentName: attachmentName!) { (photo, error, contentType) in
-        if let photo = photo where error == nil {
-          if let contentType = contentType {
-            response.setHeader("Content-Type", value: contentType)
-          }
-          response.status(HttpStatusCode.OK).sendData(photo)
-        }
-        else {
-          response.error = error ?? NSError(domain: "SwiftBluePic", code: 1, userInfo: [NSLocalizedDescriptionKey: "Photo not found"])
-        }
-        next()
-      }
-    }
-    else {
+    guard let docId = request.params["docid"],
+    let attachmentName = request.params["photoid"] else {
       response.error = NSError(domain: "SwiftBluePic", code: 1, userInfo: [NSLocalizedDescriptionKey: "Photo not found"])
+      next()
+      return
+    }
+
+    database.retrieveAttachment(docId, attachmentName: attachmentName) { (photo, error, contentType) in
+      if let photo = photo where error == nil {
+        if let contentType = contentType {
+          response.setHeader("Content-Type", value: contentType)
+        }
+        response.status(HttpStatusCode.OK).sendData(photo)
+      }
+      else {
+        response.error = error ?? NSError(domain: "SwiftBluePic", code: 1, userInfo: [NSLocalizedDescriptionKey: "Photo not found"])
+      }
       next()
     }
   }
