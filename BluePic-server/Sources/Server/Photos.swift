@@ -14,20 +14,16 @@
  * limitations under the License.
  **/
 
+import Foundation
 import Kitura
 import KituraNet
 import KituraSys
-
 import CouchDB
 import LoggerAPI
-
 import SwiftyJSON
 
-import Foundation
-
-
-/// Setup the handlers for the Photo APIs
-func setupPhotos() {
+// Setup the handlers for the Photo APIs
+func definePhotoRoutes(router: Router) {
     router.all("/photos/*", middleware: BodyParser())
 
     router.post("/photos/:title/:photoname", middleware: credentials)
@@ -48,7 +44,6 @@ func setupPhotos() {
             next()
         }
     }
-
 
     router.get("/photos/:docid/:photoid") { request, response, next in
         let docId = request.params["docid"]
@@ -72,7 +67,6 @@ func setupPhotos() {
             next()
         }
     }
-
 
     router.post("/photos/:title/:photoname") { request, response, next in
         let (document, contentType) = createPhotoDocument(request)

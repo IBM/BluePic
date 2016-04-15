@@ -14,21 +14,19 @@
  * limitations under the License.
  **/
 
+import Foundation
 import Kitura
 import KituraNet
 import KituraSys
-
 import CouchDB
 import LoggerAPI
 import HeliumLogger
 import Credentials
 import CredentialsFacebookToken
 import CredentialsGoogleToken
-
 import SwiftyJSON
 
-import Foundation
-
+// Logger
 Log.logger = HeliumLogger()
 
 let (connectionProperties, dbName) = getConfiguration()
@@ -43,9 +41,9 @@ let credentials = Credentials()
 credentials.register(fbCredentials)
 credentials.register(googleCredentials)
 
-setupAdmin()
-
-setupPhotos()
+// Define routes
+//setupAdmin() // We probably don't need these admin routes
+definePhotoRoutes(router)
 
 let server = HttpServer.listen(8090, delegate: router)
 
