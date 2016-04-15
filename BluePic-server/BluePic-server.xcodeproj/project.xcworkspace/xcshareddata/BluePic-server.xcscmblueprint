@@ -1,0 +1,58 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "32854AD50C421BB2840A6489153B4CBB77A44530",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "92AF87893551AD3F2DEE78BEF3E924B9C5659E09" : 0,
+    "32854AD50C421BB2840A6489153B4CBB77A44530" : 0,
+    "43425688648679ECEC3105C3812E3C82D04FD563" : 0,
+    "1A81AC7E588BE86E760603555BCE76FB0C611997" : 0,
+    "85E996FB125657C20E42A299A76F925867A7A6E4" : 0,
+    "09E058C67A1F7EC8B3C920635B04A0078313C192" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "D2064760-6BC3-4819-8F29-B6A8758CF785",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "92AF87893551AD3F2DEE78BEF3E924B9C5659E09" : "BluePic-IBM-Swift\/BluePic-server\/Packages\/HeliumLogger-0.4.3\/",
+    "32854AD50C421BB2840A6489153B4CBB77A44530" : "BluePic-IBM-Swift\/",
+    "43425688648679ECEC3105C3812E3C82D04FD563" : "BluePic-IBM-Swift\/BluePic-server\/Packages\/Kitura-0.7.4\/",
+    "1A81AC7E588BE86E760603555BCE76FB0C611997" : "BluePic-IBM-Swift\/BluePic-server\/Packages\/Kitura-TemplateEngine-0.0.2\/",
+    "85E996FB125657C20E42A299A76F925867A7A6E4" : "BluePic-IBM-Swift\/BluePic-server\/Packages\/LoggerAPI-0.4.0\/",
+    "09E058C67A1F7EC8B3C920635B04A0078313C192" : "BluePic-IBM-Swift\/BluePic-server\/Packages\/Kitura-Sys-0.7.0\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "BluePic-server",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "BluePic-server\/BluePic-server.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/IBM-Swift\/Kitura-sys.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "09E058C67A1F7EC8B3C920635B04A0078313C192"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/IBM-Swift\/Kitura-TemplateEngine.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "1A81AC7E588BE86E760603555BCE76FB0C611997"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/IBM-Swift\/BluePic.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "32854AD50C421BB2840A6489153B4CBB77A44530"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/IBM-Swift\/Kitura.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "43425688648679ECEC3105C3812E3C82D04FD563"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/IBM-Swift\/LoggerAPI.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "85E996FB125657C20E42A299A76F925867A7A6E4"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/IBM-Swift\/HeliumLogger.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "92AF87893551AD3F2DEE78BEF3E924B9C5659E09"
+    }
+  ]
+}

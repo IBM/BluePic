@@ -1,7 +1,5 @@
 {
   "couchDbIpAddress": "localhost",
   "couchDbPort": 5984,
-  "couchDbDbName": "swift-bluepic",
-  "redisIpAddress": "localhost",
-  "redisPort": 6379
+  "couchDbDbName": "swift-bluepic"
 }

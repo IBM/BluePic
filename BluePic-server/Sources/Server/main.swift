@@ -19,7 +19,6 @@ import KituraNet
 import KituraSys
 
 import CouchDB
-import SwiftRedis
 import LoggerAPI
 import HeliumLogger
 import Credentials
@@ -32,20 +31,12 @@ import Foundation
 
 Log.logger = HeliumLogger()
 
-let (connectionProperties, dbName, redisHost, redisPort) = getConfiguration()
+let (connectionProperties, dbName) = getConfiguration()
 
 let dbClient = CouchDBClient(connectionProperties: connectionProperties)
 let database = dbClient.database(dbName)
 
 let router = Router()
-
-let redis = Redis()
-redis.connect(redisHost, port: redisPort) {error in
-    if  let error = error {
-        Log.error("Failed to connect to Redis server at \(redisHost):\(redisPort). Error=\(error.localizedDescription)")
-    }
-}
-
 let fbCredentials = CredentialsFacebookToken()
 let googleCredentials = CredentialsGoogleToken()
 let credentials = Credentials()
@@ -59,10 +50,3 @@ setupPhotos()
 let server = HttpServer.listen(8090, delegate: router)
 
 Server.run()
-
-
-
-
-
-
-

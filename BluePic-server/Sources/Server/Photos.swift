@@ -19,7 +19,6 @@ import KituraNet
 import KituraSys
 
 import CouchDB
-import SwiftRedis
 import LoggerAPI
 
 import SwiftyJSON
@@ -30,14 +29,13 @@ import Foundation
 /// Setup the handlers for the Photo APIs
 func setupPhotos() {
     router.all("/photos/*", middleware: BodyParser())
-    
+
     router.post("/photos/:title/:photoname", middleware: credentials)
-    
+
     router.get("/photos") { _, response, next in
         database.queryByView("sortedByDate", ofDesign: "photos", usingParameters: [.Descending(true)]) { (document, error) in
             if  let document = document where error == nil  {
                 do {
-                    updatePhotoListsFetchedCounter()
                     try response.status(HttpStatusCode.OK).sendJson(parsePhotosList(document)).end()
                 }
                 catch {
@@ -50,8 +48,8 @@ func setupPhotos() {
             next()
         }
     }
-    
-    
+
+
     router.get("/photos/:docid/:photoid") { request, response, next in
         let docId = request.params["docid"]
         let attachmentName = request.params["photoid"]
@@ -74,14 +72,14 @@ func setupPhotos() {
             next()
         }
     }
-        
-    
+
+
     router.post("/photos/:title/:photoname") { request, response, next in
         let (document, contentType) = createPhotoDocument(request)
         if let document = document, let contentType = contentType {
             var image: NSData?
             let photoName = request.params["photoname"]!
-            
+
             do {
                 try image = BodyParser.readBodyData(request)
             }
@@ -90,7 +88,7 @@ func setupPhotos() {
                 next()
                 return
             }
-            
+
             database.create(JSON(document)) { (id, revision, doc, error) in
                 if let _ = doc, let id = id, let revision = revision where error == nil {
                     database.createAttachment(id, docRevison: revision, attachmentName: photoName, attachmentData: image!, contentType: contentType) { (rev, photoDoc, error) in
@@ -116,24 +114,3 @@ func setupPhotos() {
         }
     }
 }
-
-private func updatePhotoListsFetchedCounter() {
-    let multi = redis.multi()
-    multi.incr("PhotoListsFetched")
-    multi.expire("PhotoListsFetched", inTime: Double(1440*60))
-    redisQueue.queueSync() {
-        multi.exec() {response in
-            if  let responses = response.asArray,
-                        _ = responses[0].asInteger,
-                        _ = responses[1].asInteger {
-                // All is OK
-            }
-            else {
-                Log.error("Failed to increment PhotoListsFetched counter")
-            }
-        }
-    }
-}
-
-let redisQueue = Queue(type: .SERIAL, label: "RedisQueue")
-
