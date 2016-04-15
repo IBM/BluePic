@@ -17,7 +17,6 @@
 import Foundation
 import Kitura
 import KituraNet
-import KituraSys
 import Credentials
 import CouchDB
 import LoggerAPI
@@ -32,16 +31,16 @@ func defineRoutes() {
 
   router.get("/photos") { _, response, next in
     database.queryByView("sortedByDate", ofDesign: "photos", usingParameters: [.Descending(true)]) { (document, error) in
-      if  let document = document where error == nil  {
+      if let document = document where error == nil {
         do {
           try response.status(HttpStatusCode.OK).sendJson(parsePhotosList(document)).end()
         }
         catch {
-          Log.error("Failed to send response to client")
+          Log.error("Failed to send response to client.")
         }
       }
       else {
-        response.error = error ?? NSError(domain: "SwiftBluePic", code: 1, userInfo: [NSLocalizedDescriptionKey:"View not found"])
+        response.error = error ?? NSError(domain: "SwiftBluePic", code: 1, userInfo: [NSLocalizedDescriptionKey: "View not found"])
       }
       next()
     }
@@ -52,20 +51,20 @@ func defineRoutes() {
     let attachmentName = request.params["photoid"]
     if docId != nil && attachmentName != nil {
       database.retrieveAttachment(docId!, attachmentName: attachmentName!) { (photo, error, contentType) in
-        if  let photo = photo where error == nil  {
+        if let photo = photo where error == nil {
           if let contentType = contentType {
             response.setHeader("Content-Type", value: contentType)
           }
           response.status(HttpStatusCode.OK).sendData(photo)
         }
         else {
-          response.error = error  ??  NSError(domain: "SwiftBluePic", code: 1, userInfo: [NSLocalizedDescriptionKey:"Photo not found"])
+          response.error = error ?? NSError(domain: "SwiftBluePic", code: 1, userInfo: [NSLocalizedDescriptionKey: "Photo not found"])
         }
         next()
       }
     }
     else {
-      response.error = NSError(domain: "SwiftBluePic", code: 1, userInfo: [NSLocalizedDescriptionKey:"Photo not found"])
+      response.error = NSError(domain: "SwiftBluePic", code: 1, userInfo: [NSLocalizedDescriptionKey: "Photo not found"])
       next()
     }
   }
@@ -75,7 +74,6 @@ func defineRoutes() {
     if let document = document, let contentType = contentType {
       var image: NSData?
       let photoName = request.params["photoname"]!
-
       do {
         try image = BodyParser.readBodyData(request)
       }
@@ -93,19 +91,19 @@ func defineRoutes() {
               response.status(HttpStatusCode.OK).sendJson(reply)
             }
             else {
-              response.error = error  ??  NSError(domain: "SwiftBluePic", code: 1, userInfo: [NSLocalizedDescriptionKey:"Internal error"])
+              response.error = error  ??  NSError(domain: "SwiftBluePic", code: 1, userInfo: [NSLocalizedDescriptionKey: "Internal error"])
             }
             next()
           }
         }
         else {
-          response.error = error ?? NSError(domain: "SwiftBluePic", code: 1, userInfo: [NSLocalizedDescriptionKey:"Internal error"])
+          response.error = error ?? NSError(domain: "SwiftBluePic", code: 1, userInfo: [NSLocalizedDescriptionKey: "Internal error"])
           next()
         }
       }
     }
     else {
-      response.error = NSError(domain: "SwiftBluePic", code: 1, userInfo: [NSLocalizedDescriptionKey:"Invalid photo"])
+      response.error = NSError(domain: "SwiftBluePic", code: 1, userInfo: [NSLocalizedDescriptionKey: "Invalid photo"])
       next()
     }
   }

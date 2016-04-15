@@ -18,7 +18,6 @@ import Foundation
 import CouchDB
 import Kitura
 import KituraNet
-import KituraSys
 import LoggerAPI
 import Credentials
 import SwiftyJSON
