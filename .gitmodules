@@ -1,0 +1,4 @@
+[submodule "BluePic-server/Kitura-Build"]
+	path = BluePic-server/Kitura-Build
+	url = https://github.com/IBM-Swift/Kitura-Build.git
+	branch = develop
