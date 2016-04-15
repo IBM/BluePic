@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="8AK-xM-BIZ">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <scenes>
+        <!--Tab Bar View Controller-->
+        <scene sceneID="buh-Yt-C7i">
+            <objects>
+                <tabBarController id="8AK-xM-BIZ" customClass="TabBarViewController" customModule="KituraBluePic" customModuleProvider="target" sceneMemberID="viewController">
+                    <tabBar key="tabBar" contentMode="scaleToFill" translucent="NO" id="163-n0-olj">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="barTintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="selectedImageTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="4hD-bY-mnH" kind="relationship" relationship="viewControllers" id="TXN-cZ-m9S"/>
+                        <segue destination="jhr-8E-FCv" kind="relationship" relationship="viewControllers" id="r6C-CI-ZBi"/>
+                        <segue destination="i9k-2w-xfc" kind="relationship" relationship="viewControllers" id="n8o-q5-a1v"/>
+                        <segue destination="CNI-Xn-Zpi" kind="relationship" relationship="viewControllers" id="veU-lm-vYL"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="DzM-kT-lkR" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-790" y="918"/>
+        </scene>
+        <!--Login View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController storyboardIdentifier="loginVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="BYZ-38-t0r" customClass="LoginViewController" customModule="KituraBluePic" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="login_background" translatesAutoresizingMaskIntoConstraints="NO" id="ANO-Gs-Tk5">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="667"/>
+                            </imageView>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="h0t-oU-Q29">
+                                <rect key="frame" x="290" y="475" width="20" height="20"/>
+                                <color key="color" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </activityIndicatorView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome to KituraBluePic" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cIW-Ou-STz">
+                                <rect key="frame" x="135" y="175" width="343" height="36"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="343" id="YMB-Xq-LqD"/>
+                                    <constraint firstAttribute="height" constant="36" id="g3J-Gq-moa"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="loginlogo" translatesAutoresizingMaskIntoConstraints="NO" id="OyD-TT-jb1">
+                                <rect key="frame" x="264" y="68" width="74" height="70"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="73.5" id="OrX-WN-WmP"/>
+                                    <constraint firstAttribute="height" constant="70" id="eFt-le-H8b"/>
+                                </constraints>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="neQ-m5-2vk">
+                                <rect key="frame" x="249" y="611" width="101" height="29"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="101" id="LaB-Ay-BXh"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <state key="normal" title="I’ll sign in later">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="signInLaterTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gPb-DO-Xyg"/>
+                                </connections>
+                            </button>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gtv-K7-hIk">
+                                <rect key="frame" x="167" y="524" width="267" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="3xK-ij-LXs"/>
+                                    <constraint firstAttribute="width" constant="267" id="dfU-Ye-2i0"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Connecting to Facebook" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kbc-F9-DYE">
+                                <rect key="frame" x="166" y="452" width="268" height="17"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JA3-DV-7dk">
+                                <rect key="frame" x="166" y="219" width="275" height="112"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="112" id="GaN-o4-7vS"/>
+                                    <constraint firstAttribute="width" constant="275" id="eyR-Rk-Nvp"/>
+                                </constraints>
+                                <attributedString key="attributedText">
+                                    <fragment>
+                                        <string key="content">KituraBluePic is an amazing app for taking
+pictures and sharing them to the KituraBluePic community. </string>
+                                        <attributes>
+                                            <color key="NSColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <font key="NSFont" metaFont="system" size="14"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineHeightMultiple="1.5" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xvc-eo-SFq" userLabel="FBLoginButton" customClass="FBSDKLoginButton">
+                                <rect key="frame" x="203" y="485" width="194" height="44"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="XWU-Km-M9a"/>
+                                    <constraint firstAttribute="width" constant="194" id="wQA-QL-C1p"/>
+                                </constraints>
+                                <connections>
+                                    <action selector="loginTapped:" destination="BYZ-38-t0r" eventType="valueChanged" id="Dhc-lo-35G"/>
+                                </connections>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="95a-zj-J5d" userLabel="Sign In">
+                                <rect key="frame" x="240" y="555" width="120" height="30"/>
+                                <color key="backgroundColor" red="0.46903111347282689" green="0.71959629084699894" blue="1" alpha="0.67736037234042556" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="120" id="aaJ-A5-aeg"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="120" id="oKF-Eq-CtH"/>
+                                    <constraint firstAttribute="height" constant="30" id="vbS-LO-cY9"/>
+                                </constraints>
+                                <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="   Sign In   "/>
+                                <connections>
+                                    <action selector="signIn:" destination="BYZ-38-t0r" eventType="touchUpInside" id="dnA-9K-COO"/>
+                                </connections>
+                            </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2uY-Xz-0wW" userLabel="GoogleLoginButton" customClass="GIDSignInButton">
+                                <rect key="frame" x="200" y="548" width="200" height="44"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="MhY-NI-xmJ"/>
+                                </constraints>
+                                <connections>
+                                    <action selector="loginTapped:" destination="BYZ-38-t0r" eventType="valueChanged" id="Pvg-QH-8N5"/>
+                                </connections>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Xvc-eo-SFq" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="3yJ-oa-N3h"/>
+                            <constraint firstItem="JA3-DV-7dk" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" constant="219" id="4Gc-mR-BBA"/>
+                            <constraint firstItem="2uY-Xz-0wW" firstAttribute="centerX" secondItem="95a-zj-J5d" secondAttribute="centerX" id="5fO-JV-GgX"/>
+                            <constraint firstItem="kbc-F9-DYE" firstAttribute="trailing" secondItem="gtv-K7-hIk" secondAttribute="trailing" id="7uQ-71-WKB"/>
+                            <constraint firstItem="OyD-TT-jb1" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" constant="68" id="9Mx-VI-8DS"/>
+                            <constraint firstItem="h0t-oU-Q29" firstAttribute="centerX" secondItem="kbc-F9-DYE" secondAttribute="centerX" id="FAl-Hy-RFh"/>
+                            <constraint firstItem="95a-zj-J5d" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="535" id="GTc-Ag-Qdf"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="gtv-K7-hIk" secondAttribute="bottom" constant="123" id="JOd-X9-MNN"/>
+                            <constraint firstItem="ANO-Gs-Tk5" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" id="Jlx-8C-0GH"/>
+                            <constraint firstItem="Xvc-eo-SFq" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="465" id="LiH-vR-gQI"/>
+                            <constraint firstItem="gtv-K7-hIk" firstAttribute="top" secondItem="h0t-oU-Q29" secondAttribute="bottom" constant="29" id="OIx-FR-SeV"/>
+                            <constraint firstItem="cIW-Ou-STz" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" constant="175" id="PQt-gW-VB2"/>
+                            <constraint firstItem="95a-zj-J5d" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="QQe-4v-Bqs"/>
+                            <constraint firstItem="gtv-K7-hIk" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" constant="0.5" id="TUv-VN-qfh"/>
+                            <constraint firstItem="cIW-Ou-STz" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" constant="6" id="WCY-Kg-EIr"/>
+                            <constraint firstItem="ANO-Gs-Tk5" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="Yk1-eN-7XX"/>
+                            <constraint firstItem="2uY-Xz-0wW" firstAttribute="width" secondItem="Xvc-eo-SFq" secondAttribute="width" constant="6" id="fmI-Id-cLD"/>
+                            <constraint firstItem="neQ-m5-2vk" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="591" id="gNZ-6P-gWk"/>
+                            <constraint firstItem="ANO-Gs-Tk5" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="kF3-0n-p2V"/>
+                            <constraint firstItem="JA3-DV-7dk" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" constant="3.5" id="loP-gA-4Md"/>
+                            <constraint firstItem="neQ-m5-2vk" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="nYn-YS-4L8"/>
+                            <constraint firstItem="2uY-Xz-0wW" firstAttribute="centerY" secondItem="95a-zj-J5d" secondAttribute="centerY" id="qIh-z3-PlN"/>
+                            <constraint firstItem="h0t-oU-Q29" firstAttribute="top" secondItem="kbc-F9-DYE" secondAttribute="bottom" constant="6" id="r5L-BP-FvS"/>
+                            <constraint firstItem="OyD-TT-jb1" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" constant="1" id="s7Y-kb-Ucf"/>
+                            <constraint firstItem="kbc-F9-DYE" firstAttribute="leading" secondItem="JA3-DV-7dk" secondAttribute="leading" id="vlU-c8-dxv"/>
+                            <constraint firstItem="ANO-Gs-Tk5" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="y6k-qc-rXf"/>
+                        </constraints>
+                    </view>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="600" height="667"/>
+                    <connections>
+                        <outlet property="connectingLabel" destination="kbc-F9-DYE" id="Ts9-80-Swv"/>
+                        <outlet property="fbLoginButton" destination="Xvc-eo-SFq" id="WPi-0i-JLa"/>
+                        <outlet property="googleLoginButton" destination="2uY-Xz-0wW" id="242-nj-pab"/>
+                        <outlet property="loadingIndicator" destination="h0t-oU-Q29" id="KDf-xP-VcR"/>
+                        <outlet property="signInButton" destination="95a-zj-J5d" id="rQD-7B-s0a"/>
+                        <outlet property="signInLaterButton" destination="neQ-m5-2vk" id="gFO-gx-1eF"/>
+                        <outlet property="welcomeLabel" destination="gtv-K7-hIk" id="qUd-Ih-I6b"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1544" y="917.5"/>
+        </scene>
+        <!--Feed-->
+        <scene sceneID="kfC-tD-Yra">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Feed" id="4hD-bY-mnH" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Item" id="y2u-Ya-NoP"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="foZ-Y4-VOg" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-340" y="831"/>
+        </scene>
+        <!--Camera-->
+        <scene sceneID="3yi-6Q-TFW">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Camera" id="jhr-8E-FCv" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Item" id="9Vc-qh-fBO"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="BoM-Z0-aOE" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-331.5" y="918"/>
+        </scene>
+        <!--Profile-->
+        <scene sceneID="YXc-Ac-pnI">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Profile" id="i9k-2w-xfc" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Item" id="XX6-5F-xys"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hEg-5K-fME" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-332" y="1003"/>
+        </scene>
+        <!--Settings-->
+        <scene sceneID="1m4-uJ-bGm">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Settings" id="CNI-Xn-Zpi" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Item" id="v32-BK-Cbm"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="80w-a1-0Ri" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-329.5" y="1072"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="login_background" width="375" height="667"/>
+        <image name="loginlogo" width="77" height="73"/>
+    </resources>
+</document>
