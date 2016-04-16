@@ -42,7 +42,6 @@ Log.logger = HeliumLogger()
 
 // Define "global" variables for module
 let router = Router()
-let config: Configuration
 let database: Database
 
 // Create authentication credentials middlewares
@@ -54,7 +53,7 @@ credentials.register(googleCredentials)
 
 do {
   // Create Configuration object
-  config = try Configuration()
+  let config = try Configuration()
   let dbClient = CouchDBClient(connectionProperties: config.couchDBConnProps)
   database = dbClient.database(config.couchDBName)
 
