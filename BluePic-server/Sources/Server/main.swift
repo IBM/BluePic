@@ -23,7 +23,6 @@ import LoggerAPI
 import HeliumLogger
 import Credentials
 import CredentialsFacebookToken
-import CredentialsGoogleToken
 import SwiftyJSON
 
 ///
@@ -46,10 +45,8 @@ let database: Database
 
 // Create authentication credentials middlewares
 let fbCredentials = CredentialsFacebookToken()
-let googleCredentials = CredentialsGoogleToken()
 let credentials = Credentials()
 credentials.register(fbCredentials)
-credentials.register(googleCredentials)
 
 do {
   // Create Configuration object
@@ -61,7 +58,7 @@ do {
   defineRoutes()
 
   // Start server...
-  let server = HttpServer.listen(8090, delegate: router)
+  HttpServer.listen(8090, delegate: router)
   Server.run()
 } catch Configuration.Error.IO {
   Log.error("Oops, something went wrong... Server did not start!")
