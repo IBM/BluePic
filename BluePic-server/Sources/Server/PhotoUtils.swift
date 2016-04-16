@@ -29,6 +29,7 @@ func parsePhotosList(list: JSON) -> JSON {
     let empty = [[String:String]]()
     return JSON(empty)
   }
+
   for index in 0...(listLength - 1) {
     let photoId = list["rows"][index]["id"].stringValue
     let date = list["rows"][index]["key"].stringValue
@@ -41,7 +42,6 @@ func parsePhotosList(list: JSON) -> JSON {
 
     let photo = JSON(["title": title,  "date": date, "ownerId": ownerId, "ownerName": ownerName, "picturePath": "\(photoId)/\(attachmentName)"])
     photos.append(photo)
-
   }
   return JSON(photos)
 }
@@ -74,7 +74,6 @@ func createPhotoDocument(request: RouterRequest) -> (JSONDictionary?, String?) {
       return (doc, contentType)
     }
   }
-
   return (nil, nil)
 }
 
