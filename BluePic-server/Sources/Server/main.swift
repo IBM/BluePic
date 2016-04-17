@@ -24,6 +24,7 @@ import HeliumLogger
 import Credentials
 import CredentialsFacebookToken
 import SwiftyJSON
+import CFEnvironment
 
 ///
 /// Because bridging is not complete in Linux, we must use Any objects for dictionaries
@@ -57,8 +58,12 @@ do {
   // Define routes
   defineRoutes()
 
+  // Get environment config
+  let appEnv = try CFEnvironment.getAppEnv()
+  let port = appEnv.port
+
   // Start server...
-  HttpServer.listen(8090, delegate: router)
+  HttpServer.listen(port, delegate: router)
   Server.run()
 } catch Configuration.Error.IO {
   Log.error("Oops, something went wrong... Server did not start!")

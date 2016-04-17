@@ -1,0 +1,5 @@
+---
+applications:
+- name: BluePic
+  random-route: true
+  memory:  128M
