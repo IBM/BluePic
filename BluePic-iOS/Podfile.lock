@@ -33,9 +33,9 @@ PODS:
   - IMFFacebookAuthentication (1.0.14):
     - Facebook-iOS-SDK (~> 3.19)
     - IMFCore (~> 1.0.14)
-  - SDWebImage (3.7.3):
-    - SDWebImage/Core (= 3.7.3)
-  - SDWebImage/Core (3.7.3)
+  - SDWebImage (3.7.5):
+    - SDWebImage/Core (= 3.7.5)
+  - SDWebImage/Core (3.7.5)
 
 DEPENDENCIES:
   - CDTDatastore
@@ -50,6 +50,6 @@ SPEC CHECKSUMS:
   FMDB: e78c5941bb10563f2b707255119e3655e790c29e
   IMFCore: 465f1aa36715b2e9bebfa8da77e0d08ce452a871
   IMFFacebookAuthentication: 2cb30db1704b6119caac50de1da81c65ceb4435a
-  SDWebImage: 1d2b1a1efda1ade1b00b6f8498865f8ddedc8a84
+  SDWebImage: 69c6303e3348fba97e03f65d65d4fbc26740f461
 
 COCOAPODS: 0.39.0
