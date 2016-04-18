@@ -1,4 +1,7 @@
-#Kitura BluePic
+#BluePic
+
+**This repo is not ready for comsumption yet. This is a new development effort that has just started. If you are looking for the Kitura-BluePic repo, please visit this URL: https://github.com/IBM-Swift/Kitura-BluePic.**
+
 
 Kitura BluePic is a sample application for iOS that shows you how to connect your mobile application with Kitura server written in Swift. It is a photo sharing app that allows you to take photos, upload them and share them with the Kitura BluePic community.
 
