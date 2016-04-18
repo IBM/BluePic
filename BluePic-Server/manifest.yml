@@ -1,25 +1,6 @@
-declared-services:
-  BluePic cloudantNoSQLDB:
-    label: cloudantNoSQLDB
-    plan:  Shared
-  BluePic imfpush:
-    label: imfpush
-    plan: Basic
-  BluePic AdvancedMobileAccess:
-    label: AdvancedMobileAccess
-    plan: Bronze
-  Object Storage-rz:
-    label: Object-Storage
-    plan: Free
+---
 applications:
-- path: ./BluePic-Server
-  memory: 512M
-  instances: 1
-  name: BluePic
+- name: BluePic
   random-route: true
+  memory: 512M
   disk_quota: 1024M
-  services:
-  - BluePic cloudantNoSQLDB
-  - BluePic imfpush
-  - BluePic AdvancedMobileAccess
-  - Object Storage-rz
