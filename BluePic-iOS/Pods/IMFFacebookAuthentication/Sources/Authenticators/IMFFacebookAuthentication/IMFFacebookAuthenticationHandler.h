@@ -11,7 +11,7 @@
 #import "IMFFacebookAuthenticationDelegate.h"
 
 /**
- * Interface for handling Facebook authentication challenges from Advanced Mobile Access.
+ * Interface for handling Facebook authentication challenges from Mobile Client Access.
  */
 @interface IMFFacebookAuthenticationHandler : NSObject <IMFAuthenticationDelegate>
 
@@ -35,7 +35,7 @@
 - (void) registerWithDelegate:(id<IMFFacebookAuthenticationDelegate>)facebookAuthenticationDelegate;
 
 /**
- * Passes the Facebook access token back to Advanced Mobile Access.
+ * Passes the Facebook access token back to Mobile Client Access.
  *
  * @param facebookAccessToken Facebook access token.
  */
@@ -47,6 +47,14 @@
  * @param userInfo Error user information
  */
 - (void) didFailFacebookAuthenticationWithUserInfo:(NSDictionary*) userInfo;
+
+
+/**
+ *  Logs out current logged in user from Google.
+ *
+ *  @param completionHandler - completion handler to be called after request is complete.
+ */
+- (void) logout:(void(^) (IMFResponse* response, NSError* error))completionHandler;
 
 @end
 

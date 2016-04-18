@@ -10,6 +10,7 @@
  */
 
 #import <IMFCore/IMFCore.h>
+#import <FacebookSDK/FacebookSDK.h>
 #import "IMFFacebookAuthenticationHandler.h"
 #import "IMFDefaultFacebookAuthenticationDelegate.h"
 
@@ -66,6 +67,12 @@ NSString *const FACEBOOK_APP_ID_KEY = @"facebookAppId";
 
 - (void) authenticationContext:(id<IMFAuthenticationContext>)context didReceiveAuthenticationSuccess:(NSDictionary *)userInfo {
     currentContext = nil;
+}
+
+- (void) logout:(void(^) (IMFResponse* response, NSError* error))completionHandler {
+    [[FBSession activeSession] close];
+    [[FBSession activeSession] closeAndClearTokenInformation];
+    [[IMFAuthorizationManager sharedInstance] logout: completionHandler];
 }
 
 @end

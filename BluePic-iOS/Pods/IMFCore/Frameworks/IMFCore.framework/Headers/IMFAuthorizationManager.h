@@ -32,6 +32,7 @@ typedef NS_ENUM(NSInteger, IMFAuthorizationPerisistencePolicy) {
 
 @property (nonatomic, readonly) NSDictionary *appIdentity;
 
+
 /**
  *  Gets IMFAuthorizationManager shared instance
  *
@@ -74,7 +75,7 @@ typedef NS_ENUM(NSInteger, IMFAuthorizationPerisistencePolicy) {
  *  The access tokens are never persisted, meaning that an access token is 
  *  valid for the duration of the application session only.</ul>
  *  <p>
- *  The default policy is __IMFAuthorizationPerisistencePolicyAlways__.
+ *  The default policy is __IMFAuthorizationPerisistencePolicyNever__.
  *  <p>
  *  When this policy has been set, but there is no access to Touch ID, for example, 
  *  because the necessary hardware is not present or has been disabled, 
@@ -97,6 +98,11 @@ typedef NS_ENUM(NSInteger, IMFAuthorizationPerisistencePolicy) {
 - (void) setAuthorizationPersistencePolicy: (IMFAuthorizationPerisistencePolicy) policy;
 
 /**
+ * Returns current persistence policy
+ */
+- (IMFAuthorizationPerisistencePolicy) getAuthorizationPersistensePolicy;
+
+/**
  * A response is an OAuth error response only if,
  * 1. it's status is 401 or 403
  * 2. The value of the "WWW-Authenticate" header contains 'Bearer'
@@ -114,4 +120,15 @@ typedef NS_ENUM(NSInteger, IMFAuthorizationPerisistencePolicy) {
  */
 - (BOOL) isAuthorizationRequired: (int)statusCode authorizationHeaderValue: (NSString*)authorizationHeaderValue;
 
+/**
+ * Removes authorization data from the keychain and memory. The access token will be brought from the server when the application tries to access 
+ * a protected resource next time.
+ */
+- (void) clearAuthorizationData;
+/**
+*  Logs out current logged in user.
+*  
+*  @param completionHandler - completion handler to be called after request is complete.
+*/
+- (void) logout:(void(^) (IMFResponse* response, NSError* error))completionHandler;
 @end

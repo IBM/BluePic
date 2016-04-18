@@ -1,10 +1,10 @@
 PODS:
-  - Bolts (1.5.0):
-    - Bolts/AppLinks (= 1.5.0)
-    - Bolts/Tasks (= 1.5.0)
-  - Bolts/AppLinks (1.5.0):
+  - Bolts (1.7.0):
+    - Bolts/AppLinks (= 1.7.0)
+    - Bolts/Tasks (= 1.7.0)
+  - Bolts/AppLinks (1.7.0):
     - Bolts/Tasks
-  - Bolts/Tasks (1.5.0)
+  - Bolts/Tasks (1.7.0)
   - CDTDatastore (1.0.0):
     - CDTDatastore/standard (= 1.0.0)
   - CDTDatastore/common-dependencies (1.0.0):
@@ -22,17 +22,17 @@ PODS:
     - CocoaLumberjack/Core
   - CocoaLumberjack/Extensions (2.2.0):
     - CocoaLumberjack/Default
-  - Facebook-iOS-SDK (3.24.1):
+  - Facebook-iOS-SDK (3.24.4):
     - Bolts (~> 1.2)
   - FMDB (2.3):
     - FMDB/standard (= 2.3)
   - FMDB/common (2.3)
   - FMDB/standard (2.3):
     - FMDB/common
-  - IMFCore (1.0.7)
-  - IMFFacebookAuthentication (1.0.0):
+  - IMFCore (1.0.14)
+  - IMFFacebookAuthentication (1.0.14):
     - Facebook-iOS-SDK (~> 3.19)
-    - IMFCore (~> 1.0.0)
+    - IMFCore (~> 1.0.14)
   - SDWebImage (3.7.3):
     - SDWebImage/Core (= 3.7.3)
   - SDWebImage/Core (3.7.3)
@@ -43,13 +43,13 @@ DEPENDENCIES:
   - SDWebImage (~> 3.7)
 
 SPEC CHECKSUMS:
-  Bolts: 722ab9a4f8b50fc4ed1b9998a5a7a2b3f16d80b4
+  Bolts: a0058fa3b331c5a1e4402d534f2dae36dbff31e4
   CDTDatastore: ff31119f168689ab9ab7b339b02327f21a2b3cfa
   CocoaLumberjack: 17fe8581f84914d5d7e6360f7c70022b173c3ae0
-  Facebook-iOS-SDK: 08689c2690dc4e087b9c8e171e48667608b72a2a
-  FMDB: 773d79bb74226959b7e2286b1d6e0bd857c88915
-  IMFCore: dfba72f52c9c55a5a0bd6bfe9b9e43e8db4de526
-  IMFFacebookAuthentication: 065e0b5d377ecdb6e5fafb160fecb8d359b04375
+  Facebook-iOS-SDK: 5a7c414a084708220b72d5fd016f2cf3eb6deda4
+  FMDB: e78c5941bb10563f2b707255119e3655e790c29e
+  IMFCore: 465f1aa36715b2e9bebfa8da77e0d08ce452a871
+  IMFFacebookAuthentication: 2cb30db1704b6119caac50de1da81c65ceb4435a
   SDWebImage: 1d2b1a1efda1ade1b00b6f8498865f8ddedc8a84
 
 COCOAPODS: 0.39.0

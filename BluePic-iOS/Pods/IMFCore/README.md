@@ -1,13 +1,12 @@
-MobileFirst Platform for iOS SDK for IBM Bluemix
+Bluemix MobileFirst Services SDK for iOS
 ===
 
-This package contains the required native components to interact with the IBM
-MobileFirst Platform for iOS.  The SDK manages all the communication and security integration between
-the iOS mobile app and with the MobileFirst Platform for iOS in Bluemix.
+This package contains the required native components to interact with the Bluemix Mobile Services.  The SDK manages all the communication and security integration between
+the iOS mobile app and with the Bluemix Mobile Services.
 
 When you use Bluemix to create an application,
 multiple services are provisioned under a single application context. Your mobile application is given
-access to the following mobile services: Mobile Client Access (which includes security, analytics, and logging), Push for iOS8, and Cloudant NoSQL DB.
+access to the following mobile services: Mobile Client Access (which includes security, analytics, and logging), Push Notifications, and Cloudant NoSQL DB.
 
 Version: 1.0.0
 
@@ -23,7 +22,7 @@ file is included for you.
 
 ###SDK contents
 The complete SDK consists of a core, plus a collection of pods that correspond to functions that are exposed
-by the MobileFirst Platform for iOS.  Each piece of the iOS SDK is available as a separate pod
+by the Bluemix Mobile Services.  Each piece of the iOS SDK is available as a separate pod
 through CocoaPods,
 that you can add to your project individually. The MobileFirst Platform for iOS SDK contains the following
 pods, any of which you can add to your project:
@@ -39,6 +38,7 @@ pods, any of which you can add to your project:
 ###Supported iOS levels
 - iOS 7
 - iOS 8
+- iOS 9
 
 ###Getting started
 Connectivity and interaction between your mobile app and
@@ -62,7 +62,7 @@ IMFClient.sharedInstance().initializeWithBackendRoute(applicationRoute, backendG
 ###Learning More
    * Visit the **[Bluemix Developers Community](https://developer.ibm.com/bluemix/)**.
 
-   * [Getting started with IBM MobileFirst Platfrom for iOS](https://www.ng.bluemix.net/docs/#starters/mobilefirst/gettingstarted/index.html#gettingstarted)
+   * [Getting started with Bluemix Mobile Services](https://www.ng.bluemix.net/docs/#starters/mobilefirst/gettingstarted/index.html#gettingstarted)
 
 ###Connect with Bluemix
 
@@ -73,7 +73,7 @@ IMFClient.sharedInstance().initializeWithBackendRoute(applicationRoute, backendG
 [Meetup](http://www.meetup.com/bluemix/)
 
 *Licensed Materials - Property of IBM
-(C) Copyright IBM Corp. 2013, 2014. All Rights Reserved.
+(C) Copyright IBM Corp. 2013, 2015. All Rights Reserved.
 US Government Users Restricted Rights - Use, duplication or
 disclosure restricted by GSA ADP Schedule Contract with IBM Corp.*
 
