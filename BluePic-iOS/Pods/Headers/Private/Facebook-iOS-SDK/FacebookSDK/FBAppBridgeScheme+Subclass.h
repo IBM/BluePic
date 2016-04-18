@@ -1,0 +1,1 @@
+../../../../Facebook-iOS-SDK/src/DeviceAPI/FBAppBridgeScheme+Subclass.h

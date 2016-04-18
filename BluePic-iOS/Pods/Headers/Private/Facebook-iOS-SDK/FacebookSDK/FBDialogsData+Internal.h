@@ -1,0 +1,1 @@
+../../../../Facebook-iOS-SDK/src/DeviceAPI/FBDialogsData+Internal.h
