@@ -23,16 +23,16 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb1945722362319797</string>
+				<string>fb1545401759089721</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>FacebookAppID</key>
-	<string>1945722362319797</string>
+	<string>1545401759089721</string>
 	<key>FacebookDisplayName</key>
-	<string>BluePic</string>
+	<string>IBM BluePic</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>fbauth2</string>
