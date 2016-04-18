@@ -1,6 +1,6 @@
 // MultipartFormDataTests.swift
 //
-// Copyright (c) 2014–2015 Alamofire Software Foundation (http://alamofire.org/)
+// Copyright (c) 2014–2016 Alamofire Software Foundation (http://alamofire.org/)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -1384,5 +1384,35 @@ class ServerTrustPolicyCustomEvaluationTestCase: ServerTrustPolicyTestCase {
 
         // Then
         XCTAssertFalse(serverTrustIsValid, "server trust should not pass evaluation")
+    }
+}
+
+// MARK: -
+
+class ServerTrustPolicyCertificatesInBundleTestCase: ServerTrustPolicyTestCase {
+    func testOnlyValidCertificatesAreDetected() {
+        // Given
+        // Files present in bundle in the form of type+encoding+extension [key|cert][DER|PEM].[cer|crt|der|key|pem]
+        // certDER.cer: DER-encoded well-formed certificate
+        // certDER.crt: DER-encoded well-formed certificate
+        // certDER.der: DER-encoded well-formed certificate
+        // certPEM.*: PEM-encoded well-formed certificates, expected to fail: Apple API only handles DER encoding
+        // devURandomGibberish.crt: Random data, should fail
+        // keyDER.der: DER-encoded key, not a certificate, should fail
+
+        // When
+        let certificates = ServerTrustPolicy.certificatesInBundle(
+            NSBundle(forClass: ServerTrustPolicyCertificatesInBundleTestCase.self)
+        )
+
+        // Then
+        // Expectation: 18 well-formed certificates in the test bundle plus 4 invalid certificates.
+        #if os(OSX)
+            // For some reason, OSX is allowing all certificates to be considered valid. Need to file a
+            // rdar demonstrating this behavior.
+            XCTAssertEqual(certificates.count, 22, "Expected 22 well-formed certificates")
+        #else
+            XCTAssertEqual(certificates.count, 18, "Expected 18 well-formed certificates")
+        #endif
     }
 }

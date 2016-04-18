@@ -1,6 +1,6 @@
 // NSURLSessionConfiguration+AlamofireTests.swift
 //
-// Copyright (c) 2014–2015 Alamofire Software Foundation (http://alamofire.org/)
+// Copyright (c) 2014–2016 Alamofire Software Foundation (http://alamofire.org/)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -26,15 +26,11 @@ extension NSURLSessionConfiguration {
     static func backgroundSessionConfigurationForAllPlatformsWithIdentifier(identifier: String) -> NSURLSessionConfiguration {
         let configuration: NSURLSessionConfiguration
 
-        #if os(iOS) || os(watchOS) || os(tvOS)
+        if #available(OSX 10.10, *) {
             configuration = NSURLSessionConfiguration.backgroundSessionConfigurationWithIdentifier(identifier)
-        #else
-            if #available(OSX 10.10, *) {
-                configuration = NSURLSessionConfiguration.backgroundSessionConfigurationWithIdentifier(identifier)
-            } else {
-                configuration = NSURLSessionConfiguration.backgroundSessionConfiguration(identifier)
-            }
-        #endif
+        } else {
+            configuration = NSURLSessionConfiguration.backgroundSessionConfiguration(identifier)
+        }
 
         return configuration
     }

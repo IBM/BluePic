@@ -3,7 +3,9 @@ All notable changes to this project will be documented in this file.
 `Alamofire` adheres to [Semantic Versioning](http://semver.org/).
 
 #### 3.x Releases
-- `3.1.x` Releases - [3.1.0](#310) | [3.1.1](#311) | [3.1.2](#312) | [3.1.3](#313)
+- `3.3.x` Releases - [3.3.0](#330) | [3.3.1](#331)
+- `3.2.x` Releases - [3.2.0](#320) | [3.2.1](#321)
+- `3.1.x` Releases - [3.1.0](#310) | [3.1.1](#311) | [3.1.2](#312) | [3.1.3](#313) | [3.1.4](#314) | [3.1.5](#315)
 - `3.0.x` Releases - [3.0.0](#300) | [3.0.1](#301)
 - `3.0.0` Betas - [3.0.0-beta.1](#300-beta1) | [3.0.0-beta.2](#300-beta2) | [3.0.0-beta.3](#300-beta3)
 
@@ -18,6 +20,192 @@ All notable changes to this project will be documented in this file.
 - `1.0.x` Releases - [1.0.0](#100) | [1.0.1](#101)
 
 ---
+
+## [3.3.1](https://github.com/Alamofire/Alamofire/releases/tag/3.3.1)
+Released on 2016-04-06. All issues associated with this milestone can be found using this
+[filter](https://github.com/Alamofire/Alamofire/issues?utf8=✓&q=milestone%3A3.3.1).
+
+#### Added
+- Tests for the `SessionDelegate` redirect with completion override closure.
+  - Added by [Kevin Harwood](https://github.com/kcharwood) in Pull Request
+  [#1141](https://github.com/Alamofire/Alamofire/issues/1141)
+- Tests for all the `SessionDelegate` override closures.
+  - Added by [Christian Noon](https://github.com/cnoon).
+
+#### Updated
+- The authentication test cases to clear out all cookies to help stabilize Travis-CI.
+  - Updated by [Christian Noon](https://github.com/cnoon).
+- The cache test check for no store header to use availability checks.
+  - Updated by [Christian Noon](https://github.com/cnoon).
+
+#### Fixed
+- The `respondsToSelector` check for the new HTTP redirect closure with completion.
+  - Fixed by [Kevin Harwood](https://github.com/kcharwood) in Pull Request
+  [#1141](https://github.com/Alamofire/Alamofire/issues/1141) in Regards to Issue
+  [#1140](https://github.com/Alamofire/Alamofire/issues/1140).
+- Issue where the challenge and response `SessionDelegate` override closures were not called.
+  - Fixed by [Christian Noon](https://github.com/cnoon).
+- Typo in the Travis YAML file that was causing all tests to always fail on iOS 9.1.
+  - Fixed by [Christian Noon](https://github.com/cnoon).
+- Race condition in the cache tests that was causing random failures on Travis-CI.
+  - Fixed by [Christian Noon](https://github.com/cnoon).
+
+## [3.3.0](https://github.com/Alamofire/Alamofire/releases/tag/3.3.0)
+Released on 2016-03-23. All issues associated with this milestone can be found using this
+[filter](https://github.com/Alamofire/Alamofire/issues?utf8=✓&q=milestone%3A3.3.0).
+
+#### Added
+- Added override closures for all `SessionDelegate` APIs with completion handlers.
+  - Added by [Christian Noon](https://github.com/cnoon) in Pull Request
+  [#1099](https://github.com/Alamofire/Alamofire/pull/1099).
+
+#### Updated
+- The `User-Agent` header implementation to use more aggresive type-safety checks.
+  - Updated by [Christian Noon](https://github.com/cnoon) in Regards to Issue
+  [#1100](https://github.com/Alamofire/Alamofire/issues/1100).
+- All shared response serializers to accept a custom queue for execution.
+  - Updated by [Luca Torella](https://github.com/lucatorella) in Pull Request
+  [#1112](https://github.com/Alamofire/Alamofire/pull/1112).
+- The network reachability manager to use IPv4 on iOS 8.x and OSX 10.9.x.
+  - Updated by [Christian Noon](https://github.com/cnoon) in Regards to Issue
+  [#1086](https://github.com/Alamofire/Alamofire/issues/1086).
+- All source, test and example code to compile against Swift 2.2.
+  - Updated by [James Barrow](https://github.com/Baza207) and [Dominik Hadl](https://github.com/nickskull) in Pull Requests
+  [#1030](https://github.com/Alamofire/Alamofire/pull/1030) and
+  [#1128](https://github.com/Alamofire/Alamofire/pull/1128).
+- The Travis CI YAML file to use Xcode 7.3 and also updated matrix targets.
+  - Updated by [Christian Noon](https://github.com/cnoon).
+
+#### Fixed
+- Issue in JSON response serialization test case where the wrong serializer was being tested.
+  - Fixed by [Gregory J.H. Rho](https://github.com/topchul) in Pull Request
+  [#1108](https://github.com/Alamofire/Alamofire/pull/1108).
+- Issue where multipart form data encoding was unnecessarily scheduling input and output
+  streams with the current runloop.
+  - Fixed by [Brian King](https://github.com/KingOfBrian) in Pull Request
+  [#1121](https://github.com/Alamofire/Alamofire/pull/1121).
+
+#### Upgrade Notes
+This release requires Xcode 7.3+ otherwise the Swift 2.2 changes will **NOT COMPILE**. There are several reasons why this was deployed as a MINOR and not MAJOR release. First off, the public API changes of this release are fully backwards compatible. There are no breaking API changes in the public APIs. Strictly following semver dictates that this is a MINOR, not MAJOR release.
+
+> See [semver](http://semver.org/#semantic-versioning-specification-semver) for more info.
+
+We also realize that this can be frustrating for those out there not ready to upgrade to Xcode 7.3. Please know that we consider each release version carefully before deploying. Our decision to bump the MINOR version was not only due to strictly following semver, but also because it's difficult and undesirable for all OSS libraries to bump MAJOR versions each time the Swift APIs are incremented. Alamofire would have had to go through 6 additional MAJOR versions if this was the policy. That would mean we'd already be running on Alamofire 10.x. Incrementing MAJOR versions this quickly is disruptive to the community and would cause even more confusion. Instead, we try to carefully plan our MAJOR version releases and accompany them with detailed Migration Guides to help make the transition as smooth as possible.
+
+If anyone has additional questions, please feel free to open an issue and we'll be more than happy to discuss further.
+
+---
+
+## [3.2.1](https://github.com/Alamofire/Alamofire/releases/tag/3.2.1)
+Released on 2016-02-27. All issues associated with this milestone can be found using this
+[filter](https://github.com/Alamofire/Alamofire/issues?utf8=✓&q=milestone%3A3.2.1).
+
+#### Updated
+- `StringResponseSerializer` implementation to build with the latest Swift toolchain.
+  - Updated by [Chris Cieslak](https://github.com/vivid-cieslak) in Pull Request
+  [#1050](https://github.com/Alamofire/Alamofire/pull/1050).
+- Expanded the Component Libraries section and moved it up in the README.
+  - Updated by [Christian Noon](https://github.com/cnoon).
+
+#### Fixed
+- Issue where JSON and plist custom content types were not retained during parameter encoding.
+  - Fixed by [Christian Noon](https://github.com/cnoon) in Pull Request
+  [#1088](https://github.com/Alamofire/Alamofire/pull/1088).
+
+## [3.2.0](https://github.com/Alamofire/Alamofire/releases/tag/3.2.0)
+Released on 2016-02-07. All issues associated with this milestone can be found using this
+[filter](https://github.com/Alamofire/Alamofire/issues?utf8=✓&q=milestone%3A3.2.0).
+
+#### Added
+- Notifications that post when an `NSURLSessionTask` changes state to allow support for the 
+  network activity indicator.
+  - Added by [Christian Noon](https://github.com/cnoon).
+- `Timeline` struct to capture timings throughout the lifecycle of a `Request`.
+  - Added by [Christian Noon](https://github.com/cnoon) in Pull Request
+  [#1054](https://github.com/Alamofire/Alamofire/issues/1054).
+- A new `Timeline` section to the README.
+  - Added by [Christian Noon](https://github.com/cnoon) in Pull Request
+  [#1054](https://github.com/Alamofire/Alamofire/issues/1054).
+- `NetworkReachabilityManager` to listen for reachability status changes.
+  - Added by [Christian Noon](https://github.com/cnoon) in Pull Request
+  [#1053](https://github.com/Alamofire/Alamofire/issues/1053).
+- Unit tests for all the testable network reachability manager APIs.
+  - Added by [Christian Noon](https://github.com/cnoon) in Pull Request
+  [#1053](https://github.com/Alamofire/Alamofire/issues/1053).
+- A new `Network Reachability` section to the README.
+  - Added by [Christian Noon](https://github.com/cnoon) in Pull Request
+  [#1053](https://github.com/Alamofire/Alamofire/issues/1053).
+
+#### Updated
+- The `NSURLSessionStream` APIs to support `tvOS`.
+  - Updated by [Christian Noon](https://github.com/cnoon).
+- The `ParameterEncoding` encode method to allow empty parameters to still be encoded.
+  - Updated by [Christian Noon](https://github.com/cnoon) in Regards to Issues
+  [#1032](https://github.com/Alamofire/Alamofire/issues/1032) and
+  [#1049](https://github.com/Alamofire/Alamofire/issues/1049).
+
+#### Fixed
+- Broken CocoaDocs generation by moving iOS Example project into Examples folder.
+  - Fixed by [Jon Shier](https://github.com/jshier) in Pull Request
+  [#1027](https://github.com/Alamofire/Alamofire/issues/1027) in Regards to Issue
+  [#1025](https://github.com/Alamofire/Alamofire/issues/1025).
+
+---
+
+## [3.1.5](https://github.com/Alamofire/Alamofire/releases/tag/3.1.5)
+Released on 2016-01-17. All issues associated with this milestone can be found using this
+[filter](https://github.com/Alamofire/Alamofire/issues?utf8=✓&q=milestone%3A3.1.5).
+
+#### Added
+- `Package.swift` to the project to support Swift Package Manager (SPM).
+  - Added by [Kyle Fuller](https://github.com/kylef) in Pull Request
+  [#979](https://github.com/Alamofire/Alamofire/pull/979).
+- Safeguards to the `Request` class's `debugDescription` property.
+  - Added by [tokorom](https://github.com/tokorom) in Pull Request
+  [#983](https://github.com/Alamofire/Alamofire/pull/983).
+
+#### Updated
+- `Accept-Language` header generation to use functional style.
+  - Updated by [Dapeng Gao](https://github.com/dapenggao) in Pull Request
+  [#982](https://github.com/Alamofire/Alamofire/pull/982).
+- `Accept-Encoding` and `Accept-Language` header values to have separator spaces between values.
+  - Updated by [Christian Noon](https://github.com/cnoon).
+- Copyright headers to include 2016! 🎉🎉🎉
+  - Updated by [Christian Noon](https://github.com/cnoon).
+
+## [3.1.4](https://github.com/Alamofire/Alamofire/releases/tag/3.1.4)
+Released on 2015-12-16. All issues associated with this milestone can be found using this
+[filter](https://github.com/Alamofire/Alamofire/issues?utf8=✓&q=milestone%3A3.1.4).
+
+#### Added
+- `NSTemporaryExceptionMinimumTLSVersion` documentation to the ATS section in the README.
+  - Added by [Marandon Antoine](https://github.com/ntnmrndn) in Pull Request
+  [#952](https://github.com/Alamofire/Alamofire/pull/952).
+- Added `ReleaseTest` configuration to allow running tests against optimized build.
+  - Added by [Christian Noon](https://github.com/cnoon).
+
+#### Updated
+- Carthage instructions in the README to clearly callout the `carthage update` command.
+  - Updated by [vlad](https://github.com/vlastachu) in Pull Request
+  [#955](https://github.com/Alamofire/Alamofire/pull/955).
+- `ParameterEncoding` to early out when passed an empty parameters dictionary.
+  - Updated by [Anthony Miller](https://github.com/AnthonyMDev) in Pull Request
+  [#954](https://github.com/Alamofire/Alamofire/pull/954).  
+- The `certificatesInBundle` to support `cer`, `crt` and `der` extensions.
+  - Updated by [Jacob Jennings](https://github.com/jacobjennings) in Pull Request
+  [#956](https://github.com/Alamofire/Alamofire/pull/956).
+- The `ENABLE_TESTABILITY` flag to `NO` for Release configuration and disabled tests for
+  non-test builds to better support Carthage.
+  - Updated by [Jed Lewison](https://github.com/jedlewison) in Pull Request
+  [#953](https://github.com/Alamofire/Alamofire/pull/953).
+- The server certificates for the TLS tests and added all certificates to all test targets.
+  - Updated by [Christian Noon](https://github.com/cnoon).
+- The Travis-CI configuration to Xcode 7.2, iOS 9.2, tvOS 9.1 and watchOS 2.1.
+  - Updated by [Christian Noon](https://github.com/cnoon).
+
+#### Removed
+- `SecCertificate` array Swift workaround in `ServerTrustPolicy` for Xcode 7.2.
+  - Removed by [Christian Noon](https://github.com/cnoon).
 
 ## [3.1.3](https://github.com/Alamofire/Alamofire/releases/tag/3.1.3)
 Released on 2015-11-22. All issues associated with this milestone can be found using this

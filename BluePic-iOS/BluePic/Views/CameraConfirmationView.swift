@@ -106,8 +106,8 @@ class CameraConfirmationView: UIView, UITextFieldDelegate {
      Method to add show and hide keyboard observers
      */
     func addKeyboardObservers() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(CameraConfirmationView.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(CameraConfirmationView.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
     }
     
     /**

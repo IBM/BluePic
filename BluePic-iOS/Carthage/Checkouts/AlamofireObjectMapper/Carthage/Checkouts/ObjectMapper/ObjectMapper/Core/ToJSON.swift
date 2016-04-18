@@ -3,8 +3,28 @@
 //  ObjectMapper
 //
 //  Created by Tristan Himmelman on 2014-10-13.
-//  Copyright (c) 2014 hearst. All rights reserved.
 //
+//  The MIT License (MIT)
+//
+//  Copyright (c) 2014-2015 Hearst
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
 
 import class Foundation.NSNumber
 
@@ -46,50 +66,30 @@ private func setValue(value: AnyObject, forKeyPathComponents components: ArraySl
 internal final class ToJSON {
 	
 	class func basicType<N>(field: N, map: Map) {
-		func _setValue(value: AnyObject) {
-			setValue(value, map: map)
-		}
-
-		if let x = field as? NSNumber { // basic types
-			_setValue(x)
-		} else if let x = field as? Bool {
-			_setValue(x)
-		} else if let x = field as? Int {
-			_setValue(x)
-		} else if let x = field as? Double {
-			_setValue(x)
-		} else if let x = field as? Float {
-			_setValue(x)
-		} else if let x = field as? String {
-			_setValue(x)
-		} else if let x = field as? Array<NSNumber> { // Arrays
-			_setValue(x)
-		} else if let x = field as? Array<Bool> {
-			_setValue(x)
-		} else if let x = field as? Array<Int> {
-			_setValue(x)
-		} else if let x = field as? Array<Double> {
-			_setValue(x)
-		} else if let x = field as? Array<Float> {
-			_setValue(x)
-		} else if let x = field as? Array<String> {
-			_setValue(x)
-		} else if let x = field as? Array<AnyObject> {
-			_setValue(x)
-		} else if let x = field as? Dictionary<String, NSNumber> { // Dictionaries
-			_setValue(x)
-		} else if let x = field as? Dictionary<String, Bool> {
-			_setValue(x)
-		} else if let x = field as? Dictionary<String, Int> {
-			_setValue(x)
-		} else if let x = field as? Dictionary<String, Double> {
-			_setValue(x)
-		} else if let x = field as? Dictionary<String, Float> {
-			_setValue(x)
-		} else if let x = field as? Dictionary<String, String> {
-			_setValue(x)
-		} else if let x = field as? Dictionary<String, AnyObject> {
-			_setValue(x)
+		if let x = field as? AnyObject where false
+			|| x is NSNumber // Basic types
+			|| x is Bool
+			|| x is Int
+			|| x is Double
+			|| x is Float
+			|| x is String
+			|| x is Array<NSNumber> // Arrays
+			|| x is Array<Bool>
+			|| x is Array<Int>
+			|| x is Array<Double>
+			|| x is Array<Float>
+			|| x is Array<String>
+			|| x is Array<AnyObject>
+			|| x is Array<Dictionary<String, AnyObject>>
+			|| x is Dictionary<String, NSNumber> // Dictionaries
+			|| x is Dictionary<String, Bool>
+			|| x is Dictionary<String, Int>
+			|| x is Dictionary<String, Double>
+			|| x is Dictionary<String, Float>
+			|| x is Dictionary<String, String>
+			|| x is Dictionary<String, AnyObject>
+		{
+			setValue(x, map: map)
 		}
 	}
 

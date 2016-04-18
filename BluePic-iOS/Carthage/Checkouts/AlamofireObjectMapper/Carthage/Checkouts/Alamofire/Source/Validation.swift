@@ -1,6 +1,6 @@
 // Validation.swift
 //
-// Copyright (c) 2014–2015 Alamofire Software Foundation (http://alamofire.org/)
+// Copyright (c) 2014–2016 Alamofire Software Foundation (http://alamofire.org/)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -130,6 +130,8 @@ extension Request {
     */
     public func validate<S : SequenceType where S.Generator.Element == String>(contentType acceptableContentTypes: S) -> Self {
         return validate { _, response in
+            guard let validData = self.delegate.data where validData.length > 0 else { return .Success }
+
             if let
                 responseContentType = response.MIMEType,
                 responseMIMEType = MIMEType(responseContentType)

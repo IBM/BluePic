@@ -389,6 +389,7 @@
 				28652D394171C4F52E5A398D /* Embed Pods Frameworks */,
 				7D0179214381D54F428B05CB /* Copy Pods Resources */,
 				347AD2201C18E2DC00C3B473 /* Embed Frameworks */,
+				2ED38AE41CC588BA0093F9E2 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -507,6 +508,22 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		2ED38AE41CC588BA0093F9E2 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/Alamofire.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/AlamofireObjectMapper.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/ObjectMapper.framework",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks";
 		};
 		7D0179214381D54F428B05CB /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;

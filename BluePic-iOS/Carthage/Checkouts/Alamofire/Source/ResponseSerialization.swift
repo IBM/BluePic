@@ -1,6 +1,6 @@
 // ResponseSerialization.swift
 //
-// Copyright (c) 2014–2015 Alamofire Software Foundation (http://alamofire.org/)
+// Copyright (c) 2014–2016 Alamofire Software Foundation (http://alamofire.org/)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -29,10 +29,10 @@ import Foundation
 */
 public protocol ResponseSerializerType {
     /// The type of serialized object to be created by this `ResponseSerializerType`.
-    typealias SerializedObject
+    associatedtype SerializedObject
 
     /// The type of error to be created by this `ResponseSerializer` if serialization fails.
-    typealias ErrorObject: ErrorType
+    associatedtype ErrorObject: ErrorType
 
     /**
         A closure used by response handlers that takes a request, response, data and error and returns a result.
@@ -119,16 +119,25 @@ extension Request {
                 self.delegate.error
             )
 
-            dispatch_async(queue ?? dispatch_get_main_queue()) {
-                let response = Response<T.SerializedObject, T.ErrorObject>(
-                    request: self.request,
-                    response: self.response,
-                    data: self.delegate.data,
-                    result: result
-                )
+            let requestCompletedTime = self.endTime ?? CFAbsoluteTimeGetCurrent()
+            let initialResponseTime = self.delegate.initialResponseTime ?? requestCompletedTime
 
-                completionHandler(response)
-            }
+            let timeline = Timeline(
+                requestStartTime: self.startTime ?? CFAbsoluteTimeGetCurrent(),
+                initialResponseTime: initialResponseTime,
+                requestCompletedTime: requestCompletedTime,
+                serializationCompletedTime: CFAbsoluteTimeGetCurrent()
+            )
+
+            let response = Response<T.SerializedObject, T.ErrorObject>(
+                request: self.request,
+                response: self.response,
+                data: self.delegate.data,
+                result: result,
+                timeline: timeline
+            )
+
+            dispatch_async(queue ?? dispatch_get_main_queue()) { completionHandler(response) }
         }
 
         return self
@@ -167,8 +176,12 @@ extension Request {
 
         - returns: The request.
     */
-    public func responseData(completionHandler: Response<NSData, NSError> -> Void) -> Self {
-        return response(responseSerializer: Request.dataResponseSerializer(), completionHandler: completionHandler)
+    public func responseData(
+        queue queue: dispatch_queue_t? = nil,
+        completionHandler: Response<NSData, NSError> -> Void)
+        -> Self
+    {
+        return response(queue: queue, responseSerializer: Request.dataResponseSerializer(), completionHandler: completionHandler)
     }
 }
 
@@ -186,7 +199,7 @@ extension Request {
         - returns: A string response serializer.
     */
     public static func stringResponseSerializer(
-        var encoding encoding: NSStringEncoding? = nil)
+        encoding encoding: NSStringEncoding? = nil)
         -> ResponseSerializer<String, NSError>
     {
         return ResponseSerializer { _, response, data, error in
@@ -199,14 +212,16 @@ extension Request {
                 let error = Error.errorWithCode(.StringSerializationFailed, failureReason: failureReason)
                 return .Failure(error)
             }
-
-            if let encodingName = response?.textEncodingName where encoding == nil {
-                encoding = CFStringConvertEncodingToNSStringEncoding(
+            
+            var convertedEncoding = encoding
+            
+            if let encodingName = response?.textEncodingName where convertedEncoding == nil {
+                convertedEncoding = CFStringConvertEncodingToNSStringEncoding(
                     CFStringConvertIANACharSetNameToEncoding(encodingName)
                 )
             }
 
-            let actualEncoding = encoding ?? NSISOLatin1StringEncoding
+            let actualEncoding = convertedEncoding ?? NSISOLatin1StringEncoding
 
             if let string = String(data: validData, encoding: actualEncoding) {
                 return .Success(string)
@@ -229,11 +244,13 @@ extension Request {
         - returns: The request.
     */
     public func responseString(
-        encoding encoding: NSStringEncoding? = nil,
+        queue queue: dispatch_queue_t? = nil,
+        encoding: NSStringEncoding? = nil,
         completionHandler: Response<String, NSError> -> Void)
         -> Self
     {
         return response(
+            queue: queue,
             responseSerializer: Request.stringResponseSerializer(encoding: encoding),
             completionHandler: completionHandler
         )
@@ -285,11 +302,13 @@ extension Request {
         - returns: The request.
     */
     public func responseJSON(
-        options options: NSJSONReadingOptions = .AllowFragments,
+        queue queue: dispatch_queue_t? = nil,
+        options: NSJSONReadingOptions = .AllowFragments,
         completionHandler: Response<AnyObject, NSError> -> Void)
         -> Self
     {
         return response(
+            queue: queue,
             responseSerializer: Request.JSONResponseSerializer(options: options),
             completionHandler: completionHandler
         )
@@ -343,11 +362,13 @@ extension Request {
         - returns: The request.
     */
     public func responsePropertyList(
-        options options: NSPropertyListReadOptions = NSPropertyListReadOptions(),
+        queue queue: dispatch_queue_t? = nil,
+        options: NSPropertyListReadOptions = NSPropertyListReadOptions(),
         completionHandler: Response<AnyObject, NSError> -> Void)
         -> Self
     {
         return response(
+            queue: queue,
             responseSerializer: Request.propertyListResponseSerializer(options: options),
             completionHandler: completionHandler
         )
