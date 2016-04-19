@@ -34,11 +34,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         self.initializeBackendForFacebookAuth()
         
+        let notificationTypes: UIUserNotificationType = [UIUserNotificationType.Badge, UIUserNotificationType.Alert, UIUserNotificationType.Sound]
+        let notificationSettings: UIUserNotificationSettings = UIUserNotificationSettings(forTypes: notificationTypes, categories: nil)
+        application.registerUserNotificationSettings(notificationSettings)
+        application.registerForRemoteNotifications()
+        
         preLoadKeyboardToPrevantLaggyKeyboardInCameraConfirmationScreen()
         
         return true
     }
     
+    func application (application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData){
+        /*let push =  BMSPushClient.sharedInstance
+        push.registerDeviceToken(deviceToken) { (response, statusCode, error) -> Void in
+            if error.isEmpty {
+                print( "Response during device registration : \(response)")
+                print( "status code during device registration : \(statusCode)")
+            }
+            else{
+                print( "Error during device registration \(error) ")
+                Print( "Error during device registration \n  - status code: \(statusCode) \n Error :\(error) \n")
+            }
+        }*/
+        
+    }
+    
+    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
+        print("Received notification from server")
+    }
     
     /**
      Method preloads keyboard to prevant the keybaord on the camera confirmation screen to be laggy when touching the text field for the first time
