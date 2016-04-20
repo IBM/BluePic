@@ -37,6 +37,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         //self.initializeBackendForFacebookAuth(application, launchOptions: launchOptions)
         
+        MCARESTTestManager.SharedInstance.localHostTest()
+        MCARESTTestManager.SharedInstance.localHostHelloTest()
+        
+        
         let notificationTypes: UIUserNotificationType = [UIUserNotificationType.Badge, UIUserNotificationType.Alert, UIUserNotificationType.Sound]
         let notificationSettings: UIUserNotificationSettings = UIUserNotificationSettings(forTypes: notificationTypes, categories: nil)
         application.registerUserNotificationSettings(notificationSettings)
