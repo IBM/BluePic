@@ -1,0 +1,1 @@
+../../../BMSCore/Source/Resources/BMSCore.h

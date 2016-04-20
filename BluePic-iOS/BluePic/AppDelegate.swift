@@ -16,6 +16,9 @@
 
 
 import UIKit
+import BMSCore
+import BMSSecurity
+
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -32,11 +35,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
      - returns: Bool
      */
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        self.initializeBackendForFacebookAuth()
+        //self.initializeBackendForFacebookAuth(application, launchOptions: launchOptions)
         
         preLoadKeyboardToPrevantLaggyKeyboardInCameraConfirmationScreen()
         
-        return true
+        return self.initializeBackendForFacebookAuth(application, launchOptions: launchOptions)
     }
     
     
@@ -57,15 +60,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /**
      Method to initialize Bluemix Mobile Client Access with Facebook
      */
-    func initializeBackendForFacebookAuth() {
+    func initializeBackendForFacebookAuth(application: UIApplication, launchOptions: [NSObject: AnyObject]?) -> Bool {
         //Initialize backend
         let key = Utils.getKeyFromPlist("keys", key: "backend_route")
         let guid = Utils.getKeyFromPlist("keys", key: "GUID")
-        IMFClient.sharedInstance().initializeWithBackendRoute(key, backendGUID: guid);
+        //IMFClient.sharedInstance().initializeWithBackendRoute(key, backendGUID: guid);
+        BMSClient.sharedInstance.initializeWithBluemixAppRoute(key, bluemixAppGUID: guid, bluemixRegion: BMSClient.REGION_US_SOUTH)
     
+        
         //Initialize Facebook
-        IMFFacebookAuthenticationHandler.sharedInstance().registerWithDefaultDelegate()
-    
+        BMSClient.sharedInstance.authorizationManager = MCAAuthorizationManager.sharedInstance
+        //IMFFacebookAuthenticationHandler.sharedInstance().registerWithDefaultDelegate()
+        FacebookAuthenticationManager.sharedInstance.register()
+        
+        return FacebookAuthenticationManager.sharedInstance.onFinishLaunching(application, withOptions:  launchOptions)
     }
 
 
@@ -85,7 +93,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-        FBAppEvents.activateApp()
+        //FBAppEvents.activateApp()
     }
     
     
@@ -100,7 +108,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
      - returns: Bool
      */
     func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?,annotation: AnyObject) -> Bool {
-        return FBAppCall.handleOpenURL(url, sourceApplication:sourceApplication)
+        return FacebookAuthenticationManager.sharedInstance.onOpenURL(application, url: url, sourceApplication: sourceApplication, annotation: annotation)
+        //return FBAppCall.handleOpenURL(url, sourceApplication:sourceApplication)
     }
     
     

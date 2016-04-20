@@ -16,6 +16,7 @@
 
 
 import UIKit
+import BMSCore
 
 
 /// Manages all facebook authentication state and calls
@@ -89,8 +90,15 @@ class FacebookDataManager: NSObject {
      - parameter callback: Success or Failure
      */
     func getAuthToken(callback : ((networkRequest: NetworkRequest) -> ())) {
-       let authManager = IMFAuthorizationManager.sharedInstance()
-        authManager.obtainAuthorizationHeaderWithCompletionHandler( {(response: IMFResponse?, error: NSError?) in
+        
+        //let authManager = IMFAuthorizationManager.sharedInstance()
+        // authManager.obtainAuthorizationHeaderWithCompletionHandler( {(response: IMFResponse?, error: NSError?) in
+        
+        
+        
+        let authManager = BMSClient.sharedInstance.authorizationManager
+        authManager
+        authManager.obtainAuthorization(completionHandler: {(response: Response?, error: NSError?) in
             let errorMsg = NSMutableString()
             
             //error
@@ -109,8 +117,8 @@ class FacebookDataManager: NSObject {
                 //no error
             else {
                 if let identity = authManager.userIdentity {
-                    if let userID = identity["id"] as? NSString {
-                        if let userName = identity["displayName"] as? NSString {
+                    if let userID = identity.id  {
+                        if let userName = identity.displayName {
                         
                             //save username and id to shared instance of this class
                             self.fbUniqueUserID = userID as String
@@ -157,19 +165,19 @@ class FacebookDataManager: NSObject {
      - returns: true or false if valid or not
      */
     func checkIMFClient() -> Bool {
-        let imfClient = IMFClient.sharedInstance()
-        let route = imfClient.backendRoute
-        let guid = imfClient.backendGUID
-        
-        if (route == nil || route.characters.count == 0) {
-            print ("Invalid Route.\n Check applicationRoute in appdelegate")
-            return false
-        }
-        
-        if (guid == nil || guid.characters.count == 0) {
-            print ("Invalid GUID.\n Check applicationId in appdelegate")
-            return false
-        }
+//        let imfClient = IMFClient.sharedInstance()
+//        let route = imfClient.backendRoute
+//        let guid = imfClient.backendGUID
+//        
+//        if (route == nil || route.characters.count == 0) {
+//            print ("Invalid Route.\n Check applicationRoute in appdelegate")
+//            return false
+//        }
+//        
+//        if (guid == nil || guid.characters.count == 0) {
+//            print ("Invalid GUID.\n Check applicationId in appdelegate")
+//            return false
+//        }
         return true
         
     }

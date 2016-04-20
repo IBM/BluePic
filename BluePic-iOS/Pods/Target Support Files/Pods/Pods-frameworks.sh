@@ -82,3 +82,30 @@ strip_invalid_archs() {
   fi
 }
 
+
+if [[ "$CONFIGURATION" == "Debug" ]]; then
+  install_framework "Pods/BMSAnalyticsAPI.framework"
+  install_framework "Pods/BMSCore.framework"
+  install_framework "Pods/BMSSecurity.framework"
+  install_framework "Pods/Bolts.framework"
+  install_framework "Pods/CDTDatastore.framework"
+  install_framework "Pods/CocoaLumberjack.framework"
+  install_framework "Pods/FBSDKCoreKit.framework"
+  install_framework "Pods/FBSDKLoginKit.framework"
+  install_framework "Pods/FMDB.framework"
+  install_framework "Pods/RNCryptor.framework"
+  install_framework "Pods/SDWebImage.framework"
+fi
+if [[ "$CONFIGURATION" == "Release" ]]; then
+  install_framework "Pods/BMSAnalyticsAPI.framework"
+  install_framework "Pods/BMSCore.framework"
+  install_framework "Pods/BMSSecurity.framework"
+  install_framework "Pods/Bolts.framework"
+  install_framework "Pods/CDTDatastore.framework"
+  install_framework "Pods/CocoaLumberjack.framework"
+  install_framework "Pods/FBSDKCoreKit.framework"
+  install_framework "Pods/FBSDKLoginKit.framework"
+  install_framework "Pods/FMDB.framework"
+  install_framework "Pods/RNCryptor.framework"
+  install_framework "Pods/SDWebImage.framework"
+fi
