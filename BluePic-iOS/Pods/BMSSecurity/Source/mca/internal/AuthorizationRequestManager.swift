@@ -323,7 +323,9 @@ public class AuthorizationRequestManager {
     internal func processRedirectResponse(response:Response) throws {
         
         func getLocationString(obj:AnyObject?) -> String? {
-            guard let unWrappedObj = obj as? [String] else {
+            // Following line of code may be causing problems when runnning on a physical phone
+            //guard let unWrappedObj = obj as? [String] else {
+            guard let unWrappedObj = obj else {
                 return nil
             }
             //checks if obj is an array of strings
