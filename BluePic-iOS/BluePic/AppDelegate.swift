@@ -40,12 +40,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         MCARESTTestManager.SharedInstance.localHostTest()
         MCARESTTestManager.SharedInstance.localHostHelloTest()
         
-        
         let notificationTypes: UIUserNotificationType = [UIUserNotificationType.Badge, UIUserNotificationType.Alert, UIUserNotificationType.Sound]
         let notificationSettings: UIUserNotificationSettings = UIUserNotificationSettings(forTypes: notificationTypes, categories: nil)
         application.registerUserNotificationSettings(notificationSettings)
         application.registerForRemoteNotifications()
-        BMSPushClient.sharedInstance // initalizes push service
         
         preLoadKeyboardToPrevantLaggyKeyboardInCameraConfirmationScreen()
         
@@ -69,6 +67,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
         print("Received notification from server with contents: \(userInfo)")
+        completionHandler(UIBackgroundFetchResult.NewData)
     }
     
     /**
@@ -122,6 +121,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidBecomeActive(application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         //FBAppEvents.activateApp()
+        UIApplication.sharedApplication().applicationIconBadgeNumber = 0
     }
     
     
