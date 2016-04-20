@@ -5,6 +5,8 @@ PODS:
   - BMSFacebookAuthentication (1.0.0):
     - BMSSecurity (~> 1.0)
     - FBSDKLoginKit (~> 4.9)
+  - BMSPush (1.0.1):
+    - BMSCore (~> 1.0)
   - BMSSecurity (1.0.0):
     - BMSCore (~> 1.0)
     - RNCryptor (~> 4.0.0-beta)
@@ -47,6 +49,7 @@ PODS:
 
 DEPENDENCIES:
   - BMSFacebookAuthentication
+  - BMSPush
   - CDTDatastore
   - SDWebImage (~> 3.7)
 
@@ -54,6 +57,7 @@ SPEC CHECKSUMS:
   BMSAnalyticsAPI: 50f5cec71a5ad0a9af232a833d6d37c2abda54ac
   BMSCore: 2f903402eaeae17ae58fbde69120cf464c0ca413
   BMSFacebookAuthentication: 458439bc09a498ad5738757f202bea66c8f3077a
+  BMSPush: 31da8c14f4e0a91a9361db7fdaa758f27a73dc4d
   BMSSecurity: f87d18eef80976181ddabea67414ee52f2e7fa7d
   Bolts: a0058fa3b331c5a1e4402d534f2dae36dbff31e4
   CDTDatastore: ff31119f168689ab9ab7b339b02327f21a2b3cfa

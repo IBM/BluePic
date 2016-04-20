@@ -86,6 +86,7 @@ strip_invalid_archs() {
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods/BMSAnalyticsAPI.framework"
   install_framework "Pods/BMSCore.framework"
+  install_framework "Pods/BMSPush.framework"
   install_framework "Pods/BMSSecurity.framework"
   install_framework "Pods/Bolts.framework"
   install_framework "Pods/CDTDatastore.framework"
@@ -99,6 +100,7 @@ fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods/BMSAnalyticsAPI.framework"
   install_framework "Pods/BMSCore.framework"
+  install_framework "Pods/BMSPush.framework"
   install_framework "Pods/BMSSecurity.framework"
   install_framework "Pods/Bolts.framework"
   install_framework "Pods/CDTDatastore.framework"

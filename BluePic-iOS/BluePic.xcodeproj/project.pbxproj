@@ -25,6 +25,7 @@
 		1BC7AF5C1C0E39F100DDFD02 /* FeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC7AF5B1C0E39F100DDFD02 /* FeedViewModel.swift */; };
 		1BC7AF5F1C0E480800DDFD02 /* ImageFeedCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC7AF5D1C0E480800DDFD02 /* ImageFeedCollectionViewCell.swift */; };
 		1BC7AF601C0E480800DDFD02 /* ImageFeedCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1BC7AF5E1C0E480800DDFD02 /* ImageFeedCollectionViewCell.xib */; };
+		2E26F6081CC82C8B00650494 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E26F6071CC82C8B00650494 /* Pods.framework */; };
 		342E4EBB1C161FE500DC3771 /* PopulateFeedWithPhotos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342E4EBA1C161FE500DC3771 /* PopulateFeedWithPhotos.swift */; };
 		3435C7C91C0368B1004923BD /* Feed.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3435C7C81C0368B1004923BD /* Feed.storyboard */; };
 		3435C7CB1C0368DA004923BD /* Camera.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3435C7CA1C0368DA004923BD /* Camera.storyboard */; };
@@ -109,6 +110,7 @@
 		1BC7AF5B1C0E39F100DDFD02 /* FeedViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedViewModel.swift; sourceTree = "<group>"; };
 		1BC7AF5D1C0E480800DDFD02 /* ImageFeedCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageFeedCollectionViewCell.swift; sourceTree = "<group>"; };
 		1BC7AF5E1C0E480800DDFD02 /* ImageFeedCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageFeedCollectionViewCell.xib; sourceTree = "<group>"; };
+		2E26F6071CC82C8B00650494 /* Pods.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Pods.framework; path = "Pods/../build/Debug-iphoneos/Pods.framework"; sourceTree = "<group>"; };
 		342E4EBA1C161FE500DC3771 /* PopulateFeedWithPhotos.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopulateFeedWithPhotos.swift; sourceTree = "<group>"; };
 		3435C7C81C0368B1004923BD /* Feed.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Feed.storyboard; sourceTree = "<group>"; };
 		3435C7CA1C0368DA004923BD /* Camera.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Camera.storyboard; sourceTree = "<group>"; };
@@ -158,6 +160,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2E26F6081CC82C8B00650494 /* Pods.framework in Frameworks */,
 				346F94841C10AA32004999A8 /* ImageIO.framework in Frameworks */,
 				347AD21A1C18E2DC00C3B473 /* Alamofire.framework in Frameworks */,
 				347AD21E1C18E2DC00C3B473 /* ObjectMapper.framework in Frameworks */,
@@ -363,6 +366,7 @@
 		C93A0D59BDE755BE5A1209FC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2E26F6071CC82C8B00650494 /* Pods.framework */,
 				346F94831C10AA32004999A8 /* ImageIO.framework */,
 			);
 			name = Frameworks;
@@ -728,6 +732,7 @@
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 					"$(PROJECT_DIR)/BluePic/ExternalLibraries",
+					"$(PROJECT_DIR)/build/Debug-iphoneos",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/BluePic/Configuration/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -751,6 +756,7 @@
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 					"$(PROJECT_DIR)/BluePic/ExternalLibraries",
+					"$(PROJECT_DIR)/build/Debug-iphoneos",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/BluePic/Configuration/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;

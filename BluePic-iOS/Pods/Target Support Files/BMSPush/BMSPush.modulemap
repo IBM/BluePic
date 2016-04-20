@@ -1,0 +1,6 @@
+framework module BMSPush {
+  umbrella header "BMSPush-umbrella.h"
+
+  export *
+  module * { export * }
+}

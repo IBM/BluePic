@@ -12,4 +12,6 @@ pod 'CDTDatastore'
 
 pod 'BMSFacebookAuthentication'
 
+pod 'BMSPush'
+
 pod 'SDWebImage', '~>3.7'

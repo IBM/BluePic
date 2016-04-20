@@ -18,6 +18,7 @@
 import UIKit
 import BMSCore
 import BMSSecurity
+import BMSPush
 
 
 @UIApplicationMain
