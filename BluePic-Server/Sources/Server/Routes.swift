@@ -25,15 +25,31 @@ import SwiftyJSON
 // Setup the handlers for the Photo APIs
 func defineRoutes() {
 
-  router.get("/hello") { _, response, next in
-     response.setHeader("Content-Type", value: "text/plain; charset=utf-8")
-     do {
-         try response.status(HttpStatusCode.OK).send("Hello World, from BluePic-Server!").end()
-     }
-     catch {
-       Log.error("Failed to send response to client.")
-     }
-     next()
+  let closure = { (request: RouterRequest, response: RouterResponse, next: () -> Void) -> Void in
+    response.setHeader("Content-Type", value: "text/plain; charset=utf-8")
+    do {
+        print("Request: \(request)")
+        try response.status(HttpStatusCode.OK).send("Hello World, from BluePic-Server! Original URL: \(request.originalUrl)").end()
+    }
+    catch {
+      Log.error("Failed to send response to client.")
+      response.error = NSError(domain: BluePic.Domain, code: BluePic.Error.Internal.rawValue, userInfo: [NSLocalizedDescriptionKey: String(BluePic.Error.Internal)])
+    }
+    next()
+  }
+
+  // Test endpoint
+  router.get("/hello", handler: closure)
+
+  // Upload a new picture for a given user
+  router.post("/users/:userId/photos", handler: closure)
+
+  // Get all pictures for a given user
+  router.get("/users/:userId/photos", handler: closure)
+
+  // Get all pictures
+  router.get("/users/photos") { request, response, next in
+      next()
   }
 
   router.all("/photos/*", middleware: BodyParser())
