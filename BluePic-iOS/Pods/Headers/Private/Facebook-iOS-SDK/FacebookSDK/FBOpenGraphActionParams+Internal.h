@@ -1,1 +1,0 @@
-../../../../Facebook-iOS-SDK/src/DeviceAPI/FBOpenGraphActionParams+Internal.h

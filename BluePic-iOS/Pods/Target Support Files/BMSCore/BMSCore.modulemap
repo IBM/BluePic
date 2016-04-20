@@ -1,0 +1,6 @@
+framework module BMSCore {
+    umbrella header "BMSCore.h"
+    
+    export *
+    module * { export * }
+}
