@@ -323,7 +323,7 @@ public class AuthorizationRequestManager {
     internal func processRedirectResponse(response:Response) throws {
         
         func getLocationString(obj:AnyObject?) -> String? {
-            guard let unWrappedObj = obj else {
+            guard let unWrappedObj = obj as? [String] else {
                 return nil
             }
             //checks if obj is an array of strings
