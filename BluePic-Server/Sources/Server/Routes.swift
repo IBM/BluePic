@@ -41,16 +41,14 @@ func defineRoutes() {
   // Test endpoint
   router.get("/hello", handler: closure)
 
+  // Get all pictures
+  router.get("/users/photos", handler: closure)
+
   // Upload a new picture for a given user
   router.post("/users/:userId/photos", handler: closure)
 
   // Get all pictures for a given user
   router.get("/users/:userId/photos", handler: closure)
-
-  // Get all pictures
-  router.get("/users/photos") { request, response, next in
-      next()
-  }
 
   router.all("/photos/*", middleware: BodyParser())
 
