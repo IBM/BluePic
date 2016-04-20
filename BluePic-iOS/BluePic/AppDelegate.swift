@@ -36,7 +36,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
      - returns: Bool
      */
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        //self.initializeBackendForFacebookAuth(application, launchOptions: launchOptions)
         
         MCARESTTestManager.SharedInstance.localHostTest()
         MCARESTTestManager.SharedInstance.localHostHelloTest()
@@ -46,6 +45,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let notificationSettings: UIUserNotificationSettings = UIUserNotificationSettings(forTypes: notificationTypes, categories: nil)
         application.registerUserNotificationSettings(notificationSettings)
         application.registerForRemoteNotifications()
+        BMSPushClient.sharedInstance // initalizes push service
         
         preLoadKeyboardToPrevantLaggyKeyboardInCameraConfirmationScreen()
         
@@ -53,7 +53,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application (application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData){
-        /*let push =  BMSPushClient.sharedInstance
+        let push =  BMSPushClient.sharedInstance
         push.registerDeviceToken(deviceToken) { (response, statusCode, error) -> Void in
             if error.isEmpty {
                 print( "Response during device registration : \(response)")
@@ -61,14 +61,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
             else{
                 print( "Error during device registration \(error) ")
-                Print( "Error during device registration \n  - status code: \(statusCode) \n Error :\(error) \n")
+                print( "Error during device registration \n  - status code: \(statusCode) \n Error :\(error) \n")
             }
-        }*/
+        }
         
     }
     
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
-        print("Received notification from server")
+        print("Received notification from server with contents: \(userInfo)")
     }
     
     /**
