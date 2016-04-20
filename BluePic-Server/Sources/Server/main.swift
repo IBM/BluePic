@@ -52,15 +52,14 @@ credentials.register(fbCredentials)
 do {
   // Create Configuration object
   let config = try Configuration()
-  let dbClient = CouchDBClient(connectionProperties: config.couchDBConnProps)
-  database = dbClient.database(config.couchDBName)
+  // Get environment config
+  let appEnv = try CFEnvironment.getAppEnv(config.configJson)
+  let port = appEnv.port
+
+  database = try config.setupCouchDB(appEnv)
 
   // Define routes
   defineRoutes()
-
-  // Get environment config
-  let appEnv = try CFEnvironment.getAppEnv()
-  let port = appEnv.port
 
   // Start server...
   HttpServer.listen(port, delegate: router)

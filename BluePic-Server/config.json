@@ -1,5 +1,92 @@
 {
-  "couchDbIpAddress": "localhost",
-  "couchDbPort": 5984,
-  "couchDbDbName": "swift-bluepic"
+	"vcap": {
+		"application": {
+			"limits": {
+				"mem": 128,
+				"disk": 1024,
+				"fds": 16384
+			},
+			"application_id": "e582416a-9771-453f-8df1-7b467f6d78e4",
+			"application_version": "e5e029d1-4a1a-4004-9f79-655d550183fb",
+			"application_name": "swift-test",
+			"application_uris": ["swift-test.mybluemix.net"],
+			"version": "e5e029d1-4a1a-4004-9f79-655d550183fb",
+			"name": "swift-test",
+			"space_name": "dev",
+			"space_id": "b15eb0bb-cbf3-43b6-bfbc-f76d495981e5",
+			"uris": ["swift-test.mybluemix.net"],
+			"users": null,
+			"instance_id": "7d4f24cfba06462ba23d68aaf1d7354a",
+			"instance_index": 0,
+			"host": "0.0.0.0",
+			"port": 61263,
+			"started_at": "2016-03-04 02:43:07 +0000",
+			"started_at_timestamp": 1457059387,
+			"start": "2016-03-04 02:43:07 +0000",
+			"state_timestamp": 1457059387
+		},
+		"services": {
+			"CouchDB": [{
+				"name": "couchDB-temp",
+				"label": "couchDB",
+				"tags": [],
+				"plan": "",
+				"credentials": {
+					"couchDbIpAddress": "localhost",
+					"couchDbPort": 5984,
+					"couchDbDbName": "swift-bluepic"
+				}
+			}],
+			"AdvancedMobileAccess": [{
+				"name": "Mobile Client Access-ag",
+				"label": "AdvancedMobileAccess",
+				"plan": "Gold",
+				"credentials": {
+					"serverUrl": "https://imf-authserver.ng.bluemix.net/imf-authserver",
+					"clientId": "75eef52c-2ed1-4518-9587-ce55cc66479d",
+					"secret": "kBLTWY1vRO2g5gFdRbpV8Q",
+					"tenantId": "75eef52c-2ed1-4518-9587-ce55cc66479d",
+					"admin_url": "https://mobile.ng.bluemix.net/imfmobileplatformdashboard/?appGuid=75eef52c-2ed1-4518-9587-ce55cc66479d"
+				}
+			}],
+			"imfpush": [{
+				"name": "IBM Push Notifications-12",
+				"label": "imfpush",
+				"plan": "Basic",
+				"credentials": {
+					"url": "http://imfpush.ng.bluemix.net/imfpush/v1/apps/75eef52c-2ed1-4518-9587-ce55cc66479d",
+					"admin_url": "//mobile.ng.bluemix.net/imfpushdashboard/?appGuid=75eef52c-2ed1-4518-9587-ce55cc66479d",
+					"appSecret": "ef28c8e7-6f7e-41d5-ace1-bdf56a81aceb"
+				}
+			}],
+			"cloudantNoSQLDB": [{
+				"name": "Cloudant NoSQL DB-fz",
+				"label": "cloudantNoSQLDB",
+				"plan": "Shared",
+				"credentials": {
+					"username": "d60741e4-629e-48e4-aa5d-da6e7557d5b5-bluemix",
+					"password": "f2c7c6a70784057bf8ab86a3ae5c9ac7129fedf67619f243eb030058764792e3",
+					"host": "d60741e4-629e-48e4-aa5d-da6e7557d5b5-bluemix.cloudant.com",
+					"port": 443,
+					"url": "https://d60741e4-629e-48e4-aa5d-da6e7557d5b5-bluemix:f2c7c6a70784057bf8ab86a3ae5c9ac7129fedf67619f243eb030058764792e3@d60741e4-629e-48e4-aa5d-da6e7557d5b5-bluemix.cloudant.com"
+				}
+			}],
+			"Object-Storage": [{
+				"name": "Object Storage-bv",
+				"label": "Object-Storage",
+				"plan": "standard",
+				"credentials": {
+					"auth_url": "https://identity.open.softlayer.com",
+					"project": "object_storage_0fcbfa67_dbcf_443c_a617_31f84a1200f6",
+					"projectId": "742fffae2c24438b83a2c43491119a82",
+					"region": "dallas",
+					"userId": "69435710c71c4ed2b78856520f9cae25",
+					"username": "Admin_cc7f793a6823788b1ad1acd052f88a8ac9b817f9",
+					"password": "F*nt4gmY-Oss4{v.",
+					"domainId": "6cf5edf7c9434b0c99a17e523900d82f",
+					"domainName": "782791"
+				}
+			}]
+		}
+	}
 }

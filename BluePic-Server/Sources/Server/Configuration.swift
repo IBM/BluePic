@@ -17,6 +17,7 @@
 import Foundation
 import CouchDB
 import SwiftyJSON
+import CFEnvironment
 
 public struct Configuration {
 
@@ -25,20 +26,35 @@ public struct Configuration {
   }
 
   let configurationFile = "config.json"
-  let couchDBConnProps: ConnectionProperties
-  let couchDBName: String
+  let configJson: JSON
 
   init() throws {
-    if let configData = NSData(contentsOfFile: "./\(configurationFile)") {
-      let configJson = JSON(data:configData)
-      if let ipAddress = configJson["couchDbIpAddress"].string,
-         let port = configJson["couchDbPort"].number,
-         let dbName = configJson["couchDbDbName"].string {
-           couchDBConnProps = ConnectionProperties(hostName: ipAddress, port: Int16(port.integerValue), secured: false)
-           couchDBName = dbName
-           return
-      }
+    // generate file path for config.json
+    let filePath = #file
+    let components = filePath.characters.split(separator: "/").map(String.init)
+    let notLastThree = components[0..<components.count - 3]
+    let finalPath = "/" + notLastThree.joined(separator: "/") + "/\(configurationFile)"
+
+    if let configData = NSData(contentsOfFile: finalPath) {
+      configJson = JSON(data:configData)
+      return
     }
     throw Error.IO("Failed to read/parse the contents of the '\(configurationFile)' configuration file.")
+  }
+
+  func setupCouchDB(appEnv: AppEnv) throws -> Database {
+
+      if let couchDBCredentials = appEnv.getService("CouchDB")?.credentials?.dictionaryValue {
+
+        if let ipAddress = couchDBCredentials["couchDbIpAddress"]?.stringValue, 
+          port = couchDBCredentials["couchDbPort"]?.intValue, 
+          dbName = couchDBCredentials["couchDbDbName"]?.stringValue {
+
+          let couchDBConnProps = ConnectionProperties(hostName: ipAddress, port: Int16(port), secured: false)
+          let dbClient = CouchDBClient(connectionProperties: couchDBConnProps)
+          return dbClient.database(dbName)
+        }
+      }
+      throw Error.IO("Failed to load database")
   }
 }
