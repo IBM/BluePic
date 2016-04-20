@@ -60,7 +60,6 @@
 		34CA18201C04CB6700EC2636 /* ObjectStorageDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34CA181F1C04CB6700EC2636 /* ObjectStorageDataManager.swift */; };
 		4710A7F67733A51B7D78C13C /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8F39EBA47AF948446B66C8F /* Pods.framework */; };
 		494AA0B01BFE4CBA006FC48E /* ObjectStorageClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494AA0AF1BFE4CBA006FC48E /* ObjectStorageClientTests.swift */; };
-		7C2D4AC3ED07600340EB7BA3 /* Pods_BluePic.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A37522BC665CD78FF878964F /* Pods_BluePic.framework */; };
 		B3A9E7DA1C063FA1002D4AEE /* CloudantSyncClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3A9E7D91C063FA1002D4AEE /* CloudantSyncClientTests.swift */; };
 		B3C2CE981C19DC54003DAF5A /* ReplicatorDelegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C2CE971C19DC54003DAF5A /* ReplicatorDelegates.swift */; };
 /* End PBXBuildFile section */
@@ -148,7 +147,6 @@
 		494AA0AF1BFE4CBA006FC48E /* ObjectStorageClientTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectStorageClientTests.swift; sourceTree = "<group>"; };
 		4DF2008F9A93E25237957424 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		548428B896D4182B293AB59E /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
-		A37522BC665CD78FF878964F /* Pods_BluePic.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BluePic.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B3A9E7D91C063FA1002D4AEE /* CloudantSyncClientTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudantSyncClientTests.swift; sourceTree = "<group>"; };
 		B3C2CE971C19DC54003DAF5A /* ReplicatorDelegates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReplicatorDelegates.swift; sourceTree = "<group>"; };
 		B8F39EBA47AF948446B66C8F /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -164,7 +162,6 @@
 				347AD21A1C18E2DC00C3B473 /* Alamofire.framework in Frameworks */,
 				347AD21E1C18E2DC00C3B473 /* ObjectMapper.framework in Frameworks */,
 				347AD21C1C18E2DC00C3B473 /* AlamofireObjectMapper.framework in Frameworks */,
-				7C2D4AC3ED07600340EB7BA3 /* Pods_BluePic.framework in Frameworks */,
 				4710A7F67733A51B7D78C13C /* Pods.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -367,7 +364,6 @@
 			isa = PBXGroup;
 			children = (
 				346F94831C10AA32004999A8 /* ImageIO.framework */,
-				A37522BC665CD78FF878964F /* Pods_BluePic.framework */,
 				B8F39EBA47AF948446B66C8F /* Pods.framework */,
 			);
 			name = Frameworks;
