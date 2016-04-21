@@ -1,0 +1,9 @@
+{"docs":[
+{"_id":"1000","name":"Ellen Harrison","type":"user"},
+{"_id":"1001","name":"Brad Tyler","type":"user"},
+{"_id":"2000","fileName":"keys.jpg","displayName":"Keys","url":"https://www.flmnh.ufl.edu/fish/SouthFlorida/images/bocachita.JPG","width":"500","height":"150","uploadedTs":"2015-01-05T18:25:43.511Z","userId":"1000","type":"image"},
+{"_id":"2001","fileName":"bigbend.jpg","displayName":"Big Bend","url":"http://media-cdn.tripadvisor.com/media/photo-s/02/92/12/75/sierra-del-carmen-sunset.jpg","width":"500","height":"150","uploadedTs":"2015-01-22T11:25:43.511Z","userId":"1000","type":"image"},
+{"_id":"2002","fileName":"yosemite.jpg","displayName":"Yosemite","url":"http://www.tenayalodge.com/img/Carousel-DiscoverYosemite_img3.jpg","width":"500","height":"150","uploadedTs":"2015-01-21T10:25:43.511Z","userId":"1001","type":"image"},
+{"_id":"2003","fileName":"austin.jpg","displayName":"Austin","url":"https://upload.wikimedia.org/wikipedia/commons/0/06/AustinSkylineLouNeffPoint-2010-03-29-b.JPG","width":"500","height":"150","uploadedTs":"2015-01-05T18:25:43.511Z","userId":"1001","type":"image"},
+{"_id":"_design/main_design","views":{"images":{"map":"function(doc) {\n  if (doc.type == 'image') {\n    emit([doc._id, 0], null);\n    emit([doc._id, 1], {_id : doc.userId});\n  }\n}"}},"language":"javascript"}
+]}
