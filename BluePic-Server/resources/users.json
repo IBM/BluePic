@@ -1,9 +1,9 @@
 [{
 	"_id": "1000",
 	"name": "Ellen Harrison",
-	"user": "user"
+	"type": "user"
 },{
 	"_id": "1001",
 	"name": "Brad Tyler",
-	"user": "user"
+	"type": "user"
 }]
