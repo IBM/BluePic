@@ -99,3 +99,4 @@ func getDesign() -> (String?, JSON?) {
 
     return ("photos", JSON(designDoc))
 }
+
