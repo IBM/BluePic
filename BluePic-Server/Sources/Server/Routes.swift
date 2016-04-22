@@ -28,8 +28,8 @@ func defineRoutes() {
   let closure = { (request: RouterRequest, response: RouterResponse, next: () -> Void) -> Void in
     response.setHeader("Content-Type", value: "text/plain; charset=utf-8")
     do {
-        print("Request: \(request)")
-        try response.status(HttpStatusCode.OK).send("Hello World, from BluePic-Server! Original URL: \(request.originalUrl)").end()
+      print("Request: \(request)")
+      try response.status(HttpStatusCode.OK).send("Hello World, from BluePic-Server! Original URL: \(request.originalUrl)").end()
     }
     catch {
       Log.error("Failed to send response to client.")
@@ -41,14 +41,56 @@ func defineRoutes() {
   // Test endpoint
   router.get("/hello", handler: closure)
 
-  // Get all pictures
-  router.get("/users/photos", handler: closure)
+  // Get all images
+  router.get("/images") { _, response, next in
+    database.queryByView("images", ofDesign: "main_design", usingParameters: [.Descending(true), .IncludeDocs(true)]) { (document, error) in
+      if let document = document where error == nil {
+        do {
+          try response.status(HttpStatusCode.OK).sendJson(document).end()
+        }
+        catch {
+          Log.error("Failed to send response to client.")
+        }
+      } else {
+        response.error = NSError(domain: BluePic.Domain, code: BluePic.Error.Internal.rawValue, userInfo: [NSLocalizedDescriptionKey: String(BluePic.Error.Internal)])
+      }
+      next()
+    }
+  }
+
+  // Get all users
+  router.get("/users", handler: closure)
+
+  // Get a specific user
+  router.get("/users/:userId") { request, response, next in
+    guard let userId = request.params["userId"] else {
+      response.error = NSError(domain: BluePic.Domain, code: BluePic.Error.Internal.rawValue, userInfo: [NSLocalizedDescriptionKey: String(BluePic.Error.Internal)])
+      next()
+      return
+    }
+
+    database.retrieve(userId, callback: { (document: JSON?, error: NSError?) in
+      if let document = document where error == nil {
+        do {
+          try response.status(HttpStatusCode.OK).sendJson(document).end()
+        }
+        catch {
+          Log.error("Failed to send response to client.")
+        }
+      } else {
+        response.error = NSError(domain: BluePic.Domain, code: BluePic.Error.Internal.rawValue, userInfo: [NSLocalizedDescriptionKey: String(BluePic.Error.Internal)])
+      }
+      next()
+    })
+  }
 
   // Upload a new picture for a given user
-  router.post("/users/:userId/photos", handler: closure)
+  router.post("/users/:userId/images", handler: closure)
 
   // Get all pictures for a given user
-  router.get("/users/:userId/photos", handler: closure)
+  router.get("/users/:userId/images", handler: closure)
+
+  //////
 
   router.all("/photos/*", middleware: BodyParser())
 
