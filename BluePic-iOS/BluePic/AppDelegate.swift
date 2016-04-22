@@ -91,8 +91,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //Initialize backend
         let key = Utils.getKeyFromPlist("keys", key: "backend_route")
         let guid = Utils.getKeyFromPlist("keys", key: "GUID")
+        let region = Utils.getKeyFromPlist("keys", key: "region")
         //IMFClient.sharedInstance().initializeWithBackendRoute(key, backendGUID: guid);
-        BMSClient.sharedInstance.initializeWithBluemixAppRoute(key, bluemixAppGUID: guid, bluemixRegion: BMSClient.REGION_US_SOUTH)
+        BMSClient.sharedInstance.initializeWithBluemixAppRoute(key, bluemixAppGUID: guid, bluemixRegion: region)
     
         
         //Initialize Facebook
