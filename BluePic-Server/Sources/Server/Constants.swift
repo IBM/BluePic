@@ -5,3 +5,7 @@ struct BluePic {
     case Other
   }
 }
+
+enum ProcessingError: ErrorProtocol {
+  case Image(String)
+}

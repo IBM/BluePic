@@ -46,6 +46,49 @@ func parsePhotosList(list: JSON) -> JSON {
   return JSON(photos)
 }
 
+/*
+"fileName": "keys.jpg",
+"displayName": "Keys",
+"url": "https://www.flmnh.ufl.edu/fish/SouthFlorida/images/bocachita.JPG",
+"width": "500",
+"height": "150",
+"uploadedTs": "2015-01-05T18:25:43.511Z",
+"userId": "1000",
+"type": "image"
+*/
+
+func getImageDocument(request: RouterRequest) throws -> JSONDictionary {
+  guard let displayName = request.params["displayName"],
+    let fileName = request.params["fileName"],
+    let userId = request.params["userId"] else {
+      throw ProcessingError.Image("Invalid image document!")
+  }
+
+  #if os(Linux)
+    let ext = fileName.componentsSeparatedByString(".")[1].lowercased()
+  #else
+    let ext = fileName.componentsSeparated(by: ".")[1].lowercased()
+  #endif
+
+  guard let contentType = ContentType.contentTypeForExtension(ext) else {
+    throw ProcessingError.Image("Invalid image document!")
+  }
+
+  #if os(Linux)
+    let dateStr = NSDate().descriptionWithLocale(nil).bridge()
+    let uploadedTs = dateStr.substringToIndex(10) + "T" + dateStr.substringWithRange(NSMakeRange(11, 8))
+    let imageName = displayName.stringByReplacingOccurrencesOfString("%20", withString: " ")
+  #else
+    let dateStr = NSDate().description(withLocale: nil).bridge()
+    let uploadedTs = dateStr.substring(to: 10) + "T" + dateStr.substring(with:NSMakeRange(11, 8))
+    let imageName = displayName.replacingOccurrences(of: "%20", with: " ")
+  #endif
+
+  let imageDocument: JSONDictionary = ["contentType": contentType, "fileName": fileName, "userId": userId, "displayName": imageName, "uploadedTs": uploadedTs, "type": "image"]
+  return imageDocument
+}
+
+
 func createPhotoDocument(request: RouterRequest) -> (JSONDictionary?, String?) {
   var title = request.params["title"]
   let photoName = request.params["photoname"]
@@ -79,11 +122,10 @@ func createPhotoDocument(request: RouterRequest) -> (JSONDictionary?, String?) {
 
 func createUploadReply(fromDocument document: JSONDictionary, id: String, photoName: String) -> JSON {
   var result = [String:String]()
-  result["picturePath"] = "\(id)/\(photoName)"
-  result["ownerId"] = document["ownerId"] as? String
-  result["ownerName"] = document["ownerName"] as? String
-  result["date"] = document["date"] as? String
-  result["title"] = document["title"] as? String
+  result["url"] = "\(id)/\(photoName)"
+  //result["ownerId"] = document["userId"] as? String
+  //result["uploadedTs"] = document["date"] as? String
+  //result["title"] = document["title"] as? String
   return JSON(result)
 }
 

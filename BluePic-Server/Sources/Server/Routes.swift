@@ -68,7 +68,7 @@ func defineRoutes() {
       next()
       return
     }
-
+    // Retrieve JSON document for user
     database.retrieve(userId, callback: { (document: JSON?, error: NSError?) in
       if let document = document where error == nil {
         do {
@@ -85,7 +85,42 @@ func defineRoutes() {
   }
 
   // Upload a new picture for a given user
-  router.post("/users/:userId/images", handler: closure)
+  router.post("/users/:userId/images/:fileName/:displayName") { request, response, next in
+    do {
+      // As of now, we don't have a multi-form request parser...
+      // Because of this we are using the RENT endpoint definition as the mechanism
+      // to send the metadata about the image, while the body of the request only
+      // contains the binary data for the image.
+      var imageDocument = try getImageDocument(request)
+      guard let contentType = imageDocument["contentType"] as? String else {
+        throw ProcessingError.Image("Invalid image document!")
+      }
+
+      let image = try BodyParser.readBodyData(request)
+      database.create(JSON(imageDocument)) { (id, revision, doc, error) in
+        if let fileName = request.params["fileName"], let _ = doc, let id = id, let revision = revision where error == nil {
+          database.createAttachment(id, docRevison: revision, attachmentName: fileName, attachmentData: image, contentType: contentType) { (rev, photoDoc, error) in
+            if let _ = photoDoc where error == nil {
+              imageDocument["url"] = "http://\(database.connProperties.hostName):\(database.connProperties.port)/\(database.name)/\(id)/\(fileName)"
+              imageDocument["_id"] = id
+              imageDocument["_rev"] = revision
+              response.status(HttpStatusCode.OK).sendJson(JSON(imageDocument))
+            } else {
+              response.error = error ?? NSError(domain: BluePic.Domain, code: BluePic.Error.Internal.rawValue, userInfo: [NSLocalizedDescriptionKey: String(BluePic.Error.Internal)])
+            }
+            next()
+          }
+        } else {
+          response.error = NSError(domain: BluePic.Domain, code: BluePic.Error.Internal.rawValue, userInfo: [NSLocalizedDescriptionKey: String(BluePic.Error.Internal)])
+          next()
+        }
+      }
+    } catch {
+      Log.error("Failed to send response to client.")
+      response.error = NSError(domain: BluePic.Domain, code: BluePic.Error.Internal.rawValue, userInfo: [NSLocalizedDescriptionKey: String(BluePic.Error.Internal)])
+      next()
+    }
+  }
 
   // Get all pictures for a given user
   router.get("/users/:userId/images", handler: closure)
