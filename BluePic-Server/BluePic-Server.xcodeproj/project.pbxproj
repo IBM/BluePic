@@ -1095,6 +1095,7 @@
 			buildPhases = (
 				CompilePhase_LoggerAPI /* Sources */,
 				"___LinkPhase_LoggerAPI" /* Frameworks */,
+				1B7F4AAE1CCA9C6A0020D59C /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -1228,6 +1229,22 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		1B7F4AAE1CCA9C6A0020D59C /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "brew install http-parser curl && make clean && make && .build/debug/Server";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		CompilePhase_CFEnvironment /* Sources */ = {
