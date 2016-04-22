@@ -311,10 +311,10 @@
 		__PBXFileRef_Sources/Server/Routes.swift /* Routes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Routes.swift; sourceTree = "<group>"; };
 		__PBXFileRef_Sources/Server/main.swift /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		"_____Product_CFEnvironment" /* libCFEnvironment.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; path = libCFEnvironment.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
-		"_____Product_CFEnvironmentTestSuite" /* CFEnvironmentTestSuite.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; name = CFEnvironmentTestSuite.xctest; path = CFEnvironment.testsuite.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		"_____Product_CFEnvironmentTestSuite" /* CFEnvironment.testsuite.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = CFEnvironment.testsuite.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		"_____Product_CouchDB" /* libCouchDB.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; path = libCouchDB.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		"_____Product_CouchDBSample" /* CouchDBSample */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; path = CouchDBSample; sourceTree = BUILT_PRODUCTS_DIR; };
-		"_____Product_CouchDBTestSuite" /* CouchDBTestSuite.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; name = CouchDBTestSuite.xctest; path = CouchDB.testsuite.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		"_____Product_CouchDBTestSuite" /* CouchDB.testsuite.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = CouchDB.testsuite.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		"_____Product_Credentials" /* libCredentials.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; path = libCredentials.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		"_____Product_CredentialsFacebookToken" /* libCredentialsFacebookToken.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; path = libCredentialsFacebookToken.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		"_____Product_HeliumLogger" /* libHeliumLogger.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; path = libHeliumLogger.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -322,12 +322,12 @@
 		"_____Product_KituraNet" /* libKituraNet.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; path = libKituraNet.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		"_____Product_KituraSys" /* libKituraSys.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; path = libKituraSys.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		"_____Product_KituraTemplateEngine" /* libKitura-TemplateEngine.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; path = "libKitura-TemplateEngine.dylib"; sourceTree = BUILT_PRODUCTS_DIR; };
-		"_____Product_KituraTestSuite" /* KituraTestSuite.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; name = KituraTestSuite.xctest; path = Kitura.testsuite.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		"_____Product_KituraTestSuite" /* Kitura.testsuite.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = Kitura.testsuite.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		"_____Product_LoggerAPI" /* libLoggerAPI.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; path = libLoggerAPI.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		"_____Product_Server" /* Server */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; path = Server; sourceTree = BUILT_PRODUCTS_DIR; };
 		"_____Product_Socket" /* libSocket.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; path = libSocket.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		"_____Product_SwiftyJSON" /* libSwiftyJSON.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; path = libSwiftyJSON.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
-		"_____Product_netTestSuite" /* netTestSuite.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; name = netTestSuite.xctest; path = net.testsuite.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		"_____Product_netTestSuite" /* net.testsuite.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = net.testsuite.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -537,10 +537,10 @@
 		TestProducts_ /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				"_____Product_KituraTestSuite" /* KituraTestSuite.xctest */,
-				"_____Product_netTestSuite" /* netTestSuite.xctest */,
-				"_____Product_CouchDBTestSuite" /* CouchDBTestSuite.xctest */,
-				"_____Product_CFEnvironmentTestSuite" /* CFEnvironmentTestSuite.xctest */,
+				"_____Product_KituraTestSuite" /* Kitura.testsuite.xctest */,
+				"_____Product_netTestSuite" /* net.testsuite.xctest */,
+				"_____Product_CouchDBTestSuite" /* CouchDB.testsuite.xctest */,
+				"_____Product_CFEnvironmentTestSuite" /* CFEnvironment.testsuite.xctest */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -857,7 +857,7 @@
 			);
 			name = CFEnvironment.testsuite;
 			productName = CFEnvironmentTestSuite;
-			productReference = "_____Product_CFEnvironmentTestSuite" /* CFEnvironmentTestSuite.xctest */;
+			productReference = "_____Product_CFEnvironmentTestSuite" /* CFEnvironment.testsuite.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		"______Target_CouchDB" /* CouchDB */ = {
@@ -925,7 +925,7 @@
 			);
 			name = CouchDB.testsuite;
 			productName = CouchDBTestSuite;
-			productReference = "_____Product_CouchDBTestSuite" /* CouchDBTestSuite.xctest */;
+			productReference = "_____Product_CouchDBTestSuite" /* CouchDB.testsuite.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		"______Target_Credentials" /* Credentials */ = {
@@ -1086,7 +1086,7 @@
 			);
 			name = Kitura.testsuite;
 			productName = KituraTestSuite;
-			productReference = "_____Product_KituraTestSuite" /* KituraTestSuite.xctest */;
+			productReference = "_____Product_KituraTestSuite" /* Kitura.testsuite.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		"______Target_LoggerAPI" /* LoggerAPI */ = {
@@ -1184,7 +1184,7 @@
 			);
 			name = net.testsuite;
 			productName = netTestSuite;
-			productReference = "_____Product_netTestSuite" /* netTestSuite.xctest */;
+			productReference = "_____Product_netTestSuite" /* net.testsuite.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
