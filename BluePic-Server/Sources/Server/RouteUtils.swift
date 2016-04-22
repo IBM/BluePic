@@ -77,6 +77,10 @@ func getImageDocument(request: RouterRequest) throws -> JSONDictionary {
   return imageDocument
 }
 
+func generateInternalError() -> NSError {
+  return NSError(domain: BluePic.Domain, code: BluePic.Error.Internal.rawValue, userInfo: [NSLocalizedDescriptionKey: String(BluePic.Error.Internal)])
+}
+
 func getDesign() -> (String?, JSON?) {
     let designDoc : JSONDictionary =
         ["_id" : "_design/photos",
