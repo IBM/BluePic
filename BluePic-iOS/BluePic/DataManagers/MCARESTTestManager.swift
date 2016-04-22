@@ -29,7 +29,6 @@ class MCARESTTestManager: NSObject {
         //        let appRoute = "https://greatapp.mybluemix.net"
         //        let appGuid = "2fe35477-5410-4c87-1234-aca59511433b"
         let bluemixRegion = BMSClient.REGION_US_SOUTH
-        print(bluemixRegion)
         
         BMSClient.sharedInstance
             .initializeWithBluemixAppRoute(appRoute,
