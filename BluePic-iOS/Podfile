@@ -15,3 +15,5 @@ pod 'BMSFacebookAuthentication'
 pod 'BMSPush'
 
 pod 'SDWebImage', '~>3.7'
+
+pod 'Alamofire', '~> 3.3'
