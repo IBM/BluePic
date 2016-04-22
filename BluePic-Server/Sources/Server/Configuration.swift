@@ -50,7 +50,7 @@ public struct Configuration {
         user = couchDBCredentials["username"].string,
         password = couchDBCredentials["password"].string {
         //port = couchDBCredentials["port"].int {
-        //TODO Update port value
+        //TODO Update port value - Kitura-CouchDB needs to be tagged
           let port = 80
           let connProperties = ConnectionProperties(hostName: host, port: Int16(port), secured: false, userName: user, password: password)
           let dbClient = CouchDBClient(connectionProperties: connProperties)

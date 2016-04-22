@@ -59,7 +59,21 @@ func defineRoutes() {
   }
 
   // Get all users
-  router.get("/users", handler: closure)
+  router.get("/users") { _, response, next in
+    database.queryByView("users", ofDesign: "main_design", usingParameters: [.Descending(true), .IncludeDocs(true)]) { (document, error) in
+      if let document = document where error == nil {
+        do {
+          try response.status(HttpStatusCode.OK).sendJson(document).end()
+        }
+        catch {
+          Log.error("Failed to send response to client.")
+        }
+      } else {
+        response.error = NSError(domain: BluePic.Domain, code: BluePic.Error.Internal.rawValue, userInfo: [NSLocalizedDescriptionKey: String(BluePic.Error.Internal)])
+      }
+      next()
+    }
+  }
 
   // Get a specific user
   router.get("/users/:userId") { request, response, next in
@@ -131,6 +145,8 @@ func defineRoutes() {
 
   router.post("/photos/:title/:photoname", middleware: credentials)
 
+  ///
+
   router.get("/photos") { _, response, next in
     database.queryByView("sortedByDate", ofDesign: "photos", usingParameters: [.Descending(true)]) { (document, error) in
       if let document = document where error == nil {
@@ -147,6 +163,7 @@ func defineRoutes() {
     }
   }
 
+/*
   router.get("/photos/:docid/:photoid") { request, response, next in
     guard let docId = request.params["docid"],
     let attachmentName = request.params["photoid"] else {
@@ -166,8 +183,9 @@ func defineRoutes() {
       }
       next()
     }
-  }
+  }*/
 
+  /*
   router.post("/photos/:title/:photoname") { request, response, next in
     let (doc, docType) = createPhotoDocument(request)
     guard let document = doc, let contentType = docType else {
@@ -199,5 +217,5 @@ func defineRoutes() {
       next()
       return
     }
-  }
+  }*/
 }

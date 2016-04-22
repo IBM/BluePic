@@ -46,17 +46,6 @@ func parsePhotosList(list: JSON) -> JSON {
   return JSON(photos)
 }
 
-/*
-"fileName": "keys.jpg",
-"displayName": "Keys",
-"url": "https://www.flmnh.ufl.edu/fish/SouthFlorida/images/bocachita.JPG",
-"width": "500",
-"height": "150",
-"uploadedTs": "2015-01-05T18:25:43.511Z",
-"userId": "1000",
-"type": "image"
-*/
-
 func getImageDocument(request: RouterRequest) throws -> JSONDictionary {
   guard let displayName = request.params["displayName"],
     let fileName = request.params["fileName"],
@@ -88,47 +77,6 @@ func getImageDocument(request: RouterRequest) throws -> JSONDictionary {
   return imageDocument
 }
 
-
-func createPhotoDocument(request: RouterRequest) -> (JSONDictionary?, String?) {
-  var title = request.params["title"]
-  let photoName = request.params["photoname"]
-
-  if let profile = request.userProfile where photoName != nil {
-    let ownerId = profile.id
-    #if os(Linux)
-    let ownerName = profile.displayName.stringByReplacingOccurrencesOfString("%20", withString: " ")
-    let ext = photoName!.componentsSeparatedByString(".")[1].lowercased()
-    #else
-    let ownerName = profile.displayName.replacingOccurrences(of: "%20", with: " ")
-    let ext = photoName!.componentsSeparated(by: ".")[1].lowercased()
-    #endif
-    if let contentType = ContentType.contentTypeForExtension(ext) {
-      #if os(Linux)
-      let tempDateString = NSDate().descriptionWithLocale(nil).bridge()
-      let dateString = tempDateString.substringToIndex(10) + "T" + tempDateString.substringWithRange(NSMakeRange(11, 8))
-      title = title?.stringByReplacingOccurrencesOfString("%20", withString: " ") ?? ""
-      #else
-      let tempDateString = NSDate().description(withLocale: nil).bridge()
-      let dateString = tempDateString.substring(to: 10) + "T" + tempDateString.substring(with:NSMakeRange(11, 8))
-      title = title?.replacingOccurrences(of: "%20", with: " ") ?? ""
-      #endif
-      let doc : JSONDictionary = ["ownerId": ownerId, "ownerName": ownerName, "title": title!, "date": dateString, "inFeed": true, "type": "photo"]
-
-      return (doc, contentType)
-    }
-  }
-  return (nil, nil)
-}
-
-func createUploadReply(fromDocument document: JSONDictionary, id: String, photoName: String) -> JSON {
-  var result = [String:String]()
-  result["url"] = "\(id)/\(photoName)"
-  //result["ownerId"] = document["userId"] as? String
-  //result["uploadedTs"] = document["date"] as? String
-  //result["title"] = document["title"] as? String
-  return JSON(result)
-}
-
 func getDesign() -> (String?, JSON?) {
     let designDoc : JSONDictionary =
         ["_id" : "_design/photos",
@@ -141,4 +89,3 @@ func getDesign() -> (String?, JSON?) {
 
     return ("photos", JSON(designDoc))
 }
-
