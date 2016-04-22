@@ -52,17 +52,13 @@ credentials.register(fbCredentials)
 do {
   // Create Configuration object
   let config = try Configuration()
-  // Get environment config
-  let appEnv = try CFEnvironment.getAppEnv(config.configJson)
-  let port = appEnv.port
-
-  database = try config.setupCouchDB(appEnv)
+  database = try config.getDatabase("bluepic_db")
 
   // Define routes
   defineRoutes()
 
   // Start server...
-  HttpServer.listen(port, delegate: router)
+  HttpServer.listen(config.appEnv.port, delegate: router)
   Server.run()
 } catch Configuration.Error.IO {
   Log.error("Oops, something went wrong... Server did not start!")
