@@ -16,6 +16,8 @@
 	<string>https://IBM-BluePic.mybluemix.net</string>
 	<key>GUID</key>
 	<string>75eef52c-2ed1-4518-9587-ce55cc66479d</string>
+	<key>region</key>
+	<string>.ng.bluemix.net</string>
 	<key>obj_stg_public_url</key>
 	<string>https://dal.objectstorage.open.softlayer.com/v1/AUTH_dd1ceb19680948119774a6d2f08057c2</string>
 	<key>obj_stg_password</key>
