@@ -137,8 +137,27 @@ func defineRoutes() {
   }
 
   // Get all pictures for a given user
-  router.get("/users/:userId/images", handler: closure)
+  router.get("/users/:userId/images") { request, response, next in
+    guard let userId = request.params["userId"] else {
+      response.error = NSError(domain: BluePic.Domain, code: BluePic.Error.Internal.rawValue, userInfo: [NSLocalizedDescriptionKey: String(BluePic.Error.Internal)])
+      next()
+      return
+    }
 
+    database.queryByView("images_per_user", ofDesign: "main_design", usingParameters: [.Descending(true), .Keys([userId])]) { (document, error) in
+      if let document = document where error == nil {
+        do {
+          try response.status(HttpStatusCode.OK).sendJson(document).end()
+        }
+        catch {
+          Log.error("Failed to send response to client.")
+        }
+      } else {
+        response.error = NSError(domain: BluePic.Domain, code: BluePic.Error.Internal.rawValue, userInfo: [NSLocalizedDescriptionKey: String(BluePic.Error.Internal)])
+      }
+      next()
+    }
+  }
   //////
 
   router.all("/photos/*", middleware: BodyParser())
