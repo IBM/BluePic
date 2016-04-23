@@ -19,3 +19,6 @@ curl -v -d @/Users/olivieri/git/BluePic-IBM-Swift/BluePic-Server/resources/curl-
 
 # Create a database
 curl -X PUT https://d60741e4-629e-48e4-aa5d-da6e7557d5b5-bluemix.cloudant.com/bluepic_db -u d60741e4-629e-48e4-aa5d-da6e7557d5b5-bluemix:f2c7c6a70784057bf8ab86a3ae5c9ac7129fedf67619f243eb030058764792e3
+
+# Delete database
+curl -X DELETE https://d60741e4-629e-48e4-aa5d-da6e7557d5b5-bluemix.cloudant.com/bluepic_db -u d60741e4-629e-48e4-aa5d-da6e7557d5b5-bluemix:f2c7c6a70784057bf8ab86a3ae5c9ac7129fedf67619f243eb030058764792e3
