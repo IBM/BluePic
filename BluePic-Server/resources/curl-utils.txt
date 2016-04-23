@@ -18,4 +18,4 @@ curl -v -d @/Users/olivieri/git/BluePic-IBM-Swift/BluePic-Server/resources/tombs
 curl -v -d @/Users/olivieri/git/BluePic-IBM-Swift/BluePic-Server/resources/curl-utils.txt   -X POST http://localhost:8090/users/1000/images/utils.txt/SwiftRocks
 
 # Create a database
-curl -X PUT https://d60741e4-629e-48e4-aa5d-da6e7557d5b5-bluemix.cloudant.com/bluepic_db -u d60741e4-629e-48e4-aa5d-da6e7557d5b5-bluemix
+curl -X PUT https://d60741e4-629e-48e4-aa5d-da6e7557d5b5-bluemix.cloudant.com/bluepic_db -u d60741e4-629e-48e4-aa5d-da6e7557d5b5-bluemix:f2c7c6a70784057bf8ab86a3ae5c9ac7129fedf67619f243eb030058764792e3
