@@ -8,4 +8,5 @@ struct BluePic {
 
 enum ProcessingError: ErrorProtocol {
   case Image(String)
+  case User(String)
 }

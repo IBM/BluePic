@@ -61,10 +61,11 @@ func defineRoutes() {
 
   // Get all users
   router.get("/users") { _, response, next in
-    database.queryByView("users", ofDesign: "main_design", usingParameters: [.Descending(true), .IncludeDocs(true)]) { (document, error) in
+    database.queryByView("users", ofDesign: "main_design", usingParameters: [.Descending(true), .IncludeDocs(false)]) { (document, error) in
       if let document = document where error == nil {
         do {
-          try response.status(HttpStatusCode.OK).sendJson(document).end()
+          let users = try parseUsers(document)
+          try response.status(HttpStatusCode.OK).sendJson(users).end()
         }
         catch {
           Log.error("Failed to send response to client.")

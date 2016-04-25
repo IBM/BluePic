@@ -46,6 +46,24 @@ func parsePhotosList(list: JSON) -> JSON {
   return JSON(photos)
 }
 
+func parseUsers(document: JSON) throws -> JSON {
+  guard let rows = document["rows"].array else {
+    throw ProcessingError.User("Invalid users document returned from Cloudant!")
+  }
+
+  var users: [JSON] = []
+  for row in rows {
+    let user = row["value"]
+    users.append(user)
+  }
+
+  var usersDocument = JSON([:])
+  usersDocument["offset"] = document["offset"]
+  usersDocument["total_rows"] = document["total_rows"]
+  usersDocument["records"] = JSON(users)
+  return usersDocument
+}
+
 func getImageDocument(request: RouterRequest) throws -> JSONDictionary {
   guard let displayName = request.params["displayName"],
     let fileName = request.params["fileName"],
@@ -79,17 +97,4 @@ func getImageDocument(request: RouterRequest) throws -> JSONDictionary {
 
 func generateInternalError() -> NSError {
   return NSError(domain: BluePic.Domain, code: BluePic.Error.Internal.rawValue, userInfo: [NSLocalizedDescriptionKey: String(BluePic.Error.Internal)])
-}
-
-func getDesign() -> (String?, JSON?) {
-    let designDoc : JSONDictionary =
-        ["_id" : "_design/photos",
-         "views" : [
-            "sortedByDate" : [
-                "map" : "function(doc) {if (doc.type == 'photo' && doc.title && doc.date && doc.ownerId && doc.ownerName) { emit(doc.date, {title: doc.title, ownerId: doc.ownerId, ownerName: doc.ownerName, attachments: doc._attachments});}}"
-                ]
-            ]
-        ]
-
-    return ("photos", JSON(designDoc))
 }
