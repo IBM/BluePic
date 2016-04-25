@@ -43,7 +43,7 @@ func defineRoutes() {
 
   // Get all images
   router.get("/images") { _, response, next in
-    database.queryByView("images", ofDesign: "main_design", usingParameters: [.Descending(true), .IncludeDocs(true)]) { (document, error) in
+    database.queryByView("images", ofDesign: "main_design", usingParameters: [.Descending(false), .IncludeDocs(true)]) { (document, error) in
       if let document = document where error == nil {
         do {
           try response.status(HttpStatusCode.OK).sendJson(document).end()
