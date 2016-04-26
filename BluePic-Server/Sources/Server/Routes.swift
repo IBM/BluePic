@@ -46,7 +46,9 @@ func defineRoutes() {
     database.queryByView("images", ofDesign: "main_design", usingParameters: [.Descending(false), .IncludeDocs(true)]) { (document, error) in
       if let document = document where error == nil {
         do {
-          try response.status(HttpStatusCode.OK).sendJson(document).end()
+          let images = try parseImages(document)
+          try response.status(HttpStatusCode.OK).sendJson(images).end()
+          //try response.status(HttpStatusCode.OK).sendJson(document).end()
         }
         catch {
           Log.error("Failed to send response to client.")
@@ -206,13 +208,17 @@ func defineRoutes() {
   }
 
   //////////////////////////////////////////////////////////////
+  //TODO: Validate need for these middlewares
 
+  //???
   router.all("/photos/*", middleware: BodyParser())
 
+  // Needed for authentication
   router.post("/photos/:title/:photoname", middleware: credentials)
 
-  ///
+  /////////////////////////////////////////////////////////////
 
+/*
   router.get("/photos") { _, response, next in
     database.queryByView("sortedByDate", ofDesign: "photos", usingParameters: [.Descending(true)]) { (document, error) in
       if let document = document where error == nil {
@@ -227,6 +233,6 @@ func defineRoutes() {
       }
       next()
     }
-  }
+  }*/
 
 }
