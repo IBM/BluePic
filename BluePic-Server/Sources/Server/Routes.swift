@@ -181,8 +181,10 @@ func defineRoutes() {
         throw ProcessingError.Image("Invalid user document!")
       }
 
+      userJson["type"] = "user"
+
       // Keep only those keys that are valid for the user document
-      let validKeys = ["_id", "name"]
+      let validKeys = ["_id", "name", "type"]
       for (key, _) in userJson {
         if validKeys.index(of: key) == nil {
           userJson.dictionaryObject?.removeValue(forKey: key)
