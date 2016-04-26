@@ -23,55 +23,42 @@ import Credentials
 import SwiftyJSON
 
 func parseImages(document: JSON) throws -> JSON {
-  guard let rows = document["rows"].array,
-  let totalRows = document["total_rows"].int else {
-    throw ProcessingError.User("Invalid document returned from Cloudant!")
+  guard let rows = document["rows"].array else {
+    throw ProcessingError.User("Invalid images document returned from Cloudant!")
   }
 
-  let upperBound = totalRows - 1
+  let upperBound = (rows.count) - 1
   var images: [JSON] = []
   for index in 0...upperBound {
     var record = rows[index]["doc"]
     if index % 2 == 0 {
-      let id = record["_id"].stringValue
-      let fileName = record["fileName"].stringValue
-      record["url"].stringValue = "http://\(database.connProperties.hostName):\(database.connProperties.port)/\(database.name)/\(id)/\(fileName)"
-      record["length"].int = record["_attachments"]["jen.png"]["length"].int
-      record.dictionaryObject?.removeValue(forKey: "userId")
-      record.dictionaryObject?.removeValue(forKey: "_attachments")
+      massageImageRecord(&record)
       images.append(record)
     } else {
       var record = images[images.endIndex - 1]
       record["user"] = rows[index]["doc"]
     }
   }
-  return constructDocument(document, records: images, totalRows: (totalRows / 2))
+  return constructDocument(document, records: images)
+}
+
+func parseImagesForUser(document: JSON) throws -> JSON {
+  guard let rows = document["rows"].array else {
+    throw ProcessingError.User("Invalid images document returned from Cloudant!")
+  }
+
+  var images: [JSON] = []
+  for row in rows {
+    var record = row["value"]
+    massageImageRecord(&record)
+    images.append(record)
+  }
+  return constructDocument(document, records: images)
 }
 
 func parseUsers(document: JSON) throws -> JSON {
   let users = try parseRecords(document)
-  return constructDocument(document, records: users, totalRows: nil)
-}
-
-private func parseRecords(document: JSON) throws -> [JSON] {
-  guard let rows = document["rows"].array else {
-    throw ProcessingError.User("Invalid document returned from Cloudant!")
-  }
-
-  var records: [JSON] = []
-  for row in rows {
-    let record = row["value"]
-    records.append(record)
-  }
-  return records
-}
-
-private func constructDocument(document: JSON, records: [JSON], totalRows: Int?) -> JSON {
-  var jsonDocument = JSON([:])
-  jsonDocument["offset"] = document["offset"]
-  jsonDocument["total_rows"].int = totalRows ?? document["total_rows"].int
-  jsonDocument["records"] = JSON(records)
-  return jsonDocument
+  return constructDocument(document, records: users)
 }
 
 func getImageDocument(request: RouterRequest) throws -> JSONDictionary {
@@ -107,4 +94,34 @@ func getImageDocument(request: RouterRequest) throws -> JSONDictionary {
 
 func generateInternalError() -> NSError {
   return NSError(domain: BluePic.Domain, code: BluePic.Error.Internal.rawValue, userInfo: [NSLocalizedDescriptionKey: String(BluePic.Error.Internal)])
+}
+
+private func massageImageRecord(record: inout JSON) {
+  let id = record["_id"].stringValue
+  let fileName = record["fileName"].stringValue
+  record["url"].stringValue = "http://\(database.connProperties.hostName):\(database.connProperties.port)/\(database.name)/\(id)/\(fileName)"
+  record["length"].int = record["_attachments"]["jen.png"]["length"].int
+  record.dictionaryObject?.removeValue(forKey: "userId")
+  record.dictionaryObject?.removeValue(forKey: "_attachments")
+}
+
+private func parseRecords(document: JSON) throws -> [JSON] {
+  guard let rows = document["rows"].array else {
+    throw ProcessingError.User("Invalid document returned from Cloudant!")
+  }
+
+  var records: [JSON] = []
+  for row in rows {
+    let record = row["value"]
+    records.append(record)
+  }
+  return records
+}
+
+private func constructDocument(document: JSON, records: [JSON]) -> JSON {
+  var jsonDocument = JSON([:])
+  //jsonDocument["offset"] = document["offset"]
+  jsonDocument["number_of_records"].int = records.count
+  jsonDocument["records"] = JSON(records)
+  return jsonDocument
 }

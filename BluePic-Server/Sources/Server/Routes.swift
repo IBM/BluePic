@@ -154,7 +154,9 @@ func defineRoutes() {
     database.queryByView("images_per_user", ofDesign: "main_design", usingParameters: [.Descending(true), .Keys([userId])]) { (document, error) in
       if let document = document where error == nil {
         do {
-          try response.status(HttpStatusCode.OK).sendJson(document).end()
+          let images = try parseImagesForUser(document)
+          try response.status(HttpStatusCode.OK).sendJson(images).end()
+          //try response.status(HttpStatusCode.OK).sendJson(document).end()
         }
         catch {
           Log.error("Failed to get images for \(userId).")
@@ -174,13 +176,15 @@ func defineRoutes() {
       var userJson = JSON(data: rawUserData)
 
       // Verify JSON has required fields
-      guard let _ = userJson["name"].string else {
+      guard let _ = userJson["name"].string,
+      let _ = userJson["_id"].string else {
         throw ProcessingError.Image("Invalid user document!")
       }
 
       // Keep only those keys that are valid for the user document
+      let validKeys = ["_id", "name"]
       for (key, _) in userJson {
-        if key != "name" {
+        if validKeys.index(of: key) == nil {
           userJson.dictionaryObject?.removeValue(forKey: key)
         }
       }
@@ -217,22 +221,5 @@ func defineRoutes() {
   router.post("/photos/:title/:photoname", middleware: credentials)
 
   /////////////////////////////////////////////////////////////
-
-/*
-  router.get("/photos") { _, response, next in
-    database.queryByView("sortedByDate", ofDesign: "photos", usingParameters: [.Descending(true)]) { (document, error) in
-      if let document = document where error == nil {
-        do {
-          try response.status(HttpStatusCode.OK).sendJson(parsePhotosList(document)).end()
-        }
-        catch {
-          Log.error("Failed to send response to client.")
-        }
-      } else {
-        response.error = error ?? NSError(domain: "SwiftBluePic", code: 1, userInfo: [NSLocalizedDescriptionKey: "View not found"])
-      }
-      next()
-    }
-  }*/
 
 }
