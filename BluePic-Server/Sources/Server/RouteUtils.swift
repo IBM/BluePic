@@ -22,59 +22,69 @@ import LoggerAPI
 import Credentials
 import SwiftyJSON
 
-func parsePhotosList(list: JSON) -> JSON {
-  var photos = [JSON]()
-  let listLength = Int(list["total_rows"].number!)
-  if listLength == 0 {
-    let empty = [[String:String]]()
-    return JSON(empty)
+func parseImages(document: JSON) throws -> JSON {
+  guard let rows = document["rows"].array,
+  let totalRows = document["total_rows"].int else {
+    throw ProcessingError.User("Invalid document returned from Cloudant!")
   }
 
-  for index in 0...(listLength - 1) {
-    let photoId = list["rows"][index]["id"].stringValue
-    let date = list["rows"][index]["key"].stringValue
-    let data = list["rows"][index]["value"].dictionaryValue
-    let title = data["title"]!.stringValue
-    let ownerId = data["ownerId"]!.stringValue
-    let ownerName = data["ownerName"]!.stringValue
-    let attachments = data["attachments"]!.dictionaryValue
-    let attachmentName = ([String](attachments.keys))[0]
-
-    let photo = JSON(["title": title,  "date": date, "ownerId": ownerId, "ownerName": ownerName, "picturePath": "\(photoId)/\(attachmentName)"])
-    photos.append(photo)
+  let upperBound = totalRows - 1
+  var images: [JSON] = []
+  for index in 0...upperBound {
+    var record = rows[index]["doc"]
+    if index % 2 == 0 {
+      let id = record["_id"].stringValue
+      let fileName = record["fileName"].stringValue
+      record["url"].stringValue = "http://\(database.connProperties.hostName):\(database.connProperties.port)/\(database.name)/\(id)/\(fileName)"
+      record["length"].int = record["_attachments"]["jen.png"]["length"].int
+      record.dictionaryObject?.removeValue(forKey: "userId")
+      record.dictionaryObject?.removeValue(forKey: "_attachments")
+      images.append(record)
+    } else {
+      var record = images[images.endIndex - 1]
+      record["user"] = rows[index]["doc"]
+    }
   }
-  return JSON(photos)
+  return constructDocument(document, records: images, totalRows: (totalRows / 2))
 }
 
 func parseUsers(document: JSON) throws -> JSON {
+  let users = try parseRecords(document)
+  return constructDocument(document, records: users, totalRows: nil)
+}
+
+private func parseRecords(document: JSON) throws -> [JSON] {
   guard let rows = document["rows"].array else {
-    throw ProcessingError.User("Invalid users document returned from Cloudant!")
+    throw ProcessingError.User("Invalid document returned from Cloudant!")
   }
 
-  var users: [JSON] = []
+  var records: [JSON] = []
   for row in rows {
-    let user = row["value"]
-    users.append(user)
+    let record = row["value"]
+    records.append(record)
   }
+  return records
+}
 
-  var usersDocument = JSON([:])
-  usersDocument["offset"] = document["offset"]
-  usersDocument["total_rows"] = document["total_rows"]
-  usersDocument["records"] = JSON(users)
-  return usersDocument
+private func constructDocument(document: JSON, records: [JSON], totalRows: Int?) -> JSON {
+  var jsonDocument = JSON([:])
+  jsonDocument["offset"] = document["offset"]
+  jsonDocument["total_rows"].int = totalRows ?? document["total_rows"].int
+  jsonDocument["records"] = JSON(records)
+  return jsonDocument
 }
 
 func getImageDocument(request: RouterRequest) throws -> JSONDictionary {
   guard let displayName = request.params["displayName"],
-    let fileName = request.params["fileName"],
-    let userId = request.params["userId"] else {
-      throw ProcessingError.Image("Invalid image document!")
+  let fileName = request.params["fileName"],
+  let userId = request.params["userId"] else {
+    throw ProcessingError.Image("Invalid image document!")
   }
 
   #if os(Linux)
-    let ext = fileName.componentsSeparatedByString(".")[1].lowercased()
+  let ext = fileName.componentsSeparatedByString(".")[1].lowercased()
   #else
-    let ext = fileName.componentsSeparated(by: ".")[1].lowercased()
+  let ext = fileName.componentsSeparated(by: ".")[1].lowercased()
   #endif
 
   guard let contentType = ContentType.contentTypeForExtension(ext) else {
@@ -82,13 +92,13 @@ func getImageDocument(request: RouterRequest) throws -> JSONDictionary {
   }
 
   #if os(Linux)
-    let dateStr = NSDate().descriptionWithLocale(nil).bridge()
-    let uploadedTs = dateStr.substringToIndex(10) + "T" + dateStr.substringWithRange(NSMakeRange(11, 8))
-    let imageName = displayName.stringByReplacingOccurrencesOfString("%20", withString: " ")
+  let dateStr = NSDate().descriptionWithLocale(nil).bridge()
+  let uploadedTs = dateStr.substringToIndex(10) + "T" + dateStr.substringWithRange(NSMakeRange(11, 8))
+  let imageName = displayName.stringByReplacingOccurrencesOfString("%20", withString: " ")
   #else
-    let dateStr = NSDate().description(withLocale: nil).bridge()
-    let uploadedTs = dateStr.substring(to: 10) + "T" + dateStr.substring(with:NSMakeRange(11, 8))
-    let imageName = displayName.replacingOccurrences(of: "%20", with: " ")
+  let dateStr = NSDate().description(withLocale: nil).bridge()
+  let uploadedTs = dateStr.substring(to: 10) + "T" + dateStr.substring(with:NSMakeRange(11, 8))
+  let imageName = displayName.replacingOccurrences(of: "%20", with: " ")
   #endif
 
   let imageDocument: JSONDictionary = ["contentType": contentType, "fileName": fileName, "userId": userId, "displayName": imageName, "uploadedTs": uploadedTs, "type": "image"]
