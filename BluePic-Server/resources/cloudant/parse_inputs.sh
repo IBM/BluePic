@@ -16,7 +16,29 @@
 # limitations under the License.
 ##
 
-# If any commands fail, we want the shell script to exit immediately.
-set -e
+for i in "$@"
+do
+case $i in
+    -u=*|--username=*)
+    username="${i#*=}"
+    shift # past argument=value
+    ;;
+    -p=*|--password=*)
+    password="${i#*=}"
+    shift # past argument=value
+    ;;
+    *)
+        # unknown option
+    ;;
+esac
+done
 
-curl -X PUT "https://d60741e4-629e-48e4-aa5d-da6e7557d5b5-bluemix.cloudant.com/bluepic_db/_design/main_design" -u d60741e4-629e-48e4-aa5d-da6e7557d5b5-bluemix:f2c7c6a70784057bf8ab86a3ae5c9ac7129fedf67619f243eb030058764792e3 -d @main_design.json
+# Variables (tmp)
+username=d60741e4-629e-48e4-aa5d-da6e7557d5b5-bluemix
+password=f2c7c6a70784057bf8ab86a3ae5c9ac7129fedf67619f243eb030058764792e3
+database=bluepic_db
+
+echo "Variables:"
+echo -e "  username: $username"
+echo -e "  password: $password"
+echo -e "  database: $database"
