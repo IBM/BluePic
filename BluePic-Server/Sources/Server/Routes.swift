@@ -40,6 +40,9 @@ func defineRoutes() {
   // Test endpoint
   router.get("/hello", handler: closure)
 
+  // Endpoint for sending push notification (this will use the new Push SDK)
+  router.post("/push", handler: closure)
+
   // Get all image documents
   router.get("/images") { _, response, next in
     database.queryByView("images", ofDesign: "main_design", usingParameters: [.Descending(false), .IncludeDocs(true)]) { (document, error) in
