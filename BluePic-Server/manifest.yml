@@ -1,6 +1,13 @@
 ---
+declared-services:
+  cloudantNoSQLDB:
+    label: Cloudant NoSQL DB-fz
+    plan:  Shared
+
 applications:
 - name: BluePic
   random-route: true
   memory: 512M
   disk_quota: 1024M
+  services:
+  - Cloudant NoSQL DB-fz
