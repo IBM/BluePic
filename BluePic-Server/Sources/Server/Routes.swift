@@ -20,7 +20,6 @@ import KituraNet
 import CouchDB
 import LoggerAPI
 import SwiftyJSON
-//import Credentials
 
 // Setup the handlers for the Photo APIs
 func defineRoutes() {
@@ -41,7 +40,7 @@ func defineRoutes() {
   // Test endpoint
   router.get("/hello", handler: closure)
 
-  // Get all images
+  // Get all image documents
   router.get("/images") { _, response, next in
     database.queryByView("images", ofDesign: "main_design", usingParameters: [.Descending(false), .IncludeDocs(true)]) { (document, error) in
       if let document = document where error == nil {
@@ -61,7 +60,7 @@ func defineRoutes() {
     }
   }
 
-  // Get all users
+  // Get all user documents
   router.get("/users") { _, response, next in
     database.queryByView("users", ofDesign: "main_design", usingParameters: [.Descending(true), .IncludeDocs(false)]) { (document, error) in
       if let document = document where error == nil {
@@ -80,7 +79,7 @@ func defineRoutes() {
     }
   }
 
-  // Get a specific user
+  // Get a specific user document
   router.get("/users/:userId") { request, response, next in
     guard let userId = request.params["userId"] else {
       response.error = NSError(domain: BluePic.Domain, code: BluePic.Error.Internal.rawValue, userInfo: [NSLocalizedDescriptionKey: String(BluePic.Error.Internal)])
@@ -169,7 +168,7 @@ func defineRoutes() {
     }
   }
 
-  // Create a new user
+  // Create a new user in the database
   router.post("/users") { request, response, next in
     do {
       let rawUserData = try BodyParser.readBodyData(request)
@@ -213,14 +212,36 @@ func defineRoutes() {
     }
   }
 
+  // Get image binary.
+  // It does not seem technically possible to server attachments from Cloudant
+  // without requiring authentication. Hence, the need for this proxy method.
+  router.get("/images/:imageId/:attachmentName") { request, response, next in
+    guard let imageId = request.params["imageId"],
+    let attachmentName = request.params["attachmentName"] else {
+      response.error = generateInternalError()
+      next()
+      return
+    }
+
+    database.retrieveAttachment(imageId, attachmentName: attachmentName) { (image, error, contentType) in
+      if  let image = image where error == nil  {
+        if let contentType = contentType {
+          response.setHeader("Content-Type", value: contentType)
+        }
+        response.status(HttpStatusCode.OK).sendData(image)
+      }
+      else {
+        response.error = error ?? generateInternalError()
+      }
+      next()
+    }
+  }
+
   //////////////////////////////////////////////////////////////
-  //TODO: Validate need for these middlewares
+  //TODO: Validate need for these middleware
 
-  //???
+  //What is this doing?
   router.all("/photos/*", middleware: BodyParser())
-
-  // Needed for authentication
-  //router.post("/photos/:title/:photoname", middleware: credentials)
 
   /////////////////////////////////////////////////////////////
 
