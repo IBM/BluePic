@@ -47,12 +47,12 @@ func parseImagesForUser(document: JSON) throws -> JSON {
     throw ProcessingError.User("Invalid images document returned from Cloudant!")
   }
 
-  var images: [JSON] = []
-  for row in rows {
+  let images: [JSON] = rows.map({row in
     var record = row["value"]
     massageImageRecord(&record)
-    images.append(record)
-  }
+    return record
+  })
+
   return constructDocument(document, records: images)
 }
 
@@ -100,7 +100,7 @@ private func massageImageRecord(record: inout JSON) {
   let id = record["_id"].stringValue
   let fileName = record["fileName"].stringValue
   record["url"].stringValue = "http://\(database.connProperties.hostName):\(database.connProperties.port)/\(database.name)/\(id)/\(fileName)"
-  record["length"].int = record["_attachments"]["jen.png"]["length"].int
+  record["length"].int = record["_attachments"][fileName]["length"].int
   record.dictionaryObject?.removeValue(forKey: "userId")
   record.dictionaryObject?.removeValue(forKey: "_attachments")
 }
@@ -110,17 +110,15 @@ private func parseRecords(document: JSON) throws -> [JSON] {
     throw ProcessingError.User("Invalid document returned from Cloudant!")
   }
 
-  var records: [JSON] = []
-  for row in rows {
-    let record = row["value"]
-    records.append(record)
-  }
+  let records: [JSON] = rows.map({row in
+    row["value"]
+  })
+
   return records
 }
 
 private func constructDocument(document: JSON, records: [JSON]) -> JSON {
   var jsonDocument = JSON([:])
-  //jsonDocument["offset"] = document["offset"]
   jsonDocument["number_of_records"].int = records.count
   jsonDocument["records"] = JSON(records)
   return jsonDocument
