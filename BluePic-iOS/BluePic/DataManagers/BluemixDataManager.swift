@@ -131,7 +131,7 @@ class BluemixDataManager: NSObject {
     
     func getUsers(){
         
-        let request = Request(url: "/" + kUsersEndPoint, method: HttpMethod.GET)
+        let request = Request(url: getBluemixBaseURL() + "/" + kUsersEndPoint, method: HttpMethod.GET)
         
         request.sendWithCompletionHandler { (response, error) -> Void in
             if let error = error {
