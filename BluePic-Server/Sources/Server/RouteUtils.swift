@@ -37,9 +37,10 @@ func parseImages(document: JSON) throws -> JSON {
     } else {
       var record = images[images.endIndex - 1]
       record["user"] = rows[index]["doc"]
+      images[images.endIndex - 1] = record
     }
   }
-  return constructDocument(document, records: images)
+  return constructDocument(images)
 }
 
 func parseImagesForUser(document: JSON) throws -> JSON {
@@ -53,12 +54,12 @@ func parseImagesForUser(document: JSON) throws -> JSON {
     return record
   })
 
-  return constructDocument(document, records: images)
+  return constructDocument(images)
 }
 
 func parseUsers(document: JSON) throws -> JSON {
   let users = try parseRecords(document)
-  return constructDocument(document, records: users)
+  return constructDocument(users)
 }
 
 func getImageDocument(request: RouterRequest) throws -> JSONDictionary {
@@ -117,9 +118,10 @@ private func parseRecords(document: JSON) throws -> [JSON] {
   return records
 }
 
-private func constructDocument(document: JSON, records: [JSON]) -> JSON {
+private func constructDocument(records: [JSON]) -> JSON {
   var jsonDocument = JSON([:])
   jsonDocument["number_of_records"].int = records.count
   jsonDocument["records"] = JSON(records)
+  //(jsonDocument)
   return jsonDocument
 }
