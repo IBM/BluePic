@@ -1,0 +1,14 @@
+{
+  "docs": [
+    {
+      "_id": "1000",
+      "name": "John Smith",
+      "type": "user"
+    },
+    {
+      "_id": "1001",
+      "name": "Peter Adams",
+      "type": "user"
+    }
+  ]
+}

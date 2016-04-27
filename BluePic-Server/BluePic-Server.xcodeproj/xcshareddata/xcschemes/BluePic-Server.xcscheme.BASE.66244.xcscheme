@@ -154,6 +154,34 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "______Target_Credentials"
+               BuildableName = "libCredentials.dylib"
+               BlueprintName = "Credentials"
+               ReferencedContainer = "container:BluePic-Server.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "______Target_CredentialsFacebookToken"
+               BuildableName = "libCredentialsFacebookToken.dylib"
+               BlueprintName = "CredentialsFacebookToken"
+               ReferencedContainer = "container:BluePic-Server.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "______Target_CFEnvironment"
                BuildableName = "libCFEnvironment.dylib"
                BlueprintName = "CFEnvironment"
@@ -189,6 +217,16 @@
                BlueprintIdentifier = "______Target_KituraTestSuite"
                BuildableName = "Kitura.testsuite.xctest"
                BlueprintName = "Kitura.testsuite"
+               ReferencedContainer = "container:BluePic-Server.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "______Target_netTestSuite"
+               BuildableName = "netTestSuite.xctest"
+               BlueprintName = "net.testsuite"
                ReferencedContainer = "container:BluePic-Server.xcodeproj">
             </BuildableReference>
          </TestableReference>

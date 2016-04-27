@@ -1,3 +1,4 @@
+---
 declared-services:
   BluePic cloudantNoSQLDB:
     label: cloudantNoSQLDB

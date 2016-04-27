@@ -17,7 +17,6 @@
 import Foundation
 import Kitura
 import KituraNet
-import Credentials
 import CouchDB
 import LoggerAPI
 import SwiftyJSON
@@ -41,7 +40,7 @@ func defineRoutes() {
   // Test endpoint
   router.get("/hello", handler: closure)
 
-  // Get all images
+  // Get all image documents
   router.get("/images") { _, response, next in
     database.queryByView("images", ofDesign: "main_design", usingParameters: [.Descending(false), .IncludeDocs(true)]) { (document, error) in
       if let document = document where error == nil {
@@ -61,7 +60,7 @@ func defineRoutes() {
     }
   }
 
-  // Get all users
+  // Get all user documents
   router.get("/users") { _, response, next in
     database.queryByView("users", ofDesign: "main_design", usingParameters: [.Descending(true), .IncludeDocs(false)]) { (document, error) in
       if let document = document where error == nil {
@@ -80,7 +79,7 @@ func defineRoutes() {
     }
   }
 
-  // Get a specific user
+  // Get a specific user document
   router.get("/users/:userId") { request, response, next in
     guard let userId = request.params["userId"] else {
       response.error = NSError(domain: BluePic.Domain, code: BluePic.Error.Internal.rawValue, userInfo: [NSLocalizedDescriptionKey: String(BluePic.Error.Internal)])
@@ -122,7 +121,7 @@ func defineRoutes() {
         let _ = doc, let id = id, let revision = revision where error == nil {
           database.createAttachment(id, docRevison: revision, attachmentName: fileName, attachmentData: image, contentType: contentType) { (rev, imageDoc, error) in
             if let _ = imageDoc where error == nil {
-              imageDocument["url"] = "http://\(database.connProperties.hostName):\(database.connProperties.port)/\(database.name)/\(id)/\(fileName)"
+              imageDocument["url"] = generateImageUrl(id, attachmentName: fileName)
               imageDocument["_id"] = id
               imageDocument["_rev"] = revision
               response.status(HttpStatusCode.OK).sendJson(JSON(imageDocument))
@@ -151,10 +150,12 @@ func defineRoutes() {
       return
     }
 
-    database.queryByView("images_per_user", ofDesign: "main_design", usingParameters: [.Descending(true), .Keys([userId])]) { (document, error) in
+    database.queryByView("images_per_user", ofDesign: "main_design", usingParameters: [.Descending(true), .Keys([NSString(string: userId)])]) { (document, error) in
       if let document = document where error == nil {
         do {
-          try response.status(HttpStatusCode.OK).sendJson(document).end()
+          let images = try parseImagesForUser(document)
+          try response.status(HttpStatusCode.OK).sendJson(images).end()
+          //try response.status(HttpStatusCode.OK).sendJson(document).end()
         }
         catch {
           Log.error("Failed to get images for \(userId).")
@@ -167,20 +168,24 @@ func defineRoutes() {
     }
   }
 
-  // Create a new user
+  // Create a new user in the database
   router.post("/users") { request, response, next in
     do {
       let rawUserData = try BodyParser.readBodyData(request)
       var userJson = JSON(data: rawUserData)
 
       // Verify JSON has required fields
-      guard let _ = userJson["name"].string else {
+      guard let _ = userJson["name"].string,
+      let _ = userJson["_id"].string else {
         throw ProcessingError.Image("Invalid user document!")
       }
 
+      userJson["type"] = "user"
+
       // Keep only those keys that are valid for the user document
+      let validKeys = ["_id", "name", "type"]
       for (key, _) in userJson {
-        if key != "name" {
+        if validKeys.index(of: key) == nil {
           userJson.dictionaryObject?.removeValue(forKey: key)
         }
       }
@@ -207,32 +212,37 @@ func defineRoutes() {
     }
   }
 
-  //////////////////////////////////////////////////////////////
-  //TODO: Validate need for these middlewares
+  // Get image binary.
+  // It does not seem technically possible to server attachments from Cloudant
+  // without requiring authentication. Hence, the need for this proxy method.
+  router.get("/images/:imageId/:attachmentName") { request, response, next in
+    guard let imageId = request.params["imageId"],
+    let attachmentName = request.params["attachmentName"] else {
+      response.error = generateInternalError()
+      next()
+      return
+    }
 
-  //???
-  router.all("/photos/*", middleware: BodyParser())
-
-  // Needed for authentication
-  router.post("/photos/:title/:photoname", middleware: credentials)
-
-  /////////////////////////////////////////////////////////////
-
-/*
-  router.get("/photos") { _, response, next in
-    database.queryByView("sortedByDate", ofDesign: "photos", usingParameters: [.Descending(true)]) { (document, error) in
-      if let document = document where error == nil {
-        do {
-          try response.status(HttpStatusCode.OK).sendJson(parsePhotosList(document)).end()
+    database.retrieveAttachment(imageId, attachmentName: attachmentName) { (image, error, contentType) in
+      if  let image = image where error == nil  {
+        if let contentType = contentType {
+          response.setHeader("Content-Type", value: contentType)
         }
-        catch {
-          Log.error("Failed to send response to client.")
-        }
-      } else {
-        response.error = error ?? NSError(domain: "SwiftBluePic", code: 1, userInfo: [NSLocalizedDescriptionKey: "View not found"])
+        response.status(HttpStatusCode.OK).sendData(image)
+      }
+      else {
+        response.error = error ?? generateInternalError()
       }
       next()
     }
-  }*/
+  }
+
+  //////////////////////////////////////////////////////////////
+  //TODO: Validate need for these middleware
+
+  //What is this doing?
+  router.all("/photos/*", middleware: BodyParser())
+
+  /////////////////////////////////////////////////////////////
 
 }
