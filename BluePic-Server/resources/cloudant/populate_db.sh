@@ -38,23 +38,20 @@ curl -H "Content-Type: application/json" -d @users.json -X POST https://$usernam
 curl -H "Content-Type: application/json" -d @images.json -X POST https://$username.cloudant.com/$database/_bulk_docs -u $username:$password
 
 # Upload attachments (images)
-revNumber=`curl -H "Content-Type: application/json" --head https://$username.cloudant.com/$database/2000 -u $username:$password | grep Etag | awk '{print $2}' | tr -cd '[[:alnum:]]._-'`
-curl -v -H "Content-Type: image/png" --data-binary @/Users/olivieri/git/BluePic-IBM-Swift/BluePic-Server/resources/imgs/swift.png -X PUT "https://$username.cloudant.com/$database/2000/swift.png?rev=$revNumber" -u $username:$password
-
-revNumber=`curl -H "Content-Type: application/json" --head https://$username.cloudant.com/$database/2001 -u $username:$password | grep Etag | awk '{print $2}' | tr -cd '[[:alnum:]]._-'`
-curl -v -H "Content-Type: image/jpg" --data-binary @/Users/olivieri/git/BluePic-IBM-Swift/BluePic-Server/resources/imgs/genesis.jpg -X PUT "https://$username.cloudant.com/$database/2001/genesis.jpg?rev=$revNumber" -u $username:$password
-
-revNumber=`curl -H "Content-Type: application/json" --head https://$username.cloudant.com/$database/2002 -u $username:$password | grep Etag | awk '{print $2}' | tr -cd '[[:alnum:]]._-'`
-curl -v -H "Content-Type: image/jpg" --data-binary @/Users/olivieri/git/BluePic-IBM-Swift/BluePic-Server/resources/imgs/tombstone.jpg -X PUT "https://$username.cloudant.com/$database/2002/tombstone.jpg?rev=$revNumber" -u $username:$password
-
-revNumber=`curl -H "Content-Type: application/json" --head https://$username.cloudant.com/$database/2003 -u $username:$password | grep Etag | awk '{print $2}' | tr -cd '[[:alnum:]]._-'`
-curl -v -H "Content-Type: image/jpg" --data-binary @/Users/olivieri/git/BluePic-IBM-Swift/BluePic-Server/resources/imgs/rush-logo.jpg -X PUT "https://$username.cloudant.com/$database/2003/rush-logo.jpg?rev=$revNumber" -u $username:$password
-
-revNumber=`curl -H "Content-Type: application/json" --head https://$username.cloudant.com/$database/2004 -u $username:$password | grep Etag | awk '{print $2}' | tr -cd '[[:alnum:]]._-'`
-curl -v -H "Content-Type: image/jpg" --data-binary @/Users/olivieri/git/BluePic-IBM-Swift/BluePic-Server/resources/imgs/rush.jpg -X PUT "https://$username.cloudant.com/$database/2004/rush.jpg?rev=$revNumber" -u $username:$password
-
-revNumber=`curl -H "Content-Type: application/json" --head https://$username.cloudant.com/$database/2005 -u $username:$password | grep Etag | awk '{print $2}' | tr -cd '[[:alnum:]]._-'`
-curl -v -H "Content-Type: image/jpg" --data-binary @/Users/olivieri/git/BluePic-IBM-Swift/BluePic-Server/resources/imgs/within-temptation.jpg -X PUT "https://$username.cloudant.com/$database/2005/within-temptation.jpg?rev=$revNumber" -u $username:$password
+declare -a attachments=('image/png' '2000' 'swift.png' 'image/jpg' '2001' 'genesis.jpg' 'image/jpg' '2002' 'tombstone.jpg' 'image/jpg' '2003' 'rush-logo.jpg' 'image/jpg' '2004' 'rush.jpg' 'image/jpg' '2005' 'within-temptation.jpg');
+index=0
+while [ $index -lt ${#attachments[@]} ]; do
+  contentType=${attachments[$index]}
+  let index+=1
+  imageId=${attachments[$index]}
+  let index+=1
+  fileName=${attachments[$index]}
+  # Get revision number from image document
+  revNumber=`curl -H "Content-Type: application/json" --head https://$username.cloudant.com/$database/$imageId -u $username:$password | grep Etag | awk '{print $2}' | tr -cd '[[:alnum:]]._-'`
+  # Upload image file to image document as an attachment
+  curl -v -H "Content-Type: $contentType" --data-binary @/Users/olivieri/git/BluePic-IBM-Swift/BluePic-Server/resources/imgs/$fileName -X PUT "https://$username.cloudant.com/$database/$imageId/$fileName?rev=$revNumber" -u $username:$password
+  let index+=1
+done
 
 echo
 echo "Successfully finished populating cloudant database '$database'."
