@@ -151,7 +151,7 @@ func defineRoutes() {
       return
     }
 
-    database.queryByView("images_per_user", ofDesign: "main_design", usingParameters: [.Descending(true), .Keys([userId])]) { (document, error) in
+    database.queryByView("images_per_user", ofDesign: "main_design", usingParameters: [.Descending(true), .Keys([NSString(string: userId)])]) { (document, error) in
       if let document = document where error == nil {
         do {
           let images = try parseImagesForUser(document)
