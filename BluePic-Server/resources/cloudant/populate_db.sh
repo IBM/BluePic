@@ -56,4 +56,5 @@ curl -v -H "Content-Type: image/jpg" --data-binary @/Users/olivieri/git/BluePic-
 revNumber=`curl -H "Content-Type: application/json" --head https://$username.cloudant.com/$database/2005 -u $username:$password | grep Etag | awk '{print $2}' | tr -cd '[[:alnum:]]._-'`
 curl -v -H "Content-Type: image/jpg" --data-binary @/Users/olivieri/git/BluePic-IBM-Swift/BluePic-Server/resources/imgs/within-temptation.jpg -X PUT "https://$username.cloudant.com/$database/2005/within-temptation.jpg?rev=$revNumber" -u $username:$password
 
+echo
 echo "Successfully finished populating cloudant database '$database'."
