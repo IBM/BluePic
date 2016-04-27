@@ -49,7 +49,7 @@ while [ $index -lt ${#attachments[@]} ]; do
   # Get revision number from image document
   revNumber=`curl -H "Content-Type: application/json" --head https://$username.cloudant.com/$database/$imageId -u $username:$password | grep Etag | awk '{print $2}' | tr -cd '[[:alnum:]]._-'`
   # Upload image file to image document as an attachment
-  curl -v -H "Content-Type: $contentType" --data-binary @/Users/olivieri/git/BluePic-IBM-Swift/BluePic-Server/resources/imgs/$fileName -X PUT "https://$username.cloudant.com/$database/$imageId/$fileName?rev=$revNumber" -u $username:$password
+  curl -v -H "Content-Type: $contentType" --data-binary @/Users/olivieri/git/BluePic-IBM-Swift/BluePic-Server/resources/images/$fileName -X PUT "https://$username.cloudant.com/$database/$imageId/$fileName?rev=$revNumber" -u $username:$password
   let index+=1
 done
 
