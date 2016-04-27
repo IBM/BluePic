@@ -40,5 +40,4 @@ database=bluepic_db
 
 echo "Variables:"
 echo -e "  username: $username"
-echo -e "  password: $password"
 echo -e "  database: $database"
