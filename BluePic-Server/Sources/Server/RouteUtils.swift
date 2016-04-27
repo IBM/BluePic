@@ -20,7 +20,6 @@ import Kitura
 import KituraNet
 import LoggerAPI
 import SwiftyJSON
-//import Credentials
 
 func parseImages(document: JSON) throws -> JSON {
   guard let rows = document["rows"].array else {
@@ -68,7 +67,7 @@ func getImageDocument(request: RouterRequest) throws -> JSONDictionary {
   let userId = request.params["userId"] else {
     throw ProcessingError.Image("Invalid image document!")
   }
-  
+
   guard let contentType = ContentType.sharedInstance.contentTypeForFile(fileName) else {
     throw ProcessingError.Image("Invalid image document!")
   }
@@ -91,10 +90,16 @@ func generateInternalError() -> NSError {
   return NSError(domain: BluePic.Domain, code: BluePic.Error.Internal.rawValue, userInfo: [NSLocalizedDescriptionKey: String(BluePic.Error.Internal)])
 }
 
+func generateImageUrl(imageId: String, attachmentName: String) -> String {
+   //let url = "http://\(database.connProperties.host):\(database.connProperties.port)/\(database.name)/\(imageId)/\(attachmentName)"
+   let url = "\(config.appEnv.url)/images/\(imageId)/\(attachmentName)"
+   return url
+}
+
 private func massageImageRecord(record: inout JSON) {
   let id = record["_id"].stringValue
   let fileName = record["fileName"].stringValue
-  record["url"].stringValue = "http://\(database.connProperties.host):\(database.connProperties.port)/\(database.name)/\(id)/\(fileName)"
+  record["url"].stringValue = generateImageUrl(id, attachmentName: fileName)
   record["length"].int = record["_attachments"][fileName]["length"].int
   record.dictionaryObject?.removeValue(forKey: "userId")
   record.dictionaryObject?.removeValue(forKey: "_attachments")

@@ -23,8 +23,6 @@ import LoggerAPI
 import HeliumLogger
 import SwiftyJSON
 import CFEnvironment
-//import Credentials
-//import CredentialsFacebookToken
 
 ///
 /// Because bridging is not complete in Linux, we must use Any objects for dictionaries
@@ -43,15 +41,11 @@ Log.logger = HeliumLogger()
 // Define "global" variables for module
 let router = Router()
 let database: Database
-
-// Create authentication credentials middlewares
-//let fbCredentials = CredentialsFacebookToken()
-//let credentials = Credentials()
-//credentials.register(fbCredentials)
+let config: Configuration
 
 do {
   // Create Configuration object
-  let config = try Configuration()
+  config = try Configuration()
   database = try config.getDatabase("bluepic_db")
 
   // Define routes

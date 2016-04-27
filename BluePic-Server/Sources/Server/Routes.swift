@@ -121,7 +121,7 @@ func defineRoutes() {
         let _ = doc, let id = id, let revision = revision where error == nil {
           database.createAttachment(id, docRevison: revision, attachmentName: fileName, attachmentData: image, contentType: contentType) { (rev, imageDoc, error) in
             if let _ = imageDoc where error == nil {
-              imageDocument["url"] = "http://\(database.connProperties.host):\(database.connProperties.port)/\(database.name)/\(id)/\(fileName)"
+              imageDocument["url"] = generateImageUrl(id, attachmentName: fileName)
               imageDocument["_id"] = id
               imageDocument["_rev"] = revision
               response.status(HttpStatusCode.OK).sendJson(JSON(imageDocument))
