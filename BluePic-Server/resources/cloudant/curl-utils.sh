@@ -19,9 +19,9 @@
 # If any commands fail, we want the shell script to exit immediately.
 set -e
 
-imgsFolder=`dirname $( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )`
-echo "imgsFolder: $imgsFolder"
+imagesFolder=`dirname $( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )`
+echo "imagesFolder: $imagesFolder"
 
 # Upload images via Kitura-based server
-curl -v --data-binary @$imgsFolder/imgs/tombstone.jpg -X POST http://localhost:8090/users/1000/images/tombstone.jpg/Tombstone
-curl -v --data-binary @$imgsFolder/imgs/swift.png -X POST http://localhost:8090/users/1000/images/swift.png/SwiftRocks
+curl -v --data-binary @$imagesFolder/images/tombstone.jpg -X POST http://localhost:8090/users/1000/images/tombstone.jpg/Tombstone
+curl -v --data-binary @$imagesFolder/images/swift.png -X POST http://localhost:8090/users/1000/images/swift.png/SwiftRocks
