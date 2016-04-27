@@ -21,8 +21,6 @@ import KituraSys
 import CouchDB
 import LoggerAPI
 import HeliumLogger
-import Credentials
-import CredentialsFacebookToken
 import SwiftyJSON
 import CFEnvironment
 
@@ -43,15 +41,11 @@ Log.logger = HeliumLogger()
 // Define "global" variables for module
 let router = Router()
 let database: Database
-
-// Create authentication credentials middlewares
-let fbCredentials = CredentialsFacebookToken()
-let credentials = Credentials()
-credentials.register(fbCredentials)
+let config: Configuration
 
 do {
   // Create Configuration object
-  let config = try Configuration()
+  config = try Configuration()
   database = try config.getDatabase("bluepic_db")
 
   // Define routes

@@ -17,8 +17,11 @@
 import Foundation
 import CouchDB
 import SwiftyJSON
+import LoggerAPI
 import CFEnvironment
 
+//https://console.ng.bluemix.net/docs/services/ObjectStorage/objectstorge_usingobjectstorage.html
+//https://console.ng.bluemix.net/docs/services/ObjectStorage/objectstorge_usingobjectstorage.html#using-swift-restapi
 public struct Configuration {
 
   public enum Error: ErrorProtocol {
@@ -39,20 +42,20 @@ public struct Configuration {
     if let configData = NSData(contentsOfFile: finalPath) {
       let configJson = JSON(data: configData)
       appEnv = try CFEnvironment.getAppEnv(configJson)
-      return
+      Log.info("Using configuration values from '\(configurationFile)'.")
+    } else {
+      Log.warning("Could not find '\(configurationFile)'.")
+      appEnv = try CFEnvironment.getAppEnv()
     }
-    throw Error.IO("Failed to read/parse the contents of the '\(configurationFile)' configuration file.")
   }
 
   func getDatabase(dbName: String) throws -> Database {
     if let couchDBCredentials = appEnv.getService("Cloudant NoSQL DB-fz")?.credentials {
       if let host = couchDBCredentials["host"].string,
         user = couchDBCredentials["username"].string,
-        password = couchDBCredentials["password"].string {
-        //port = couchDBCredentials["port"].int {
-        //TODO Update port value - Kitura-CouchDB needs to be tagged
-          let port = 80
-          let connProperties = ConnectionProperties(hostName: host, port: Int16(port), secured: false, userName: user, password: password)
+        password = couchDBCredentials["password"].string,
+        port = couchDBCredentials["port"].int {
+          let connProperties = ConnectionProperties(host: host, port: Int16(port), secured: true, username: user, password: password)
           let dbClient = CouchDBClient(connectionProperties: connProperties)
         return dbClient.database(dbName)
       }

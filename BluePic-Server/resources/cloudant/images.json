@@ -1,0 +1,58 @@
+{
+  "docs": [
+    {
+      "_id": "2000",
+      "fileName": "swift.png",
+      "displayName": "Swift",
+      "contentType": "image/png",
+      "uploadedTs": "2015-01-05T18:25:43.511Z",
+      "userId": "1000",
+      "type": "image"
+    },
+    {
+      "_id": "2001",
+      "fileName": "genesis.jpg",
+      "displayName": "Genesis",
+      "contentType": "image/jpg",
+      "uploadedTs": "2015-01-05T18:25:43.511Z",
+      "userId": "1000",
+      "type": "image"
+    },
+    {
+      "_id": "2002",
+      "fileName": "tombstone.jpg",
+      "displayName": "Tombstone",
+      "contentType": "image/jpg",
+      "uploadedTs": "2015-01-05T18:25:43.511Z",
+      "userId": "1000",
+      "type": "image"
+    },
+    {
+      "_id": "2003",
+      "fileName": "rush-logo.jpg",
+      "displayName": "Rush Logo",
+      "contentType": "image/jpg",
+      "uploadedTs": "2015-01-05T18:25:43.511Z",
+      "userId": "1001",
+      "type": "image"
+    },
+    {
+      "_id": "2004",
+      "fileName": "rush.jpg",
+      "displayName": "Rush",
+      "contentType": "image/jpg",
+      "uploadedTs": "2015-01-05T18:25:43.511Z",
+      "userId": "1001",
+      "type": "image"
+    },
+    {
+      "_id": "2005",
+      "fileName": "within-temptation.jpg",
+      "displayName": "Within Temptation",
+      "contentType": "image/jpg",
+      "uploadedTs": "2015-01-05T18:25:43.511Z",
+      "userId": "1001",
+      "type": "image"
+    }
+  ]
+}
