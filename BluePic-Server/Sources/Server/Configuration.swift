@@ -17,6 +17,7 @@
 import Foundation
 import CouchDB
 import SwiftyJSON
+import LoggerAPI
 import CFEnvironment
 
 public struct Configuration {
@@ -39,9 +40,11 @@ public struct Configuration {
     if let configData = NSData(contentsOfFile: finalPath) {
       let configJson = JSON(data: configData)
       appEnv = try CFEnvironment.getAppEnv(configJson)
-      return
+      Log.info("Using configuration values from '\(configurationFile)'.")
+    } else {
+      Log.warning("Could not find '\(configurationFile)'.")
+      appEnv = try CFEnvironment.getAppEnv()
     }
-    throw Error.IO("Failed to read/parse the contents of the '\(configurationFile)' configuration file.")
   }
 
   func getDatabase(dbName: String) throws -> Database {
