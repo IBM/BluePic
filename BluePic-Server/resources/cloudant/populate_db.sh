@@ -19,36 +19,41 @@
 # If any commands fail, we want the shell script to exit immediately.
 set -e
 
+# Parse input parameters
+source ./parse_inputs.sh
+
 # Delete bluepic_db just in case it already exists (we need a clean slate)
-curl -X DELETE https://d60741e4-629e-48e4-aa5d-da6e7557d5b5-bluemix.cloudant.com/bluepic_db -u d60741e4-629e-48e4-aa5d-da6e7557d5b5-bluemix:f2c7c6a70784057bf8ab86a3ae5c9ac7129fedf67619f243eb030058764792e3
+curl -X DELETE https://$username.cloudant.com/$database -u $username:$password
 
 # Create bluepic_db
-curl -X PUT https://d60741e4-629e-48e4-aa5d-da6e7557d5b5-bluemix.cloudant.com/bluepic_db -u d60741e4-629e-48e4-aa5d-da6e7557d5b5-bluemix:f2c7c6a70784057bf8ab86a3ae5c9ac7129fedf67619f243eb030058764792e3
+curl -X PUT https://$username.cloudant.com/$database -u $username:$password
 
 # Upload design document
-./upload_design_doc.sh
+curl -X PUT "https://$username.cloudant.com/bluepic_db/_design/main_design" -u $username:$password -d @main_design.json
 
 # Create user documents
-curl -H "Content-Type: application/json" -d @users.json -X POST https://d60741e4-629e-48e4-aa5d-da6e7557d5b5-bluemix.cloudant.com/bluepic_db/_bulk_docs -u d60741e4-629e-48e4-aa5d-da6e7557d5b5-bluemix:f2c7c6a70784057bf8ab86a3ae5c9ac7129fedf67619f243eb030058764792e3
+curl -H "Content-Type: application/json" -d @users.json -X POST https://$username.cloudant.com/$database/_bulk_docs -u $username:$password
 
 # Create image documents
-curl -H "Content-Type: application/json" -d @images.json -X POST https://d60741e4-629e-48e4-aa5d-da6e7557d5b5-bluemix.cloudant.com/bluepic_db/_bulk_docs -u d60741e4-629e-48e4-aa5d-da6e7557d5b5-bluemix:f2c7c6a70784057bf8ab86a3ae5c9ac7129fedf67619f243eb030058764792e3
+curl -H "Content-Type: application/json" -d @images.json -X POST https://$username.cloudant.com/$database/_bulk_docs -u $username:$password
 
 # Upload attachments (images)
-revNumber=`curl -H "Content-Type: application/json" --head https://d60741e4-629e-48e4-aa5d-da6e7557d5b5-bluemix.cloudant.com/bluepic_db/2000 -u d60741e4-629e-48e4-aa5d-da6e7557d5b5-bluemix:f2c7c6a70784057bf8ab86a3ae5c9ac7129fedf67619f243eb030058764792e3 | grep Etag | awk '{print $2}' | tr -cd '[[:alnum:]]._-'`
-curl -v -H "Content-Type: image/png" --data-binary @/Users/olivieri/git/BluePic-IBM-Swift/BluePic-Server/resources/imgs/swift.png -X PUT "https://d60741e4-629e-48e4-aa5d-da6e7557d5b5-bluemix.cloudant.com/bluepic_db/2000/swift.png?rev=$revNumber" -u d60741e4-629e-48e4-aa5d-da6e7557d5b5-bluemix:f2c7c6a70784057bf8ab86a3ae5c9ac7129fedf67619f243eb030058764792e3
+revNumber=`curl -H "Content-Type: application/json" --head https://$username.cloudant.com/$database/2000 -u $username:$password | grep Etag | awk '{print $2}' | tr -cd '[[:alnum:]]._-'`
+curl -v -H "Content-Type: image/png" --data-binary @/Users/olivieri/git/BluePic-IBM-Swift/BluePic-Server/resources/imgs/swift.png -X PUT "https://$username.cloudant.com/$database/2000/swift.png?rev=$revNumber" -u $username:$password
 
-revNumber=`curl -H "Content-Type: application/json" --head https://d60741e4-629e-48e4-aa5d-da6e7557d5b5-bluemix.cloudant.com/bluepic_db/2001 -u d60741e4-629e-48e4-aa5d-da6e7557d5b5-bluemix:f2c7c6a70784057bf8ab86a3ae5c9ac7129fedf67619f243eb030058764792e3 | grep Etag | awk '{print $2}' | tr -cd '[[:alnum:]]._-'`
-curl -v -H "Content-Type: image/jpg" --data-binary @/Users/olivieri/git/BluePic-IBM-Swift/BluePic-Server/resources/imgs/genesis.jpg -X PUT "https://d60741e4-629e-48e4-aa5d-da6e7557d5b5-bluemix.cloudant.com/bluepic_db/2001/genesis.jpg?rev=$revNumber" -u d60741e4-629e-48e4-aa5d-da6e7557d5b5-bluemix:f2c7c6a70784057bf8ab86a3ae5c9ac7129fedf67619f243eb030058764792e3
+revNumber=`curl -H "Content-Type: application/json" --head https://$username.cloudant.com/$database/2001 -u $username:$password | grep Etag | awk '{print $2}' | tr -cd '[[:alnum:]]._-'`
+curl -v -H "Content-Type: image/jpg" --data-binary @/Users/olivieri/git/BluePic-IBM-Swift/BluePic-Server/resources/imgs/genesis.jpg -X PUT "https://$username.cloudant.com/$database/2001/genesis.jpg?rev=$revNumber" -u $username:$password
 
-revNumber=`curl -H "Content-Type: application/json" --head https://d60741e4-629e-48e4-aa5d-da6e7557d5b5-bluemix.cloudant.com/bluepic_db/2002 -u d60741e4-629e-48e4-aa5d-da6e7557d5b5-bluemix:f2c7c6a70784057bf8ab86a3ae5c9ac7129fedf67619f243eb030058764792e3 | grep Etag | awk '{print $2}' | tr -cd '[[:alnum:]]._-'`
-curl -v -H "Content-Type: image/jpg" --data-binary @/Users/olivieri/git/BluePic-IBM-Swift/BluePic-Server/resources/imgs/tombstone.jpg -X PUT "https://d60741e4-629e-48e4-aa5d-da6e7557d5b5-bluemix.cloudant.com/bluepic_db/2002/tombstone.jpg?rev=$revNumber" -u d60741e4-629e-48e4-aa5d-da6e7557d5b5-bluemix:f2c7c6a70784057bf8ab86a3ae5c9ac7129fedf67619f243eb030058764792e3
+revNumber=`curl -H "Content-Type: application/json" --head https://$username.cloudant.com/$database/2002 -u $username:$password | grep Etag | awk '{print $2}' | tr -cd '[[:alnum:]]._-'`
+curl -v -H "Content-Type: image/jpg" --data-binary @/Users/olivieri/git/BluePic-IBM-Swift/BluePic-Server/resources/imgs/tombstone.jpg -X PUT "https://$username.cloudant.com/$database/2002/tombstone.jpg?rev=$revNumber" -u $username:$password
 
-revNumber=`curl -H "Content-Type: application/json" --head https://d60741e4-629e-48e4-aa5d-da6e7557d5b5-bluemix.cloudant.com/bluepic_db/2003 -u d60741e4-629e-48e4-aa5d-da6e7557d5b5-bluemix:f2c7c6a70784057bf8ab86a3ae5c9ac7129fedf67619f243eb030058764792e3 | grep Etag | awk '{print $2}' | tr -cd '[[:alnum:]]._-'`
-curl -v -H "Content-Type: image/jpg" --data-binary @/Users/olivieri/git/BluePic-IBM-Swift/BluePic-Server/resources/imgs/rush-logo.jpg -X PUT "https://d60741e4-629e-48e4-aa5d-da6e7557d5b5-bluemix.cloudant.com/bluepic_db/2003/rush-logo.jpg?rev=$revNumber" -u d60741e4-629e-48e4-aa5d-da6e7557d5b5-bluemix:f2c7c6a70784057bf8ab86a3ae5c9ac7129fedf67619f243eb030058764792e3
+revNumber=`curl -H "Content-Type: application/json" --head https://$username.cloudant.com/$database/2003 -u $username:$password | grep Etag | awk '{print $2}' | tr -cd '[[:alnum:]]._-'`
+curl -v -H "Content-Type: image/jpg" --data-binary @/Users/olivieri/git/BluePic-IBM-Swift/BluePic-Server/resources/imgs/rush-logo.jpg -X PUT "https://$username.cloudant.com/$database/2003/rush-logo.jpg?rev=$revNumber" -u $username:$password
 
-revNumber=`curl -H "Content-Type: application/json" --head https://d60741e4-629e-48e4-aa5d-da6e7557d5b5-bluemix.cloudant.com/bluepic_db/2004 -u d60741e4-629e-48e4-aa5d-da6e7557d5b5-bluemix:f2c7c6a70784057bf8ab86a3ae5c9ac7129fedf67619f243eb030058764792e3 | grep Etag | awk '{print $2}' | tr -cd '[[:alnum:]]._-'`
-curl -v -H "Content-Type: image/jpg" --data-binary @/Users/olivieri/git/BluePic-IBM-Swift/BluePic-Server/resources/imgs/rush.jpg -X PUT "https://d60741e4-629e-48e4-aa5d-da6e7557d5b5-bluemix.cloudant.com/bluepic_db/2004/rush.jpg?rev=$revNumber" -u d60741e4-629e-48e4-aa5d-da6e7557d5b5-bluemix:f2c7c6a70784057bf8ab86a3ae5c9ac7129fedf67619f243eb030058764792e3
+revNumber=`curl -H "Content-Type: application/json" --head https://$username.cloudant.com/$database/2004 -u $username:$password | grep Etag | awk '{print $2}' | tr -cd '[[:alnum:]]._-'`
+curl -v -H "Content-Type: image/jpg" --data-binary @/Users/olivieri/git/BluePic-IBM-Swift/BluePic-Server/resources/imgs/rush.jpg -X PUT "https://$username.cloudant.com/$database/2004/rush.jpg?rev=$revNumber" -u $username:$password
 
-revNumber=`curl -H "Content-Type: application/json" --head https://d60741e4-629e-48e4-aa5d-da6e7557d5b5-bluemix.cloudant.com/bluepic_db/2005 -u d60741e4-629e-48e4-aa5d-da6e7557d5b5-bluemix:f2c7c6a70784057bf8ab86a3ae5c9ac7129fedf67619f243eb030058764792e3 | grep Etag | awk '{print $2}' | tr -cd '[[:alnum:]]._-'`
-curl -v -H "Content-Type: image/jpg" --data-binary @/Users/olivieri/git/BluePic-IBM-Swift/BluePic-Server/resources/imgs/within-temptation.jpg -X PUT "https://d60741e4-629e-48e4-aa5d-da6e7557d5b5-bluemix.cloudant.com/bluepic_db/2005/within-temptation.jpg?rev=$revNumber" -u d60741e4-629e-48e4-aa5d-da6e7557d5b5-bluemix:f2c7c6a70784057bf8ab86a3ae5c9ac7129fedf67619f243eb030058764792e3
+revNumber=`curl -H "Content-Type: application/json" --head https://$username.cloudant.com/$database/2005 -u $username:$password | grep Etag | awk '{print $2}' | tr -cd '[[:alnum:]]._-'`
+curl -v -H "Content-Type: image/jpg" --data-binary @/Users/olivieri/git/BluePic-IBM-Swift/BluePic-Server/resources/imgs/within-temptation.jpg -X PUT "https://$username.cloudant.com/$database/2005/within-temptation.jpg?rev=$revNumber" -u $username:$password
+
+echo "Successfully finished populating cloudant database '$database'."
