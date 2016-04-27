@@ -48,11 +48,9 @@ public struct Configuration {
     if let couchDBCredentials = appEnv.getService("Cloudant NoSQL DB-fz")?.credentials {
       if let host = couchDBCredentials["host"].string,
         user = couchDBCredentials["username"].string,
-        password = couchDBCredentials["password"].string {
-        //port = couchDBCredentials["port"].int {
-        //TODO Update port value - Kitura-CouchDB needs to be tagged
-          let port = 80
-          let connProperties = ConnectionProperties(host: host, port: Int16(port), secured: false, username: user, password: password)
+        password = couchDBCredentials["password"].string,
+        port = couchDBCredentials["port"].int {
+          let connProperties = ConnectionProperties(host: host, port: Int16(port), secured: true, username: user, password: password)
           let dbClient = CouchDBClient(connectionProperties: connProperties)
         return dbClient.database(dbName)
       }
