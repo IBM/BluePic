@@ -20,6 +20,8 @@ import SwiftyJSON
 import LoggerAPI
 import CFEnvironment
 
+//https://console.ng.bluemix.net/docs/services/ObjectStorage/objectstorge_usingobjectstorage.html
+//https://console.ng.bluemix.net/docs/services/ObjectStorage/objectstorge_usingobjectstorage.html#using-swift-restapi
 public struct Configuration {
 
   public enum Error: ErrorProtocol {
