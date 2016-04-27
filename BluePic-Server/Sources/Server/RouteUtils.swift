@@ -19,8 +19,8 @@ import CouchDB
 import Kitura
 import KituraNet
 import LoggerAPI
-import Credentials
 import SwiftyJSON
+//import Credentials
 
 func parseImages(document: JSON) throws -> JSON {
   guard let rows = document["rows"].array else {
@@ -68,14 +68,8 @@ func getImageDocument(request: RouterRequest) throws -> JSONDictionary {
   let userId = request.params["userId"] else {
     throw ProcessingError.Image("Invalid image document!")
   }
-
-  #if os(Linux)
-  let ext = fileName.componentsSeparatedByString(".")[1].lowercased()
-  #else
-  let ext = fileName.componentsSeparated(by: ".")[1].lowercased()
-  #endif
-
-  guard let contentType = ContentType.contentTypeForExtension(ext) else {
+  
+  guard let contentType = ContentType.sharedInstance.contentTypeForFile(fileName) else {
     throw ProcessingError.Image("Invalid image document!")
   }
 
@@ -100,7 +94,7 @@ func generateInternalError() -> NSError {
 private func massageImageRecord(record: inout JSON) {
   let id = record["_id"].stringValue
   let fileName = record["fileName"].stringValue
-  record["url"].stringValue = "http://\(database.connProperties.hostName):\(database.connProperties.port)/\(database.name)/\(id)/\(fileName)"
+  record["url"].stringValue = "http://\(database.connProperties.host):\(database.connProperties.port)/\(database.name)/\(id)/\(fileName)"
   record["length"].int = record["_attachments"][fileName]["length"].int
   record.dictionaryObject?.removeValue(forKey: "userId")
   record.dictionaryObject?.removeValue(forKey: "_attachments")

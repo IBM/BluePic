@@ -17,10 +17,10 @@
 import Foundation
 import Kitura
 import KituraNet
-import Credentials
 import CouchDB
 import LoggerAPI
 import SwiftyJSON
+//import Credentials
 
 // Setup the handlers for the Photo APIs
 func defineRoutes() {
@@ -122,7 +122,7 @@ func defineRoutes() {
         let _ = doc, let id = id, let revision = revision where error == nil {
           database.createAttachment(id, docRevison: revision, attachmentName: fileName, attachmentData: image, contentType: contentType) { (rev, imageDoc, error) in
             if let _ = imageDoc where error == nil {
-              imageDocument["url"] = "http://\(database.connProperties.hostName):\(database.connProperties.port)/\(database.name)/\(id)/\(fileName)"
+              imageDocument["url"] = "http://\(database.connProperties.host):\(database.connProperties.port)/\(database.name)/\(id)/\(fileName)"
               imageDocument["_id"] = id
               imageDocument["_rev"] = revision
               response.status(HttpStatusCode.OK).sendJson(JSON(imageDocument))
@@ -220,7 +220,7 @@ func defineRoutes() {
   router.all("/photos/*", middleware: BodyParser())
 
   // Needed for authentication
-  router.post("/photos/:title/:photoname", middleware: credentials)
+  //router.post("/photos/:title/:photoname", middleware: credentials)
 
   /////////////////////////////////////////////////////////////
 

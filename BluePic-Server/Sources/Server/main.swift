@@ -21,10 +21,10 @@ import KituraSys
 import CouchDB
 import LoggerAPI
 import HeliumLogger
-import Credentials
-import CredentialsFacebookToken
 import SwiftyJSON
 import CFEnvironment
+//import Credentials
+//import CredentialsFacebookToken
 
 ///
 /// Because bridging is not complete in Linux, we must use Any objects for dictionaries
@@ -45,9 +45,9 @@ let router = Router()
 let database: Database
 
 // Create authentication credentials middlewares
-let fbCredentials = CredentialsFacebookToken()
-let credentials = Credentials()
-credentials.register(fbCredentials)
+//let fbCredentials = CredentialsFacebookToken()
+//let credentials = Credentials()
+//credentials.register(fbCredentials)
 
 do {
   // Create Configuration object
