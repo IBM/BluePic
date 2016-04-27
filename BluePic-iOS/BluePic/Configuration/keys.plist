@@ -29,7 +29,7 @@
 	<key>obj_stg_auth_url</key>
 	<string>https://identity.open.softlayer.com/v3/auth/tokens</string>
 	<key>isLocal</key>
-	<false/>
+	<true/>
 	<key>bluemixBaseURL_remote</key>
 	<string>https://IBM-BluePic.mybluemix.net</string>
 	<key>bluemixBaseURL_local</key>

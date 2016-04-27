@@ -116,7 +116,7 @@ class BluemixDataManager: NSObject {
     
     func getImages(){
         
-        let request = Request(url: "/" + kImagesEndPoint, method: HttpMethod.GET)
+        let request = Request(url: getBluemixBaseURL() + "/" + kImagesEndPoint, method: HttpMethod.GET)
         
         request.sendWithCompletionHandler { (response, error) -> Void in
             if let error = error {
