@@ -38,7 +38,7 @@ curl -H "Content-Type: application/json" -d @users.json -X POST https://$usernam
 curl -H "Content-Type: application/json" -d @images.json -X POST https://$username.cloudant.com/$database/_bulk_docs -u $username:$password
 
 # Upload attachments (images)
-imagesFolder=`dirname $( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )`
+imagesFolder=`dirname $( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )`/images
 declare -a attachments=('image/png' '2000' 'swift.png' 'image/jpg' '2001' 'genesis.jpg' 'image/jpg' '2002' 'tombstone.jpg' 'image/jpg' '2003' 'rush-logo.jpg' 'image/jpg' '2004' 'rush.jpg' 'image/jpg' '2005' 'within-temptation.jpg');
 index=0
 while [ $index -lt ${#attachments[@]} ]; do
