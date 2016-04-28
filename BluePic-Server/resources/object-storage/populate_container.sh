@@ -31,19 +31,24 @@ accessPoint=dal.objectstorage.open.softlayer.com
 publicUrl=https://$accessPoint/v1/AUTH_$projectid
 container=9012390
 
+# Echo publicUrl
+echo "publicUrl: $publicUrl" 
+
 # Get access token
 authToken=`curl -i -H "Content-Type: application/json" -d "{ \"auth\": { \"identity\": { \"methods\": [ \"password\" ], \"password\": { \"user\": { \"id\": \"$userid\", \"password\": \"$password\" } } }, \"scope\": { \"project\": { \"id\": \"$projectid\" } } } }" $authUrl | grep X-Subject-Token | awk '{print $2}' | tr -cd '[[:alnum:]]._-'`
-echo "authToken: $authToken"
 
 # Create container
 curl -i $publicUrl/$container -X PUT -H "Content-Length: 0" -H "X-Auth-Token: $authToken"
 
-# Upload text document to container
-#curl -i $publicUrl/$container/helloworld.txt -X PUT -H "Content-Length: 1" -H "Content-Type: text/html; charset=UTF-8" -H "X-Auth-Token: $authToken"
+# Configure container for web hosting
+curl -i $publicUrl/$container -X POST -H "Content-Length: 0" -H "X-Auth-Token: $authToken" -H  "X-Container-Meta-Web-Listings: true"
+
+# Configure container for public access
+curl -i $publicUrl/$container -X POST -H "Content-Length: 0" -H "X-Auth-Token: $authToken" -H  "X-Container-Read: .r:*,.rlistings"
 
 # Upload image to container
 imagesFolder=`dirname $( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )`/images
-curl -i $publicUrl/$container/genesis.jpg --data-binary @$imagesFolder/genesis.jpg -X PUT -H -H "Content-Type: image/jpeg" -H "X-Auth-Token: $authToken"
+curl -i $publicUrl/$container/rush.jpg --data-binary @$imagesFolder/rush.jpg -X PUT -H "Content-Type: image/jpeg" -H "X-Auth-Token: $authToken"
 
 echo
 echo "Successfully finished populating object storage."
