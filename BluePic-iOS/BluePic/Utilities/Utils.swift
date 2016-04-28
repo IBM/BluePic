@@ -34,6 +34,34 @@ class Utils: NSObject {
         return keyList!.objectForKey(key) as! String
     }
     
+    /**
+     Method gets a key from a plist, both specified in parameters
+     
+     - parameter plist: String!
+     - parameter key:   String!
+     
+     - returns: Bool
+     */
+    class func getBoolValueWithKeyFromPlist (plist: String!, key: String!) -> Bool {
+        let path: String = NSBundle.mainBundle().pathForResource(plist, ofType: "plist")!
+        let keyList = NSDictionary(contentsOfFile: path)
+        return keyList!.objectForKey(key) as! Bool
+    }
+    
+    /**
+     Method gets a key from a plist, both specified in parameters
+     
+     - parameter plist: String!
+     - parameter key:   String!
+     
+     - returns: String
+     */
+    class func getStringValueWithKeyFromPlist (plist: String!, key: String!) -> String {
+        let path: String = NSBundle.mainBundle().pathForResource(plist, ofType: "plist")!
+        let keyList = NSDictionary(contentsOfFile: path)
+        return keyList!.objectForKey(key) as! String
+    }
+    
     
     /**
     Method returns an instance of the Main.storyboard

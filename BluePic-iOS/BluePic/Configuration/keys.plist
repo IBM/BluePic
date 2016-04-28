@@ -28,5 +28,17 @@
 	<string>dd1ceb19680948119774a6d2f08057c2</string>
 	<key>obj_stg_auth_url</key>
 	<string>https://identity.open.softlayer.com/v3/auth/tokens</string>
+	<key>isLocal</key>
+	<true/>
+	<key>bluemixBaseRequestURL_remote</key>
+	<string>https://IBM-BluePic.mybluemix.net</string>
+	<key>bluemixBaseRequestURL_local</key>
+	<string>http://localhost:8090</string>
+	<key>bluemixAppRoute</key>
+	<string>https://IBM-BluePic.mybluemix.net</string>
+	<key>bluemixAppGUID</key>
+	<string>75eef52c-2ed1-4518-9587-ce55cc66479d</string>
+	<key>bluemixAppRegion</key>
+	<string>.ng.bluemix.net</string>
 </dict>
 </plist>

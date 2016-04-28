@@ -17,6 +17,7 @@
 		1B2DC2541C1F360D00B4E77B /* EmptyFeedCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1B2DC2521C1F360D00B4E77B /* EmptyFeedCollectionViewCell.xib */; };
 		1B3BA0761C0F5FBD0064C850 /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = 1B3BA0751C0F5FBD0064C850 /* .gitkeep */; };
 		1B3BA0781C0F62850064C850 /* Picture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3BA0771C0F62850064C850 /* Picture.swift */; };
+		1B4357011CD15CF4008262A1 /* BluemixDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B4357001CD15CF4008262A1 /* BluemixDataManager.swift */; };
 		1B5555BE1C1616B000B3086E /* TabBarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B5555BD1C1616B000B3086E /* TabBarViewModel.swift */; };
 		1B6132161C270DD300B57231 /* PictureUploadQueueImageFeedCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B6132141C270DD300B57231 /* PictureUploadQueueImageFeedCollectionViewCell.swift */; };
 		1B6132171C270DD300B57231 /* PictureUploadQueueImageFeedCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1B6132151C270DD300B57231 /* PictureUploadQueueImageFeedCollectionViewCell.xib */; };
@@ -93,6 +94,7 @@
 		1B2DC2521C1F360D00B4E77B /* EmptyFeedCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EmptyFeedCollectionViewCell.xib; sourceTree = "<group>"; };
 		1B3BA0751C0F5FBD0064C850 /* .gitkeep */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		1B3BA0771C0F62850064C850 /* Picture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Picture.swift; sourceTree = "<group>"; };
+		1B4357001CD15CF4008262A1 /* BluemixDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluemixDataManager.swift; sourceTree = "<group>"; };
 		1B5555BD1C1616B000B3086E /* TabBarViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarViewModel.swift; sourceTree = "<group>"; };
 		1B6132141C270DD300B57231 /* PictureUploadQueueImageFeedCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PictureUploadQueueImageFeedCollectionViewCell.swift; sourceTree = "<group>"; };
 		1B6132151C270DD300B57231 /* PictureUploadQueueImageFeedCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PictureUploadQueueImageFeedCollectionViewCell.xib; sourceTree = "<group>"; };
@@ -295,6 +297,7 @@
 		34C809511BFD0CBC00C48004 /* DataManagers */ = {
 			isa = PBXGroup;
 			children = (
+				1B4357001CD15CF4008262A1 /* BluemixDataManager.swift */,
 				1BAB94141CC81784004DAD84 /* MCARESTTestManager.swift */,
 				3435C7D01C03E223004923BD /* CloudantSyncDataManager.swift */,
 				B3C2CE971C19DC54003DAF5A /* ReplicatorDelegates.swift */,
@@ -553,6 +556,7 @@
 				347472E11BFA8DEF0018B7F6 /* NSDateExtension.swift in Sources */,
 				1BC7AF5C1C0E39F100DDFD02 /* FeedViewModel.swift in Sources */,
 				B3C2CE981C19DC54003DAF5A /* ReplicatorDelegates.swift in Sources */,
+				1B4357011CD15CF4008262A1 /* BluemixDataManager.swift in Sources */,
 				3435C7D71C041116004923BD /* CameraViewController.swift in Sources */,
 				3435C7D31C03E223004923BD /* ObjectStorageClient.swift in Sources */,
 				347472EA1BFA8DEF0018B7F6 /* UIViewExtensions.swift in Sources */,
