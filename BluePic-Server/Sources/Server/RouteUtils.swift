@@ -58,7 +58,7 @@ func parseImagesForUser(document: JSON) throws -> JSON {
 
 func parseUsers(document: JSON) throws -> JSON {
   let users = try parseRecords(document: document)
-  return constructDocument(users)
+  return constructDocument(records: users)
 }
 
 func getImageDocument(request: RouterRequest) throws -> JSONDictionary {
