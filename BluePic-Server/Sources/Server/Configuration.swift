@@ -41,7 +41,7 @@ public struct Configuration {
 
     if let configData = NSData(contentsOfFile: finalPath) {
       let configJson = JSON(data: configData)
-      appEnv = try CFEnvironment.getAppEnv(configJson)
+      appEnv = try CFEnvironment.getAppEnv(options: configJson)
       Log.info("Using configuration values from '\(configurationFile)'.")
     } else {
       Log.warning("Could not find '\(configurationFile)'.")
@@ -50,7 +50,7 @@ public struct Configuration {
   }
 
   func getDatabase(dbName: String) throws -> Database {
-    if let couchDBCredentials = appEnv.getService("Cloudant NoSQL DB-fz")?.credentials {
+    if let couchDBCredentials = appEnv.getService(spec: "Cloudant NoSQL DB-fz")?.credentials {
       if let host = couchDBCredentials["host"].string,
         user = couchDBCredentials["username"].string,
         password = couchDBCredentials["password"].string,

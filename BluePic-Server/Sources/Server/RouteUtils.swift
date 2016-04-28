@@ -31,7 +31,7 @@ func parseImages(document: JSON) throws -> JSON {
   for index in 0...upperBound {
     var record = rows[index]["doc"]
     if index % 2 == 0 {
-      massageImageRecord(&record)
+      massageImageRecord(record: &record)
       images.append(record)
     } else {
       var record = images[images.endIndex - 1]
@@ -39,7 +39,7 @@ func parseImages(document: JSON) throws -> JSON {
       images[images.endIndex - 1] = record
     }
   }
-  return constructDocument(images)
+  return constructDocument(records: images)
 }
 
 func parseImagesForUser(document: JSON) throws -> JSON {
@@ -49,15 +49,15 @@ func parseImagesForUser(document: JSON) throws -> JSON {
 
   let images: [JSON] = rows.map({row in
     var record = row["value"]
-    massageImageRecord(&record)
+    massageImageRecord(record: &record)
     return record
   })
 
-  return constructDocument(images)
+  return constructDocument(records: images)
 }
 
 func parseUsers(document: JSON) throws -> JSON {
-  let users = try parseRecords(document)
+  let users = try parseRecords(document: document)
   return constructDocument(users)
 }
 
@@ -99,7 +99,7 @@ func generateImageUrl(imageId: String, attachmentName: String) -> String {
 private func massageImageRecord(record: inout JSON) {
   let id = record["_id"].stringValue
   let fileName = record["fileName"].stringValue
-  record["url"].stringValue = generateImageUrl(id, attachmentName: fileName)
+  record["url"].stringValue = generateImageUrl(imageId: id, attachmentName: fileName)
   record["length"].int = record["_attachments"][fileName]["length"].int
   record.dictionaryObject?.removeValue(forKey: "userId")
   record.dictionaryObject?.removeValue(forKey: "_attachments")

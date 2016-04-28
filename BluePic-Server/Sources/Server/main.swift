@@ -46,13 +46,13 @@ let config: Configuration
 do {
   // Create Configuration object
   config = try Configuration()
-  database = try config.getDatabase("bluepic_db")
+  database = try config.getDatabase(dbName: "bluepic_db")
 
   // Define routes
   defineRoutes()
 
   // Start server...
-  HttpServer.listen(config.appEnv.port, delegate: router)
+  HttpServer.listen(port: config.appEnv.port, delegate: router)
   Server.run()
 } catch Configuration.Error.IO {
   Log.error("Oops, something went wrong... Server did not start!")
