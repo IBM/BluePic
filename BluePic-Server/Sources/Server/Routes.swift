@@ -49,7 +49,7 @@ func defineRoutes() {
       if let document = document where error == nil {
         do {
           let images = try parseImages(document: document)
-          try response.status(HttpStatusCode.OK).sendJson(images).end()
+          try response.status(HttpStatusCode.OK).send(json: images).end()
           //try response.status(HttpStatusCode.OK).sendJson(document).end()
         }
         catch {
@@ -69,7 +69,7 @@ func defineRoutes() {
       if let document = document where error == nil {
         do {
           let users = try parseUsers(document: document)
-          try response.status(HttpStatusCode.OK).sendJson(users).end()
+          try response.status(HttpStatusCode.OK).send(json: users).end()
         }
         catch {
           Log.error("Failed to send response to client.")
@@ -94,7 +94,7 @@ func defineRoutes() {
     database.retrieve(userId, callback: { (document: JSON?, error: NSError?) in
       if let document = document where error == nil {
         do {
-          try response.status(HttpStatusCode.OK).sendJson(document).end()
+          try response.status(HttpStatusCode.OK).send(json: document).end()
         }
         catch {
           Log.error("Failed to send response to client.")
@@ -124,10 +124,10 @@ func defineRoutes() {
         let _ = doc, let id = id, let revision = revision where error == nil {
           database.createAttachment(id, docRevison: revision, attachmentName: fileName, attachmentData: image, contentType: contentType) { (rev, imageDoc, error) in
             if let _ = imageDoc where error == nil {
-              imageDocument["url"] = generateImageUrl(id, attachmentName: fileName)
+              imageDocument["url"] = generateImageUrl(imageId: id, attachmentName: fileName)
               imageDocument["_id"] = id
               imageDocument["_rev"] = revision
-              response.status(HttpStatusCode.OK).sendJson(JSON(imageDocument))
+              response.status(HttpStatusCode.OK).send(json: JSON(imageDocument))
             } else {
               response.error = error ?? generateInternalError()
             }
@@ -157,7 +157,7 @@ func defineRoutes() {
       if let document = document where error == nil {
         do {
           let images = try parseImagesForUser(document: document)
-          try response.status(HttpStatusCode.OK).sendJson(images).end()
+          try response.status(HttpStatusCode.OK).send(json: images).end()
           //try response.status(HttpStatusCode.OK).sendJson(document).end()
         }
         catch {
@@ -198,7 +198,7 @@ func defineRoutes() {
         if let document = document where error == nil {
           do {
             //TODO send just the _id
-            try response.status(HttpStatusCode.OK).sendJson(document).end()
+            try response.status(HttpStatusCode.OK).send(json: document).end()
           } catch {
             Log.error("Failed to send response to client.")
             response.error = generateInternalError()
@@ -231,7 +231,7 @@ func defineRoutes() {
         if let contentType = contentType {
           response.setHeader("Content-Type", value: contentType)
         }
-        response.status(HttpStatusCode.OK).sendData(image)
+        response.status(HttpStatusCode.OK).send(data: image)
       }
       else {
         response.error = error ?? generateInternalError()
