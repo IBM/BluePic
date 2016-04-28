@@ -48,7 +48,7 @@ func defineRoutes() {
     database.queryByView("images", ofDesign: "main_design", usingParameters: [.Descending(false), .IncludeDocs(true)]) { (document, error) in
       if let document = document where error == nil {
         do {
-          let images = try parseImages(document)
+          let images = try parseImages(document: document)
           try response.status(HttpStatusCode.OK).sendJson(images).end()
           //try response.status(HttpStatusCode.OK).sendJson(document).end()
         }
@@ -68,7 +68,7 @@ func defineRoutes() {
     database.queryByView("users", ofDesign: "main_design", usingParameters: [.Descending(true), .IncludeDocs(false)]) { (document, error) in
       if let document = document where error == nil {
         do {
-          let users = try parseUsers(document)
+          let users = try parseUsers(document: document)
           try response.status(HttpStatusCode.OK).sendJson(users).end()
         }
         catch {
@@ -113,12 +113,12 @@ func defineRoutes() {
       // Because of this we are using the REST endpoint definition as the mechanism
       // to send the metadata about the image, while the body of the request only
       // contains the binary data for the image. I know, yuck...
-      var imageDocument = try getImageDocument(request)
+      var imageDocument = try getImageDocument(request: request)
       guard let contentType = imageDocument["contentType"] as? String else {
         throw ProcessingError.Image("Invalid image document!")
       }
 
-      let image = try BodyParser.readBodyData(request)
+      let image = try BodyParser.readBodyData(with: request)
       database.create(JSON(imageDocument)) { (id, revision, doc, error) in
         if let fileName = request.params["fileName"],
         let _ = doc, let id = id, let revision = revision where error == nil {
@@ -156,7 +156,7 @@ func defineRoutes() {
     database.queryByView("images_per_user", ofDesign: "main_design", usingParameters: [.Descending(true), .Keys([NSString(string: userId)])]) { (document, error) in
       if let document = document where error == nil {
         do {
-          let images = try parseImagesForUser(document)
+          let images = try parseImagesForUser(document: document)
           try response.status(HttpStatusCode.OK).sendJson(images).end()
           //try response.status(HttpStatusCode.OK).sendJson(document).end()
         }
@@ -174,7 +174,7 @@ func defineRoutes() {
   // Create a new user in the database
   router.post("/users") { request, response, next in
     do {
-      let rawUserData = try BodyParser.readBodyData(request)
+      let rawUserData = try BodyParser.readBodyData(with: request)
       var userJson = JSON(data: rawUserData)
 
       // Verify JSON has required fields

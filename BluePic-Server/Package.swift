@@ -21,7 +21,6 @@ let package = Package(
     dependencies: [
         .Package(url: "https://github.com/IBM-Swift/Kitura.git", majorVersion: 0, minor: 11),
         .Package(url: "https://github.com/IBM-Swift/Kitura-CouchDB.git", majorVersion: 0, minor: 11),
-        //.Package(url: "https://github.com/IBM-Swift/Kitura-CredentialsFacebookToken.git", majorVersion: 0, minor: 7),
         .Package(url: "https://github.com/IBM-Swift/Swift-cfenv.git", majorVersion: 0)
         //.Package(url: "https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-swift-objectstore.git", versions: Version(0,0,0)..<Version(0,0,23))
     ],
