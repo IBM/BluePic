@@ -59,7 +59,7 @@ internal class AuthorizationRequest : BaseRequest {
             if i < formParamaters.count - 1 {
                 body += "&"
             }
-            i++
+            i+=1
         }
         sendString(body, completionHandler: callback)
     }
