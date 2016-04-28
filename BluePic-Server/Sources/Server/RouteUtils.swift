@@ -77,7 +77,8 @@ func getImageDocument(request: RouterRequest) throws -> JSONDictionary {
   let uploadedTs = dateStr.substringToIndex(10) + "T" + dateStr.substringWithRange(NSMakeRange(11, 8))
   let imageName = displayName.stringByReplacingOccurrencesOfString("%20", withString: " ")
   #else
-  let dateStr = NSDate().description(withLocale: nil).bridge()
+
+  let dateStr = NSDate().description.bridge()
   let uploadedTs = dateStr.substring(to: 10) + "T" + dateStr.substring(with:NSMakeRange(11, 8))
   let imageName = displayName.replacingOccurrences(of: "%20", with: " ")
   #endif
