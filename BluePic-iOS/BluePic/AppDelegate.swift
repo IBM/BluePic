@@ -37,8 +37,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
      */
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
-        MCARESTTestManager.SharedInstance.localHostTest()
-        MCARESTTestManager.SharedInstance.localHostHelloTest()
+        BluemixDataManager.SharedInstance.getUsers()
         
         let notificationTypes: UIUserNotificationType = [UIUserNotificationType.Badge, UIUserNotificationType.Alert, UIUserNotificationType.Sound]
         let notificationSettings: UIUserNotificationSettings = UIUserNotificationSettings(forTypes: notificationTypes, categories: nil)
@@ -88,12 +87,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
      Method to initialize Bluemix Mobile Client Access with Facebook
      */
     func initializeBackendForFacebookAuth(application: UIApplication, launchOptions: [NSObject: AnyObject]?) -> Bool {
-        //Initialize backend
-        let key = Utils.getKeyFromPlist("keys", key: "backend_route")
-        let guid = Utils.getKeyFromPlist("keys", key: "GUID")
-        let region = Utils.getKeyFromPlist("keys", key: "region")
-        //IMFClient.sharedInstance().initializeWithBackendRoute(key, backendGUID: guid);
-        BMSClient.sharedInstance.initializeWithBluemixAppRoute(key, bluemixAppGUID: guid, bluemixRegion: region)
+//        //Initialize backend
+        BluemixDataManager.SharedInstance.initilizeBluemixAppRoute()
+        
+//        let key = Utils.getKeyFromPlist("keys", key: "backend_route")
+//        let guid = Utils.getKeyFromPlist("keys", key: "GUID")
+//        let region = Utils.getKeyFromPlist("keys", key: "region")
+//        //IMFClient.sharedInstance().initializeWithBackendRoute(key, backendGUID: guid);
+//        BMSClient.sharedInstance.initializeWithBluemixAppRoute(key, bluemixAppGUID: guid, bluemixRegion: region)
     
         
         //Initialize Facebook
