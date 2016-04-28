@@ -16,11 +16,32 @@
 # limitations under the License.
 ##
 
-# If any commands fail, we want the shell script to exit immediately.
-set -e
+for i in "$@"
+do
+case $i in
+    --userid=*)
+    userid="${i#*=}"
+    shift # past argument=value
+    ;;
+    --password=*)
+    password="${i#*=}"
+    shift # past argument=value
+    ;;
+    --projectid=*)
+    projectid="${i#*=}"
+    shift # past argument=value
+    ;;
+    *)
+        # unknown option
+    ;;
+esac
+done
 
-imagesFolder=`dirname $( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )`/images
+# Variables (tmp)
+userid=69435710c71c4ed2b78856520f9cae25
+password=F*nt4gmY-Oss4{v.
+projectid=742fffae2c24438b83a2c43491119a82
 
-# Upload images via Kitura-based server
-curl -v --data-binary @$imagesFolder/tombstone.jpg -X POST http://localhost:8090/users/1000/images/tombstone.jpg/Tombstone
-curl -v --data-binary @$imagesFolder/swift.png -X POST http://localhost:8090/users/1000/images/swift.png/SwiftRocks
+echo "Variables:"
+echo -e "  userid: $userid"
+echo -e "  projectid: $projectid"
