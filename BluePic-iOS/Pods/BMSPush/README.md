@@ -21,12 +21,13 @@ This package contains the Push components of the Swift SDK.
 
 ## Installation
 
-The Bluemix Mobile Services Swift SDK is available via [Cocoapods](http://cocoapods.org/). 
-To install, add the `BMSPush` pod to your `Podfile`. You have to add `BMSCore` also in your `Podfile`.
+The Bluemix Mobile Services Swift SDKs are available via [Cocoapods](http://cocoapods.org/) and [Carthage](https://github.com/Carthage/Carthage).
 
-##### iOS
 
-```Swift
+#### Cocoapods
+To install BMSCore using Cocoapods, add it to your Podfile:
+
+```ruby
 use_frameworks!
 
 target 'MyApp' do
@@ -38,7 +39,7 @@ end
 From the Terminal, go to your project folder and install the dependencies with the following command:
 
 ```
-pod update
+pod install
 ```
 
 That command installs your dependencies and creates a new Xcode workspace.
@@ -47,6 +48,18 @@ That command installs your dependencies and creates a new Xcode workspace.
 ```
 open App.xcworkspace
 ```
+
+
+#### Carthage
+To install BMSPush using Carthage, add it to your Cartfile: 
+
+```ogdl
+github "ibm-bluemix-mobile-services/bms-clientsdk-swift-push"
+```
+
+Then run the `carthage update` command. Once the build is finished, drag `BMSPush.framework`,`BMSCore.framework` and `BMSAnalyticsAPI.framework` into your Xcode project. 
+
+To complete the integration, follow the instructions [here](https://github.com/Carthage/Carthage#getting-started).
 
 ## Enabling iOS applications to receive push notifications
 
@@ -153,8 +166,8 @@ push.subscribeToTags(response, completionHandler: { (response, statusCode, error
                             
     if error.isEmpty {
         
-        print( "Response during Subscribing to tags : \(response.description)")
-        
+        print( "Response during Subscribing to tags : \(response?.description)")
+
         print( "status code during Subscribing tags : \(statusCode)")
     }
     else {
@@ -173,8 +186,8 @@ push.retrieveSubscriptionsWithCompletionHandler { (response, statusCode, error) 
             
     if error.isEmpty {
         
-        print( "Response during retrieving subscribed tags : \(response.description)")
-        
+        print( "Response during retrieving subscribed tags : \(response?.description)")
+
         print( "status code during retrieving subscribed tags : \(statusCode)")
     }
     else {
@@ -195,8 +208,8 @@ push.unsubscribeFromTags(response, completionHandler: { (response, statusCode, e
                     
     if error.isEmpty {
         
-        print( "Response during unsubscribed tags : \(response.description)")
-        
+        print( "Response during unsubscribed tags : \(response?.description)")
+
         print( "status code during unsubscribed tags : \(statusCode)")
     }
     else {

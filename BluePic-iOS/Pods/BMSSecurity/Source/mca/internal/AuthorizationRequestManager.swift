@@ -322,24 +322,21 @@ public class AuthorizationRequestManager {
     
     internal func processRedirectResponse(response:Response) throws {
         
-        func getLocationString(obj:AnyObject?) -> String? {
-            // Following line of code may be causing problems when runnning on a physical phone
-            //guard let unWrappedObj = obj as? [String] else {
-            guard let unWrappedObj = obj else {
+        func getLocationString(locationHeader:AnyObject?) -> String? {
+            guard locationHeader != nil else {
                 return nil
             }
-            //checks if obj is an array of strings
-            if case let myObj as String = unWrappedObj[0] {
-                return myObj
-            }
-                //or string
-            else if case let str as String = unWrappedObj{
-                return str
-            }
+			
+			if let locationHeader = locationHeader as? [String]{
+				return locationHeader[0]
+			} else if let locationHeader = locationHeader as? String{
+				return locationHeader
+			}
+			
             return nil
         }
         
-        guard let location =  getLocationString(response.headers?[caseInsensitive : BMSSecurityConstants.LOCATION_HEADER_NAME]) else {
+        guard let location = getLocationString(response.headers?[caseInsensitive : BMSSecurityConstants.LOCATION_HEADER_NAME]) else {
             throw ResponseError.NoLocation("Redirect response does not contain 'Location' header.")
         }
         
