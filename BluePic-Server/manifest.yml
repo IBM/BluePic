@@ -11,3 +11,4 @@ applications:
   disk_quota: 1024M
   services:
   - Cloudant NoSQL DB-fz
+  buildpack: https://github.com/IBM-Swift/swift-buildpack.git
