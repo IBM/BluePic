@@ -30,9 +30,9 @@
 	<string>https://identity.open.softlayer.com/v3/auth/tokens</string>
 	<key>isLocal</key>
 	<true/>
-	<key>bluemixBaseURL_remote</key>
+	<key>bluemixBaseRequestURL_remote</key>
 	<string>https://IBM-BluePic.mybluemix.net</string>
-	<key>bluemixBaseURL_local</key>
+	<key>bluemixBaseRequestURL_local</key>
 	<string>http://localhost:8090</string>
 	<key>bluemixAppRoute</key>
 	<string>https://IBM-BluePic.mybluemix.net</string>

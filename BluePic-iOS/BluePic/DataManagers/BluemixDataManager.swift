@@ -27,8 +27,8 @@ class BluemixDataManager: NSObject {
     //Plist Keys
     private let kKeysPlistName = "keys"
     private let kIsLocalKey = "isLocal"
-    private let kBluemixBaseURLKey_local = "bluemixBaseURL_local"
-    private let kBluemixBaseURLKey_remote = "bluemixBaseURL_remote"
+    private let kBluemixBaseRequestURLKey_local = "bluemixBaseRequestURL_local"
+    private let kBluemixBaseRequestURLKey_remote = "bluemixBaseRequestURL_remote"
     private let kBluemixAppRouteKey = "bluemixAppRoute"
     private let kBluemixAppGUIDKey = "bluemixAppGUID"
     private let kBluemixAppRegionKey = "bluemixAppRegion"
@@ -53,12 +53,12 @@ class BluemixDataManager: NSObject {
         return Utils.getBoolValueWithKeyFromPlist(kKeysPlistName, key: kIsLocalKey)
     }
     
-    func getBluemixBaseURL() -> String {
+    func getBluemixBaseRequestURL() -> String {
         if(isLocal()){
-            return Utils.getStringValueWithKeyFromPlist(kKeysPlistName, key: kBluemixBaseURLKey_local)
+            return Utils.getStringValueWithKeyFromPlist(kKeysPlistName, key: kBluemixBaseRequestURLKey_local)
         }
         else{
-            return Utils.getStringValueWithKeyFromPlist(kKeysPlistName, key: kBluemixBaseURLKey_remote)
+            return Utils.getStringValueWithKeyFromPlist(kKeysPlistName, key: kBluemixBaseRequestURLKey_remote)
         }
     }
     
@@ -116,7 +116,9 @@ class BluemixDataManager: NSObject {
     
     func getImages(){
         
-        let request = Request(url: getBluemixBaseURL() + "/" + kImagesEndPoint, method: HttpMethod.GET)
+        let requestURL = getBluemixBaseRequestURL() + "/" + kImagesEndPoint
+        
+        let request = Request(url: requestURL, method: HttpMethod.GET)
         
         request.sendWithCompletionHandler { (response, error) -> Void in
             if let error = error {
@@ -131,7 +133,9 @@ class BluemixDataManager: NSObject {
     
     func getUsers(){
         
-        let request = Request(url: getBluemixBaseURL() + "/" + kUsersEndPoint, method: HttpMethod.GET)
+        let requestURL = getBluemixBaseRequestURL() + "/" + kUsersEndPoint
+        
+        let request = Request(url: requestURL, method: HttpMethod.GET)
         
         request.sendWithCompletionHandler { (response, error) -> Void in
             if let error = error {
