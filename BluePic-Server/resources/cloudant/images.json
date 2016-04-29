@@ -7,11 +7,10 @@
       "contentType": "image/png",
       "tags": [],
       "location": {
+        "name": "Austin, Texas",
         "latitude": 34.53,
         "longitude": 84.5,
-        "weather": {
-          "temperature": "70"
-        },
+        "temperature": "70 F"
       },
       "uploadedTs": "2015-01-05T18:25:43.511Z",
       "userId": "1000",
@@ -24,11 +23,10 @@
       "contentType": "image/jpg",
       "tags": [],
       "location": {
+        "name": "Austin, Texas",
         "latitude": 34.53,
         "longitude": 84.5,
-        "weather": {
-          "temperature": "70"
-        },
+        "temperature": "70 F"
       },
       "uploadedTs": "2015-01-05T18:25:43.511Z",
       "userId": "1000",
@@ -41,11 +39,10 @@
       "contentType": "image/jpg",
       "tags": [],
       "location": {
+        "name": "Austin, Texas",
         "latitude": 34.53,
         "longitude": 84.5,
-        "weather": {
-          "temperature": "70"
-        },
+        "temperature": "70 F"
       },
       "uploadedTs": "2015-01-05T18:25:43.511Z",
       "userId": "1000",
@@ -58,11 +55,10 @@
       "contentType": "image/jpg",
       "tags": [],
       "location": {
+        "name": "Austin, Texas",
         "latitude": 34.53,
         "longitude": 84.5,
-        "weather": {
-          "temperature": "70"
-        },
+        "temperature": "70 F"
       },
       "uploadedTs": "2015-01-05T18:25:43.511Z",
       "userId": "1001",
@@ -75,11 +71,10 @@
       "contentType": "image/jpg",
       "tags": [],
       "location": {
+        "name": "Austin, Texas",
         "latitude": 34.53,
         "longitude": 84.5,
-        "weather": {
-          "temperature": "70"
-        },
+        "temperature": "70 F"
       },
       "uploadedTs": "2015-01-05T18:25:43.511Z",
       "userId": "1001",
@@ -92,11 +87,10 @@
       "contentType": "image/jpg",
       "tags": [],
       "location": {
+        "name": "Austin, Texas",
         "latitude": 34.53,
         "longitude": 84.5,
-        "weather": {
-          "temperature": "70"
-        },
+        "temperature": "70 F"
       },
       "uploadedTs": "2015-01-05T18:25:43.511Z",
       "userId": "1001",
