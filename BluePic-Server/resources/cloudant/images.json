@@ -2,10 +2,27 @@
   "docs": [
     {
       "_id": "2000",
-      "fileName": "swift.png",
-      "displayName": "Swift",
-      "contentType": "image/png",
-      "tags": [],
+      "fileName": "rush.jpg",
+      "displayName": "Rush",
+      "contentType": "image/jpg",
+      "tags": [
+        {
+          "label": "rush",
+          "confidence": 99
+        },
+        {
+          "label": "rock",
+          "confidence": 80
+        },
+        {
+          "label": "progressive",
+          "confidence": 85
+        },
+        {
+          "label": "music",
+          "confidence": 90
+        }
+      ],
       "location": {
         "name": "Austin, Texas",
         "latitude": 34.53,
@@ -18,44 +35,21 @@
     },
     {
       "_id": "2001",
-      "fileName": "genesis.jpg",
-      "displayName": "Genesis",
+      "fileName": "bridge.jpg",
+      "displayName": "Bridge",
       "contentType": "image/jpg",
-      "tags": [],
+      "tags": [
+        {
+          "label": "bridge",
+          "confidence": 90
+        },
+        {
+          "label": "infrastructure",
+          "confidence": 85
+        }
+      ],
       "location": {
-        "name": "Austin, Texas",
-        "latitude": 34.53,
-        "longitude": 84.5,
-        "temperature": "70 F"
-      },
-      "uploadedTs": "2015-01-05T18:25:43.511Z",
-      "userId": "1000",
-      "type": "image"
-    },
-    {
-      "_id": "2002",
-      "fileName": "tombstone.jpg",
-      "displayName": "Tombstone",
-      "contentType": "image/jpg",
-      "tags": [],
-      "location": {
-        "name": "Austin, Texas",
-        "latitude": 34.53,
-        "longitude": 84.5,
-        "temperature": "70 F"
-      },
-      "uploadedTs": "2015-01-05T18:25:43.511Z",
-      "userId": "1000",
-      "type": "image"
-    },
-    {
-      "_id": "2003",
-      "fileName": "rush-logo.jpg",
-      "displayName": "Rush Logo",
-      "contentType": "image/jpg",
-      "tags": [],
-      "location": {
-        "name": "Austin, Texas",
+        "name": "Boston, Massachusetts",
         "latitude": 34.53,
         "longitude": 84.5,
         "temperature": "70 F"
@@ -65,13 +59,68 @@
       "type": "image"
     },
     {
-      "_id": "2004",
-      "fileName": "rush.jpg",
-      "displayName": "Rush",
+      "_id": "2002",
+      "fileName": "car.jpg",
+      "displayName": "Car",
       "contentType": "image/jpg",
-      "tags": [],
+      "tags": [
+        {
+          "label": "car",
+          "confidence": 90
+        },
+        {
+          "label": "transportation",
+          "confidence": 85
+        }
+      ],
       "location": {
-        "name": "Austin, Texas",
+        "name": "Los Angeles, California",
+        "latitude": 34.53,
+        "longitude": 84.5,
+        "temperature": "70 F"
+      },
+      "uploadedTs": "2015-01-05T18:25:43.511Z",
+      "userId": "1002",
+      "type": "image"
+    },
+    {
+      "_id": "2003",
+      "fileName": "church.jpg",
+      "displayName": "Church",
+      "contentType": "image/jpg",
+      "tags": [
+        {
+          "label": "church",
+          "confidence": 90
+        },
+        {
+          "label": "house of worship",
+          "confidence": 85
+        }
+      ],
+      "location": {
+        "name": "Tuscson, Arizona",
+        "latitude": 34.53,
+        "longitude": 84.5,
+        "temperature": "70 F"
+      },
+      "uploadedTs": "2015-01-05T18:25:43.511Z",
+      "userId": "1000",
+      "type": "image"
+    },
+    {
+      "_id": "2004",
+      "fileName": "city.jpg",
+      "displayName": "City",
+      "contentType": "image/jpg",
+      "tags": [
+        {
+          "label": "city",
+          "confidence": 90
+        }
+      ],
+      "location": {
+        "name": "New York, New York",
         "latitude": 34.53,
         "longitude": 84.5,
         "temperature": "70 F"
@@ -82,10 +131,144 @@
     },
     {
       "_id": "2005",
-      "fileName": "within-temptation.jpg",
-      "displayName": "Within Temptation",
+      "fileName": "concert.jpg",
+      "displayName": "Concert",
       "contentType": "image/jpg",
-      "tags": [],
+      "tags": [
+        {
+          "label": "concert",
+          "confidence": 90
+        },
+        {
+          "label": "music",
+          "confidence": 89
+        }
+      ],
+      "location": {
+        "name": "Austin, Texas",
+        "latitude": 34.53,
+        "longitude": 84.5,
+        "temperature": "70 F"
+      },
+      "uploadedTs": "2015-01-05T18:25:43.511Z",
+      "userId": "1002",
+      "type": "image"
+    },
+    {
+      "_id": "2006",
+      "fileName": "flower_1.jpg",
+      "displayName": "Flower",
+      "contentType": "image/jpg",
+      "tags": [
+        {
+          "label": "flower",
+          "confidence": 90
+        },
+        {
+          "label": "nature",
+          "confidence": 89
+        }
+      ],
+      "location": {
+        "name": "Marble Falls, Texas",
+        "latitude": 34.53,
+        "longitude": 84.5,
+        "temperature": "70 F"
+      },
+      "uploadedTs": "2015-01-05T18:25:43.511Z",
+      "userId": "1000",
+      "type": "image"
+    },
+    {
+      "_id": "2007",
+      "fileName": "flower_2.jpg",
+      "displayName": "Flower",
+      "contentType": "image/jpg",
+      "tags": [
+        {
+          "label": "flower",
+          "confidence": 90
+        },
+        {
+          "label": "nature",
+          "confidence": 89
+        }
+      ],
+      "location": {
+        "name": "Marble Falls, Texas",
+        "latitude": 34.53,
+        "longitude": 84.5,
+        "temperature": "70 F"
+      },
+      "uploadedTs": "2015-01-05T18:25:43.511Z",
+      "userId": "1001",
+      "type": "image"
+    },
+    {
+      "_id": "2008",
+      "fileName": "nature.jpg",
+      "displayName": "Nature",
+      "contentType": "image/jpg",
+      "tags": [
+        {
+          "label": "outdoors",
+          "confidence": 90
+        },
+        {
+          "label": "nature",
+          "confidence": 89
+        }
+      ],
+      "location": {
+        "name": "Austin, Texas",
+        "latitude": 34.53,
+        "longitude": 84.5,
+        "temperature": "70 F"
+      },
+      "uploadedTs": "2015-01-05T18:25:43.511Z",
+      "userId": "1002",
+      "type": "image"
+    },
+    {
+      "_id": "2009",
+      "fileName": "person.jpg",
+      "displayName": "Person",
+      "contentType": "image/jpg",
+      "tags": [
+        {
+          "label": "person",
+          "confidence": 90
+        },
+        {
+          "label": "human",
+          "confidence": 89
+        },
+        {
+          "label": "body",
+          "confidence": 89
+        }
+      ],
+      "location": {
+        "name": "Miami, Florida",
+        "latitude": 34.53,
+        "longitude": 84.5,
+        "temperature": "70 F"
+      },
+      "uploadedTs": "2015-01-05T18:25:43.511Z",
+      "userId": "1000",
+      "type": "image"
+    },
+    {
+      "_id": "2010",
+      "fileName": "road.jpg",
+      "displayName": "Road",
+      "contentType": "image/jpg",
+      "tags": [
+        {
+          "label": "road",
+          "confidence": 90
+        }
+      ],
       "location": {
         "name": "Austin, Texas",
         "latitude": 34.53,

@@ -9,6 +9,11 @@
       "_id": "1001",
       "name": "Peter Adams",
       "type": "user"
+    },
+    {
+      "_id": "1002",
+      "name": "Sharon den Adel",
+      "type": "user"
     }
   ]
 }
