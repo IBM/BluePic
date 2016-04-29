@@ -127,6 +127,7 @@ func defineRoutes() {
               imageDocument["url"] = generateImageUrl(imageId: id, attachmentName: fileName)
               imageDocument["_id"] = id
               imageDocument["_rev"] = revision
+              invokeOpenWhisk(image: image)
               response.status(HttpStatusCode.OK).send(json: JSON(imageDocument))
             } else {
               response.error = error ?? generateInternalError()
