@@ -18,6 +18,7 @@
 		1B3BA0761C0F5FBD0064C850 /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = 1B3BA0751C0F5FBD0064C850 /* .gitkeep */; };
 		1B3BA0781C0F62850064C850 /* Picture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3BA0771C0F62850064C850 /* Picture.swift */; };
 		1B4305971CD3C94C00474AB5 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B4305961CD3C94C00474AB5 /* User.swift */; };
+		1B4305991CD3EA4400474AB5 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B4305981CD3EA4400474AB5 /* Image.swift */; };
 		1B4357011CD15CF4008262A1 /* BluemixDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B4357001CD15CF4008262A1 /* BluemixDataManager.swift */; };
 		1B5555BE1C1616B000B3086E /* TabBarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B5555BD1C1616B000B3086E /* TabBarViewModel.swift */; };
 		1B6132161C270DD300B57231 /* PictureUploadQueueImageFeedCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B6132141C270DD300B57231 /* PictureUploadQueueImageFeedCollectionViewCell.swift */; };
@@ -96,6 +97,7 @@
 		1B3BA0751C0F5FBD0064C850 /* .gitkeep */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		1B3BA0771C0F62850064C850 /* Picture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Picture.swift; sourceTree = "<group>"; };
 		1B4305961CD3C94C00474AB5 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		1B4305981CD3EA4400474AB5 /* Image.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		1B4357001CD15CF4008262A1 /* BluemixDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluemixDataManager.swift; sourceTree = "<group>"; };
 		1B5555BD1C1616B000B3086E /* TabBarViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarViewModel.swift; sourceTree = "<group>"; };
 		1B6132141C270DD300B57231 /* PictureUploadQueueImageFeedCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PictureUploadQueueImageFeedCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -173,6 +175,7 @@
 				1B3BA0751C0F5FBD0064C850 /* .gitkeep */,
 				1B3BA0771C0F62850064C850 /* Picture.swift */,
 				1B4305961CD3C94C00474AB5 /* User.swift */,
+				1B4305981CD3EA4400474AB5 /* Image.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -573,6 +576,7 @@
 				34C809551BFD0F2400C48004 /* FacebookDataManager.swift in Sources */,
 				347AD2221C18F98600C3B473 /* LoginViewModel.swift in Sources */,
 				1B6132161C270DD300B57231 /* PictureUploadQueueImageFeedCollectionViewCell.swift in Sources */,
+				1B4305991CD3EA4400474AB5 /* Image.swift in Sources */,
 				1B057E061C17B10100AC21EE /* ProfileViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

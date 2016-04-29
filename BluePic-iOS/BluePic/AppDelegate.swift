@@ -37,16 +37,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
      */
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
-        BluemixDataManager.SharedInstance.createNewUserIfUserDoesntAlreadyExistElseReturnExistingUser("55546wer", name: "Alex Dude", result: {user in
-            
-            print("printing result")
-            print(user?.name)
-            print(user?.facebookID)
-            
-            
-            
-            
-        })
+//        BluemixDataManager.SharedInstance.createNewUserIfUserDoesntAlreadyExistElseReturnExistingUser("55546wer", name: "Alex Dude", result: {user in
+//            
+//            print("printing result")
+//            print(user?.name)
+//            print(user?.facebookID)
+//            
+//            
+//            
+//            
+//        })
+        
+        
+        BluemixDataManager.SharedInstance.getImages()
         
         let notificationTypes: UIUserNotificationType = [UIUserNotificationType.Badge, UIUserNotificationType.Alert, UIUserNotificationType.Sound]
         let notificationSettings: UIUserNotificationSettings = UIUserNotificationSettings(forTypes: notificationTypes, categories: nil)
