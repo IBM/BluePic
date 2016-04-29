@@ -21,6 +21,10 @@ import KituraNet
 import LoggerAPI
 import SwiftyJSON
 
+func invokeOpenWhisk(image: NSData) {
+  //TODO
+}
+
 func parseImages(document: JSON) throws -> JSON {
   guard let rows = document["rows"].array else {
     throw ProcessingError.User("Invalid images document returned from Cloudant!")
