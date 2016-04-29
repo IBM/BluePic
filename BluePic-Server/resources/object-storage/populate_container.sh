@@ -19,6 +19,9 @@
 # If any commands fail, we want the shell script to exit immediately.
 set -e
 
+# References
+#https://console.ng.bluemix.net/docs/services/ObjectStorage/objectstorge_usingobjectstorage.html
+#https://console.ng.bluemix.net/docs/services/ObjectStorage/objectstorge_usingobjectstorage.html#using-swift-restapi
 #https://<access point>/<API version>/AUTH_<project ID>/<container namespace>/<object namespace>
 #https://dal.objectstorage.open.softlayer.com/v1/AUTH_742fffae2c24438b83a2c43491119a82
 
@@ -30,10 +33,10 @@ authUrl=https://identity.open.softlayer.com/v3/auth/tokens
 accessPoint=dal.objectstorage.open.softlayer.com
 publicUrl=https://$accessPoint/v1/AUTH_$projectid
 
-# Containers
-container1=100002031687931a
-container2=100002031687932b
-container3=100002031687933c
+# Containers (these should match the user ids)
+container1=1000
+container2=1001
+container3=1002
 
 # Echo publicUrl
 echo "publicUrl: $publicUrl"
@@ -58,7 +61,10 @@ done
 # Upload images to containers
 imagesFolder=`dirname $( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )`/images
 echo "imagesFolder: $imagesFolder"
-declare -a images=("$container1:rush.jpg:image/jpg" "$container2:rush.jpg:image/jpg" "$container3:rush.jpg:image/jpg")
+declare -a images=("$container1:person.jpg:image/jpg" "$container1:flower_1.jpg:image/jpg" "$container1:church.jpg:image/jpg" "$container1:rush.jpg:image/jpg" \
+  "$container2:road.jpg:image/jpg" "$container2:flower_2.jpg:image/jpg" "$container2:city.jpg:image/jpg" "$container2:bridge.jpg:image/jpg" \
+  "$container3:nature.jpg:image/jpg" "$container3:concert.jpg:image/jpg" "$container3:car.jpg:image/jpg")
+
 for record in "${images[@]}"; do
   IFS=':' read -ra image <<< "$record"
   container=${image[0]}
