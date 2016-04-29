@@ -112,27 +112,45 @@ class BluemixDataManager: NSObject {
         //        logger.info("This is an info message")
         //        logger.warn("This is a warning message")
         
-        
     }
 
     
     
     
     
-    func getImages(){
+    func getImages(result : (images : [Image]?)-> ()){
         
         let requestURL = getBluemixBaseRequestURL() + "/" + kImagesEndPoint
-        
         let request = Request(url: requestURL, method: HttpMethod.GET)
         
         request.sendWithCompletionHandler { (response, error) -> Void in
             if let error = error {
+                result(images: nil)
                 print ("Error :: \(error)")
             } else {
-                print ("Success :: \(response?.responseText)")
+                
+                let images = self.parseGetImagesResponse(response)
+                result(images: images)
             }
         }
   
+    }
+    
+    private func parseGetImagesResponse(response : Response?) -> [Image]{
+        var images = [Image]()
+        
+        if let dict = Utils.convertResponseToDictionary(response),
+            let records = dict["records"] as? [[String:AnyObject]]{
+            
+            for record in records {
+                if let image = Image(record){
+                    images.append(image)
+                }
+            }
+  
+        }
+        
+        return images
     }
     
     
@@ -161,7 +179,6 @@ class BluemixDataManager: NSObject {
         request.sendWithCompletionHandler { (response, error) -> Void in
             if let error = error {
                 print ("Error Getting User By Id :: \(error)")
-                
                result(user: nil)
             } else {
                 var user = User(response)
@@ -259,3 +276,4 @@ class BluemixDataManager: NSObject {
  
     
 }
+
