@@ -2,13 +2,17 @@
 declared-services:
   cloudantNoSQLDB:
     label: Cloudant NoSQL DB-fz
-    plan:  Shared
-
+    plan: Shared
+  Object-Storage:
+    label: Object Storage-bv
+    plan: standard
 applications:
 - name: BluePic
   random-route: true
   memory: 512M
   disk_quota: 1024M
+  instances: 1
+  buildpack: https://github.com/IBM-Swift/swift-buildpack.git
   services:
   - Cloudant NoSQL DB-fz
-  buildpack: https://github.com/IBM-Swift/swift-buildpack.git
+  - Object Storage-bv
