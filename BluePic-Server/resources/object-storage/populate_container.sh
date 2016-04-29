@@ -45,7 +45,6 @@ authToken=`curl -i -H "Content-Type: application/json" -d "{ \"auth\": { \"ident
 declare -a containers=($container1 $container2 $container3)
 
 for container in "${containers[@]}"; do
-  echo "container: $container"
   # Create container
   curl -i $publicUrl/$container -X PUT -H "Content-Length: 0" -H "X-Auth-Token: $authToken"
 
@@ -56,19 +55,15 @@ for container in "${containers[@]}"; do
   curl -i $publicUrl/$container -X POST -H "Content-Length: 0" -H "X-Auth-Token: $authToken" -H  "X-Container-Read: .r:*,.rlistings"
 done
 
-# Upload image sto containers
+# Upload images to containers
 imagesFolder=`dirname $( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )`/images
 echo "imagesFolder: $imagesFolder"
 declare -a images=("$container1:rush.jpg:image/jpg" "$container2:rush.jpg:image/jpg" "$container3:rush.jpg:image/jpg")
-
 for record in "${images[@]}"; do
   IFS=':' read -ra image <<< "$record"
   container=${image[0]}
   fileName=${image[1]}
   contentType=${image[2]}
-  echo "container: $container"
-  echo "fileName: $fileName"
-  echo "contentType: $contentType"
   curl -i $publicUrl/$container/$fileName --data-binary @$imagesFolder/$fileName -X PUT -H "Content-Type: $contentType" -H "X-Auth-Token: $authToken"
 done
 
