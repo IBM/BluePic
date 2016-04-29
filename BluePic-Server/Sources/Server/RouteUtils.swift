@@ -27,7 +27,7 @@ func invokeOpenWhisk(image: NSData) {
 
 func parseImages(document: JSON) throws -> JSON {
   guard let rows = document["rows"].array else {
-    throw ProcessingError.User("Invalid images document returned from Cloudant!")
+    throw ProcessingError.Image("Invalid images document returned from Cloudant!")
   }
 
   let upperBound = (rows.count) - 1
@@ -48,7 +48,7 @@ func parseImages(document: JSON) throws -> JSON {
 
 func parseImagesForUser(document: JSON) throws -> JSON {
   guard let rows = document["rows"].array else {
-    throw ProcessingError.User("Invalid images document returned from Cloudant!")
+    throw ProcessingError.Image("Invalid images document returned from Cloudant!")
   }
 
   let images: [JSON] = rows.map({row in
