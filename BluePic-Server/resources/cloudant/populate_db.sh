@@ -39,7 +39,10 @@ curl -H "Content-Type: application/json" -d @images.json -X POST https://$userna
 
 # Upload attachments (images)
 imagesFolder=`dirname $( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )`/images
-declare -a attachments=('image/png' '2000' 'swift.png' 'image/jpg' '2001' 'genesis.jpg' 'image/jpg' '2002' 'tombstone.jpg' 'image/jpg' '2003' 'rush-logo.jpg' 'image/jpg' '2004' 'rush.jpg' 'image/jpg' '2005' 'within-temptation.jpg');
+declare -a attachments=('image/jpg' '2000' 'rush.jpg' 'image/jpg' '2001' 'bridge.jpg' 'image/jpg' '2002' 'car.jpg' 'image/jpg' '2003' 'church.jpg' \
+  'image/jpg' '2004' 'city.jpg' 'image/jpg' '2005' 'concert.jpg' 'image/jpg' '2006' 'flower_1.jpg' 'image/jpg' '2007' 'flower_2.jpg' \
+  'image/jpg' '2008' 'nature.jpg' 'image/jpg' '2009' 'person.jpg' 'image/jpg' '2010' 'road.jpg');
+
 index=0
 while [ $index -lt ${#attachments[@]} ]; do
   contentType=${attachments[$index]}
