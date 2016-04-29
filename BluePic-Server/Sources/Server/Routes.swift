@@ -181,7 +181,7 @@ func defineRoutes() {
       // Verify JSON has required fields
       guard let _ = userJson["name"].string,
       let _ = userJson["_id"].string else {
-        throw ProcessingError.Image("Invalid user document!")
+        throw ProcessingError.User("Invalid user document!")
       }
 
       userJson["type"] = "user"
@@ -198,8 +198,10 @@ func defineRoutes() {
       database.create(userJson) { (id, revision, document, error) in
         if let document = document where error == nil {
           do {
-            //TODO send just the _id
-            try response.status(HttpStatusCode.OK).send(json: document).end()
+            // Return user document back to caller
+            // Add revision number to it
+            userJson["_rev"] = document["rev"]
+            try response.status(HttpStatusCode.OK).send(json: userJson).end()
           } catch {
             Log.error("Failed to send response to client.")
             response.error = generateInternalError()
@@ -209,8 +211,9 @@ func defineRoutes() {
         }
         next()
       }
-    } catch {
+    } catch let error {
       Log.error("Failed to create new user document.")
+      Log.error("Error domain: \(error._domain); error code: \(error._code).")
       response.error = generateInternalError()
       next()
     }
