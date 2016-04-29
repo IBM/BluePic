@@ -5,6 +5,14 @@
       "fileName": "swift.png",
       "displayName": "Swift",
       "contentType": "image/png",
+      "tags": [],
+      "location": {
+        "latitude": 34.53,
+        "longitude": 84.5,
+        "weather": {
+          "temperature": "70"
+        },
+      },
       "uploadedTs": "2015-01-05T18:25:43.511Z",
       "userId": "1000",
       "type": "image"
@@ -14,6 +22,14 @@
       "fileName": "genesis.jpg",
       "displayName": "Genesis",
       "contentType": "image/jpg",
+      "tags": [],
+      "location": {
+        "latitude": 34.53,
+        "longitude": 84.5,
+        "weather": {
+          "temperature": "70"
+        },
+      },
       "uploadedTs": "2015-01-05T18:25:43.511Z",
       "userId": "1000",
       "type": "image"
@@ -23,6 +39,14 @@
       "fileName": "tombstone.jpg",
       "displayName": "Tombstone",
       "contentType": "image/jpg",
+      "tags": [],
+      "location": {
+        "latitude": 34.53,
+        "longitude": 84.5,
+        "weather": {
+          "temperature": "70"
+        },
+      },
       "uploadedTs": "2015-01-05T18:25:43.511Z",
       "userId": "1000",
       "type": "image"
@@ -32,6 +56,14 @@
       "fileName": "rush-logo.jpg",
       "displayName": "Rush Logo",
       "contentType": "image/jpg",
+      "tags": [],
+      "location": {
+        "latitude": 34.53,
+        "longitude": 84.5,
+        "weather": {
+          "temperature": "70"
+        },
+      },
       "uploadedTs": "2015-01-05T18:25:43.511Z",
       "userId": "1001",
       "type": "image"
@@ -41,6 +73,14 @@
       "fileName": "rush.jpg",
       "displayName": "Rush",
       "contentType": "image/jpg",
+      "tags": [],
+      "location": {
+        "latitude": 34.53,
+        "longitude": 84.5,
+        "weather": {
+          "temperature": "70"
+        },
+      },
       "uploadedTs": "2015-01-05T18:25:43.511Z",
       "userId": "1001",
       "type": "image"
@@ -50,6 +90,14 @@
       "fileName": "within-temptation.jpg",
       "displayName": "Within Temptation",
       "contentType": "image/jpg",
+      "tags": [],
+      "location": {
+        "latitude": 34.53,
+        "longitude": 84.5,
+        "weather": {
+          "temperature": "70"
+        },
+      },
       "uploadedTs": "2015-01-05T18:25:43.511Z",
       "userId": "1001",
       "type": "image"
