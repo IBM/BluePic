@@ -21,8 +21,11 @@ import KituraNet
 import LoggerAPI
 import SwiftyJSON
 
-func invokeOpenWhisk(image: NSData) {
+func invokeOpenWhisk(imageDocument: JSONDictionary, image: NSData) {
   //TODO
+  // Read user document to obtain language and units of measure...
+  Log.verbose("invokeOpenWhisk() not implemented yet...")
+  Log.verbose("imageDocument: \(imageDocument)")
 }
 
 func parseImages(document: JSON) throws -> JSON {
@@ -68,7 +71,12 @@ func parseUsers(document: JSON) throws -> JSON {
 func getImageDocument(request: RouterRequest) throws -> JSONDictionary {
   guard let displayName = request.params["displayName"],
   let fileName = request.params["fileName"],
-  let userId = request.params["userId"] else {
+  let userId = request.params["userId"],
+  let lat = request.params["latitude"],
+  let long = request.params["longitude"],
+  let city = request.params["city"],
+  let latitude = Float(lat),
+  let longitude = Float(long) else {
     throw ProcessingError.Image("Invalid image document!")
   }
 
@@ -80,14 +88,16 @@ func getImageDocument(request: RouterRequest) throws -> JSONDictionary {
   let dateStr = NSDate().descriptionWithLocale(nil).bridge()
   let uploadedTs = dateStr.substringToIndex(10) + "T" + dateStr.substringWithRange(NSMakeRange(11, 8))
   let imageName = displayName.stringByReplacingOccurrencesOfString("%20", withString: " ")
+  let locationName = city.stringByReplacingOccurrencesOfString("%20", withString: " ")
   #else
-
   let dateStr = NSDate().description.bridge()
   let uploadedTs = dateStr.substring(to: 10) + "T" + dateStr.substring(with:NSMakeRange(11, 8))
   let imageName = displayName.replacingOccurrences(of: "%20", with: " ")
+  let locationName = city.replacingOccurrences(of: "%20", with: " ")
   #endif
 
-  let imageDocument: JSONDictionary = ["contentType": contentType, "fileName": fileName, "userId": userId, "displayName": imageName, "uploadedTs": uploadedTs, "type": "image"]
+  let location: JSONDictionary = ["latitude": latitude, "longitude": longitude, "name": locationName]
+  let imageDocument: JSONDictionary = ["location": location, "contentType": contentType, "fileName": fileName, "userId": userId, "displayName": imageName, "uploadedTs": uploadedTs, "type": "image"]
   return imageDocument
 }
 

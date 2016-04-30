@@ -107,7 +107,7 @@ func defineRoutes() {
   }
 
   // Upload a new picture for a given user
-  router.post("/users/:userId/images/:fileName/:displayName") { request, response, next in
+  router.post("/users/:userId/images/:fileName/:displayName/:latitude/:longitude/:city") { request, response, next in
     do {
       // As of now, we don't have a multi-form request parser...
       // Because of this we are using the REST endpoint definition as the mechanism
@@ -127,7 +127,7 @@ func defineRoutes() {
               imageDocument["url"] = generateImageUrl(imageId: id, attachmentName: fileName)
               imageDocument["_id"] = id
               imageDocument["_rev"] = revision
-              invokeOpenWhisk(image: image)
+              invokeOpenWhisk(imageDocument: imageDocument, image: image)
               response.status(HttpStatusCode.OK).send(json: JSON(imageDocument))
             } else {
               response.error = error ?? generateInternalError()
