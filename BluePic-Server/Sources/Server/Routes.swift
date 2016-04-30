@@ -27,7 +27,6 @@ func defineRoutes() {
   let closure = { (request: RouterRequest, response: RouterResponse, next: () -> Void) -> Void in
     response.setHeader("Content-Type", value: "text/plain; charset=utf-8")
     do {
-      print("Request: \(request)")
       try response.status(HttpStatusCode.OK).send("Hello World, from BluePic-Server! Original URL: \(request.originalUrl)").end()
     }
     catch {
@@ -153,10 +152,8 @@ func defineRoutes() {
       next()
       return
     }
-
-    // Need to add quotes around the string values in the startKey and endKey arrays due to limitation in the
-    // Kitura-CouchDB package... this will be addressed in the official Cloudand SDK for Swift.
-    database.queryByView("images_per_user", ofDesign: "main_design", usingParameters: [.Descending(true), .EndKey([NSString(string: "\"\(userId)\"")]), .StartKey([NSString(string: "\"\(userId)\""), NSString(string: "{}")])]) { (document, error) in
+    
+    database.queryByView("images_per_user", ofDesign: "main_design", usingParameters: [.Descending(true), .EndKey([NSString(string: userId), NSString(string: "0")]), .StartKey([NSString(string: userId),  NSObject()])]) { (document, error) in
       if let document = document where error == nil {
         do {
           let images = try parseImagesForUser(document: document)
