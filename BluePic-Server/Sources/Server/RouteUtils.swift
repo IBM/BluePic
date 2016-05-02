@@ -33,18 +33,14 @@ func parseImages(document: JSON) throws -> JSON {
     throw ProcessingError.Image("Invalid images document returned from Cloudant!")
   }
 
-  let upperBound = (rows.count) - 1
   var images: [JSON] = []
-  for index in 0...upperBound {
-    var record = rows[index]["doc"]
-    if index % 2 == 0 {
-      massageImageRecord(record: &record)
-      images.append(record)
-    } else {
-      var record = images[images.endIndex - 1]
-      record["user"] = rows[index]["doc"]
-      images[images.endIndex - 1] = record
-    }
+  var index = 1
+  while index <= (rows.count) {
+    var imageRecord = rows[index]["doc"]
+    massageImageRecord(record: &imageRecord)
+    imageRecord["user"] = rows[index-1]["doc"]
+    images.append(imageRecord)
+    index = index + 2
   }
   return constructDocument(records: images)
 }
