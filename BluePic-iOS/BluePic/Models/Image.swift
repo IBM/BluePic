@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import BMSCore
 
 class Image: NSObject {
 
@@ -15,7 +14,7 @@ class Image: NSObject {
     var id : String?
     var displayName : String?
     var fileName : String?
-    var timeStamp : String?
+    var timeStamp : NSDate?
     var url : String?
     var usersName : String?
     
@@ -29,6 +28,7 @@ class Image: NSObject {
                 let displayName = dict["displayName"] as? String,
                 let fileName = dict["fileName"] as? String,
                 let url = dict["url"] as? String,
+                let timeStamp = dict["uploadedTs"] as? String,
                 let user = dict["user"] as? [String : AnyObject],
                 let usersName = user["name"] as? String {
                 
@@ -37,7 +37,16 @@ class Image: NSObject {
                 self.fileName = fileName
                 self.url = url
                 self.usersName = usersName
-        
+                
+                //set timeStamp
+                let dateFormatter = NSDateFormatter()
+                dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSZ"
+                dateFormatter.timeZone = NSTimeZone(abbreviation: "UTC")
+                if let date = dateFormatter.dateFromString(timeStamp) {
+                    self.timeStamp = date
+                }
+                
+
             }else{
                 return nil
             }
