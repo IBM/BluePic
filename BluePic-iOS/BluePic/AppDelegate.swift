@@ -49,7 +49,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        })
         
         
-        BluemixDataManager.SharedInstance.getImages()
+        BluemixDataManager.SharedInstance.getImages({ images in
+            
+            
+        })
         
         let notificationTypes: UIUserNotificationType = [UIUserNotificationType.Badge, UIUserNotificationType.Alert, UIUserNotificationType.Sound]
         let notificationSettings: UIUserNotificationSettings = UIUserNotificationSettings(forTypes: notificationTypes, categories: nil)

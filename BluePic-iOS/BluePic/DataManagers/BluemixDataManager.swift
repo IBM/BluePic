@@ -131,6 +131,9 @@ class BluemixDataManager: NSObject {
                 
                 let images = self.parseGetImagesResponse(response)
                 result(images: images)
+                
+                let response = Utils.convertResponseToDictionary(response)
+                print(response)
             }
         }
   
