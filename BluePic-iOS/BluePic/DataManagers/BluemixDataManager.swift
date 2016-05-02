@@ -129,19 +129,16 @@ class BluemixDataManager: NSObject {
                 print ("Error :: \(error)")
             } else {
                 
-                let images = self.parseGetImagesResponse(response)
+                let images = self.parseGetImagesResponse(response, userId: nil, usersName: nil)
                 result(images: images)
-                
-//                let response = Utils.convertResponseToDictionary(response)
-//                print(response)
             }
         }
   
     }
     
-    func getImagesByUserId(userId : String, result : (images : [Image]?)-> ()){
+    func getImagesByUserId(userId : String, usersName : String, result : (images : [Image]?)-> ()){
         
-        let requestURL = getBluemixBaseRequestURL() + "/" + userId + kImagesEndPoint
+        let requestURL = getBluemixBaseRequestURL() + "/" + kUsersEndPoint + "/" + userId + "/" + kImagesEndPoint
         let request = Request(url: requestURL, method: HttpMethod.GET)
         
         request.sendWithCompletionHandler { (response, error) -> Void in
@@ -150,8 +147,8 @@ class BluemixDataManager: NSObject {
                 print ("Error :: \(error)")
             } else {
                 
-                //let images = self.parseGetImagesResponse(response)
-                //result(images: images)
+                let images = self.parseGetImagesResponse(response, userId: userId, usersName: usersName)
+                result(images: images)
                 
                 let response = Utils.convertResponseToDictionary(response)
                 print(response)
@@ -160,13 +157,24 @@ class BluemixDataManager: NSObject {
         
     }
     
-    private func parseGetImagesResponse(response : Response?) -> [Image]{
+    private func parseGetImagesResponse(response : Response?, userId : String?, usersName : String?) -> [Image]{
         var images = [Image]()
         
         if let dict = Utils.convertResponseToDictionary(response),
             let records = dict["records"] as? [[String:AnyObject]]{
             
-            for record in records {
+            for var record in records {
+                
+                if let userId = userId, let usersName = usersName {
+                    
+                    var user = [String : AnyObject]()
+                    user["name"] = usersName
+                    user["_id"] = userId
+                    record["user"] = user
+
+                }
+                
+                
                 if let image = Image(record){
                     images.append(image)
                 }

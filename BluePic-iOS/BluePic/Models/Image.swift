@@ -48,6 +48,7 @@ class Image: NSObject {
                 
 
             }else{
+                print("invalid image json")
                 return nil
             }
             

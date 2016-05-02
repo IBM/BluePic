@@ -54,7 +54,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //            
 //        })
         
-        BluemixDataManager.SharedInstance.getImagesByUserId("1000", result: {images in})
+        BluemixDataManager.SharedInstance.getImagesByUserId("1000", usersName: "Alex", result: { images in
+        
+        
+        
+        
+        
+        })
         
         
         BluemixDataManager.SharedInstance.getUsers()
