@@ -132,11 +132,32 @@ class BluemixDataManager: NSObject {
                 let images = self.parseGetImagesResponse(response)
                 result(images: images)
                 
+//                let response = Utils.convertResponseToDictionary(response)
+//                print(response)
+            }
+        }
+  
+    }
+    
+    func getImagesByUserId(userId : String, result : (images : [Image]?)-> ()){
+        
+        let requestURL = getBluemixBaseRequestURL() + "/" + userId + kImagesEndPoint
+        let request = Request(url: requestURL, method: HttpMethod.GET)
+        
+        request.sendWithCompletionHandler { (response, error) -> Void in
+            if let error = error {
+                //result(images: nil)
+                print ("Error :: \(error)")
+            } else {
+                
+                //let images = self.parseGetImagesResponse(response)
+                //result(images: images)
+                
                 let response = Utils.convertResponseToDictionary(response)
                 print(response)
             }
         }
-  
+        
     }
     
     private func parseGetImagesResponse(response : Response?) -> [Image]{
