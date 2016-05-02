@@ -16,6 +16,7 @@
 
 
 import UIKit
+import BMSCore
 
 class Utils: NSObject {
     
@@ -143,5 +144,36 @@ class Utils: NSObject {
         collectionView.registerNib(nib, forSupplementaryViewOfKind: kind, withReuseIdentifier: nibName)
     }
     
+    
+    class func convertStringToDictionary(text: String) -> [String:AnyObject]? {
+        if let data = text.dataUsingEncoding(NSUTF8StringEncoding) {
+            do {
+                let json = try NSJSONSerialization.JSONObjectWithData(data, options: .MutableContainers) as? [String:AnyObject]
+                return json
+            } catch {
+                print("Error converting string to Dictionary")
+            }
+        }
+        return nil
+    }
+    
+    
+    
+    
+    class func convertResponseToDictionary(response : Response?) -> [String : AnyObject]? {
+        
+        if let resp = response {
+            if let responseText = resp.responseText {
+                return convertStringToDictionary(responseText)
+            }
+            else{
+                return nil
+            }
+        }
+        else{
+            return nil
+        }
+  
+    }
     
 }

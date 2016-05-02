@@ -9,6 +9,11 @@
 import UIKit
 import BMSCore
 
+
+enum BlueMixDataManagerError: ErrorType {
+    case DocDoesNotExist
+}
+
 class BluemixDataManager: NSObject {
     
     static let SharedInstance: BluemixDataManager = {
@@ -107,27 +112,69 @@ class BluemixDataManager: NSObject {
         //        logger.info("This is an info message")
         //        logger.warn("This is a warning message")
         
-        
     }
 
     
     
     
     
-    func getImages(){
+    func getImages(result : (images : [Image]?)-> ()){
         
         let requestURL = getBluemixBaseRequestURL() + "/" + kImagesEndPoint
-        
         let request = Request(url: requestURL, method: HttpMethod.GET)
         
         request.sendWithCompletionHandler { (response, error) -> Void in
             if let error = error {
+                result(images: nil)
                 print ("Error :: \(error)")
             } else {
-                print ("Success :: \(response?.responseText)")
+                
+                let images = self.parseGetImagesResponse(response)
+                result(images: images)
+                
+//                let response = Utils.convertResponseToDictionary(response)
+//                print(response)
             }
         }
   
+    }
+    
+    func getImagesByUserId(userId : String, result : (images : [Image]?)-> ()){
+        
+        let requestURL = getBluemixBaseRequestURL() + "/" + userId + kImagesEndPoint
+        let request = Request(url: requestURL, method: HttpMethod.GET)
+        
+        request.sendWithCompletionHandler { (response, error) -> Void in
+            if let error = error {
+                //result(images: nil)
+                print ("Error :: \(error)")
+            } else {
+                
+                //let images = self.parseGetImagesResponse(response)
+                //result(images: images)
+                
+                let response = Utils.convertResponseToDictionary(response)
+                print(response)
+            }
+        }
+        
+    }
+    
+    private func parseGetImagesResponse(response : Response?) -> [Image]{
+        var images = [Image]()
+        
+        if let dict = Utils.convertResponseToDictionary(response),
+            let records = dict["records"] as? [[String:AnyObject]]{
+            
+            for record in records {
+                if let image = Image(record){
+                    images.append(image)
+                }
+            }
+  
+        }
+        
+        return images
     }
     
     
@@ -147,35 +194,87 @@ class BluemixDataManager: NSObject {
         
     }
     
-    func getUserById(userId : String){
+    func getUserById(userId : String, result: (user : User?) -> ()){
         
-        let request = Request(url: "/" + kUsersEndPoint + "/" + userId, method: HttpMethod.GET)
+        let requestURL = getBluemixBaseRequestURL() + "/" + kUsersEndPoint + "/" + userId
+        
+        let request = Request(url: requestURL, method: HttpMethod.GET)
         
         request.sendWithCompletionHandler { (response, error) -> Void in
             if let error = error {
-                print ("Error :: \(error)")
+                print ("Error Getting User By Id :: \(error)")
+               result(user: nil)
             } else {
+                var user = User(response)
+                result(user: user)
                 print ("Success :: \(response?.responseText)")
             }
         }
     }
     
+    func doesUserAlreadyExist(userId : String, result : (doesUserAlreadyExist : Bool) -> ()){
     
-    func createNewUser(name : String){
-        
-        let request = Request(url: "/" + kUsersEndPoint, method: HttpMethod.POST)
-        request.headers = ["name": name]
-        //request.queryParameters = ["foo":"bar"]
-        
-        request.sendWithCompletionHandler { (response, error) -> Void in
-            if let error = error {
-                print ("Error :: \(error)")
-            } else {
-                print ("Success :: \(response?.responseText)")
+        getUserById(userId, result: { user in
+            
+            if user != nil {
+                result(doesUserAlreadyExist: true)
             }
+            else{
+                result(doesUserAlreadyExist: false)
+            }
+            
+        })
+    }
+    
+    
+    private func createNewUser(userId : String, name : String, result : ((user : User?) -> ())){
+        
+        let requestURL = getBluemixBaseRequestURL() + "/" + kUsersEndPoint
+        
+        let request = Request(url: requestURL, method: HttpMethod.POST)
+        
+        //request.headers = ["Content-Type" : "application/json"]
+        
+        let json = ["_id": userId, "name": name]
+
+        
+        do{
+            let jsonData = try NSJSONSerialization.dataWithJSONObject(json, options: .PrettyPrinted)
+            
+            request.sendData(jsonData, completionHandler: { (response, error) -> Void in
+                if let error = error {
+                    result(user: nil)
+                    print ("Error  Creating New User :: \(error)")
+                } else {
+                    let user = User(response)
+                    result(user: user)
+                    print ("Success :: \(response?.responseText)")
+                }
+            })
+            
+        } catch {
+            result(user: nil)
+            
         }
         
+    }
+    
+    
+
+    func createNewUserIfUserDoesntAlreadyExistElseReturnExistingUser(userId : String, name : String, result : ((user : User?) -> ())){
         
+        getUserById(userId, result: { user in
+            
+            if let user = user {
+                result(user: user)
+            }
+            else{
+                self.createNewUser(userId, name: name, result: { user in
+                    result(user: user)
+                })
+            }
+   
+        })
     }
     
     ///users/:userId/images/:fileName/:displayName
@@ -201,3 +300,4 @@ class BluemixDataManager: NSObject {
  
     
 }
+
