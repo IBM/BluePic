@@ -1051,7 +1051,8 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd ..\n./server-runner.sh xcode";
+			shellScript = "
+";
 		};
 /* End PBXShellScriptBuildPhase section */
 
