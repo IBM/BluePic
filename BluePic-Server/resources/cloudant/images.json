@@ -50,8 +50,7 @@
         {
           "label": "building",
           "confidence": 50
-        },
-
+        }
       ],
       "location": {
         "name": "Boston, Massachusetts",
@@ -72,8 +71,7 @@
         {
           "label": "car",
           "confidence": 76
-        },
-
+        }
       ],
       "location": {
         "name": "Los Angeles, California",
@@ -102,8 +100,7 @@
         {
           "label": "mountain",
           "confidence": 64
-        },
-
+        }
       ],
       "location": {
         "name": "Tuscson, Arizona",
@@ -145,8 +142,7 @@
         {
           "label": "person",
           "confidence": 90
-        },
-
+        }
       ],
       "location": {
         "name": "Austin, Texas",
@@ -171,8 +167,7 @@
         {
           "label": "garden",
           "confidence": 50
-        },
-
+        }
       ],
       "location": {
         "name": "Marble Falls, Texas",
@@ -197,8 +192,7 @@
         {
           "label": "tree",
           "confidence": 75
-        },
-
+        }
       ],
       "location": {
         "name": "Marble Falls, Texas",
@@ -231,8 +225,7 @@
         {
           "label": "mountain",
           "confidence": 64
-        },
-
+        }
       ],
       "location": {
         "name": "Austin, Texas",
@@ -254,7 +247,6 @@
           "label": "sunset",
           "confidence": 37
         },
-
       ],
       "location": {
         "name": "Miami, Florida",
@@ -279,8 +271,7 @@
         {
           "label": "mountain",
           "confidence": 50
-        },
-
+        }
       ],
       "location": {
         "name": "Austin, Texas",
