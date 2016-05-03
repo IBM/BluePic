@@ -19,6 +19,7 @@ import CouchDB
 import SwiftyJSON
 import LoggerAPI
 import CFEnvironment
+import BluemixObjectStore
 
 public struct Configuration {
 
@@ -50,16 +51,30 @@ public struct Configuration {
   func getDatabase(dbName: String) throws -> Database {
     if let couchDBCredentials = appEnv.getService(spec: "Cloudant NoSQL DB-fz")?.credentials {
       if let host = couchDBCredentials["host"].string,
-        user = couchDBCredentials["username"].string,
-        password = couchDBCredentials["password"].string,
-        port = couchDBCredentials["port"].int {
-          let connProperties = ConnectionProperties(host: host, port: Int16(port), secured: true, username: user, password: password)
-          let dbClient = CouchDBClient(connectionProperties: connProperties)
+      user = couchDBCredentials["username"].string,
+      password = couchDBCredentials["password"].string,
+      port = couchDBCredentials["port"].int {
+        let connProperties = ConnectionProperties(host: host, port: Int16(port), secured: true, username: user, password: password)
+        let dbClient = CouchDBClient(connectionProperties: connProperties)
         return dbClient.database(dbName)
       }
     }
     throw Error.IO("Failed to obtain database service and/or credentials.")
   }
 
-  //TODO: Add methods for parsing credentials for Object Storage
+  func getObjectStoreConnProps() throws -> ObjectStoreConnProps {
+    guard let objStoreCredentials = appEnv.getService(spec: "Object Storage-bv")?.credentials else {
+      throw Error.IO("Failed to obtain object storage service and/or credentials.")
+    }
+
+    guard let projectId = objStoreCredentials["projectId"].string,
+    userId = objStoreCredentials["userId"].string,
+    password = objStoreCredentials["password"].string else {
+      throw Error.IO("Failed to obtain object storage credentials.")
+    }
+
+    let connProperties = ObjectStoreConnProps(projectId: projectId, userId: userId, password: password)
+    return connProperties
+  }
+
 }
