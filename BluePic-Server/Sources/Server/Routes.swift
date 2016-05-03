@@ -24,6 +24,12 @@ import SwiftyJSON
 // Setup the handlers for the Photo APIs
 func defineRoutes() {
 
+  /////////////////////////////////////////
+  //What is this doing?
+  //router.all("/photos/*", middleware: BodyParser())
+  //////////////////////////////////////
+
+  // Test closure
   let closure = { (request: RouterRequest, response: RouterResponse, next: () -> Void) -> Void in
     response.setHeader("Content-Type", value: "text/plain; charset=utf-8")
     do {
@@ -49,7 +55,6 @@ func defineRoutes() {
         do {
           let images = try parseImages(document: document)
           try response.status(HttpStatusCode.OK).send(json: images).end()
-          //try response.status(HttpStatusCode.OK).sendJson(document).end()
         }
         catch {
           Log.error("Failed to send response to client.")
@@ -106,37 +111,39 @@ func defineRoutes() {
   }
 
   // Upload a new picture for a given user
-  router.post("/users/:userId/images/:fileName/:displayName/:latitude/:longitude/:city") { request, response, next in
+  router.post("/users/:userId/images/:fileName/:displayName/:latitude/:longitude/:location") { request, response, next in
     do {
       // As of now, we don't have a multi-form request parser...
       // Because of this we are using the REST endpoint definition as the mechanism
       // to send the metadata about the image, while the body of the request only
       // contains the binary data for the image. I know, yuck...
-      var imageDocument = try getImageDocument(request: request)
-      guard let contentType = imageDocument["contentType"] as? String else {
-        throw ProcessingError.Image("Invalid image document!")
-      }
-
+      var imageJSON = try getImageJSON(fromRequest: request)
+      Log.verbose("The following is the imageJSON document generated: \(imageJSON)")
       let image = try BodyParser.readBodyData(with: request)
-      database.create(JSON(imageDocument)) { (id, revision, doc, error) in
-        if let fileName = request.params["fileName"],
-        let _ = doc, let id = id, let revision = revision where error == nil {
-          database.createAttachment(id, docRevison: revision, attachmentName: fileName, attachmentData: image, contentType: contentType) { (rev, imageDoc, error) in
-            if let _ = imageDoc where error == nil {
-              imageDocument["url"] = generateImageUrl(imageId: id, attachmentName: fileName)
-              imageDocument["_id"] = id
-              imageDocument["_rev"] = revision
-              invokeOpenWhisk(imageDocument: imageDocument, image: image)
-              response.status(HttpStatusCode.OK).send(json: JSON(imageDocument))
-            } else {
-              response.error = error ?? generateInternalError()
-            }
-            next()
-          }
-        } else {
+      database.create(imageJSON) { (id, revision, doc, error) in
+        guard let id = id where error == nil else {
           response.error = generateInternalError()
           next()
+          return
         }
+
+        // Create closure
+        let completionHandler = { (success: Bool) -> Void in
+          if success {
+            // Update JSON document with url, _id, and _rev
+            imageJSON["url"].stringValue = generateUrl(forContainer: imageJSON["userId"].stringValue, forImage: imageJSON["fileName"].stringValue)
+            //imageDocument["_id"] = id
+            //imageDocument["_rev"] = revision
+            process(image: image, withImageId: id, withUserId: imageJSON["userId"].stringValue)
+            // Return user document back to caller
+            response.status(HttpStatusCode.OK).send(json: imageJSON)
+          } else {
+            response.error = generateInternalError()
+          }
+          next()
+        }
+        // Create container for user
+        store(image: image, withName: imageJSON["fileName"].stringValue, inContainer: imageJSON["userId"].stringValue, completionHandler: completionHandler)
       }
     } catch {
       Log.error("Failed to send response to client.")
@@ -152,13 +159,13 @@ func defineRoutes() {
       next()
       return
     }
-    
-    database.queryByView("images_per_user", ofDesign: "main_design", usingParameters: [.Descending(true), .EndKey([NSString(string: userId), NSString(string: "0")]), .StartKey([NSString(string: userId),  NSObject()])]) { (document, error) in
+
+    let queryParams: [Database.QueryParameters] = [.Descending(true), .EndKey([NSString(string: userId), NSString(string: "0")]), .StartKey([NSString(string: userId),  NSObject()])]
+    database.queryByView("images_per_user", ofDesign: "main_design", usingParameters: queryParams) { (document, error) in
       if let document = document where error == nil {
         do {
-          let images = try parseImagesForUser(document: document)
+          let images = try parseImages(forUserId: userId, usingDocument: document)
           try response.status(HttpStatusCode.OK).send(json: images).end()
-          //try response.status(HttpStatusCode.OK).sendJson(document).end()
         }
         catch {
           Log.error("Failed to get images for \(userId).")
@@ -179,10 +186,9 @@ func defineRoutes() {
 
       // Verify JSON has required fields
       guard let _ = userJson["name"].string,
-      let _ = userJson["_id"].string else {
+      let userId = userJson["_id"].string else {
         throw ProcessingError.User("Invalid user document!")
       }
-
       userJson["type"] = "user"
 
       // Keep only those keys that are valid for the user document
@@ -196,19 +202,29 @@ func defineRoutes() {
       // Persist user document
       database.create(userJson) { (id, revision, document, error) in
         if let document = document where error == nil {
-          do {
-            // Return user document back to caller
-            // Add revision number to it
-            userJson["_rev"] = document["rev"]
-            try response.status(HttpStatusCode.OK).send(json: userJson).end()
-          } catch {
-            Log.error("Failed to send response to client.")
-            response.error = generateInternalError()
+          // Add revision number response document
+          userJson["_rev"] = document["rev"]
+          // Create closure
+          let completionHandler = { (success: Bool) -> Void in
+            do {
+              if success {
+                // Return user document back to caller
+                try response.status(HttpStatusCode.OK).send(json: userJson).end()
+              } else {
+                response.error = generateInternalError()
+              }
+            } catch {
+              Log.error("Failed to send response to client.")
+              response.error = generateInternalError()
+            }
+            next()
           }
+          // Create container for user
+          createContainer(withName: userId, completionHandler: completionHandler)
         } else {
           response.error = error ?? generateInternalError()
+          next()
         }
-        next()
       }
     } catch let error {
       Log.error("Failed to create new user document.")
@@ -218,37 +234,30 @@ func defineRoutes() {
     }
   }
 
-  // Get image binary.
-  // It does not seem technically possible to server attachments from Cloudant
-  // without requiring authentication. Hence, the need for this proxy method.
-  router.get("/images/:imageId/:attachmentName") { request, response, next in
-    guard let imageId = request.params["imageId"],
-    let attachmentName = request.params["attachmentName"] else {
-      response.error = generateInternalError()
-      next()
-      return
-    }
-
-    database.retrieveAttachment(imageId, attachmentName: attachmentName) { (image, error, contentType) in
-      if  let image = image where error == nil  {
-        if let contentType = contentType {
-          response.setHeader("Content-Type", value: contentType)
-        }
-        response.status(HttpStatusCode.OK).send(data: image)
-      }
-      else {
-        response.error = error ?? generateInternalError()
-      }
-      next()
-    }
-  }
-
-  //////////////////////////////////////////////////////////////
-  //TODO: Validate need for these middleware
-
-  //What is this doing?
-  router.all("/photos/*", middleware: BodyParser())
-
-  /////////////////////////////////////////////////////////////
+  // Get image binary. Note that it is not technically possible to serve attachments from Cloudant
+  // without requiring authentication (unless the authentication settings for the entire database
+  // are changed). Hence, the need for this proxy method.
+  // router.get("/images/:imageId/:attachmentName") { request, response, next in
+  //   guard let imageId = request.params["imageId"],
+  //   let attachmentName = request.params["attachmentName"] else {
+  //     response.error = generateInternalError()
+  //     next()
+  //     return
+  //   }
+  //
+  //   database.retrieveAttachment(imageId, attachmentName: attachmentName) { (image, error, contentType) in
+  //     if let image = image where error == nil {
+  //       // Add content type to response header
+  //       if let contentType = contentType {
+  //         response.setHeader("Content-Type", value: contentType)
+  //       }
+  //       response.status(HttpStatusCode.OK).send(data: image)
+  //     }
+  //     else {
+  //       response.error = error ?? generateInternalError()
+  //     }
+  //     next()
+  //   }
+  // }
 
 }
