@@ -285,22 +285,36 @@ class BluemixDataManager: NSObject {
         })
     }
     
-    ///users/:userId/images/:fileName/:displayName
-    func postNewImage(userId : String, fileName : String, displayName : String,  image: NSData){
+    //users/:userId/images/:fileName/:displayName/:latitude/:longitude/:city - POST
+    func postNewImage(userId : String, fileName : String, displayName : String, latitude : String, longitude : String, city : String,  image: NSData){
         
-        let request = Request(url: "/" + kUsersEndPoint + "/" + userId + "/" + fileName + "/" + displayName, method: HttpMethod.POST)
+        let tempURL = getBluemixBaseRequestURL() + "/" + kUsersEndPoint + "/" + userId + "/" + kImagesEndPoint + "/" + fileName + "/" + displayName + "/" + latitude + "/" + longitude + "/" + city
+        
+        let requestURL = tempURL.stringByAddingPercentEncodingWithAllowedCharacters( NSCharacterSet.URLQueryAllowedCharacterSet())!
+
+        //"multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        print(requestURL)
+        let request = Request(url: requestURL, method: HttpMethod.POST)
+        
+        request.headers = ["Content-Type" : "application/x-www-form-urlencoded"]
+        
+        //let request = Request(url: "/" + kUsersEndPoint + "/" + userId + "/" + kImagesEndPoint + "/" + fileName + "/" + displayName, method: HttpMethod.POST)
         
         //NEED TO ADD IMAGE TO PAYLOAD
         //request.headers = ["name": name]
         //request.queryParameters = ["foo":"bar"]
         
-        request.sendWithCompletionHandler { (response, error) -> Void in
+     
+        
+        request.sendData(image, completionHandler: { (response, error) -> Void in
             if let error = error {
-                print ("Error :: \(error)")
+                print ("Error uploading image :: \(error)")
             } else {
-                print ("Success :: \(response?.responseText)")
+                print ("Success uploading image :: \(response?.responseText)")
             }
-        }
+        })
+        
+        
         
     }
     
