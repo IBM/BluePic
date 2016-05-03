@@ -41,12 +41,17 @@
       "tags": [
         {
           "label": "bridge",
-          "confidence": 90
+          "confidence": 75
         },
         {
-          "label": "infrastructure",
-          "confidence": 85
-        }
+          "label": "city",
+          "confidence": 60
+        },
+        {
+          "label": "building",
+          "confidence": 50
+        },
+
       ],
       "location": {
         "name": "Boston, Massachusetts",
@@ -66,12 +71,9 @@
       "tags": [
         {
           "label": "car",
-          "confidence": 90
+          "confidence": 76
         },
-        {
-          "label": "transportation",
-          "confidence": 85
-        }
+
       ],
       "location": {
         "name": "Los Angeles, California",
@@ -90,13 +92,18 @@
       "contentType": "image/jpg",
       "tags": [
         {
-          "label": "church",
-          "confidence": 90
+          "label": "nature",
+          "confidence": 99
         },
         {
-          "label": "house of worship",
-          "confidence": 85
-        }
+          "label": "sky",
+          "confidence": 91
+        },
+        {
+          "label": "mountain",
+          "confidence": 64
+        },
+
       ],
       "location": {
         "name": "Tuscson, Arizona",
@@ -136,13 +143,10 @@
       "contentType": "image/jpg",
       "tags": [
         {
-          "label": "concert",
+          "label": "person",
           "confidence": 90
         },
-        {
-          "label": "music",
-          "confidence": 89
-        }
+
       ],
       "location": {
         "name": "Austin, Texas",
@@ -162,12 +166,13 @@
       "tags": [
         {
           "label": "flower",
-          "confidence": 90
+          "confidence": 99
         },
         {
-          "label": "nature",
-          "confidence": 89
-        }
+          "label": "garden",
+          "confidence": 50
+        },
+
       ],
       "location": {
         "name": "Marble Falls, Texas",
@@ -187,12 +192,13 @@
       "tags": [
         {
           "label": "flower",
-          "confidence": 90
+          "confidence": 93
         },
         {
-          "label": "nature",
-          "confidence": 89
-        }
+          "label": "tree",
+          "confidence": 75
+        },
+
       ],
       "location": {
         "name": "Marble Falls, Texas",
@@ -211,13 +217,22 @@
       "contentType": "image/jpg",
       "tags": [
         {
-          "label": "outdoors",
-          "confidence": 90
+          "label": "nature",
+          "confidence": 99
         },
         {
-          "label": "nature",
-          "confidence": 89
-        }
+          "label": "lake",
+          "confidence": 98
+        },
+        {
+          "label": "sky",
+          "confidence": 78
+        },
+        {
+          "label": "mountain",
+          "confidence": 64
+        },
+
       ],
       "location": {
         "name": "Austin, Texas",
@@ -236,17 +251,10 @@
       "contentType": "image/jpg",
       "tags": [
         {
-          "label": "person",
-          "confidence": 90
+          "label": "sunset",
+          "confidence": 37
         },
-        {
-          "label": "human",
-          "confidence": 89
-        },
-        {
-          "label": "body",
-          "confidence": 89
-        }
+
       ],
       "location": {
         "name": "Miami, Florida",
@@ -266,8 +274,13 @@
       "tags": [
         {
           "label": "road",
-          "confidence": 90
-        }
+          "confidence": 89
+        },
+        {
+          "label": "mountain",
+          "confidence": 50
+        },
+
       ],
       "location": {
         "name": "Austin, Texas",
