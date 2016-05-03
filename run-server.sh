@@ -19,7 +19,7 @@
 set -e
 cd "$(dirname "$0")"
 cd BluePic-Server
-kill `ps aux | grep -F '.build/debug/Server' | grep -v -F 'grep' | awk '{ print $2 }'`
+kill `ps aux | grep -F '.build/debug/Server' | grep -v -F 'grep' | awk '{ print $2 }'` || true
 if [[ "$1" = "xcode" ]]; then
 	echo 'Running Kitura-based server in the foreground (xcode)'
 	.build/debug/Server
