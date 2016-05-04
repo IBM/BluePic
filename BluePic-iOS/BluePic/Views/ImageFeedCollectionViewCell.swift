@@ -56,18 +56,18 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
      - parameter timeStamp:   Double?
      - parameter fileName:    String?
      */
-    func setupData(url : String?, image : UIImage?, displayName : String?, ownerName: String?, timeStamp: NSDate?, fileName : String?){
+    func setupData(url : String?, image : UIImage?, caption : String?, usersName: String?, timeStamp: NSDate?, fileName : String?){
      
         //set the image view's image
         self.setImageView(url, fileName: fileName)
 
         //set the captionLabel's text
-        captionLabel.text = displayName ?? ""
+        captionLabel.text = caption ?? ""
         
         //set the photographerNameLabel's text
         var ownerNameString = ""
-        if let owner = ownerName {
-            ownerNameString = NSLocalizedString("by", comment: "") + " \(owner)"
+        if let name = usersName {
+            ownerNameString = NSLocalizedString("by", comment: "") + " \(name)"
         }
         photographerNameLabel.text = ownerNameString
         

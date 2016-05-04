@@ -12,7 +12,7 @@ class Image: NSObject {
 
     
     var id : String?
-    var displayName : String?
+    var caption : String?
     var fileName : String?
     var timeStamp : NSDate?
     var url : String?
@@ -27,7 +27,7 @@ class Image: NSObject {
         //if let dict = Utils.convertResponseToDictionary(response){
             
             if let id = dict["_id"] as? String,
-                let displayName = dict["displayName"] as? String,
+                let caption = dict["caption"] as? String,
                 let fileName = dict["fileName"] as? String,
                 let url = dict["url"] as? String,
                 let timeStamp = dict["uploadedTs"] as? String,
@@ -35,17 +35,19 @@ class Image: NSObject {
                 let usersName = user["name"] as? String {
                 
                 self.id = id
-                self.displayName = displayName
+                self.caption = caption
                 self.fileName = fileName
                 self.url = url
                 self.usersName = usersName
                 
                 
-                if let width = dict["width"] as? CGFloat,
-                    let height = dict["height"] as? CGFloat{
+                if let width = dict["width"] as? String,
+                    let height = dict["height"] as? String,
+                    let widthNSNumber = NSNumberFormatter().numberFromString(width),
+                    let heightNSNumber = NSNumberFormatter().numberFromString(height) {
                     
-                    self.width = width
-                    self.height = height
+                    self.width = CGFloat(widthNSNumber)
+                    self.height = CGFloat(heightNSNumber)
 
                 }
                 
