@@ -67,6 +67,111 @@ class FacebookDataManager: NSObject {
         case Failure
     }
     
+    enum FacebookAuthenticationError {
+        case PlistNotConfigured
+        case AuthenticationHeaderNotFound
+        case FacebookUserIdNotFound
+        case FacebookuserIdentifyNotFound
+        
+    }
+    
+   
+    /**
+     Method to check if Facebook SDK is setup on native iOS side and all required keys have been added to plist
+     
+     - returns: true if configured, false if not
+     */
+    func isFacebookConfigured() -> Bool {
+        let facebookAppID = NSBundle.mainBundle().objectForInfoDictionaryKey("FacebookAppID") as? NSString
+        let facebookDisplayName = NSBundle.mainBundle().objectForInfoDictionaryKey("FacebookDisplayName") as? NSString
+        let urlTypes = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleURLTypes") as? NSArray
+        
+        let urlTypes0 = urlTypes!.firstObject as? NSDictionary
+        let urlSchemes = urlTypes0!["CFBundleURLSchemes"] as? NSArray
+        let facebookURLScheme = urlSchemes!.firstObject as? NSString
+        
+        if (facebookAppID == nil || facebookAppID!.isEqualToString("") || facebookAppID == "123456789") {
+            print("Authentication is not configured in Info.plist. You have to configure Info.plist with the same Authentication method configured on Bluemix such as Facebook")
+            return false
+        }
+        if (facebookDisplayName == nil || facebookDisplayName!.isEqualToString("")) {
+            print("Authentication is not configured in Info.plist. You have to configure Info.plist with the same Authentication method configured on Bluemix such as Facebook")
+            return false
+        }
+        
+        if (facebookURLScheme == nil || facebookURLScheme!.isEqualToString("") || facebookURLScheme!.isEqualToString("fb123456789") || !(facebookURLScheme!.hasPrefix("fb"))) {
+            print("Authentication is not configured in Info.plist. You have to configure Info.plist with the same Authentication method configured on Bluemix such as Facebook")
+            return false
+        }
+        
+        //success if made it past this point
+        
+        print("Facebook Auth configured, getting ready to show native FB Login:\nFacebookAppID \(facebookAppID!)\nFacebookDisplayName \(facebookDisplayName!)\nFacebookURLScheme \(facebookURLScheme!)")
+        return true;
+    }
+    
+    
+    
+    func loginWithFacebook(callback : ((facebookUserId : String?, facebookUserFullName : String?, error : FacebookAuthenticationError?) -> ())){
+        
+        if(isFacebookConfigured()){
+           authenticateFacebookUser(callback)
+     
+        }
+        
+    }
+    
+
+    private func authenticateFacebookUser(callback : ((facebookUserId : String?, facebookUserFullName : String?, error : FacebookAuthenticationError?) -> ())) {
+        
+        let authManager = BMSClient.sharedInstance.authorizationManager
+        authManager
+        authManager.obtainAuthorization(completionHandler: {(response: Response?, error: NSError?) in
+            let errorMsg = NSMutableString()
+            
+            //error
+            if let errorObject = error {
+                callback(facebookUserId: nil, facebookUserFullName: nil, error: FacebookAuthenticationError.AuthenticationHeaderNotFound)
+                errorMsg.appendString("Error obtaining Authentication Header.\nCheck Bundle Identifier and Bundle version string\n\n")
+                if let responseObject = response {
+                    if let responseString = responseObject.responseText {
+                        errorMsg.appendString(responseString)
+                    }
+                }
+                let userInfo = errorObject.userInfo
+                errorMsg.appendString(userInfo.description)
+            }
+                //no error
+            else {
+                if let identity = authManager.userIdentity {
+                    if let userId = identity.id  {
+                        if let fullName = identity.displayName {
+                            //success!
+                            callback(facebookUserId: userId, facebookUserFullName: fullName, error: nil)
+                        }
+                    }
+                    else {
+                        print("Valid Authentication Header and userIdentity, but id not found")
+                        callback(facebookUserId: nil, facebookUserFullName: nil, error: FacebookAuthenticationError.FacebookUserIdNotFound)
+                    }
+                    
+                }
+                else {
+                    print("Valid Authentication Header, but userIdentity not found. You have to configure one of the methods available in Advanced Mobile Service on Bluemix, such as Facebook")
+                    callback(facebookUserId: nil, facebookUserFullName: nil, error: FacebookAuthenticationError.FacebookuserIdentifyNotFound)
+                }
+
+            }
+            
+        })
+        
+    }
+
+}
+
+//Preivous stuff
+
+extension FacebookDataManager {
     
     /**
      Method to auth user using Facebook SDK
@@ -119,11 +224,11 @@ class FacebookDataManager: NSObject {
                 if let identity = authManager.userIdentity {
                     if let userID = identity.id  {
                         if let userName = identity.displayName {
-                        
+                            
                             //save username and id to shared instance of this class
                             self.fbUniqueUserID = userID as String
                             self.fbUserDisplayName = userName as String
-                        
+                            
                             //set user logged in
                             self.isLoggedIn = true
                             
@@ -132,7 +237,7 @@ class FacebookDataManager: NSObject {
                             NSUserDefaults.standardUserDefaults().setObject(userName, forKey: "user_name")
                             NSUserDefaults.standardUserDefaults().synchronize()
                             
-                        
+                            
                             print("Got facebook auth token for user \(userName) with id \(userID)")
                             
                             //self.checkIfUserExistsOnCloudantAndPushIfNeeded()
@@ -155,7 +260,7 @@ class FacebookDataManager: NSObject {
                 
             }
             
-            })
+        })
         
     }
     
@@ -171,9 +276,9 @@ class FacebookDataManager: NSObject {
                 callback( networkRequest: NetworkRequest.Failure)
             }
             
-  
+            
         })
-    
+        
         
     }
     
@@ -184,19 +289,19 @@ class FacebookDataManager: NSObject {
      - returns: true or false if valid or not
      */
     func checkIMFClient() -> Bool {
-//        let imfClient = IMFClient.sharedInstance()
-//        let route = imfClient.backendRoute
-//        let guid = imfClient.backendGUID
-//        
-//        if (route == nil || route.characters.count == 0) {
-//            print ("Invalid Route.\n Check applicationRoute in appdelegate")
-//            return false
-//        }
-//        
-//        if (guid == nil || guid.characters.count == 0) {
-//            print ("Invalid GUID.\n Check applicationId in appdelegate")
-//            return false
-//        }
+        //        let imfClient = IMFClient.sharedInstance()
+        //        let route = imfClient.backendRoute
+        //        let guid = imfClient.backendGUID
+        //
+        //        if (route == nil || route.characters.count == 0) {
+        //            print ("Invalid Route.\n Check applicationRoute in appdelegate")
+        //            return false
+        //        }
+        //
+        //        if (guid == nil || guid.characters.count == 0) {
+        //            print ("Invalid GUID.\n Check applicationId in appdelegate")
+        //            return false
+        //        }
         return true
         
     }
@@ -220,43 +325,43 @@ class FacebookDataManager: NSObject {
     }
     
     
-    /**
-     Method to check if Facebook SDK is setup on native iOS side and all required keys have been added to plist
-     
-     - returns: true if configured, false if not
-     */
-    func isFacebookConfigured() -> Bool {
-        let facebookAppID = NSBundle.mainBundle().objectForInfoDictionaryKey("FacebookAppID") as? NSString
-        let facebookDisplayName = NSBundle.mainBundle().objectForInfoDictionaryKey("FacebookDisplayName") as? NSString
-        let urlTypes = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleURLTypes") as? NSArray
-        
-        let urlTypes0 = urlTypes!.firstObject as? NSDictionary
-        let urlSchemes = urlTypes0!["CFBundleURLSchemes"] as? NSArray
-        let facebookURLScheme = urlSchemes!.firstObject as? NSString
-        
-        if (facebookAppID == nil || facebookAppID!.isEqualToString("") || facebookAppID == "123456789") {
-            return false
-        }
-        if (facebookDisplayName == nil || facebookDisplayName!.isEqualToString("")) {
-            return false
-        }
-        
-        if (facebookURLScheme == nil || facebookURLScheme!.isEqualToString("") || facebookURLScheme!.isEqualToString("fb123456789") || !(facebookURLScheme!.hasPrefix("fb"))) {
-            return false
-        }
-        
-        //success if made it past this point
-        
-        
-        
-        //save app ID and app display name to this class
-        self.fbAppID = facebookAppID! as String
-        self.fbAppDisplayName = facebookDisplayName! as String
-        
-
-        print("Facebook Auth configured, getting ready to show native FB Login:\nFacebookAppID \(facebookAppID!)\nFacebookDisplayName \(facebookDisplayName!)\nFacebookURLScheme \(facebookURLScheme!)")
-        return true;
-    }
+//    /**
+//     Method to check if Facebook SDK is setup on native iOS side and all required keys have been added to plist
+//     
+//     - returns: true if configured, false if not
+//     */
+//    func isFacebookConfigured() -> Bool {
+//        let facebookAppID = NSBundle.mainBundle().objectForInfoDictionaryKey("FacebookAppID") as? NSString
+//        let facebookDisplayName = NSBundle.mainBundle().objectForInfoDictionaryKey("FacebookDisplayName") as? NSString
+//        let urlTypes = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleURLTypes") as? NSArray
+//        
+//        let urlTypes0 = urlTypes!.firstObject as? NSDictionary
+//        let urlSchemes = urlTypes0!["CFBundleURLSchemes"] as? NSArray
+//        let facebookURLScheme = urlSchemes!.firstObject as? NSString
+//        
+//        if (facebookAppID == nil || facebookAppID!.isEqualToString("") || facebookAppID == "123456789") {
+//            return false
+//        }
+//        if (facebookDisplayName == nil || facebookDisplayName!.isEqualToString("")) {
+//            return false
+//        }
+//        
+//        if (facebookURLScheme == nil || facebookURLScheme!.isEqualToString("") || facebookURLScheme!.isEqualToString("fb123456789") || !(facebookURLScheme!.hasPrefix("fb"))) {
+//            return false
+//        }
+//        
+//        //success if made it past this point
+//        
+//        
+//        
+//        //save app ID and app display name to this class
+//        self.fbAppID = facebookAppID! as String
+//        self.fbAppDisplayName = facebookDisplayName! as String
+//        
+//        
+//        print("Facebook Auth configured, getting ready to show native FB Login:\nFacebookAppID \(facebookAppID!)\nFacebookDisplayName \(facebookDisplayName!)\nFacebookURLScheme \(facebookURLScheme!)")
+//        return true;
+//    }
     
     
     
@@ -267,24 +372,24 @@ class FacebookDataManager: NSObject {
      */
     func tryToShowLoginScreen() {
         //authenticate with object storage every time opening app, try to show facebook login once completed
-//        if (!ObjectStorageDataManager.SharedInstance.objectStorageClient.isAuthenticated()) { //try to authenticate if not authenticated
-//            print("Attempting to authenticate with Object storage...")
-//            ObjectStorageDataManager.SharedInstance.objectStorageClient.authenticate({() in
-//                    print("success authenticating with object storage!")
-//                    self.showLoginIfUserNotAuthenticated()
-//                }, onFailure: {(error) in
-//                    print("error authenticating with object storage: \(error)")
-//                    DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.ObjectStorageAuthError)
-//            })
-//        }
-//        else { //if already authenticated with object storage, just try to show facebook login
-//            print("Object storage already authenticated somehow!")
-//            self.showLoginIfUserNotAuthenticated()
-//            
-//        }
+        //        if (!ObjectStorageDataManager.SharedInstance.objectStorageClient.isAuthenticated()) { //try to authenticate if not authenticated
+        //            print("Attempting to authenticate with Object storage...")
+        //            ObjectStorageDataManager.SharedInstance.objectStorageClient.authenticate({() in
+        //                    print("success authenticating with object storage!")
+        //                    self.showLoginIfUserNotAuthenticated()
+        //                }, onFailure: {(error) in
+        //                    print("error authenticating with object storage: \(error)")
+        //                    DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.ObjectStorageAuthError)
+        //            })
+        //        }
+        //        else { //if already authenticated with object storage, just try to show facebook login
+        //            print("Object storage already authenticated somehow!")
+        //            self.showLoginIfUserNotAuthenticated()
+        //
+        //        }
         
         self.showLoginIfUserNotAuthenticated()
-   
+        
     }
     
     
@@ -326,7 +431,7 @@ class FacebookDataManager: NSObject {
         
     }
     
-
+    
     
     
     /**
@@ -392,6 +497,9 @@ class FacebookDataManager: NSObject {
             return ""
         }
     }
+    
+    
+    
     
     
     

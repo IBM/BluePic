@@ -32,7 +32,7 @@ class TabBarViewController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        viewModel = TabBarViewModel(passDataNotificationToTabBarVCCallback: handleDataNotification)
+        viewModel = TabBarViewModel(passDataNotificationToTabBarVCCallback: handleTabBarNotifications)
         
         self.tabBar.tintColor! = UIColor.whiteColor()
         
@@ -85,6 +85,18 @@ class TabBarViewController: UITabBarController {
     }
     
     
+    func handleTabBarNotifications(tabBarNotification : TabBarNotification){
+ 
+        if(tabBarNotification == TabBarNotification.ShowLoginVC) {
+            presentLoginVC()
+        }
+        else if(tabBarNotification == TabBarNotification.HideLoginVC){
+             hideBackgroundImage()
+        }
+  
+    }
+    
+
     /**
      Method handles DataManagerNotifications passed to the view controller from its viewModel
      
