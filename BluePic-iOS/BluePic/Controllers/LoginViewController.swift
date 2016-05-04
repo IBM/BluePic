@@ -55,11 +55,23 @@ class LoginViewController: UIViewController {
      Method to setup this VC's viewModel and provide it a callback method to execute
      */
     func setupViewModel() {
-        
-        viewModel = LoginViewModel(fbAuthCallback: fbAuthReturned)
-        
+        viewModel = LoginViewModel(notifyLoginVC: handleLoginViewModelNotifications)
     }
     
+    func handleLoginViewModelNotifications(loginViewModelNotification : LoginViewModelNotification){
+        
+        if(loginViewModelNotification == LoginViewModelNotification.LoginSuccess){
+            dismissViewControllerAnimated(true, completion: nil)
+            
+        }
+        else if(loginViewModelNotification == LoginViewModelNotification.LoginFailure){
+            //show error message
+            welcomeLabel.text = "Oops, an error occurred! Try again."
+            facebookButton.hidden = false
+            signInLaterButton.hidden = false
+        }
+        
+    }
     
     /**
      Method to save to user defaults when user has pressed sign in later
@@ -83,29 +95,6 @@ class LoginViewController: UIViewController {
         viewModel.authenticateWithFacebook()
         
     }
-    
-    
-    /**
-     Callback method called when facebook authentication + creating object storage container returns
-     
-     - parameter successful: value returned, either successful or not
-     */
-    func fbAuthReturned(successful: Bool!) {
-        stopLoading()
-        
-        if !successful {
-            //show error message
-            welcomeLabel.text = "Oops, an error occurred! Try again."
-            facebookButton.hidden = false
-            signInLaterButton.hidden = false
-            
-        }
-        else {
-            //dismiss login vc
-            dismissViewControllerAnimated(true, completion: nil)
-        }
-    }
-    
     
     /**
      Method to start the loading animation and setup UI for loading

@@ -30,7 +30,7 @@ class TabBarViewModel: NSObject {
     var hasTriedToPresentLoginThisAppLaunch = false
     
     //callback that allows the tab bar view model to send DataManagerNotifications to the tab bar VC
-    var passDataNotificationToTabBarVCCallback : ((tabBarNotification: TabBarNotification)->())!
+    var passTabBarNotificationToTabBarVCCallback : ((tabBarNotification: TabBarNotification)->())!
     
     //state variable that keeps track of if we've successfully pulled data yet, used to help make sure we are showing the loading animation at the right time
     var hasSuccessFullyPulled = false
@@ -43,10 +43,10 @@ class TabBarViewModel: NSObject {
      
      - returns:
      */
-    init(passDataNotificationToTabBarVCCallback : ((tabBarNotification: TabBarNotification)->())){
+    init(passTabBarNotificationToTabBarVCCallback : ((tabBarNotification: TabBarNotification)->())){
         super.init()
         
-        self.passDataNotificationToTabBarVCCallback = passDataNotificationToTabBarVCCallback
+        self.passTabBarNotificationToTabBarVCCallback = passTabBarNotificationToTabBarVCCallback
         
         DataManagerCalbackCoordinator.SharedInstance.addCallback(handleDataManagerNotifications)
         
@@ -68,11 +68,11 @@ class TabBarViewModel: NSObject {
         
         if(LoginDataManager.SharedInstance.isUserAuthenticatedOrPressedSignInLater()){
             
-            passDataNotificationToTabBarVCCallback(tabBarNotification: TabBarNotification.HideLoginVC)
+            passTabBarNotificationToTabBarVCCallback(tabBarNotification: TabBarNotification.HideLoginVC)
         
         }
         else{
-            passDataNotificationToTabBarVCCallback(tabBarNotification: TabBarNotification.ShowLoginVC)
+            passTabBarNotificationToTabBarVCCallback(tabBarNotification: TabBarNotification.ShowLoginVC)
         }
 
         
@@ -133,7 +133,7 @@ class TabBarViewModel: NSObject {
         dispatch_async(dispatch_get_main_queue()) {
             print("Retrying to pull Cloudant data")
             
-            FacebookDataManager.SharedInstance.tryToShowLoginScreen()
+            //FacebookDataManager.SharedInstance.tryToShowLoginScreen()
             
         }
     }
@@ -146,7 +146,7 @@ class TabBarViewModel: NSObject {
         dispatch_async(dispatch_get_main_queue()) {
             print("Retrying to authenticate with Object Storage")
             
-            FacebookDataManager.SharedInstance.tryToShowLoginScreen()
+            //FacebookDataManager.SharedInstance.tryToShowLoginScreen()
             
         }
     }

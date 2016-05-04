@@ -17,12 +17,14 @@
 
 import UIKit
 
+enum LoginViewModelNotification {
+    case LoginSuccess
+    case LoginFailure
+}
+
 class LoginViewModel: NSObject {
     
-    
-    //callback used to inform the LoginViewController whether facebook authentication was a success or not
-    var fbAuthCallback: ((Bool!)->())!
-    
+    var notifyLoginVC : ((loginViewModelNotification : LoginViewModelNotification) -> ())!
     
     /**
      Method to initialize view model with the appropriate callback
@@ -31,18 +33,15 @@ class LoginViewModel: NSObject {
      
      - returns: an instance of this view model
      */
-    init(fbAuthCallback: ((Bool!)->())) {
+    init(notifyLoginVC: ((loginViewModelNotification : LoginViewModelNotification) -> ())) {
         super.init()
         
-        self.fbAuthCallback = fbAuthCallback
+        self.notifyLoginVC = notifyLoginVC
         
     }
     
     func loginLater(){
-        
         LoginDataManager.SharedInstance.loginLater()
-        
-        
     }
     
     
@@ -50,47 +49,17 @@ class LoginViewModel: NSObject {
      Method to attempt authenticating with Facebook and call the callback if failure, otherwise will continue to object storage container creation
      */
     func authenticateWithFacebook() {
-        FacebookDataManager.SharedInstance.authenticateUser({(response: FacebookDataManager.NetworkRequest) in
-            if (response == FacebookDataManager.NetworkRequest.Success) {
-                print("successfully logged into facebook with keys:")
-                if let userID = FacebookDataManager.SharedInstance.fbUniqueUserID {
-                    if let userDisplayName = FacebookDataManager.SharedInstance.fbUserDisplayName {
-                        print("\(userID)")
-                        print("\(userDisplayName)")
-                        //save that user has not pressed login later
-                        NSUserDefaults.standardUserDefaults().setBool(false, forKey: "hasPressedLater")
-                        NSUserDefaults.standardUserDefaults().synchronize()
-                        
-                        //add container once to object storage
-                        //self.createObjectStorageContainer(userID)
-                        self.fbAuthCallback(true)
-                    }
-                }
+        
+        LoginDataManager.SharedInstance.login({ success in
+        
+            if(success){
+                self.notifyLoginVC(loginViewModelNotification: LoginViewModelNotification.LoginSuccess)
             }
-            else {
-                print("failure logging into facebook")
-                self.fbAuthCallback(false)
-
+            else{
+                self.notifyLoginVC(loginViewModelNotification: LoginViewModelNotification.LoginFailure)
             }
+        
         })
     }
-    
-    
-    /**
-     Method to attempt creating an object storage container and call callback upon completion (success or failure)
-     
-     - parameter userID: user id to be used for container creation
-     */
-    func createObjectStorageContainer(userID: String!) {
-        print("Creating object storage container...")
-        ObjectStorageDataManager.SharedInstance.objectStorageClient.createContainer(userID, onSuccess: {(name) in
-            print("Successfully created object storage container with name \(name)") //success closure
-            self.fbAuthCallback(true)
-            }, onFailure: {(error) in //failure closure
-                print("Facebook auth successful, but error creating Object Storage container: \(error)")
-                self.fbAuthCallback(false)
-        })
-    }
-    
 
 }

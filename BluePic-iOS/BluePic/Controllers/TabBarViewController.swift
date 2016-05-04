@@ -32,7 +32,7 @@ class TabBarViewController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        viewModel = TabBarViewModel(passDataNotificationToTabBarVCCallback: handleTabBarNotifications)
+        viewModel = TabBarViewModel(passTabBarNotificationToTabBarVCCallback: handleTabBarNotifications)
         
         self.tabBar.tintColor! = UIColor.whiteColor()
         

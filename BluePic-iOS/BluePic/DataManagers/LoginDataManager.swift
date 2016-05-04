@@ -21,12 +21,40 @@ class LoginDataManager: NSObject {
     }()
     
     
-    
-    
-    
-    func login(){
-        
 
+    func login(callback : ((success : Bool)->())){
+        
+        ///Check if user is already authenticated from previous sesssions, aka check nsuserdefaults for user info
+        if(isUserAlreadyAuthenticated()){
+            callback(success: true)
+        }
+            //user not already authenticated from previous sessions
+        else{
+            
+            //login with facebook
+            FacebookDataManager.SharedInstance.loginWithFacebook({ (facebookUserId: String?, facebookUserFullName : String?, error: FacebookAuthenticationError?) in
+                
+                //facebook authentication failure
+                if(error != nil){
+                    callback(success: false)
+                }
+                //facebook authentication success
+                else{
+                    
+                    //try to register user with backend if the user doesn't already exist
+                    //We know facebookUserId and facebookUserFullName aren't nil because there wasn't an error
+                    BluemixDataManager.SharedInstance.checkIfUserAlreadyExistsIfNotCreateNewUser(facebookUserId!, name: facebookUserFullName!, callback: { success in
+                        //return the result of this which will determine whether login was a success or not
+                        
+                        CurrentUser.facebookUserId = facebookUserId!
+                        CurrentUser.fullName = facebookUserFullName!
+                        callback(success: success)
+                    })
+                }
+
+            })
+            
+        }
     }
     
     
@@ -56,20 +84,5 @@ class LoginDataManager: NSObject {
         }
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+ 
 }
