@@ -81,6 +81,8 @@ func getImageJSON(fromRequest request: RouterRequest) throws -> JSON {
   let lat = request.params["latitude"],
   let long = request.params["longitude"],
   let location = request.params["location"],
+  let width = request.params["width"],
+  let height = request.params["height"],
   let latitude = Float(lat),
   let longitude = Float(long) else {
     throw ProcessingError.Image("Invalid image document!")
@@ -104,7 +106,9 @@ func getImageJSON(fromRequest request: RouterRequest) throws -> JSON {
   #endif
 
   let whereabouts: JSONDictionary = ["latitude": latitude, "longitude": longitude, "name": locationName]
-  let imageDocument: JSONDictionary = ["location": whereabouts, "contentType": contentType, "fileName": fileName, "userId": userId, "displayName": imageName, "uploadedTs": uploadedTs, "type": "image"]
+  let imageDocument: JSONDictionary = ["location": whereabouts, "contentType": contentType,
+  "fileName": fileName, "userId": userId, "displayName": imageName, "uploadedTs": uploadedTs,
+  "width": width, "height": height, "type": "image"]
   return JSON(imageDocument)
 }
 
@@ -113,12 +117,6 @@ func generateInternalError() -> NSError {
 }
 
 // func generateUrl(forImageId imageId: String, forAttachmentName attachmentName: String) -> String {
-//   //let url = "http://\(database.connProperties.host):\(database.connProperties.port)/\(database.name)/\(imageId)/\(attachmentName)"
-//   // let imageURL = "\(publicURL)/\(containerName)/\(imageName)"
-//   let url = "\(config.appEnv.url)/images/\(imageId)/\(attachmentName)"
-//   return url
-// }
-
 func generateUrl(forContainer containerName: String, forImage imageName: String) -> String {
   //let url = "http://\(database.connProperties.host):\(database.connProperties.port)/\(database.name)/\(imageId)/\(attachmentName)"
   //let url = "\(config.appEnv.url)/images/\(imageId)/\(attachmentName)"
@@ -198,9 +196,9 @@ func store(image: NSData, withName name: String, inContainer containerName: Stri
 
 private func massageImageRecord(containerName: String, record: inout JSON) {
   //let id = record["_id"].stringValue
+  //record["length"].int = record["_attachments"][fileName]["length"].int
   let fileName = record["fileName"].stringValue
   record["url"].stringValue = generateUrl(forContainer: containerName, forImage: fileName)
-  record["length"].int = record["_attachments"][fileName]["length"].int
   record.dictionaryObject?.removeValue(forKey: "userId")
   record.dictionaryObject?.removeValue(forKey: "_attachments")
 }
