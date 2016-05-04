@@ -317,7 +317,7 @@ class BluemixDataManager: NSObject {
             } else {
                 
                  var dict = Utils.convertResponseToDictionary(response)
-                print(dict)
+                //print(dict)
                 var user = [String : AnyObject]()
                 
                 user["name"] = "Test User"
@@ -328,7 +328,7 @@ class BluemixDataManager: NSObject {
                 let image = Image(dict!)
                 
                 
-                print ("Success uploading image :: \(response?.responseText)")
+                //print ("Success uploading image :: \(response?.responseText)")
             }
         })
         
