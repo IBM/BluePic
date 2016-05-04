@@ -17,6 +17,7 @@
 		1B2DC2541C1F360D00B4E77B /* EmptyFeedCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1B2DC2521C1F360D00B4E77B /* EmptyFeedCollectionViewCell.xib */; };
 		1B3BA0761C0F5FBD0064C850 /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = 1B3BA0751C0F5FBD0064C850 /* .gitkeep */; };
 		1B3BA0781C0F62850064C850 /* Picture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3BA0771C0F62850064C850 /* Picture.swift */; };
+		1B40BF7C1CDA79080097F435 /* CurrentUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B40BF7B1CDA79080097F435 /* CurrentUser.swift */; };
 		1B4305971CD3C94C00474AB5 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B4305961CD3C94C00474AB5 /* User.swift */; };
 		1B4305991CD3EA4400474AB5 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B4305981CD3EA4400474AB5 /* Image.swift */; };
 		1B4357011CD15CF4008262A1 /* BluemixDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B4357001CD15CF4008262A1 /* BluemixDataManager.swift */; };
@@ -96,6 +97,7 @@
 		1B2DC2521C1F360D00B4E77B /* EmptyFeedCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EmptyFeedCollectionViewCell.xib; sourceTree = "<group>"; };
 		1B3BA0751C0F5FBD0064C850 /* .gitkeep */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		1B3BA0771C0F62850064C850 /* Picture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Picture.swift; sourceTree = "<group>"; };
+		1B40BF7B1CDA79080097F435 /* CurrentUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentUser.swift; sourceTree = "<group>"; };
 		1B4305961CD3C94C00474AB5 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		1B4305981CD3EA4400474AB5 /* Image.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		1B4357001CD15CF4008262A1 /* BluemixDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluemixDataManager.swift; sourceTree = "<group>"; };
@@ -176,6 +178,7 @@
 				1B3BA0771C0F62850064C850 /* Picture.swift */,
 				1B4305961CD3C94C00474AB5 /* User.swift */,
 				1B4305981CD3EA4400474AB5 /* Image.swift */,
+				1B40BF7B1CDA79080097F435 /* CurrentUser.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -573,6 +576,7 @@
 				3435C7D51C04110C004923BD /* FeedViewController.swift in Sources */,
 				1B057E091C17C03400AC21EE /* ProfileHeaderCollectionReusableView.swift in Sources */,
 				1B5555BE1C1616B000B3086E /* TabBarViewModel.swift in Sources */,
+				1B40BF7C1CDA79080097F435 /* CurrentUser.swift in Sources */,
 				34C809551BFD0F2400C48004 /* FacebookDataManager.swift in Sources */,
 				347AD2221C18F98600C3B473 /* LoginViewModel.swift in Sources */,
 				1B6132161C270DD300B57231 /* PictureUploadQueueImageFeedCollectionViewCell.swift in Sources */,
