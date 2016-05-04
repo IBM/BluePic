@@ -3,7 +3,7 @@
     {
       "_id": "2000",
       "fileName": "rush.jpg",
-      "displayName": "Rush",
+      "caption": "Rush",
       "contentType": "image/jpg",
       "width": 90,
       "height": 90,
@@ -38,7 +38,7 @@
     {
       "_id": "2001",
       "fileName": "bridge.jpg",
-      "displayName": "Bridge",
+      "caption": "Bridge",
       "contentType": "image/jpg",
       "width": 90,
       "height": 90,
@@ -69,7 +69,7 @@
     {
       "_id": "2002",
       "fileName": "car.jpg",
-      "displayName": "Car",
+      "caption": "Car",
       "contentType": "image/jpg",
       "width": 90,
       "height": 90,
@@ -92,7 +92,7 @@
     {
       "_id": "2003",
       "fileName": "church.jpg",
-      "displayName": "Church",
+      "caption": "Church",
       "contentType": "image/jpg",
       "width": 90,
       "height": 90,
@@ -123,7 +123,7 @@
     {
       "_id": "2004",
       "fileName": "city.jpg",
-      "displayName": "City",
+      "caption": "City",
       "contentType": "image/jpg",
       "width": 90,
       "height": 90,
@@ -146,7 +146,7 @@
     {
       "_id": "2005",
       "fileName": "concert.jpg",
-      "displayName": "Concert",
+      "caption": "Concert",
       "contentType": "image/jpg",
       "width": 90,
       "height": 90,
@@ -169,7 +169,7 @@
     {
       "_id": "2006",
       "fileName": "flower_1.jpg",
-      "displayName": "Flower",
+      "caption": "Flower",
       "contentType": "image/jpg",
       "width": 90,
       "height": 90,
@@ -196,7 +196,7 @@
     {
       "_id": "2007",
       "fileName": "flower_2.jpg",
-      "displayName": "Flower",
+      "caption": "Flower",
       "contentType": "image/jpg",
       "width": 90,
       "height": 90,
@@ -223,7 +223,7 @@
     {
       "_id": "2008",
       "fileName": "nature.jpg",
-      "displayName": "Nature",
+      "caption": "Nature",
       "contentType": "image/jpg",
       "width": 90,
       "height": 90,
@@ -258,7 +258,7 @@
     {
       "_id": "2009",
       "fileName": "person.jpg",
-      "displayName": "Person",
+      "caption": "Person",
       "contentType": "image/jpg",
       "width": 90,
       "height": 90,
@@ -281,7 +281,7 @@
     {
       "_id": "2010",
       "fileName": "road.jpg",
-      "displayName": "Road",
+      "caption": "Road",
       "contentType": "image/jpg",
       "width": 90,
       "height": 90,

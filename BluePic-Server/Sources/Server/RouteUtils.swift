@@ -75,7 +75,7 @@ func parseUsers(document: JSON) throws -> JSON {
 }
 
 func getImageJSON(fromRequest request: RouterRequest) throws -> JSON {
-  guard let displayName = request.params["displayName"],
+  guard let caption = request.params["caption"],
   let fileName = request.params["fileName"],
   let userId = request.params["userId"],
   let lat = request.params["latitude"],
@@ -96,18 +96,18 @@ func getImageJSON(fromRequest request: RouterRequest) throws -> JSON {
   #if os(Linux)
   let dateStr = NSDate().descriptionWithLocale(nil).bridge()
   let uploadedTs = dateStr.substringToIndex(10) + "T" + dateStr.substringWithRange(NSMakeRange(11, 8))
-  let imageName = displayName.stringByReplacingOccurrencesOfString("%20", withString: " ")
+  let imageName = caption.stringByReplacingOccurrencesOfString("%20", withString: " ")
   let locationName = location.stringByReplacingOccurrencesOfString("%20", withString: " ")
   #else
   let dateStr = NSDate().description.bridge()
   let uploadedTs = dateStr.substring(to: 10) + "T" + dateStr.substring(with:NSMakeRange(11, 8))
-  let imageName = displayName.replacingOccurrences(of: "%20", with: " ")
+  let imageName = caption.replacingOccurrences(of: "%20", with: " ")
   let locationName = location.replacingOccurrences(of: "%20", with: " ")
   #endif
 
   let whereabouts: JSONDictionary = ["latitude": latitude, "longitude": longitude, "name": locationName]
   let imageDocument: JSONDictionary = ["location": whereabouts, "contentType": contentType,
-  "fileName": fileName, "userId": userId, "displayName": imageName, "uploadedTs": uploadedTs,
+  "fileName": fileName, "userId": userId, "caption": imageName, "uploadedTs": uploadedTs,
   "width": width, "height": height, "type": "image"]
   return JSON(imageDocument)
 }

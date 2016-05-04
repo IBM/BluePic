@@ -111,7 +111,7 @@ func defineRoutes() {
   }
 
   // Upload a new picture for a given user
-  router.post("/users/:userId/images/:fileName/:displayName/:width/:height/:latitude/:longitude/:location") { request, response, next in
+  router.post("/users/:userId/images/:fileName/:caption/:width/:height/:latitude/:longitude/:location") { request, response, next in
     do {
       // As of now, we don't have a multi-form request parser...
       // Because of this we are using the REST endpoint definition as the mechanism
