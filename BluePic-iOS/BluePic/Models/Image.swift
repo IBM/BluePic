@@ -40,6 +40,15 @@ class Image: NSObject {
                 self.url = url
                 self.usersName = usersName
                 
+                
+                if let width = dict["width"] as? CGFloat,
+                    let height = dict["height"] as? CGFloat{
+                    
+                    self.width = width
+                    self.height = height
+
+                }
+                
                 //set timeStamp
                 let dateFormatter = NSDateFormatter()
                 dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSZ"
