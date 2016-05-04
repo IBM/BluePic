@@ -121,7 +121,7 @@ func defineRoutes() {
       Log.verbose("The following is the imageJSON document generated: \(imageJSON)")
       let image = try BodyParser.readBodyData(with: request)
       database.create(imageJSON) { (id, revision, doc, error) in
-        guard let id = id where error == nil else {
+        guard let id = id, revision = revision where error == nil else {
           response.error = generateInternalError()
           next()
           return
@@ -132,8 +132,8 @@ func defineRoutes() {
           if success {
             // Update JSON document with url, _id, and _rev
             imageJSON["url"].stringValue = generateUrl(forContainer: imageJSON["userId"].stringValue, forImage: imageJSON["fileName"].stringValue)
-            //imageDocument["_id"] = id
-            //imageDocument["_rev"] = revision
+            imageJSON["_id"].stringValue = id
+            imageJSON["_rev"].stringValue = revision
             process(image: image, withImageId: id, withUserId: imageJSON["userId"].stringValue)
             // Return user document back to caller
             response.status(HttpStatusCode.OK).send(json: imageJSON)
