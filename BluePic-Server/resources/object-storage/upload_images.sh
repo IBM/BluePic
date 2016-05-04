@@ -22,6 +22,6 @@ set -e
 imagesFolder=`dirname $( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )`/images
 
 # Upload images via Kitura-based server
-curl -v --data-binary @$imagesFolder/bridge.jpg -X POST http://localhost:8090/users/1002/images/bridge.jpg/Bridge/34.2/80.5/Austin,%20Texas
-curl -v --data-binary @$imagesFolder/car.jpg -X POST http://localhost:8090/users/1002/images/car.jpg/Car/50.2/90.5/Tuscon,%20Arizona
-curl -v --data-binary @$imagesFolder/yosemite.png -X POST http://localhost:8090/users/1002/images/yosemite.png/Yosemite%20Hiking/37.864851/119.538523/Mariposa,%20California
+curl -v --data-binary @$imagesFolder/bridge.jpg -X POST http://localhost:8090/users/1003/images/bridge.jpg/Bridge/100/100/34.2/80.5/Austin,%20Texas
+curl -v --data-binary @$imagesFolder/car.jpg -X POST http://localhost:8090/users/1003/images/car.jpg/Car/90/90/50.2/90.5/Tuscon,%20Arizona
+curl -v --data-binary @$imagesFolder/yosemite.png -X POST http://localhost:8090/users/1003/images/yosemite.png/Yosemite%20Hiking/80/80/37.864851/119.538523/Mariposa,%20California

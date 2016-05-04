@@ -111,42 +111,49 @@ func defineRoutes() {
   }
 
   // Upload a new picture for a given user
-  router.post("/users/:userId/images/:fileName/:displayName/:latitude/:longitude/:location") { request, response, next in
+  router.post("/users/:userId/images/:fileName/:displayName/:width/:height/:latitude/:longitude/:location") { request, response, next in
     do {
       // As of now, we don't have a multi-form request parser...
       // Because of this we are using the REST endpoint definition as the mechanism
-      // to send the metadata about the image, while the body of the request only
+      // to send the image metadata, while the body of the request only
       // contains the binary data for the image. I know, yuck...
       var imageJSON = try getImageJSON(fromRequest: request)
-      Log.verbose("The following is the imageJSON document generated: \(imageJSON)")
-      let image = try BodyParser.readBodyData(with: request)
-      database.create(imageJSON) { (id, revision, doc, error) in
-        guard let id = id, revision = revision where error == nil else {
-          response.error = generateInternalError()
-          next()
-          return
-        }
+      //Log.verbose("The following is the imageJSON document generated: \(imageJSON)")
 
-        // Create closure
-        let completionHandler = { (success: Bool) -> Void in
-          if success {
-            // Update JSON document with url, _id, and _rev
+      // Get image binary from request body
+      let image = try BodyParser.readBodyData(with: request)
+
+      // Create closure
+      let completionHandler = { (success: Bool) -> Void in
+        if success {
+          // Add image record to database
+          database.create(imageJSON) { (id, revision, doc, error) in
+            guard let id = id, revision = revision where error == nil else {
+              response.error = generateInternalError()
+              next()
+              return
+            }
+
+            // Contine processing of request (async request for OpenWhisk)
+            process(image: image, withImageId: id, withUserId: imageJSON["userId"].stringValue)
+
+            // Return image document to caller
+            // Update JSON image document with url, _id, and _rev
             imageJSON["url"].stringValue = generateUrl(forContainer: imageJSON["userId"].stringValue, forImage: imageJSON["fileName"].stringValue)
             imageJSON["_id"].stringValue = id
             imageJSON["_rev"].stringValue = revision
-            process(image: image, withImageId: id, withUserId: imageJSON["userId"].stringValue)
-            // Return user document back to caller
             response.status(HttpStatusCode.OK).send(json: imageJSON)
-          } else {
-            response.error = generateInternalError()
           }
-          next()
+        } else {
+          response.error = generateInternalError()
         }
-        // Create container for user
-        store(image: image, withName: imageJSON["fileName"].stringValue, inContainer: imageJSON["userId"].stringValue, completionHandler: completionHandler)
+        next()
       }
+
+      // Create container for user before creating image record in database
+      store(image: image, withName: imageJSON["fileName"].stringValue, inContainer: imageJSON["userId"].stringValue, completionHandler: completionHandler)
     } catch {
-      Log.error("Failed to send response to client.")
+      Log.error("Failed to add image record.")
       response.error = generateInternalError()
       next()
     }
@@ -199,33 +206,38 @@ func defineRoutes() {
         }
       }
 
-      // Persist user document
-      database.create(userJson) { (id, revision, document, error) in
-        if let document = document where error == nil {
-          // Add revision number response document
-          userJson["_rev"] = document["rev"]
-          // Create closure
-          let completionHandler = { (success: Bool) -> Void in
+      // Create completion handler closure
+      let completionHandler = { (success: Bool) -> Void in
+        if success {
+          // Persist user document to database
+          database.create(userJson) { (id, revision, document, error) in
             do {
-              if success {
+              if let document = document where error == nil {
+                // Add revision number response document
+                userJson["_rev"] = document["rev"]
                 // Return user document back to caller
                 try response.status(HttpStatusCode.OK).send(json: userJson).end()
+                next()
               } else {
-                response.error = generateInternalError()
+                Log.error("Failed to add user to the system of records.")
+                response.error = error ?? generateInternalError()
+                next()
               }
             } catch {
-              Log.error("Failed to send response to client.")
+              Log.error("Failed to add user to the system of records.")
               response.error = generateInternalError()
+              next()
             }
-            next()
           }
-          // Create container for user
-          createContainer(withName: userId, completionHandler: completionHandler)
         } else {
-          response.error = error ?? generateInternalError()
+          Log.error("Failed to add user to the system of records.")
+          response.error = generateInternalError()
           next()
         }
       }
+
+      // Create container for user before adding record to database
+      createContainer(withName: userId, completionHandler: completionHandler)
     } catch let error {
       Log.error("Failed to create new user document.")
       Log.error("Error domain: \(error._domain); error code: \(error._code).")
