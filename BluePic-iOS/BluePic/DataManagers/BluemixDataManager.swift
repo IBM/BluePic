@@ -285,10 +285,10 @@ class BluemixDataManager: NSObject {
         })
     }
     
-    //users/:userId/images/:fileName/:displayName/:latitude/:longitude/:city - POST
-    func postNewImage(userId : String, fileName : String, displayName : String, latitude : String, longitude : String, city : String,  image: NSData){
+    //users/:userId/images/:fileName/:displayName/:width/:height/:latitude/:longitude/:location - POST
+    func postNewImage(userId : String, fileName : String, displayName : String, width : CGFloat, height : CGFloat, latitude : String, longitude : String, city : String,  image: NSData){
         
-        let tempURL = getBluemixBaseRequestURL() + "/" + kUsersEndPoint + "/" + userId + "/" + kImagesEndPoint + "/" + fileName + "/" + displayName + "/" + latitude + "/" + longitude + "/" + city
+        let tempURL = getBluemixBaseRequestURL() + "/" + kUsersEndPoint + "/" + userId + "/" + kImagesEndPoint + "/" + fileName + "/" + displayName + "/" + "\(width)" + "/" + "\(height)" + "/" + latitude + "/" + longitude + "/" + city
         
         let requestURL = tempURL.stringByAddingPercentEncodingWithAllowedCharacters( NSCharacterSet.URLQueryAllowedCharacterSet())!
 
