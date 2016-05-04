@@ -107,7 +107,7 @@ class ProfileViewModel: NSObject {
      */
     func getPictureObjects(){
         
-        BluemixDataManager.SharedInstance.getImagesByUserId(FacebookDataManager.SharedInstance.fbUniqueUserID!, usersName: FacebookDataManager.SharedInstance.fbUserDisplayName!, result: { images in
+        BluemixDataManager.SharedInstance.getImagesByUserId(CurrentUser.facebookUserId!, usersName: CurrentUser.fullName!, result: { images in
             
             
             if(images != nil){
@@ -271,7 +271,7 @@ class ProfileViewModel: NSObject {
         
         header = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "ProfileHeaderCollectionReusableView", forIndexPath: indexPath) as! ProfileHeaderCollectionReusableView
         
-        header.setupData(FacebookDataManager.SharedInstance.fbUserDisplayName, numberOfShots: imageDataArray.count, profilePictureURL : FacebookDataManager.SharedInstance.getUserFacebookProfilePictureURL())
+        header.setupData(CurrentUser.fullName!, numberOfShots: imageDataArray.count, profilePictureURL : CurrentUser.facebookProfilePictureURL)
         
         return header
     }

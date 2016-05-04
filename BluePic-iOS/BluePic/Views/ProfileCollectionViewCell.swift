@@ -101,7 +101,7 @@ class ProfileCollectionViewCell: UICollectionViewCell {
     private func tryToSetImageViewWithLocallyCachedImage(fileName : String?) -> UIImage?{
         
         //check if file name and facebook user id aren't nil
-        if let fName = fileName, let userID = FacebookDataManager.SharedInstance.fbUniqueUserID {
+        if let fName = fileName, let userID = CurrentUser.facebookUserId {
             
             //generate id which is a concatenation of the file name and facebook user id
             let id = fName + userID

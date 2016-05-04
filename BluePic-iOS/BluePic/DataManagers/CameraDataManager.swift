@@ -198,7 +198,7 @@ class CameraDataManager: NSObject {
      */
     func addPhotoToPictureTakenDuringAppSessionByIdDictionary(){
         
-        if let fileName = lastPhotoTakenName, let userID = FacebookDataManager.SharedInstance.fbUniqueUserID {
+        if let fileName = lastPhotoTakenName, let userID = CurrentUser.facebookUserId {
             
             let id = fileName + userID
             
@@ -219,7 +219,7 @@ class CameraDataManager: NSObject {
        
         print("last photo taken name")
         print(lastPhotoTakenName)
-        BluemixDataManager.SharedInstance.postNewImage(FacebookDataManager.SharedInstance.fbUniqueUserID!, fileName: lastPhotoTakenName, displayName: lastPhotoTakenCaption, width: lastPhotoTakenWidth, height: lastPhotoTakenHeight, latitude: "37.864851", longitude: "119.538523", city: "Yosemite", image: UIImagePNGRepresentation(lastPhotoTaken)!)
+        BluemixDataManager.SharedInstance.postNewImage(CurrentUser.facebookUserId!, fileName: lastPhotoTakenName, displayName: lastPhotoTakenCaption, width: lastPhotoTakenWidth, height: lastPhotoTakenHeight, latitude: "37.864851", longitude: "119.538523", city: "Yosemite", image: UIImagePNGRepresentation(lastPhotoTaken)!)
         
  
         //// Below original code
@@ -227,7 +227,7 @@ class CameraDataManager: NSObject {
         let newPicture = Picture()
         newPicture.image = lastPhotoTaken
         newPicture.displayName = lastPhotoTakenCaption
-        newPicture.ownerName = FacebookDataManager.SharedInstance.fbUserDisplayName
+        newPicture.ownerName = CurrentUser.fullName
         newPicture.width = lastPhotoTakenWidth
         newPicture.height = lastPhotoTakenHeight
         newPicture.timeStamp = NSDate.timeIntervalSinceReferenceDate()
@@ -275,7 +275,7 @@ class CameraDataManager: NSObject {
     func uploadImageToObjectStorage(picture : Picture) {
         print("uploading photo to object storage...")
         
-        ObjectStorageDataManager.SharedInstance.objectStorageClient.uploadImage(FacebookDataManager.SharedInstance.fbUniqueUserID!, imageName: picture.fileName!, image: picture.image!,
+        ObjectStorageDataManager.SharedInstance.objectStorageClient.uploadImage(CurrentUser.facebookUserId!, imageName: picture.fileName!, image: picture.image!,
             onSuccess: { (imageURL: String) in
                 print("upload to object storage succeeded.")
                 print("imageURL: \(imageURL)")
@@ -315,7 +315,7 @@ class CameraDataManager: NSObject {
      */
     func createPictureDoc(picture : Picture) {
         do {
-            try CloudantSyncDataManager.SharedInstance!.createPictureDoc(picture.displayName!, fileName: picture.fileName!, url: picture.url!, ownerID: FacebookDataManager.SharedInstance.fbUniqueUserID!, width: "\(picture.width!)", height: "\(picture.height!)")
+            try CloudantSyncDataManager.SharedInstance!.createPictureDoc(picture.displayName!, fileName: picture.fileName!, url: picture.url!, ownerID: CurrentUser.facebookUserId!, width: "\(picture.width!)", height: "\(picture.height!)")
             
         } catch {
             print("cloudantCreatePictureFailure ERROR: \(error)")

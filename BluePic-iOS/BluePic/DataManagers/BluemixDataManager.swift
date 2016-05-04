@@ -268,6 +268,31 @@ class BluemixDataManager: NSObject {
     }
     
     
+    func checkIfUserAlreadyExistsIfNotCreateNewUser(userId : String, name : String, callback : ((success : Bool) -> ())){
+
+        getUserById(userId, result: { user in
+            
+            if(user != nil){
+               callback(success: true)
+            }
+            else{
+                self.createNewUser(userId, name: name, result: { user in
+                    
+                    if(user != nil){
+                        callback(success: true)
+                    }
+                    else{
+                        callback(success: false)
+                    }
+
+                })
+            }
+            
+        })
+
+    }
+    
+    
 
     func createNewUserIfUserDoesntAlreadyExistElseReturnExistingUser(userId : String, name : String, result : ((user : User?) -> ())){
         
