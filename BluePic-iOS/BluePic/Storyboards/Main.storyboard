@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9060" systemVersion="14F1509" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="8AK-xM-BIZ">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="8AK-xM-BIZ">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -12,7 +12,6 @@
                     <tabBar key="tabBar" contentMode="scaleToFill" translucent="NO" id="163-n0-olj">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <animations/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="barTintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -42,11 +41,9 @@
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="login_background" translatesAutoresizingMaskIntoConstraints="NO" id="ANO-Gs-Tk5">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="667"/>
-                                <animations/>
                             </imageView>
                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="g2J-LJ-jge">
                                 <rect key="frame" x="291" y="614" width="20" height="20"/>
-                                <animations/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="20" id="IUl-ZY-3Wd"/>
                                     <constraint firstAttribute="height" constant="20" id="pL6-YK-0em"/>
@@ -55,7 +52,6 @@
                             </activityIndicatorView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JA3-DV-7dk">
                                 <rect key="frame" x="182" y="218" width="236" height="112"/>
-                                <animations/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="112" id="GaN-o4-7vS"/>
                                     <constraint firstAttribute="width" constant="236" id="eyR-Rk-Nvp"/>
@@ -76,7 +72,6 @@ also built on IBM Bluemix services.</string>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome to BluePic" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cIW-Ou-STz">
                                 <rect key="frame" x="167" y="175" width="267" height="35"/>
-                                <animations/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="267" id="YMB-Xq-LqD"/>
                                     <constraint firstAttribute="height" constant="35" id="g3J-Gq-moa"/>
@@ -87,7 +82,6 @@ also built on IBM Bluemix services.</string>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wjw-Zr-PRg">
                                 <rect key="frame" x="15" y="603" width="570" height="44"/>
-                                <animations/>
                                 <color key="backgroundColor" red="0.0" green="0.56862745098039214" blue="0.91764705882352937" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="eKN-Rv-bz3"/>
@@ -113,7 +107,6 @@ also built on IBM Bluemix services.</string>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="loginlogo" translatesAutoresizingMaskIntoConstraints="NO" id="OyD-TT-jb1">
                                 <rect key="frame" x="264" y="68" width="74" height="70"/>
-                                <animations/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="73.5" id="OrX-WN-WmP"/>
                                     <constraint firstAttribute="height" constant="70" id="eFt-le-H8b"/>
@@ -121,7 +114,6 @@ also built on IBM Bluemix services.</string>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hia-oq-hEM">
                                 <rect key="frame" x="290" y="348" width="20" height="2"/>
-                                <animations/>
                                 <color key="backgroundColor" red="0.0" green="0.56862745098039214" blue="0.91764705882352937" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="2" id="Cc5-SZ-uZB"/>
@@ -130,7 +122,6 @@ also built on IBM Bluemix services.</string>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="neQ-m5-2vk">
                                 <rect key="frame" x="250" y="560" width="101" height="29"/>
-                                <animations/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="100.5" id="F27-v2-W2V"/>
                                 </constraints>
@@ -144,7 +135,6 @@ also built on IBM Bluemix services.</string>
                             </button>
                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gtv-K7-hIk">
                                 <rect key="frame" x="167" y="524" width="267" height="20"/>
-                                <animations/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="3xK-ij-LXs"/>
                                     <constraint firstAttribute="width" constant="267" id="dfU-Ye-2i0"/>
@@ -155,7 +145,6 @@ also built on IBM Bluemix services.</string>
                             </label>
                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Connecting to Facebook" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LMk-mW-Kmu">
                                 <rect key="frame" x="168" y="569" width="267" height="20"/>
-                                <animations/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="Vk1-8C-hfh"/>
                                     <constraint firstAttribute="width" constant="267" id="fdV-cJ-dxd"/>
@@ -165,7 +154,6 @@ also built on IBM Bluemix services.</string>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="Wjw-Zr-PRg" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="0R1-rU-8sk"/>

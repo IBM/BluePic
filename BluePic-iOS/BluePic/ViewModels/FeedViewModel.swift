@@ -35,7 +35,8 @@ enum FeedViewModelNotification {
 class FeedViewModel: NSObject {
     
     //array that holds all the picture data objects we used to populate the Feed VC's collection view
-    var pictureDataArray = [Picture]()
+    //var pictureDataArray = [Picture]()
+    var imageDataArray = [Image]()
     
     //callback used to inform the Feed VC when there is new data and to refresh its collection view
     var refreshVCCallback : (()->())?
@@ -92,24 +93,24 @@ class FeedViewModel: NSObject {
      */
     func handleDataManagerNotification(dataManagerNotification : DataManagerNotification){
         
-        if(dataManagerNotification == DataManagerNotification.CloudantPullDataSuccess){
-            isPullingFromCloudantAlready = false
-            getPictureObjects()
-        }
-        else if(dataManagerNotification == DataManagerNotification.UserDecidedToPostPhoto){
-            self.passFeedViewModelNotificationToFeedVCCallback(feedViewModelNotification: FeedViewModelNotification.UploadingPhotoStarted)
-            getPictureObjects()
-        }
-        else if(dataManagerNotification == DataManagerNotification.StartLoadingAnimationForAppLaunch){
-            self.passFeedViewModelNotificationToFeedVCCallback(feedViewModelNotification: FeedViewModelNotification.StartLoadingAnimationForAppLaunch)
-        }
-        else if(dataManagerNotification == DataManagerNotification.UserCanceledUploadingPhotos){
-            getPictureObjects()
-        }
-        else if(dataManagerNotification == DataManagerNotification.ObjectStorageUploadImageAndCloudantCreatePictureDocSuccess){
-            self.passFeedViewModelNotificationToFeedVCCallback(feedViewModelNotification: FeedViewModelNotification.UploadingPhotoFinished)
-            getPictureObjects()
-        }
+//        if(dataManagerNotification == DataManagerNotification.CloudantPullDataSuccess){
+//            isPullingFromCloudantAlready = false
+//            getPictureObjects()
+//        }
+//        else if(dataManagerNotification == DataManagerNotification.UserDecidedToPostPhoto){
+//            self.passFeedViewModelNotificationToFeedVCCallback(feedViewModelNotification: FeedViewModelNotification.UploadingPhotoStarted)
+//            getPictureObjects()
+//        }
+//        else if(dataManagerNotification == DataManagerNotification.StartLoadingAnimationForAppLaunch){
+//            self.passFeedViewModelNotificationToFeedVCCallback(feedViewModelNotification: FeedViewModelNotification.StartLoadingAnimationForAppLaunch)
+//        }
+//        else if(dataManagerNotification == DataManagerNotification.UserCanceledUploadingPhotos){
+//            getPictureObjects()
+//        }
+//        else if(dataManagerNotification == DataManagerNotification.ObjectStorageUploadImageAndCloudantCreatePictureDocSuccess){
+//            self.passFeedViewModelNotificationToFeedVCCallback(feedViewModelNotification: FeedViewModelNotification.UploadingPhotoFinished)
+//            getPictureObjects()
+//        }
     }
 
     
@@ -117,16 +118,32 @@ class FeedViewModel: NSObject {
      Method asks cloudant to pull for new data
      */
     func repullForNewData() {
-        if(isPullingFromCloudantAlready == false){
-            isPullingFromCloudantAlready = true
-            do {
-                try CloudantSyncDataManager.SharedInstance!.pullFromRemoteDatabase()
-            } catch {
-                isPullingFromCloudantAlready = false
-                print("repullForNewData ERROR: \(error)")
-                DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantPullDataFailure)
+        
+        
+        BluemixDataManager.SharedInstance.getImages({ images in
+        
+            if let images = images {
+                self.imageDataArray = images
+                dispatch_async(dispatch_get_main_queue()) {
+                    self.passFeedViewModelNotificationToFeedVCCallback(feedViewModelNotification: FeedViewModelNotification.RefreshCollectionView)
+                }
             }
-        }
+        
+        })
+        
+        
+        
+        
+//        if(isPullingFromCloudantAlready == false){
+//            isPullingFromCloudantAlready = true
+//            do {
+//                try CloudantSyncDataManager.SharedInstance!.pullFromRemoteDatabase()
+//            } catch {
+//                isPullingFromCloudantAlready = false
+//                print("repullForNewData ERROR: \(error)")
+//                DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantPullDataFailure)
+//            }
+//        }
     }
     
     
@@ -134,12 +151,12 @@ class FeedViewModel: NSObject {
      Method synchronously asks cloudant for new data. It sets the pictureDataArray to be a combination of the local pictureUploadQueue images + images receives from cloudant/objectDataStore
      */
     func getPictureObjects(){
-        pictureDataArray = CloudantSyncDataManager.SharedInstance!.getPictureObjects(nil)
-        hasRecievedDataFromCloudant = true
-
-         dispatch_async(dispatch_get_main_queue()) {
-            self.passFeedViewModelNotificationToFeedVCCallback(feedViewModelNotification: FeedViewModelNotification.RefreshCollectionView)
-        }
+//        pictureDataArray = CloudantSyncDataManager.SharedInstance!.getPictureObjects(nil)
+//        hasRecievedDataFromCloudant = true
+//
+//         dispatch_async(dispatch_get_main_queue()) {
+//            self.passFeedViewModelNotificationToFeedVCCallback(feedViewModelNotification: FeedViewModelNotification.RefreshCollectionView)
+//        }
     }
     
     
@@ -167,11 +184,11 @@ class FeedViewModel: NSObject {
         }
         // if the section is 1, then it depends how many items are in the pictureDataArray
         else{
-            if(pictureDataArray.count == 0 && hasRecievedDataFromCloudant == true){
+            if(imageDataArray.count == 0 && hasRecievedDataFromCloudant == true){
                 return kNumberOfCellsWhenUserHasNoPhotos
             }
             else{
-                return pictureDataArray.count
+                return imageDataArray.count
             }
         }
     }
@@ -197,7 +214,7 @@ class FeedViewModel: NSObject {
         else{
             
             //return size for empty feed collection view cell
-            if(pictureDataArray.count == 0){
+            if(imageDataArray.count == 0){
 
                 return CGSize(width: collectionView.frame.width, height: collectionView.frame.height + kEmptyFeedCollectionViewCellBufferToAllowForScrolling)
                 
@@ -205,9 +222,9 @@ class FeedViewModel: NSObject {
             //return size for image feed collection view cell
             else{
         
-                let picture = pictureDataArray[indexPath.row]
+                let image = imageDataArray[indexPath.row]
         
-                if let width = picture.width, let height = picture.height {
+                if let width = image.width, let height = image.height {
             
                     let ratio = height / width
             
@@ -257,7 +274,7 @@ class FeedViewModel: NSObject {
         else{
             
             //return EmptyFeedCollectionViewCell
-            if(pictureDataArray.count == 0){
+            if(imageDataArray.count == 0){
             
                 let cell : EmptyFeedCollectionViewCell
             
@@ -273,15 +290,15 @@ class FeedViewModel: NSObject {
                 
                 cell = collectionView.dequeueReusableCellWithReuseIdentifier("ImageFeedCollectionViewCell", forIndexPath: indexPath) as! ImageFeedCollectionViewCell
         
-                let picture = pictureDataArray[indexPath.row]
+                let image = imageDataArray[indexPath.row]
         
                 cell.setupData(
-                    picture.url,
-                    image: picture.image,
-                    displayName: picture.displayName,
-                    ownerName: picture.ownerName,
-                    timeStamp: picture.timeStamp,
-                    fileName: picture.fileName
+                    image.url,
+                    image: nil, //MIGHT NEED TO FIX
+                    displayName: image.displayName,
+                    ownerName: image.usersName,
+                    timeStamp: image.timeStamp,
+                    fileName: image.fileName
                 )
         
                 cell.layer.shouldRasterize = true

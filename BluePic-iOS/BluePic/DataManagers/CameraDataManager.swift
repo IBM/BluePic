@@ -215,10 +215,11 @@ class CameraDataManager: NSObject {
      */
     func addPhotoToPictureUploadQueue() -> Picture{
         
-        //let image = UIImage(named: "yosemite")!
+        let image = UIImage(named: "yosemite")!
        
-        
-        BluemixDataManager.SharedInstance.postNewImage("1000", fileName: "yosemite.png", displayName: "Yosemite Hiking", latitude: "37.864851", longitude: "119.538523", city: "Yosemite", image: UIImagePNGRepresentation(lastPhotoTaken)!)
+        print("last photo taken name")
+        print(lastPhotoTakenName)
+        BluemixDataManager.SharedInstance.postNewImage(FacebookDataManager.SharedInstance.fbUniqueUserID!, fileName: lastPhotoTakenName, displayName: lastPhotoTakenCaption, latitude: "37.864851", longitude: "119.538523", city: "Yosemite", image: UIImagePNGRepresentation(lastPhotoTaken)!)
         
         
         
@@ -470,7 +471,7 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
             let dateFormatter = NSDateFormatter()
             dateFormatter.dateFormat = "MM-dd-yyyy_HHmmss"
             let todaysDate = NSDate()
-            self.lastPhotoTakenName = dateFormatter.stringFromDate(todaysDate) + ".JPG"
+            self.lastPhotoTakenName = dateFormatter.stringFromDate(todaysDate) + ".png"
             
             }
             //if image isn't available (iCloud photo in Photo stream not loaded yet)
