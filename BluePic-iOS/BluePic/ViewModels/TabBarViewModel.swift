@@ -15,13 +15,22 @@
  **/
 
 
+enum TabBarNotification {
+    
+    case ShowLoginVC
+    case HideLoginVC
+    
+}
+
+
+
 class TabBarViewModel: NSObject {
 
     /// Boolean if showLoginScreen() has been called yet this app launch (should only try to show login once)
     var hasTriedToPresentLoginThisAppLaunch = false
     
     //callback that allows the tab bar view model to send DataManagerNotifications to the tab bar VC
-    var passDataNotificationToTabBarVCCallback : ((dataManagerNotification : DataManagerNotification)->())!
+    var passDataNotificationToTabBarVCCallback : ((tabBarNotification: TabBarNotification)->())!
     
     //state variable that keeps track of if we've successfully pulled data yet, used to help make sure we are showing the loading animation at the right time
     var hasSuccessFullyPulled = false
@@ -34,7 +43,7 @@ class TabBarViewModel: NSObject {
      
      - returns:
      */
-    init(passDataNotificationToTabBarVCCallback : ((dataManagerNotification: DataManagerNotification)->())){
+    init(passDataNotificationToTabBarVCCallback : ((tabBarNotification: TabBarNotification)->())){
         super.init()
         
         self.passDataNotificationToTabBarVCCallback = passDataNotificationToTabBarVCCallback
@@ -49,12 +58,24 @@ class TabBarViewModel: NSObject {
      */
     func tryToShowLogin(){
         
-        if(!hasTriedToPresentLoginThisAppLaunch){
-           
-            hasTriedToPresentLoginThisAppLaunch = true
+//        if(!hasTriedToPresentLoginThisAppLaunch){
+//           
+//            hasTriedToPresentLoginThisAppLaunch = true
+//            
+//            FacebookDataManager.SharedInstance.tryToShowLoginScreen()
+//        }
+        
+        
+        if(LoginDataManager.SharedInstance.isUserAuthenticatedOrPressedSignInLater()){
             
-            FacebookDataManager.SharedInstance.tryToShowLoginScreen()
+            passDataNotificationToTabBarVCCallback(tabBarNotification: TabBarNotification.HideLoginVC)
+        
         }
+        else{
+            passDataNotificationToTabBarVCCallback(tabBarNotification: TabBarNotification.ShowLoginVC)
+        }
+
+        
     }
     
     
@@ -69,7 +90,7 @@ class TabBarViewModel: NSObject {
             hasSuccessFullyPulled = true
         }
         
-       passDataNotificationToTabBarVCCallback(dataManagerNotification: dataManagerNotification)
+      // passDataNotificationToTabBarVCCallback(dataManagerNotification: dataManagerNotification)
     }
     
     

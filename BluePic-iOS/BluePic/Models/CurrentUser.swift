@@ -28,7 +28,6 @@ class CurrentUser: NSObject {
     }
     
     class var fullName : String? {
-    
         get {
             if let full_name = NSUserDefaults.standardUserDefaults().objectForKey("user_full_name") as? String {
                 return full_name
@@ -42,11 +41,43 @@ class CurrentUser: NSObject {
             NSUserDefaults.standardUserDefaults().setObject(user_full_name, forKey: "user_full_name")
             NSUserDefaults.standardUserDefaults().synchronize()
         }
-   
+    }
+    
+    class var facebookProfilePictureURL : String {
+        get {
+            if let facebookUserId = CurrentUser.facebookUserId {
+                return kFacebookProfilePictureURLPrefix + facebookUserId + kFacebookProfilePictureURLPostfix
+            }
+            else{
+                return ""
+            }
+        }
     }
     
     
+    class var willLoginLater : Bool {
+        get {
+            if let log_in_later = NSUserDefaults.standardUserDefaults().objectForKey("log_in_later") as? Bool{
+                return log_in_later
+            }
+            else{
+                return false
+            }
+        }
+        set(log_in_later) {
+            NSUserDefaults.standardUserDefaults().setObject(log_in_later, forKey: "log_in_later")
+            NSUserDefaults.standardUserDefaults().synchronize()
+        }
+   
+    }
+
     
+    /// Prefix for url needed to get user profile picture given their unique id (id goes after this)
+    private static let kFacebookProfilePictureURLPrefix = "http://graph.facebook.com/"
     
+    /// Postfix for url needed to get user profile picture given their unique id (id goes before this)
+    private static let kFacebookProfilePictureURLPostfix = "/picture?type=large"
+    
+  
     
 }

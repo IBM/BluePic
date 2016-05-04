@@ -38,6 +38,13 @@ class LoginViewModel: NSObject {
         
     }
     
+    func loginLater(){
+        
+        LoginDataManager.SharedInstance.loginLater()
+        
+        
+    }
+    
     
     /**
      Method to attempt authenticating with Facebook and call the callback if failure, otherwise will continue to object storage container creation

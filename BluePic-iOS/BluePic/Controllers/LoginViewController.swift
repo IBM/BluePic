@@ -67,8 +67,7 @@ class LoginViewController: UIViewController {
      - parameter sender: sign in later button
      */
     @IBAction func signInLaterTapped(sender: AnyObject) {
-        NSUserDefaults.standardUserDefaults().setBool(true, forKey: "hasPressedLater")
-        NSUserDefaults.standardUserDefaults().synchronize()
+        viewModel.loginLater()
         
         dismissViewControllerAnimated(true, completion: nil)
     }
