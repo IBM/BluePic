@@ -37,7 +37,9 @@ curl -H "Content-Type: application/json" -d @users.json -X POST https://$usernam
 # Create image documents
 curl -H "Content-Type: application/json" -d @images.json -X POST https://$username.cloudant.com/$database/_bulk_docs -u $username:$password
 
+# Images are now stored in Object Storage; keeping the code below as reference
 # Upload attachments (images)
+<<COMMENT1
 imagesFolder=`dirname $( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )`/images
 declare -a attachments=('image/jpg' '2000' 'rush.jpg' 'image/jpg' '2001' 'bridge.jpg' 'image/jpg' '2002' 'car.jpg' 'image/jpg' '2003' 'church.jpg' \
   'image/jpg' '2004' 'city.jpg' 'image/jpg' '2005' 'concert.jpg' 'image/jpg' '2006' 'flower_1.jpg' 'image/jpg' '2007' 'flower_2.jpg' \
@@ -56,6 +58,7 @@ while [ $index -lt ${#attachments[@]} ]; do
   curl -v -H "Content-Type: $contentType" --data-binary @$imagesFolder/$fileName -X PUT "https://$username.cloudant.com/$database/$imageId/$fileName?rev=$revNumber" -u $username:$password
   let index+=1
 done
+COMMENT1
 
 echo
 echo "Finished populating cloudant database '$database'."
