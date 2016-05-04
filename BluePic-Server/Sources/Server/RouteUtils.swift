@@ -23,15 +23,15 @@ import SwiftyJSON
 import BluemixObjectStore
 
 /**
-* This method should read the user document and kick off asynchronously an OpenWhisk action
+* This method should kick off asynchronously an OpenWhisk sequence
 * and then return immediately. This method is not going to wait
 * for the outcome of the OpenWhisk sequence/actions. Once the OpenWhisk sequence
-* completes execution, the sequence should invoke the /push endpoint to generate
+* completes execution, the sequence should invoke the '/push' endpoint to generate
 * a push notification for the iOS client.
 */
-func process(image: NSData, withImageId imageId: String, withUserId userId: String) {
-  // TODO
-  // TODO Read user document from cloudant to obtain language and units of measure...
+func process(imageURL: String, withImageId imageId: String, withUserId userId: String) {
+  // TODO Invoke OpenWhisk action
+  // TODO OpenWRead user document from cloudant to obtain language and units of measure...
   Log.verbose("process() not implemented yet...")
   Log.verbose("imageId: \(imageId), userId: \(userId)")
 }
@@ -120,7 +120,7 @@ func generateInternalError() -> NSError {
 func generateUrl(forContainer containerName: String, forImage imageName: String) -> String {
   //let url = "http://\(database.connProperties.host):\(database.connProperties.port)/\(database.name)/\(imageId)/\(attachmentName)"
   //let url = "\(config.appEnv.url)/images/\(imageId)/\(attachmentName)"
-  let url = "\(objStoreConnProperties.publicURL)/\(containerName)/\(imageName)"
+  let url = "\(objStoreConnProps.publicURL)/\(containerName)/\(imageName)"
   return url
 }
 
@@ -223,8 +223,8 @@ private func constructDocument(records: [JSON]) -> JSON {
 
 private func connectToObjectStore(completionHandler: (objStore: ObjectStore?) -> Void) {
   // Create object store instance and connect
-  let objStore = ObjectStore(projectId: objStoreConnProperties.projectId)
-  objStore.connect(userId: objStoreConnProperties.userId, password: objStoreConnProperties.password, region: ObjectStore.REGION_DALLAS) { (error) in
+  let objStore = ObjectStore(projectId: objStoreConnProps.projectId)
+  objStore.connect(userId: objStoreConnProps.userId, password: objStoreConnProps.password, region: ObjectStore.REGION_DALLAS) { (error) in
     if let error = error {
       let errorMsg = "Could not connect to Object Storage."
       Log.error("\(errorMsg) Error was: '\(error)'.")
