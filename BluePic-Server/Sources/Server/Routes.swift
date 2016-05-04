@@ -115,38 +115,45 @@ func defineRoutes() {
     do {
       // As of now, we don't have a multi-form request parser...
       // Because of this we are using the REST endpoint definition as the mechanism
-      // to send the metadata about the image, while the body of the request only
+      // to send the image metadata, while the body of the request only
       // contains the binary data for the image. I know, yuck...
       var imageJSON = try getImageJSON(fromRequest: request)
-      Log.verbose("The following is the imageJSON document generated: \(imageJSON)")
-      let image = try BodyParser.readBodyData(with: request)
-      database.create(imageJSON) { (id, revision, doc, error) in
-        guard let id = id, revision = revision where error == nil else {
-          response.error = generateInternalError()
-          next()
-          return
-        }
+      //Log.verbose("The following is the imageJSON document generated: \(imageJSON)")
 
-        // Create closure
-        let completionHandler = { (success: Bool) -> Void in
-          if success {
-            // Update JSON document with url, _id, and _rev
+      // Get image binary from request body
+      let image = try BodyParser.readBodyData(with: request)
+
+      // Create closure
+      let completionHandler = { (success: Bool) -> Void in
+        if success {
+          // Add image record to database
+          database.create(imageJSON) { (id, revision, doc, error) in
+            guard let id = id, revision = revision where error == nil else {
+              response.error = generateInternalError()
+              next()
+              return
+            }
+
+            // Contine processing of request (async request for OpenWhisk)
+            process(image: image, withImageId: id, withUserId: imageJSON["userId"].stringValue)
+
+            // Return image document to caller
+            // Update JSON image document with url, _id, and _rev
             imageJSON["url"].stringValue = generateUrl(forContainer: imageJSON["userId"].stringValue, forImage: imageJSON["fileName"].stringValue)
             imageJSON["_id"].stringValue = id
             imageJSON["_rev"].stringValue = revision
-            process(image: image, withImageId: id, withUserId: imageJSON["userId"].stringValue)
-            // Return user document back to caller
             response.status(HttpStatusCode.OK).send(json: imageJSON)
-          } else {
-            response.error = generateInternalError()
           }
-          next()
+        } else {
+          response.error = generateInternalError()
         }
-        // Create container for user
-        store(image: image, withName: imageJSON["fileName"].stringValue, inContainer: imageJSON["userId"].stringValue, completionHandler: completionHandler)
+        next()
       }
+
+      // Create container for user before creating image record in database
+      store(image: image, withName: imageJSON["fileName"].stringValue, inContainer: imageJSON["userId"].stringValue, completionHandler: completionHandler)
     } catch {
-      Log.error("Failed to send response to client.")
+      Log.error("Failed to add image record.")
       response.error = generateInternalError()
       next()
     }
