@@ -199,33 +199,38 @@ func defineRoutes() {
         }
       }
 
-      // Persist user document
-      database.create(userJson) { (id, revision, document, error) in
-        if let document = document where error == nil {
-          // Add revision number response document
-          userJson["_rev"] = document["rev"]
-          // Create closure
-          let completionHandler = { (success: Bool) -> Void in
+      // Create completion handler closure
+      let completionHandler = { (success: Bool) -> Void in
+        if success {
+          // Persist user document to database
+          database.create(userJson) { (id, revision, document, error) in
             do {
-              if success {
+              if let document = document where error == nil {
+                // Add revision number response document
+                userJson["_rev"] = document["rev"]
                 // Return user document back to caller
                 try response.status(HttpStatusCode.OK).send(json: userJson).end()
+                next()
               } else {
-                response.error = generateInternalError()
+                Log.error("Failed to add user to the system of records.")
+                response.error = error ?? generateInternalError()
+                next()
               }
             } catch {
-              Log.error("Failed to send response to client.")
+              Log.error("Failed to add user to the system of records.")
               response.error = generateInternalError()
+              next()
             }
-            next()
           }
-          // Create container for user
-          createContainer(withName: userId, completionHandler: completionHandler)
         } else {
-          response.error = error ?? generateInternalError()
+          Log.error("Failed to add user to the system of records.")
+          response.error = generateInternalError()
           next()
         }
       }
+
+      // Create container for user before adding record to database
+      createContainer(withName: userId, completionHandler: completionHandler)
     } catch let error {
       Log.error("Failed to create new user document.")
       Log.error("Error domain: \(error._domain); error code: \(error._code).")
