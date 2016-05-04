@@ -219,12 +219,9 @@ class CameraDataManager: NSObject {
        
         print("last photo taken name")
         print(lastPhotoTakenName)
-        BluemixDataManager.SharedInstance.postNewImage(FacebookDataManager.SharedInstance.fbUniqueUserID!, fileName: lastPhotoTakenName, displayName: lastPhotoTakenCaption, latitude: "37.864851", longitude: "119.538523", city: "Yosemite", image: UIImagePNGRepresentation(lastPhotoTaken)!)
+        BluemixDataManager.SharedInstance.postNewImage(FacebookDataManager.SharedInstance.fbUniqueUserID!, fileName: lastPhotoTakenName, displayName: lastPhotoTakenCaption, width: lastPhotoTakenWidth, height: lastPhotoTakenHeight, latitude: "37.864851", longitude: "119.538523", city: "Yosemite", image: UIImagePNGRepresentation(lastPhotoTaken)!)
         
-        
-        
-        
-        
+ 
         //// Below original code
         
         let newPicture = Picture()
