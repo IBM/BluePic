@@ -238,13 +238,13 @@ class ProfileViewModel: NSObject {
         
             cell = collectionView.dequeueReusableCellWithReuseIdentifier("ProfileCollectionViewCell", forIndexPath: indexPath) as! ProfileCollectionViewCell
         
-            let picture = imageDataArray[indexPath.row]
+            let image = imageDataArray[indexPath.row]
         
-            cell.setupData(picture.url,
+            cell.setupData(image.url,
                 image: nil,
-                displayName: picture.displayName,
-                timeStamp: picture.timeStamp,
-                fileName: picture.fileName
+                caption: image.caption,
+                timeStamp: image.timeStamp,
+                fileName: image.fileName
             )
         
             cell.layer.shouldRasterize = true

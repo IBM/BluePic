@@ -295,8 +295,8 @@ class FeedViewModel: NSObject {
                 cell.setupData(
                     image.url,
                     image: nil, //MIGHT NEED TO FIX
-                    displayName: image.displayName,
-                    ownerName: image.usersName,
+                    caption: image.caption,
+                    usersName: image.usersName,
                     timeStamp: image.timeStamp,
                     fileName: image.fileName
                 )

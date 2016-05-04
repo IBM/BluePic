@@ -55,13 +55,13 @@ class ProfileCollectionViewCell: UICollectionViewCell {
      - parameter timeStamp:   Double?
      - parameter fileName:    String?
      */
-    func setupData(url : String?, image : UIImage?, displayName : String?, timeStamp: NSDate?, fileName : String?){
+    func setupData(url : String?, image : UIImage?, caption : String?, timeStamp: NSDate?, fileName : String?){
         
         //set the image view's image
         setImageView(url, fileName: fileName)
         
         //label that displays the photos caption
-        captionLabel.text = displayName ?? ""
+        captionLabel.text = caption ?? ""
         
         //set the time since posted label's text
         if let tStamp = timeStamp {
