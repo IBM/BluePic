@@ -24,10 +24,8 @@ import SwiftyJSON
 // Setup the handlers for the Photo APIs
 func defineRoutes() {
 
-  /////////////////////////////////////////
-  //What is this doing?
-  //router.all("/photos/*", middleware: BodyParser())
-  //////////////////////////////////////
+  let dbClient = CouchDBClient(connectionProperties: couchDBConnProps)
+  let database = dbClient.database("bluepic_db")
 
   // Test closure
   let closure = { (request: RouterRequest, response: RouterResponse, next: () -> Void) -> Void in
@@ -135,11 +133,12 @@ func defineRoutes() {
             }
 
             // Contine processing of request (async request for OpenWhisk)
-            process(image: image, withImageId: id, withUserId: imageJSON["userId"].stringValue)
+            let imageURL = generateUrl(forContainer: imageJSON["userId"].stringValue, forImage: imageJSON["fileName"].stringValue)
+            process(imageURL: imageURL, withImageId: id, withUserId: imageJSON["userId"].stringValue)
 
             // Return image document to caller
             // Update JSON image document with url, _id, and _rev
-            imageJSON["url"].stringValue = generateUrl(forContainer: imageJSON["userId"].stringValue, forImage: imageJSON["fileName"].stringValue)
+            imageJSON["url"].stringValue = imageURL
             imageJSON["_id"].stringValue = id
             imageJSON["_rev"].stringValue = revision
             response.status(HttpStatusCode.OK).send(json: imageJSON)

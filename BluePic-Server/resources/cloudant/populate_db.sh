@@ -41,9 +41,9 @@ curl -H "Content-Type: application/json" -d @images.json -X POST https://$userna
 # Upload attachments (images)
 <<COMMENT1
 imagesFolder=`dirname $( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )`/images
-declare -a attachments=('image/jpg' '2000' 'rush.jpg' 'image/jpg' '2001' 'bridge.jpg' 'image/jpg' '2002' 'car.jpg' 'image/jpg' '2003' 'church.jpg' \
-  'image/jpg' '2004' 'city.jpg' 'image/jpg' '2005' 'concert.jpg' 'image/jpg' '2006' 'flower_1.jpg' 'image/jpg' '2007' 'flower_2.jpg' \
-  'image/jpg' '2008' 'nature.jpg' 'image/jpg' '2009' 'person.jpg' 'image/jpg' '2010' 'road.jpg');
+declare -a attachments=('image/png' '2000' 'rush.png' 'image/png' '2001' 'bridge.png' 'image/png' '2002' 'car.png' 'image/png' '2003' 'church.png' \
+  'image/png' '2004' 'city.png' 'image/png' '2005' 'concert.png' 'image/png' '2006' 'flower_1.png' 'image/png' '2007' 'flower_2.png' \
+  'image/png' '2008' 'nature.png' 'image/png' '2009' 'person.png' 'image/png' '2010' 'road.png');
 
 index=0
 while [ $index -lt ${#attachments[@]} ]; do

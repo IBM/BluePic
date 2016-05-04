@@ -51,6 +51,10 @@ authToken=`curl -i -H "Content-Type: application/json" -d "{ \"auth\": { \"ident
 declare -a containers=($container1 $container2 $container3 $container4)
 
 for container in "${containers[@]}"; do
+
+  # Delete container (this operation fails unless the container is empty)
+  #curl -i $publicUrl/$container -X DELETE -H "Content-Length: 0" -H "X-Auth-Token: $authToken"
+
   # Create container
   curl -i $publicUrl/$container -X PUT -H "Content-Length: 0" -H "X-Auth-Token: $authToken"
 
@@ -65,9 +69,9 @@ done
 # Note that container4 does not have any images
 imagesFolder=`dirname $( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )`/images
 echo "imagesFolder: $imagesFolder"
-declare -a images=("$container1:person.jpg:image/jpg" "$container1:flower_1.jpg:image/jpg" "$container1:church.jpg:image/jpg" "$container1:rush.jpg:image/jpg" \
-  "$container2:road.jpg:image/jpg" "$container2:flower_2.jpg:image/jpg" "$container2:city.jpg:image/jpg" "$container2:bridge.jpg:image/jpg" \
-  "$container3:nature.jpg:image/jpg" "$container3:concert.jpg:image/jpg" "$container3:car.jpg:image/jpg")
+declare -a images=("$container1:person.png:image/png" "$container1:flower_1.png:image/png" "$container1:church.png:image/png" "$container1:rush.png:image/png" \
+  "$container2:road.png:image/png" "$container2:flower_2.png:image/png" "$container2:city.png:image/png" "$container2:bridge.png:image/png" \
+  "$container3:nature.png:image/png" "$container3:concert.png:image/png" "$container3:car.png:image/png")
 
 for record in "${images[@]}"; do
   IFS=':' read -ra image <<< "$record"
