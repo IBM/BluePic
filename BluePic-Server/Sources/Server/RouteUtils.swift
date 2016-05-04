@@ -31,7 +31,7 @@ import BluemixObjectStore
 */
 func process(imageURL: String, withImageId imageId: String, withUserId userId: String) {
   // TODO Invoke OpenWhisk action
-  // TODO Read user document from cloudant to obtain language and units of measure...
+  // TODO OpenWRead user document from cloudant to obtain language and units of measure...
   Log.verbose("process() not implemented yet...")
   Log.verbose("imageId: \(imageId), userId: \(userId)")
 }
@@ -120,7 +120,7 @@ func generateInternalError() -> NSError {
 func generateUrl(forContainer containerName: String, forImage imageName: String) -> String {
   //let url = "http://\(database.connProperties.host):\(database.connProperties.port)/\(database.name)/\(imageId)/\(attachmentName)"
   //let url = "\(config.appEnv.url)/images/\(imageId)/\(attachmentName)"
-  let url = "\(objStoreConnProperties.publicURL)/\(containerName)/\(imageName)"
+  let url = "\(objStoreConnProps.publicURL)/\(containerName)/\(imageName)"
   return url
 }
 
@@ -223,8 +223,8 @@ private func constructDocument(records: [JSON]) -> JSON {
 
 private func connectToObjectStore(completionHandler: (objStore: ObjectStore?) -> Void) {
   // Create object store instance and connect
-  let objStore = ObjectStore(projectId: objStoreConnProperties.projectId)
-  objStore.connect(userId: objStoreConnProperties.userId, password: objStoreConnProperties.password, region: ObjectStore.REGION_DALLAS) { (error) in
+  let objStore = ObjectStore(projectId: objStoreConnProps.projectId)
+  objStore.connect(userId: objStoreConnProps.userId, password: objStoreConnProps.password, region: ObjectStore.REGION_DALLAS) { (error) in
     if let error = error {
       let errorMsg = "Could not connect to Object Storage."
       Log.error("\(errorMsg) Error was: '\(error)'.")

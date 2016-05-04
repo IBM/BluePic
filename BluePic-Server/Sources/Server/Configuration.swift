@@ -48,15 +48,14 @@ public struct Configuration {
     }
   }
 
-  func getDatabase(dbName: String) throws -> Database {
+  func getCouchDBConnProps() throws -> ConnectionProperties {
     if let couchDBCredentials = appEnv.getService(spec: "Cloudant NoSQL DB-fz")?.credentials {
       if let host = couchDBCredentials["host"].string,
       user = couchDBCredentials["username"].string,
       password = couchDBCredentials["password"].string,
       port = couchDBCredentials["port"].int {
         let connProperties = ConnectionProperties(host: host, port: Int16(port), secured: true, username: user, password: password)
-        let dbClient = CouchDBClient(connectionProperties: connProperties)
-        return dbClient.database(dbName)
+        return connProperties
       }
     }
     throw Error.IO("Failed to obtain database service and/or credentials.")

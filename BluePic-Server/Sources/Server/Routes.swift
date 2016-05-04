@@ -24,10 +24,8 @@ import SwiftyJSON
 // Setup the handlers for the Photo APIs
 func defineRoutes() {
 
-  /////////////////////////////////////////
-  //What is this doing?
-  //router.all("/photos/*", middleware: BodyParser())
-  //////////////////////////////////////
+  let dbClient = CouchDBClient(connectionProperties: couchDBConnProps)
+  let database = dbClient.database("bluepic_db")
 
   // Test closure
   let closure = { (request: RouterRequest, response: RouterResponse, next: () -> Void) -> Void in
