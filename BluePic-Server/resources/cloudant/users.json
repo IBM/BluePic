@@ -20,6 +20,13 @@
       "language": "en-US",
       "unitsOfMeasurement": "e",
       "type": "user"
+    },
+    {
+      "_id": "1003",
+      "name": "Kevin White",
+      "language": "en-US",
+      "unitsOfMeasurement": "e",
+      "type": "user"
     }
   ]
 }
