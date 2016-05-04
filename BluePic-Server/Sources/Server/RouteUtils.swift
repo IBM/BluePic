@@ -103,8 +103,8 @@ func getImageJSON(fromRequest request: RouterRequest) throws -> JSON {
   let locationName = location.replacingOccurrences(of: "%20", with: " ")
   #endif
 
-  let imageDocument: JSONDictionary = ["location": ["latitude": latitude, "longitude": longitude, "name": locationName],
-    "contentType": contentType, "fileName": fileName, "userId": userId, "displayName": imageName, "uploadedTs": uploadedTs, "type": "image"]
+  let whereabouts: JSONDictionary = ["latitude": latitude, "longitude": longitude, "name": locationName]
+  let imageDocument: JSONDictionary = ["location": whereabouts, "contentType": contentType, "fileName": fileName, "userId": userId, "displayName": imageName, "uploadedTs": uploadedTs, "type": "image"]
   return JSON(imageDocument)
 }
 
