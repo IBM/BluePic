@@ -58,4 +58,4 @@ while [ $index -lt ${#attachments[@]} ]; do
 done
 
 echo
-echo "Successfully finished populating cloudant database '$database'."
+echo "Finished populating cloudant database '$database'."

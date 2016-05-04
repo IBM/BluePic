@@ -215,10 +215,10 @@ class CameraDataManager: NSObject {
      */
     func addPhotoToPictureUploadQueue() -> Picture{
         
-        let image = UIImage(named: "yosemite")!
+        //let image = UIImage(named: "yosemite")!
        
         
-        BluemixDataManager.SharedInstance.postNewImage("1000", fileName: "yosemite", displayName: "Yosemite Hiking", latitude: "37.864851", longitude: "119.538523", city: "Yosemite", image: UIImagePNGRepresentation(image)!)
+        BluemixDataManager.SharedInstance.postNewImage("1000", fileName: "yosemite.png", displayName: "Yosemite Hiking", latitude: "37.864851", longitude: "119.538523", city: "Yosemite", image: UIImagePNGRepresentation(lastPhotoTaken)!)
         
         
         
