@@ -23,14 +23,14 @@ import SwiftyJSON
 import BluemixObjectStore
 
 /**
-* This method should read the user document and kick off asynchronously an OpenWhisk action
+* This method should kick off asynchronously an OpenWhisk sequence
 * and then return immediately. This method is not going to wait
 * for the outcome of the OpenWhisk sequence/actions. Once the OpenWhisk sequence
-* completes execution, the sequence should invoke the /push endpoint to generate
+* completes execution, the sequence should invoke the '/push' endpoint to generate
 * a push notification for the iOS client.
 */
-func process(image: NSData, withImageId imageId: String, withUserId userId: String) {
-  // TODO
+func process(imageURL: String, withImageId imageId: String, withUserId userId: String) {
+  // TODO Invoke OpenWhisk action
   // TODO Read user document from cloudant to obtain language and units of measure...
   Log.verbose("process() not implemented yet...")
   Log.verbose("imageId: \(imageId), userId: \(userId)")
