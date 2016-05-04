@@ -327,6 +327,8 @@ class BluemixDataManager: NSObject {
                 
                 let image = Image(dict!)
                 
+                print(image?.url!)
+                
                 
                 //print ("Success uploading image :: \(response?.responseText)")
             }
