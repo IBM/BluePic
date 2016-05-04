@@ -5,6 +5,8 @@
       "fileName": "rush.jpg",
       "displayName": "Rush",
       "contentType": "image/jpg",
+      "width": 90,
+      "height": 90,
       "tags": [
         {
           "label": "rush",
@@ -38,6 +40,8 @@
       "fileName": "bridge.jpg",
       "displayName": "Bridge",
       "contentType": "image/jpg",
+      "width": 90,
+      "height": 90,
       "tags": [
         {
           "label": "bridge",
@@ -67,6 +71,8 @@
       "fileName": "car.jpg",
       "displayName": "Car",
       "contentType": "image/jpg",
+      "width": 90,
+      "height": 90,
       "tags": [
         {
           "label": "car",
@@ -88,6 +94,8 @@
       "fileName": "church.jpg",
       "displayName": "Church",
       "contentType": "image/jpg",
+      "width": 90,
+      "height": 90,
       "tags": [
         {
           "label": "nature",
@@ -117,6 +125,8 @@
       "fileName": "city.jpg",
       "displayName": "City",
       "contentType": "image/jpg",
+      "width": 90,
+      "height": 90,
       "tags": [
         {
           "label": "city",
@@ -138,6 +148,8 @@
       "fileName": "concert.jpg",
       "displayName": "Concert",
       "contentType": "image/jpg",
+      "width": 90,
+      "height": 90,
       "tags": [
         {
           "label": "person",
@@ -159,6 +171,8 @@
       "fileName": "flower_1.jpg",
       "displayName": "Flower",
       "contentType": "image/jpg",
+      "width": 90,
+      "height": 90,
       "tags": [
         {
           "label": "flower",
@@ -184,6 +198,8 @@
       "fileName": "flower_2.jpg",
       "displayName": "Flower",
       "contentType": "image/jpg",
+      "width": 90,
+      "height": 90,
       "tags": [
         {
           "label": "flower",
@@ -209,6 +225,8 @@
       "fileName": "nature.jpg",
       "displayName": "Nature",
       "contentType": "image/jpg",
+      "width": 90,
+      "height": 90,
       "tags": [
         {
           "label": "nature",
@@ -242,6 +260,8 @@
       "fileName": "person.jpg",
       "displayName": "Person",
       "contentType": "image/jpg",
+      "width": 90,
+      "height": 90,
       "tags": [
         {
           "label": "sunset",
@@ -263,6 +283,8 @@
       "fileName": "road.jpg",
       "displayName": "Road",
       "contentType": "image/jpg",
+      "width": 90,
+      "height": 90,
       "tags": [
         {
           "label": "road",

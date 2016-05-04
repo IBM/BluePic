@@ -19,11 +19,13 @@
 # If any commands fail, we want the shell script to exit immediately.
 set -e
 
-# References
-#https://console.ng.bluemix.net/docs/services/ObjectStorage/objectstorge_usingobjectstorage.html
-#https://console.ng.bluemix.net/docs/services/ObjectStorage/objectstorge_usingobjectstorage.html#using-swift-restapi
-#https://<access point>/<API version>/AUTH_<project ID>/<container namespace>/<object namespace>
-#https://dal.objectstorage.open.softlayer.com/v1/AUTH_742fffae2c24438b83a2c43491119a82
+# References:
+# https://console.ng.bluemix.net/docs/services/ObjectStorage/objectstorge_usingobjectstorage.html
+# https://console.ng.bluemix.net/docs/services/ObjectStorage/objectstorge_usingobjectstorage.html#using-swift-restapi
+# https://dal.objectstorage.open.softlayer.com/v1/AUTH_742fffae2c24438b83a2c43491119a82
+
+# Example URL for accessing an object/image
+# https://<access point>/<API version>/AUTH_<project ID>/<container namespace>/<object namespace>
 
 # Parse input parameters
 source ./parse_inputs.sh
@@ -37,6 +39,7 @@ publicUrl=https://$accessPoint/v1/AUTH_$projectid
 container1=1000
 container2=1001
 container3=1002
+container4=1003
 
 # Echo publicUrl
 echo "publicUrl: $publicUrl"
@@ -45,7 +48,7 @@ echo "publicUrl: $publicUrl"
 authToken=`curl -i -H "Content-Type: application/json" -d "{ \"auth\": { \"identity\": { \"methods\": [ \"password\" ], \"password\": { \"user\": { \"id\": \"$userid\", \"password\": \"$password\" } } }, \"scope\": { \"project\": { \"id\": \"$projectid\" } } } }" $authUrl | grep X-Subject-Token | awk '{print $2}' | tr -cd '[[:alnum:]]._-'`
 
 # Create and configure containers
-declare -a containers=($container1 $container2 $container3)
+declare -a containers=($container1 $container2 $container3 $container4)
 
 for container in "${containers[@]}"; do
   # Create container
@@ -59,6 +62,7 @@ for container in "${containers[@]}"; do
 done
 
 # Upload images to containers
+# Note that container4 does not have any images
 imagesFolder=`dirname $( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )`/images
 echo "imagesFolder: $imagesFolder"
 declare -a images=("$container1:person.jpg:image/jpg" "$container1:flower_1.jpg:image/jpg" "$container1:church.jpg:image/jpg" "$container1:rush.jpg:image/jpg" \
@@ -74,4 +78,4 @@ for record in "${images[@]}"; do
 done
 
 echo
-echo "Successfully finished populating object storage."
+echo "Finished populating object storage."
