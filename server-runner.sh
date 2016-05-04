@@ -19,7 +19,7 @@
 set -e
 
 # Install system level dependencies
-brew install http-parser curl
+brew install curl
 
 # Compile server code (Kitura-based server)
 ./compile-server.sh
