@@ -296,7 +296,12 @@ class BluemixDataManager: NSObject {
         print(requestURL)
         let request = Request(url: requestURL, method: HttpMethod.POST)
         
-        request.headers = ["Content-Type" : "application/x-www-form-urlencoded"]
+        
+        //image/png
+        //application/x-www-form-urlencoded
+        
+        
+        request.headers = ["Content-Type" : "image/png"]
         
         //let request = Request(url: "/" + kUsersEndPoint + "/" + userId + "/" + kImagesEndPoint + "/" + fileName + "/" + displayName, method: HttpMethod.POST)
         
@@ -310,6 +315,19 @@ class BluemixDataManager: NSObject {
             if let error = error {
                 print ("Error uploading image :: \(error)")
             } else {
+                
+                 var dict = Utils.convertResponseToDictionary(response)
+                print(dict)
+                var user = [String : AnyObject]()
+                
+                user["name"] = "Test User"
+                user["_id"] = "1234"
+                dict!["user"] = user
+                print(dict)
+                
+                let image = Image(dict!)
+                
+                
                 print ("Success uploading image :: \(response?.responseText)")
             }
         })

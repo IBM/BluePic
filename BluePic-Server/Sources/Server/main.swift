@@ -39,14 +39,16 @@ import CFEnvironment
 Log.logger = HeliumLogger()
 
 // Define "global" variables for module
-let router = Router()
+let router: Router = Router()
 let database: Database
 let config: Configuration
+let objStoreConnProperties: ObjectStoreConnProps
 
 do {
   // Create Configuration object
   config = try Configuration()
   database = try config.getDatabase(dbName: "bluepic_db")
+  objStoreConnProperties = try config.getObjectStoreConnProps()
 
   // Define routes
   defineRoutes()

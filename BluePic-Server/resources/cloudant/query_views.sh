@@ -24,7 +24,7 @@ source ./parse_inputs.sh
 
 # Get all images
 echo "Querying images view..."
-curl -X GET https://$username.cloudant.com/$database/_design/main_design/_view/images?include_docs=true -u $username:$password
+curl -g -X GET "https://$username.cloudant.com/$database/_design/main_design/_view/images?include_docs=true&descending=true" -u $username:$password
 echo
 echo
 
