@@ -2,11 +2,11 @@
   "docs": [
     {
       "_id": "2000",
-      "fileName": "rush.jpg",
+      "fileName": "rush.png",
       "caption": "Rush",
-      "contentType": "image/jpg",
-      "width": 90,
-      "height": 90,
+      "contentType": "image/png",
+      "width": 236,
+      "height": 236,
       "tags": [
         {
           "label": "rush",
@@ -37,11 +37,11 @@
     },
     {
       "_id": "2001",
-      "fileName": "bridge.jpg",
+      "fileName": "bridge.png",
       "caption": "Bridge",
-      "contentType": "image/jpg",
-      "width": 90,
-      "height": 90,
+      "contentType": "image/png",
+      "width": 600,
+      "height": 900,
       "tags": [
         {
           "label": "bridge",
@@ -68,11 +68,11 @@
     },
     {
       "_id": "2002",
-      "fileName": "car.jpg",
+      "fileName": "car.png",
       "caption": "Car",
-      "contentType": "image/jpg",
-      "width": 90,
-      "height": 90,
+      "contentType": "image/png",
+      "width": 600,
+      "height": 398,
       "tags": [
         {
           "label": "car",
@@ -91,11 +91,11 @@
     },
     {
       "_id": "2003",
-      "fileName": "church.jpg",
+      "fileName": "church.png",
       "caption": "Church",
-      "contentType": "image/jpg",
-      "width": 90,
-      "height": 90,
+      "contentType": "image/png",
+      "width": 600,
+      "height": 450,
       "tags": [
         {
           "label": "nature",
@@ -122,17 +122,12 @@
     },
     {
       "_id": "2004",
-      "fileName": "city.jpg",
+      "fileName": "city.png",
       "caption": "City",
-      "contentType": "image/jpg",
-      "width": 90,
-      "height": 90,
-      "tags": [
-        {
-          "label": "city",
-          "confidence": 90
-        }
-      ],
+      "contentType": "image/png",
+      "width": 600,
+      "height": 450,
+      "tags": [],
       "location": {
         "name": "New York, New York",
         "latitude": 34.53,
@@ -145,11 +140,11 @@
     },
     {
       "_id": "2005",
-      "fileName": "concert.jpg",
+      "fileName": "concert.png",
       "caption": "Concert",
-      "contentType": "image/jpg",
-      "width": 90,
-      "height": 90,
+      "contentType": "image/png",
+      "width": 600,
+      "height": 400,
       "tags": [
         {
           "label": "person",
@@ -168,11 +163,11 @@
     },
     {
       "_id": "2006",
-      "fileName": "flower_1.jpg",
+      "fileName": "flower_1.png",
       "caption": "Flower",
-      "contentType": "image/jpg",
-      "width": 90,
-      "height": 90,
+      "contentType": "image/png",
+      "width": 600,
+      "height": 400,
       "tags": [
         {
           "label": "flower",
@@ -195,11 +190,11 @@
     },
     {
       "_id": "2007",
-      "fileName": "flower_2.jpg",
+      "fileName": "flower_2.png",
       "caption": "Flower",
-      "contentType": "image/jpg",
-      "width": 90,
-      "height": 90,
+      "contentType": "image/png",
+      "width": 600,
+      "height": 400,
       "tags": [
         {
           "label": "flower",
@@ -222,11 +217,11 @@
     },
     {
       "_id": "2008",
-      "fileName": "nature.jpg",
+      "fileName": "nature.png",
       "caption": "Nature",
-      "contentType": "image/jpg",
-      "width": 90,
-      "height": 90,
+      "contentType": "image/png",
+      "width": 600,
+      "height": 399,
       "tags": [
         {
           "label": "nature",
@@ -257,11 +252,11 @@
     },
     {
       "_id": "2009",
-      "fileName": "person.jpg",
+      "fileName": "person.png",
       "caption": "Person",
-      "contentType": "image/jpg",
-      "width": 90,
-      "height": 90,
+      "contentType": "image/png",
+      "width": 600,
+      "height": 900,
       "tags": [
         {
           "label": "sunset",
@@ -280,11 +275,11 @@
     },
     {
       "_id": "2010",
-      "fileName": "road.jpg",
+      "fileName": "road.png",
       "caption": "Road",
-      "contentType": "image/jpg",
-      "width": 90,
-      "height": 90,
+      "contentType": "image/png",
+      "width": 600,
+      "height": 402,
       "tags": [
         {
           "label": "road",
