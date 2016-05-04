@@ -52,6 +52,8 @@ class FeedViewController: UIViewController {
 
         setupCollectionView()
         setupViewModel()
+        
+        viewModel.repullForNewData()
  
     }
     

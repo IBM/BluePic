@@ -55,8 +55,8 @@ class LoginViewModel: NSObject {
                         NSUserDefaults.standardUserDefaults().synchronize()
                         
                         //add container once to object storage
-                        self.createObjectStorageContainer(userID)
-                        
+                        //self.createObjectStorageContainer(userID)
+                        self.fbAuthCallback(true)
                     }
                 }
             }

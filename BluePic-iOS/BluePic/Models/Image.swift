@@ -17,6 +17,8 @@ class Image: NSObject {
     var timeStamp : NSDate?
     var url : String?
     var usersName : String?
+    var width : CGFloat?
+    var height : CGFloat?
     
     init?(_ dict : [String : AnyObject]) {
         

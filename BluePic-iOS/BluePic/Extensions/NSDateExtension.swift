@@ -156,7 +156,7 @@ extension NSDate {
      
      - returns: String
      */
-    private class func timeSinceDateString(date:NSDate) -> String {
+    class func timeSinceDateString(date:NSDate) -> String {
         if weeksFrom(date)   > 0 { return "\(weeksFrom(date))w"   }
         if daysFrom(date)    > 0 { return "\(daysFrom(date))d"    }
         if hoursFrom(date)   > 0 { return "\(hoursFrom(date))h"   }

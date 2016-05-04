@@ -135,9 +135,10 @@ class FacebookDataManager: NSObject {
                         
                             print("Got facebook auth token for user \(userName) with id \(userID)")
                             
-                            self.checkIfUserExistsOnCloudantAndPushIfNeeded()
+                            //self.checkIfUserExistsOnCloudantAndPushIfNeeded()
+                            self.tryToCreateNewUser(callback)
                             
-                            callback(networkRequest: NetworkRequest.Success)
+                            //callback(networkRequest: NetworkRequest.Success)
                         }
                     }
                     else {
@@ -155,6 +156,24 @@ class FacebookDataManager: NSObject {
             }
             
             })
+        
+    }
+    
+    func tryToCreateNewUser(callback : ((networkRequest: NetworkRequest) -> ())){
+        
+        BluemixDataManager.SharedInstance.createNewUserIfUserDoesntAlreadyExistElseReturnExistingUser(self.fbUniqueUserID!, name: self.fbUserDisplayName!, result: {
+            user in
+            
+            if(user != nil){
+                callback( networkRequest: NetworkRequest.Success)
+            }
+            else{
+                callback( networkRequest: NetworkRequest.Failure)
+            }
+            
+  
+        })
+    
         
     }
     
@@ -248,23 +267,26 @@ class FacebookDataManager: NSObject {
      */
     func tryToShowLoginScreen() {
         //authenticate with object storage every time opening app, try to show facebook login once completed
-        if (!ObjectStorageDataManager.SharedInstance.objectStorageClient.isAuthenticated()) { //try to authenticate if not authenticated
-            print("Attempting to authenticate with Object storage...")
-            ObjectStorageDataManager.SharedInstance.objectStorageClient.authenticate({() in
-                    print("success authenticating with object storage!")
-                    self.showLoginIfUserNotAuthenticated()
-                }, onFailure: {(error) in
-                    print("error authenticating with object storage: \(error)")
-                    DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.ObjectStorageAuthError)
-            })
-        }
-        else { //if already authenticated with object storage, just try to show facebook login
-            print("Object storage already authenticated somehow!")
-            self.showLoginIfUserNotAuthenticated()
-            
-        }
+//        if (!ObjectStorageDataManager.SharedInstance.objectStorageClient.isAuthenticated()) { //try to authenticate if not authenticated
+//            print("Attempting to authenticate with Object storage...")
+//            ObjectStorageDataManager.SharedInstance.objectStorageClient.authenticate({() in
+//                    print("success authenticating with object storage!")
+//                    self.showLoginIfUserNotAuthenticated()
+//                }, onFailure: {(error) in
+//                    print("error authenticating with object storage: \(error)")
+//                    DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.ObjectStorageAuthError)
+//            })
+//        }
+//        else { //if already authenticated with object storage, just try to show facebook login
+//            print("Object storage already authenticated somehow!")
+//            self.showLoginIfUserNotAuthenticated()
+//            
+//        }
+        
+        self.showLoginIfUserNotAuthenticated()
    
     }
+    
     
     
     

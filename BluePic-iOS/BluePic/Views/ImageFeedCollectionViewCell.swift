@@ -56,7 +56,7 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
      - parameter timeStamp:   Double?
      - parameter fileName:    String?
      */
-    func setupData(url : String?, image : UIImage?, displayName : String?, ownerName: String?, timeStamp: Double?, fileName : String?){
+    func setupData(url : String?, image : UIImage?, displayName : String?, ownerName: String?, timeStamp: NSDate?, fileName : String?){
      
         //set the image view's image
         self.setImageView(url, fileName: fileName)
@@ -73,7 +73,7 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
         
         //set the time since posted label's text
         if let tStamp = timeStamp {
-           timeSincePostedLabel.text = NSDate.timeStringSinceIntervalSinceReferenceDate(tStamp)
+           timeSincePostedLabel.text = NSDate.timeSinceDateString(tStamp)
         }
 
     }

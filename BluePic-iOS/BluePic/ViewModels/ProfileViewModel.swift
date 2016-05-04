@@ -20,7 +20,8 @@ import UIKit
 class ProfileViewModel: NSObject {
     
     //array that holds all that pictures that are displayed in the collection view
-    var pictureDataArray = [Picture]()
+    //var pictureDataArray = [Picture]()
+    var imageDataArray = [Image]()
     
     //callback used to tell the ProfileViewController when to refresh its collection view
     var refreshVCCallback : (()->())!
@@ -88,14 +89,14 @@ class ProfileViewModel: NSObject {
      */
     func addUsersLastPhotoTakenToPictureDataArrayAndRefreshCollectionView(){
         
-        let lastPhotoTaken = CameraDataManager.SharedInstance.lastPictureObjectTaken
-        
-        var lastPhotoTakenArray = [Picture]()
-        lastPhotoTakenArray.append(lastPhotoTaken)
-        
-        pictureDataArray = lastPhotoTakenArray + pictureDataArray
-        
-        callRefreshCallBack()
+//        let lastPhotoTaken = CameraDataManager.SharedInstance.lastPictureObjectTaken
+//        
+//        var lastPhotoTakenArray = [Picture]()
+//        lastPhotoTakenArray.append(lastPhotoTaken)
+//        
+//        imageDataArray = lastPhotoTakenArray + imageDataArray
+//        
+//        callRefreshCallBack()
         
     }
     
@@ -105,12 +106,29 @@ class ProfileViewModel: NSObject {
      Method gets the picture objects from cloudant based on the facebook unique user id. When this completes it tells the profile view controller to refresh its collection view
      */
     func getPictureObjects(){
-        pictureDataArray = CloudantSyncDataManager.SharedInstance!.getPictureObjects(FacebookDataManager.SharedInstance.fbUniqueUserID!)
-        hasRecievedDataFromCloudant = true
         
-        dispatch_async(dispatch_get_main_queue()) {
-            self.callRefreshCallBack()
-        }
+        BluemixDataManager.SharedInstance.getImagesByUserId(FacebookDataManager.SharedInstance.fbUniqueUserID!, usersName: FacebookDataManager.SharedInstance.fbUserDisplayName!, result: { images in
+            
+            
+            if(images != nil){
+                self.imageDataArray = images!
+                dispatch_async(dispatch_get_main_queue()) {
+                    self.callRefreshCallBack()
+                }
+                
+            }
+            
+            
+            
+            
+        })
+        
+        //pictureDataArray = CloudantSyncDataManager.SharedInstance!.getPictureObjects(FacebookDataManager.SharedInstance.fbUniqueUserID!)
+        hasRecievedDataFromCloudant = true
+//        
+//        dispatch_async(dispatch_get_main_queue()) {
+//            self.callRefreshCallBack()
+//        }
     }
     
     /**
@@ -146,11 +164,11 @@ class ProfileViewModel: NSObject {
      */
     func numberOfItemsInSection(section : Int) -> Int {
         
-        if(pictureDataArray.count == 0 && hasRecievedDataFromCloudant == true) {
+        if(imageDataArray.count == 0 && hasRecievedDataFromCloudant == true) {
             return kNumberOfCellsWhenUserHasNoPhotos
         }
         else {
-            return pictureDataArray.count
+            return imageDataArray.count
         }
     }
     
@@ -166,13 +184,13 @@ class ProfileViewModel: NSObject {
      */
     func sizeForItemAtIndexPath(indexPath : NSIndexPath, collectionView : UICollectionView, heightForEmptyProfileCollectionViewCell : CGFloat) -> CGSize {
         
-        if(pictureDataArray.count == 0) {
+        if(imageDataArray.count == 0) {
             
             return CGSize(width: collectionView.frame.width, height: heightForEmptyProfileCollectionViewCell + kEmptyFeedCollectionViewCellBufferToAllowForScrolling)
         }
         else{
         
-            let picture = pictureDataArray[indexPath.row]
+            let picture = imageDataArray[indexPath.row]
         
         
             if let width = picture.width, let height = picture.height {
@@ -205,7 +223,7 @@ class ProfileViewModel: NSObject {
      */
     func setUpCollectionViewCell(indexPath : NSIndexPath, collectionView : UICollectionView) -> UICollectionViewCell {
         
-        if(pictureDataArray.count == 0){
+        if(imageDataArray.count == 0){
             
             let cell: EmptyFeedCollectionViewCell
             
@@ -220,10 +238,10 @@ class ProfileViewModel: NSObject {
         
             cell = collectionView.dequeueReusableCellWithReuseIdentifier("ProfileCollectionViewCell", forIndexPath: indexPath) as! ProfileCollectionViewCell
         
-            let picture = pictureDataArray[indexPath.row]
+            let picture = imageDataArray[indexPath.row]
         
             cell.setupData(picture.url,
-                image: picture.image,
+                image: nil,
                 displayName: picture.displayName,
                 timeStamp: picture.timeStamp,
                 fileName: picture.fileName
@@ -253,7 +271,7 @@ class ProfileViewModel: NSObject {
         
         header = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "ProfileHeaderCollectionReusableView", forIndexPath: indexPath) as! ProfileHeaderCollectionReusableView
         
-        header.setupData(FacebookDataManager.SharedInstance.fbUserDisplayName, numberOfShots: pictureDataArray.count, profilePictureURL : FacebookDataManager.SharedInstance.getUserFacebookProfilePictureURL())
+        header.setupData(FacebookDataManager.SharedInstance.fbUserDisplayName, numberOfShots: imageDataArray.count, profilePictureURL : FacebookDataManager.SharedInstance.getUserFacebookProfilePictureURL())
         
         return header
     }
