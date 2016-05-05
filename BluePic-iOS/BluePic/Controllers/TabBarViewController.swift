@@ -108,10 +108,10 @@ class TabBarViewController: UITabBarController {
             hideBackgroundImage()
         }
         else if(dataManagerNotification == DataManagerNotification.ObjectStorageAuthError){
-            showObjectStorageAuthErrorAlert()
+            //showObjectStorageAuthErrorAlert()
         }
         else if(dataManagerNotification == DataManagerNotification.ObjectStorageUploadError){
-            showObjectStorageUploadErrorAlert()
+            //showObjectStorageUploadErrorAlert()
         }
         else if(dataManagerNotification == DataManagerNotification.UserNotAuthenticated){
             presentLoginVC()
@@ -287,7 +287,7 @@ extension TabBarViewController: UITabBarControllerDelegate {
      - returns: Returns a boolean -- true if tab bar with show the selected tab, and false if it will not
      */
     func checkIfUserPressedSignInLater(showCameraPicker: Bool!) -> Bool! {
-        if NSUserDefaults.standardUserDefaults().boolForKey("hasPressedLater") == true {
+        if CurrentUser.willLoginLater {
             print("user not logged in, prompt login now!")
             presentLoginVCAnimated()
             return false
