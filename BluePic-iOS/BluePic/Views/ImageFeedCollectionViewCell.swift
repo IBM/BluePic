@@ -115,7 +115,7 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
             let id = fName + userID
             
             //check to see if there is an image cached in the camera data manager's picturesTakenDuringAppSessionById cache
-            if let img = CameraDataManager.SharedInstance.imagesTakenDuringAppSessionById[id] {
+            if let img = BluemixDataManager.SharedInstance.imagesTakenDuringAppSessionById[id] {
         
                 //hide loading placeholder view
                 self.loadingView.hidden = true
