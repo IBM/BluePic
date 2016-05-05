@@ -44,6 +44,8 @@ class CameraDataManager: NSObject {
     /// ConfirmationView to be shown after selecting or taking a photo (add a caption here)
     var confirmationView: CameraConfirmationView!
     
+    var lastImageTaken: Image!
+    
     /// Copy of last photo taken
     var lastPhotoTaken: UIImage!
     
@@ -172,7 +174,7 @@ class CameraDataManager: NSObject {
      Method called when user presses "post Photo" on confirmation view
      */
     func postPhoto() {
-        self.lastPhotoTakenCaption = self.confirmationView.titleTextField.text //save caption text
+        self.lastImageTaken.caption = self.confirmationView.titleTextField.text //save caption text
         self.confirmationView.endEditing(true) //dismiss keyboard first if shown
         self.confirmationView.userInteractionEnabled = false
         self.tabVC.view.userInteractionEnabled = false
@@ -181,7 +183,7 @@ class CameraDataManager: NSObject {
         self.confirmationView.postButton.hidden = true
         self.addImageToImageTakenDuringAppSessionByIdDictionary()
         //let picture = self.addPhotoToPictureUploadQueue()
-        let image = self.addImageToImageUploadQueue()
+        self.addImageToImageUploadQueue()
         
         //Dismiss Camera Confirmation View when user presses post photo to bring user back to image feed
         dismissCameraConfirmation()
@@ -191,7 +193,7 @@ class CameraDataManager: NSObject {
         
         //try upploading the image to object storage
         //tryToUploadImageToObjectStorage(picture)
-        tryToUploadImage(image)
+        tryToUploadImage(lastImageTaken)
     }
     
     func tryToUploadImage(image : Image){
@@ -243,12 +245,12 @@ class CameraDataManager: NSObject {
      */
     func addImageToImageTakenDuringAppSessionByIdDictionary(){
         
-        if let fileName = lastPhotoTakenName, let userID = CurrentUser.facebookUserId {
+        if let fileName = lastImageTaken.fileName, let userID = CurrentUser.facebookUserId {
             
             let id = fileName + userID
             
             print("setting is as \(id)")
-            imagesTakenDuringAppSessionById[id] = lastPhotoTaken
+            imagesTakenDuringAppSessionById[id] = lastImageTaken.image
             
         }
     }
@@ -258,28 +260,28 @@ class CameraDataManager: NSObject {
      
      - returns: Picture
      */
-    func addImageToImageUploadQueue() -> Image {
+    func addImageToImageUploadQueue() {
         
         //let image = UIImage(named: "yosemite")!
        
-        print("last photo taken name")
-        print(lastPhotoTakenName)
+        //print("last photo taken name")
+        //print(lastPhotoTakenName)
 //        BluemixDataManager.SharedInstance.postNewImage(CurrentUser.facebookUserId!, fileName: lastPhotoTakenName, displayName: lastPhotoTakenCaption, width: lastPhotoTakenWidth, height: lastPhotoTakenHeight, latitude: "37.864851", longitude: "119.538523", city: "Yosemite", image: UIImagePNGRepresentation(lastPhotoTaken)!)
 //        
  
         //// Below original code
         
-        let image = Image()
-        image.image = lastPhotoTaken
-        image.caption = lastPhotoTakenCaption
-        image.usersName = CurrentUser.fullName
-        image.width = lastPhotoTakenWidth
-        image.height = lastPhotoTakenHeight
-        image.timeStamp = NSDate()
-        image.fileName = lastPhotoTakenName
-        imageUploadQueue.append(image)
+//        let image = Image()
+//        image.image = lastPhotoTaken
+//        image.caption = lastPhotoTakenCaption
+//        image.usersName = CurrentUser.fullName
+//        image.width = lastPhotoTakenWidth
+//        image.height = lastPhotoTakenHeight
+//        image.timeStamp = NSDate()
+//        image.fileName = lastPhotoTakenName
+        imageUploadQueue.append(lastImageTaken)
         
-        return image
+        //return image
     }
     
     /**
@@ -357,15 +359,15 @@ class CameraDataManager: NSObject {
      
      - returns: CDTDocumentRevision?
      */
-    func createPictureDoc(picture : Picture) {
-        do {
-            try CloudantSyncDataManager.SharedInstance!.createPictureDoc(picture.displayName!, fileName: picture.fileName!, url: picture.url!, ownerID: CurrentUser.facebookUserId!, width: "\(picture.width!)", height: "\(picture.height!)")
-            
-        } catch {
-            print("cloudantCreatePictureFailure ERROR: \(error)")
-            DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantCreatePictureFailure)
-        }
-    }
+//    func createPictureDoc(picture : Picture) {
+//        do {
+//            try CloudantSyncDataManager.SharedInstance!.createPictureDoc(picture.displayName!, fileName: picture.fileName!, url: picture.url!, ownerID: CurrentUser.facebookUserId!, width: "\(picture.width!)", height: "\(picture.height!)")
+//            
+//        } catch {
+//            print("cloudantCreatePictureFailure ERROR: \(error)")
+//            DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantCreatePictureFailure)
+//        }
+//    }
 
     
     
@@ -487,32 +489,44 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
     {
         picker.dismissViewControllerAnimated(true, completion: nil)
         
+        self.lastImageTaken = Image()
+        
+        
         //show image on confirmationView, save a copy
         if let takenImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
             print("original image width: \(takenImage.size.width) height: \(takenImage.size.height)")
             if (takenImage.size.width > kResizeAllImagesToThisWidth) { //if image too big, shrink it down
-                self.lastPhotoTaken = UIImage.resizeImage(takenImage, newWidth: kResizeAllImagesToThisWidth)
+                //self.lastPhotoTaken = UIImage.resizeImage(takenImage, newWidth: kResizeAllImagesToThisWidth)
+                self.lastImageTaken.image = UIImage.resizeImage(takenImage, newWidth: kResizeAllImagesToThisWidth)
             }
             else {
-                self.lastPhotoTaken = takenImage
+                self.lastImageTaken.image = takenImage
+                //self.lastPhotoTaken = takenImage
             }
             
             //rotate image if necessary and then save photo
-            self.lastPhotoTaken = self.rotateImageIfNecessary(self.lastPhotoTaken)
-        
+            //self.lastPhotoTaken = self.rotateImageIfNecessary(self.lastPhotoTaken)
+            self.lastImageTaken.image = self.rotateImageIfNecessary(self.lastImageTaken.image)
+            
+            
+            
             //save width and height of photo
-            self.lastPhotoTakenWidth = self.lastPhotoTaken.size.width
-            self.lastPhotoTakenHeight = self.lastPhotoTaken.size.height
-            print("resized image width: \(self.lastPhotoTaken.size.width) height: \(self.lastPhotoTaken.size.height)")
+            self.lastImageTaken.width = self.lastImageTaken.image?.size.width
+            self.lastImageTaken.height = self.lastImageTaken.image?.size.height
+            
+            //self.lastPhotoTakenWidth = self.lastPhotoTaken.size.width
+            //self.lastPhotoTakenHeight = self.lastPhotoTaken.size.height
+            print("resized image width: \(self.lastImageTaken.image?.size.width) height: \(self.lastImageTaken.image?.size.height)")
             
             //set the confirmation view's photoImageView with the photo just chosen/taken
-            self.confirmationView.photoImageView.image = self.lastPhotoTaken
+            self.confirmationView.photoImageView.image = self.lastImageTaken.image
         
             //save name of image as current date and time
             let dateFormatter = NSDateFormatter()
             dateFormatter.dateFormat = "MM-dd-yyyy_HHmmss"
             let todaysDate = NSDate()
-            self.lastPhotoTakenName = dateFormatter.stringFromDate(todaysDate) + ".png"
+            self.lastImageTaken.fileName = dateFormatter.stringFromDate(todaysDate) + ".png"
+            //self.lastPhotoTakenName = dateFormatter.stringFromDate(todaysDate) + ".png"
             
             }
             //if image isn't available (iCloud photo in Photo stream not loaded yet)
