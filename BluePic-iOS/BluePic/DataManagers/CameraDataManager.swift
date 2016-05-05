@@ -44,6 +44,7 @@ class CameraDataManager: NSObject {
     /// ConfirmationView to be shown after selecting or taking a photo (add a caption here)
     var confirmationView: CameraConfirmationView!
     
+    
     var lastImageTaken: Image!
     
     /// Constant for how wide all images should be constrained to when compressing for upload (600 results in ~1.2 MB photos)
@@ -103,10 +104,8 @@ class CameraDataManager: NSObject {
      */
     func openCamera()
     {
-
         if(UIImagePickerController .isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera))
         {
-            
             picker!.sourceType = UIImagePickerControllerSourceType.Camera
             self.tabVC.presentViewController(picker, animated: true, completion: { _ in
                 self.showCameraConfirmation()
@@ -160,90 +159,11 @@ class CameraDataManager: NSObject {
         self.confirmationView.loadingIndicator.startAnimating()
         self.confirmationView.cancelButton.hidden = true
         self.confirmationView.postButton.hidden = true
-        //self.addImageToImageTakenDuringAppSessionByIdDictionary()
-        //let picture = self.addPhotoToPictureUploadQueue()
-        //self.addImageToImageUploadQueue()
         
         //Dismiss Camera Confirmation View when user presses post photo to bring user back to image feed
         dismissCameraConfirmation()
         
-        //Send notification to view model's informing them that the user decided to post the photo
-        DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.UserDecidedToPostPhoto)
-        
-        //try upploading the image to object storage
-        //tryToUploadImageToObjectStorage(picture)
-        //tryToUploadImage(lastImageTaken)
-        
-        
         BluemixDataManager.SharedInstance.uploadImage(lastImageTaken)
-    }
-    
-    func tryToUploadImage(image : Image){
-        
-        if(imageUploadQueue.count == 1){
-            uploadImage(image)
-        }
-    }
-    
-    
-    
-    
-    
-    func uploadImage(image : Image){
-        
-        
-//        BluemixDataManager.SharedInstance.postNewImage(CurrentUser.facebookUserId!, fileName: image.fileName!, displayName: image.caption!, width: image.width!, height: image.height!, latitude: "37.864851", longitude: "119.538523", city: "Yosemite", image: UIImagePNGRepresentation(image.image!)!, callback: { success in
-//            
-//            
-//            if(success){
-//                self.removeImageFromImageUploadQueue(image)
-//            
-//                self.uploadImagesIfThereAreAnyLeftInTheQueue()
-//            }
-//            
-//        })
-    
-    }
-    
-    
-    func removeImageFromImageUploadQueue(image: Image){
-        
-        imageUploadQueue = imageUploadQueue.filter({ $0 !== image})
-        
-    }
-    
-    func uploadImagesIfThereAreAnyLeftInTheQueue(){
-        
-        if(imageUploadQueue.count > 0){
-            uploadImage(imageUploadQueue[0])
-        }
-    }
-    
-    
-    
-    
-    /**
-     Method adds the photo to the picturesTakenDuringAppSessionById cache to display the photo in the image feed while we wait for the photo to upload to.
-     */
-    func addImageToImageTakenDuringAppSessionByIdDictionary(){
-        
-        if let fileName = lastImageTaken.fileName, let userID = CurrentUser.facebookUserId {
-            
-            let id = fileName + userID
-            
-            print("setting is as \(id)")
-            imagesTakenDuringAppSessionById[id] = lastImageTaken.image
-            
-        }
-    }
-    
-    /**
-     Method creates a new picture object and adds it to the picture upload queue
-     
-     - returns: Picture
-     */
-    func addImageToImageUploadQueue() {
-        imageUploadQueue.append(lastImageTaken)
     }
     
     /**
@@ -265,126 +185,6 @@ class CameraDataManager: NSObject {
     
     
     /**
-     Method will start uploading an image to object storage if the picture uploadQueue only has 1 object in it. If it has more than one image in the picture upload queue then this means there is already a photo being uploaded. When this photo is finished being uploaded, then it will check the queue to see if there are any other images left to be uploaded.
-     
-     - parameter picture: Picture
-     */
-//    func tryToUploadImageToObjectStorage(picture : Picture){
-//        
-//        if(pictureUploadQueue.count == 1){
-//            uploadImageToObjectStorage(image)
-//        }
-//    }
-    
-    
-    /**
-     Method called to push image to object storage, on sucuess create picture document with url from object storage and push to cloudant sync if there are no more picture in the queue, else try uploading the rest of the photos in the queue
-     */
-//    func uploadImageToObjectStorage(picture : Picture) {
-//        print("uploading photo to object storage...")
-//        
-//        ObjectStorageDataManager.SharedInstance.objectStorageClient.uploadImage(CurrentUser.facebookUserId!, imageName: picture.fileName!, image: picture.image!,
-//            onSuccess: { (imageURL: String) in
-//                print("upload to object storage succeeded.")
-//                print("imageURL: \(imageURL)")
-//                
-//                //update picture object with new image url received from on success from Object Storage
-//                picture.url = imageURL
-//                
-//                //create the picture document with Cloudant Sync
-//                print("creating cloudant picture document...")
-//                self.createPictureDoc(picture)
-//                
-//                //Once picture has been added to Cloudant Sync, remove this picture from our picture upload queue
-//                self.removePictureFromPictureUploadQueue(picture)
-//                
-//                //tell view models that we have successfully uploading the picture to object storage and added the picture to cloudant sync
-//                DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.ObjectStorageUploadImageAndCloudantCreatePictureDocSuccess)
-//                
-//                //try to push new changes to cloudant sync if there are no more picture in the picture upload queue
-//                self.tryToPushToCloudantSync()
-//                
-//                //if there are more pictures in the picture upload queue, continue on to upload those pictures following the same process.
-//                self.uploadPhotosIfThereAreAnyLeftInTheQueue()
-//                
-//                
-//            }, onFailure: { (error) in
-//                print("upload to object storage failed!")
-//                print("error: \(error)")
-//                DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.ObjectStorageUploadError)
-//        })
-//    }
-
-    
-    /**
-     Method creates a picture doc before trying to upload to object storage
-     
-     - returns: CDTDocumentRevision?
-     */
-//    func createPictureDoc(picture : Picture) {
-//        do {
-//            try CloudantSyncDataManager.SharedInstance!.createPictureDoc(picture.displayName!, fileName: picture.fileName!, url: picture.url!, ownerID: CurrentUser.facebookUserId!, width: "\(picture.width!)", height: "\(picture.height!)")
-//            
-//        } catch {
-//            print("cloudantCreatePictureFailure ERROR: \(error)")
-//            DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantCreatePictureFailure)
-//        }
-//    }
-
-    
-    
-    /**
-     Method removes the picture parameter from the picture upload queue
-     
-     - parameter picture: Picture
-     */
-//    func removePictureFromPictureUploadQueue(picture : Picture){
-//        
-//        pictureUploadQueue = pictureUploadQueue.filter({ $0 !== picture})
-//        
-//    }
-    
-    
-    /**
-     Method will push the recent changes to cloudant sync if there are no more photos left in the picture upload queue
-     */
-//    func tryToPushToCloudantSync(){
-//        if(pictureUploadQueue.count == 0){
-//            do {
-//                try CloudantSyncDataManager.SharedInstance!.pushToRemoteDatabase()
-//            } catch {
-//                print("uploadImageToObjectStorage ERROR: \(error)")
-//                DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantPushDataFailure)
-//            }
-//        }
-//    }
-
-
-    
-    /**
-     If there are any pictures left in the picture upload queue, then try to upload this photo to object storage and cloudant sync
-     */
-//    func uploadPhotosIfThereAreAnyLeftInTheQueue(){
-//        
-//        if(pictureUploadQueue.count > 0){
-//            uploadImageToObjectStorage(pictureUploadQueue[0])
-//        }
-//    }
-    
-    
-    /**
-     Method cancels uploading a picture(s) to object storage and cloudant sync by clearing the picture upload cache and informing view models that the picture uploading has been canceled
-     */
-//    func cancelUploadingPictureToObjectStorage(){
-//        
-//        pictureUploadQueue = []
-//        
-//        DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.UserCanceledUploadingPhotos)
-//        
-//    }
-    
-    
-    /**
      Method to remove the confirmation view from memory when finished with it
      */
     func destroyConfirmationView() {
@@ -393,8 +193,7 @@ class CameraDataManager: NSObject {
         self.confirmationView = nil
     }
     
-    
-    
+
     /**
      Alert to be shown if photo couldn't be loaded from disk (iCloud photo stream photo not loaded, for example)
      */
@@ -460,27 +259,18 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
         if let takenImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
             print("original image width: \(takenImage.size.width) height: \(takenImage.size.height)")
             if (takenImage.size.width > kResizeAllImagesToThisWidth) { //if image too big, shrink it down
-                //self.lastPhotoTaken = UIImage.resizeImage(takenImage, newWidth: kResizeAllImagesToThisWidth)
                 self.lastImageTaken.image = UIImage.resizeImage(takenImage, newWidth: kResizeAllImagesToThisWidth)
             }
             else {
                 self.lastImageTaken.image = takenImage
-                //self.lastPhotoTaken = takenImage
             }
             
             //rotate image if necessary and then save photo
-            //self.lastPhotoTaken = self.rotateImageIfNecessary(self.lastPhotoTaken)
             self.lastImageTaken.image = self.rotateImageIfNecessary(self.lastImageTaken.image)
-            
-            
             
             //save width and height of photo
             self.lastImageTaken.width = self.lastImageTaken.image?.size.width
             self.lastImageTaken.height = self.lastImageTaken.image?.size.height
-            
-            //self.lastPhotoTakenWidth = self.lastPhotoTaken.size.width
-            //self.lastPhotoTakenHeight = self.lastPhotoTaken.size.height
-            print("resized image width: \(self.lastImageTaken.image?.size.width) height: \(self.lastImageTaken.image?.size.height)")
             
             //set the confirmation view's photoImageView with the photo just chosen/taken
             self.confirmationView.photoImageView.image = self.lastImageTaken.image
@@ -490,14 +280,12 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
             dateFormatter.dateFormat = "MM-dd-yyyy_HHmmss"
             let todaysDate = NSDate()
             self.lastImageTaken.fileName = dateFormatter.stringFromDate(todaysDate) + ".png"
-            //self.lastPhotoTakenName = dateFormatter.stringFromDate(todaysDate) + ".png"
-            
+
             }
             //if image isn't available (iCloud photo in Photo stream not loaded yet)
             else { 
                 self.destroyConfirmationView()
                 picker.dismissViewControllerAnimated(true, completion: { _ in
-                
                 
                     })
                 self.showPhotoCouldntBeChosenAlert()

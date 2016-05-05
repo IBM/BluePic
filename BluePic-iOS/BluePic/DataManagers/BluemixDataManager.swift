@@ -41,27 +41,6 @@ class BluemixDataManager: NSObject {
         }
     }
     
-    
-    
-    
-    
-//    class var facebookUserId: String? {
-//        get {
-//            if let userId = NSUserDefaults.standardUserDefaults().objectForKey("facebook_user_id") as? String {
-//                return userId
-//            }
-//            else{
-//                return nil
-//            }
-//        }
-//        set(userId) {
-//            
-//            NSUserDefaults.standardUserDefaults().setObject(userId, forKey: "facebook_user_id")
-//            NSUserDefaults.standardUserDefaults().synchronize()
-//        }
-//    }
-
-    
     /// photos that were taken during this app session
     var imagesTakenDuringAppSessionById = [String : UIImage]()
     
@@ -366,13 +345,13 @@ class BluemixDataManager: NSObject {
         })
     }
     
-    //users/:userId/images/:fileName/:displayName/:width/:height/:latitude/:longitude/:location - POST
-//    func postNewImage(userId : String, fileName : String, displayName : String, width : CGFloat, height : CGFloat, latitude : String, longitude : String, city : String,  image: NSData, callback : ((success : Bool)->())){
+    
+    
     func postNewImage(image : Image){
         
         NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImageUploadBegan.rawValue, object: nil)
     
-        
+        //TEMP HARDCODED
         let latitude = "37.864851"
         let longitude = "119.538523"
         let city = "Austin"
@@ -381,53 +360,22 @@ class BluemixDataManager: NSObject {
         
         let requestURL = tempURL.stringByAddingPercentEncodingWithAllowedCharacters( NSCharacterSet.URLQueryAllowedCharacterSet())!
 
-        //"multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-        print(requestURL)
         let request = Request(url: requestURL, method: HttpMethod.POST)
-        
-        
-        //image/png
-        //application/x-www-form-urlencoded
-        
-        
+  
         request.headers = ["Content-Type" : "image/png"]
         
-        //let request = Request(url: "/" + kUsersEndPoint + "/" + userId + "/" + kImagesEndPoint + "/" + fileName + "/" + displayName, method: HttpMethod.POST)
-        
-        //NEED TO ADD IMAGE TO PAYLOAD
-        //request.headers = ["name": name]
-        //request.queryParameters = ["foo":"bar"]
-        
-     
-        
         request.sendData(UIImagePNGRepresentation(image.image!)!, completionHandler: { (response, error) -> Void in
-            if let error = error {
-                print ("Error uploading image :: \(error)")
-                //callback(success: false)
+            
+            if(error != nil){
                 NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImageUploadFailure.rawValue, object: nil)
             } else {
-                
-//                 var dict = Utils.convertResponseToDictionary(response)
-//                //print(dict)
-//                var user = [String : AnyObject]()
-//                
-//                user["name"] = "Test User"
-//                user["_id"] = "1234"
-//                dict!["user"] = user
-//                print(dict)
-//                
-//                let image = Image(dict!)
-//                
-//                print(image?.url!)
-                
+  
                 self.removeImageFromImageUploadQueue(image)
                 
                 self.uploadImagesIfThereAreAnyLeftInTheQueue()
                 
-                //callback(success: true)
                 NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImageUploadSuccess.rawValue, object: nil)
-                
-                //print ("Success uploading image :: \(response?.responseText)")
+ 
             }
         })
     
@@ -446,16 +394,13 @@ extension BluemixDataManager {
     func uploadImage(image : Image){
         
         self.addImageToImageTakenDuringAppSessionByIdDictionary(image)
-        //let picture = self.addPhotoToPictureUploadQueue()
         self.addImageToImageUploadQueue(image)
 
-        
         tryToPostNewImage(image)
  
-        
     }
     
-    func tryToPostNewImage(image : Image){
+    private func tryToPostNewImage(image : Image){
         
         if(imageUploadQueue.count == 1){
             postNewImage(image)
@@ -463,32 +408,28 @@ extension BluemixDataManager {
     }
 
     
-    func removeImageFromImageUploadQueue(image: Image){
+    private func removeImageFromImageUploadQueue(image: Image){
         
         imageUploadQueue = imageUploadQueue.filter({ $0 !== image})
         
     }
     
     
-    func uploadImagesIfThereAreAnyLeftInTheQueue(){
+    private func uploadImagesIfThereAreAnyLeftInTheQueue(){
         
         if(imageUploadQueue.count > 0){
-            
             postNewImage(imageUploadQueue[0])
-            //uploadImage(imageUploadQueue[0])
         }
     }
     
     /**
      Method adds the photo to the picturesTakenDuringAppSessionById cache to display the photo in the image feed while we wait for the photo to upload to.
      */
-    func addImageToImageTakenDuringAppSessionByIdDictionary(image : Image){
+    private func addImageToImageTakenDuringAppSessionByIdDictionary(image : Image){
         
-        if let fileName = image.fileName, let userID = CurrentUser.facebookUserId {
+        if let fileName = image.fileName, let userID = image.usersId {
             
             let id = fileName + userID
-            
-            print("setting is as \(id)")
             imagesTakenDuringAppSessionById[id] = image.image
             
         }
@@ -499,7 +440,7 @@ extension BluemixDataManager {
      
      - returns: Picture
      */
-    func addImageToImageUploadQueue(image : Image) {
+    private func addImageToImageUploadQueue(image : Image) {
         imageUploadQueue.append(image)
     }
 

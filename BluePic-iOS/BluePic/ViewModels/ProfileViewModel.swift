@@ -148,14 +148,14 @@ class ProfileViewModel: NSObject {
     /**
      method repulls for new data from cloudant
      */
-    func repullForNewData(){
-        do {
-            try CloudantSyncDataManager.SharedInstance!.pullFromRemoteDatabase()
-        } catch {
-            print("repullForNewData error: \(error)")
-            DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantPullDataFailure)
-        }
-    }
+//    func repullForNewData(){
+//        do {
+//           // try CloudantSyncDataManager.SharedInstance!.pullFromRemoteDatabase()
+//        } catch {
+//            print("repullForNewData error: \(error)")
+//            DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantPullDataFailure)
+//        }
+//    }
     
     
     
