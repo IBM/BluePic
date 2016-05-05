@@ -81,8 +81,10 @@ func getImageJSON(fromRequest request: RouterRequest) throws -> JSON {
   let lat = request.params["latitude"],
   let long = request.params["longitude"],
   let location = request.params["location"],
-  let width = request.params["width"],
-  let height = request.params["height"],
+  let w = request.params["width"],
+  let h = request.params["height"],
+  let width = Float(w),
+  let height = Float(h),
   let latitude = Float(lat),
   let longitude = Float(long) else {
     throw ProcessingError.Image("Invalid image document!")
