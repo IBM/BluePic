@@ -94,23 +94,15 @@ func getImageJSON(fromRequest request: RouterRequest) throws -> JSON {
     throw ProcessingError.Image("Invalid image document!")
   }
 
-  // Massage fields
-  #if os(Linux)
-  let dateStr = NSDate().descriptionWithLocale(nil).bridge()
-  let uploadedTs = dateStr.substringToIndex(10) + "T" + dateStr.substringWithRange(NSMakeRange(11, 8))
-  let imageName = caption.stringByReplacingOccurrencesOfString("%20", withString: " ")
-  let locationName = location.stringByReplacingOccurrencesOfString("%20", withString: " ")
-  #else
-  let dateStr = NSDate().description.bridge()
-  let uploadedTs = dateStr.substring(to: 10) + "T" + dateStr.substring(with:NSMakeRange(11, 8))
-  let imageName = caption.replacingOccurrences(of: "%20", with: " ")
-  let locationName = location.replacingOccurrences(of: "%20", with: " ")
-  #endif
+  let uploadedTs = StringUtils.currentTimestamp()
+  let imageName = StringUtils.decodeWhiteSpace(inString: caption)
+  let locationName = StringUtils.decodeWhiteSpace(inString: location)
 
   let whereabouts: JSONDictionary = ["latitude": latitude, "longitude": longitude, "name": locationName]
   let imageDocument: JSONDictionary = ["location": whereabouts, "contentType": contentType,
   "fileName": fileName, "userId": userId, "caption": imageName, "uploadedTs": uploadedTs,
   "width": width, "height": height, "type": "image"]
+
   return JSON(imageDocument)
 }
 
