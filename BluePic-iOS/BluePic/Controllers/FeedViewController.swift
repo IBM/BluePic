@@ -169,7 +169,7 @@ class FeedViewController: UIViewController {
      */
     func tryToStartLoadingAnimation(){
         
-        if(CameraDataManager.SharedInstance.pictureUploadQueue.count > 0){
+        if(CameraDataManager.SharedInstance.imageUploadQueue.count > 0){
             logoImageView.startRotating(1)
         }
         
@@ -181,7 +181,7 @@ class FeedViewController: UIViewController {
      */
     func tryToStopLoadingAnimation(){
         
-        if(CameraDataManager.SharedInstance.pictureUploadQueue.count == 0){
+        if(CameraDataManager.SharedInstance.imageUploadQueue.count == 0){
             
             logoImageView.stopRotating()
             

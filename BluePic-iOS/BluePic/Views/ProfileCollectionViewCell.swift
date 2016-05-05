@@ -107,7 +107,7 @@ class ProfileCollectionViewCell: UICollectionViewCell {
             let id = fName + userID
             
             //check to see if there is an image cached in the camera data manager's picturesTakenDuringAppSessionById cache
-            if let img = CameraDataManager.SharedInstance.picturesTakenDuringAppSessionById[id] {
+            if let img = CameraDataManager.SharedInstance.imagesTakenDuringAppSessionById[id] {
                 
                 //hide loading placeholder view
                 self.loadingView.hidden = true

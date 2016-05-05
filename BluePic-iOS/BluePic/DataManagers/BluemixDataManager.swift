@@ -14,6 +14,19 @@ enum BlueMixDataManagerError: ErrorType {
     case DocDoesNotExist
 }
 
+
+enum BluemixDataManagerNotification : String {
+    
+    case ImagesRefreshed = "ImagesRefreshed"
+    case ImageUploadBegan = "ImageUploadBegan"
+    case ImageUploadSuccess = "ImageUploadSuccess"
+    case ImageUploadFailure = "ImageUploadFailure"
+    
+    
+}
+
+
+
 class BluemixDataManager: NSObject {
     
     static let SharedInstance: BluemixDataManager = {
@@ -23,6 +36,9 @@ class BluemixDataManager: NSObject {
         return manager
         
     }()
+    
+    var images = [Image]()
+    
     
     //End Points
     private let kImagesEndPoint = "images"
@@ -114,7 +130,18 @@ class BluemixDataManager: NSObject {
         
     }
 
-    
+    func getImages(){
+        
+        self.getImages({ images in
+            
+            if let images = images {
+                self.images = images
+                NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImagesRefreshed.rawValue, object: nil)
+            }
+ 
+        })
+        
+    }
     
     
     
@@ -311,7 +338,11 @@ class BluemixDataManager: NSObject {
     }
     
     //users/:userId/images/:fileName/:displayName/:width/:height/:latitude/:longitude/:location - POST
-    func postNewImage(userId : String, fileName : String, displayName : String, width : CGFloat, height : CGFloat, latitude : String, longitude : String, city : String,  image: NSData){
+    func postNewImage(userId : String, fileName : String, displayName : String, width : CGFloat, height : CGFloat, latitude : String, longitude : String, city : String,  image: NSData, callback : ((success : Bool)->())){
+        
+        
+        NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImageUploadBegan.rawValue, object: nil)
+        
         
         let tempURL = getBluemixBaseRequestURL() + "/" + kUsersEndPoint + "/" + userId + "/" + kImagesEndPoint + "/" + fileName + "/" + displayName + "/" + "\(width)" + "/" + "\(height)" + "/" + latitude + "/" + longitude + "/" + city
         
@@ -339,6 +370,8 @@ class BluemixDataManager: NSObject {
         request.sendData(image, completionHandler: { (response, error) -> Void in
             if let error = error {
                 print ("Error uploading image :: \(error)")
+                callback(success: false)
+                NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImageUploadFailure.rawValue, object: nil)
             } else {
                 
                  var dict = Utils.convertResponseToDictionary(response)
@@ -354,6 +387,8 @@ class BluemixDataManager: NSObject {
                 
                 print(image?.url!)
                 
+                callback(success: true)
+                NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImageUploadSuccess.rawValue, object: nil)
                 
                 //print ("Success uploading image :: \(response?.responseText)")
             }

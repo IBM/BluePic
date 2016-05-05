@@ -19,6 +19,12 @@ class Image: NSObject {
     var usersName : String?
     var width : CGFloat?
     var height : CGFloat?
+    var image : UIImage?
+    
+    
+    override init() {
+        
+    }
     
     init?(_ dict : [String : AnyObject]) {
         
@@ -41,13 +47,15 @@ class Image: NSObject {
                 self.usersName = usersName
                 
                 
-                if let width = dict["width"] as? String,
-                    let height = dict["height"] as? String,
-                    let widthNSNumber = NSNumberFormatter().numberFromString(width),
-                    let heightNSNumber = NSNumberFormatter().numberFromString(height) {
+//                ,
+//                let widthNSNumber = NSNumberFormatter().numberFromString(width),
+//                let heightNSNumber = NSNumberFormatter().numberFromString(height) {
+                
+                if let width = dict["width"] as? CGFloat,
+                    let height = dict["height"] as? CGFloat {
                     
-                    self.width = CGFloat(widthNSNumber)
-                    self.height = CGFloat(heightNSNumber)
+                    self.width = width
+                    self.height = height
 
                 }
                 
