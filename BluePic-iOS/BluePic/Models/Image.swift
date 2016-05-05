@@ -61,6 +61,17 @@ class Image: NSObject {
 
                 }
                 
+                if let width = dict["width"] as? String,
+                let height = dict["height"] as? String,
+                let widthNSNumber = NSNumberFormatter().numberFromString(width),
+                let heightNSNumber = NSNumberFormatter().numberFromString(height) {
+ 
+                    self.width = CGFloat(widthNSNumber)
+                    self.height = CGFloat(heightNSNumber)
+                
+                }
+                
+                
                 //set timeStamp
                 let dateFormatter = NSDateFormatter()
                 dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSZ"

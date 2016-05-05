@@ -37,7 +37,12 @@ class BluemixDataManager: NSObject {
     
     var currentUserImages : [Image] {
         get {
-            return images.filter({ $0.usersId! == CurrentUser.facebookUserId!})
+            if(CurrentUser.facebookUserId != nil){
+                return images.filter({ $0.usersId! == CurrentUser.facebookUserId!})
+            }
+            else{
+                return []
+            }
         }
     }
     
