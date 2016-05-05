@@ -17,6 +17,7 @@ class Image: NSObject {
     var timeStamp : NSDate?
     var url : String?
     var usersName : String?
+    var usersId : String?
     var width : CGFloat?
     var height : CGFloat?
     var image : UIImage?
@@ -38,14 +39,15 @@ class Image: NSObject {
                 let url = dict["url"] as? String,
                 let timeStamp = dict["uploadedTs"] as? String,
                 let user = dict["user"] as? [String : AnyObject],
-                let usersName = user["name"] as? String {
+                let usersName = user["name"] as? String,
+                let usersId = user["_id"] as? String {
                 
                 self.id = id
                 self.caption = caption
                 self.fileName = fileName
                 self.url = url
                 self.usersName = usersName
-                
+                self.usersId = usersId
                 
 //                ,
 //                let widthNSNumber = NSNumberFormatter().numberFromString(width),

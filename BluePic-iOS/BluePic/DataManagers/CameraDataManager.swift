@@ -46,27 +46,6 @@ class CameraDataManager: NSObject {
     
     var lastImageTaken: Image!
     
-    /// Copy of last photo taken
-    var lastPhotoTaken: UIImage!
-    
-    /// Copy of name of last photo taken
-    var lastPhotoTakenName: String!
-    
-    /// Copy of last photo taken url
-    var lastPhotoTakenURL: String!
-    
-    /// Copy of last photo taken caption
-    var lastPhotoTakenCaption: String!
-    
-    /// Copy of width of last photo
-    var lastPhotoTakenWidth : CGFloat!
-    
-    /// Copy of height of last photo
-    var lastPhotoTakenHeight : CGFloat!
-    
-    /// Copy of last photo taken Picture Model Object
-    var lastPictureObjectTaken : Picture!
-    
     /// Constant for how wide all images should be constrained to when compressing for upload (600 results in ~1.2 MB photos)
     let kResizeAllImagesToThisWidth = CGFloat(600)
     
@@ -181,9 +160,9 @@ class CameraDataManager: NSObject {
         self.confirmationView.loadingIndicator.startAnimating()
         self.confirmationView.cancelButton.hidden = true
         self.confirmationView.postButton.hidden = true
-        self.addImageToImageTakenDuringAppSessionByIdDictionary()
+        //self.addImageToImageTakenDuringAppSessionByIdDictionary()
         //let picture = self.addPhotoToPictureUploadQueue()
-        self.addImageToImageUploadQueue()
+        //self.addImageToImageUploadQueue()
         
         //Dismiss Camera Confirmation View when user presses post photo to bring user back to image feed
         dismissCameraConfirmation()
@@ -193,7 +172,10 @@ class CameraDataManager: NSObject {
         
         //try upploading the image to object storage
         //tryToUploadImageToObjectStorage(picture)
-        tryToUploadImage(lastImageTaken)
+        //tryToUploadImage(lastImageTaken)
+        
+        
+        BluemixDataManager.SharedInstance.uploadImage(lastImageTaken)
     }
     
     func tryToUploadImage(image : Image){
@@ -210,16 +192,16 @@ class CameraDataManager: NSObject {
     func uploadImage(image : Image){
         
         
-        BluemixDataManager.SharedInstance.postNewImage(CurrentUser.facebookUserId!, fileName: image.fileName!, displayName: image.caption!, width: image.width!, height: image.height!, latitude: "37.864851", longitude: "119.538523", city: "Yosemite", image: UIImagePNGRepresentation(image.image!)!, callback: { success in
-            
-            
-            if(success){
-                self.removeImageFromImageUploadQueue(image)
-            
-                self.uploadImagesIfThereAreAnyLeftInTheQueue()
-            }
-            
-        })
+//        BluemixDataManager.SharedInstance.postNewImage(CurrentUser.facebookUserId!, fileName: image.fileName!, displayName: image.caption!, width: image.width!, height: image.height!, latitude: "37.864851", longitude: "119.538523", city: "Yosemite", image: UIImagePNGRepresentation(image.image!)!, callback: { success in
+//            
+//            
+//            if(success){
+//                self.removeImageFromImageUploadQueue(image)
+//            
+//                self.uploadImagesIfThereAreAnyLeftInTheQueue()
+//            }
+//            
+//        })
     
     }
     
@@ -261,27 +243,7 @@ class CameraDataManager: NSObject {
      - returns: Picture
      */
     func addImageToImageUploadQueue() {
-        
-        //let image = UIImage(named: "yosemite")!
-       
-        //print("last photo taken name")
-        //print(lastPhotoTakenName)
-//        BluemixDataManager.SharedInstance.postNewImage(CurrentUser.facebookUserId!, fileName: lastPhotoTakenName, displayName: lastPhotoTakenCaption, width: lastPhotoTakenWidth, height: lastPhotoTakenHeight, latitude: "37.864851", longitude: "119.538523", city: "Yosemite", image: UIImagePNGRepresentation(lastPhotoTaken)!)
-//        
- 
-        //// Below original code
-        
-//        let image = Image()
-//        image.image = lastPhotoTaken
-//        image.caption = lastPhotoTakenCaption
-//        image.usersName = CurrentUser.fullName
-//        image.width = lastPhotoTakenWidth
-//        image.height = lastPhotoTakenHeight
-//        image.timeStamp = NSDate()
-//        image.fileName = lastPhotoTakenName
         imageUploadQueue.append(lastImageTaken)
-        
-        //return image
     }
     
     /**
@@ -491,6 +453,8 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
         
         self.lastImageTaken = Image()
         
+        lastImageTaken.usersId = CurrentUser.facebookUserId
+        lastImageTaken.usersName = CurrentUser.fullName
         
         //show image on confirmationView, save a copy
         if let takenImage = info[UIImagePickerControllerOriginalImage] as? UIImage {

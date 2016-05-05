@@ -77,6 +77,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         preLoadKeyboardToPrevantLaggyKeyboardInCameraConfirmationScreen()
         
+        BluemixDataManager.SharedInstance.getImages()
+        
         return self.initializeBackendForFacebookAuth(application, launchOptions: launchOptions)
     }
     

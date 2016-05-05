@@ -90,6 +90,8 @@ class FeedViewModel: NSObject {
 
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(FeedViewModel.refreshImages), name: BluemixDataManagerNotification.ImageUploadBegan.rawValue, object: nil)
         
+        refreshImages()
+        
         
     }
     
@@ -188,7 +190,7 @@ class FeedViewModel: NSObject {
     func numberOfItemsInSection(section : Int) -> Int {
         //if the section is 0, then it depends on how many items are in the picture upload queue
         if(section == 0){
-            return CameraDataManager.SharedInstance.imageUploadQueue.count
+            return BluemixDataManager.SharedInstance.imageUploadQueue.count
         }
         // if the section is 1, then it depends how many items are in the pictureDataArray
         else{
@@ -271,7 +273,7 @@ class FeedViewModel: NSObject {
             cell = collectionView.dequeueReusableCellWithReuseIdentifier("PictureUploadQueueImageFeedCollectionViewCell", forIndexPath: indexPath) as! PictureUploadQueueImageFeedCollectionViewCell
             
             
-            let image = CameraDataManager.SharedInstance.imageUploadQueue[indexPath.row]
+            let image = BluemixDataManager.SharedInstance.imageUploadQueue[indexPath.row]
             
             cell.setupData(image.image, caption: image.caption)
             

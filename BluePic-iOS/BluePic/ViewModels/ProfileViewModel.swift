@@ -59,7 +59,10 @@ class ProfileViewModel: NSObject {
         
         DataManagerCalbackCoordinator.SharedInstance.addCallback(handleDataManagerNotifications)
         
-        getPictureObjects()
+        
+         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(FeedViewModel.refreshImages), name: BluemixDataManagerNotification.ImagesRefreshed.rawValue, object: nil)
+        
+        refreshImages()
         
     }
     
@@ -72,13 +75,24 @@ class ProfileViewModel: NSObject {
     func handleDataManagerNotifications(dataManagerNotification : DataManagerNotification){
         
         if (dataManagerNotification == DataManagerNotification.UserDecidedToPostPhoto){
-            getPictureObjects()
+            refreshImages()
         }
         if (dataManagerNotification == DataManagerNotification.CloudantPullDataSuccess){
-            getPictureObjects()
+            refreshImages()
         }
         else if(dataManagerNotification == DataManagerNotification.ObjectStorageUploadImageAndCloudantCreatePictureDocSuccess){
-            getPictureObjects()
+            refreshImages()
+        }
+        
+    }
+    
+    
+    func refreshImages(){
+        
+        self.imageDataArray = BluemixDataManager.SharedInstance.currentUserImages
+        
+        dispatch_async(dispatch_get_main_queue()) {
+            self.callRefreshCallBack()
         }
         
     }
