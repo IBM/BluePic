@@ -99,75 +99,13 @@ class TabBarViewModel: NSObject {
      */
     func tellFeedToStartLoadingAnimation(){
   
-        if(hasSuccessFullyPulled == false){
+        //if(hasSuccessFullyPulled == false){
             DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.StartLoadingAnimationForAppLaunch)
-        }
+        //}
         
     }
-    
 
-//    /**
-//     Method retry pushing cloudant data upon error
-//     */
-//    func retryPushingCloudantData(){
-//        do {
-//            try CloudantSyncDataManager.SharedInstance!.pushToRemoteDatabase()
-//        } catch {
-//            print("retryPushingCloudantData ERROR: \(error)")
-//            DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantPushDataFailure)
-//        }
-//    }
-//    
-//    
-//    /**
-//     Method retry pulling cloudant data upon error
-//     */
-//    func retryPullingCloudantData() {
-//        //CloudantSyncDataManager.SharedInstance.pullReplicator.stop()
-//        do {
-//            try CloudantSyncDataManager.SharedInstance!.pullFromRemoteDatabase()
-//        } catch {
-//            print("Retry pulling error: \(error)")
-//            DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantPullDataFailure)
-//        }
-//        dispatch_async(dispatch_get_main_queue()) {
-//            print("Retrying to pull Cloudant data")
-//            
-//            //FacebookDataManager.SharedInstance.tryToShowLoginScreen()
-//            
-//        }
-//    }
-    
-    
-    /**
-     Method retry authenticating with object storage upon error
-     */
-    func retryAuthenticatingObjectStorage() {
-        dispatch_async(dispatch_get_main_queue()) {
-            print("Retrying to authenticate with Object Storage")
-            
-            //FacebookDataManager.SharedInstance.tryToShowLoginScreen()
-            
-        }
-    }
-    
-    
-    /**
-     Method tells the camera data manager to upload photos if there are any left in the queue
-     */
-//    func tellCameraDataManagerToUploadPhotosIfThereAreAnyLeftInTheQueue(){
-//        
-//        CameraDataManager.SharedInstance.uploadPhotosIfThereAreAnyLeftInTheQueue()
-//        
-//    }
-    
-    
-    /**
-     Method tells the camera data manager to cancel uploading picture to object storage
-     */
-//    func tellCameraDataManagerToCancelUploadingPictureToObjectStorage() {
-//    
-//        CameraDataManager.SharedInstance.cancelUploadingPictureToObjectStorage()
-//    }
+   
+
   
 }
