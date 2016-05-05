@@ -99,9 +99,9 @@ class TabBarViewModel: NSObject {
      */
     func tellFeedToStartLoadingAnimation(){
   
-        //if(hasSuccessFullyPulled == false){
+        if(hasSuccessFullyPulled == false){
             DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.StartLoadingAnimationForAppLaunch)
-        //}
+        }
         
     }
 

@@ -47,7 +47,7 @@ class LoginDataManager: NSObject {
                         //return the result of this which will determine whether login was a success or not
                         
                         print("success finding user")
-                        
+                        CurrentUser.willLoginLater = false
                         CurrentUser.facebookUserId = facebookUserId!
                         CurrentUser.fullName = facebookUserFullName!
                         callback(success: success)
@@ -85,6 +85,9 @@ class LoginDataManager: NSObject {
             return false
         }
     }
+    
+    
+    
     
  
 }
