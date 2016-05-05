@@ -186,41 +186,41 @@ class TabBarViewController: UITabBarController {
     /**
      Method to show the error alert and asks user if they would like to retry object storage authentication
      */
-    func showObjectStorageAuthErrorAlert() {
-        
-        let alert = UIAlertController(title: nil, message: NSLocalizedString("Oops! An error occurred authenticating with Object Storage.", comment: ""), preferredStyle: UIAlertControllerStyle.Alert)
-        
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Try Again", comment: ""), style: .Default, handler: { (action: UIAlertAction!) in
-            self.viewModel.retryAuthenticatingObjectStorage()
-        }))
-        
-        dispatch_async(dispatch_get_main_queue()) {
-            self.presentViewController(alert, animated: true, completion: nil)
-        }
-    }
+//    func showObjectStorageAuthErrorAlert() {
+//        
+//        let alert = UIAlertController(title: nil, message: NSLocalizedString("Oops! An error occurred authenticating with Object Storage.", comment: ""), preferredStyle: UIAlertControllerStyle.Alert)
+//        
+//        alert.addAction(UIAlertAction(title: NSLocalizedString("Try Again", comment: ""), style: .Default, handler: { (action: UIAlertAction!) in
+//            self.viewModel.retryAuthenticatingObjectStorage()
+//        }))
+//        
+//        dispatch_async(dispatch_get_main_queue()) {
+//            self.presentViewController(alert, animated: true, completion: nil)
+//        }
+//    }
     
     
     /**
      Method to show the error alert and asks user if they would like to retry pushing to object storage
      */
-    func showObjectStorageUploadErrorAlert() {
-        
-        let alert = UIAlertController(title: nil, message: NSLocalizedString("Oops! An error occurred uploading to Object Storage.", comment: ""), preferredStyle: UIAlertControllerStyle.Alert)
-        
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Try Again", comment: ""), style: .Default, handler: { (action: UIAlertAction!) in
-
-            //self.viewModel.tellCameraDataManagerToUploadPhotosIfThereAreAnyLeftInTheQueue()
-        }))
-        
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .Cancel, handler: { (action: UIAlertAction!) in
-            //self.viewModel.tellCameraDataManagerToCancelUploadingPictureToObjectStorage()
-            
-        }))
-        
-        dispatch_async(dispatch_get_main_queue()) {
-            self.presentViewController(alert, animated: true, completion: nil)
-        }
-    }
+//    func showObjectStorageUploadErrorAlert() {
+//        
+//        let alert = UIAlertController(title: nil, message: NSLocalizedString("Oops! An error occurred uploading to Object Storage.", comment: ""), preferredStyle: UIAlertControllerStyle.Alert)
+//        
+//        alert.addAction(UIAlertAction(title: NSLocalizedString("Try Again", comment: ""), style: .Default, handler: { (action: UIAlertAction!) in
+//
+//            //self.viewModel.tellCameraDataManagerToUploadPhotosIfThereAreAnyLeftInTheQueue()
+//        }))
+//        
+//        alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .Cancel, handler: { (action: UIAlertAction!) in
+//            //self.viewModel.tellCameraDataManagerToCancelUploadingPictureToObjectStorage()
+//            
+//        }))
+//        
+//        dispatch_async(dispatch_get_main_queue()) {
+//            self.presentViewController(alert, animated: true, completion: nil)
+//        }
+//    }
     
     
     /**
