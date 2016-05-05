@@ -155,19 +155,19 @@ class TabBarViewModel: NSObject {
     /**
      Method tells the camera data manager to upload photos if there are any left in the queue
      */
-    func tellCameraDataManagerToUploadPhotosIfThereAreAnyLeftInTheQueue(){
-        
-        CameraDataManager.SharedInstance.uploadPhotosIfThereAreAnyLeftInTheQueue()
-        
-    }
+//    func tellCameraDataManagerToUploadPhotosIfThereAreAnyLeftInTheQueue(){
+//        
+//        CameraDataManager.SharedInstance.uploadPhotosIfThereAreAnyLeftInTheQueue()
+//        
+//    }
     
     
     /**
      Method tells the camera data manager to cancel uploading picture to object storage
      */
-    func tellCameraDataManagerToCancelUploadingPictureToObjectStorage() {
-    
-        CameraDataManager.SharedInstance.cancelUploadingPictureToObjectStorage()
-    }
+//    func tellCameraDataManagerToCancelUploadingPictureToObjectStorage() {
+//    
+//        CameraDataManager.SharedInstance.cancelUploadingPictureToObjectStorage()
+//    }
   
 }

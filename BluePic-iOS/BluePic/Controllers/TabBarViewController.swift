@@ -209,11 +209,11 @@ class TabBarViewController: UITabBarController {
         
         alert.addAction(UIAlertAction(title: NSLocalizedString("Try Again", comment: ""), style: .Default, handler: { (action: UIAlertAction!) in
 
-            self.viewModel.tellCameraDataManagerToUploadPhotosIfThereAreAnyLeftInTheQueue()
+            //self.viewModel.tellCameraDataManagerToUploadPhotosIfThereAreAnyLeftInTheQueue()
         }))
         
         alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .Cancel, handler: { (action: UIAlertAction!) in
-            self.viewModel.tellCameraDataManagerToCancelUploadingPictureToObjectStorage()
+            //self.viewModel.tellCameraDataManagerToCancelUploadingPictureToObjectStorage()
             
         }))
         

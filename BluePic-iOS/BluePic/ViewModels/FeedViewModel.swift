@@ -83,6 +83,14 @@ class FeedViewModel: NSObject {
         
         DataManagerCalbackCoordinator.SharedInstance.addCallback(handleDataManagerNotification)
         
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(FeedViewModel.refreshImages), name: BluemixDataManagerNotification.ImagesRefreshed.rawValue, object: nil)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(FeedViewModel.repullForNewData), name: BluemixDataManagerNotification.ImageUploadSuccess.rawValue, object: nil)
+
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(FeedViewModel.refreshImages), name: BluemixDataManagerNotification.ImageUploadBegan.rawValue, object: nil)
+        
+        
     }
     
     
@@ -93,24 +101,24 @@ class FeedViewModel: NSObject {
      */
     func handleDataManagerNotification(dataManagerNotification : DataManagerNotification){
         
-//        if(dataManagerNotification == DataManagerNotification.CloudantPullDataSuccess){
-//            isPullingFromCloudantAlready = false
-//            getPictureObjects()
-//        }
-//        else if(dataManagerNotification == DataManagerNotification.UserDecidedToPostPhoto){
-//            self.passFeedViewModelNotificationToFeedVCCallback(feedViewModelNotification: FeedViewModelNotification.UploadingPhotoStarted)
-//            getPictureObjects()
-//        }
-//        else if(dataManagerNotification == DataManagerNotification.StartLoadingAnimationForAppLaunch){
-//            self.passFeedViewModelNotificationToFeedVCCallback(feedViewModelNotification: FeedViewModelNotification.StartLoadingAnimationForAppLaunch)
-//        }
-//        else if(dataManagerNotification == DataManagerNotification.UserCanceledUploadingPhotos){
-//            getPictureObjects()
-//        }
-//        else if(dataManagerNotification == DataManagerNotification.ObjectStorageUploadImageAndCloudantCreatePictureDocSuccess){
-//            self.passFeedViewModelNotificationToFeedVCCallback(feedViewModelNotification: FeedViewModelNotification.UploadingPhotoFinished)
-//            getPictureObjects()
-//        }
+        if(dataManagerNotification == DataManagerNotification.CloudantPullDataSuccess){
+            isPullingFromCloudantAlready = false
+            getPictureObjects()
+        }
+        else if(dataManagerNotification == DataManagerNotification.UserDecidedToPostPhoto){
+            self.passFeedViewModelNotificationToFeedVCCallback(feedViewModelNotification: FeedViewModelNotification.UploadingPhotoStarted)
+            getPictureObjects()
+        }
+        else if(dataManagerNotification == DataManagerNotification.StartLoadingAnimationForAppLaunch){
+            self.passFeedViewModelNotificationToFeedVCCallback(feedViewModelNotification: FeedViewModelNotification.StartLoadingAnimationForAppLaunch)
+        }
+        else if(dataManagerNotification == DataManagerNotification.UserCanceledUploadingPhotos){
+            //getPictureObjects()
+        }
+        else if(dataManagerNotification == DataManagerNotification.ObjectStorageUploadImageAndCloudantCreatePictureDocSuccess){
+            self.passFeedViewModelNotificationToFeedVCCallback(feedViewModelNotification: FeedViewModelNotification.UploadingPhotoFinished)
+            getPictureObjects()
+        }
     }
 
     
@@ -120,19 +128,8 @@ class FeedViewModel: NSObject {
     func repullForNewData() {
         
         
-        BluemixDataManager.SharedInstance.getImages({ images in
-        
-            if let images = images {
-                self.imageDataArray = images
-                dispatch_async(dispatch_get_main_queue()) {
-                    self.passFeedViewModelNotificationToFeedVCCallback(feedViewModelNotification: FeedViewModelNotification.RefreshCollectionView)
-                }
-            }
-        
-        })
-        
-        
-        
+        BluemixDataManager.SharedInstance.getImages()
+
         
 //        if(isPullingFromCloudantAlready == false){
 //            isPullingFromCloudantAlready = true
@@ -144,6 +141,17 @@ class FeedViewModel: NSObject {
 //                DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantPullDataFailure)
 //            }
 //        }
+    }
+    
+    
+    func refreshImages(){
+        
+        self.imageDataArray = BluemixDataManager.SharedInstance.images
+        
+        dispatch_async(dispatch_get_main_queue()) {
+            self.passFeedViewModelNotificationToFeedVCCallback(feedViewModelNotification: FeedViewModelNotification.RefreshCollectionView)
+        }
+        
     }
     
     
@@ -180,7 +188,7 @@ class FeedViewModel: NSObject {
     func numberOfItemsInSection(section : Int) -> Int {
         //if the section is 0, then it depends on how many items are in the picture upload queue
         if(section == 0){
-            return CameraDataManager.SharedInstance.pictureUploadQueue.count
+            return CameraDataManager.SharedInstance.imageUploadQueue.count
         }
         // if the section is 1, then it depends how many items are in the pictureDataArray
         else{
@@ -263,9 +271,9 @@ class FeedViewModel: NSObject {
             cell = collectionView.dequeueReusableCellWithReuseIdentifier("PictureUploadQueueImageFeedCollectionViewCell", forIndexPath: indexPath) as! PictureUploadQueueImageFeedCollectionViewCell
             
             
-            let picture = CameraDataManager.SharedInstance.pictureUploadQueue[indexPath.row]
+            let image = CameraDataManager.SharedInstance.imageUploadQueue[indexPath.row]
             
-            cell.setupData(picture.image, caption: picture.displayName)
+            cell.setupData(image.image, caption: image.caption)
             
             return cell
 
