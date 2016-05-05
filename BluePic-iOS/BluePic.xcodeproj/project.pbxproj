@@ -26,7 +26,6 @@
 		1B6132161C270DD300B57231 /* PictureUploadQueueImageFeedCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B6132141C270DD300B57231 /* PictureUploadQueueImageFeedCollectionViewCell.swift */; };
 		1B6132171C270DD300B57231 /* PictureUploadQueueImageFeedCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1B6132151C270DD300B57231 /* PictureUploadQueueImageFeedCollectionViewCell.xib */; };
 		1B9199231CC6EB1B005CC4AC /* FacebookAuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9199221CC6EB1B005CC4AC /* FacebookAuthenticationManager.swift */; };
-		1BAB94151CC81784004DAD84 /* MCARESTTestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BAB94141CC81784004DAD84 /* MCARESTTestManager.swift */; };
 		1BC7AF5C1C0E39F100DDFD02 /* FeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC7AF5B1C0E39F100DDFD02 /* FeedViewModel.swift */; };
 		1BC7AF5F1C0E480800DDFD02 /* ImageFeedCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC7AF5D1C0E480800DDFD02 /* ImageFeedCollectionViewCell.swift */; };
 		1BC7AF601C0E480800DDFD02 /* ImageFeedCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1BC7AF5E1C0E480800DDFD02 /* ImageFeedCollectionViewCell.xib */; };
@@ -36,8 +35,6 @@
 		3435C7CB1C0368DA004923BD /* Camera.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3435C7CA1C0368DA004923BD /* Camera.storyboard */; };
 		3435C7CD1C03690F004923BD /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3435C7CC1C03690F004923BD /* Profile.storyboard */; };
 		3435C7CF1C036A60004923BD /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3435C7CE1C036A60004923BD /* TabBarViewController.swift */; };
-		3435C7D21C03E223004923BD /* CloudantSyncDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3435C7D01C03E223004923BD /* CloudantSyncDataManager.swift */; };
-		3435C7D31C03E223004923BD /* ObjectStorageClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3435C7D11C03E223004923BD /* ObjectStorageClient.swift */; };
 		3435C7D51C04110C004923BD /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3435C7D41C04110C004923BD /* FeedViewController.swift */; };
 		3435C7D71C041116004923BD /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3435C7D61C041116004923BD /* CameraViewController.swift */; };
 		3435C7D91C04111F004923BD /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3435C7D81C04111F004923BD /* ProfileViewController.swift */; };
@@ -58,10 +55,8 @@
 		347AD2221C18F98600C3B473 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347AD2211C18F98600C3B473 /* LoginViewModel.swift */; };
 		34C8094D1BFCEA0400C48004 /* keys.plist in Resources */ = {isa = PBXBuildFile; fileRef = 34C8094C1BFCEA0400C48004 /* keys.plist */; };
 		34C809551BFD0F2400C48004 /* FacebookDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C809541BFD0F2400C48004 /* FacebookDataManager.swift */; };
-		34CA18201C04CB6700EC2636 /* ObjectStorageDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34CA181F1C04CB6700EC2636 /* ObjectStorageDataManager.swift */; };
 		494AA0B01BFE4CBA006FC48E /* ObjectStorageClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494AA0AF1BFE4CBA006FC48E /* ObjectStorageClientTests.swift */; };
 		B3A9E7DA1C063FA1002D4AEE /* CloudantSyncClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3A9E7D91C063FA1002D4AEE /* CloudantSyncClientTests.swift */; };
-		B3C2CE981C19DC54003DAF5A /* ReplicatorDelegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C2CE971C19DC54003DAF5A /* ReplicatorDelegates.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -107,7 +102,6 @@
 		1B6132141C270DD300B57231 /* PictureUploadQueueImageFeedCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PictureUploadQueueImageFeedCollectionViewCell.swift; sourceTree = "<group>"; };
 		1B6132151C270DD300B57231 /* PictureUploadQueueImageFeedCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PictureUploadQueueImageFeedCollectionViewCell.xib; sourceTree = "<group>"; };
 		1B9199221CC6EB1B005CC4AC /* FacebookAuthenticationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookAuthenticationManager.swift; sourceTree = "<group>"; };
-		1BAB94141CC81784004DAD84 /* MCARESTTestManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MCARESTTestManager.swift; sourceTree = "<group>"; };
 		1BC7AF5B1C0E39F100DDFD02 /* FeedViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedViewModel.swift; sourceTree = "<group>"; };
 		1BC7AF5D1C0E480800DDFD02 /* ImageFeedCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageFeedCollectionViewCell.swift; sourceTree = "<group>"; };
 		1BC7AF5E1C0E480800DDFD02 /* ImageFeedCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageFeedCollectionViewCell.xib; sourceTree = "<group>"; };
@@ -117,8 +111,6 @@
 		3435C7CA1C0368DA004923BD /* Camera.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Camera.storyboard; sourceTree = "<group>"; };
 		3435C7CC1C03690F004923BD /* Profile.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Profile.storyboard; sourceTree = "<group>"; };
 		3435C7CE1C036A60004923BD /* TabBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
-		3435C7D01C03E223004923BD /* CloudantSyncDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudantSyncDataManager.swift; sourceTree = "<group>"; };
-		3435C7D11C03E223004923BD /* ObjectStorageClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectStorageClient.swift; sourceTree = "<group>"; };
 		3435C7D41C04110C004923BD /* FeedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
 		3435C7D61C041116004923BD /* CameraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		3435C7D81C04111F004923BD /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
@@ -144,12 +136,10 @@
 		34C8094A1BFCD9A300C48004 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		34C8094C1BFCEA0400C48004 /* keys.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = keys.plist; sourceTree = "<group>"; };
 		34C809541BFD0F2400C48004 /* FacebookDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookDataManager.swift; sourceTree = "<group>"; };
-		34CA181F1C04CB6700EC2636 /* ObjectStorageDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectStorageDataManager.swift; sourceTree = "<group>"; };
 		494AA0AF1BFE4CBA006FC48E /* ObjectStorageClientTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectStorageClientTests.swift; sourceTree = "<group>"; };
 		4DF2008F9A93E25237957424 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		548428B896D4182B293AB59E /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		B3A9E7D91C063FA1002D4AEE /* CloudantSyncClientTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudantSyncClientTests.swift; sourceTree = "<group>"; };
-		B3C2CE971C19DC54003DAF5A /* ReplicatorDelegates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReplicatorDelegates.swift; sourceTree = "<group>"; };
 		BDC4B5F21BFBC77200CC1648 /* BluePic-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BluePic-Bridging-Header.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -309,11 +299,6 @@
 			isa = PBXGroup;
 			children = (
 				1B4357001CD15CF4008262A1 /* BluemixDataManager.swift */,
-				1BAB94141CC81784004DAD84 /* MCARESTTestManager.swift */,
-				3435C7D01C03E223004923BD /* CloudantSyncDataManager.swift */,
-				B3C2CE971C19DC54003DAF5A /* ReplicatorDelegates.swift */,
-				3435C7D11C03E223004923BD /* ObjectStorageClient.swift */,
-				34CA181F1C04CB6700EC2636 /* ObjectStorageDataManager.swift */,
 				34C809541BFD0F2400C48004 /* FacebookDataManager.swift */,
 				346F947B1C0F868C004999A8 /* CameraDataManager.swift */,
 				1B057E031C17637700AC21EE /* DataManagerCalbackCoordinator.swift */,
@@ -559,22 +544,17 @@
 				1BC7AF5F1C0E480800DDFD02 /* ImageFeedCollectionViewCell.swift in Sources */,
 				1B3BA0781C0F62850064C850 /* Picture.swift in Sources */,
 				347472EF1BFA8DEF0018B7F6 /* Utils.swift in Sources */,
-				1BAB94151CC81784004DAD84 /* MCARESTTestManager.swift in Sources */,
 				346F947C1C0F868C004999A8 /* CameraDataManager.swift in Sources */,
 				347472E71BFA8DEF0018B7F6 /* UIImageExtension.swift in Sources */,
 				1B9199231CC6EB1B005CC4AC /* FacebookAuthenticationManager.swift in Sources */,
 				1B0432E51C17E967007643B1 /* ProfileCollectionViewCell.swift in Sources */,
 				1B40BF7E1CDA83F10097F435 /* LoginDataManager.swift in Sources */,
 				3435C7D91C04111F004923BD /* ProfileViewController.swift in Sources */,
-				3435C7D21C03E223004923BD /* CloudantSyncDataManager.swift in Sources */,
 				347472E11BFA8DEF0018B7F6 /* NSDateExtension.swift in Sources */,
 				1BC7AF5C1C0E39F100DDFD02 /* FeedViewModel.swift in Sources */,
-				B3C2CE981C19DC54003DAF5A /* ReplicatorDelegates.swift in Sources */,
 				1B4357011CD15CF4008262A1 /* BluemixDataManager.swift in Sources */,
 				3435C7D71C041116004923BD /* CameraViewController.swift in Sources */,
-				3435C7D31C03E223004923BD /* ObjectStorageClient.swift in Sources */,
 				347472EA1BFA8DEF0018B7F6 /* UIViewExtensions.swift in Sources */,
-				34CA18201C04CB6700EC2636 /* ObjectStorageDataManager.swift in Sources */,
 				347472F11BFA8E320018B7F6 /* LoginViewController.swift in Sources */,
 				3474728E1BFA8C6A0018B7F6 /* AppDelegate.swift in Sources */,
 				3435C7D51C04110C004923BD /* FeedViewController.swift in Sources */,

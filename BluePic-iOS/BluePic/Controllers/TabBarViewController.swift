@@ -117,10 +117,10 @@ class TabBarViewController: UITabBarController {
             presentLoginVC()
         }
         else if(dataManagerNotification == DataManagerNotification.CloudantPushDataFailure){
-            showCloudantPushingErrorAlert()
+            //showCloudantPushingErrorAlert()
         }
         else if(dataManagerNotification == DataManagerNotification.CloudantPullDataFailure){
-            showCloudantPullingErrorAlert()
+            //showCloudantPullingErrorAlert()
         }
         else if(dataManagerNotification == DataManagerNotification.UserNotAuthenticated){
             presentLoginVC()
@@ -144,43 +144,43 @@ class TabBarViewController: UITabBarController {
     /**
      Method to show the error alert and asks user if they would like to retry cloudant data pushing
      */
-    func showCloudantPushingErrorAlert() {
-        
-        let alert = UIAlertController(title: nil, message: NSLocalizedString("Oops! An error occurred uploading to Cloudant.", comment: ""), preferredStyle: UIAlertControllerStyle.Alert)
-        
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Try Again", comment: ""), style: .Default, handler: { (action: UIAlertAction!) in
-            self.viewModel.retryPushingCloudantData()
-        }))
-        
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .Cancel, handler: { (action: UIAlertAction!) in
-
-        }))
-        
-        dispatch_async(dispatch_get_main_queue()) {
-            self.presentViewController(alert, animated: true, completion: nil)
-        }
-    }
-    
-    
-    /**
-     Method to show the error alert and asks user if they would like to retry cloudant data pulling
-     */
-    func showCloudantPullingErrorAlert() {
-        
-        let alert = UIAlertController(title: nil, message: NSLocalizedString("Oops! An error occurred downloading Cloudant data.", comment: ""), preferredStyle: UIAlertControllerStyle.Alert)
-        
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Try Again", comment: ""), style: .Default, handler: { (action: UIAlertAction!) in
-            self.viewModel.retryPullingCloudantData() 
-        }))
-        
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .Cancel, handler: { (action: UIAlertAction!) in
-            
-        }))
-        
-        dispatch_async(dispatch_get_main_queue()) {
-            self.presentViewController(alert, animated: true, completion: nil)
-        }
-    }
+//    func showCloudantPushingErrorAlert() {
+//        
+//        let alert = UIAlertController(title: nil, message: NSLocalizedString("Oops! An error occurred uploading to Cloudant.", comment: ""), preferredStyle: UIAlertControllerStyle.Alert)
+//        
+//        alert.addAction(UIAlertAction(title: NSLocalizedString("Try Again", comment: ""), style: .Default, handler: { (action: UIAlertAction!) in
+//            self.viewModel.retryPushingCloudantData()
+//        }))
+//        
+//        alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .Cancel, handler: { (action: UIAlertAction!) in
+//
+//        }))
+//        
+//        dispatch_async(dispatch_get_main_queue()) {
+//            self.presentViewController(alert, animated: true, completion: nil)
+//        }
+//    }
+//    
+//    
+//    /**
+//     Method to show the error alert and asks user if they would like to retry cloudant data pulling
+//     */
+//    func showCloudantPullingErrorAlert() {
+//        
+//        let alert = UIAlertController(title: nil, message: NSLocalizedString("Oops! An error occurred downloading Cloudant data.", comment: ""), preferredStyle: UIAlertControllerStyle.Alert)
+//        
+//        alert.addAction(UIAlertAction(title: NSLocalizedString("Try Again", comment: ""), style: .Default, handler: { (action: UIAlertAction!) in
+//            self.viewModel.retryPullingCloudantData() 
+//        }))
+//        
+//        alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .Cancel, handler: { (action: UIAlertAction!) in
+//            
+//        }))
+//        
+//        dispatch_async(dispatch_get_main_queue()) {
+//            self.presentViewController(alert, animated: true, completion: nil)
+//        }
+//    }
     
     
     /**

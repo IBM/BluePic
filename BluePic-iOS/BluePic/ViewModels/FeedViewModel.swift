@@ -105,11 +105,11 @@ class FeedViewModel: NSObject {
         
         if(dataManagerNotification == DataManagerNotification.CloudantPullDataSuccess){
             isPullingFromCloudantAlready = false
-            getPictureObjects()
+            //getPictureObjects()
         }
         else if(dataManagerNotification == DataManagerNotification.UserDecidedToPostPhoto){
             self.passFeedViewModelNotificationToFeedVCCallback(feedViewModelNotification: FeedViewModelNotification.UploadingPhotoStarted)
-            getPictureObjects()
+            //getPictureObjects()
         }
         else if(dataManagerNotification == DataManagerNotification.StartLoadingAnimationForAppLaunch){
             self.passFeedViewModelNotificationToFeedVCCallback(feedViewModelNotification: FeedViewModelNotification.StartLoadingAnimationForAppLaunch)
@@ -119,7 +119,7 @@ class FeedViewModel: NSObject {
         }
         else if(dataManagerNotification == DataManagerNotification.ObjectStorageUploadImageAndCloudantCreatePictureDocSuccess){
             self.passFeedViewModelNotificationToFeedVCCallback(feedViewModelNotification: FeedViewModelNotification.UploadingPhotoFinished)
-            getPictureObjects()
+            //getPictureObjects()
         }
     }
 
@@ -132,17 +132,6 @@ class FeedViewModel: NSObject {
         
         BluemixDataManager.SharedInstance.getImages()
 
-        
-//        if(isPullingFromCloudantAlready == false){
-//            isPullingFromCloudantAlready = true
-//            do {
-//                try CloudantSyncDataManager.SharedInstance!.pullFromRemoteDatabase()
-//            } catch {
-//                isPullingFromCloudantAlready = false
-//                print("repullForNewData ERROR: \(error)")
-//                DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantPullDataFailure)
-//            }
-//        }
     }
     
     
@@ -157,17 +146,7 @@ class FeedViewModel: NSObject {
     }
     
     
-    /**
-     Method synchronously asks cloudant for new data. It sets the pictureDataArray to be a combination of the local pictureUploadQueue images + images receives from cloudant/objectDataStore
-     */
-    func getPictureObjects(){
-//        pictureDataArray = CloudantSyncDataManager.SharedInstance!.getPictureObjects(nil)
-//        hasRecievedDataFromCloudant = true
-//
-//         dispatch_async(dispatch_get_main_queue()) {
-//            self.passFeedViewModelNotificationToFeedVCCallback(feedViewModelNotification: FeedViewModelNotification.RefreshCollectionView)
-//        }
-    }
+
     
     
     /**
@@ -194,6 +173,7 @@ class FeedViewModel: NSObject {
         }
         // if the section is 1, then it depends how many items are in the pictureDataArray
         else{
+            
             if(imageDataArray.count == 0 && hasRecievedDataFromCloudant == true){
                 return kNumberOfCellsWhenUserHasNoPhotos
             }
