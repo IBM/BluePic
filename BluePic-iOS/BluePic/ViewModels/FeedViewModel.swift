@@ -37,9 +37,6 @@ class FeedViewModel: NSObject {
     //callback used to inform the Feed VC of notifications from its view model
     var notifyFeedVC : ((feedViewModelNotification : FeedViewModelNotification)->())!
     
-    //state variable to keep of if we are current pulling from cloudant. This is to prevent a user to pull down to refresh while it is already refreshing
-    private var isPullingFromCloudantAlready = false
-    
     //constant that represents the height of the info view in the collection view cell that shows the photos caption and photographer name
     let kCollectionViewCellInfoViewHeight : CGFloat = 76
     

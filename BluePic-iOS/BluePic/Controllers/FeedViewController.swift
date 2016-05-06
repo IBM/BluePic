@@ -66,9 +66,7 @@ class FeedViewController: UIViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-       // tryToStartLoadingAnimation()
-        
-        //tryToStopLoadingAnimation()
+        tryToStartLoadingAnimation()
 
     }
     
@@ -234,7 +232,7 @@ extension FeedViewController: UICollectionViewDelegateFlowLayout {
     
 }
 
-//All receiving notifications from View Model
+//ViewModel -> ViewController Communication
 extension FeedViewController {
     
     /**
