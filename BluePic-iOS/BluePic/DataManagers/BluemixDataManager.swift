@@ -15,6 +15,7 @@ enum BlueMixDataManagerError: ErrorType {
 }
 
 enum BluemixDataManagerNotification : String {
+    case GetAllImagesStarted = "GetAllImagesStarted"
     case ImagesRefreshed = "ImagesRefreshed"
     case ImageUploadBegan = "ImageUploadBegan"
     case ImageUploadSuccess = "ImageUploadSuccess"
@@ -66,6 +67,9 @@ class BluemixDataManager: NSObject {
     private let kBluemixAppRouteKey = "bluemixAppRoute"
     private let kBluemixAppGUIDKey = "bluemixAppGUID"
     private let kBluemixAppRegionKey = "bluemixAppRegion"
+    
+    //State Variables
+    var hasReceievedInitialImages = false
     
     
     
@@ -145,10 +149,13 @@ class BluemixDataManager: NSObject {
 
     func getImages(){
         
+        NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.GetAllImagesStarted.rawValue, object: nil)
+        
         self.getImages({ images in
             
             if let images = images {
                 self.images = images
+                self.hasReceievedInitialImages = true
                 NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImagesRefreshed.rawValue, object: nil)
             }
  

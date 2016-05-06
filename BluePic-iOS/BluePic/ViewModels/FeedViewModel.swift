@@ -122,6 +122,13 @@ class FeedViewModel: NSObject {
             //getPictureObjects()
         }
     }
+    
+    
+    func shouldBeginLoading() -> Bool {
+        
+        return !BluemixDataManager.SharedInstance.hasReceievedInitialImages
+
+    }
 
     
     /**
