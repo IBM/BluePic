@@ -26,9 +26,6 @@ class ProfileViewModel: NSObject {
     //callback used to tell the ProfileViewController when to refresh its collection view
     var refreshVCCallback : (()->())!
     
-    //state variable to keep try of if the view model has receieved data from cloudant yet
-    var hasRecievedDataFromCloudant = false
-    
     //constant that represents the number of sections in the collection view
     let kNumberOfSectionsInCollectionView = 1
     
@@ -136,26 +133,7 @@ class ProfileViewModel: NSObject {
             
             
         })
-        
-        //pictureDataArray = CloudantSyncDataManager.SharedInstance!.getPictureObjects(FacebookDataManager.SharedInstance.fbUniqueUserID!)
-        hasRecievedDataFromCloudant = true
-//        
-//        dispatch_async(dispatch_get_main_queue()) {
-//            self.callRefreshCallBack()
-//        }
     }
-    
-    /**
-     method repulls for new data from cloudant
-     */
-//    func repullForNewData(){
-//        do {
-//           // try CloudantSyncDataManager.SharedInstance!.pullFromRemoteDatabase()
-//        } catch {
-//            print("repullForNewData error: \(error)")
-//            DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.CloudantPullDataFailure)
-//        }
-//    }
     
     
     
@@ -178,7 +156,7 @@ class ProfileViewModel: NSObject {
      */
     func numberOfItemsInSection(section : Int) -> Int {
         
-        if(imageDataArray.count == 0 && hasRecievedDataFromCloudant == true) {
+        if(imageDataArray.count == 0) {
             return kNumberOfCellsWhenUserHasNoPhotos
         }
         else {
