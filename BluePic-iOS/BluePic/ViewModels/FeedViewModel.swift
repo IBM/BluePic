@@ -20,10 +20,7 @@ import UIKit
 enum FeedViewModelNotification {
     
     //called when there is new data in the pictureDataArray, used to tell the Feed VC to refresh it's data in the collection view
-    case RefreshCollectionView
-    
-    //called when in the view did appear of the tab vc
-    case StartLoadingAnimationForAppLaunch
+    case ReloadCollectionView
     
     //called when a photo is uploading to object storage
     case UploadingPhotoStarted
@@ -34,18 +31,11 @@ enum FeedViewModelNotification {
 
 class FeedViewModel: NSObject {
     
-    //array that holds all the picture data objects we used to populate the Feed VC's collection view
-    //var pictureDataArray = [Picture]()
+    //array that holds all the image data objects we used to populate the Feed VC's collection view
     var imageDataArray = [Image]()
     
-    //callback used to inform the Feed VC when there is new data and to refresh its collection view
-    var refreshVCCallback : (()->())?
-    
     //callback used to inform the Feed VC of notifications from its view model
-    var passFeedViewModelNotificationToFeedVCCallback : ((feedViewModelNotification : FeedViewModelNotification)->())!
-    
-    //state variable used to keep track if we have received data from cloudant yet
-    var hasRecievedDataFromCloudant = false
+    var notifyFeedVC : ((feedViewModelNotification : FeedViewModelNotification)->())!
     
     //state variable to keep of if we are current pulling from cloudant. This is to prevent a user to pull down to refresh while it is already refreshing
     private var isPullingFromCloudantAlready = false
@@ -76,85 +66,55 @@ class FeedViewModel: NSObject {
      
      - returns:
      */
-    init(passFeedViewModelNotificationToFeedVCCallback : ((feedViewModelNotification : FeedViewModelNotification)->())){
+    init(notifyFeedVC : ((feedViewModelNotification : FeedViewModelNotification)->())){
         super.init()
         
-        self.passFeedViewModelNotificationToFeedVCCallback = passFeedViewModelNotificationToFeedVCCallback
+        //save callback to notify Feed View Controller of events
+        self.notifyFeedVC = notifyFeedVC
+     
+        //suscribe to events that happen in the BluemixDataManager
+        suscribeToBluemixDataManagerNotifications()
         
-        DataManagerCalbackCoordinator.SharedInstance.addCallback(handleDataManagerNotification)
+        //Grab any data from BluemixDataManager if it has any and then tell view controller to reload its collection view
+        updateImageDataArrayAndNotifyViewControllerToReloadCollectionView()
         
+    }
+    
+    
+    func suscribeToBluemixDataManagerNotifications(){
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(FeedViewModel.refreshImages), name: BluemixDataManagerNotification.ImagesRefreshed.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(FeedViewModel.updateImageDataArrayAndNotifyViewControllerToReloadCollectionView), name: BluemixDataManagerNotification.ImagesRefreshed.rawValue, object: nil)
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(FeedViewModel.repullForNewData), name: BluemixDataManagerNotification.ImageUploadSuccess.rawValue, object: nil)
-
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(FeedViewModel.refreshImages), name: BluemixDataManagerNotification.ImageUploadBegan.rawValue, object: nil)
         
-        refreshImages()
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(FeedViewModel.notifyViewControllerToTriggerLoadingAnimation), name: BluemixDataManagerNotification.ImageUploadBegan.rawValue, object: nil)
         
-        
-    }
-    
-    
-    /**
-     Method called when there are new DataManager notifications
-     
-     - parameter dataManagerNotification: DataMangerNotification
-     */
-    func handleDataManagerNotification(dataManagerNotification : DataManagerNotification){
-        
-        if(dataManagerNotification == DataManagerNotification.CloudantPullDataSuccess){
-            isPullingFromCloudantAlready = false
-            //getPictureObjects()
-        }
-        else if(dataManagerNotification == DataManagerNotification.UserDecidedToPostPhoto){
-            self.passFeedViewModelNotificationToFeedVCCallback(feedViewModelNotification: FeedViewModelNotification.UploadingPhotoStarted)
-            //getPictureObjects()
-        }
-        else if(dataManagerNotification == DataManagerNotification.StartLoadingAnimationForAppLaunch){
-            self.passFeedViewModelNotificationToFeedVCCallback(feedViewModelNotification: FeedViewModelNotification.StartLoadingAnimationForAppLaunch)
-        }
-        else if(dataManagerNotification == DataManagerNotification.UserCanceledUploadingPhotos){
-            //getPictureObjects()
-        }
-        else if(dataManagerNotification == DataManagerNotification.ObjectStorageUploadImageAndCloudantCreatePictureDocSuccess){
-            self.passFeedViewModelNotificationToFeedVCCallback(feedViewModelNotification: FeedViewModelNotification.UploadingPhotoFinished)
-            //getPictureObjects()
-        }
-    }
-    
-    
-    func shouldBeginLoading() -> Bool {
-        
-        return !BluemixDataManager.SharedInstance.hasReceievedInitialImages
-
     }
 
     
-    /**
-     Method asks cloudant to pull for new data
-     */
-    func repullForNewData() {
-        
-        
-        BluemixDataManager.SharedInstance.getImages()
-
-    }
-    
-    
-    func refreshImages(){
+    func updateImageDataArrayAndNotifyViewControllerToReloadCollectionView(){
         
         self.imageDataArray = BluemixDataManager.SharedInstance.images
         
-        dispatch_async(dispatch_get_main_queue()) {
-            self.passFeedViewModelNotificationToFeedVCCallback(feedViewModelNotification: FeedViewModelNotification.RefreshCollectionView)
-        }
-        
+        self.notifyViewControllerToTriggerReloadCollectionView()
+    }
+    
+}
+
+
+
+
+//ViewController -> ViewModel Communication
+extension FeedViewModel {
+    
+    func shouldBeginLoading() -> Bool {
+        return !BluemixDataManager.SharedInstance.hasReceievedInitialImages
     }
     
     
-
-    
+    func repullForNewData() {
+        BluemixDataManager.SharedInstance.getImages()
+    }
     
     /**
      Method returns the number of sections in the collection view
@@ -178,10 +138,10 @@ class FeedViewModel: NSObject {
         if(section == 0){
             return BluemixDataManager.SharedInstance.imageUploadQueue.count
         }
-        // if the section is 1, then it depends how many items are in the pictureDataArray
+            // if the section is 1, then it depends how many items are in the pictureDataArray
         else{
             
-            if(imageDataArray.count == 0 && hasRecievedDataFromCloudant == true){
+            if(imageDataArray.count == 0) && BluemixDataManager.SharedInstance.hasReceievedInitialImages{
                 return kNumberOfCellsWhenUserHasNoPhotos
             }
             else{
@@ -207,32 +167,32 @@ class FeedViewModel: NSObject {
             return CGSize(width: collectionView.frame.width, height: kPictureUploadCollectionViewCellHeight)
         }
             
-        //section 1 corresponds to either the empty feed collection view cell or the standard image feed collection view cell depending on how many images are in the picture data array
+            //section 1 corresponds to either the empty feed collection view cell or the standard image feed collection view cell depending on how many images are in the picture data array
         else{
             
             //return size for empty feed collection view cell
             if(imageDataArray.count == 0){
-
+                
                 return CGSize(width: collectionView.frame.width, height: collectionView.frame.height + kEmptyFeedCollectionViewCellBufferToAllowForScrolling)
                 
             }
-            //return size for image feed collection view cell
+                //return size for image feed collection view cell
             else{
-        
+                
                 let image = imageDataArray[indexPath.row]
-        
+                
                 if let width = image.width, let height = image.height {
-            
+                    
                     let ratio = height / width
-            
+                    
                     var height = collectionView.frame.width * ratio
-            
+                    
                     if(height > kCollectionViewCellHeightLimit){
                         height = kCollectionViewCellHeightLimit
                     }
                     
                     return CGSize(width: collectionView.frame.width, height: height + kCollectionViewCellInfoViewHeight)
-            
+                    
                 }
                 else{
                     return CGSize(width: collectionView.frame.width, height: collectionView.frame.width + kCollectionViewCellInfoViewHeight)
@@ -252,7 +212,7 @@ class FeedViewModel: NSObject {
      */
     func setUpCollectionViewCell(indexPath : NSIndexPath, collectionView : UICollectionView) -> UICollectionViewCell {
         
-         //Section 0 corresponds to showing picture upload queue image feed collection view cells. These cells show when there are pictures in the picture upload queue of the camera data manager
+        //Section 0 corresponds to showing picture upload queue image feed collection view cells. These cells show when there are pictures in the picture upload queue of the camera data manager
         if(indexPath.section == 0){
             
             let cell : PictureUploadQueueImageFeedCollectionViewCell
@@ -265,30 +225,30 @@ class FeedViewModel: NSObject {
             cell.setupData(image.image, caption: image.caption)
             
             return cell
-
+            
         }
-        //section 1 corresponds to either the empty feed collection view cell or the standard image feed collection view cell depending on how many images are in the picture data array
+            //section 1 corresponds to either the empty feed collection view cell or the standard image feed collection view cell depending on how many images are in the picture data array
         else{
             
             //return EmptyFeedCollectionViewCell
             if(imageDataArray.count == 0){
-            
+                
                 let cell : EmptyFeedCollectionViewCell
-            
+                
                 cell = collectionView.dequeueReusableCellWithReuseIdentifier("EmptyFeedCollectionViewCell", forIndexPath: indexPath) as! EmptyFeedCollectionViewCell
-            
+                
                 return cell
-            
+                
             }
-            //return ImageFeedCollectionViewCell
+                //return ImageFeedCollectionViewCell
             else{
-        
+                
                 let cell: ImageFeedCollectionViewCell
                 
                 cell = collectionView.dequeueReusableCellWithReuseIdentifier("ImageFeedCollectionViewCell", forIndexPath: indexPath) as! ImageFeedCollectionViewCell
-        
+                
                 let image = imageDataArray[indexPath.row]
-        
+                
                 cell.setupData(
                     image.url,
                     image: nil, //MIGHT NEED TO FIX
@@ -297,24 +257,38 @@ class FeedViewModel: NSObject {
                     timeStamp: image.timeStamp,
                     fileName: image.fileName
                 )
-        
+                
                 cell.layer.shouldRasterize = true
                 cell.layer.rasterizationScale = UIScreen.mainScreen().scale
-        
+                
                 return cell
-            
             }
         }
-        
     }
+  
+ 
+}
+
+
+
+
+//View Model -> ViewController Communication
+extension FeedViewModel {
     
-    /**
-     Method tells the view controller to refresh its collectionView
-     */
-    func callRefreshCallBack(){
-        if let callback = refreshVCCallback {
-            callback()
+    func notifyViewControllerToTriggerLoadingAnimation(){
+        
+        dispatch_async(dispatch_get_main_queue()) {
+            self.notifyFeedVC(feedViewModelNotification: FeedViewModelNotification.UploadingPhotoStarted)
         }
     }
+    
+    func notifyViewControllerToTriggerReloadCollectionView(){
+        dispatch_async(dispatch_get_main_queue()) {
+            self.notifyFeedVC(feedViewModelNotification : FeedViewModelNotification.ReloadCollectionView)
+        }
+    }
+    
+    
+    
     
 }
