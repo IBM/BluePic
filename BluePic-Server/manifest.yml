@@ -6,6 +6,12 @@ declared-services:
   Object-Storage:
     label: Object Storage-bv
     plan: standard
+  AdvancedMobileAccess:
+    label: Mobile Client Access-ag
+    plan: Gold
+  imfpush:
+    label: IBM Push Notifications-12
+    plan: Basic
 applications:
 - name: BluePic
   random-route: true
@@ -16,3 +22,5 @@ applications:
   services:
   - Cloudant NoSQL DB-fz
   - Object Storage-bv
+  - Mobile Client Access-ag
+  - IBM Push Notifications-12
