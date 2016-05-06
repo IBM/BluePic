@@ -70,6 +70,15 @@ class TabBarViewModel: NSObject {
         
     }
     
+    
+    func didUserPressLoginLater() -> Bool {
+        
+       return CurrentUser.willLoginLater
+
+    }
+    
+   
+    
 
   
 }

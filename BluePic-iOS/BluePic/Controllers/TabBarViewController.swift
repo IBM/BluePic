@@ -119,6 +119,13 @@ class TabBarViewController: UITabBarController {
         })
         
     }
+    
+    func switchToFeedTab(){
+        
+        self.selectedIndex = 0
+        
+        
+    }
 
 
 }
@@ -155,7 +162,7 @@ extension TabBarViewController: UITabBarControllerDelegate {
      - returns: Returns a boolean -- true if tab bar with show the selected tab, and false if it will not
      */
     func checkIfUserPressedSignInLater(showCameraPicker: Bool!) -> Bool! {
-        if CurrentUser.willLoginLater {
+        if viewModel.didUserPressLoginLater() {
             print("user not logged in, prompt login now!")
             presentLoginVCAnimated()
             return false
@@ -188,6 +195,9 @@ extension TabBarViewController {
         }
         else if(tabBarNotification == TabBarViewModelNotification.HideLoginVC){
             hideBackgroundImage()
+        }
+        else if(tabBarNotification == TabBarViewModelNotification.SwitchToFeedTab){
+            switchToFeedTab()
         }
         
     }
