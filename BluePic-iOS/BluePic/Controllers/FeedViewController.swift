@@ -53,6 +53,8 @@ class FeedViewController: UIViewController {
         setupCollectionView()
         setupViewModel()
         
+        beginLoading()
+        
         //viewModel.repullForNewData()
  
     }
@@ -68,6 +70,10 @@ class FeedViewController: UIViewController {
         
         tryToStartLoadingAnimation()
         
+        
+        stopLoading()
+        
+        
     }
     
 
@@ -76,6 +82,30 @@ class FeedViewController: UIViewController {
      */
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+    }
+    
+    
+    func beginLoading(){
+        
+        if(viewModel.shouldBeginLoading()){
+            dispatch_async(dispatch_get_main_queue()) {
+                self.logoImageView.startRotating(1)
+            }
+        }
+        
+        
+    }
+    
+    
+    func stopLoading(){
+        
+        if(!viewModel.shouldBeginLoading()){
+            dispatch_async(dispatch_get_main_queue()) {
+                self.logoImageView.stopRotating()
+            }
+        }
+        
+        
     }
     
     
@@ -123,8 +153,8 @@ class FeedViewController: UIViewController {
         }
         else if(feedViewModelNotification == FeedViewModelNotification.StartLoadingAnimationForAppLaunch){
         
-            self.logoImageView.image = UIImage(named: "shutter")
-            self.logoImageView.startRotating(1)
+            //self.logoImageView.image = UIImage(named: "shutter")
+           // self.logoImageView.startRotating(1)
         }
         else if(feedViewModelNotification == FeedViewModelNotification.UploadingPhotoStarted){
             
