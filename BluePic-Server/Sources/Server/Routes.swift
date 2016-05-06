@@ -74,7 +74,7 @@ func defineRoutes() {
     }
 
     let queryParams: [Database.QueryParameters] =
-    [.Descending(true), .IncludeDocs(true), .EndKey([NSString(string: imageId), NSInteger(0)]), .StartKey([NSString(string: imageId), NSObject()])]
+    [.Descending(true), .IncludeDocs(true), .EndKey([NSString(string: imageId), NSNumber(value: 0)]), .StartKey([NSString(string: imageId), NSObject()])]
     database.queryByView("images_by_id", ofDesign: "main_design", usingParameters: queryParams) { (document, error) in
       if let document = document where error == nil {
         do {
@@ -125,7 +125,7 @@ func defineRoutes() {
     }
 
     // Retrieve JSON document for user
-    database.queryByView("users", ofDesign: "main_design", usingParameters: [.Descending(true), .IncludeDocs(false), .Keys([userId])]) { (document, error) in
+    database.queryByView("users", ofDesign: "main_design", usingParameters: [.Descending(true), .IncludeDocs(false), .Keys([NSString(string: userId)])]) { (document, error) in
       if let document = document where error == nil {
         do {
           let json = try parseUsers(document: document)
