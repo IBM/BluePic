@@ -14,7 +14,7 @@
 * limitations under the License.
 **/
 
-public struct ObjectStoreConnProps {
+public struct ObjectStorageConnProps {
 
   public let accessPoint = "dal.objectstorage.open.softlayer.com"
   public let projectId: String

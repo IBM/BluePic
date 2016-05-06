@@ -40,14 +40,14 @@ Log.logger = HeliumLogger()
 
 // Define "global" variables for module
 let router: Router = Router()
-let objStoreConnProps: ObjectStoreConnProps
+let objStorageConnProps: ObjectStorageConnProps
 let couchDBConnProps: ConnectionProperties
 
 do {
   // Create Configuration object
   let config = try Configuration()
   couchDBConnProps = try config.getCouchDBConnProps()
-  objStoreConnProps = try config.getObjectStoreConnProps()
+  objStorageConnProps = try config.getObjectStorageConnProps()
 
   // Define routes
   defineRoutes()

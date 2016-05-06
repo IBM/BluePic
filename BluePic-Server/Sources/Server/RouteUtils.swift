@@ -20,7 +20,7 @@ import Kitura
 import KituraNet
 import LoggerAPI
 import SwiftyJSON
-import BluemixObjectStore
+import BluemixObjectStorage
 
 /**
 * This method should kick off asynchronously an OpenWhisk sequence
@@ -31,7 +31,7 @@ import BluemixObjectStore
 */
 func process(imageURL: String, withImageId imageId: String, withUserId userId: String) {
   // TODO Invoke OpenWhisk action
-  // TODO OpenWRead user document from cloudant to obtain language and units of measure...
+  // TODO OpenWhisk reads user document from cloudant to obtain language and units of measure...
   Log.verbose("process() not implemented yet...")
   Log.verbose("imageId: \(imageId), userId: \(userId)")
 }
@@ -94,23 +94,15 @@ func getImageJSON(fromRequest request: RouterRequest) throws -> JSON {
     throw ProcessingError.Image("Invalid image document!")
   }
 
-  // Massage fields
-  #if os(Linux)
-  let dateStr = NSDate().descriptionWithLocale(nil).bridge()
-  let uploadedTs = dateStr.substringToIndex(10) + "T" + dateStr.substringWithRange(NSMakeRange(11, 8))
-  let imageName = caption.stringByReplacingOccurrencesOfString("%20", withString: " ")
-  let locationName = location.stringByReplacingOccurrencesOfString("%20", withString: " ")
-  #else
-  let dateStr = NSDate().description.bridge()
-  let uploadedTs = dateStr.substring(to: 10) + "T" + dateStr.substring(with:NSMakeRange(11, 8))
-  let imageName = caption.replacingOccurrences(of: "%20", with: " ")
-  let locationName = location.replacingOccurrences(of: "%20", with: " ")
-  #endif
+  let uploadedTs = StringUtils.currentTimestamp()
+  let imageName = StringUtils.decodeWhiteSpace(inString: caption)
+  let locationName = StringUtils.decodeWhiteSpace(inString: location)
 
   let whereabouts: JSONDictionary = ["latitude": latitude, "longitude": longitude, "name": locationName]
   let imageDocument: JSONDictionary = ["location": whereabouts, "contentType": contentType,
   "fileName": fileName, "userId": userId, "caption": imageName, "uploadedTs": uploadedTs,
   "width": width, "height": height, "type": "image"]
+
   return JSON(imageDocument)
 }
 
@@ -122,13 +114,13 @@ func generateInternalError() -> NSError {
 func generateUrl(forContainer containerName: String, forImage imageName: String) -> String {
   //let url = "http://\(database.connProperties.host):\(database.connProperties.port)/\(database.name)/\(imageId)/\(attachmentName)"
   //let url = "\(config.appEnv.url)/images/\(imageId)/\(attachmentName)"
-  let url = "\(objStoreConnProps.publicURL)/\(containerName)/\(imageName)"
+  let url = "\(objStorageConnProps.publicURL)/\(containerName)/\(imageName)"
   return url
 }
 
 func createContainer(withName name: String, completionHandler: (success: Bool) -> Void) {
   // Cofigure container for public access and web hosting
-  let configureContainer = { (container: ObjectStoreContainer) -> Void in
+  let configureContainer = { (container: ObjectStorageContainer) -> Void in
     let metadata:Dictionary<String, String> = ["X-Container-Meta-Web-Listings" : "true", "X-Container-Read" : ".r:*,.rlistings"]
     container.updateMetadata(metadata: metadata) { (error) in
       if let _ = error {
@@ -142,7 +134,7 @@ func createContainer(withName name: String, completionHandler: (success: Bool) -
   }
 
   // Create container
-  let createContainer = { (objStore: ObjectStore?) -> Void in
+  let createContainer = { (objStore: ObjectStorage?) -> Void in
     if let objStore = objStore {
       objStore.createContainer(name: name) { (error, container) in
         if let container = container where error == nil {
@@ -159,12 +151,12 @@ func createContainer(withName name: String, completionHandler: (success: Bool) -
   }
 
   // Connect, create, and configure container
-  connectToObjectStore(completionHandler: createContainer)
+  connectToObjectStorage(completionHandler: createContainer)
 }
 
 func store(image: NSData, withName name: String, inContainer containerName: String, completionHandler: (success: Bool) -> Void) {
   // Store image in container
-  let storeImage = { (container: ObjectStoreContainer) -> Void in
+  let storeImage = { (container: ObjectStorageContainer) -> Void in
     container.storeObject(name: name, data: image) { (error, object) in
       if let _ = error {
         Log.error("Could not save image named '\(name)' in container.")
@@ -177,7 +169,7 @@ func store(image: NSData, withName name: String, inContainer containerName: Stri
   }
 
   // Get reference to container
-  let retrieveContainer = { (objStore: ObjectStore?) -> Void in
+  let retrieveContainer = { (objStore: ObjectStorage?) -> Void in
     if let objStore = objStore {
       objStore.retrieveContainer(name: containerName) { (error, container) in
         if let container = container where error == nil {
@@ -193,7 +185,7 @@ func store(image: NSData, withName name: String, inContainer containerName: Stri
   }
 
   // Connect, create, and configure container
-  connectToObjectStore(completionHandler: retrieveContainer)
+  connectToObjectStorage(completionHandler: retrieveContainer)
 }
 
 private func massageImageRecord(containerName: String, record: inout JSON) {
@@ -223,10 +215,10 @@ private func constructDocument(records: [JSON]) -> JSON {
   return jsonDocument
 }
 
-private func connectToObjectStore(completionHandler: (objStore: ObjectStore?) -> Void) {
+private func connectToObjectStorage(completionHandler: (objStore: ObjectStorage?) -> Void) {
   // Create object store instance and connect
-  let objStore = ObjectStore(projectId: objStoreConnProps.projectId)
-  objStore.connect(userId: objStoreConnProps.userId, password: objStoreConnProps.password, region: ObjectStore.REGION_DALLAS) { (error) in
+  let objStore = ObjectStorage(projectId: objStorageConnProps.projectId)
+  objStore.connect(userId: objStorageConnProps.userId, password: objStorageConnProps.password, region: ObjectStorage.REGION_DALLAS) { (error) in
     if let error = error {
       let errorMsg = "Could not connect to Object Storage."
       Log.error("\(errorMsg) Error was: '\(error)'.")
