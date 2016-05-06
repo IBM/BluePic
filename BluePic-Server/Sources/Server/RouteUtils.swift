@@ -31,7 +31,7 @@ import BluemixObjectStorage
 */
 func process(imageURL: String, withImageId imageId: String, withUserId userId: String) {
   // TODO Invoke OpenWhisk action
-  // TODO OpenWRead user document from cloudant to obtain language and units of measure...
+  // TODO OpenWhisk reads user document from cloudant to obtain language and units of measure...
   Log.verbose("process() not implemented yet...")
   Log.verbose("imageId: \(imageId), userId: \(userId)")
 }
