@@ -65,6 +65,38 @@ func defineRoutes() {
     }
   }
 
+  // Get specific image document
+  router.get("/images/:imageId") { request, response, next in
+    guard let imageId = request.params["imageId"] else {
+      response.error = generateInternalError()
+      next()
+      return
+    }
+
+    let queryParams: [Database.QueryParameters] =
+    [.Descending(true), .IncludeDocs(true), .EndKey([NSString(string: imageId), NSInteger(0)]), .StartKey([NSString(string: imageId), NSObject()])]
+    database.queryByView("images_by_id", ofDesign: "main_design", usingParameters: queryParams) { (document, error) in
+      if let document = document where error == nil {
+        do {
+          let json = try parseImages(document: document)
+          let images = json["records"].arrayValue
+          if images.count == 1 {
+            try response.status(HttpStatusCode.OK).send(json: images[0]).end()
+          } else {
+            throw ProcessingError.Image("Image not found!")
+          }
+        }
+        catch {
+          Log.error("Failed to send response to client.")
+          response.error = generateInternalError()
+        }
+      } else {
+        response.error = generateInternalError()
+      }
+      next()
+    }
+  }
+
   // Get all user documents
   router.get("/users") { _, response, next in
     database.queryByView("users", ofDesign: "main_design", usingParameters: [.Descending(true), .IncludeDocs(false)]) { (document, error) in
@@ -87,7 +119,7 @@ func defineRoutes() {
   // Get a specific user document
   router.get("/users/:userId") { request, response, next in
     guard let userId = request.params["userId"] else {
-      response.error = NSError(domain: BluePic.Domain, code: BluePic.Error.Internal.rawValue, userInfo: [NSLocalizedDescriptionKey: String(BluePic.Error.Internal)])
+      response.error = generateInternalError()
       next()
       return
     }
@@ -166,7 +198,7 @@ func defineRoutes() {
       return
     }
 
-    let queryParams: [Database.QueryParameters] = [.Descending(true), .EndKey([NSString(string: userId), NSString(string: "0")]), .StartKey([NSString(string: userId),  NSObject()])]
+    let queryParams: [Database.QueryParameters] = [.Descending(true), .EndKey([NSString(string: userId), NSString(string: "0")]), .StartKey([NSString(string: userId), NSObject()])]
     database.queryByView("images_per_user", ofDesign: "main_design", usingParameters: queryParams) { (document, error) in
       if let document = document where error == nil {
         do {
