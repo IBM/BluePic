@@ -57,7 +57,7 @@ class ProfileViewModel: NSObject {
         DataManagerCalbackCoordinator.SharedInstance.addCallback(handleDataManagerNotifications)
         
         
-         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(FeedViewModel.refreshImages), name: BluemixDataManagerNotification.ImagesRefreshed.rawValue, object: nil)
+         //NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(FeedViewModel.updateImageDataArrayAndNotifyViewControllerToReloadCollectionView), name: BluemixDataManagerNotification.ImagesRefreshed.rawValue, object: nil)
         
         refreshImages()
         
@@ -120,7 +120,6 @@ class ProfileViewModel: NSObject {
         
         BluemixDataManager.SharedInstance.getImagesByUserId(CurrentUser.facebookUserId!, usersName: CurrentUser.fullName!, result: { images in
             
-            
             if(images != nil){
                 self.imageDataArray = images!
                 dispatch_async(dispatch_get_main_queue()) {
@@ -128,10 +127,7 @@ class ProfileViewModel: NSObject {
                 }
                 
             }
-            
-            
-            
-            
+        
         })
     }
     
