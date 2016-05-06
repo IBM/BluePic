@@ -53,10 +53,8 @@ class FeedViewController: UIViewController {
         setupCollectionView()
         setupViewModel()
         
-        beginLoading()
+        startLoadingAnimationAtAppLaunch()
         
-        //viewModel.repullForNewData()
- 
     }
     
     
@@ -69,11 +67,7 @@ class FeedViewController: UIViewController {
         super.viewWillAppear(animated)
         
         tryToStartLoadingAnimation()
-        
-        
-        stopLoading()
-        
-        
+
     }
     
 
@@ -83,37 +77,13 @@ class FeedViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-    
-    
-    func beginLoading(){
-        
-        if(viewModel.shouldBeginLoading()){
-            dispatch_async(dispatch_get_main_queue()) {
-                self.logoImageView.startRotating(1)
-            }
-        }
-        
-        
-    }
-    
-    
-    func stopLoading(){
-        
-        if(!viewModel.shouldBeginLoading()){
-            dispatch_async(dispatch_get_main_queue()) {
-                self.logoImageView.stopRotating()
-            }
-        }
-        
-        
-    }
-    
-    
+
+
     /**
      Method sets up the view model, passes the callback we want ot be called when there are notifications from the feed view model
      */
     func setupViewModel(){
-        viewModel = FeedViewModel(passFeedViewModelNotificationToFeedVCCallback: handleFeedViewModelNotifications)
+        viewModel = FeedViewModel(notifyFeedVC: handleFeedViewModelNotifications)
     }
     
     
@@ -137,35 +107,6 @@ class FeedViewController: UIViewController {
         self.refreshControl.tintColor = UIColor.clearColor()
         
         self.collectionView.addSubview(refreshControl)
-    }
-    
-    
-    /**
-     Method handles view model notifications given to this view controller from its view model
-     
-     - parameter feedViewModelNotification: FeedviewModelNotifications
-     */
-    func handleFeedViewModelNotifications(feedViewModelNotification : FeedViewModelNotification){
-        
-        if(feedViewModelNotification == FeedViewModelNotification.RefreshCollectionView){
-            
-            reloadDataInCollectionView()
-        }
-        else if(feedViewModelNotification == FeedViewModelNotification.StartLoadingAnimationForAppLaunch){
-        
-            //self.logoImageView.image = UIImage(named: "shutter")
-           // self.logoImageView.startRotating(1)
-        }
-        else if(feedViewModelNotification == FeedViewModelNotification.UploadingPhotoStarted){
-            
-            dispatch_async(dispatch_get_main_queue()) {
-                self.logoImageView.startRotating(1)
-            }
-        }
-        else if(feedViewModelNotification == FeedViewModelNotification.UploadingPhotoFinished){
-            self.logoImageView.stopRotating()
-        }
-        
     }
 
     
@@ -191,6 +132,14 @@ class FeedViewController: UIViewController {
         
         viewModel.repullForNewData()
         
+    }
+    
+    func startLoadingAnimationAtAppLaunch(){
+        if(viewModel.shouldBeginLoading()){
+            dispatch_async(dispatch_get_main_queue()) {
+                self.logoImageView.startRotating(1)
+            }
+        }
     }
    
     
@@ -281,6 +230,32 @@ extension FeedViewController: UICollectionViewDelegateFlowLayout {
         return viewModel.sizeForItemAtIndexPath(indexPath, collectionView: collectionView)
     }
     
+}
+
+//ViewModel -> ViewController Communication
+extension FeedViewController {
+    
+    /**
+     Method handles view model notifications given to this view controller from its view model
+     
+     - parameter feedViewModelNotification: FeedviewModelNotifications
+     */
+    func handleFeedViewModelNotifications(feedViewModelNotification : FeedViewModelNotification){
+        
+        if(feedViewModelNotification == FeedViewModelNotification.ReloadCollectionView){
+            reloadDataInCollectionView()
+        }
+        else if(feedViewModelNotification == FeedViewModelNotification.UploadingPhotoStarted){
+            collectionView.reloadData()
+            tryToStartLoadingAnimation()
+        }
+        else if(feedViewModelNotification == FeedViewModelNotification.UploadingPhotoFinished){
+            tryToStopLoadingAnimation()
+        }
+        
+    }
+    
+
 }
 
 

@@ -15,22 +15,19 @@
  **/
 
 
-enum TabBarNotification {
+enum TabBarViewModelNotification {
     
     case ShowLoginVC
     case HideLoginVC
+    case SwitchToFeedTab
     
 }
 
 
-
 class TabBarViewModel: NSObject {
-
-    /// Boolean if showLoginScreen() has been called yet this app launch (should only try to show login once)
-    var hasTriedToPresentLoginThisAppLaunch = false
     
     //callback that allows the tab bar view model to send DataManagerNotifications to the tab bar VC
-    var passTabBarNotificationToTabBarVCCallback : ((tabBarNotification: TabBarNotification)->())!
+    var notifyTabBarVC: ((tabBarViewModelNotification: TabBarViewModelNotification)->())!
     
     //state variable that keeps track of if we've successfully pulled data yet, used to help make sure we are showing the loading animation at the right time
     var hasSuccessFullyPulled = false
@@ -43,69 +40,45 @@ class TabBarViewModel: NSObject {
      
      - returns:
      */
-    init(passTabBarNotificationToTabBarVCCallback : ((tabBarNotification: TabBarNotification)->())){
+    init(notifyTabBarVC : ((tabBarViewModelNotification: TabBarViewModelNotification)->())){
         super.init()
         
-        self.passTabBarNotificationToTabBarVCCallback = passTabBarNotificationToTabBarVCCallback
+        self.notifyTabBarVC = notifyTabBarVC
         
-        DataManagerCalbackCoordinator.SharedInstance.addCallback(handleDataManagerNotifications)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(TabBarViewModel.notifyTabBarVCToSwitchToFeedTab), name: BluemixDataManagerNotification.ImageUploadBegan.rawValue, object: nil)
         
     }
     
     
-    /**
-     Method tells the FacebookDataManager to tryToShowLoginScreen
-     */
+    func notifyTabBarVCToSwitchToFeedTab(){
+        
+        notifyTabBarVC(tabBarViewModelNotification : TabBarViewModelNotification.SwitchToFeedTab)
+        
+    }
+    
+
     func tryToShowLogin(){
-        
-//        if(!hasTriedToPresentLoginThisAppLaunch){
-//           
-//            hasTriedToPresentLoginThisAppLaunch = true
-//            
-//            FacebookDataManager.SharedInstance.tryToShowLoginScreen()
-//        }
-        
-        
+
         if(LoginDataManager.SharedInstance.isUserAuthenticatedOrPressedSignInLater()){
             
-            passTabBarNotificationToTabBarVCCallback(tabBarNotification: TabBarNotification.HideLoginVC)
+            notifyTabBarVC(tabBarViewModelNotification: TabBarViewModelNotification.HideLoginVC)
         
         }
         else{
-            passTabBarNotificationToTabBarVCCallback(tabBarNotification: TabBarNotification.ShowLoginVC)
+            notifyTabBarVC(tabBarViewModelNotification: TabBarViewModelNotification.ShowLoginVC)
         }
+        
+    }
+    
+    
+    func didUserPressLoginLater() -> Bool {
+        
+       return CurrentUser.willLoginLater
 
-        
     }
     
-    
-    /**
-     Method is called when there are new DataManagerNotifications, we mostly pass these notifications the the tabBarVC
-     
-     - parameter dataManagerNotification: DataManagerNotification
-     */
-    func handleDataManagerNotifications(dataManagerNotification : DataManagerNotification){
-        
-        if(dataManagerNotification == DataManagerNotification.CloudantPullDataSuccess){
-            hasSuccessFullyPulled = true
-        }
-        
-      // passDataNotificationToTabBarVCCallback(dataManagerNotification: dataManagerNotification)
-    }
-    
-    
-    /**
-     Method tells the feed to start the loading animation
-     */
-    func tellFeedToStartLoadingAnimation(){
-  
-        if(hasSuccessFullyPulled == false){
-            DataManagerCalbackCoordinator.SharedInstance.sendNotification(DataManagerNotification.StartLoadingAnimationForAppLaunch)
-        }
-        
-    }
-
    
+    
 
   
 }
