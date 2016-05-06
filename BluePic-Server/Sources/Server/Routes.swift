@@ -125,19 +125,26 @@ func defineRoutes() {
     }
 
     // Retrieve JSON document for user
-    database.retrieve(userId, callback: { (document: JSON?, error: NSError?) in
+    database.queryByView("users", ofDesign: "main_design", usingParameters: [.Descending(true), .IncludeDocs(false), .Keys([userId])]) { (document, error) in
       if let document = document where error == nil {
         do {
-          try response.status(HttpStatusCode.OK).send(json: document).end()
+          let json = try parseUsers(document: document)
+          let users = json["records"].arrayValue
+          if users.count == 1 {
+            try response.status(HttpStatusCode.OK).send(json: users[0]).end()
+          } else {
+            throw ProcessingError.Image("User not found!")
+          }
         }
         catch {
           Log.error("Failed to send response to client.")
+          response.error = generateInternalError()
         }
       } else {
         response.error = generateInternalError()
       }
       next()
-    })
+    }
   }
 
   // Upload a new picture for a given user
