@@ -25,14 +25,13 @@ class TabBarViewController: UITabBarController {
     // A view model that will keep state and do all the data handling for the TabBarViewController
     var viewModel : TabBarViewModel!
     
-    
     /**
      Method called upon view did load. It creates an instance of the TabBarViewModel, sets the tabBar tint color, adds a background image view, and sets its delegate
      */
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        viewModel = TabBarViewModel(passTabBarNotificationToTabBarVCCallback: handleTabBarNotifications)
+        viewModel = TabBarViewModel(notifyTabBarVC: handleTabBarViewModelNotifications)
         
         self.tabBar.tintColor! = UIColor.whiteColor()
         
@@ -43,15 +42,8 @@ class TabBarViewController: UITabBarController {
         
     }
     
-    
-    /**
-     Method called upon view did appear. It tells the feed to start the loading animation and it trys to show login
-     
-     - parameter animated: Bool
-     */
+   
     override func viewDidAppear(animated: Bool) {
-        
-        self.viewModel.tellFeedToStartLoadingAnimation()
 
         self.tryToShowLogin()
         
@@ -83,50 +75,8 @@ class TabBarViewController: UITabBarController {
     func tryToShowLogin() {
         viewModel.tryToShowLogin()
     }
-    
-    
-    func handleTabBarNotifications(tabBarNotification : TabBarNotification){
- 
-        if(tabBarNotification == TabBarNotification.ShowLoginVC) {
-            presentLoginVC()
-        }
-        else if(tabBarNotification == TabBarNotification.HideLoginVC){
-             hideBackgroundImage()
-        }
-  
-    }
-    
 
-    /**
-     Method handles DataManagerNotifications passed to the view controller from its viewModel
-     
-     - parameter dataManagerNotification: DataManagerNotification
-     */
-    func handleDataNotification(dataManagerNotification : DataManagerNotification){
-        
-        if(dataManagerNotification == DataManagerNotification.GotPastLoginCheck){
-            hideBackgroundImage()
-        }
-        else if(dataManagerNotification == DataManagerNotification.ObjectStorageAuthError){
-            //showObjectStorageAuthErrorAlert()
-        }
-        else if(dataManagerNotification == DataManagerNotification.ObjectStorageUploadError){
-            //showObjectStorageUploadErrorAlert()
-        }
-        else if(dataManagerNotification == DataManagerNotification.UserNotAuthenticated){
-            presentLoginVC()
-        }
-        else if(dataManagerNotification == DataManagerNotification.CloudantPushDataFailure){
-            //showCloudantPushingErrorAlert()
-        }
-        else if(dataManagerNotification == DataManagerNotification.CloudantPullDataFailure){
-            //showCloudantPullingErrorAlert()
-        }
-        else if(dataManagerNotification == DataManagerNotification.UserNotAuthenticated){
-            presentLoginVC()
-        }
-        
-    }
+
     
     
     /**
@@ -139,88 +89,6 @@ class TabBarViewController: UITabBarController {
         self.backgroundImageView.removeFromSuperview()
         
     }
-    
-    
-    /**
-     Method to show the error alert and asks user if they would like to retry cloudant data pushing
-     */
-//    func showCloudantPushingErrorAlert() {
-//        
-//        let alert = UIAlertController(title: nil, message: NSLocalizedString("Oops! An error occurred uploading to Cloudant.", comment: ""), preferredStyle: UIAlertControllerStyle.Alert)
-//        
-//        alert.addAction(UIAlertAction(title: NSLocalizedString("Try Again", comment: ""), style: .Default, handler: { (action: UIAlertAction!) in
-//            self.viewModel.retryPushingCloudantData()
-//        }))
-//        
-//        alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .Cancel, handler: { (action: UIAlertAction!) in
-//
-//        }))
-//        
-//        dispatch_async(dispatch_get_main_queue()) {
-//            self.presentViewController(alert, animated: true, completion: nil)
-//        }
-//    }
-//    
-//    
-//    /**
-//     Method to show the error alert and asks user if they would like to retry cloudant data pulling
-//     */
-//    func showCloudantPullingErrorAlert() {
-//        
-//        let alert = UIAlertController(title: nil, message: NSLocalizedString("Oops! An error occurred downloading Cloudant data.", comment: ""), preferredStyle: UIAlertControllerStyle.Alert)
-//        
-//        alert.addAction(UIAlertAction(title: NSLocalizedString("Try Again", comment: ""), style: .Default, handler: { (action: UIAlertAction!) in
-//            self.viewModel.retryPullingCloudantData() 
-//        }))
-//        
-//        alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .Cancel, handler: { (action: UIAlertAction!) in
-//            
-//        }))
-//        
-//        dispatch_async(dispatch_get_main_queue()) {
-//            self.presentViewController(alert, animated: true, completion: nil)
-//        }
-//    }
-    
-    
-    /**
-     Method to show the error alert and asks user if they would like to retry object storage authentication
-     */
-//    func showObjectStorageAuthErrorAlert() {
-//        
-//        let alert = UIAlertController(title: nil, message: NSLocalizedString("Oops! An error occurred authenticating with Object Storage.", comment: ""), preferredStyle: UIAlertControllerStyle.Alert)
-//        
-//        alert.addAction(UIAlertAction(title: NSLocalizedString("Try Again", comment: ""), style: .Default, handler: { (action: UIAlertAction!) in
-//            self.viewModel.retryAuthenticatingObjectStorage()
-//        }))
-//        
-//        dispatch_async(dispatch_get_main_queue()) {
-//            self.presentViewController(alert, animated: true, completion: nil)
-//        }
-//    }
-    
-    
-    /**
-     Method to show the error alert and asks user if they would like to retry pushing to object storage
-     */
-//    func showObjectStorageUploadErrorAlert() {
-//        
-//        let alert = UIAlertController(title: nil, message: NSLocalizedString("Oops! An error occurred uploading to Object Storage.", comment: ""), preferredStyle: UIAlertControllerStyle.Alert)
-//        
-//        alert.addAction(UIAlertAction(title: NSLocalizedString("Try Again", comment: ""), style: .Default, handler: { (action: UIAlertAction!) in
-//
-//            //self.viewModel.tellCameraDataManagerToUploadPhotosIfThereAreAnyLeftInTheQueue()
-//        }))
-//        
-//        alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .Cancel, handler: { (action: UIAlertAction!) in
-//            //self.viewModel.tellCameraDataManagerToCancelUploadingPictureToObjectStorage()
-//            
-//        }))
-//        
-//        dispatch_async(dispatch_get_main_queue()) {
-//            self.presentViewController(alert, animated: true, completion: nil)
-//        }
-//    }
     
     
     /**
@@ -249,6 +117,13 @@ class TabBarViewController: UITabBarController {
             self.hideBackgroundImage()
             print(NSLocalizedString("user needs to log into Facebook, showing login", comment: ""))
         })
+        
+    }
+    
+    func switchToFeedTab(){
+        
+        self.selectedIndex = 0
+        
         
     }
 
@@ -287,7 +162,7 @@ extension TabBarViewController: UITabBarControllerDelegate {
      - returns: Returns a boolean -- true if tab bar with show the selected tab, and false if it will not
      */
     func checkIfUserPressedSignInLater(showCameraPicker: Bool!) -> Bool! {
-        if CurrentUser.willLoginLater {
+        if viewModel.didUserPressLoginLater() {
             print("user not logged in, prompt login now!")
             presentLoginVCAnimated()
             return false
@@ -307,5 +182,25 @@ extension TabBarViewController: UITabBarControllerDelegate {
     
     
     
+}
+
+//ViewModel -> View Controller Communication
+extension TabBarViewController {
+    
+    
+    func handleTabBarViewModelNotifications(tabBarNotification : TabBarViewModelNotification){
+        
+        if(tabBarNotification == TabBarViewModelNotification.ShowLoginVC) {
+            presentLoginVC()
+        }
+        else if(tabBarNotification == TabBarViewModelNotification.HideLoginVC){
+            hideBackgroundImage()
+        }
+        else if(tabBarNotification == TabBarViewModelNotification.SwitchToFeedTab){
+            switchToFeedTab()
+        }
+        
+    }
+ 
 }
 
