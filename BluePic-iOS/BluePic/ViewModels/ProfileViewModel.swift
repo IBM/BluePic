@@ -57,7 +57,7 @@ class ProfileViewModel: NSObject {
         DataManagerCalbackCoordinator.SharedInstance.addCallback(handleDataManagerNotifications)
         
         
-         //NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(FeedViewModel.updateImageDataArrayAndNotifyViewControllerToReloadCollectionView), name: BluemixDataManagerNotification.ImagesRefreshed.rawValue, object: nil)
+         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ProfileViewModel.refreshImages), name: BluemixDataManagerNotification.ImagesRefreshed.rawValue, object: nil)
         
         refreshImages()
         
