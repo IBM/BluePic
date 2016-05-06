@@ -45,4 +45,9 @@ curl -g -X GET "https://$username.cloudant.com/$database/_design/main_design/_vi
 echo
 echo
 
+echo "Querying images_by_id view for image 2000..."
+curl -g -X GET "https://$username.cloudant.com/$database/_design/main_design/_view/images_by_id?include_docs=true&descending=false&startkey=[\"2000\",0]&endkey=[\"2000\",{}]" -u $username:$password
+echo
+echo
+
 echo "Successfully finished querying views on cloudant database '$database'."

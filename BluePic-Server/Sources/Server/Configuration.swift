@@ -19,7 +19,7 @@ import CouchDB
 import SwiftyJSON
 import LoggerAPI
 import CFEnvironment
-import BluemixObjectStore
+import BluemixObjectStorage
 
 public struct Configuration {
 
@@ -61,7 +61,7 @@ public struct Configuration {
     throw Error.IO("Failed to obtain database service and/or credentials.")
   }
 
-  func getObjectStoreConnProps() throws -> ObjectStoreConnProps {
+  func getObjectStorageConnProps() throws -> ObjectStorageConnProps {
     guard let objStoreCredentials = appEnv.getService(spec: "Object Storage-bv")?.credentials else {
       throw Error.IO("Failed to obtain object storage service and/or credentials.")
     }
@@ -72,7 +72,7 @@ public struct Configuration {
       throw Error.IO("Failed to obtain object storage credentials.")
     }
 
-    let connProperties = ObjectStoreConnProps(projectId: projectId, userId: userId, password: password)
+    let connProperties = ObjectStorageConnProps(projectId: projectId, userId: userId, password: password)
     return connProperties
   }
 
