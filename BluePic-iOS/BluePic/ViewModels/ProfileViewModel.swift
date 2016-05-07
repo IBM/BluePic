@@ -54,9 +54,15 @@ class ProfileViewModel: NSObject {
         
         self.refreshVCCallback  = refreshVCCallback
         
-         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ProfileViewModel.updateImageArrayAndNotifyViewControllerToReloadCollectionView), name: BluemixDataManagerNotification.ImagesRefreshed.rawValue, object: nil)
+        suscribeToBluemixDataManagerNotifications()
         
         updateImageArrayAndNotifyViewControllerToReloadCollectionView()
+        
+    }
+    
+    func suscribeToBluemixDataManagerNotifications(){
+        
+         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ProfileViewModel.updateImageArrayAndNotifyViewControllerToReloadCollectionView), name: BluemixDataManagerNotification.ImagesRefreshed.rawValue, object: nil)
         
     }
     
