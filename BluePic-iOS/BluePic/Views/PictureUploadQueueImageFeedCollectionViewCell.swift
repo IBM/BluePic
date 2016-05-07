@@ -25,7 +25,6 @@ class PictureUploadQueueImageFeedCollectionViewCell: UICollectionViewCell {
     
     func setupData(image : UIImage?, caption : String?){
         
-        
         if let img = image {
             
            imageView.image = img

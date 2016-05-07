@@ -89,14 +89,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func initializeBackendForFacebookAuth(application: UIApplication, launchOptions: [NSObject: AnyObject]?) -> Bool {
 //        //Initialize backend
         BluemixDataManager.SharedInstance.initilizeBluemixAppRoute()
-        
-//        let key = Utils.getKeyFromPlist("keys", key: "backend_route")
-//        let guid = Utils.getKeyFromPlist("keys", key: "GUID")
-//        let region = Utils.getKeyFromPlist("keys", key: "region")
-//        //IMFClient.sharedInstance().initializeWithBackendRoute(key, backendGUID: guid);
-//        BMSClient.sharedInstance.initializeWithBluemixAppRoute(key, bluemixAppGUID: guid, bluemixRegion: region)
-    
-        
+
         //Initialize Facebook
         BMSClient.sharedInstance.authorizationManager = MCAAuthorizationManager.sharedInstance
         //IMFFacebookAuthenticationHandler.sharedInstance().registerWithDefaultDelegate()
@@ -139,7 +132,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
      */
     func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?,annotation: AnyObject) -> Bool {
         return FacebookAuthenticationManager.sharedInstance.onOpenURL(application, url: url, sourceApplication: sourceApplication, annotation: annotation)
-        //return FBAppCall.handleOpenURL(url, sourceApplication:sourceApplication)
     }
     
     

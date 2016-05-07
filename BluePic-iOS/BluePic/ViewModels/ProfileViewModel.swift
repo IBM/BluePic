@@ -54,37 +54,20 @@ class ProfileViewModel: NSObject {
         
         self.refreshVCCallback  = refreshVCCallback
         
-        DataManagerCalbackCoordinator.SharedInstance.addCallback(handleDataManagerNotifications)
+        suscribeToBluemixDataManagerNotifications()
         
-        
-         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ProfileViewModel.refreshImages), name: BluemixDataManagerNotification.ImagesRefreshed.rawValue, object: nil)
-        
-        refreshImages()
+        updateImageArrayAndNotifyViewControllerToReloadCollectionView()
         
     }
     
-
-    /**
-     Method handles notifications when there are DataManagerNotifications, it passes DataManagerNotifications to the Profile VC
-     
-     - parameter dataManagerNotification: DataManagerNotification
-     */
-    func handleDataManagerNotifications(dataManagerNotification : DataManagerNotification){
+    func suscribeToBluemixDataManagerNotifications(){
         
-        if (dataManagerNotification == DataManagerNotification.UserDecidedToPostPhoto){
-            refreshImages()
-        }
-        if (dataManagerNotification == DataManagerNotification.CloudantPullDataSuccess){
-            refreshImages()
-        }
-        else if(dataManagerNotification == DataManagerNotification.ObjectStorageUploadImageAndCloudantCreatePictureDocSuccess){
-            refreshImages()
-        }
+         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ProfileViewModel.updateImageArrayAndNotifyViewControllerToReloadCollectionView), name: BluemixDataManagerNotification.ImagesRefreshed.rawValue, object: nil)
         
     }
     
     
-    func refreshImages(){
+    func updateImageArrayAndNotifyViewControllerToReloadCollectionView(){
         
         self.imageDataArray = BluemixDataManager.SharedInstance.currentUserImages
         
@@ -93,45 +76,23 @@ class ProfileViewModel: NSObject {
         }
         
     }
-    
-    
-    /**
-     Method adds a locally stored version of the image the user just posted to the pictureDataArray
-     */
-    func addUsersLastPhotoTakenToPictureDataArrayAndRefreshCollectionView(){
-        
-//        let lastPhotoTaken = CameraDataManager.SharedInstance.lastPictureObjectTaken
-//        
-//        var lastPhotoTakenArray = [Picture]()
-//        lastPhotoTakenArray.append(lastPhotoTaken)
-//        
-//        imageDataArray = lastPhotoTakenArray + imageDataArray
-//        
-//        callRefreshCallBack()
-        
-    }
-    
-    
+
     
     /**
-     Method gets the picture objects from cloudant based on the facebook unique user id. When this completes it tells the profile view controller to refresh its collection view
+     Method tells the profile view controller to reload its collectionView
      */
-    func getPictureObjects(){
-        
-        BluemixDataManager.SharedInstance.getImagesByUserId(CurrentUser.facebookUserId!, usersName: CurrentUser.fullName!, result: { images in
-            
-            if(images != nil){
-                self.imageDataArray = images!
-                dispatch_async(dispatch_get_main_queue()) {
-                    self.callRefreshCallBack()
-                }
-                
-            }
-        
-        })
+    func callRefreshCallBack(){
+        if let callback = refreshVCCallback {
+            callback()
+        }
     }
+ 
     
-    
+}
+
+
+//View Controller -> View Model Communication
+extension ProfileViewModel {
     
     /**
      Method returns the number of sections in the collection view
@@ -177,22 +138,22 @@ class ProfileViewModel: NSObject {
             return CGSize(width: collectionView.frame.width, height: heightForEmptyProfileCollectionViewCell + kEmptyFeedCollectionViewCellBufferToAllowForScrolling)
         }
         else{
-        
+            
             let picture = imageDataArray[indexPath.row]
-        
-        
+            
+            
             if let width = picture.width, let height = picture.height {
-            
+                
                 let ratio = height / width
-            
+                
                 var height = collectionView.frame.width * ratio
-            
+                
                 if(height > kCollectionViewCellHeightLimit){
                     height = kCollectionViewCellHeightLimit
                 }
-            
+                
                 return CGSize(width: collectionView.frame.width, height: height + kCollectionViewCellInfoViewHeight)
-            
+                
             }
             else{
                 return CGSize(width: collectionView.frame.width, height: collectionView.frame.width + kCollectionViewCellInfoViewHeight)
@@ -218,26 +179,26 @@ class ProfileViewModel: NSObject {
             cell = collectionView.dequeueReusableCellWithReuseIdentifier("EmptyFeedCollectionViewCell", forIndexPath: indexPath) as! EmptyFeedCollectionViewCell
             
             return cell
-  
+            
         }
         else{
-        
+            
             let cell: ProfileCollectionViewCell
-        
+            
             cell = collectionView.dequeueReusableCellWithReuseIdentifier("ProfileCollectionViewCell", forIndexPath: indexPath) as! ProfileCollectionViewCell
-        
+            
             let image = imageDataArray[indexPath.row]
-        
+            
             cell.setupData(image.url,
-                image: nil,
-                caption: image.caption,
-                timeStamp: image.timeStamp,
-                fileName: image.fileName
+                           image: nil,
+                           caption: image.caption,
+                           timeStamp: image.timeStamp,
+                           fileName: image.fileName
             )
-        
+            
             cell.layer.shouldRasterize = true
             cell.layer.rasterizationScale = UIScreen.mainScreen().scale
-        
+            
             return cell
             
         }
@@ -263,18 +224,6 @@ class ProfileViewModel: NSObject {
         
         return header
     }
-    
-    
-
-    /**
-     Method tells the profile view controller to reload its collectionView
-     */
-    func callRefreshCallBack(){
-        if let callback = refreshVCCallback {
-            callback()
-        }
-    }
-    
-    
+  
     
 }

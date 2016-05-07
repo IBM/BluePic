@@ -44,7 +44,6 @@ class CameraDataManager: NSObject {
     /// ConfirmationView to be shown after selecting or taking a photo (add a caption here)
     var confirmationView: CameraConfirmationView!
     
-    
     var lastImageTaken: Image!
     
     /// Constant for how wide all images should be constrained to when compressing for upload (600 results in ~1.2 MB photos)
