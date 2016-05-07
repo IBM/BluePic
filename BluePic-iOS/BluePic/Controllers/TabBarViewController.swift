@@ -39,14 +39,11 @@ class TabBarViewController: UITabBarController {
         
         self.delegate = self
         
-        
     }
     
    
     override func viewDidAppear(animated: Bool) {
-
         self.tryToShowLogin()
-        
     }
 
     
@@ -77,8 +74,7 @@ class TabBarViewController: UITabBarController {
     }
 
 
-    
-    
+
     /**
      Method hides the background image
      */
@@ -123,7 +119,6 @@ class TabBarViewController: UITabBarController {
     func switchToFeedTab(){
         
         self.selectedIndex = 0
-        
         
     }
 

@@ -255,6 +255,8 @@ extension FeedViewModel {
                     fileName: image.fileName
                 )
                 
+                var lookHere = "hello"
+                
                 cell.layer.shouldRasterize = true
                 cell.layer.rasterizationScale = UIScreen.mainScreen().scale
                 

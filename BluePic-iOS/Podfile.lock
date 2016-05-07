@@ -1,5 +1,4 @@
 PODS:
-  - Alamofire (3.3.1)
   - BMSAnalyticsAPI (1.0.1)
   - BMSCore (1.0.0):
     - BMSAnalyticsAPI (~> 1.0)
@@ -17,57 +16,29 @@ PODS:
   - Bolts/AppLinks (1.7.0):
     - Bolts/Tasks
   - Bolts/Tasks (1.7.0)
-  - CDTDatastore (1.0.0):
-    - CDTDatastore/standard (= 1.0.0)
-  - CDTDatastore/common-dependencies (1.0.0):
-    - CDTDatastore/no-arc
-    - CocoaLumberjack (~> 2.0)
-  - CDTDatastore/no-arc (1.0.0)
-  - CDTDatastore/standard (1.0.0):
-    - CDTDatastore/common-dependencies
-    - FMDB (= 2.3)
-  - CocoaLumberjack (2.2.0):
-    - CocoaLumberjack/Default (= 2.2.0)
-    - CocoaLumberjack/Extensions (= 2.2.0)
-  - CocoaLumberjack/Core (2.2.0)
-  - CocoaLumberjack/Default (2.2.0):
-    - CocoaLumberjack/Core
-  - CocoaLumberjack/Extensions (2.2.0):
-    - CocoaLumberjack/Default
   - FBSDKCoreKit (4.11.0):
     - Bolts (~> 1.7)
   - FBSDKLoginKit (4.11.0):
     - FBSDKCoreKit
-  - FMDB (2.3):
-    - FMDB/standard (= 2.3)
-  - FMDB/common (2.3)
-  - FMDB/standard (2.3):
-    - FMDB/common
   - RNCryptor (4.0.0)
   - SDWebImage (3.7.5):
     - SDWebImage/Core (= 3.7.5)
   - SDWebImage/Core (3.7.5)
 
 DEPENDENCIES:
-  - Alamofire (~> 3.3)
   - BMSFacebookAuthentication
   - BMSPush
-  - CDTDatastore
   - SDWebImage (~> 3.7)
 
 SPEC CHECKSUMS:
-  Alamofire: 369bc67b6f5ac33ded3648d7bd21c5bfb91c2ecc
   BMSAnalyticsAPI: 50f5cec71a5ad0a9af232a833d6d37c2abda54ac
   BMSCore: 2f903402eaeae17ae58fbde69120cf464c0ca413
   BMSFacebookAuthentication: 458439bc09a498ad5738757f202bea66c8f3077a
   BMSPush: 8af7e3b6c73d4913c5f998638652b4866a84252d
   BMSSecurity: 87d563731bde0029af1526f53ae0c2da398e6e7d
   Bolts: a0058fa3b331c5a1e4402d534f2dae36dbff31e4
-  CDTDatastore: ff31119f168689ab9ab7b339b02327f21a2b3cfa
-  CocoaLumberjack: 17fe8581f84914d5d7e6360f7c70022b173c3ae0
   FBSDKCoreKit: 686ac982723a14ec9ddb85e2f81235d7706c891b
   FBSDKLoginKit: bade9fc78277764149ccc5bfaadbf13c83175c6a
-  FMDB: e78c5941bb10563f2b707255119e3655e790c29e
   RNCryptor: 59d6483908115af5c12b884db23392024e52a5fe
   SDWebImage: 69c6303e3348fba97e03f65d65d4fbc26740f461
 
