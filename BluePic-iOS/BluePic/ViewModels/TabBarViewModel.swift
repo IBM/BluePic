@@ -42,8 +42,14 @@ class TabBarViewModel: NSObject {
         
         self.notifyTabBarVC = notifyTabBarVC
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(TabBarViewModel.notifyTabBarVCToSwitchToFeedTab), name: BluemixDataManagerNotification.ImageUploadBegan.rawValue, object: nil)
+        suscribeToBluemixDataManagerNotifications()
+    }
+    
+    
+    func suscribeToBluemixDataManagerNotifications(){
         
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(TabBarViewModel.notifyTabBarVCToSwitchToFeedTab), name: BluemixDataManagerNotification.ImageUploadBegan.rawValue, object: nil)
+
     }
     
     
