@@ -29,9 +29,6 @@ class TabBarViewModel: NSObject {
     //callback that allows the tab bar view model to send DataManagerNotifications to the tab bar VC
     var notifyTabBarVC: ((tabBarViewModelNotification: TabBarViewModelNotification)->())!
     
-    //state variable that keeps track of if we've successfully pulled data yet, used to help make sure we are showing the loading animation at the right time
-    var hasSuccessFullyPulled = false
-    
     
     /**
      Method called upon init, it sets up the callback
@@ -77,8 +74,5 @@ class TabBarViewModel: NSObject {
 
     }
     
-   
-    
-
-  
+ 
 }
