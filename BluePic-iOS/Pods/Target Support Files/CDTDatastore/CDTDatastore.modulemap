@@ -1,6 +1,0 @@
-framework module CDTDatastore {
-  umbrella header "CDTDatastore-umbrella.h"
-
-  export *
-  module * { export * }
-}
