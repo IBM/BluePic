@@ -260,7 +260,7 @@ class BluemixDataManager: NSObject {
                 print ("Error Getting User By Id :: \(error)")
                result(user: nil)
             } else {
-                var user = User(response)
+                let user = User(response)
                 result(user: user)
                 print ("Success :: \(response?.responseText)")
             }

@@ -1,1 +1,0 @@
-../../../CDTDatastore/Classes/common/CloudantSync.h
