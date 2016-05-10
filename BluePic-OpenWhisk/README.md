@@ -4,10 +4,13 @@ Install using the bluepic.sh shell script:
 
 ```./bluepic.sh --install``` 
 
+Don't forget to set configuration variables (auth creds, etc...) inside of local.env.
+
 ## Actions
 
 The following actions are created by the shell script:
 
+---
 ### processEntry
 
 A sequence of individual actions: 
