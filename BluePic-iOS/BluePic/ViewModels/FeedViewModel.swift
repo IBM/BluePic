@@ -37,6 +37,9 @@ class FeedViewModel: NSObject {
     //callback used to inform the Feed VC of notifications from its view model
     var notifyFeedVC : ((feedViewModelNotification : FeedViewModelNotification)->())!
     
+    //string that holds the search query if it is present, meaning we are looking at search results
+    var searchQuery: String?
+    
     //constant that represents the height of the info view in the collection view cell that shows the photos caption and photographer name
     let kCollectionViewCellInfoViewHeight : CGFloat = 76
     
@@ -57,23 +60,28 @@ class FeedViewModel: NSObject {
     
     
     /**
-     Method called upon init. It sets a callback to inform the VC of new noti
+     Method called upon init. It sets a callback to inform the VC of new notification
      
      - parameter passFeedViewModelNotificationToTabBarVCCallback: ((feedViewModelNotification : FeedViewModelNotification)->())
      
      - returns:
      */
-    init(notifyFeedVC : ((feedViewModelNotification : FeedViewModelNotification)->())){
+    init(notifyFeedVC : ((feedViewModelNotification : FeedViewModelNotification)->()), searchQuery: String?){
         super.init()
-        
+
         //save callback to notify Feed View Controller of events
         self.notifyFeedVC = notifyFeedVC
+        self.searchQuery = searchQuery
      
         //suscribe to events that happen in the BluemixDataManager
         suscribeToBluemixDataManagerNotifications()
         
-        //Grab any data from BluemixDataManager if it has any and then tell view controller to reload its collection view
-        updateImageDataArrayAndNotifyViewControllerToReloadCollectionView()
+        if let query = searchQuery {
+            BluemixDataManager.SharedInstance.getImagesByTags([query])
+        } else {
+            //Grab any data from BluemixDataManager if it has any and then tell view controller to reload its collection view
+            updateImageDataArrayAndNotifyViewControllerToReloadCollectionView()
+        }
         
     }
     
@@ -91,7 +99,7 @@ class FeedViewModel: NSObject {
     
     func updateImageDataArrayAndNotifyViewControllerToReloadCollectionView(){
         
-        self.imageDataArray = BluemixDataManager.SharedInstance.images
+        self.imageDataArray = searchQuery == nil ? BluemixDataManager.SharedInstance.images : BluemixDataManager.SharedInstance.searchResultImages
         
         self.notifyViewControllerToTriggerReloadCollectionView()
     }
@@ -110,7 +118,11 @@ extension FeedViewModel {
     
     
     func repullForNewData() {
-        BluemixDataManager.SharedInstance.getImages()
+        if let query = self.searchQuery {
+            BluemixDataManager.SharedInstance.getImagesByTags([query])
+        } else {
+            BluemixDataManager.SharedInstance.getImages()
+        }
     }
     
     /**
