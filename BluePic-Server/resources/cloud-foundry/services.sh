@@ -18,3 +18,5 @@
 
 cf create-service cloudantNoSQLDB Shared "Cloudant NoSQL DB-fz"
 cf create-service Object-Storage standard "Object Storage-bv"
+cf create-service AdvancedMobileAccess Gold "Mobile Client Access-ag"
+cf create-service imfpush Basic "IBM Push Notifications-12"

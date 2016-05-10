@@ -73,8 +73,11 @@ func defineRoutes() {
       return
     }
 
+    // Will eventually move the following code back, but we had issues with NSNumber and NSInteger. Removed in order to continue progress
+    // let queryParams: [Database.QueryParameters] =
+    // [.Descending(true), .IncludeDocs(true), .EndKey([NSString(string: imageId), NSNumber(value: 0)]), .StartKey([NSString(string: imageId), NSObject()])]
     let queryParams: [Database.QueryParameters] =
-    [.Descending(true), .IncludeDocs(true), .EndKey([NSString(string: imageId), NSNumber(value: 0)]), .StartKey([NSString(string: imageId), NSObject()])]
+    [.Descending(true), .IncludeDocs(true), .EndKey([NSString(string: imageId)]), .StartKey([NSString(string: imageId), NSObject()])]
     database.queryByView("images_by_id", ofDesign: "main_design", usingParameters: queryParams) { (document, error) in
       if let document = document where error == nil {
         do {
