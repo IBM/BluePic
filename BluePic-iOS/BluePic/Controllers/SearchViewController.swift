@@ -21,6 +21,7 @@ class SearchViewController: UIViewController {
     @IBOutlet weak var searchField: UITextField!
     @IBOutlet weak var tagsButton: UIButton!
     @IBOutlet weak var tagCollectionView: UICollectionView!
+    @IBOutlet weak var bottomCollectionViewConstraint: NSLayoutConstraint!
     
     let kCellPadding: CGFloat = 60
     
@@ -32,6 +33,7 @@ class SearchViewController: UIViewController {
         tagsButton.titleLabel!.attributedText = attributedString
         
         Utils.registerNibWithCollectionView("TagCollectionViewCell", collectionView: tagCollectionView)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
 
     }
     
@@ -42,6 +44,16 @@ class SearchViewController: UIViewController {
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+    }
+    
+    /// Method to make sure keyboard doesn't hide parts of the collectionView
+    func keyboardWillShow(n: NSNotification) {
+        let userInfo = n.userInfo
+
+        if let info = userInfo, keyboardRect = info[UIKeyboardFrameEndUserInfoKey] as? NSValue {
+            let rectValue = keyboardRect.CGRectValue()
+            bottomCollectionViewConstraint.constant = rectValue.height - 40 // with offset
+        }
     }
 
     @IBAction func popVC(sender: AnyObject) {
@@ -62,7 +74,6 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
         }
         
         cell.tagLabel.text = tempPopularTags[indexPath.item]
-        
         return cell
     }
     

@@ -194,7 +194,7 @@
                             </label>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="eYy-ef-u1J">
                                 <rect key="frame" x="0.0" y="158" width="320" height="203"/>
-                                <color key="backgroundColor" red="0.95973154362416091" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="12" id="u4o-o2-nII">
                                     <size key="itemSize" width="130" height="30"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -226,6 +226,7 @@
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
+                        <outlet property="bottomCollectionViewConstraint" destination="5Ur-at-Dxv" id="8WM-eZ-zZC"/>
                         <outlet property="searchField" destination="G98-jD-Yfs" id="lbJ-GG-jCp"/>
                         <outlet property="tagCollectionView" destination="eYy-ef-u1J" id="cuh-RK-1a1"/>
                         <outlet property="tagsButton" destination="aeY-1c-lIB" id="Nca-ob-IPR"/>
