@@ -122,7 +122,10 @@ class TabBarViewController: UITabBarController {
         
     }
 
-
+    override func shouldAutomaticallyForwardAppearanceMethods() -> Bool {
+        return true
+    }
+    
 }
 
 
