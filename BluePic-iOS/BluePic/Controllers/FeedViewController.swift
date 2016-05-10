@@ -66,6 +66,7 @@ class FeedViewController: UIViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
         tryToStartLoadingAnimation()
 
     }
@@ -165,6 +166,11 @@ class FeedViewController: UIViewController {
             logoImageView.stopRotating()
             
         } 
+    }
+    
+    @IBAction func transitionToSearch(sender: AnyObject) {
+        let vc = UIStoryboard(name: "Feed", bundle: nil).instantiateViewControllerWithIdentifier("SearchViewController") as! SearchViewController
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 
 }
