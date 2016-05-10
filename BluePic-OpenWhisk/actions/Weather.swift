@@ -10,6 +10,9 @@ func main(args:[String:Any]) -> [String:Any] {
 
     print("inside weather action")
 
+    let weatherUsername: Any? = args["weatherUsername"]
+    let weatherPassword: Any? = args["weatherPassword"]
+    
     var latitude: Any? = args["latitude"]
     var longitude: Any? = args["longitude"]
     var language: Any? = args["language"]
@@ -28,10 +31,6 @@ func main(args:[String:Any]) -> [String:Any] {
         units = "e"
     }
     
-    
-    var weatherUsername: Any? = args["weatherUsername"]
-    var weatherPassword: Any? = args["weatherPassword"]
-
     let url = "https://\(weatherUsername!):\(weatherPassword!)@twcservice.mybluemix.net/api/weather/v2/observations/current?geocode=\(latitude!),\(longitude!)&language=\(language!)&units=\(units!)"
     
     var str = ""
