@@ -36,6 +36,8 @@ class BluemixDataManager: NSObject {
     //Data Variables
     var images = [Image]()
     
+    var searchResultImages = [Image]()
+    
     var currentUserImages : [Image] {
         get {
             if(CurrentUser.facebookUserId != nil){
@@ -151,7 +153,10 @@ class BluemixDataManager: NSObject {
         
         NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.GetAllImagesStarted.rawValue, object: nil)
         
-        self.getImages({ images in
+        let requestURL = getBluemixBaseRequestURL() + "/" + kImagesEndPoint
+        let request = Request(url: requestURL, method: HttpMethod.GET)
+        
+        self.getImages(request) { images in
             
             if let images = images {
                 self.images = images
@@ -159,23 +164,39 @@ class BluemixDataManager: NSObject {
                 NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImagesRefreshed.rawValue, object: nil)
             }
  
-        })
+        }
         
     }
     
-    
-    
-    func getImages(result : (images : [Image]?)-> ()){
+    func getImagesByTags(tags: [String]) {
         
-        let requestURL = getBluemixBaseRequestURL() + "/" + kImagesEndPoint
+        var requestURL = getBluemixBaseRequestURL() + "/" + kImagesEndPoint + "?tag="
+        for (index, tag) in tags.enumerate() {
+            if index == 0 {
+                requestURL.appendContentsOf(tag)
+            } else {
+                requestURL.appendContentsOf(",\(tag)")
+            }
+        }
         let request = Request(url: requestURL, method: HttpMethod.GET)
         
+        self.getImages(request) { images in
+            if let images = images {
+                self.searchResultImages = Array(images[0..<10]) // TODO: replace with images once endpoint works
+                self.hasReceievedInitialImages = true
+                NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImagesRefreshed.rawValue, object: nil)
+            }
+        }
+        
+    }
+    
+    func getImages(request: Request, result : (images : [Image]?)-> ()){
+
         request.sendWithCompletionHandler { (response, error) -> Void in
             if let error = error {
                 result(images: nil)
                 print ("Error :: \(error)")
             } else {
-                
                 let images = self.parseGetImagesResponse(response, userId: nil, usersName: nil)
                 result(images: images)
             }

@@ -28,10 +28,7 @@ class SearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let attributedString = NSMutableAttributedString(string: "TAGS")
-        attributedString.addAttribute(NSKernAttributeName, value: CGFloat(1.7), range: NSRange(location: 0, length: attributedString.length))
-        tagsButton.titleLabel!.attributedText = attributedString
-        
+        Utils.kernLabelString(tagsButton.titleLabel!, spacingValue: 1.7)
         Utils.registerNibWithCollectionView("TagCollectionViewCell", collectionView: tagCollectionView)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
 
@@ -60,6 +57,10 @@ class SearchViewController: UIViewController {
         searchField.resignFirstResponder()
         self.navigationController?.popViewControllerAnimated(true)
     }
+    
+    deinit {
+        BluemixDataManager.SharedInstance.searchResultImages.removeAll()
+    }
 }
 
 extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
@@ -85,6 +86,9 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         collectionView.deselectItemAtIndexPath(indexPath, animated: true)
         // open feed of items with selected tag
+        let vc = Utils.vcWithNameFromStoryboardWithName("FeedViewController", storyboardName: "Feed") as! FeedViewController
+        vc.searchQuery = tempPopularTags[indexPath.item]
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
 }
@@ -93,6 +97,16 @@ extension SearchViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
+        
+        if let query = textField.text where !query.containsString(" ") && query.characters.count > 0 {
+        
+            let vc = Utils.vcWithNameFromStoryboardWithName("FeedViewController", storyboardName: "Feed") as! FeedViewController
+            vc.searchQuery = textField.text
+            self.navigationController?.pushViewController(vc, animated: true)
+        } else {
+            print("Invalid search query")
+        }
+        
         return true
     }
     

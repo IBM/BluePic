@@ -176,4 +176,13 @@ class Utils: NSObject {
   
     }
     
+    // Kerning helper method
+    class func kernLabelString(label: UILabel, spacingValue: CGFloat) {
+        
+        let attributedString = NSMutableAttributedString(string: label.text!)
+        attributedString.addAttribute(NSKernAttributeName, value: spacingValue, range: NSRange(location: 0, length: attributedString.length))
+        label.attributedText = attributedString
+        
+    }
+    
 }
