@@ -53,22 +53,51 @@ class LocationDataManager: NSObject {
     }
     
     
-    func requestWhenInUseAuthorization(){
+    func requestWhenInUseAuthorizationAndStartUpdatingLocation(){
         
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
         locationManager.requestWhenInUseAuthorization()
+        locationManager.startUpdatingLocation()
         
     }
     
-    func getUsersLocation(callback : ((location : CLLocation?)->())){
+    func getUsersCurrentLocation() -> CLLocation? {
         
         if CLLocationManager.locationServicesEnabled() {
-            self.locationCallback = callback
-            locationManager.delegate = self
-            locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
-            locationManager.startUpdatingLocation()
+          return locationManager.location
+        }
+        else{
+           return nil
         }
 
     }
+    
+    
+    
+    func getPlaceMarkFromLocation(location : CLLocation, callback : ((placemark : CLPlacemark?)->())){
+        
+        CLGeocoder().reverseGeocodeLocation(location, completionHandler: {(placemarks, error) -> Void in
+            print(location)
+            
+            if error != nil {
+                print("Reverse geocoder failed with error" + error!.localizedDescription)
+                callback(placemark: nil)
+            }
+            
+            if placemarks!.count > 0 {
+                let placemark = placemarks![0]
+                callback(placemark: placemark)
+            }
+            else {
+                callback(placemark: nil)
+                print("Problem with the data received from geocoder")
+            }
+        })
+
+    }
+    
+    
 
    
 }
@@ -78,11 +107,6 @@ extension LocationDataManager : CLLocationManagerDelegate {
     
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
-        let userLocation:CLLocation = locations[0]
-        
-        locationCallback(location: userLocation)
-        
-        locationManager.stopUpdatingLocation()
   
     }
     

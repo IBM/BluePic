@@ -60,7 +60,14 @@ class ProfileViewController: UIViewController {
         setupHeaderView()
         
         setupStatusBarBackgroundView()
-
+        
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        
+        //LocationDataManager.SharedInstance.getCityAndStateFromLocation(LocationDataManager.SharedInstance.getUsersCurrentLocation()!)
+       
+        
     }
 
     

@@ -21,6 +21,10 @@ class Image: NSObject {
     var width : CGFloat?
     var height : CGFloat?
     var image : UIImage?
+    var latitude : String?
+    var longitude : String?
+    var city : String?
+    var state : String?
     
     
     override init() {
