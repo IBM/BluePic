@@ -63,11 +63,11 @@ function install() {
 
   echo "Creating actions"
   #this is just a test action to make sure we can make HTTP requests leveraging kitura networking
-  wsk action create --kind swift:3 bluepic/httpGet actions/httpGet.swift
-  wsk action create --kind swift:3 bluepic/weather actions/weather.swift
-  wsk action create --kind swift:3 bluepic/alchemy actions/alchemy.swift
-  wsk action create --kind swift:3 bluepic/cloudantRead actions/cloudantRead.swift
-  wsk action create --kind swift:3 bluepic/cloudantWrite actions/cloudantWrite.swift
+  wsk action create --kind swift:3 bluepic/httpGet actions/HttpGet.swift
+  wsk action create --kind swift:3 bluepic/weather actions/Weather.swift
+  wsk action create --kind swift:3 bluepic/alchemy actions/Alchemy.swift
+  wsk action create --kind swift:3 bluepic/cloudantRead actions/CloudantRead.swift
+  wsk action create --kind swift:3 bluepic/cloudantWrite actions/CloudantWrite.swift
   
   wsk action create processEntry --sequence bluepic/cloudantRead,bluepic/weather,bluepic/alchemy,bluepic/cloudantWrite
   
