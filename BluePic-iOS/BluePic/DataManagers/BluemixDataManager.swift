@@ -55,10 +55,13 @@ class BluemixDataManager: NSObject {
     // An array of photos that need to be uploaded to object storage and cloudant
     var imageUploadQueue : [Image] = []
     
+    var tags = [String]()
+    
     
     //End Points
     private let kImagesEndPoint = "images"
     private let kUsersEndPoint = "users"
+    private let kTagsEndPoint = "tags"
     
     
     //Plist Keys
@@ -148,6 +151,32 @@ class BluemixDataManager: NSObject {
         //        logger.warn("This is a warning message")
         
     }
+    
+    func getPopularTags() {
+        
+        let requestURL = getBluemixBaseRequestURL() + "/" + kTagsEndPoint
+        let request = Request(url: requestURL, method: HttpMethod.GET)
+        
+        request.sendWithCompletionHandler { (response, error) -> Void in
+            if let error = error {
+                print ("Error :: \(error)")
+            } else {
+                if let text = response?.responseText, data = text.dataUsingEncoding(NSUTF8StringEncoding) {
+                    do {
+                        let jsonObject = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
+                        if let result = jsonObject as? [String] {
+                            self.tags = result
+                            // post notification
+                        }
+                    } catch {
+                        print("Failed to convert data to json object: \(error)")
+                    }
+                }
+
+            }
+        }
+        
+    }
 
     func getImages(){
         
@@ -182,7 +211,7 @@ class BluemixDataManager: NSObject {
         
         self.getImages(request) { images in
             if let images = images {
-                self.searchResultImages = Array(images[0..<10]) // TODO: replace with images once endpoint works
+                self.searchResultImages = images
                 self.hasReceievedInitialImages = true
                 NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImagesRefreshed.rawValue, object: nil)
             }
