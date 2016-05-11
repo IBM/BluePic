@@ -262,7 +262,7 @@ extension FeedViewModel {
                     image.url,
                     image: nil, //MIGHT NEED TO FIX
                     caption: image.caption,
-                    usersName: image.usersName,
+                    usersName: image.user?.name,
                     timeStamp: image.timeStamp,
                     fileName: image.fileName
                 )

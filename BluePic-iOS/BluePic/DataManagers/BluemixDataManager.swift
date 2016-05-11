@@ -41,7 +41,7 @@ class BluemixDataManager: NSObject {
     var currentUserImages : [Image] {
         get {
             if(CurrentUser.facebookUserId != nil){
-                return images.filter({ $0.usersId! == CurrentUser.facebookUserId!})
+                return images.filter({ $0.user?.facebookID! == CurrentUser.facebookUserId!})
             }
             else{
                 return []
@@ -447,7 +447,7 @@ extension BluemixDataManager {
      */
     private func addImageToImageTakenDuringAppSessionByIdDictionary(image : Image){
         
-        if let fileName = image.fileName, let userID = image.usersId {
+        if let fileName = image.fileName, let userID = image.user?.facebookID {
             
             let id = fileName + userID
             imagesTakenDuringAppSessionById[id] = image.image
