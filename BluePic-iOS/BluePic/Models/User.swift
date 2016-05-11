@@ -14,7 +14,9 @@ class User: NSObject {
     var facebookID : String?
     var name : String?
     
-    
+    override init() {
+        
+    }
     
     init(_ response: Response?) {
         
