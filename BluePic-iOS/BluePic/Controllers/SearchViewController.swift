@@ -17,7 +17,7 @@ import UIKit
 
 class SearchViewController: UIViewController {
     
-    let tempPopularTags = ["MOUNTAIN", "TREES", "SKY", "NATURE", "PEOPLE", "OCEAN", "CITY"]
+    let tempPopularTags = [String]() // ["MOUNTAIN", "TREES", "SKY", "NATURE", "PEOPLE", "OCEAN", "CITY"]
     @IBOutlet weak var searchField: UITextField!
     @IBOutlet weak var tagsButton: UIButton!
     @IBOutlet weak var tagCollectionView: UICollectionView!
@@ -29,6 +29,9 @@ class SearchViewController: UIViewController {
         super.viewDidLoad()
         
         setupPopularTags()
+        setupNotificationObservers()
+        
+        BluemixDataManager.SharedInstance.getPopularTags()
     }
     
     func setupPopularTags() {
@@ -40,6 +43,10 @@ class SearchViewController: UIViewController {
         
         Utils.kernLabelString(tagsButton.titleLabel!, spacingValue: 1.7)
         Utils.registerNibWithCollectionView("TagCollectionViewCell", collectionView: tagCollectionView)
+    }
+    
+    func setupNotificationObservers() {
+        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
         
     }
