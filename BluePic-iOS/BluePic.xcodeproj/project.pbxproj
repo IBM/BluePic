@@ -33,6 +33,7 @@
 		2E71D6171CE1197800EEBD2B /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E71D6161CE1197800EEBD2B /* SearchViewController.swift */; };
 		2E7C95621CE13DCE0044F6ED /* TagCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7C95601CE13DCE0044F6ED /* TagCollectionViewCell.swift */; };
 		2E7C95631CE13DCE0044F6ED /* TagCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2E7C95611CE13DCE0044F6ED /* TagCollectionViewCell.xib */; };
+		2EAAC0E81CE39C13006A0B41 /* KTCenterFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EAAC0E71CE39C13006A0B41 /* KTCenterFlowLayout.m */; };
 		342E4EBB1C161FE500DC3771 /* PopulateFeedWithPhotos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342E4EBA1C161FE500DC3771 /* PopulateFeedWithPhotos.swift */; };
 		3435C7C91C0368B1004923BD /* Feed.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3435C7C81C0368B1004923BD /* Feed.storyboard */; };
 		3435C7CB1C0368DA004923BD /* Camera.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3435C7CA1C0368DA004923BD /* Camera.storyboard */; };
@@ -112,6 +113,8 @@
 		2E71D6161CE1197800EEBD2B /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		2E7C95601CE13DCE0044F6ED /* TagCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagCollectionViewCell.swift; sourceTree = "<group>"; };
 		2E7C95611CE13DCE0044F6ED /* TagCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TagCollectionViewCell.xib; sourceTree = "<group>"; };
+		2EAAC0E61CE39C13006A0B41 /* KTCenterFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTCenterFlowLayout.h; sourceTree = "<group>"; };
+		2EAAC0E71CE39C13006A0B41 /* KTCenterFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTCenterFlowLayout.m; sourceTree = "<group>"; };
 		342E4EBA1C161FE500DC3771 /* PopulateFeedWithPhotos.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopulateFeedWithPhotos.swift; sourceTree = "<group>"; };
 		3435C7C81C0368B1004923BD /* Feed.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Feed.storyboard; sourceTree = "<group>"; };
 		3435C7CA1C0368DA004923BD /* Camera.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Camera.storyboard; sourceTree = "<group>"; };
@@ -297,6 +300,8 @@
 		347AD2131C18E2A700C3B473 /* ExternalLibraries */ = {
 			isa = PBXGroup;
 			children = (
+				2EAAC0E61CE39C13006A0B41 /* KTCenterFlowLayout.h */,
+				2EAAC0E71CE39C13006A0B41 /* KTCenterFlowLayout.m */,
 				1B9199221CC6EB1B005CC4AC /* FacebookAuthenticationManager.swift */,
 			);
 			path = ExternalLibraries;
@@ -551,6 +556,7 @@
 				1B2DC2531C1F360D00B4E77B /* EmptyFeedCollectionViewCell.swift in Sources */,
 				1B40BF801CE0D0140097F435 /* LocationDataManager.swift in Sources */,
 				1B4305971CD3C94C00474AB5 /* User.swift in Sources */,
+				2EAAC0E81CE39C13006A0B41 /* KTCenterFlowLayout.m in Sources */,
 				1BC7AF5F1C0E480800DDFD02 /* ImageFeedCollectionViewCell.swift in Sources */,
 				347472EF1BFA8DEF0018B7F6 /* Utils.swift in Sources */,
 				346F947C1C0F868C004999A8 /* CameraDataManager.swift in Sources */,
