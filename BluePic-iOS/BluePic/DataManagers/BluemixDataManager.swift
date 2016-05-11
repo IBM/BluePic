@@ -52,7 +52,7 @@ class BluemixDataManager: NSObject {
     /// photos that were taken during this app session
     var imagesTakenDuringAppSessionById = [String : UIImage]()
     
-    // An array of photos that need to be uploaded to object storage and cloudant sync
+    // An array of photos that need to be uploaded to object storage and cloudant
     var imageUploadQueue : [Image] = []
     
     
