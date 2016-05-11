@@ -29,8 +29,6 @@ class Image: NSObject {
     var fileName : String?
     var timeStamp : NSDate?
     var url : String?
-    var usersName : String?
-    var usersId : String?
     var width : CGFloat?
     var height : CGFloat?
     var image : UIImage?
@@ -40,7 +38,7 @@ class Image: NSObject {
     var state : String?
     var location : Location?
     var tags : [Tag]?
-    
+    var user : User?
     
     override init() {
         
@@ -55,25 +53,32 @@ class Image: NSObject {
                 let fileName = dict["fileName"] as? String,
                 let url = dict["url"] as? String,
                 let timeStamp = dict["uploadedTs"] as? String,
-                let user = dict["user"] as? [String : AnyObject],
-                let usersName = user["name"] as? String,
-                let usersId = user["_id"] as? String{
+                let user = dict["user"] as? [String : AnyObject] {
             
                 self.id = id
                 self.caption = caption
                 self.fileName = fileName
                 self.url = url
-                self.usersName = usersName
-                self.usersId = usersId
                 
+                let userObject = User()
+                if let usersName = user["name"] as? String,
+                    let usersId = user["_id"] as? String{
+                    
+                    userObject.name = usersName
+                    userObject.facebookID = usersId
+                    
+                }
+                self.user = userObject
+                
+                //Parse widht and height data
                 if let width = dict["width"] as? CGFloat,
                     let height = dict["height"] as? CGFloat {
                         self.width = width
                         self.height = height
                 }
                 
-                
-                //Parse location info
+    
+                //Parse location data
                 if let location = dict["location"] as? [String : AnyObject]{
                         if let name = location["name"] as? String,
                         let latitude = location["latitude"] as? CGFloat,
@@ -95,7 +100,7 @@ class Image: NSObject {
                     }
                 }
                 
-                //Parse tags
+                //Parse tags data
                 var tagsArray = [Tag]()
                 if let tags = dict["tags"] as? [[String: AnyObject]] {
                     for tag in tags {
