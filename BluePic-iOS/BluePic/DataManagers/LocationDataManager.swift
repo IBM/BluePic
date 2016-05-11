@@ -28,7 +28,7 @@ class LocationDataManager: NSObject {
     private var locationCallback : ((location : CLLocation?)->())!
     
     
-    func getUnitOfMeasurement() -> String{
+    func getUnitsOfMeasurement() -> String{
         let locale = NSLocale.currentLocale()
         
         if let isMetricString = locale.objectForKey(NSLocaleUsesMetricSystem),
