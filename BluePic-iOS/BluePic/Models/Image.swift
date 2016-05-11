@@ -34,9 +34,7 @@ class Image: NSObject {
     init?(_ dict : [String : AnyObject]) {
         
         super.init()
-        
-        //if let dict = Utils.convertResponseToDictionary(response){
-            
+  
             if let id = dict["_id"] as? String,
                 let caption = dict["caption"] as? String,
                 let fileName = dict["fileName"] as? String,
@@ -53,32 +51,15 @@ class Image: NSObject {
                 self.usersName = usersName
                 self.usersId = usersId
                 
-//                ,
-//                let widthNSNumber = NSNumberFormatter().numberFromString(width),
-//                let heightNSNumber = NSNumberFormatter().numberFromString(height) {
-                
                 if let width = dict["width"] as? CGFloat,
                     let height = dict["height"] as? CGFloat {
-                    
-                    self.width = width
-                    self.height = height
+                        self.width = width
+                        self.height = height
+                }
 
-                }
-                
-                if let width = dict["width"] as? String,
-                let height = dict["height"] as? String,
-                let widthNSNumber = NSNumberFormatter().numberFromString(width),
-                let heightNSNumber = NSNumberFormatter().numberFromString(height) {
- 
-                    self.width = CGFloat(widthNSNumber)
-                    self.height = CGFloat(heightNSNumber)
-                
-                }
-                
-                
                 //set timeStamp
                 let dateFormatter = NSDateFormatter()
-                dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss" //"yyyy-MM-dd'T'HH:mm:ss.SSSSSSZ"
+                dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
                 dateFormatter.timeZone = NSTimeZone(abbreviation: "UTC")
                 if let date = dateFormatter.dateFromString(timeStamp) {
                     
@@ -91,11 +72,6 @@ class Image: NSObject {
                 print("invalid image json")
                 return nil
             }
-            
-//        }
-//        else{
-//            return nil
-//        }
         
     }
 

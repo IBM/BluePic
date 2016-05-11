@@ -18,6 +18,7 @@
 		1B40BF7C1CDA79080097F435 /* CurrentUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B40BF7B1CDA79080097F435 /* CurrentUser.swift */; };
 		1B40BF7E1CDA83F10097F435 /* LoginDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B40BF7D1CDA83F10097F435 /* LoginDataManager.swift */; };
 		1B40BF801CE0D0140097F435 /* LocationDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B40BF7F1CE0D0140097F435 /* LocationDataManager.swift */; };
+		1B40BF821CE37AE30097F435 /* ImageDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B40BF811CE37AE30097F435 /* ImageDetailViewController.swift */; };
 		1B4305971CD3C94C00474AB5 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B4305961CD3C94C00474AB5 /* User.swift */; };
 		1B4305991CD3EA4400474AB5 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B4305981CD3EA4400474AB5 /* Image.swift */; };
 		1B4357011CD15CF4008262A1 /* BluemixDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B4357001CD15CF4008262A1 /* BluemixDataManager.swift */; };
@@ -96,6 +97,7 @@
 		1B40BF7B1CDA79080097F435 /* CurrentUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentUser.swift; sourceTree = "<group>"; };
 		1B40BF7D1CDA83F10097F435 /* LoginDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginDataManager.swift; sourceTree = "<group>"; };
 		1B40BF7F1CE0D0140097F435 /* LocationDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationDataManager.swift; sourceTree = "<group>"; };
+		1B40BF811CE37AE30097F435 /* ImageDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageDetailViewController.swift; sourceTree = "<group>"; };
 		1B4305961CD3C94C00474AB5 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		1B4305981CD3EA4400474AB5 /* Image.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		1B4357001CD15CF4008262A1 /* BluemixDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluemixDataManager.swift; sourceTree = "<group>"; };
@@ -258,6 +260,7 @@
 				3435C7D61C041116004923BD /* CameraViewController.swift */,
 				3435C7D81C04111F004923BD /* ProfileViewController.swift */,
 				2E71D6161CE1197800EEBD2B /* SearchViewController.swift */,
+				1B40BF811CE37AE30097F435 /* ImageDetailViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -558,6 +561,7 @@
 				3435C7D91C04111F004923BD /* ProfileViewController.swift in Sources */,
 				347472E11BFA8DEF0018B7F6 /* NSDateExtension.swift in Sources */,
 				1BC7AF5C1C0E39F100DDFD02 /* FeedViewModel.swift in Sources */,
+				1B40BF821CE37AE30097F435 /* ImageDetailViewController.swift in Sources */,
 				1B4357011CD15CF4008262A1 /* BluemixDataManager.swift in Sources */,
 				3435C7D71C041116004923BD /* CameraViewController.swift in Sources */,
 				347472EA1BFA8DEF0018B7F6 /* UIViewExtensions.swift in Sources */,
