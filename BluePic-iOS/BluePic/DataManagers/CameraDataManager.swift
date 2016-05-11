@@ -371,8 +371,8 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
         
         let image = Image()
         
-        image.usersId = CurrentUser.facebookUserId
-        image.usersName = CurrentUser.fullName
+        image.user?.facebookID = CurrentUser.facebookUserId
+        image.user?.name = CurrentUser.fullName
         
         if (lastImageTakenOriginalUIImage.size.width > kResizeAllImagesToThisWidth) { //if image too big, shrink it down
             image.image = UIImage.resizeImage(lastImageTakenOriginalUIImage, newWidth: kResizeAllImagesToThisWidth)
