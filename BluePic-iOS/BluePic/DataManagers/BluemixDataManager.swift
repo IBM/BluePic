@@ -303,15 +303,15 @@ class BluemixDataManager: NSObject {
     }
     
     
-    private func createNewUser(userId : String, name : String, result : ((user : User?) -> ())){
+    private func createNewUser(userId : String, name : String, language : String, unitsOfMeasurement : String, result : ((user : User?) -> ())){
         
         let requestURL = getBluemixBaseRequestURL() + "/" + kUsersEndPoint
         
         let request = Request(url: requestURL, method: HttpMethod.POST)
         
         //request.headers = ["Content-Type" : "application/json"]
-        
-        let json = ["_id": userId, "name": name]
+        //"language": "en-US", "unitsOfMeasurement": "e"
+        let json = ["_id": userId, "name": name, "language" : language, "unitsOfMeasurement" : unitsOfMeasurement]
 
         
         do{
@@ -336,7 +336,7 @@ class BluemixDataManager: NSObject {
     }
     
     
-    func checkIfUserAlreadyExistsIfNotCreateNewUser(userId : String, name : String, callback : ((success : Bool) -> ())){
+    func checkIfUserAlreadyExistsIfNotCreateNewUser(userId : String, name : String, language: String, unitsOfMeasurement : String, callback : ((success : Bool) -> ())){
 
         getUserById(userId, result: { user in
             
@@ -344,7 +344,7 @@ class BluemixDataManager: NSObject {
                callback(success: true)
             }
             else{
-                self.createNewUser(userId, name: name, result: { user in
+                self.createNewUser(userId, name: name, language: language, unitsOfMeasurement: unitsOfMeasurement, result: { user in
                     
                     if(user != nil){
                         callback(success: true)
@@ -360,25 +360,7 @@ class BluemixDataManager: NSObject {
 
     }
     
-    
 
-    func createNewUserIfUserDoesntAlreadyExistElseReturnExistingUser(userId : String, name : String, result : ((user : User?) -> ())){
-        
-        getUserById(userId, result: { user in
-            
-            if let user = user {
-                result(user: user)
-            }
-            else{
-                self.createNewUser(userId, name: name, result: { user in
-                    result(user: user)
-                })
-            }
-   
-        })
-    }
-    
-    
     
     func postNewImage(image : Image){
         
