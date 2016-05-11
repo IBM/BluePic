@@ -18,6 +18,12 @@
 import UIKit
 import ImageIO
 
+
+enum CameraDataManagerNotification : String {
+    case UserPressedPostPhoto = "UserPressedPostPhoto"
+ 
+}
+
 /// Singleton to hold any state with showing the camera picker. Allows user to upload a photo to BluePic
 class CameraDataManager: NSObject {
 
@@ -44,7 +50,9 @@ class CameraDataManager: NSObject {
     /// ConfirmationView to be shown after selecting or taking a photo (add a caption here)
     var confirmationView: CameraConfirmationView!
     
-    var lastImageTaken: Image!
+    //var lastImageTaken: Image!
+    
+    var lastImageTakenOriginalUIImage : UIImage!
     
     /// Constant for how wide all images should be constrained to when compressing for upload (600 results in ~1.2 MB photos)
     let kResizeAllImagesToThisWidth = CGFloat(600)
@@ -52,7 +60,7 @@ class CameraDataManager: NSObject {
     /// photos that were taken during this app session
     var imagesTakenDuringAppSessionById = [String : UIImage]()
     
-    // An array of photos that need to be uploaded to object storage and cloudant sync
+    // An array of photos that need to be uploaded to object storage and cloudant
     var imageUploadQueue : [Image] = []
     
     
@@ -151,7 +159,7 @@ class CameraDataManager: NSObject {
      Method called when user presses "post Photo" on confirmation view
      */
     func postPhoto() {
-        self.lastImageTaken.caption = self.confirmationView.titleTextField.text //save caption text
+       // self.lastImageTaken.caption = self.confirmationView.titleTextField.text //save caption text
         self.confirmationView.endEditing(true) //dismiss keyboard first if shown
         self.confirmationView.userInteractionEnabled = false
         self.tabVC.view.userInteractionEnabled = false
@@ -159,10 +167,22 @@ class CameraDataManager: NSObject {
         self.confirmationView.cancelButton.hidden = true
         self.confirmationView.postButton.hidden = true
         
+        
+        
+    
+        let image = prepareImageObjectFromPickerInfoDictionary({ image in
+        
+            BluemixDataManager.SharedInstance.beginUploadingImagesFromQueueIfUploadHasntAlreadyBegan()
+        
+        })
+        
+        BluemixDataManager.SharedInstance.queueImageForUpload(image)
+        
+        NSNotificationCenter.defaultCenter().postNotificationName(CameraDataManagerNotification.UserPressedPostPhoto.rawValue, object: nil)
+        
         //Dismiss Camera Confirmation View when user presses post photo to bring user back to image feed
         dismissCameraConfirmation()
-        
-        BluemixDataManager.SharedInstance.uploadImage(lastImageTaken)
+    
     }
     
     /**
@@ -249,37 +269,39 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
     {
         picker.dismissViewControllerAnimated(true, completion: nil)
         
-        self.lastImageTaken = Image()
-        
-        lastImageTaken.usersId = CurrentUser.facebookUserId
-        lastImageTaken.usersName = CurrentUser.fullName
+//        self.lastImageTaken = Image()
+//        
+//        lastImageTaken.usersId = CurrentUser.facebookUserId
+//        lastImageTaken.usersName = CurrentUser.fullName
         
         //show image on confirmationView, save a copy
         if let takenImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
-            print("original image width: \(takenImage.size.width) height: \(takenImage.size.height)")
-            if (takenImage.size.width > kResizeAllImagesToThisWidth) { //if image too big, shrink it down
-                self.lastImageTaken.image = UIImage.resizeImage(takenImage, newWidth: kResizeAllImagesToThisWidth)
-            }
-            else {
-                self.lastImageTaken.image = takenImage
-            }
+//            print("original image width: \(takenImage.size.width) height: \(takenImage.size.height)")
+//            if (takenImage.size.width > kResizeAllImagesToThisWidth) { //if image too big, shrink it down
+//                self.lastImageTaken.image = UIImage.resizeImage(takenImage, newWidth: kResizeAllImagesToThisWidth)
+//            }
+//            else {
+//                self.lastImageTaken.image = takenImage
+//            }
             
-            //rotate image if necessary and then save photo
-            self.lastImageTaken.image = self.rotateImageIfNecessary(self.lastImageTaken.image)
-            
-            //save width and height of photo
-            self.lastImageTaken.width = self.lastImageTaken.image?.size.width
-            self.lastImageTaken.height = self.lastImageTaken.image?.size.height
+//            //rotate image if necessary and then save photo
+//            self.lastImageTaken.image = self.rotateImageIfNecessary(self.lastImageTaken.image)
+//            
+//            //save width and height of photo
+//            self.lastImageTaken.width = self.lastImageTaken.image?.size.width
+//            self.lastImageTaken.height = self.lastImageTaken.image?.size.height
             
             //set the confirmation view's photoImageView with the photo just chosen/taken
-            self.confirmationView.photoImageView.image = self.lastImageTaken.image
+            
+            lastImageTakenOriginalUIImage = takenImage
+            self.confirmationView.photoImageView.image = takenImage
         
-            //save name of image as current date and time
-            let dateFormatter = NSDateFormatter()
-            dateFormatter.dateFormat = "MM-dd-yyyy_HHmmss"
-            let todaysDate = NSDate()
-            self.lastImageTaken.fileName = dateFormatter.stringFromDate(todaysDate) + ".png"
-
+//            //save name of image as current date and time
+//            let dateFormatter = NSDateFormatter()
+//            dateFormatter.dateFormat = "MM-dd-yyyy_HHmmss"
+//            let todaysDate = NSDate()
+//            self.lastImageTaken.fileName = dateFormatter.stringFromDate(todaysDate) + ".png"
+//
             }
             //if image isn't available (iCloud photo in Photo stream not loaded yet)
             else { 
@@ -292,6 +314,135 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
             
             }
     }
+    
+    //Backup of original image picker
+//    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject])
+//    {
+//        picker.dismissViewControllerAnimated(true, completion: nil)
+//        
+//        self.lastImageTaken = Image()
+//        
+//        lastImageTaken.usersId = CurrentUser.facebookUserId
+//        lastImageTaken.usersName = CurrentUser.fullName
+//        
+//        //show image on confirmationView, save a copy
+//        if let takenImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
+//            print("original image width: \(takenImage.size.width) height: \(takenImage.size.height)")
+//            if (takenImage.size.width > kResizeAllImagesToThisWidth) { //if image too big, shrink it down
+//                self.lastImageTaken.image = UIImage.resizeImage(takenImage, newWidth: kResizeAllImagesToThisWidth)
+//            }
+//            else {
+//                self.lastImageTaken.image = takenImage
+//            }
+//            
+//            //rotate image if necessary and then save photo
+//            self.lastImageTaken.image = self.rotateImageIfNecessary(self.lastImageTaken.image)
+//            
+//            //save width and height of photo
+//            self.lastImageTaken.width = self.lastImageTaken.image?.size.width
+//            self.lastImageTaken.height = self.lastImageTaken.image?.size.height
+//            
+//            //set the confirmation view's photoImageView with the photo just chosen/taken
+//            self.confirmationView.photoImageView.image = self.lastImageTaken.image
+//            
+//            //save name of image as current date and time
+//            let dateFormatter = NSDateFormatter()
+//            dateFormatter.dateFormat = "MM-dd-yyyy_HHmmss"
+//            let todaysDate = NSDate()
+//            self.lastImageTaken.fileName = dateFormatter.stringFromDate(todaysDate) + ".png"
+//            
+//        }
+//            //if image isn't available (iCloud photo in Photo stream not loaded yet)
+//        else {
+//            self.destroyConfirmationView()
+//            picker.dismissViewControllerAnimated(true, completion: { _ in
+//                
+//            })
+//            self.showPhotoCouldntBeChosenAlert()
+//            print("picker canceled - photo not available!")
+//            
+//        }
+//    }
+    
+    
+    
+    
+    func prepareImageObjectFromPickerInfoDictionary(callback : ((image : Image)->())) -> Image {
+        
+        let image = Image()
+        
+        image.usersId = CurrentUser.facebookUserId
+        image.usersName = CurrentUser.fullName
+        
+        if (lastImageTakenOriginalUIImage.size.width > kResizeAllImagesToThisWidth) { //if image too big, shrink it down
+            image.image = UIImage.resizeImage(lastImageTakenOriginalUIImage, newWidth: kResizeAllImagesToThisWidth)
+        }
+        else {
+            image.image = lastImageTakenOriginalUIImage
+        }
+        
+        image.image = self.rotateImageIfNecessary(image.image)
+        image.width = image.image!.size.width
+        image.height = image.image!.size.height
+        
+        //save name of image as current date and time
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "MM-dd-yyyy_HHmmss"
+        let todaysDate = NSDate()
+        image.fileName = dateFormatter.stringFromDate(todaysDate) + ".png"
+    
+        image.caption = self.confirmationView.titleTextField.text
+        
+        dispatch_async(dispatch_get_main_queue()) {
+        NSNotificationCenter.defaultCenter().postNotificationName(CameraDataManagerNotification.UserPressedPostPhoto.rawValue, object: nil)
+        }
+        
+        setLatLongCityAndStateForImage(image, callback: { image in
+    
+            callback(image: image)
+            
+        })
+        
+        return image
+        
+    }
+    
+    
+    func setLatLongCityAndStateForImage(image : Image, callback : ((image : Image)->())){
+        
+        let location = LocationDataManager.SharedInstance.getUsersCurrentLocation()
+        if let location = location {
+            image.latitude = "\(location.coordinate.latitude)"
+            image.longitude = "\(location.coordinate.longitude)"
+            
+            LocationDataManager.SharedInstance.getPlaceMarkFromLocation(location, callback: { placemark in
+                
+                if let placemark = placemark, let city = placemark.locality, let state = placemark.administrativeArea {
+                    
+                    image.city = city
+                    image.state = state
+                    
+                }
+                else{
+                    image.city = ""
+                    image.state = ""
+                }
+                
+                callback(image: image)
+                
+            })
+        }
+        else{
+            image.latitude = ""
+            image.longitude = ""
+            image.city = ""
+            image.state = ""
+            callback(image: image)
+        }
+  
+    }
+    
+    
     
     
     /**
