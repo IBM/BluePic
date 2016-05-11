@@ -262,7 +262,7 @@ extension FeedViewModel {
                     image.url,
                     image: nil, //MIGHT NEED TO FIX
                     caption: image.caption,
-                    usersName: image.usersName,
+                    usersName: image.user?.name,
                     timeStamp: image.timeStamp,
                     fileName: image.fileName
                 )
@@ -274,6 +274,21 @@ extension FeedViewModel {
             }
         }
     }
+    
+    
+    func prepareImageDetailViewControllerSelectedCellAtIndexPath(indexPath : NSIndexPath) -> ImageDetailViewController {
+        
+         let imageDetailVC = Utils.vcWithNameFromStoryboardWithName("ImageDetailViewController", storyboardName: "Feed") as! ImageDetailViewController
+        
+        imageDetailVC.image = imageDataArray[indexPath.row]
+        
+        
+        return imageDetailVC
+        
+    }
+    
+    
+    
   
  
 }
