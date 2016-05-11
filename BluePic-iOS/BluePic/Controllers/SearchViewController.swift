@@ -28,10 +28,20 @@ class SearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupPopularTags()
+    }
+    
+    func setupPopularTags() {
+        
+        let layout = KTCenterFlowLayout()
+        layout.minimumInteritemSpacing = 12.0
+        layout.minimumLineSpacing = 10.0
+        tagCollectionView.setCollectionViewLayout(layout, animated: false)
+        
         Utils.kernLabelString(tagsButton.titleLabel!, spacingValue: 1.7)
         Utils.registerNibWithCollectionView("TagCollectionViewCell", collectionView: tagCollectionView)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
-
+        
     }
     
     override func viewWillAppear(animated: Bool) {
