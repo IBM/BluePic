@@ -9,9 +9,13 @@
 import UIKit
 
 class ImageDetailViewController: UIViewController {
+    
+    var image : Image!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        setupSubviewWithImageData()
 
         // Do any additional setup after loading the view.
     }
@@ -19,6 +23,13 @@ class ImageDetailViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func setupSubviewWithImageData(){
+        
+        
+        
+        
     }
     
 
