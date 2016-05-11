@@ -10,7 +10,13 @@ import UIKit
 
 class ImageDetailViewController: UIViewController {
     
+    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var dimView: UIView!
+    @IBOutlet weak var backButton: UIButton!
+    
+    
     var image : Image!
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,6 +33,19 @@ class ImageDetailViewController: UIViewController {
     
     func setupSubviewWithImageData(){
         
+        if let urlString = image.url {
+            
+            let nsurl = NSURL(string: urlString)
+            
+            imageView.sd_setImageWithURL(nsurl)
+        }
+        
+    }
+    
+    
+    @IBAction func backButtonAction(sender: AnyObject) {
+        
+        self.navigationController?.popViewControllerAnimated(true)
         
         
         
