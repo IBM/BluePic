@@ -362,13 +362,9 @@ class BluemixDataManager: NSObject {
     func postNewImage(image : Image){
         
         NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImageUploadBegan.rawValue, object: nil)
-    
-        //TEMP HARDCODED
-        let latitude = "37.864851"
-        let longitude = "119.538523"
-        let city = "Austin"
+
         
-        let tempURL = getBluemixBaseRequestURL() + "/" + kUsersEndPoint + "/" + CurrentUser.facebookUserId! + "/" + kImagesEndPoint + "/" + image.fileName! + "/" + image.caption! + "/" + "\(image.width!)" + "/" + "\(image.height!)" + "/" + latitude + "/" + longitude + "/" + city
+        let tempURL = getBluemixBaseRequestURL() + "/" + kUsersEndPoint + "/" + CurrentUser.facebookUserId! + "/" + kImagesEndPoint + "/" + image.fileName! + "/" + image.caption! + "/" + "\(image.width!)" + "/" + "\(image.height!)" + "/" + image.latitude! + "/" + image.longitude! + "/" + image.city!
         
         let requestURL = tempURL.stringByAddingPercentEncodingWithAllowedCharacters( NSCharacterSet.URLQueryAllowedCharacterSet())!
 
@@ -402,19 +398,28 @@ class BluemixDataManager: NSObject {
 //UPLOADING IMAGES
 extension BluemixDataManager {
     
-    
-    func uploadImage(image : Image){
+    func queueImageForUpload(image : Image){
         
         self.addImageToImageTakenDuringAppSessionByIdDictionary(image)
         self.addImageToImageUploadQueue(image)
+        
+    }
+    
+    
+    func beginUploadingImagesFromQueueIfUploadHasntAlreadyBegan(){
+        
+//        self.addImageToImageTakenDuringAppSessionByIdDictionary(image)
+//        self.addImageToImageUploadQueue(image)
 
-        tryToPostNewImage(image)
+        tryToPostNewImageFromImageUploadQueue()
  
     }
     
-    private func tryToPostNewImage(image : Image){
+    private func tryToPostNewImageFromImageUploadQueue(){
         
         if(imageUploadQueue.count == 1){
+            
+            let image = imageUploadQueue[0]
             postNewImage(image)
         }
     }
