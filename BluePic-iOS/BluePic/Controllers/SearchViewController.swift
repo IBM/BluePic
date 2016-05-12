@@ -36,8 +36,9 @@ class SearchViewController: UIViewController {
     func setupPopularTags() {
         
         let layout = KTCenterFlowLayout()
-        layout.minimumInteritemSpacing = 12.0
+        layout.minimumInteritemSpacing = 10.0
         layout.minimumLineSpacing = 10.0
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 15.0, bottom: 0, right: 15.0)
         tagCollectionView.setCollectionViewLayout(layout, animated: false)
         
         Utils.kernLabelString(tagsButton.titleLabel!, spacingValue: 1.7)
