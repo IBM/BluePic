@@ -74,7 +74,7 @@ class FeedViewController: UIViewController {
             searchTopBarView.frame = defaultTopBarView.frame
             defaultTopBarView.hidden = true
             searchTopBarView.hidden = false
-            wordTagLabel.text = query.uppercaseString
+            wordTagLabel.text = query
             Utils.kernLabelString(wordTagLabel, spacingValue: 1.4)
             self.view.addSubview(searchTopBarView)
         }
