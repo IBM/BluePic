@@ -13,7 +13,23 @@ class ImageDetailViewController: UIViewController {
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var dimView: UIView!
     @IBOutlet weak var backButton: UIButton!
+    @IBOutlet weak var captionLabel: UILabel!
+    @IBOutlet weak var byUserLabel: UILabel!
+    @IBOutlet weak var cityStateLabel: UILabel!
+    @IBOutlet weak var coordinatesLabel: UILabel!
+    @IBOutlet weak var dateLabel: UILabel!
+    @IBOutlet weak var timeLabel: UILabel!
+    @IBOutlet weak var weatherImageView: UIImageView!
+    @IBOutlet weak var temperatureLabel: UILabel!
     
+    
+    private let kByUserLabelPrefix = "by"
+    private let kDateLabelPrefix = "on"
+    private let kTimeLabelPrefix = "at"
+    
+    
+    private let kCaptionLabelLetterSpacing : CGFloat = 1.7
+    private let kCaptionLabelLineSpacing : CGFloat = 20.0
     
     var image : Image!
     
@@ -40,7 +56,29 @@ class ImageDetailViewController: UIViewController {
             imageView.sd_setImageWithURL(nsurl)
         }
         
+        //setup captionLabel
+        setupCaptionLabelWithData()
+    
+        //setup byUserLabel
+        let userFullName = image.user?.name ?? ""
+        byUserLabel.text = kByUserLabelPrefix + " " + userFullName
+    
+        //setup locationLabel
+        let locationName = image.location?.name ?? ""
+        cityStateLabel.text = locationName
+    
+        //setup dateLabel
+        setupDateLabelWithData()
+        
+        //setup timeLabel
+        setupTimeLabelWithData()
+        
+        
+  
     }
+    
+    
+    
     
     
     @IBAction func backButtonAction(sender: AnyObject) {
@@ -62,4 +100,51 @@ class ImageDetailViewController: UIViewController {
     }
     */
 
+}
+
+
+//UI Setup Methods
+extension ImageDetailViewController {
+    
+    func setupCaptionLabelWithData(){
+        
+        let caption = image.caption?.uppercaseString ?? ""
+        
+        captionLabel.attributedText = NSAttributedString.createAttributedStringWithLetterAndLineSpacingWithCentering(caption, letterSpacing: kCaptionLabelLetterSpacing, lineSpacing: kCaptionLabelLineSpacing, centered: true)
+        
+    }
+    
+    func setupDateLabelWithData(){
+        
+        if let date = image.timeStamp {
+            let dateFormatter = NSDateFormatter()
+            dateFormatter.dateStyle = NSDateFormatterStyle.LongStyle
+            let dateString = dateFormatter.stringFromDate(date)
+            
+            dateLabel.text = kDateLabelPrefix + " " + dateString
+        }
+        else{
+            dateLabel.text = ""
+        }
+        
+    }
+    
+    func setupTimeLabelWithData(){
+        
+        if let date = image.timeStamp {
+            let dateFormatter = NSDateFormatter()
+            dateFormatter.dateFormat = "h:mm a"
+            let dateString = dateFormatter.stringFromDate(date)
+            timeLabel.text = kTimeLabelPrefix + " " + dateString
+   
+        }
+        else{
+            timeLabel.text = ""
+        }
+        
+    }
+    
+    
+    
+    
 }

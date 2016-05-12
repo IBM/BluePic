@@ -20,6 +20,7 @@
 		1B40BF801CE0D0140097F435 /* LocationDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B40BF7F1CE0D0140097F435 /* LocationDataManager.swift */; };
 		1B40BF821CE37AE30097F435 /* ImageDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B40BF811CE37AE30097F435 /* ImageDetailViewController.swift */; };
 		1B40BF841CE3989C0097F435 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B40BF831CE3989C0097F435 /* User.swift */; };
+		1B40BF861CE4DDB10097F435 /* NSAttributedStringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B40BF851CE4DDB10097F435 /* NSAttributedStringExtension.swift */; };
 		1B4305991CD3EA4400474AB5 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B4305981CD3EA4400474AB5 /* Image.swift */; };
 		1B4357011CD15CF4008262A1 /* BluemixDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B4357001CD15CF4008262A1 /* BluemixDataManager.swift */; };
 		1B5555BE1C1616B000B3086E /* TabBarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B5555BD1C1616B000B3086E /* TabBarViewModel.swift */; };
@@ -99,6 +100,7 @@
 		1B40BF7F1CE0D0140097F435 /* LocationDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationDataManager.swift; sourceTree = "<group>"; };
 		1B40BF811CE37AE30097F435 /* ImageDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageDetailViewController.swift; sourceTree = "<group>"; };
 		1B40BF831CE3989C0097F435 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		1B40BF851CE4DDB10097F435 /* NSAttributedStringExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSAttributedStringExtension.swift; sourceTree = "<group>"; };
 		1B4305981CD3EA4400474AB5 /* Image.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		1B4357001CD15CF4008262A1 /* BluemixDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluemixDataManager.swift; sourceTree = "<group>"; };
 		1B5555BD1C1616B000B3086E /* TabBarViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarViewModel.swift; sourceTree = "<group>"; };
@@ -271,6 +273,7 @@
 				347472C51BFA8DEF0018B7F6 /* NSDateExtension.swift */,
 				347472CB1BFA8DEF0018B7F6 /* UIImageExtension.swift */,
 				347472CE1BFA8DEF0018B7F6 /* UIViewExtensions.swift */,
+				1B40BF851CE4DDB10097F435 /* NSAttributedStringExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -549,6 +552,7 @@
 				346F94821C0F9225004999A8 /* CameraConfirmationView.swift in Sources */,
 				3435C7CF1C036A60004923BD /* TabBarViewController.swift in Sources */,
 				1B2DC2531C1F360D00B4E77B /* EmptyFeedCollectionViewCell.swift in Sources */,
+				1B40BF861CE4DDB10097F435 /* NSAttributedStringExtension.swift in Sources */,
 				1B40BF801CE0D0140097F435 /* LocationDataManager.swift in Sources */,
 				1B40BF841CE3989C0097F435 /* User.swift in Sources */,
 				1BC7AF5F1C0E480800DDFD02 /* ImageFeedCollectionViewCell.swift in Sources */,
