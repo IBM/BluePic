@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="cJB-KH-xpj">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="cJB-KH-xpj">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -222,6 +222,21 @@
                                     <action selector="popVC:" destination="YXB-GP-5T8" eventType="touchUpInside" id="UdN-xD-33Y"/>
                                 </connections>
                             </button>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="7gP-x3-QmR">
+                                <rect key="frame" x="61" y="430" width="478" height="93"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="93" id="wHm-4f-cId"/>
+                                    <constraint firstAttribute="width" constant="478" id="wOL-YU-ebA"/>
+                                </constraints>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="f6F-Hg-TvR">
+                                    <size key="itemSize" width="50" height="50"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells/>
+                            </collectionView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RsH-Gz-PYp">
                                 <rect key="frame" x="60" y="189" width="480" height="222"/>
                                 <subviews>
@@ -281,7 +296,9 @@
                             <constraint firstItem="R64-Bq-Ddf" firstAttribute="height" secondItem="Lw7-1A-XeJ" secondAttribute="height" id="gth-Ng-rvZ"/>
                             <constraint firstItem="FKM-yh-7wQ" firstAttribute="height" secondItem="Lw7-1A-XeJ" secondAttribute="height" id="hFA-aG-4Vk"/>
                             <constraint firstItem="R64-Bq-Ddf" firstAttribute="centerX" secondItem="Lw7-1A-XeJ" secondAttribute="centerX" id="iNC-Ft-woF"/>
+                            <constraint firstItem="k0e-Eu-NFL" firstAttribute="top" secondItem="7gP-x3-QmR" secondAttribute="bottom" constant="77" id="jQ2-bt-4AR"/>
                             <constraint firstItem="RsH-Gz-PYp" firstAttribute="centerX" secondItem="Lw7-1A-XeJ" secondAttribute="centerX" id="jm0-M4-wZe"/>
+                            <constraint firstItem="7gP-x3-QmR" firstAttribute="centerX" secondItem="Lw7-1A-XeJ" secondAttribute="centerX" id="pdf-nZ-YZM"/>
                             <constraint firstItem="FKM-yh-7wQ" firstAttribute="centerY" secondItem="Lw7-1A-XeJ" secondAttribute="centerY" id="wmG-rX-Aw8"/>
                             <constraint firstItem="XOT-Zw-pMR" firstAttribute="leading" secondItem="Lw7-1A-XeJ" secondAttribute="leadingMargin" constant="40" id="yOJ-00-Cxv"/>
                         </constraints>
@@ -302,6 +319,7 @@
                         <outlet property="dateLabel" destination="RQQ-1s-b3E" id="cCQ-Ac-soC"/>
                         <outlet property="dimView" destination="FKM-yh-7wQ" id="2Fy-FJ-BUS"/>
                         <outlet property="imageView" destination="R64-Bq-Ddf" id="5pB-sw-441"/>
+                        <outlet property="tagCollectionView" destination="7gP-x3-QmR" id="IdL-Xn-j6Z"/>
                         <outlet property="temperatureLabel" destination="vgc-t0-cYj" id="cFS-eK-iWR"/>
                         <outlet property="timeLabel" destination="ARm-GP-M6F" id="2uS-O7-Jrq"/>
                         <outlet property="weatherImageView" destination="KfL-4y-Ubp" id="8bA-RO-yIj"/>
