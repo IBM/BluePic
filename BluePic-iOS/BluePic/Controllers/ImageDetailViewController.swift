@@ -21,11 +21,15 @@ class ImageDetailViewController: UIViewController {
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var weatherImageView: UIImageView!
     @IBOutlet weak var temperatureLabel: UILabel!
+
+    @IBOutlet weak var tagCollectionView: UICollectionView!
     
     
     private let kByUserLabelPrefix = "by"
     private let kDateLabelPrefix = "on"
     private let kTimeLabelPrefix = "at"
+    
+    private let kCellPadding: CGFloat = 60
     
     
     private let kCaptionLabelLetterSpacing : CGFloat = 1.7
@@ -38,6 +42,9 @@ class ImageDetailViewController: UIViewController {
         super.viewDidLoad()
         
         setupSubviewWithImageData()
+        setupTagCollectionView()
+        
+        UIApplication.sharedApplication().statusBarStyle = .LightContent
 
         // Do any additional setup after loading the view.
     }
@@ -45,6 +52,21 @@ class ImageDetailViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func setupTagCollectionView(){
+        
+        let layout = KTCenterFlowLayout()
+        layout.minimumInteritemSpacing = 10.0
+        layout.minimumLineSpacing = 10.0
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 15.0, bottom: 0, right: 15.0)
+        tagCollectionView.setCollectionViewLayout(layout, animated: false)
+        tagCollectionView.delegate = self
+        tagCollectionView.dataSource = self
+        
+        //Utils.kernLabelString(tagsButton.titleLabel!, spacingValue: 1.7)
+        Utils.registerNibWithCollectionView("TagCollectionViewCell", collectionView: tagCollectionView)
+        
     }
     
     func setupSubviewWithImageData(){
@@ -91,7 +113,7 @@ class ImageDetailViewController: UIViewController {
         
         
     }
-    
+   
 
     /*
     // MARK: - Navigation
@@ -161,6 +183,64 @@ extension ImageDetailViewController {
         else{
             coordinatesLabel.text = ""
         }
+    }
+    
+}
+
+
+extension ImageDetailViewController : UICollectionViewDataSource {
+    
+    
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+       
+        if let tags = image.tags {
+            return tags.count
+        }
+        else{
+            return 0
+        }
+        
+    }
+    
+    
+    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+        return 1
+    }
+
+    
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCellWithReuseIdentifier("TagCollectionViewCell", forIndexPath: indexPath) as? TagCollectionViewCell else {
+            return UICollectionViewCell()
+        }
+        
+        let tags = image.tags!
+        
+        cell.tagLabel.text = tags[indexPath.item].label
+        return cell
+        
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        
+        let tags = image.tags!
+        
+        let size = NSString(string: tags[indexPath.item].label!).sizeWithAttributes(nil)
+        return CGSizeMake(size.width + kCellPadding, 30.0)
+    }
+    
+    
+
+}
+
+
+extension ImageDetailViewController : UICollectionViewDelegate {
+    
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        
+        
+        
+        
+        
     }
     
     
