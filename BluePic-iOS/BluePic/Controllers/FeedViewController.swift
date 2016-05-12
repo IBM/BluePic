@@ -89,6 +89,8 @@ class FeedViewController: UIViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
+        UIApplication.sharedApplication().statusBarStyle = UIStatusBarStyle.Default
+        
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         tryToStartLoadingAnimation()
 
