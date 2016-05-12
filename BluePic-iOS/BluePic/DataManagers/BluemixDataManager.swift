@@ -20,6 +20,7 @@ enum BluemixDataManagerNotification : String {
     case ImageUploadBegan = "ImageUploadBegan"
     case ImageUploadSuccess = "ImageUploadSuccess"
     case ImageUploadFailure = "ImageUploadFailure"
+    case PopularTagsReceived = "PopularTagsReceived"
 }
 
 
@@ -165,8 +166,8 @@ class BluemixDataManager: NSObject {
                     do {
                         let jsonObject = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
                         if let result = jsonObject as? [String] {
-                            self.tags = result
-                            // post notification
+                            self.tags = result.map({ $0.uppercaseString })
+                            NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.PopularTagsReceived.rawValue, object: nil)
                         }
                     } catch {
                         print("Failed to convert data to json object: \(error)")

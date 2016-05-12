@@ -48,7 +48,7 @@ func defineRoutes() {
 
   router.get("/tags") { request, response, next in
     
-    let popularTags = ["Friend", "Brother", "Happy", "Rude", "Squid"]
+    let popularTags = ["Friend", "Brother", "Happy", "MOUNTAIN", "TREES", "SKY", "NATURE", "PEOPLE", "OCEAN", "CITY"]
     let json = JSON(popularTags)
     do {
         try response.status(HttpStatusCode.OK).send(json: json).end()
