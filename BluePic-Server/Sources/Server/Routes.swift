@@ -46,27 +46,68 @@ func defineRoutes() {
   // Endpoint for sending push notification (this will use the new Push SDK)
   router.post("/push", handler: closure)
 
-  // Get all image documents
-  router.get("/images") { _, response, next in
-    database.queryByView("images", ofDesign: "main_design", usingParameters: [.Descending(true), .IncludeDocs(true)]) { (document, error) in
-      if let document = document where error == nil {
-        do {
-          let images = try parseImages(document: document)
-          try response.status(HttpStatusCode.OK).send(json: images).end()
-        }
-        catch {
-          Log.error("Failed to send response to client.")
-          response.error = generateInternalError()
-        }
-      } else {
+  router.get("/tags") { request, response, next in
+    
+    let popularTags = ["Friend", "Brother", "Happy", "MOUNTAIN", "TREES", "SKY", "NATURE", "PEOPLE", "OCEAN", "CITY"]
+    let json = JSON(popularTags)
+    do {
+        try response.status(HttpStatusCode.OK).send(json: json).end()
+    } catch {
+        Log.error("Failed to send response to client.")
         response.error = generateInternalError()
-      }
-      next()
+        return
+    }
+
+  }
+
+  // Get all image documents
+  router.get("/images") { request, response, next in
+
+    // if getting images by tag
+    if let tag = request.queryParams["tag"] {
+        let tags = tag.characters.split(separator: ",").map(String.init)
+
+        // placeholder cloudant call that gets 2 images
+        let queryParams: [Database.QueryParameters] =
+        [.Descending(true), .IncludeDocs(true), .EndKey([NSString(string: "0026258080e68113b6da1b6713996faa")]), .StartKey([NSString(string: "135464b130774f928d572eb9b5ad9c95"), NSObject()])]
+        database.queryByView("images_by_id", ofDesign: "main_design", usingParameters: queryParams) { (document, error) in
+          if let document = document where error == nil {
+              do {
+                  let images = try parseImages(document: document)
+                  try response.status(HttpStatusCode.OK).send(json: images).end()
+              }
+              catch {
+                  Log.error("Failed to send response to client.")
+                  response.error = generateInternalError()
+              }
+          } else {
+              response.error = generateInternalError()
+          }
+          next()
+        }
+    } else {
+    
+        database.queryByView("images", ofDesign: "main_design", usingParameters: [.Descending(true), .IncludeDocs(true)]) { (document, error) in
+          if let document = document where error == nil {
+            do {
+              let images = try parseImages(document: document)
+              try response.status(HttpStatusCode.OK).send(json: images).end()
+            }
+            catch {
+              Log.error("Failed to send response to client.")
+              response.error = generateInternalError()
+            }
+          } else {
+            response.error = generateInternalError()
+          }
+          next()
+        }
     }
   }
 
   // Get specific image document
   router.get("/images/:imageId") { request, response, next in
+    print("imageID \(request.params)")
     guard let imageId = request.params["imageId"] else {
       response.error = generateInternalError()
       next()
