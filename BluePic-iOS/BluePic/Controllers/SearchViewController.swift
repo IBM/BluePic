@@ -17,7 +17,7 @@ import UIKit
 
 class SearchViewController: UIViewController {
     
-    let tempPopularTags = ["MOUNTAIN", "TREES", "SKY", "NATURE", "PEOPLE", "OCEAN", "CITY"]
+    var popularTags = [String]()
     @IBOutlet weak var searchField: UITextField!
     @IBOutlet weak var tagsButton: UIButton!
     @IBOutlet weak var tagCollectionView: UICollectionView!
@@ -29,6 +29,8 @@ class SearchViewController: UIViewController {
         super.viewDidLoad()
         
         setupPopularTags()
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
+        initializeDataRetrieval()
     }
     
     func setupPopularTags() {
@@ -40,8 +42,6 @@ class SearchViewController: UIViewController {
         
         Utils.kernLabelString(tagsButton.titleLabel!, spacingValue: 1.7)
         Utils.registerNibWithCollectionView("TagCollectionViewCell", collectionView: tagCollectionView)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
-        
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -73,10 +73,26 @@ class SearchViewController: UIViewController {
     }
 }
 
+// extension to separate out data handling code
+extension SearchViewController {
+    
+    func initializeDataRetrieval() {
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(updateWithTagData), name: BluemixDataManagerNotification.PopularTagsReceived.rawValue, object: nil)
+        
+        BluemixDataManager.SharedInstance.getPopularTags()
+    }
+    
+    func updateWithTagData() {
+        popularTags = BluemixDataManager.SharedInstance.tags
+    }
+    
+}
+
 extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return tempPopularTags.count
+        return popularTags.count
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -84,12 +100,12 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
             return UICollectionViewCell()
         }
         
-        cell.tagLabel.text = tempPopularTags[indexPath.item]
+        cell.tagLabel.text = popularTags[indexPath.item]
         return cell
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        let size = NSString(string: tempPopularTags[indexPath.item]).sizeWithAttributes(nil)
+        let size = NSString(string: popularTags[indexPath.item]).sizeWithAttributes(nil)
         return CGSizeMake(size.width + kCellPadding, 30.0)
     }
     
@@ -97,7 +113,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
         collectionView.deselectItemAtIndexPath(indexPath, animated: true)
         // open feed of items with selected tag
         let vc = Utils.vcWithNameFromStoryboardWithName("FeedViewController", storyboardName: "Feed") as! FeedViewController
-        vc.searchQuery = tempPopularTags[indexPath.item]
+        vc.searchQuery = popularTags[indexPath.item]
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
