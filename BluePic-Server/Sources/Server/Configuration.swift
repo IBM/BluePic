@@ -75,5 +75,34 @@ public struct Configuration {
     let connProperties = ObjectStorageConnProps(projectId: projectId, userId: userId, password: password)
     return connProperties
   }
+    
+    func getMobileClientAccessProps() throws -> MobileClientAccessProps {
+        guard let mcaCredentials = appEnv.getService(spec: "Mobile Client Access-ag")?.credentials else {
+            throw Error.IO("Failed to obtain MCA service and/or credentials.")
+        }
+        
+        guard let secret = mcaCredentials["secret"].string,
+        serverUrl = mcaCredentials["serverUrl"].string,
+        clientId = mcaCredentials["clientId"].string else {
+                throw Error.IO("Failed to obtain MCA credentials")
+        }
+        
+        let mcaProperties = MobileClientAccessProps(secret: secret, serverUrl: serverUrl, clientId: clientId)
+        return mcaProperties
+    }
 
+    func getIbmPushProps() throws -> IbmPushProps {
+        guard let pushCredentials = appEnv.getService(spec: "IBM Push Notifications-12")?.credentials else {
+            throw Error.IO("Failed to obtain IBM Push service and/or credentials.")
+        }
+        
+        guard let url = pushCredentials["url"].string,
+            adminUrl = pushCredentials["admin_url"].string,
+            secret = pushCredentials["appSecret"].string else {
+                throw Error.IO("Failed to obtain IBM Push credentials")
+        }
+        
+        let ibmPushProperties = IbmPushProps(url: url, adminUrl: adminUrl, secret: secret)
+        return ibmPushProperties
+    }
 }
