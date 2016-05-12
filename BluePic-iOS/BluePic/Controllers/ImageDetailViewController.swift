@@ -29,7 +29,7 @@ class ImageDetailViewController: UIViewController {
     
     
     private let kCaptionLabelLetterSpacing : CGFloat = 1.7
-    private let kCaptionLabelLineSpacing : CGFloat = 20.0
+    private let kCaptionLabelLineSpacing : CGFloat = 10.0
     
     var image : Image!
     
@@ -66,6 +66,9 @@ class ImageDetailViewController: UIViewController {
         //setup locationLabel
         let locationName = image.location?.name ?? ""
         cityStateLabel.text = locationName
+        
+        //setup coordinatesLabel
+        setupCoordintesLabel()
     
         //setup dateLabel
         setupDateLabelWithData()
@@ -144,6 +147,21 @@ extension ImageDetailViewController {
         
     }
     
+    
+    func setupCoordintesLabel(){
+        
+        if let latitude = image.location?.latitude,
+            let longitude = image.location?.longitude {
+            
+            let formattedCordinatesString = Utils.coordinateString(Double(latitude), longitude: Double(longitude))
+            
+            coordinatesLabel.attributedText = NSAttributedString.createAttributedStringWithLetterAndLineSpacingWithCentering(formattedCordinatesString, letterSpacing: 1.4, lineSpacing: 5, centered: true)
+       
+        }
+        else{
+            coordinatesLabel.text = ""
+        }
+    }
     
     
     
