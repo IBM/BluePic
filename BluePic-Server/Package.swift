@@ -23,6 +23,7 @@ let package = Package(
       .Package(url: "https://github.com/IBM-Swift/Kitura-CouchDB.git", majorVersion: 0, minor: 13),
       .Package(url: "https://github.com/IBM-Swift/Swift-cfenv.git", majorVersion: 1),
       .Package(url: "https://github.com/ibm-bluemix-mobile-services/bluemix-objectstorage-serversdk-swift", majorVersion: 0, minor: 3)
+      .Package(url: "https://github.com/ibm-bluemix-mobile-services/bms-mca-kitura-credentials-plugin.git", majorVersion: 0, minor: 1)
     ],
     exclude: ["Makefile", "Kitura-Build"]
 )
