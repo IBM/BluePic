@@ -31,7 +31,7 @@ func defineRoutes() {
   let closure = { (request: RouterRequest, response: RouterResponse, next: () -> Void) -> Void in
     response.setHeader("Content-Type", value: "text/plain; charset=utf-8")
     do {
-      try response.status(HttpStatusCode.OK).send("Hello World, from BluePic-Server! Original URL: \(request.originalUrl)").end()
+      try response.status(HTTPStatusCode.OK).send("Hello World, from BluePic-Server! Original URL: \(request.originalUrl)").end()
     }
     catch {
       Log.error("Failed to send response to client.")
@@ -51,7 +51,7 @@ func defineRoutes() {
     let popularTags = ["Friend", "Brother", "Happy", "MOUNTAIN", "TREES", "SKY", "NATURE", "PEOPLE", "OCEAN", "CITY"]
     let json = JSON(popularTags)
     do {
-        try response.status(HttpStatusCode.OK).send(json: json).end()
+        try response.status(HTTPStatusCode.OK).send(json: json).end()
     } catch {
         Log.error("Failed to send response to client.")
         response.error = generateInternalError()
@@ -65,16 +65,16 @@ func defineRoutes() {
 
     // if getting images by tag
     if let tag = request.queryParams["tag"] {
-        let tags = tag.characters.split(separator: ",").map(String.init)
+        let _ = tag.characters.split(separator: ",").map(String.init)
 
         // placeholder cloudant call that gets 2 images
         let queryParams: [Database.QueryParameters] =
-        [.Descending(true), .IncludeDocs(true), .EndKey([NSString(string: "0026258080e68113b6da1b6713996faa")]), .StartKey([NSString(string: "135464b130774f928d572eb9b5ad9c95"), NSObject()])]
+        [.descending(true), .includeDocs(true), .endKey([NSString(string: "0026258080e68113b6da1b6713996faa")]), .startKey([NSString(string: "135464b130774f928d572eb9b5ad9c95"), NSObject()])]
         database.queryByView("images_by_id", ofDesign: "main_design", usingParameters: queryParams) { (document, error) in
           if let document = document where error == nil {
               do {
                   let images = try parseImages(document: document)
-                  try response.status(HttpStatusCode.OK).send(json: images).end()
+                  try response.status(HTTPStatusCode.OK).send(json: images).end()
               }
               catch {
                   Log.error("Failed to send response to client.")
@@ -87,11 +87,11 @@ func defineRoutes() {
         }
     } else {
     
-        database.queryByView("images", ofDesign: "main_design", usingParameters: [.Descending(true), .IncludeDocs(true)]) { (document, error) in
+        database.queryByView("images", ofDesign: "main_design", usingParameters: [.descending(true), .includeDocs(true)]) { (document, error) in
           if let document = document where error == nil {
             do {
               let images = try parseImages(document: document)
-              try response.status(HttpStatusCode.OK).send(json: images).end()
+              try response.status(HTTPStatusCode.OK).send(json: images).end()
             }
             catch {
               Log.error("Failed to send response to client.")
@@ -118,14 +118,14 @@ func defineRoutes() {
     // let queryParams: [Database.QueryParameters] =
     // [.Descending(true), .IncludeDocs(true), .EndKey([NSString(string: imageId), NSNumber(value: 0)]), .StartKey([NSString(string: imageId), NSObject()])]
     let queryParams: [Database.QueryParameters] =
-    [.Descending(true), .IncludeDocs(true), .EndKey([NSString(string: imageId)]), .StartKey([NSString(string: imageId), NSObject()])]
+    [.descending(true), .includeDocs(true), .endKey([NSString(string: imageId)]), .startKey([NSString(string: imageId), NSObject()])]
     database.queryByView("images_by_id", ofDesign: "main_design", usingParameters: queryParams) { (document, error) in
       if let document = document where error == nil {
         do {
           let json = try parseImages(document: document)
           let images = json["records"].arrayValue
           if images.count == 1 {
-            try response.status(HttpStatusCode.OK).send(json: images[0]).end()
+            try response.status(HTTPStatusCode.OK).send(json: images[0]).end()
           } else {
             throw ProcessingError.Image("Image not found!")
           }
@@ -143,11 +143,11 @@ func defineRoutes() {
 
   // Get all user documents
   router.get("/users") { _, response, next in
-    database.queryByView("users", ofDesign: "main_design", usingParameters: [.Descending(true), .IncludeDocs(false)]) { (document, error) in
+    database.queryByView("users", ofDesign: "main_design", usingParameters: [.descending(true), .includeDocs(false)]) { (document, error) in
       if let document = document where error == nil {
         do {
           let users = try parseUsers(document: document)
-          try response.status(HttpStatusCode.OK).send(json: users).end()
+          try response.status(HTTPStatusCode.OK).send(json: users).end()
         }
         catch {
           Log.error("Failed to send response to client.")
@@ -169,13 +169,13 @@ func defineRoutes() {
     }
 
     // Retrieve JSON document for user
-    database.queryByView("users", ofDesign: "main_design", usingParameters: [.Descending(true), .IncludeDocs(false), .Keys([NSString(string: userId)])]) { (document, error) in
+    database.queryByView("users", ofDesign: "main_design", usingParameters: [.descending(true), .includeDocs(false), .keys([NSString(string: userId)])]) { (document, error) in
       if let document = document where error == nil {
         do {
           let json = try parseUsers(document: document)
           let users = json["records"].arrayValue
           if users.count == 1 {
-            try response.status(HttpStatusCode.OK).send(json: users[0]).end()
+            try response.status(HTTPStatusCode.OK).send(json: users[0]).end()
           } else {
             throw ProcessingError.Image("User not found!")
           }
@@ -224,7 +224,7 @@ func defineRoutes() {
             imageJSON["url"].stringValue = imageURL
             imageJSON["_id"].stringValue = id
             imageJSON["_rev"].stringValue = revision
-            response.status(HttpStatusCode.OK).send(json: imageJSON)
+            response.status(HTTPStatusCode.OK).send(json: imageJSON)
           }
         } else {
           response.error = generateInternalError()
@@ -249,12 +249,12 @@ func defineRoutes() {
       return
     }
 
-    let queryParams: [Database.QueryParameters] = [.Descending(true), .EndKey([NSString(string: userId), NSString(string: "0")]), .StartKey([NSString(string: userId), NSObject()])]
+    let queryParams: [Database.QueryParameters] = [.descending(true), .endKey([NSString(string: userId), NSString(string: "0")]), .startKey([NSString(string: userId), NSObject()])]
     database.queryByView("images_per_user", ofDesign: "main_design", usingParameters: queryParams) { (document, error) in
       if let document = document where error == nil {
         do {
           let images = try parseImages(forUserId: userId, usingDocument: document)
-          try response.status(HttpStatusCode.OK).send(json: images).end()
+          try response.status(HTTPStatusCode.OK).send(json: images).end()
         }
         catch {
           Log.error("Failed to get images for \(userId).")
@@ -298,7 +298,7 @@ func defineRoutes() {
                 // Add revision number response document
                 userJson["_rev"] = document["rev"]
                 // Return user document back to caller
-                try response.status(HttpStatusCode.OK).send(json: userJson).end()
+                try response.status(HTTPStatusCode.OK).send(json: userJson).end()
                 next()
               } else {
                 Log.error("Failed to add user to the system of records.")
@@ -345,7 +345,7 @@ func defineRoutes() {
   //       if let contentType = contentType {
   //         response.setHeader("Content-Type", value: contentType)
   //       }
-  //       response.status(HttpStatusCode.OK).send(data: image)
+  //       response.status(HTTPStatusCode.OK).send(data: image)
   //     }
   //     else {
   //       response.error = error ?? generateInternalError()
