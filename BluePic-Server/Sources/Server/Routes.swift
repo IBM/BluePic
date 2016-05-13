@@ -114,11 +114,8 @@ func defineRoutes() {
       return
     }
 
-    // Will eventually move the following code back, but we had issues with NSNumber and NSInteger. Removed in order to continue progress
-    // let queryParams: [Database.QueryParameters] =
-    // [.Descending(true), .IncludeDocs(true), .EndKey([NSString(string: imageId), NSNumber(value: 0)]), .StartKey([NSString(string: imageId), NSObject()])]
     let queryParams: [Database.QueryParameters] =
-    [.descending(true), .includeDocs(true), .endKey([NSString(string: imageId)]), .startKey([NSString(string: imageId), NSObject()])]
+    [.descending(true), .includeDocs(true), .endKey([imageId, 0]), .startKey([imageId, NSObject()])]
     database.queryByView("images_by_id", ofDesign: "main_design", usingParameters: queryParams) { (document, error) in
       if let document = document where error == nil {
         do {
@@ -169,7 +166,7 @@ func defineRoutes() {
     }
 
     // Retrieve JSON document for user
-    database.queryByView("users", ofDesign: "main_design", usingParameters: [.descending(true), .includeDocs(false), .keys([NSString(string: userId)])]) { (document, error) in
+    database.queryByView("users", ofDesign: "main_design", usingParameters: [ .descending(true), .includeDocs(false), .keys([userId]) ]) { (document, error) in
       if let document = document where error == nil {
         do {
           let json = try parseUsers(document: document)
@@ -247,7 +244,7 @@ func defineRoutes() {
       return
     }
 
-    let queryParams: [Database.QueryParameters] = [.descending(true), .endKey([NSString(string: userId), NSString(string: "0")]), .startKey([NSString(string: userId), NSObject()])]
+    let queryParams: [Database.QueryParameters] = [.descending(true), .endKey([userId, "0"]), .startKey([userId, NSObject()])]
     database.queryByView("images_per_user", ofDesign: "main_design", usingParameters: queryParams) { (document, error) in
       if let document = document where error == nil {
         do {
