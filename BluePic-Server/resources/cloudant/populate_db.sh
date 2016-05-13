@@ -22,6 +22,17 @@ set -e
 # Parse input parameters
 source ./parse_inputs.sh
 
+# Variables (object storage - needed for URL stored in Cloudant database)
+accessPoint=dal.objectstorage.open.softlayer.com
+publicUrl=https://$accessPoint/v1/AUTH_$projectid
+
+# Load images JSON file and expand variables in the JSON document
+# As a reference, see http://stackoverflow.com/questions/10683349/forcing-bash-to-expand-variables-in-a-string-loaded-from-a-file
+scriptsFolder="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+imagesJSON=$(<$scriptsFolder/images.json)
+delimiter="__apply_shell_expansion_delimiter__"
+imagesJSON=`eval "cat <<$delimiter"$'\n'"$imagesJSON"$'\n'"$delimiter"`
+
 # Delete bluepic_db just in case it already exists (we need a clean slate)
 curl -X DELETE https://$username.cloudant.com/$database -u $username:$password
 
@@ -35,7 +46,7 @@ curl -X PUT "https://$username.cloudant.com/bluepic_db/_design/main_design" -u $
 curl -H "Content-Type: application/json" -d @users.json -X POST https://$username.cloudant.com/$database/_bulk_docs -u $username:$password
 
 # Create image documents
-curl -H "Content-Type: application/json" -d @images.json -X POST https://$username.cloudant.com/$database/_bulk_docs -u $username:$password
+curl -H "Content-Type: application/json" --data "$imagesJSON" -X POST https://$username.cloudant.com/$database/_bulk_docs -u $username:$password
 
 # Images are now stored in Object Storage; keeping the code below as reference
 # Upload attachments (images)
