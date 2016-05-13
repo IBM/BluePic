@@ -20,11 +20,18 @@ import KituraNet
 import CouchDB
 import LoggerAPI
 import SwiftyJSON
+import KituraSys
+import MobileClientAccessKituraCredentialsPlugin
+import MobileClientAccess
+import Credentials
 
 /**
 * Function for setting up the different routes for this app.
 */
 func defineRoutes() {
+    
+  let credentials = Credentials()
+  credentials.register(plugin: MobileClientAccessKituraCredentialsPlugin())
 
   let dbClient = CouchDBClient(connectionProperties: couchDBConnProps)
   let database = dbClient.database("bluepic_db")
@@ -176,9 +183,10 @@ func defineRoutes() {
   }
 
   /**
-  * Route for getting all user documents.
-  */
-  router.get("/users") { _, response, next in
+   * Route for getting all user documents.
+   */
+  router.get("/users", middleware: credentials)
+  router.get("/users") { request, response, next in
     database.queryByView("users", ofDesign: "main_design", usingParameters: [.descending(true), .includeDocs(false)]) { (document, error) in
       if let document = document where error == nil {
         do {
@@ -200,6 +208,7 @@ func defineRoutes() {
   /**
   * Route for getting a specific user document.
   */
+  router.get("/users/:userId", middleware: credentials)
   router.get("/users/:userId") { request, response, next in
     guard let userId = request.params["userId"] else {
       response.error = generateInternalError()
@@ -237,9 +246,22 @@ func defineRoutes() {
   * to send the image metadata, while the body of the request only
   * contains the binary data for the image. I know, yuck...
   */
+  router.post("/users/:userId/images/:fileName/:caption/:width/:height/:latitude/:longitude/:location", middleware: credentials)
   router.post("/users/:userId/images/:fileName/:caption/:width/:height/:latitude/:longitude/:location") { request, response, next in
     do {
       var imageJSON = try getImageJSON(fromRequest: request)
+
+      // Determine facebook ID from MCA and passed in userId match
+      let userId = imageJSON["userId"].stringValue
+      guard let authContext = request.userInfo["mcaAuthContext"] as? AuthorizationContext, 
+      userIdentity = authContext.userIdentity?.id where userId == userIdentity else {
+        Log.error("User is not authorized to post image")
+        response.error = generateInternalError()
+        next()
+        return
+      }
+      print("fbID: \(userId) and \(userIdentity)")
+
       // Get image binary from request body
       let image = try BodyParser.readBodyData(with: request)
       // Create closure
@@ -309,6 +331,7 @@ func defineRoutes() {
   /**
   * Route for creating a new user document in the database.
   */
+  router.post("/users", middleware: credentials)
   router.post("/users") { request, response, next in
     do {
       let rawUserData = try BodyParser.readBodyData(with: request)
