@@ -22,7 +22,7 @@ set -e
 # Parse input parameters
 source ./parse_inputs.sh
 
-# Variables (object storage - needed for URL stored in Cloudant database)
+# Variables (object storage - these are needed for storing URL in Cloudant database)
 accessPoint=dal.objectstorage.open.softlayer.com
 publicUrl=https://$accessPoint/v1/AUTH_$projectid
 
