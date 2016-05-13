@@ -31,7 +31,7 @@ func defineRoutes() {
   let closure = { (request: RouterRequest, response: RouterResponse, next: () -> Void) -> Void in
     response.setHeader("Content-Type", value: "text/plain; charset=utf-8")
     do {
-      try response.status(HttpStatusCode.OK).send("Hello World, from BluePic-Server! Original URL: \(request.originalUrl)").end()
+      try response.status(HTTPStatusCode.OK).send("Hello World, from BluePic-Server! Original URL: \(request.originalUrl)").end()
     }
     catch {
       Log.error("Failed to send response to client.")
@@ -51,7 +51,7 @@ func defineRoutes() {
     let popularTags = ["Friend", "Brother", "Happy", "MOUNTAIN", "TREES", "SKY", "NATURE", "PEOPLE", "OCEAN", "CITY"]
     let json = JSON(popularTags)
     do {
-        try response.status(HttpStatusCode.OK).send(json: json).end()
+        try response.status(HTTPStatusCode.OK).send(json: json).end()
     } catch {
         Log.error("Failed to send response to client.")
         response.error = generateInternalError()
@@ -74,7 +74,7 @@ func defineRoutes() {
           if let document = document where error == nil {
               do {
                   let images = try parseImages(document: document)
-                  try response.status(HttpStatusCode.OK).send(json: images).end()
+                  try response.status(HTTPStatusCode.OK).send(json: images).end()
               }
               catch {
                   Log.error("Failed to send response to client.")
@@ -91,7 +91,7 @@ func defineRoutes() {
           if let document = document where error == nil {
             do {
               let images = try parseImages(document: document)
-              try response.status(HttpStatusCode.OK).send(json: images).end()
+              try response.status(HTTPStatusCode.OK).send(json: images).end()
             }
             catch {
               Log.error("Failed to send response to client.")
@@ -125,7 +125,7 @@ func defineRoutes() {
           let json = try parseImages(document: document)
           let images = json["records"].arrayValue
           if images.count == 1 {
-            try response.status(HttpStatusCode.OK).send(json: images[0]).end()
+            try response.status(HTTPStatusCode.OK).send(json: images[0]).end()
           } else {
             throw ProcessingError.Image("Image not found!")
           }
@@ -147,7 +147,7 @@ func defineRoutes() {
       if let document = document where error == nil {
         do {
           let users = try parseUsers(document: document)
-          try response.status(HttpStatusCode.OK).send(json: users).end()
+          try response.status(HTTPStatusCode.OK).send(json: users).end()
         }
         catch {
           Log.error("Failed to send response to client.")
@@ -175,7 +175,7 @@ func defineRoutes() {
           let json = try parseUsers(document: document)
           let users = json["records"].arrayValue
           if users.count == 1 {
-            try response.status(HttpStatusCode.OK).send(json: users[0]).end()
+            try response.status(HTTPStatusCode.OK).send(json: users[0]).end()
           } else {
             throw ProcessingError.Image("User not found!")
           }
@@ -224,7 +224,7 @@ func defineRoutes() {
             imageJSON["url"].stringValue = imageURL
             imageJSON["_id"].stringValue = id
             imageJSON["_rev"].stringValue = revision
-            response.status(HttpStatusCode.OK).send(json: imageJSON)
+            response.status(HTTPStatusCode.OK).send(json: imageJSON)
           }
         } else {
           response.error = generateInternalError()
@@ -254,7 +254,7 @@ func defineRoutes() {
       if let document = document where error == nil {
         do {
           let images = try parseImages(forUserId: userId, usingDocument: document)
-          try response.status(HttpStatusCode.OK).send(json: images).end()
+          try response.status(HTTPStatusCode.OK).send(json: images).end()
         }
         catch {
           Log.error("Failed to get images for \(userId).")
@@ -298,7 +298,7 @@ func defineRoutes() {
                 // Add revision number response document
                 userJson["_rev"] = document["rev"]
                 // Return user document back to caller
-                try response.status(HttpStatusCode.OK).send(json: userJson).end()
+                try response.status(HTTPStatusCode.OK).send(json: userJson).end()
                 next()
               } else {
                 Log.error("Failed to add user to the system of records.")
@@ -345,7 +345,7 @@ func defineRoutes() {
   //       if let contentType = contentType {
   //         response.setHeader("Content-Type", value: contentType)
   //       }
-  //       response.status(HttpStatusCode.OK).send(data: image)
+  //       response.status(HTTPStatusCode.OK).send(data: image)
   //     }
   //     else {
   //       response.error = error ?? generateInternalError()
