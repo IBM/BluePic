@@ -27,6 +27,10 @@ case $i in
     password="${i#*=}"
     shift # past argument=value
     ;;
+    --projectid=*)
+    projectid="${i#*=}"
+    shift # past argument=value
+    ;;
     *)
         # unknown option
     ;;
@@ -36,8 +40,13 @@ done
 # Variables (tmp)
 username=d60741e4-629e-48e4-aa5d-da6e7557d5b5-bluemix
 password=f2c7c6a70784057bf8ab86a3ae5c9ac7129fedf67619f243eb030058764792e3
+
+# Variables
 database=bluepic_db
+# Object storage project id
+projectid=742fffae2c24438b83a2c43491119a82
 
 echo "Variables:"
 echo -e "  username: $username"
 echo -e "  database: $database"
+echo -e "  projectid: $projectid"
