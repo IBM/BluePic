@@ -29,7 +29,7 @@ import BluemixObjectStorage
 * completes execution, the sequence should invoke the '/push' endpoint to generate
 * a push notification for the iOS client.
 */
-func process(imageURL: String, withImageId imageId: String, withUserId userId: String) {
+func processImage(withId imageId: String, forUser userId: String) {
   // TODO Invoke OpenWhisk action
   // TODO OpenWhisk reads user document from cloudant to obtain language and units of measure...
   Log.verbose("process() not implemented yet...")
@@ -97,9 +97,10 @@ func getImageJSON(fromRequest request: RouterRequest) throws -> JSON {
   let uploadedTs = StringUtils.currentTimestamp()
   let imageName = StringUtils.decodeWhiteSpace(inString: caption)
   let locationName = StringUtils.decodeWhiteSpace(inString: location)
+  let imageURL = generateUrl(forContainer: userId, forImage: fileName)
 
   let whereabouts: JSONDictionary = ["latitude": latitude, "longitude": longitude, "name": locationName]
-  let imageDocument: JSONDictionary = ["location": whereabouts, "contentType": contentType,
+  let imageDocument: JSONDictionary = ["location": whereabouts, "contentType": contentType, "url": imageURL,
   "fileName": fileName, "userId": userId, "caption": imageName, "uploadedTs": uploadedTs,
   "width": width, "height": height, "type": "image"]
 

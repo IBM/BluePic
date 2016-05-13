@@ -47,7 +47,7 @@ func defineRoutes() {
   router.post("/push", handler: closure)
 
   router.get("/tags") { request, response, next in
-    
+
     let popularTags = ["Friend", "Brother", "Happy", "MOUNTAIN", "TREES", "SKY", "NATURE", "PEOPLE", "OCEAN", "CITY"]
     let json = JSON(popularTags)
     do {
@@ -86,7 +86,7 @@ func defineRoutes() {
           next()
         }
     } else {
-    
+
         database.queryByView("images", ofDesign: "main_design", usingParameters: [.descending(true), .includeDocs(true)]) { (document, error) in
           if let document = document where error == nil {
             do {
@@ -216,12 +216,10 @@ func defineRoutes() {
             }
 
             // Contine processing of request (async request for OpenWhisk)
-            let imageURL = generateUrl(forContainer: imageJSON["userId"].stringValue, forImage: imageJSON["fileName"].stringValue)
-            process(imageURL: imageURL, withImageId: id, withUserId: imageJSON["userId"].stringValue)
+            processImage(withId: id, forUser: imageJSON["userId"].stringValue)
 
             // Return image document to caller
-            // Update JSON image document with url, _id, and _rev
-            imageJSON["url"].stringValue = imageURL
+            // Update JSON image document with _id, and _rev
             imageJSON["_id"].stringValue = id
             imageJSON["_rev"].stringValue = revision
             response.status(HTTPStatusCode.OK).send(json: imageJSON)
