@@ -57,7 +57,7 @@ do {
   defineRoutes()
 
   // Start server...
-  HttpServer.listen(port: config.appEnv.port, delegate: router)
+  HTTPServer.listen(port: config.appEnv.port, delegate: router)
   Server.run()
 } catch Configuration.Error.IO {
   Log.error("Oops, something went wrong... Server did not start!")
