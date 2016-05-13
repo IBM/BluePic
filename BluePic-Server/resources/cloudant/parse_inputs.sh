@@ -19,11 +19,11 @@
 for i in "$@"
 do
 case $i in
-    -u=*|--username=*)
+    --username=*)
     username="${i#*=}"
     shift # past argument=value
     ;;
-    -p=*|--password=*)
+    --password=*)
     password="${i#*=}"
     shift # past argument=value
     ;;
@@ -38,13 +38,12 @@ esac
 done
 
 # Variables (tmp)
-username=d60741e4-629e-48e4-aa5d-da6e7557d5b5-bluemix
-password=f2c7c6a70784057bf8ab86a3ae5c9ac7129fedf67619f243eb030058764792e3
+#username=d60741e4-629e-48e4-aa5d-da6e7557d5b5-bluemix
+#password=f2c7c6a70784057bf8ab86a3ae5c9ac7129fedf67619f243eb030058764792e3
+#projectid=742fffae2c24438b83a2c43491119a82
 
 # Variables
 database=bluepic_db
-# Object storage project id
-projectid=742fffae2c24438b83a2c43491119a82
 
 echo "Variables:"
 echo -e "  username: $username"
