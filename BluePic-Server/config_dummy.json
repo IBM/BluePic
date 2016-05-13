@@ -79,7 +79,7 @@
             "auth_url": "https://identity.open.softlayer.com",
             "project": "<project>",
             "projectId": "<projectId>",
-            "region": "dallas",
+            "region": "<region>",
             "userId": "<userId>",
             "username": "<username>",
             "password": "<password>",
