@@ -207,6 +207,10 @@ func defineRoutes() {
           // Add image record to database
           database.create(imageJSON) { (id, revision, doc, error) in
             guard let id = id, revision = revision where error == nil else {
+              Log.error("Failed to create image record in Cloudant database.")
+              if let error = error {
+                Log.error("Error domain: \(error._domain); error code: \(error._code).")
+              }
               response.error = generateInternalError()
               next()
               return
