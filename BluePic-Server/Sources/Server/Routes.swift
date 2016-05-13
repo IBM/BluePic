@@ -65,11 +65,11 @@ func defineRoutes() {
 
     // if getting images by tag
     if let tag = request.queryParams["tag"] {
-        let tags = tag.characters.split(separator: ",").map(String.init)
+        let _ = tag.characters.split(separator: ",").map(String.init)
 
         // placeholder cloudant call that gets 2 images
         let queryParams: [Database.QueryParameters] =
-        [.Descending(true), .IncludeDocs(true), .EndKey([NSString(string: "0026258080e68113b6da1b6713996faa")]), .StartKey([NSString(string: "135464b130774f928d572eb9b5ad9c95"), NSObject()])]
+        [.descending(true), .includeDocs(true), .endKey([NSString(string: "0026258080e68113b6da1b6713996faa")]), .startKey([NSString(string: "135464b130774f928d572eb9b5ad9c95"), NSObject()])]
         database.queryByView("images_by_id", ofDesign: "main_design", usingParameters: queryParams) { (document, error) in
           if let document = document where error == nil {
               do {
@@ -87,7 +87,7 @@ func defineRoutes() {
         }
     } else {
     
-        database.queryByView("images", ofDesign: "main_design", usingParameters: [.Descending(true), .IncludeDocs(true)]) { (document, error) in
+        database.queryByView("images", ofDesign: "main_design", usingParameters: [.descending(true), .includeDocs(true)]) { (document, error) in
           if let document = document where error == nil {
             do {
               let images = try parseImages(document: document)
@@ -118,7 +118,7 @@ func defineRoutes() {
     // let queryParams: [Database.QueryParameters] =
     // [.Descending(true), .IncludeDocs(true), .EndKey([NSString(string: imageId), NSNumber(value: 0)]), .StartKey([NSString(string: imageId), NSObject()])]
     let queryParams: [Database.QueryParameters] =
-    [.Descending(true), .IncludeDocs(true), .EndKey([NSString(string: imageId)]), .StartKey([NSString(string: imageId), NSObject()])]
+    [.descending(true), .includeDocs(true), .endKey([NSString(string: imageId)]), .startKey([NSString(string: imageId), NSObject()])]
     database.queryByView("images_by_id", ofDesign: "main_design", usingParameters: queryParams) { (document, error) in
       if let document = document where error == nil {
         do {
@@ -143,7 +143,7 @@ func defineRoutes() {
 
   // Get all user documents
   router.get("/users") { _, response, next in
-    database.queryByView("users", ofDesign: "main_design", usingParameters: [.Descending(true), .IncludeDocs(false)]) { (document, error) in
+    database.queryByView("users", ofDesign: "main_design", usingParameters: [.descending(true), .includeDocs(false)]) { (document, error) in
       if let document = document where error == nil {
         do {
           let users = try parseUsers(document: document)
@@ -169,7 +169,7 @@ func defineRoutes() {
     }
 
     // Retrieve JSON document for user
-    database.queryByView("users", ofDesign: "main_design", usingParameters: [.Descending(true), .IncludeDocs(false), .Keys([NSString(string: userId)])]) { (document, error) in
+    database.queryByView("users", ofDesign: "main_design", usingParameters: [.descending(true), .includeDocs(false), .keys([NSString(string: userId)])]) { (document, error) in
       if let document = document where error == nil {
         do {
           let json = try parseUsers(document: document)
@@ -249,7 +249,7 @@ func defineRoutes() {
       return
     }
 
-    let queryParams: [Database.QueryParameters] = [.Descending(true), .EndKey([NSString(string: userId), NSString(string: "0")]), .StartKey([NSString(string: userId), NSObject()])]
+    let queryParams: [Database.QueryParameters] = [.descending(true), .endKey([NSString(string: userId), NSString(string: "0")]), .startKey([NSString(string: userId), NSObject()])]
     database.queryByView("images_per_user", ofDesign: "main_design", usingParameters: queryParams) { (document, error) in
       if let document = document where error == nil {
         do {
