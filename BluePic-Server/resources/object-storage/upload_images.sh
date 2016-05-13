@@ -21,6 +21,10 @@ set -e
 
 imagesFolder=`dirname $( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )`/images
 
-# Upload images via Kitura-based server
+# Upload images via Kitura-based server (localhost)
 curl -v --data-binary @$imagesFolder/bridge.png -X POST http://localhost:8090/users/1003/images/bridge.png/Bridge/100/100/34.2/80.5/Austin,%20Texas
 curl -v --data-binary @$imagesFolder/car.png -X POST http://localhost:8090/users/1003/images/car.png/Car/90/90/50.2/90.5/Tuscon,%20Arizona
+
+# Upload images via Kitura-based server (running on Bluemix)
+#curl -v --data-binary @$imagesFolder/bridge.png -X POST http://bluepic-superconductive-ebonite.mybluemix.net/users/1003/images/bridge.png/Bridge/100/100/34.2/80.5/Austin,%20Texas
+#curl -v --data-binary @$imagesFolder/car.png -X POST http://bluepic-superconductive-ebonite.mybluemix.net/users/1003/images/car.png/Car/90/90/50.2/90.5/Tuscon,%20Arizona
