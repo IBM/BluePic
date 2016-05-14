@@ -46,7 +46,36 @@ func defineRoutes() {
   // Endpoint for sending push notification (this will use the new Push SDK)
   router.post("/push", handler: closure)
 
+  // http://www.ramblingincode.com/building-a-couchdb-reduce-function/
+  // http://docs.couchdb.org/en/1.6.1/couchapp/ddocs.html#reduce-and-rereduce-functions
+  // http://guide.couchdb.org/draft/cookbook.html#aggregate
+  // http://www.slideshare.net/okurow/couchdb-mapreduce-13321353
+  // https://qnalist.com/questions/2434952/sorting-by-reduce-value
+  // https://gist.github.com/doppler/807315
+  // http://guide.couchdb.org/draft/transforming.html
   router.get("/tags") { request, response, next in
+
+    // WORK IN PROGRESS...
+    let queryParams: [Database.QueryParameters] = [.group(true), .groupLevel(1)]
+    database.queryByView("tags", ofDesign: "main_design", usingParameters: queryParams) { (document, error) in
+      if let document = document where error == nil {
+        do {
+          print("document: \(document)")
+          // TODO: Parse and sort rows received from cloudant...
+          try response.status(HTTPStatusCode.OK).send(json: document).end()
+        }
+        catch {
+          Log.error("Failed to send response to client.")
+          response.error = generateInternalError()
+        }
+      } else {
+        response.error = generateInternalError()
+      }
+      next()
+    }
+    //
+
+      /*
 
     let popularTags = ["Friend", "Brother", "Happy", "MOUNTAIN", "TREES", "SKY", "NATURE", "PEOPLE", "OCEAN", "CITY"]
     let json = JSON(popularTags)
@@ -57,6 +86,7 @@ func defineRoutes() {
         response.error = generateInternalError()
         return
     }
+    */
 
   }
 
