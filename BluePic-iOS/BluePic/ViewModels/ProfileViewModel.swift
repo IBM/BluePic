@@ -192,6 +192,7 @@ extension ProfileViewModel {
             cell.setupData(image.url,
                            image: nil,
                            caption: image.caption,
+                           numberOfTags: image.tags?.count,
                            timeStamp: image.timeStamp,
                            fileName: image.fileName
             )
