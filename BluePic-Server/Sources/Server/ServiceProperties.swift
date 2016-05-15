@@ -29,3 +29,31 @@ public struct ObjectStorageConnProps {
     self.publicURL = "https://\(accessPoint)/v1/AUTH_\(projectId)"
   }
 }
+
+public struct MobileClientAccessProps {
+    
+  public let secret: String
+  public let serverUrl: String
+  public let clientId: String
+  public let adminUrl: String
+
+  public init(secret: String, serverUrl: String, clientId: String) {
+    self.secret = secret
+    self.serverUrl = serverUrl
+    self.clientId = clientId
+    self.adminUrl = "https://mobile.ng.bluemix.net/imfmobileplatformdashboard/?appGuid=\(clientId)"
+  }
+}
+
+public struct IbmPushProps {
+    
+  public let url: String
+  public let adminUrl: String
+  public let secret: String
+
+  public init(url: String, adminUrl: String, secret: String) {
+    self.url = url
+    self.adminUrl = adminUrl
+    self.secret = secret
+  }
+}
