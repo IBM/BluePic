@@ -37,6 +37,7 @@ class ProfileCollectionViewCell: UICollectionViewCell {
     //the view that is shown while we wait for the image to download and display
     @IBOutlet weak var loadingView: UIView!
     
+    private let kNumberOfTagsPostFix = "Tags"
     
     /**
      Method is called when the view wakes from nib
@@ -55,7 +56,22 @@ class ProfileCollectionViewCell: UICollectionViewCell {
      - parameter timeStamp:   Double?
      - parameter fileName:    String?
      */
-    func setupData(url : String?, image : UIImage?, caption : String?, timeStamp: NSDate?, fileName : String?){
+    func setupData(url : String?, image : UIImage?, caption : String?, numberOfTags : Int?, timeStamp: NSDate?, fileName : String?){
+        
+        if let numOfTags = numberOfTags {
+            
+            if(numOfTags == 0){
+                numberOfTagsLabel.hidden = true
+            }
+            else{
+                numberOfTagsLabel.hidden = false
+                numberOfTagsLabel.text = "\(numOfTags)" + " " + kNumberOfTagsPostFix
+            }
+        }
+        else{
+            numberOfTagsLabel.hidden = true
+        }
+    
         
         //set the image view's image
         setImageView(url, fileName: fileName)
