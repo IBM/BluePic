@@ -41,11 +41,16 @@ class ImageDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
         setupSubviewsWithImageData()
         setupTagCollectionView()
 
         
         UIApplication.sharedApplication().statusBarStyle = .LightContent
+        
+    
+        
+        
 
         // Do any additional setup after loading the view.
     }
