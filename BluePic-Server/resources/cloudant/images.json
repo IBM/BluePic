@@ -5,6 +5,7 @@
       "fileName": "rush.png",
       "caption": "Rush",
       "contentType": "image/png",
+      "url": "$publicUrl/1000/rush.png",
       "width": 236,
       "height": 236,
       "tags": [
@@ -27,8 +28,8 @@
       ],
       "location": {
         "name": "Austin, Texas",
-        "latitude": 34.53,
-        "longitude": 84.5,
+        "latitude": "34.53",
+        "longitude": "84.5",
         "temperature": "70 F",
         "weather": "Mostly Cloudy"
       },
@@ -41,6 +42,7 @@
       "fileName": "bridge.png",
       "caption": "Bridge",
       "contentType": "image/png",
+      "url": "$publicUrl/1001/bridge.png",
       "width": 600,
       "height": 900,
       "tags": [
@@ -59,8 +61,8 @@
       ],
       "location": {
         "name": "Boston, Massachusetts",
-        "latitude": 34.53,
-        "longitude": 84.5,
+        "latitude": "34.53",
+        "longitude": "84.5",
         "temperature": "70 F",
         "weather": "Mostly Cloudy"
       },
@@ -73,6 +75,7 @@
       "fileName": "car.png",
       "caption": "Car",
       "contentType": "image/png",
+      "url": "$publicUrl/1002/car.png",
       "width": 600,
       "height": 398,
       "tags": [
@@ -83,8 +86,8 @@
       ],
       "location": {
         "name": "Los Angeles, California",
-        "latitude": 34.53,
-        "longitude": 84.5,
+        "latitude": "34.53",
+        "longitude": "84.5",
         "temperature": "70 F",
         "weather": "Sunny"
       },
@@ -97,6 +100,7 @@
       "fileName": "church.png",
       "caption": "Church",
       "contentType": "image/png",
+      "url": "$publicUrl/1000/church.png",
       "width": 600,
       "height": 450,
       "tags": [
@@ -115,8 +119,8 @@
       ],
       "location": {
         "name": "Tuscson, Arizona",
-        "latitude": 34.53,
-        "longitude": 84.5,
+        "latitude": "34.53",
+        "longitude": "84.5",
         "temperature": "70 F",
         "weather": "Sunny"
       },
@@ -129,13 +133,14 @@
       "fileName": "city.png",
       "caption": "City",
       "contentType": "image/png",
+      "url": "$publicUrl/1001/city.png",
       "width": 600,
       "height": 450,
       "tags": [],
       "location": {
         "name": "New York, New York",
-        "latitude": 34.53,
-        "longitude": 84.5,
+        "latitude": "34.53",
+        "longitude": "84.5",
         "temperature": "70 F",
         "weather": "Mostly Sunny"
       },
@@ -148,6 +153,7 @@
       "fileName": "concert.png",
       "caption": "Concert",
       "contentType": "image/png",
+      "url": "$publicUrl/1002/concert.png",
       "width": 600,
       "height": 400,
       "tags": [
@@ -158,8 +164,8 @@
       ],
       "location": {
         "name": "Austin, Texas",
-        "latitude": 34.53,
-        "longitude": 84.5,
+        "latitude": "34.53",
+        "longitude": "84.5",
         "temperature": "70 F",
         "weather": "Mostly Cloudy"
       },
@@ -172,6 +178,7 @@
       "fileName": "flower_1.png",
       "caption": "Flower",
       "contentType": "image/png",
+      "url": "$publicUrl/1000/flower_1.png",
       "width": 600,
       "height": 400,
       "tags": [
@@ -186,8 +193,8 @@
       ],
       "location": {
         "name": "Marble Falls, Texas",
-        "latitude": 34.53,
-        "longitude": 84.5,
+        "latitude": "34.53",
+        "longitude": "84.5",
         "temperature": "70 F",
         "weather": "Mostly Cloudy"
       },
@@ -200,6 +207,7 @@
       "fileName": "flower_2.png",
       "caption": "Flower",
       "contentType": "image/png",
+      "url": "$publicUrl/1001/flower_2.png",
       "width": 600,
       "height": 400,
       "tags": [
@@ -214,8 +222,8 @@
       ],
       "location": {
         "name": "Marble Falls, Texas",
-        "latitude": 34.53,
-        "longitude": 84.5,
+        "latitude": "34.53",
+        "longitude": "84.5",
         "temperature": "70 F",
         "weather": "Mostly Cloudy"
       },
@@ -228,6 +236,7 @@
       "fileName": "nature.png",
       "caption": "Nature",
       "contentType": "image/png",
+      "url": "$publicUrl/1002/nature.png",
       "width": 600,
       "height": 399,
       "tags": [
@@ -250,8 +259,8 @@
       ],
       "location": {
         "name": "Austin, Texas",
-        "latitude": 34.53,
-        "longitude": 84.5,
+        "latitude": "34.53",
+        "longitude": "84.5",
         "temperature": "70 F",
         "weather": "Mostly Cloudy"
       },
@@ -264,6 +273,7 @@
       "fileName": "person.png",
       "caption": "Person",
       "contentType": "image/png",
+      "url": "$publicUrl/1000/person.png",
       "width": 600,
       "height": 900,
       "tags": [
@@ -274,8 +284,8 @@
       ],
       "location": {
         "name": "Miami, Florida",
-        "latitude": 34.53,
-        "longitude": 84.5,
+        "latitude": "34.53",
+        "longitude": "84.5",
         "temperature": "70 F",
         "weather": "Mostly Cloudy"
       },
@@ -288,6 +298,7 @@
       "fileName": "road.png",
       "caption": "Road",
       "contentType": "image/png",
+      "url": "$publicUrl/1001/road.png",
       "width": 600,
       "height": 402,
       "tags": [
@@ -302,8 +313,8 @@
       ],
       "location": {
         "name": "Austin, Texas",
-        "latitude": 34.53,
-        "longitude": 84.5,
+        "latitude": "34.53",
+        "longitude": "84.5",
         "temperature": "70 F",
         "weather": "Mostly Cloudy"
       },
