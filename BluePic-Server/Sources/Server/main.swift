@@ -42,18 +42,22 @@ Log.logger = HeliumLogger()
 let router: Router = Router()
 let objStorageConnProps: ObjectStorageConnProps
 let couchDBConnProps: ConnectionProperties
+let mobileClientAccessProps: MobileClientAccessProps
+let ibmPushProps: IbmPushProps
 
 do {
   // Create Configuration object
   let config = try Configuration()
   couchDBConnProps = try config.getCouchDBConnProps()
   objStorageConnProps = try config.getObjectStorageConnProps()
+  mobileClientAccessProps = try config.getMobileClientAccessProps()
+  ibmPushProps = try config.getIbmPushProps()
 
   // Define routes
   defineRoutes()
 
   // Start server...
-  HttpServer.listen(port: config.appEnv.port, delegate: router)
+  HTTPServer.listen(port: config.appEnv.port, delegate: router)
   Server.run()
 } catch Configuration.Error.IO {
   Log.error("Oops, something went wrong... Server did not start!")

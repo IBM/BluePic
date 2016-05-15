@@ -31,7 +31,7 @@ func defineRoutes() {
   let closure = { (request: RouterRequest, response: RouterResponse, next: () -> Void) -> Void in
     response.setHeader("Content-Type", value: "text/plain; charset=utf-8")
     do {
-      try response.status(HttpStatusCode.OK).send("Hello World, from BluePic-Server! Original URL: \(request.originalUrl)").end()
+      try response.status(HTTPStatusCode.OK).send("Hello World, from BluePic-Server! Original URL: \(request.originalUrl)").end()
     }
     catch {
       Log.error("Failed to send response to client.")
@@ -46,17 +46,47 @@ func defineRoutes() {
   // Endpoint for sending push notification (this will use the new Push SDK)
   router.post("/push", handler: closure)
 
+  // http://www.ramblingincode.com/building-a-couchdb-reduce-function/
+  // http://docs.couchdb.org/en/1.6.1/couchapp/ddocs.html#reduce-and-rereduce-functions
+  // http://guide.couchdb.org/draft/cookbook.html#aggregate
+  // http://www.slideshare.net/okurow/couchdb-mapreduce-13321353
+  // https://qnalist.com/questions/2434952/sorting-by-reduce-value
+  // https://gist.github.com/doppler/807315
+  // http://guide.couchdb.org/draft/transforming.html
   router.get("/tags") { request, response, next in
-    
+
+    // WORK IN PROGRESS...
+    let queryParams: [Database.QueryParameters] = [.group(true), .groupLevel(1)]
+    database.queryByView("tags", ofDesign: "main_design", usingParameters: queryParams) { (document, error) in
+      if let document = document where error == nil {
+        do {
+          print("document: \(document)")
+          // TODO: Parse and sort rows received from cloudant...
+          try response.status(HTTPStatusCode.OK).send(json: document).end()
+        }
+        catch {
+          Log.error("Failed to send response to client.")
+          response.error = generateInternalError()
+        }
+      } else {
+        response.error = generateInternalError()
+      }
+      next()
+    }
+    //
+
+      /*
+
     let popularTags = ["Friend", "Brother", "Happy", "MOUNTAIN", "TREES", "SKY", "NATURE", "PEOPLE", "OCEAN", "CITY"]
     let json = JSON(popularTags)
     do {
-        try response.status(HttpStatusCode.OK).send(json: json).end()
+        try response.status(HTTPStatusCode.OK).send(json: json).end()
     } catch {
         Log.error("Failed to send response to client.")
         response.error = generateInternalError()
         return
     }
+    */
 
   }
 
@@ -65,16 +95,16 @@ func defineRoutes() {
 
     // if getting images by tag
     if let tag = request.queryParams["tag"] {
-        let tags = tag.characters.split(separator: ",").map(String.init)
+        let _ = tag.characters.split(separator: ",").map(String.init)
 
         // placeholder cloudant call that gets 2 images
         let queryParams: [Database.QueryParameters] =
-        [.Descending(true), .IncludeDocs(true), .EndKey([NSString(string: "0026258080e68113b6da1b6713996faa")]), .StartKey([NSString(string: "135464b130774f928d572eb9b5ad9c95"), NSObject()])]
+        [.descending(true), .includeDocs(true), .endKey([NSString(string: "0026258080e68113b6da1b6713996faa")]), .startKey([NSString(string: "135464b130774f928d572eb9b5ad9c95"), NSObject()])]
         database.queryByView("images_by_id", ofDesign: "main_design", usingParameters: queryParams) { (document, error) in
           if let document = document where error == nil {
               do {
                   let images = try parseImages(document: document)
-                  try response.status(HttpStatusCode.OK).send(json: images).end()
+                  try response.status(HTTPStatusCode.OK).send(json: images).end()
               }
               catch {
                   Log.error("Failed to send response to client.")
@@ -86,12 +116,12 @@ func defineRoutes() {
           next()
         }
     } else {
-    
-        database.queryByView("images", ofDesign: "main_design", usingParameters: [.Descending(true), .IncludeDocs(true)]) { (document, error) in
+
+        database.queryByView("images", ofDesign: "main_design", usingParameters: [.descending(true), .includeDocs(true)]) { (document, error) in
           if let document = document where error == nil {
             do {
               let images = try parseImages(document: document)
-              try response.status(HttpStatusCode.OK).send(json: images).end()
+              try response.status(HTTPStatusCode.OK).send(json: images).end()
             }
             catch {
               Log.error("Failed to send response to client.")
@@ -114,18 +144,15 @@ func defineRoutes() {
       return
     }
 
-    // Will eventually move the following code back, but we had issues with NSNumber and NSInteger. Removed in order to continue progress
-    // let queryParams: [Database.QueryParameters] =
-    // [.Descending(true), .IncludeDocs(true), .EndKey([NSString(string: imageId), NSNumber(value: 0)]), .StartKey([NSString(string: imageId), NSObject()])]
     let queryParams: [Database.QueryParameters] =
-    [.Descending(true), .IncludeDocs(true), .EndKey([NSString(string: imageId)]), .StartKey([NSString(string: imageId), NSObject()])]
+    [.descending(true), .includeDocs(true), .endKey([imageId, 0]), .startKey([imageId, NSObject()])]
     database.queryByView("images_by_id", ofDesign: "main_design", usingParameters: queryParams) { (document, error) in
       if let document = document where error == nil {
         do {
           let json = try parseImages(document: document)
           let images = json["records"].arrayValue
           if images.count == 1 {
-            try response.status(HttpStatusCode.OK).send(json: images[0]).end()
+            try response.status(HTTPStatusCode.OK).send(json: images[0]).end()
           } else {
             throw ProcessingError.Image("Image not found!")
           }
@@ -143,11 +170,11 @@ func defineRoutes() {
 
   // Get all user documents
   router.get("/users") { _, response, next in
-    database.queryByView("users", ofDesign: "main_design", usingParameters: [.Descending(true), .IncludeDocs(false)]) { (document, error) in
+    database.queryByView("users", ofDesign: "main_design", usingParameters: [.descending(true), .includeDocs(false)]) { (document, error) in
       if let document = document where error == nil {
         do {
           let users = try parseUsers(document: document)
-          try response.status(HttpStatusCode.OK).send(json: users).end()
+          try response.status(HTTPStatusCode.OK).send(json: users).end()
         }
         catch {
           Log.error("Failed to send response to client.")
@@ -169,13 +196,13 @@ func defineRoutes() {
     }
 
     // Retrieve JSON document for user
-    database.queryByView("users", ofDesign: "main_design", usingParameters: [.Descending(true), .IncludeDocs(false), .Keys([NSString(string: userId)])]) { (document, error) in
+    database.queryByView("users", ofDesign: "main_design", usingParameters: [ .descending(true), .includeDocs(false), .keys([userId]) ]) { (document, error) in
       if let document = document where error == nil {
         do {
           let json = try parseUsers(document: document)
           let users = json["records"].arrayValue
           if users.count == 1 {
-            try response.status(HttpStatusCode.OK).send(json: users[0]).end()
+            try response.status(HTTPStatusCode.OK).send(json: users[0]).end()
           } else {
             throw ProcessingError.Image("User not found!")
           }
@@ -210,21 +237,23 @@ func defineRoutes() {
           // Add image record to database
           database.create(imageJSON) { (id, revision, doc, error) in
             guard let id = id, revision = revision where error == nil else {
+              Log.error("Failed to create image record in Cloudant database.")
+              if let error = error {
+                Log.error("Error domain: \(error._domain); error code: \(error._code).")
+              }
               response.error = generateInternalError()
               next()
               return
             }
 
             // Contine processing of request (async request for OpenWhisk)
-            let imageURL = generateUrl(forContainer: imageJSON["userId"].stringValue, forImage: imageJSON["fileName"].stringValue)
-            process(imageURL: imageURL, withImageId: id, withUserId: imageJSON["userId"].stringValue)
+            processImage(withId: id, forUser: imageJSON["userId"].stringValue)
 
             // Return image document to caller
-            // Update JSON image document with url, _id, and _rev
-            imageJSON["url"].stringValue = imageURL
+            // Update JSON image document with _id, and _rev
             imageJSON["_id"].stringValue = id
             imageJSON["_rev"].stringValue = revision
-            response.status(HttpStatusCode.OK).send(json: imageJSON)
+            response.status(HTTPStatusCode.OK).send(json: imageJSON)
           }
         } else {
           response.error = generateInternalError()
@@ -249,12 +278,12 @@ func defineRoutes() {
       return
     }
 
-    let queryParams: [Database.QueryParameters] = [.Descending(true), .EndKey([NSString(string: userId), NSString(string: "0")]), .StartKey([NSString(string: userId), NSObject()])]
+    let queryParams: [Database.QueryParameters] = [.descending(true), .endKey([userId, "0"]), .startKey([userId, NSObject()])]
     database.queryByView("images_per_user", ofDesign: "main_design", usingParameters: queryParams) { (document, error) in
       if let document = document where error == nil {
         do {
           let images = try parseImages(forUserId: userId, usingDocument: document)
-          try response.status(HttpStatusCode.OK).send(json: images).end()
+          try response.status(HTTPStatusCode.OK).send(json: images).end()
         }
         catch {
           Log.error("Failed to get images for \(userId).")
@@ -298,7 +327,7 @@ func defineRoutes() {
                 // Add revision number response document
                 userJson["_rev"] = document["rev"]
                 // Return user document back to caller
-                try response.status(HttpStatusCode.OK).send(json: userJson).end()
+                try response.status(HTTPStatusCode.OK).send(json: userJson).end()
                 next()
               } else {
                 Log.error("Failed to add user to the system of records.")
@@ -345,7 +374,7 @@ func defineRoutes() {
   //       if let contentType = contentType {
   //         response.setHeader("Content-Type", value: contentType)
   //       }
-  //       response.status(HttpStatusCode.OK).send(data: image)
+  //       response.status(HTTPStatusCode.OK).send(data: image)
   //     }
   //     else {
   //       response.error = error ?? generateInternalError()
