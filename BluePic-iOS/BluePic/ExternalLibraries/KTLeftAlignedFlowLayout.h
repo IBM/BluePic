@@ -10,7 +10,7 @@
 /**
  * Aligns cells to the center of a collection view.
  */
-@interface KTCenterFlowLayout : UICollectionViewFlowLayout
+@interface KTLeftAlignedFlowLayout : UICollectionViewFlowLayout
 
 
 

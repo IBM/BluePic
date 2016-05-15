@@ -5,12 +5,12 @@
 //  Copyright (c) 2014 keighl. All rights reserved.
 //
 
-#import "KTCenterFlowLayout.h"
+#import "KTLeftAlignedFlowLayout.h"
 
-@interface KTCenterFlowLayout ()
+@interface KTLeftAlignedFlowLayout ()
 @end
 
-@implementation KTCenterFlowLayout
+@implementation KTLeftAlignedFlowLayout
 
 - (NSArray *)layoutAttributesForElementsInRect:(CGRect)rect
 {
@@ -76,9 +76,9 @@
     // Build an alignment rect
     // |==|--------|==|
     CGFloat alignmentWidth = aggregateItemWidths + aggregateInteritemSpacing;
-   
-    CGFloat alignmentXOffset = (collectionViewWidth - alignmentWidth) / 2.f;
       
+    CGFloat alignmentXOffset = 15.0;
+     
 
     // Adjust each item's position to be centered
     CGRect previousFrame = CGRectZero;
