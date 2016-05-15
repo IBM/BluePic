@@ -65,8 +65,8 @@ class ProfileViewController: UIViewController {
     
     override func viewDidAppear(animated: Bool) {
         
-        //LocationDataManager.SharedInstance.getCityAndStateFromLocation(LocationDataManager.SharedInstance.getUsersCurrentLocation()!)
-       
+        UIApplication.sharedApplication().statusBarStyle = UIStatusBarStyle.Default
+        
         
     }
 
