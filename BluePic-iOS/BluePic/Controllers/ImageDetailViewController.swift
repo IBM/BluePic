@@ -176,7 +176,7 @@ extension ImageDetailViewController {
         if let latitude = image.location?.latitude,
             let longitude = image.location?.longitude {
             
-            let formattedCordinatesString = Utils.coordinateString(Double(latitude), longitude: Double(longitude))
+            let formattedCordinatesString = Utils.coordinateString(latitude, longitude: longitude)
             
             coordinatesLabel.attributedText = NSAttributedString.createAttributedStringWithLetterAndLineSpacingWithCentering(formattedCordinatesString, letterSpacing: 1.4, lineSpacing: 5, centered: true)
        
