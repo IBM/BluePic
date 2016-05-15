@@ -31,9 +31,9 @@ class ProfileCollectionViewCell: UICollectionViewCell {
     //label that displays the amount of time since the photo was taken
     @IBOutlet weak var timeSincePostedLabel: UILabel!
     
-    //button that triggers the options display for a photo (currently hidden and not in use)
-    @IBOutlet weak var moreButton: UIButton!
-    
+    //label shows the number of tags an image has
+    @IBOutlet weak var numberOfTagsLabel: UILabel!
+   
     //the view that is shown while we wait for the image to download and display
     @IBOutlet weak var loadingView: UIView!
     

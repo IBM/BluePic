@@ -107,8 +107,6 @@ class ImageDetailViewController: UIViewController {
         //setup timeLabel
         setupTimeLabelWithData()
         
-        
-  
     }
     
     
@@ -118,9 +116,7 @@ class ImageDetailViewController: UIViewController {
     @IBAction func backButtonAction(sender: AnyObject) {
         
         self.navigationController?.popViewControllerAnimated(true)
-        
-        
-        
+  
     }
    
 
@@ -158,7 +154,6 @@ extension ImageDetailViewController {
         
         
         imageView.addSubview(blurViewHolderView)
-        
         
     }
     
@@ -270,10 +265,7 @@ extension ImageDetailViewController : UICollectionViewDelegate {
         
         
         
-        
-        
+ 
     }
-    
-    
-    
+
 }
