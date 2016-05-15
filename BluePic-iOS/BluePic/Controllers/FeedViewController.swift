@@ -250,9 +250,6 @@ extension FeedViewController: UICollectionViewDelegate {
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         
-        
-        print("cell selected")
-        
         let imageDetailVC = viewModel.prepareImageDetailViewControllerSelectedCellAtIndexPath(indexPath)
         self.navigationController?.pushViewController(imageDetailVC, animated: true)
         
