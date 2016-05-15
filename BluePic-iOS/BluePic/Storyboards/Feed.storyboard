@@ -223,7 +223,7 @@
                                 </connections>
                             </button>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="7gP-x3-QmR">
-                                <rect key="frame" x="61" y="430" width="478" height="93"/>
+                                <rect key="frame" x="80" y="430" width="440" height="93"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="93" id="wHm-4f-cId"/>
@@ -236,6 +236,11 @@
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells/>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="wOL-YU-ebA"/>
+                                    </mask>
+                                </variation>
                             </collectionView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RsH-Gz-PYp">
                                 <rect key="frame" x="60" y="189" width="480" height="222"/>
@@ -290,6 +295,7 @@
                             <constraint firstItem="RsH-Gz-PYp" firstAttribute="top" secondItem="XOT-Zw-pMR" secondAttribute="bottom" constant="17" id="OKq-bL-kR5"/>
                             <constraint firstItem="RsH-Gz-PYp" firstAttribute="centerY" secondItem="Lw7-1A-XeJ" secondAttribute="centerY" id="Rex-hK-V8I"/>
                             <constraint firstItem="FKM-yh-7wQ" firstAttribute="width" secondItem="Lw7-1A-XeJ" secondAttribute="width" id="ShX-Ve-aI2"/>
+                            <constraint firstItem="7gP-x3-QmR" firstAttribute="leading" secondItem="Lw7-1A-XeJ" secondAttribute="leadingMargin" constant="60" id="T1q-NQ-BZI"/>
                             <constraint firstItem="lvr-uH-u7R" firstAttribute="leading" secondItem="Lw7-1A-XeJ" secondAttribute="leadingMargin" id="VcR-9X-aq2"/>
                             <constraint firstItem="XOT-Zw-pMR" firstAttribute="top" secondItem="Nsc-CY-ZbJ" secondAttribute="bottom" constant="80" id="arQ-9N-79f"/>
                             <constraint firstItem="XOT-Zw-pMR" firstAttribute="centerX" secondItem="Lw7-1A-XeJ" secondAttribute="centerX" id="g82-6G-rn4"/>
@@ -298,6 +304,7 @@
                             <constraint firstItem="R64-Bq-Ddf" firstAttribute="centerX" secondItem="Lw7-1A-XeJ" secondAttribute="centerX" id="iNC-Ft-woF"/>
                             <constraint firstItem="k0e-Eu-NFL" firstAttribute="top" secondItem="7gP-x3-QmR" secondAttribute="bottom" constant="77" id="jQ2-bt-4AR"/>
                             <constraint firstItem="RsH-Gz-PYp" firstAttribute="centerX" secondItem="Lw7-1A-XeJ" secondAttribute="centerX" id="jm0-M4-wZe"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="7gP-x3-QmR" secondAttribute="trailing" constant="60" id="kS1-OF-FaU"/>
                             <constraint firstItem="7gP-x3-QmR" firstAttribute="centerX" secondItem="Lw7-1A-XeJ" secondAttribute="centerX" id="pdf-nZ-YZM"/>
                             <constraint firstItem="FKM-yh-7wQ" firstAttribute="centerY" secondItem="Lw7-1A-XeJ" secondAttribute="centerY" id="wmG-rX-Aw8"/>
                             <constraint firstItem="XOT-Zw-pMR" firstAttribute="leading" secondItem="Lw7-1A-XeJ" secondAttribute="leadingMargin" constant="40" id="yOJ-00-Cxv"/>
@@ -307,6 +314,7 @@
                                 <exclude reference="C1A-mS-6Sy"/>
                                 <exclude reference="arQ-9N-79f"/>
                                 <exclude reference="yOJ-00-Cxv"/>
+                                <exclude reference="pdf-nZ-YZM"/>
                             </mask>
                         </variation>
                     </view>
