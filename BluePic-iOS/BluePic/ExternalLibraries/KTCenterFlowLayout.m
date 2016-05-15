@@ -76,7 +76,7 @@
     // Build an alignment rect
     // |==|--------|==|
     CGFloat alignmentWidth = aggregateItemWidths + aggregateInteritemSpacing;
-      CGFloat alignmentXOffset = 15.0; //(collectionViewWidth - alignmentWidth) / 2.f;
+      CGFloat alignmentXOffset = (collectionViewWidth - alignmentWidth) / 2.f; //15.0
 
     // Adjust each item's position to be centered
     CGRect previousFrame = CGRectZero;
