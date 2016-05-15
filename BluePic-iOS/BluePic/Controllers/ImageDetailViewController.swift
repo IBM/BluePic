@@ -41,7 +41,7 @@ class ImageDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupSubviewWithImageData()
+        setupSubviewsWithImageData()
         setupTagCollectionView()
         
         UIApplication.sharedApplication().statusBarStyle = .LightContent
@@ -70,7 +70,7 @@ class ImageDetailViewController: UIViewController {
         
     }
     
-    func setupSubviewWithImageData(){
+    func setupSubviewsWithImageData(){
         
         if let urlString = image.url {
             
@@ -78,6 +78,8 @@ class ImageDetailViewController: UIViewController {
             
             imageView.sd_setImageWithURL(nsurl)
         }
+        
+        setupBlurView()
         
         //setup captionLabel
         setupCaptionLabelWithData()
@@ -131,6 +133,28 @@ class ImageDetailViewController: UIViewController {
 
 //UI Setup Methods
 extension ImageDetailViewController {
+    
+    func setupBlurView(){
+        
+        dimView.hidden = true
+        
+        let blurViewFrame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height)
+        
+        let blurViewHolderView = UIView(frame: blurViewFrame)
+        
+        let darkBlur = UIBlurEffect(style: UIBlurEffectStyle.Dark)
+        
+        let blurView = UIVisualEffectView(effect: darkBlur)
+        blurView.frame = blurViewFrame
+        blurViewHolderView.alpha = 0.90
+        
+        blurViewHolderView.addSubview(blurView)
+        
+        
+        imageView.addSubview(blurViewHolderView)
+        
+        
+    }
     
     func setupCaptionLabelWithData(){
         
