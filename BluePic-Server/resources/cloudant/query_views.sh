@@ -55,4 +55,9 @@ curl -g -X GET "https://$username.cloudant.com/$database/_design/main_design/_vi
 echo
 echo
 
+echo "Querying images_by_tags view"
+curl -g -X GET "https://$username.cloudant.com/$database/_design/main_design/_view/images_by_tags?group=true&group_level=1" -u $username:$password
+echo
+echo
+
 echo "Successfully finished querying views on cloudant database '$database'."
