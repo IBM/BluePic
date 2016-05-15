@@ -43,6 +43,7 @@ class ImageDetailViewController: UIViewController {
         
         setupSubviewsWithImageData()
         setupTagCollectionView()
+
         
         UIApplication.sharedApplication().statusBarStyle = .LightContent
 

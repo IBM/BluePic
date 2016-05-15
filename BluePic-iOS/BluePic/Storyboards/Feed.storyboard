@@ -222,11 +222,11 @@
                                     <action selector="popVC:" destination="YXB-GP-5T8" eventType="touchUpInside" id="UdN-xD-33Y"/>
                                 </connections>
                             </button>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="7gP-x3-QmR">
-                                <rect key="frame" x="80" y="430" width="440" height="93"/>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="7gP-x3-QmR">
+                                <rect key="frame" x="40" y="441" width="520" height="70"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="93" id="wHm-4f-cId"/>
+                                    <constraint firstAttribute="height" constant="70" id="wHm-4f-cId"/>
                                     <constraint firstAttribute="width" constant="478" id="wOL-YU-ebA"/>
                                 </constraints>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="f6F-Hg-TvR">
@@ -295,16 +295,17 @@
                             <constraint firstItem="RsH-Gz-PYp" firstAttribute="top" secondItem="XOT-Zw-pMR" secondAttribute="bottom" constant="17" id="OKq-bL-kR5"/>
                             <constraint firstItem="RsH-Gz-PYp" firstAttribute="centerY" secondItem="Lw7-1A-XeJ" secondAttribute="centerY" id="Rex-hK-V8I"/>
                             <constraint firstItem="FKM-yh-7wQ" firstAttribute="width" secondItem="Lw7-1A-XeJ" secondAttribute="width" id="ShX-Ve-aI2"/>
-                            <constraint firstItem="7gP-x3-QmR" firstAttribute="leading" secondItem="Lw7-1A-XeJ" secondAttribute="leadingMargin" constant="60" id="T1q-NQ-BZI"/>
+                            <constraint firstItem="7gP-x3-QmR" firstAttribute="leading" secondItem="Lw7-1A-XeJ" secondAttribute="leadingMargin" constant="20" id="T1q-NQ-BZI"/>
                             <constraint firstItem="lvr-uH-u7R" firstAttribute="leading" secondItem="Lw7-1A-XeJ" secondAttribute="leadingMargin" id="VcR-9X-aq2"/>
                             <constraint firstItem="XOT-Zw-pMR" firstAttribute="top" secondItem="Nsc-CY-ZbJ" secondAttribute="bottom" constant="80" id="arQ-9N-79f"/>
                             <constraint firstItem="XOT-Zw-pMR" firstAttribute="centerX" secondItem="Lw7-1A-XeJ" secondAttribute="centerX" id="g82-6G-rn4"/>
                             <constraint firstItem="R64-Bq-Ddf" firstAttribute="height" secondItem="Lw7-1A-XeJ" secondAttribute="height" id="gth-Ng-rvZ"/>
                             <constraint firstItem="FKM-yh-7wQ" firstAttribute="height" secondItem="Lw7-1A-XeJ" secondAttribute="height" id="hFA-aG-4Vk"/>
                             <constraint firstItem="R64-Bq-Ddf" firstAttribute="centerX" secondItem="Lw7-1A-XeJ" secondAttribute="centerX" id="iNC-Ft-woF"/>
-                            <constraint firstItem="k0e-Eu-NFL" firstAttribute="top" secondItem="7gP-x3-QmR" secondAttribute="bottom" constant="77" id="jQ2-bt-4AR"/>
+                            <constraint firstItem="k0e-Eu-NFL" firstAttribute="top" secondItem="7gP-x3-QmR" secondAttribute="bottom" constant="30" id="jQ2-bt-4AR"/>
                             <constraint firstItem="RsH-Gz-PYp" firstAttribute="centerX" secondItem="Lw7-1A-XeJ" secondAttribute="centerX" id="jm0-M4-wZe"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="7gP-x3-QmR" secondAttribute="trailing" constant="60" id="kS1-OF-FaU"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="7gP-x3-QmR" secondAttribute="trailing" constant="20" id="kS1-OF-FaU"/>
+                            <constraint firstItem="7gP-x3-QmR" firstAttribute="top" secondItem="RsH-Gz-PYp" secondAttribute="bottom" constant="30" id="kVk-TU-Jax"/>
                             <constraint firstItem="7gP-x3-QmR" firstAttribute="centerX" secondItem="Lw7-1A-XeJ" secondAttribute="centerX" id="pdf-nZ-YZM"/>
                             <constraint firstItem="FKM-yh-7wQ" firstAttribute="centerY" secondItem="Lw7-1A-XeJ" secondAttribute="centerY" id="wmG-rX-Aw8"/>
                             <constraint firstItem="XOT-Zw-pMR" firstAttribute="leading" secondItem="Lw7-1A-XeJ" secondAttribute="leadingMargin" constant="40" id="yOJ-00-Cxv"/>
@@ -315,6 +316,7 @@
                                 <exclude reference="arQ-9N-79f"/>
                                 <exclude reference="yOJ-00-Cxv"/>
                                 <exclude reference="pdf-nZ-YZM"/>
+                                <exclude reference="jQ2-bt-4AR"/>
                             </mask>
                         </variation>
                     </view>
