@@ -42,6 +42,10 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="login_background" translatesAutoresizingMaskIntoConstraints="NO" id="ANO-Gs-Tk5">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="667"/>
                             </imageView>
+                            <view alpha="0.14999999999999999" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y1W-Vw-pKb">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="667"/>
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="g2J-LJ-jge">
                                 <rect key="frame" x="291" y="614" width="20" height="20"/>
                                 <constraints>
@@ -158,10 +162,12 @@ also built on IBM Bluemix services.</string>
                         <constraints>
                             <constraint firstItem="Wjw-Zr-PRg" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="0R1-rU-8sk"/>
                             <constraint firstAttribute="bottomMargin" secondItem="LMk-mW-Kmu" secondAttribute="bottom" constant="78" id="1D8-BC-AUx"/>
+                            <constraint firstItem="y1W-Vw-pKb" firstAttribute="height" secondItem="ANO-Gs-Tk5" secondAttribute="height" id="1ce-H4-iaV"/>
                             <constraint firstItem="JA3-DV-7dk" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" constant="218" id="4Gc-mR-BBA"/>
                             <constraint firstAttribute="bottomMargin" secondItem="neQ-m5-2vk" secondAttribute="bottom" constant="78" id="5XF-wZ-oHn"/>
                             <constraint firstItem="g2J-LJ-jge" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" constant="1" id="8Vb-3w-1iR"/>
                             <constraint firstItem="OyD-TT-jb1" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" constant="68" id="9Mx-VI-8DS"/>
+                            <constraint firstItem="y1W-Vw-pKb" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="Au8-FP-bx8"/>
                             <constraint firstAttribute="bottomMargin" secondItem="g2J-LJ-jge" secondAttribute="bottom" constant="33" id="BrA-Mg-9yT"/>
                             <constraint firstItem="Wjw-Zr-PRg" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="15" id="F9G-Z6-Oyr"/>
                             <constraint firstAttribute="bottomMargin" secondItem="gtv-K7-hIk" secondAttribute="bottom" constant="123" id="JOd-X9-MNN"/>
@@ -169,8 +175,10 @@ also built on IBM Bluemix services.</string>
                             <constraint firstItem="cIW-Ou-STz" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" constant="175" id="PQt-gW-VB2"/>
                             <constraint firstAttribute="trailing" secondItem="Wjw-Zr-PRg" secondAttribute="trailing" constant="15" id="QIj-7S-Qit"/>
                             <constraint firstItem="gtv-K7-hIk" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" constant="0.5" id="TUv-VN-qfh"/>
+                            <constraint firstItem="y1W-Vw-pKb" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="W4o-a5-l7L"/>
                             <constraint firstItem="cIW-Ou-STz" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="WCY-Kg-EIr"/>
                             <constraint firstItem="ANO-Gs-Tk5" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="Yk1-eN-7XX"/>
+                            <constraint firstItem="y1W-Vw-pKb" firstAttribute="width" secondItem="ANO-Gs-Tk5" secondAttribute="width" id="YvA-xZ-GcK"/>
                             <constraint firstItem="neQ-m5-2vk" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="coA-y2-fHJ"/>
                             <constraint firstItem="ANO-Gs-Tk5" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="kF3-0n-p2V"/>
                             <constraint firstItem="Hia-oq-hEM" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" constant="348" id="lG5-9M-mkA"/>

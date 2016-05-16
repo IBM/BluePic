@@ -49,6 +49,10 @@ class LoginViewController: UIViewController {
         setupViewModel()
    
     }
+    
+    override func viewWillAppear(animated: Bool) {
+        UIApplication.sharedApplication().statusBarStyle = .LightContent
+    }
 
     
     /**
