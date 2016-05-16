@@ -63,11 +63,8 @@ class ProfileViewController: UIViewController {
         
     }
     
-    override func viewDidAppear(animated: Bool) {
-        
+    override func viewWillAppear(animated: Bool) {
         UIApplication.sharedApplication().statusBarStyle = UIStatusBarStyle.Default
-        
-        
     }
 
     
