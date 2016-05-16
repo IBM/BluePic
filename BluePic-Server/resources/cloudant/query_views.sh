@@ -56,7 +56,7 @@ echo
 echo
 
 echo "Querying images_by_tags view"
-curl -g -X GET "https://$username.cloudant.com/$database/_design/main_design/_view/images_by_tags?group=true&group_level=1" -u $username:$password
+curl -g -X GET "https://$username.cloudant.com/$database/_design/main_design/_view/images_by_tags?include_docs=true&descending=true&reduce=false&endkey=[\"mountain\",\"0\",\"0\",0]&startkey=[\"mountain\",{}]" -u $username:$password
 echo
 echo
 
