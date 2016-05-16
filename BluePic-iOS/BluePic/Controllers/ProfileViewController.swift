@@ -65,8 +65,8 @@ class ProfileViewController: UIViewController {
     
     override func viewDidAppear(animated: Bool) {
         
-        //LocationDataManager.SharedInstance.getCityAndStateFromLocation(LocationDataManager.SharedInstance.getUsersCurrentLocation()!)
-       
+        UIApplication.sharedApplication().statusBarStyle = UIStatusBarStyle.Default
+        
         
     }
 
@@ -294,6 +294,15 @@ extension ProfileViewController: UICollectionViewDelegateFlowLayout {
 
 extension ProfileViewController : UIScrollViewDelegate {
 
+
+    
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        
+        let imageDetailVC = viewModel.prepareImageDetailViewControllerSelectedCellAtIndexPath(indexPath)
+        self.navigationController?.pushViewController(imageDetailVC, animated: true)
+
+    }
+    
 
     /**
      Method that is called when the scrollView scrolls. When the scrollView scrolls we call the updateImageViewFrameWithScrollViewDidScroll method

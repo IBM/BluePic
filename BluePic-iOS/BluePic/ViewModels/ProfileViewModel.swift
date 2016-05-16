@@ -159,6 +159,9 @@ extension ProfileViewModel {
                 return CGSize(width: collectionView.frame.width, height: collectionView.frame.width + kCollectionViewCellInfoViewHeight)
             }
         }
+        
+        
+        
     }
     
     
@@ -192,6 +195,7 @@ extension ProfileViewModel {
             cell.setupData(image.url,
                            image: nil,
                            caption: image.caption,
+                           numberOfTags: image.tags?.count,
                            timeStamp: image.timeStamp,
                            fileName: image.fileName
             )
@@ -223,6 +227,18 @@ extension ProfileViewModel {
         header.setupData(CurrentUser.fullName!, numberOfShots: imageDataArray.count, profilePictureURL : CurrentUser.facebookProfilePictureURL)
         
         return header
+    }
+    
+    
+    func prepareImageDetailViewControllerSelectedCellAtIndexPath(indexPath : NSIndexPath) -> ImageDetailViewController {
+        
+        let imageDetailVC = Utils.vcWithNameFromStoryboardWithName("ImageDetailViewController", storyboardName: "Feed") as! ImageDetailViewController
+        
+        imageDetailVC.image = imageDataArray[indexPath.row]
+        
+        
+        return imageDetailVC
+        
     }
   
     

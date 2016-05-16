@@ -249,7 +249,6 @@ extension FeedViewModel {
                 return cell
                 
             }
-                //return ImageFeedCollectionViewCell
             else{
                 
                 let cell: ImageFeedCollectionViewCell
@@ -263,6 +262,7 @@ extension FeedViewModel {
                     image: nil, //MIGHT NEED TO FIX
                     caption: image.caption,
                     usersName: image.user?.name,
+                    numberOfTags: image.tags?.count,
                     timeStamp: image.timeStamp,
                     fileName: image.fileName
                 )
