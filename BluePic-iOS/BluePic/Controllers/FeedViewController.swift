@@ -89,6 +89,8 @@ class FeedViewController: UIViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
+        UIApplication.sharedApplication().statusBarStyle = UIStatusBarStyle.Default
+        
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         tryToStartLoadingAnimation()
 
@@ -247,9 +249,6 @@ extension FeedViewController: UICollectionViewDelegate {
     
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        
-        
-        print("cell selected")
         
         let imageDetailVC = viewModel.prepareImageDetailViewControllerSelectedCellAtIndexPath(indexPath)
         self.navigationController?.pushViewController(imageDetailVC, animated: true)
