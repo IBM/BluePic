@@ -104,9 +104,6 @@ func getImageJSON(fromRequest request: RouterRequest) throws -> JSON {
   "fileName": fileName, "userId": userId, "caption": imageName, "uploadedTs": uploadedTs,
   "width": width, "height": height, "type": "image"]
 
-  let tst = JSON(imageDocument).rawString()
-  print("test: \(tst)")
-
   return JSON(imageDocument)
 }
 
