@@ -395,9 +395,17 @@ class BluemixDataManager: NSObject {
     func postNewImage(image : Image){
         
         NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImageUploadBegan.rawValue, object: nil)
-
         
-        let tempURL = getBluemixBaseRequestURL() + "/" + kUsersEndPoint + "/" + CurrentUser.facebookUserId! + "/" + kImagesEndPoint + "/" + image.fileName! + "/" + image.caption! + "/" + "\(image.width!)" + "/" + "\(image.height!)" + "/" + image.latitude! + "/" + image.longitude! + "/" + image.city!
+        var cityStateString = ""
+     
+            cityStateString = image.location!.city!
+            
+            if(image.location!.state!.characters.count > 0){
+                cityStateString = cityStateString + ", " + image.location!.state!
+            }
+   
+
+        let tempURL = getBluemixBaseRequestURL() + "/" + kUsersEndPoint + "/" + CurrentUser.facebookUserId! + "/" + kImagesEndPoint + "/" + image.fileName! + "/" + image.caption! + "/" + "\(image.width!)" + "/" + "\(image.height!)" + "/" + image.location!.latitude! + "/" + image.location!.longitude! + "/" + cityStateString
         
         let requestURL = tempURL.stringByAddingPercentEncodingWithAllowedCharacters( NSCharacterSet.URLQueryAllowedCharacterSet())!
 

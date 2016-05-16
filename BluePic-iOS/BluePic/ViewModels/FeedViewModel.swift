@@ -276,14 +276,20 @@ extension FeedViewModel {
     }
     
     
-    func prepareImageDetailViewControllerSelectedCellAtIndexPath(indexPath : NSIndexPath) -> ImageDetailViewController {
+    func prepareImageDetailViewControllerSelectedCellAtIndexPath(indexPath : NSIndexPath) -> ImageDetailViewController? {
         
-         let imageDetailVC = Utils.vcWithNameFromStoryboardWithName("ImageDetailViewController", storyboardName: "Feed") as! ImageDetailViewController
+        if(imageDataArray.count > 0 ){
+            let imageDetailVC = Utils.vcWithNameFromStoryboardWithName("ImageDetailViewController", storyboardName: "Feed") as! ImageDetailViewController
         
-        imageDetailVC.image = imageDataArray[indexPath.row]
+            imageDetailVC.image = imageDataArray[indexPath.row]
         
         
-        return imageDetailVC
+            return imageDetailVC
+            
+        }
+        else{
+            return nil
+        }
         
     }
     

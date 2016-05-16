@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="14F1509" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -12,11 +12,9 @@
             <subviews>
                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Pfc-My-QgD">
                     <rect key="frame" x="0.0" y="44" width="600" height="429"/>
-                    <animations/>
                 </imageView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P01-uK-Cyb">
                     <rect key="frame" x="500" y="537" width="80" height="30"/>
-                    <animations/>
                     <constraints>
                         <constraint firstAttribute="height" constant="30" id="AKK-Cq-2jd"/>
                         <constraint firstAttribute="width" constant="80" id="J9s-2V-Keg"/>
@@ -28,7 +26,6 @@
                 </button>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="uqc-ek-PMi">
                     <rect key="frame" x="0.0" y="472" width="600" height="40"/>
-                    <animations/>
                     <color key="backgroundColor" red="0.086274509803921567" green="0.12156862745098039" blue="0.14509803921568626" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="40" id="Bdi-Hu-SZi"/>
@@ -45,7 +42,6 @@
                 </textField>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cQr-Kg-s1V">
                     <rect key="frame" x="20" y="537" width="46" height="30"/>
-                    <animations/>
                     <constraints>
                         <constraint firstAttribute="height" constant="30" id="I2x-5y-w1b"/>
                         <constraint firstAttribute="width" constant="46" id="Qqb-3g-GFb"/>
@@ -57,7 +53,6 @@
                 </button>
                 <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="eEg-If-sLb">
                     <rect key="frame" x="290" y="542" width="20" height="20"/>
-                    <animations/>
                     <constraints>
                         <constraint firstAttribute="height" constant="20" id="IyY-7m-6aq"/>
                         <constraint firstAttribute="width" constant="20" id="iuT-Zz-Nky"/>
@@ -65,7 +60,6 @@
                     <color key="color" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </activityIndicatorView>
             </subviews>
-            <animations/>
             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="uqc-ek-PMi" secondAttribute="trailing" id="1BA-rs-SjG"/>
