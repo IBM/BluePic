@@ -23,13 +23,17 @@ class ImageDetailViewController: UIViewController {
     @IBOutlet weak var temperatureLabel: UILabel!
 
     @IBOutlet weak var tagCollectionView: UICollectionView!
+
+    private let kWeatherIconNamePrefix = "weather_icon_"
     
+    private let kByUserLabelPrefixString = NSLocalizedString("by", comment: "")
+    private let kDateLabelPrefixString = NSLocalizedString("on", comment: "")
+    private let kTimeLabelPrefixString = NSLocalizedString("at", comment: "")
     
-    private let kByUserLabelPrefix = "by"
-    private let kDateLabelPrefix = "on"
-    private let kTimeLabelPrefix = "at"
     
     private let kCellPadding: CGFloat = 60
+    
+    
     
     
     private let kCaptionLabelLetterSpacing : CGFloat = 1.7
@@ -45,14 +49,10 @@ class ImageDetailViewController: UIViewController {
         setupSubviewsWithImageData()
         setupTagCollectionView()
 
-        
-        UIApplication.sharedApplication().statusBarStyle = .LightContent
-        
+    }
     
-        
-        
-
-        // Do any additional setup after loading the view.
+    override func viewWillAppear(animated: Bool) {
+        UIApplication.sharedApplication().statusBarStyle = .LightContent
     }
 
     override func didReceiveMemoryWarning() {
@@ -92,7 +92,7 @@ class ImageDetailViewController: UIViewController {
     
         //setup byUserLabel
         let userFullName = image.user?.name ?? ""
-        byUserLabel.text = kByUserLabelPrefix + " " + userFullName
+        byUserLabel.text = kByUserLabelPrefixString + " " + userFullName
     
         //setup locationLabel
         let locationName = image.location?.name ?? ""
@@ -106,6 +106,9 @@ class ImageDetailViewController: UIViewController {
         
         //setup timeLabel
         setupTimeLabelWithData()
+        
+        //setup weatherImageView and Temperature Label
+        setupWeatherImageViewAndTemperatureLabel()
         
     }
     
@@ -170,9 +173,11 @@ extension ImageDetailViewController {
         if let date = image.timeStamp {
             let dateFormatter = NSDateFormatter()
             dateFormatter.dateStyle = NSDateFormatterStyle.LongStyle
+            let locale = LocationDataManager.SharedInstance.getLanguageLocale()
+            dateFormatter.locale = NSLocale(localeIdentifier: locale)
             let dateString = dateFormatter.stringFromDate(date)
             
-            dateLabel.text = kDateLabelPrefix + " " + dateString
+            dateLabel.text = kDateLabelPrefixString + " " + dateString
         }
         else{
             dateLabel.text = ""
@@ -184,9 +189,12 @@ extension ImageDetailViewController {
         
         if let date = image.timeStamp {
             let dateFormatter = NSDateFormatter()
-            dateFormatter.dateFormat = "h:mm a"
+            dateFormatter.timeStyle = .ShortStyle
+            let locale = LocationDataManager.SharedInstance.getLanguageLocale()
+            dateFormatter.locale = NSLocale(localeIdentifier: locale)
+            //dateFormatter.dateFormat = "h:mm a"
             let dateString = dateFormatter.stringFromDate(date)
-            timeLabel.text = kTimeLabelPrefix + " " + dateString
+            timeLabel.text = kTimeLabelPrefixString + " " + dateString
    
         }
         else{
@@ -199,15 +207,29 @@ extension ImageDetailViewController {
     func setupCoordintesLabel(){
         
         if let latitude = image.location?.latitude,
-            let longitude = image.location?.longitude {
+        let longitude = image.location?.longitude,
+        let lat = Double(latitude),
+        let long = Double(longitude) {
             
-            let formattedCordinatesString = Utils.coordinateString(latitude, longitude: longitude)
+            let formattedCordinatesString = Utils.coordinateString(lat, longitude: long)
             
             coordinatesLabel.attributedText = NSAttributedString.createAttributedStringWithLetterAndLineSpacingWithCentering(formattedCordinatesString, letterSpacing: 1.4, lineSpacing: 5, centered: true)
        
         }
         else{
             coordinatesLabel.text = ""
+        }
+    }
+    
+    func setupWeatherImageViewAndTemperatureLabel(){
+        
+        if let iconId = image.location?.weather?.iconId {
+            let imageName = kWeatherIconNamePrefix + "\(iconId)"
+            
+            if let image = UIImage(named: imageName){
+                weatherImageView.image = image
+            }
+ 
         }
     }
     
@@ -241,7 +263,7 @@ extension ImageDetailViewController : UICollectionViewDataSource {
         
         let tags = image.tags!
         
-        cell.tagLabel.text = tags[indexPath.item].label
+        cell.tagLabel.text = tags[indexPath.item].label?.uppercaseString
         return cell
         
     }
@@ -263,9 +285,12 @@ extension ImageDetailViewController : UICollectionViewDelegate {
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         
+        let tag = image.tags![indexPath.row]
         
-        
- 
+        let vc = Utils.vcWithNameFromStoryboardWithName("FeedViewController", storyboardName: "Feed") as! FeedViewController
+        vc.searchQuery = tag.label!
+        self.navigationController?.pushViewController(vc, animated: true)
+  
     }
 
 }

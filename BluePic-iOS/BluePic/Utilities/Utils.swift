@@ -201,11 +201,11 @@ class Utils: NSObject {
                       abs(latDegrees),
                       latMinutes,
                       latSeconds,
-                      {return latDegrees >= 0 ? "N" : "S"}(),
+                      {return latDegrees >= 0 ? NSLocalizedString("N", comment: "first letter of the word North") : NSLocalizedString("S", comment: "first letter of the word South")}(),
                       abs(longDegrees),
                       longMinutes,
                       longSeconds,
-                      {return longDegrees >= 0 ? "E" : "W"}() )
+                      {return longDegrees >= 0 ? NSLocalizedString("E", comment: "first letter of the word East") : NSLocalizedString("W", comment: "first letter of the word West")}() )
     }
     
 }

@@ -15,11 +15,18 @@ struct Tag {
 }
 
 struct Location {
-    var temperature: String?
     var name: String?
-    var latitude : Double?
-    var longitude: Double?
-    var weather : String?
+    var latitude : String?
+    var longitude: String?
+    var weather : Weather?
+    var city : String?
+    var state : String?
+}
+
+struct Weather {
+    var temperature: String?
+    var iconId: Int?
+    var description: String?
 }
 
 class Image: NSObject {
@@ -32,10 +39,6 @@ class Image: NSObject {
     var width : CGFloat?
     var height : CGFloat?
     var image : UIImage?
-    var latitude : String?
-    var longitude : String?
-    var city : String?
-    var state : String?
     var location : Location?
     var tags : [Tag]?
     var user : User?
@@ -87,14 +90,24 @@ class Image: NSObject {
                         var loc = Location()
                     
                         loc.name = name
-                        loc.latitude = Double(latitude)
-                        loc.longitude = Double(longitude)
-                        if let temperature = location["temperature"] as? String {
-                            loc.temperature = temperature
+                        loc.latitude = latitude
+                        loc.longitude = longitude
+                            
+                            
+                        var weatherObject = Weather()
+                        if let weather = location["weather"] as? [String : AnyObject] {
+                            if let temperature = weather["temperature"] as? String {
+                                weatherObject.temperature = temperature
+                            }
+                            if let iconId = weather["iconId"] as? Int {
+                                weatherObject.iconId = iconId
+                            }
+                            if let description = weather["description"] as? String {
+                                weatherObject.description = description
+                            }
                         }
-                        if let weather = location["weather"] as? String {
-                            loc.weather = weather
-                        }
+                            
+                        loc.weather = weatherObject
                         
                         self.location = loc
                     }
