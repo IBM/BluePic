@@ -14,7 +14,7 @@
                         <viewControllerLayoutGuide type="bottom" id="FM8-p5-wjj"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="g4t-4c-UGB">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="551"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="f5a-5Z-S74">
@@ -146,6 +146,7 @@
                             <constraint firstItem="zly-lq-htn" firstAttribute="centerX" secondItem="g4t-4c-UGB" secondAttribute="centerX" id="zJN-JX-bEf"/>
                         </constraints>
                     </view>
+                    <extendedEdge key="edgesForExtendedLayout" top="YES"/>
                     <navigationItem key="navigationItem" id="uKy-qm-bVM"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
@@ -545,7 +546,7 @@
         <!--Navigation Controller-->
         <scene sceneID="kHV-2J-pRr">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="cJB-KH-xpj" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="cJB-KH-xpj" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="" image="home" id="LM7-29-glG">
                         <inset key="imageInsets" minX="0.0" minY="6" maxX="0.0" maxY="-6"/>
                     </tabBarItem>
