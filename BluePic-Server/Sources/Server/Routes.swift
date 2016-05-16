@@ -87,61 +87,60 @@ func defineRoutes() {
     }
   }
 
-  // Get all image documents
+  /**
+  * Route for getting all image documents and all images that match a given tag.
+  * As of now, searching on multiple tags is not supported. To search using multiple tags,
+  * additional logic would be required. See following URLs for further details:
+  * https://issues.apache.org/jira/browse/COUCHDB-523
+  * http://stackoverflow.com/questions/1468684/multiple-key-ranges-as-parameters-to-a-couchdb-view
+  */
   router.get("/images") { request, response, next in
     if let tag = request.queryParams["tag"] {
-        let _ = tag.characters.split(separator: ",").map(String.init)
-        // Get images by tag
+      // Get images by tag
+      //let _ = tag.characters.split(separator: ",").map(String.init)
 
-        let queryParams: [Database.QueryParameters] =
-        [.descending(false), .includeDocs(true), .reduce(false), .endKey(["label", 0]), .startKey(["label", NSObject()])]
-        database.queryByView("images_by_tags", ofDesign: "main_design", usingParameters: queryParams) { (document, error) in
-          if let document = document where error == nil {
-
-
-
-
-
-            do {
-              let images = try parseImages(document: document)
-              try response.status(HTTPStatusCode.OK).send(json: images).end()
-            }
-            catch {
-              Log.error("Failed to send response to client.")
-              response.error = generateInternalError()
-            }
-
-
-
-
-
-
-          } else {
-              response.error = generateInternalError()
+      let queryParams: [Database.QueryParameters] =
+      [.descending(true), .includeDocs(true), .reduce(false), .endKey([tag, "0", "0", 0]), .startKey([tag, NSObject()])]
+      database.queryByView("images_by_tags", ofDesign: "main_design", usingParameters: queryParams) { (document, error) in
+        if let document = document where error == nil {
+          do {
+            let images = try parseImages(document: document)
+            response.status(HTTPStatusCode.OK).send(json: images)
           }
-          next()
+          catch {
+            Log.error("Failed to find images by tag.")
+            response.error = generateInternalError()
+          }
+        } else {
+          Log.error("Failed to find images by tag.")
+          response.error = generateInternalError()
         }
+        next()
+      }
     } else {
       // Get all images
       database.queryByView("images", ofDesign: "main_design", usingParameters: [.descending(true), .includeDocs(true)]) { (document, error) in
-      if let document = document where error == nil {
-        do {
-          let images = try parseImages(document: document)
-          try response.status(HTTPStatusCode.OK).send(json: images).end()
-        }
-        catch {
-          Log.error("Failed to send response to client.")
+        if let document = document where error == nil {
+          do {
+            let images = try parseImages(document: document)
+            response.status(HTTPStatusCode.OK).send(json: images)
+          }
+          catch {
+            Log.error("Failed to retrieve all images.")
+            response.error = generateInternalError()
+          }
+        } else {
+          Log.error("Failed to retrieve all images.")
           response.error = generateInternalError()
         }
-      } else {
-        response.error = generateInternalError()
-      }
-      next()
+        next()
       }
     }
   }
 
-  // Get specific image document
+  /**
+  * Route for getting a specific image document.
+  */
   router.get("/images/:imageId") { request, response, next in
     print("imageID \(request.params)")
     guard let imageId = request.params["imageId"] else {
