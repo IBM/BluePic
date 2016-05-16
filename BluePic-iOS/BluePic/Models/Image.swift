@@ -17,8 +17,8 @@ struct Tag {
 struct Location {
     var temperature: String?
     var name: String?
-    var latitude : CGFloat?
-    var longitude: CGFloat?
+    var latitude : Double?
+    var longitude: Double?
     var weather : String?
 }
 
@@ -81,14 +81,14 @@ class Image: NSObject {
                 //Parse location data
                 if let location = dict["location"] as? [String : AnyObject]{
                         if let name = location["name"] as? String,
-                        let latitude = location["latitude"] as? CGFloat,
-                        let longitude = location["longitude"] as? CGFloat {
+                        let latitude = location["latitude"] as? String,
+                        let longitude = location["longitude"] as? String {
           
                         var loc = Location()
                     
                         loc.name = name
-                        loc.latitude = latitude
-                        loc.longitude = longitude
+                        loc.latitude = Double(latitude)
+                        loc.longitude = Double(longitude)
                         if let temperature = location["temperature"] as? String {
                             loc.temperature = temperature
                         }

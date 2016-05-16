@@ -21,11 +21,15 @@ class ImageDetailViewController: UIViewController {
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var weatherImageView: UIImageView!
     @IBOutlet weak var temperatureLabel: UILabel!
+
+    @IBOutlet weak var tagCollectionView: UICollectionView!
     
     
     private let kByUserLabelPrefix = "by"
     private let kDateLabelPrefix = "on"
     private let kTimeLabelPrefix = "at"
+    
+    private let kCellPadding: CGFloat = 60
     
     
     private let kCaptionLabelLetterSpacing : CGFloat = 1.7
@@ -37,7 +41,16 @@ class ImageDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupSubviewWithImageData()
+        
+        setupSubviewsWithImageData()
+        setupTagCollectionView()
+
+        
+        UIApplication.sharedApplication().statusBarStyle = .LightContent
+        
+    
+        
+        
 
         // Do any additional setup after loading the view.
     }
@@ -47,7 +60,23 @@ class ImageDetailViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func setupSubviewWithImageData(){
+    func setupTagCollectionView(){
+        
+        let layout = KTCenterFlowLayout()
+        
+        layout.minimumInteritemSpacing = 10.0
+        layout.minimumLineSpacing = 10.0
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 15.0, bottom: 0, right: 15.0)
+        tagCollectionView.setCollectionViewLayout(layout, animated: false)
+        tagCollectionView.delegate = self
+        tagCollectionView.dataSource = self
+        
+        //Utils.kernLabelString(tagsButton.titleLabel!, spacingValue: 1.7)
+        Utils.registerNibWithCollectionView("TagCollectionViewCell", collectionView: tagCollectionView)
+        
+    }
+    
+    func setupSubviewsWithImageData(){
         
         if let urlString = image.url {
             
@@ -55,6 +84,8 @@ class ImageDetailViewController: UIViewController {
             
             imageView.sd_setImageWithURL(nsurl)
         }
+        
+        setupBlurView()
         
         //setup captionLabel
         setupCaptionLabelWithData()
@@ -76,8 +107,6 @@ class ImageDetailViewController: UIViewController {
         //setup timeLabel
         setupTimeLabelWithData()
         
-        
-  
     }
     
     
@@ -87,11 +116,9 @@ class ImageDetailViewController: UIViewController {
     @IBAction func backButtonAction(sender: AnyObject) {
         
         self.navigationController?.popViewControllerAnimated(true)
-        
-        
-        
+  
     }
-    
+   
 
     /*
     // MARK: - Navigation
@@ -108,6 +135,27 @@ class ImageDetailViewController: UIViewController {
 
 //UI Setup Methods
 extension ImageDetailViewController {
+    
+    func setupBlurView(){
+        
+        dimView.hidden = true
+        
+        let blurViewFrame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height)
+        
+        let blurViewHolderView = UIView(frame: blurViewFrame)
+        
+        let darkBlur = UIBlurEffect(style: UIBlurEffectStyle.Dark)
+        
+        let blurView = UIVisualEffectView(effect: darkBlur)
+        blurView.frame = blurViewFrame
+        blurViewHolderView.alpha = 0.90
+        
+        blurViewHolderView.addSubview(blurView)
+        
+        
+        imageView.addSubview(blurViewHolderView)
+        
+    }
     
     func setupCaptionLabelWithData(){
         
@@ -153,7 +201,7 @@ extension ImageDetailViewController {
         if let latitude = image.location?.latitude,
             let longitude = image.location?.longitude {
             
-            let formattedCordinatesString = Utils.coordinateString(Double(latitude), longitude: Double(longitude))
+            let formattedCordinatesString = Utils.coordinateString(latitude, longitude: longitude)
             
             coordinatesLabel.attributedText = NSAttributedString.createAttributedStringWithLetterAndLineSpacingWithCentering(formattedCordinatesString, letterSpacing: 1.4, lineSpacing: 5, centered: true)
        
@@ -163,6 +211,61 @@ extension ImageDetailViewController {
         }
     }
     
+}
+
+
+extension ImageDetailViewController : UICollectionViewDataSource {
     
     
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+       
+        if let tags = image.tags {
+            return tags.count
+        }
+        else{
+            return 0
+        }
+        
+    }
+    
+    
+    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+        return 1
+    }
+
+    
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCellWithReuseIdentifier("TagCollectionViewCell", forIndexPath: indexPath) as? TagCollectionViewCell else {
+            return UICollectionViewCell()
+        }
+        
+        let tags = image.tags!
+        
+        cell.tagLabel.text = tags[indexPath.item].label
+        return cell
+        
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        
+        let tags = image.tags!
+        
+        let size = NSString(string: tags[indexPath.item].label!).sizeWithAttributes(nil)
+        return CGSizeMake(size.width + kCellPadding, 30.0)
+    }
+    
+    
+
+}
+
+
+extension ImageDetailViewController : UICollectionViewDelegate {
+    
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        
+        
+        
+ 
+    }
+
 }
