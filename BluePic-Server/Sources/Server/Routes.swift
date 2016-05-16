@@ -24,6 +24,7 @@ import KituraSys
 import MobileClientAccessKituraCredentialsPlugin
 import MobileClientAccess
 import Credentials
+import BluemixPushNotifications
 
 /**
 * Function for setting up the different routes for this app.
@@ -32,6 +33,8 @@ func defineRoutes() {
     
   let credentials = Credentials()
   credentials.register(plugin: MobileClientAccessKituraCredentialsPlugin())
+
+  let pushNotificationsClient = PushNotifications(bluemixRegion: PushNotifications.Region.US_SOUTH, bluemixAppGuid: "75eef52c-2ed1-4518-9587-ce55cc66479d", bluemixAppSecret: "ef28c8e7-6f7e-41d5-ace1-bdf56a81aceb")
 
   let dbClient = CouchDBClient(connectionProperties: couchDBConnProps)
   let database = dbClient.database("bluepic_db")
@@ -51,9 +54,6 @@ func defineRoutes() {
 
   // Test endpoint
   router.get("/hello", handler: closure)
-
-  // Endpoint for sending push notification (this will use the new Push SDK)
-  router.post("/push", handler: closure)
 
   // http://www.ramblingincode.com/building-a-couchdb-reduce-function/
   // http://docs.couchdb.org/en/1.6.1/couchapp/ddocs.html#reduce-and-rereduce-functions
@@ -146,41 +146,91 @@ func defineRoutes() {
     }
   }
 
+  func getImageBy(imageId: String, callback: ((jsonData : JSON?) -> ())) {
+
+    let queryParams: [Database.QueryParameters] =
+        [.descending(true), .includeDocs(true), .endKey([imageId, 0]), .startKey([imageId, NSObject()])]
+    database.queryByView("images_by_id", ofDesign: "main_design", usingParameters: queryParams) { (document, error) in
+        if let document = document where error == nil {
+            do {
+                let json = try parseImages(document: document)
+                let images = json["records"].arrayValue
+                if images.count == 1 {
+                    callback(jsonData: images[0])
+                } else {
+                    throw ProcessingError.Image("Image not found!")
+                }
+            }
+            catch {
+                Log.error("Failed to get specific Image")
+                callback(jsonData: nil)
+            }
+        } else {
+            callback(jsonData: nil)
+        }
+    }
+
+  }
+
   /**
-  * Route for getting a specific image document.
-  */
+   * Route for getting a specific image document.
+   */
   router.get("/images/:imageId") { request, response, next in
-    print("imageID \(request.params)")
     guard let imageId = request.params["imageId"] else {
       response.error = generateInternalError()
       next()
       return
     }
 
-    let queryParams: [Database.QueryParameters] =
-    [.descending(true), .includeDocs(true), .endKey([imageId, 0]), .startKey([imageId, NSObject()])]
-    database.queryByView("images_by_id", ofDesign: "main_design", usingParameters: queryParams) { (document, error) in
-      if let document = document where error == nil {
-        do {
-          let json = try parseImages(document: document)
-          let images = json["records"].arrayValue
-          if images.count == 1 {
-            response.status(HTTPStatusCode.OK).send(json: images[0])
-          } else {
-            throw ProcessingError.Image("Image not found!")
-          }
+    getImageBy(imageId: imageId, callback: { (jsonData) in
+        print("data: \(jsonData)")
+        if let jsonData = jsonData {
+            response.status(HTTPStatusCode.OK).send(json: jsonData)
+        } else {
+            Log.error("Could not get image data")
+            response.error = generateInternalError()
         }
-        catch {
-          Log.error("Failed to read requested image document.")
-          response.error = generateInternalError()
-        }
-      } else {
-        Log.error("Failed to read requested image document.")
-        response.error = generateInternalError()
-      }
-      next()
-    }
+        next()
+    })
   }
+    
+    // Endpoint for sending push notification (this will use the new Push SDK)
+    router.post("/push/images/:imageId") { _, response, next in
+        
+        print("In Push Endpoint")
+        let imageId = "2001"
+        getImageBy(imageId: imageId, callback: { (jsonData) in
+            print("data: \(jsonData)")
+            if let imageData = jsonData {
+
+//                let msg = Notification.Message(alert:"asd", url:"asd")
+//                
+//                let gcmExample = Notification.Settings.Gcm(collapseKey: "collapseKey", delayWhileIdle: true, payload: "payload", priority: GcmPriority.DEFAULT, sound: "sound.mp3", timeToLive: 1.0)
+//                
+//                
+//                let apnsExample = Notification.Settings.Apns(badge: 1, category: "category", iosActionKey: "iosActionKey", sound: "sound.mp3", type: ApnsType.DEFAULT, payload: ["key": "value"])
+
+                //                let settingsExample = Notification.Settings(apns: apnsExample, gcm: gcmExample)
+//                let targetExample = Notification.Target(deviceIds: ["device1", "device2"], platforms: [TargetPlatform.Apple, TargetPlatform.Google], tagNames: ["tag1", "tag2"], userIds: ["user1", "user2"])
+//                let messageExample = Notification.Message(alert: "Testing BluemixPushNotifications", url: "url")
+//                
+//                let notificationExample = Notification(message: messageExample, target: targetExample, settings: settingsExample)
+
+                
+//                do {
+//                    try response.status(HTTPStatusCode.OK).send(json: imageData).end()
+//                }
+//                catch {
+//                    Log.error("Failed to send response to client.")
+//                    response.error = generateInternalError()
+//                }
+            } else {
+                Log.error("Could not get image data")
+                response.error = generateInternalError()
+            }
+        })
+        
+    }
 
   /**
    * Route for getting all user documents.
@@ -252,7 +302,7 @@ func defineRoutes() {
       var imageJSON = try getImageJSON(fromRequest: request)
 
       // Determine facebook ID from MCA and passed in userId match
-      let userId = imageJSON["userId"].stringValue
+      /*let userId = imageJSON["userId"].stringValue
       guard let authContext = request.userInfo["mcaAuthContext"] as? AuthorizationContext, 
       userIdentity = authContext.userIdentity?.id where userId == userIdentity else {
         Log.error("User is not authorized to post image")
@@ -260,7 +310,7 @@ func defineRoutes() {
         next()
         return
       }
-      print("fbID: \(userId) and \(userIdentity)")
+      print("fbID: \(userId) and \(userIdentity)")*/
 
       // Get image binary from request body
       let image = try BodyParser.readBodyData(with: request)
