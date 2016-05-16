@@ -29,7 +29,7 @@ func defineRoutes() {
 
   // Test closure
   let closure = { (request: RouterRequest, response: RouterResponse, next: () -> Void) -> Void in
-    response.setHeader("Content-Type", value: "text/plain; charset=utf-8")
+    response.headers.append("Content-Type", value: "text/plain; charset=utf-8")
     do {
       try response.status(HTTPStatusCode.OK).send("Hello World, from BluePic-Server! Original URL: \(request.originalUrl)").end()
     }
@@ -89,33 +89,19 @@ func defineRoutes() {
 
   // Get all image documents
   router.get("/images") { request, response, next in
-
-    // if getting images by tag
     if let tag = request.queryParams["tag"] {
         let _ = tag.characters.split(separator: ",").map(String.init)
+        // Get images by tag
 
-        // placeholder cloudant call that gets 2 images
         let queryParams: [Database.QueryParameters] =
-        [.descending(true), .includeDocs(true), .endKey([NSString(string: "0026258080e68113b6da1b6713996faa")]), .startKey([NSString(string: "135464b130774f928d572eb9b5ad9c95"), NSObject()])]
-        database.queryByView("images_by_id", ofDesign: "main_design", usingParameters: queryParams) { (document, error) in
+        [.descending(false), .includeDocs(true), .reduce(false), .endKey(["label", 0]), .startKey(["label", NSObject()])]
+        database.queryByView("images_by_tags", ofDesign: "main_design", usingParameters: queryParams) { (document, error) in
           if let document = document where error == nil {
-              do {
-                  let images = try parseImages(document: document)
-                  try response.status(HTTPStatusCode.OK).send(json: images).end()
-              }
-              catch {
-                  Log.error("Failed to send response to client.")
-                  response.error = generateInternalError()
-              }
-          } else {
-              response.error = generateInternalError()
-          }
-          next()
-        }
-    } else {
 
-        database.queryByView("images", ofDesign: "main_design", usingParameters: [.descending(true), .includeDocs(true)]) { (document, error) in
-          if let document = document where error == nil {
+
+
+
+
             do {
               let images = try parseImages(document: document)
               try response.status(HTTPStatusCode.OK).send(json: images).end()
@@ -124,11 +110,34 @@ func defineRoutes() {
               Log.error("Failed to send response to client.")
               response.error = generateInternalError()
             }
+
+
+
+
+
+
           } else {
-            response.error = generateInternalError()
+              response.error = generateInternalError()
           }
           next()
         }
+    } else {
+      // Get all images
+      database.queryByView("images", ofDesign: "main_design", usingParameters: [.descending(true), .includeDocs(true)]) { (document, error) in
+      if let document = document where error == nil {
+        do {
+          let images = try parseImages(document: document)
+          try response.status(HTTPStatusCode.OK).send(json: images).end()
+        }
+        catch {
+          Log.error("Failed to send response to client.")
+          response.error = generateInternalError()
+        }
+      } else {
+        response.error = generateInternalError()
+      }
+      next()
+      }
     }
   }
 
