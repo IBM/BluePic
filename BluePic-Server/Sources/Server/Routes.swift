@@ -54,15 +54,27 @@ func defineRoutes() {
   // https://gist.github.com/doppler/807315
   // http://guide.couchdb.org/draft/transforming.html
   router.get("/tags") { request, response, next in
-
-    // WORK IN PROGRESS...
     let queryParams: [Database.QueryParameters] = [.group(true), .groupLevel(1)]
     database.queryByView("tags", ofDesign: "main_design", usingParameters: queryParams) { (document, error) in
       if let document = document where error == nil {
         do {
-          print("document: \(document)")
-          // TODO: Parse and sort rows received from cloudant...
-          try response.status(HTTPStatusCode.OK).send(json: document).end()
+          // Get tags (rows from JSON result document)
+          guard var tags = document["rows"].array else {
+            throw ProcessingError.Image("Tags could not be retrieved from database!")
+          }
+
+          // Sort tags in descending order
+          tags.sort {
+            let tag1: JSON = $0
+            let tag2: JSON = $1
+            return tag1["value"].intValue > tag2["value"].intValue
+          }
+
+          // Send sorted tags to client
+          var tagsDocument = JSON([:])
+          tagsDocument["records"] = JSON(tags)
+          tagsDocument["number_of_records"].int = tags.count
+          try response.status(HTTPStatusCode.OK).send(json: tagsDocument).end()
         }
         catch {
           Log.error("Failed to send response to client.")
@@ -73,21 +85,6 @@ func defineRoutes() {
       }
       next()
     }
-    //
-
-      /*
-
-    let popularTags = ["Friend", "Brother", "Happy", "MOUNTAIN", "TREES", "SKY", "NATURE", "PEOPLE", "OCEAN", "CITY"]
-    let json = JSON(popularTags)
-    do {
-        try response.status(HTTPStatusCode.OK).send(json: json).end()
-    } catch {
-        Log.error("Failed to send response to client.")
-        response.error = generateInternalError()
-        return
-    }
-    */
-
   }
 
   // Get all image documents
