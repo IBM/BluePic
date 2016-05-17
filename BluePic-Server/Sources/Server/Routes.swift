@@ -68,7 +68,7 @@ func defineRoutes() {
       if let document = document where error == nil {
         do {
           // Get tags (rows from JSON result document)
-          guard var tags = document["rows"].array else {
+          guard var tags: [JSON] = document["rows"].array else {
             throw ProcessingError.Image("Tags could not be retrieved from database!")
           }
           // Sort tags in descending order
@@ -77,7 +77,10 @@ func defineRoutes() {
             let tag2: JSON = $1
             return tag1["value"].intValue > tag2["value"].intValue
           }
-          // Slice tags array
+          // Slice tags array (max number of items is 10)
+          if tags.count > 10 {
+            tags = Array(tags[0...9])
+          }
 
           // Send sorted tags to client
           var tagsDocument = JSON([:])
@@ -187,17 +190,17 @@ func defineRoutes() {
         Had to comment out the code below... it is throwing compilation errors:
 
         /Users/olivieri/git/BluePic-IBM-Swift/BluePic-Server/Sources/Server/Routes.swift:186:58: error: type of expression is ambiguous without more context
-                let apnsSettings = Notification.Settings.Apns(badge: nil, category: "imageProcessed", iosActionKey: nil, sound: nil, type: ApnsType.DEFAULT, payload: imageData.dictionaryObject)
-                                   ~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/Users/olivieri/git/BluePic-IBM-Swift/BluePic-Server/Sources/Server/Routes.swift:188:43: error: type of expression is ambiguous without more context
-                let target = Notification.Target(deviceIds: nil, platforms: [TargetPlatform.Apple], tagNames: nil, userIds: [userID])
-                             ~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/Users/olivieri/git/BluePic-IBM-Swift/BluePic-Server/Sources/Server/Routes.swift:189:44: error: type of expression is ambiguous without more context
-                let message = Notification.Message(alert: "Your image has finished processing and is ready to view!", url: nil)
-                              ~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-<unknown>:0: error: build had 1 command failures
-error: exit(1): /Library/Developer/Toolchains/swift-DEVELOPMENT-SNAPSHOT-2016-05-03-a.xctoolchain/usr/bin/swift-build-tool -f /Users/olivieri/git/BluePic-IBM-Swift/BluePic-Server/.build/debug.yaml
-make: *** [build] Error 1
+        let apnsSettings = Notification.Settings.Apns(badge: nil, category: "imageProcessed", iosActionKey: nil, sound: nil, type: ApnsType.DEFAULT, payload: imageData.dictionaryObject)
+        ~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        /Users/olivieri/git/BluePic-IBM-Swift/BluePic-Server/Sources/Server/Routes.swift:188:43: error: type of expression is ambiguous without more context
+        let target = Notification.Target(deviceIds: nil, platforms: [TargetPlatform.Apple], tagNames: nil, userIds: [userID])
+        ~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        /Users/olivieri/git/BluePic-IBM-Swift/BluePic-Server/Sources/Server/Routes.swift:189:44: error: type of expression is ambiguous without more context
+        let message = Notification.Message(alert: "Your image has finished processing and is ready to view!", url: nil)
+        ~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        <unknown>:0: error: build had 1 command failures
+        error: exit(1): /Library/Developer/Toolchains/swift-DEVELOPMENT-SNAPSHOT-2016-05-03-a.xctoolchain/usr/bin/swift-build-tool -f /Users/olivieri/git/BluePic-IBM-Swift/BluePic-Server/.build/debug.yaml
+        make: *** [build] Error 1
 
 
 
