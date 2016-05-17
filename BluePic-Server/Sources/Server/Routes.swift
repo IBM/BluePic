@@ -21,7 +21,9 @@ import CouchDB
 import LoggerAPI
 import SwiftyJSON
 
-// Setup the handlers for the Photo APIs
+/**
+* Function for setting up the different routes for this app.
+*/
 func defineRoutes() {
 
   let dbClient = CouchDBClient(connectionProperties: couchDBConnProps)
@@ -62,25 +64,24 @@ func defineRoutes() {
           guard var tags = document["rows"].array else {
             throw ProcessingError.Image("Tags could not be retrieved from database!")
           }
-
           // Sort tags in descending order
           tags.sort {
             let tag1: JSON = $0
             let tag2: JSON = $1
             return tag1["value"].intValue > tag2["value"].intValue
           }
-
           // Send sorted tags to client
           var tagsDocument = JSON([:])
           tagsDocument["records"] = JSON(tags)
           tagsDocument["number_of_records"].int = tags.count
-          try response.status(HTTPStatusCode.OK).send(json: tagsDocument).end()
+          response.status(HTTPStatusCode.OK).send(json: tagsDocument)
         }
         catch {
-          Log.error("Failed to send response to client.")
+          Log.error("Failed to obtain tags from database.")
           response.error = generateInternalError()
         }
       } else {
+        Log.error("Failed to obtain tags from database.")
         response.error = generateInternalError()
       }
       next()
@@ -88,9 +89,10 @@ func defineRoutes() {
   }
 
   /**
-  * Route for getting all image documents and all images that match a given tag.
-  * As of now, searching on multiple tags is not supported. To search using multiple tags,
-  * additional logic would be required. See following URLs for further details:
+  * Route for getting all image documents or all images that match a given tag.
+  * As of now, searching on multiple tags is not supported in this app.
+  * To search using multiple tags, additional logic is required.
+  * See following URLs for further details:
   * https://issues.apache.org/jira/browse/COUCHDB-523
   * http://stackoverflow.com/questions/1468684/multiple-key-ranges-as-parameters-to-a-couchdb-view
   */
@@ -98,7 +100,6 @@ func defineRoutes() {
     if let tag = request.queryParams["tag"] {
       // Get images by tag
       //let _ = tag.characters.split(separator: ",").map(String.init)
-
       let queryParams: [Database.QueryParameters] =
       [.descending(true), .includeDocs(true), .reduce(false), .endKey([tag, "0", "0", 0]), .startKey([tag, NSObject()])]
       database.queryByView("images_by_tags", ofDesign: "main_design", usingParameters: queryParams) { (document, error) in
@@ -157,42 +158,48 @@ func defineRoutes() {
           let json = try parseImages(document: document)
           let images = json["records"].arrayValue
           if images.count == 1 {
-            try response.status(HTTPStatusCode.OK).send(json: images[0]).end()
+            response.status(HTTPStatusCode.OK).send(json: images[0])
           } else {
             throw ProcessingError.Image("Image not found!")
           }
         }
         catch {
-          Log.error("Failed to send response to client.")
+          Log.error("Failed to read requested image document.")
           response.error = generateInternalError()
         }
       } else {
+        Log.error("Failed to read requested image document.")
         response.error = generateInternalError()
       }
       next()
     }
   }
 
-  // Get all user documents
+  /**
+  * Route for getting all user documents.
+  */
   router.get("/users") { _, response, next in
     database.queryByView("users", ofDesign: "main_design", usingParameters: [.descending(true), .includeDocs(false)]) { (document, error) in
       if let document = document where error == nil {
         do {
           let users = try parseUsers(document: document)
-          try response.status(HTTPStatusCode.OK).send(json: users).end()
+          response.status(HTTPStatusCode.OK).send(json: users)
         }
         catch {
-          Log.error("Failed to send response to client.")
+          Log.error("Failed to read users from database.")
           response.error = generateInternalError()
         }
       } else {
+        Log.error("Failed to read users from database.")
         response.error = generateInternalError()
       }
       next()
     }
   }
 
-  // Get a specific user document
+  /**
+  * Route for getting a specific user document.
+  */
   router.get("/users/:userId") { request, response, next in
     guard let userId = request.params["userId"] else {
       response.error = generateInternalError()
@@ -207,35 +214,34 @@ func defineRoutes() {
           let json = try parseUsers(document: document)
           let users = json["records"].arrayValue
           if users.count == 1 {
-            try response.status(HTTPStatusCode.OK).send(json: users[0]).end()
+            response.status(HTTPStatusCode.OK).send(json: users[0])
           } else {
             throw ProcessingError.Image("User not found!")
           }
-        }
-        catch {
-          Log.error("Failed to send response to client.")
+        } catch {
+          Log.error("Failed to read requested user document.")
           response.error = generateInternalError()
         }
       } else {
+        Log.error("Failed to read requested user document.")
         response.error = generateInternalError()
       }
       next()
     }
   }
 
-  // Upload a new picture for a given user
+  /**
+  * Route for uploading a new picture for a given user.
+  * As of now, we don't have a multi-form request parser in Kitura.
+  * Therefore, we are using the REST endpoint definition as the mechanism
+  * to send the image metadata, while the body of the request only
+  * contains the binary data for the image. I know, yuck...
+  */
   router.post("/users/:userId/images/:fileName/:caption/:width/:height/:latitude/:longitude/:location") { request, response, next in
     do {
-      // As of now, we don't have a multi-form request parser...
-      // Because of this we are using the REST endpoint definition as the mechanism
-      // to send the image metadata, while the body of the request only
-      // contains the binary data for the image. I know, yuck...
       var imageJSON = try getImageJSON(fromRequest: request)
-      //Log.verbose("The following is the imageJSON document generated: \(imageJSON)")
-
       // Get image binary from request body
       let image = try BodyParser.readBodyData(with: request)
-
       // Create closure
       let completionHandler = { (success: Bool) -> Void in
         if success {
@@ -250,10 +256,8 @@ func defineRoutes() {
               next()
               return
             }
-
-            // Contine processing of request (async request for OpenWhisk)
+            // Contine processing of image (async request for OpenWhisk)
             processImage(withId: id, forUser: imageJSON["userId"].stringValue)
-
             // Return image document to caller
             // Update JSON image document with _id, and _rev
             imageJSON["_id"].stringValue = id
@@ -261,11 +265,11 @@ func defineRoutes() {
             response.status(HTTPStatusCode.OK).send(json: imageJSON)
           }
         } else {
+          Log.error("Failed to create image record in Cloudant database.")
           response.error = generateInternalError()
         }
         next()
       }
-
       // Create container for user before creating image record in database
       store(image: image, withName: imageJSON["fileName"].stringValue, inContainer: imageJSON["userId"].stringValue, completionHandler: completionHandler)
     } catch {
@@ -288,20 +292,23 @@ func defineRoutes() {
       if let document = document where error == nil {
         do {
           let images = try parseImages(forUserId: userId, usingDocument: document)
-          try response.status(HTTPStatusCode.OK).send(json: images).end()
+          response.status(HTTPStatusCode.OK).send(json: images)
         }
         catch {
           Log.error("Failed to get images for \(userId).")
           response.error = generateInternalError()
         }
       } else {
+        Log.error("Failed to get images for \(userId).")
         response.error = generateInternalError()
       }
       next()
     }
   }
 
-  // Create a new user in the database
+  /**
+  * Route for creating a new user document in the database.
+  */
   router.post("/users") { request, response, next in
     do {
       let rawUserData = try BodyParser.readBodyData(with: request)
@@ -351,7 +358,6 @@ func defineRoutes() {
           next()
         }
       }
-
       // Create container for user before adding record to database
       createContainer(withName: userId, completionHandler: completionHandler)
     } catch let error {
