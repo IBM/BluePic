@@ -28,8 +28,8 @@
       ],
       "location": {
         "name": "Austin, Texas",
-        "latitude": "34.53",
-        "longitude": "84.5",
+        "latitude": 34.53,
+        "longitude": 84.5,
         "weather": {
           "description": "Mostly Cloudy",
           "temperature": "70 F",
@@ -64,8 +64,8 @@
       ],
       "location": {
         "name": "Boston, Massachusetts",
-        "latitude": "34.53",
-        "longitude": "84.5",
+        "latitude": 34.53,
+        "longitude": 84.5,
         "weather": {
           "description": "Mostly Cloudy",
           "temperature": "70 F",
@@ -92,8 +92,8 @@
       ],
       "location": {
         "name": "Los Angeles, California",
-        "latitude": "34.53",
-        "longitude": "84.5",
+        "latitude": 34.53,
+        "longitude": 84.5,
         "weather": {
           "description": "Sunny",
           "temperature": "70 F",
@@ -128,8 +128,8 @@
       ],
       "location": {
         "name": "Tuscson, Arizona",
-        "latitude": "34.53",
-        "longitude": "84.5",
+        "latitude": 34.53,
+        "longitude": 84.5,
         "weather": {
           "description": "Sunny",
           "temperature": "70 F",
@@ -151,8 +151,8 @@
       "tags": [],
       "location": {
         "name": "New York, New York",
-        "latitude": "34.53",
-        "longitude": "84.5",
+        "latitude": 34.53,
+        "longitude": 84.5,
         "weather": {
           "description": "Mostly Sunny",
           "temperature": "80 F",
@@ -179,8 +179,8 @@
       ],
       "location": {
         "name": "Austin, Texas",
-        "latitude": "34.53",
-        "longitude": "84.5",
+        "latitude": 34.53,
+        "longitude": 84.5,
         "weather": {
           "description": "Mostly Sunny",
           "temperature": "80 F",
@@ -211,8 +211,8 @@
       ],
       "location": {
         "name": "Marble Falls, Texas",
-        "latitude": "34.53",
-        "longitude": "84.5",
+        "latitude": 34.53,
+        "longitude": 84.5,
         "weather": {
           "description": "Mostly Cloudy",
           "temperature": "80 F",
@@ -243,8 +243,8 @@
       ],
       "location": {
         "name": "Marble Falls, Texas",
-        "latitude": "34.53",
-        "longitude": "84.5",
+        "latitude": 34.53,
+        "longitude": 84.5,
         "weather": {
           "description": "Mostly Cloudy",
           "temperature": "80 F",
@@ -283,8 +283,8 @@
       ],
       "location": {
         "name": "Austin, Texas",
-        "latitude": "34.53",
-        "longitude": "84.5",
+        "latitude": 34.53,
+        "longitude": 84.5,
         "weather": {
           "description": "Mostly Sunny",
           "temperature": "85 F",
@@ -311,8 +311,8 @@
       ],
       "location": {
         "name": "Miami, Florida",
-        "latitude": "34.53",
-        "longitude": "84.5",
+        "latitude": 34.53,
+        "longitude": 84.5,
         "weather": {
           "description": "Mostly Sunny",
           "temperature": "85 F",
@@ -343,8 +343,8 @@
       ],
       "location": {
         "name": "Austin, Texas",
-        "latitude": "34.53",
-        "longitude": "84.5",
+        "latitude": 34.53,
+        "longitude": 84.5,
         "weather": {
           "description": "Mostly Sunny",
           "temperature": "85 F",
