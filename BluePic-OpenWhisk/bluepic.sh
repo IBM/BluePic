@@ -43,11 +43,10 @@ function install() {
     -p alchemyKey $ALCHEMY_key\
     -p weatherUsername $WEATHER_username\
     -p weatherPassword $WEATHER_password\
-
-  #  -p cloudantUrl https://$CLOUDANT_username:$CLOUDANT_password@$CLOUDANT_host\    
-  #  -p watsonUsername $WATSON_username\
-  #  -p watsonPassword $WATSON_password\
-  #  -p cloudantDbName $CLOUDANT_db
+    -p cloudantHost $CLOUDANT_host\
+    -p cloudantUsername $CLOUDANT_username\
+    -p cloudantPassword $CLOUDANT_password\
+    -p cloudantDbName $CLOUDANT_db
     
   # we will need to listen to cloudant event
   #echo "Binding cloudant"
@@ -56,7 +55,9 @@ function install() {
   #  bluepic-cloudant\
   #  -p username $CLOUDANT_username\
   #  -p password $CLOUDANT_password\
-  #  -p host $CLOUDANT_host
+  #  -p host $CLOUDANT_host   
+  #  -p watsonUsername $WATSON_username\
+  #  -p watsonPassword $WATSON_password\
 
   #echo "Creating trigger"
   #wsk trigger create bluepic-cloudant-trigger --feed bluepic-cloudant/changes -p dbname $CLOUDANT_db -p includeDoc true
@@ -121,10 +122,10 @@ function uninstall() {
 
 function showenv() {
   echo -e "${YELLOW}"
-  #echo CLOUDANT_username=$CLOUDANT_username
-  #echo CLOUDANT_password=$CLOUDANT_password
-  #echo CLOUDANT_host=$CLOUDANT_host
-  #echo CLOUDANT_db=$CLOUDANT_db
+  echo CLOUDANT_username=$CLOUDANT_username
+  echo CLOUDANT_password=$CLOUDANT_password
+  echo CLOUDANT_host=$CLOUDANT_host
+  echo CLOUDANT_db=$CLOUDANT_db
   echo ALCHEMY_key=$ALCHEMY_key
   echo WEATHER_username=$WEATHER_username
   echo WEATHER_password=$WEATHER_password
