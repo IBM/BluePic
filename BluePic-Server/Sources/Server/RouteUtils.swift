@@ -99,14 +99,10 @@ func getImageJSON(fromRequest request: RouterRequest) throws -> JSON {
   let locationName = StringUtils.decodeWhiteSpace(inString: location)
   let imageURL = generateUrl(forContainer: userId, forImage: fileName)
 
-  // There is defect in our custom version of SwiftyJSON: if a JSON object contains Float values,
-  // then invoking the rawString() method on the JSON object returns nil.
-  // Therefore, as a stopgap solution, using int values for width and height fields,
-  // and string values for the latitude and longitude fields.
-  let whereabouts: JSONDictionary = ["latitude": String(latitude), "longitude": String(longitude), "name": locationName]
+  let whereabouts: JSONDictionary = ["latitude": latitude, "longitude": longitude, "name": locationName]
   let imageDocument: JSONDictionary = ["location": whereabouts, "contentType": contentType, "url": imageURL,
   "fileName": fileName, "userId": userId, "caption": imageName, "uploadedTs": uploadedTs,
-  "width": Int(width), "height": Int(height), "type": "image"]
+  "width": width, "height": height, "type": "image"]
 
   return JSON(imageDocument)
 }
