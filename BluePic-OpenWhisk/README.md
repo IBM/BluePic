@@ -6,7 +6,7 @@ Install using the bluepic.sh shell script:
 
 Don't forget to set configuration variables (auth creds, etc...) inside of local.env.
 
-## Actions
+# Actions
 
 The following actions are created by the shell script:
 
@@ -23,7 +23,7 @@ A sequence of individual actions:
 
 ### httpGet
 
-Just a test sample to make sure Swift 3 actions with HTTP support using KituraNet is available.
+Just a test sample to make sure Swift 3 actions with HTTP support using KituraNet is available.  Originaly from https://github.com/openwhisk/openwhisk/blob/master/catalog/samples/httpGet.swift
 
 
 ---
