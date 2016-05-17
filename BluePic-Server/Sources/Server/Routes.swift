@@ -33,9 +33,7 @@ func defineRoutes() {
 
   let credentials = Credentials()
   credentials.register(plugin: MobileClientAccessKituraCredentialsPlugin())
-
   let pushNotificationsClient = PushNotifications(bluemixRegion: PushNotifications.Region.US_SOUTH, bluemixAppGuid: "75eef52c-2ed1-4518-9587-ce55cc66479d", bluemixAppSecret: "ef28c8e7-6f7e-41d5-ace1-bdf56a81aceb")
-
   let dbClient = CouchDBClient(connectionProperties: couchDBConnProps)
   let database = dbClient.database("bluepic_db")
 
@@ -161,19 +159,19 @@ func defineRoutes() {
       return
     }
 
-    getImageBy(database: database, imageId: imageId, callback: { (jsonData) in
-      print("data: \(jsonData)")
+    readImage(database: database, imageId: imageId, callback: { (jsonData) in
       if let jsonData = jsonData {
         response.status(HTTPStatusCode.OK).send(json: jsonData)
       } else {
-        Log.error("Could not get image data")
         response.error = generateInternalError()
       }
       next()
     })
   }
 
-  // Endpoint for sending push notification (this will use the server Push SDK)
+  /**
+  * Route for sending push notification (this uses the Push server SDK).
+  */
   router.post("/push/images/:imageId") { request, response, next in
     guard let imageId = request.params["imageId"] else {
       response.error = generateInternalError()
@@ -181,29 +179,23 @@ func defineRoutes() {
       return
     }
 
-    getImageBy(database: database, imageId: imageId, callback: { (jsonData) in
-      print("data: \(jsonData)")
+    readImage(database: database, imageId: imageId, callback: { (jsonData) in
       if let imageData = jsonData {
-
         // TODO: Get user ID off of imageData object once task #121 is complete
         let apnsSettings = Notification.Settings.Apns(badge: nil, category: "imageProcessed", iosActionKey: nil, sound: nil, type: ApnsType.DEFAULT, payload: imageData.dictionaryObject)
         let settings = Notification.Settings(apns: apnsSettings, gcm: nil)
         let target = Notification.Target(deviceIds: nil, platforms: [TargetPlatform.Apple], tagNames: nil, userIds: ["<userID>"])
         let message = Notification.Message(alert: "Your image has finished processing and is ready to view!", url: nil)
         let notification = Notification(message: message, target: target, settings: settings)
-        
         pushNotificationsClient.send(notification: notification) { (error) in
           if error != nil {
             print("Failed to send push notification. Error: \(error!)")
           }
         }
-
       } else {
-        Log.error("Could not get image data")
         response.error = generateInternalError()
       }
     })
-
   }
 
   /**
