@@ -411,9 +411,9 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
     func setLatLongCityAndStateForImage(image : Image, callback : ((image : Image)->())){
         
         let location = LocationDataManager.SharedInstance.getUsersCurrentLocation()
+        
+        image.location = Location()
         if let location = location {
-            
-            image.location = Location()
             
             image.location!.latitude = "\(location.coordinate.latitude)"
             image.location!.longitude = "\(location.coordinate.longitude)"
