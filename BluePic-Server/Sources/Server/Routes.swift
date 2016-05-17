@@ -20,18 +20,28 @@ import KituraNet
 import CouchDB
 import LoggerAPI
 import SwiftyJSON
+import KituraSys
+import MobileClientAccessKituraCredentialsPlugin
+import MobileClientAccess
+import Credentials
+import BluemixPushNotifications
 
 /**
 * Function for setting up the different routes for this app.
 */
 func defineRoutes() {
+    
+  let credentials = Credentials()
+  credentials.register(plugin: MobileClientAccessKituraCredentialsPlugin())
+
+  let pushNotificationsClient = PushNotifications(bluemixRegion: PushNotifications.Region.US_SOUTH, bluemixAppGuid: "75eef52c-2ed1-4518-9587-ce55cc66479d", bluemixAppSecret: "ef28c8e7-6f7e-41d5-ace1-bdf56a81aceb")
 
   let dbClient = CouchDBClient(connectionProperties: couchDBConnProps)
   let database = dbClient.database("bluepic_db")
 
   // Test closure
   let closure = { (request: RouterRequest, response: RouterResponse, next: () -> Void) -> Void in
-    response.headers.append("Content-Type", value: "text/plain; charset=utf-8")
+//    response.headers.append("Content-Type", value: "text/plain; charset=utf-8")
     do {
       try response.status(HTTPStatusCode.OK).send("Hello World, from BluePic-Server! Original URL: \(request.originalUrl)").end()
     }
@@ -44,9 +54,6 @@ func defineRoutes() {
 
   // Test endpoint
   router.get("/hello", handler: closure)
-
-  // Endpoint for sending push notification (this will use the new Push SDK)
-  router.post("/push", handler: closure)
 
   // http://www.ramblingincode.com/building-a-couchdb-reduce-function/
   // http://docs.couchdb.org/en/1.6.1/couchapp/ddocs.html#reduce-and-rereduce-functions
@@ -140,45 +147,65 @@ func defineRoutes() {
   }
 
   /**
-  * Route for getting a specific image document.
-  */
+   * Route for getting a specific image document.
+   */
   router.get("/images/:imageId") { request, response, next in
-    print("imageID \(request.params)")
     guard let imageId = request.params["imageId"] else {
       response.error = generateInternalError()
       next()
       return
     }
 
-    let queryParams: [Database.QueryParameters] =
-    [.descending(true), .includeDocs(true), .endKey([imageId, 0]), .startKey([imageId, NSObject()])]
-    database.queryByView("images_by_id", ofDesign: "main_design", usingParameters: queryParams) { (document, error) in
-      if let document = document where error == nil {
-        do {
-          let json = try parseImages(document: document)
-          let images = json["records"].arrayValue
-          if images.count == 1 {
-            response.status(HTTPStatusCode.OK).send(json: images[0])
-          } else {
-            throw ProcessingError.Image("Image not found!")
-          }
+    getImageBy(database: database, imageId: imageId, callback: { (jsonData) in
+        print("data: \(jsonData)")
+        if let jsonData = jsonData {
+            response.status(HTTPStatusCode.OK).send(json: jsonData)
+        } else {
+            Log.error("Could not get image data")
+            response.error = generateInternalError()
         }
-        catch {
-          Log.error("Failed to read requested image document.")
-          response.error = generateInternalError()
-        }
-      } else {
-        Log.error("Failed to read requested image document.")
-        response.error = generateInternalError()
-      }
-      next()
-    }
+        next()
+    })
   }
+    
+    // Endpoint for sending push notification (this will use the server Push SDK)
+    router.post("/push/images/:imageId") { request, response, next in
+        guard let imageId = request.params["imageId"] else {
+            response.error = generateInternalError()
+            next()
+            return
+        }
+        
+        getImageBy(database: database, imageId: imageId, callback: { (jsonData) in
+            print("data: \(jsonData)")
+            if let imageData = jsonData, authContext = request.userInfo["mcaAuthContext"] as? AuthorizationContext, userID = authContext.userIdentity?.id {
+                print("DeviceID: \(userID)")
+                
+                let apnsSettings = Notification.Settings.Apns(badge: nil, category: "imageProcessed", iosActionKey: nil, sound: nil, type: ApnsType.DEFAULT, payload: imageData.dictionaryObject)
+                let settings = Notification.Settings(apns: apnsSettings, gcm: nil)
+                let target = Notification.Target(deviceIds: nil, platforms: [TargetPlatform.Apple], tagNames: nil, userIds: [userID])
+                let message = Notification.Message(alert: "Your image has finished processing and is ready to view!", url: nil)
+                let notification = Notification(message: message, target: target, settings: settings)
+
+                pushNotificationsClient.send(notification: notification) { (error) in
+                    if error != nil {
+                        print("Failed to send push notification. Error: \(error!)")
+                    }
+                }
+                
+            } else {
+                Log.error("Could not get image data")
+                response.error = generateInternalError()
+            }
+        })
+        
+    }
 
   /**
-  * Route for getting all user documents.
-  */
-  router.get("/users") { _, response, next in
+   * Route for getting all user documents.
+   */
+  router.get("/users", middleware: credentials)
+  router.get("/users") { request, response, next in
     database.queryByView("users", ofDesign: "main_design", usingParameters: [.descending(true), .includeDocs(false)]) { (document, error) in
       if let document = document where error == nil {
         do {
@@ -200,6 +227,7 @@ func defineRoutes() {
   /**
   * Route for getting a specific user document.
   */
+  router.get("/users/:userId", middleware: credentials)
   router.get("/users/:userId") { request, response, next in
     guard let userId = request.params["userId"] else {
       response.error = generateInternalError()
@@ -237,9 +265,33 @@ func defineRoutes() {
   * to send the image metadata, while the body of the request only
   * contains the binary data for the image. I know, yuck...
   */
+  router.post("/users/:userId/images/:fileName/:caption/:width/:height/:latitude/:longitude/:location", middleware: credentials)
   router.post("/users/:userId/images/:fileName/:caption/:width/:height/:latitude/:longitude/:location") { request, response, next in
     do {
       var imageJSON = try getImageJSON(fromRequest: request)
+
+      // Determine facebook ID from MCA and passed in userId match
+      /*let userId = imageJSON["userId"].stringValue
+      guard let authContext = request.userInfo["mcaAuthContext"] as? AuthorizationContext, 
+      userIdentity = authContext.userIdentity?.id where userId == userIdentity else {
+        Log.error("User is not authorized to post image")
+        response.error = generateInternalError()
+        next()
+        return
+      }
+      print("fbID: \(userId) and \(userIdentity)")*/
+
+      // Determine facebook ID from MCA and passed in userId match
+      let userId = imageJSON["userId"].stringValue
+      guard let authContext = request.userInfo["mcaAuthContext"] as? AuthorizationContext, 
+      userIdentity = authContext.userIdentity?.id where userId == userIdentity else {
+        Log.error("User is not authorized to post image")
+        response.error = generateInternalError()
+        next()
+        return
+      }
+      print("fbID: \(userId) and \(userIdentity)")
+
       // Get image binary from request body
       let image = try BodyParser.readBodyData(with: request)
       // Create closure
@@ -309,6 +361,7 @@ func defineRoutes() {
   /**
   * Route for creating a new user document in the database.
   */
+  router.post("/users", middleware: credentials)
   router.post("/users") { request, response, next in
     do {
       let rawUserData = try BodyParser.readBodyData(with: request)
