@@ -107,7 +107,7 @@ extension LocationDataManager : CLLocationManagerDelegate {
     
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
-  
+        print("did update")
     }
     
     
