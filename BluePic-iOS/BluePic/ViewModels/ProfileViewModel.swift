@@ -230,14 +230,16 @@ extension ProfileViewModel {
     }
     
     
-    func prepareImageDetailViewControllerSelectedCellAtIndexPath(indexPath : NSIndexPath) -> ImageDetailViewController {
-        
-        let imageDetailVC = Utils.vcWithNameFromStoryboardWithName("ImageDetailViewController", storyboardName: "Feed") as! ImageDetailViewController
-        
-        imageDetailVC.image = imageDataArray[indexPath.row]
-        
-        
-        return imageDetailVC
+    func prepareImageDetailViewControllerSelectedCellAtIndexPath(indexPath : NSIndexPath) -> ImageDetailViewController? {
+   
+        if(imageDataArray.count > 0){
+            let imageDetailVC = Utils.vcWithNameFromStoryboardWithName("ImageDetailViewController", storyboardName: "Feed") as! ImageDetailViewController
+            imageDetailVC.image = imageDataArray[indexPath.row]
+            return imageDetailVC
+        }
+        else{
+            return nil
+        }
         
     }
   

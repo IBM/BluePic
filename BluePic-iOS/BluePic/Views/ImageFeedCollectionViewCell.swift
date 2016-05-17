@@ -37,7 +37,7 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
     //the view that is shown while we wait for the image to download and display
     @IBOutlet weak var loadingView: UIView!
     
-    private let kNumberOfTagsPostFix = "Tags"
+    private let kNumberOfTagsPostFix = NSLocalizedString("Tags", comment: "")
     
 
     /**
