@@ -146,6 +146,7 @@ func defineRoutes() {
     }
   }
 
+<<<<<<< 001245dabe7aea3cca2572af001e29fb38a8b7b3
   func getImageBy(imageId: String, callback: ((jsonData : JSON?) -> ())) {
 
     let queryParams: [Database.QueryParameters] =
@@ -182,7 +183,7 @@ func defineRoutes() {
       return
     }
 
-    getImageBy(imageId: imageId, callback: { (jsonData) in
+    getImageBy(database: database, imageId: imageId, callback: { (jsonData) in
         print("data: \(jsonData)")
         if let jsonData = jsonData {
             response.status(HTTPStatusCode.OK).send(json: jsonData)
@@ -194,36 +195,31 @@ func defineRoutes() {
     })
   }
     
-    // Endpoint for sending push notification (this will use the new Push SDK)
-    router.post("/push/images/:imageId") { _, response, next in
+    // Endpoint for sending push notification (this will use the server Push SDK)
+    router.post("/push/images/:imageId") { request, response, next in
+        guard let imageId = request.params["imageId"] else {
+            response.error = generateInternalError()
+            next()
+            return
+        }
         
-        print("In Push Endpoint")
-        let imageId = "2001"
-        getImageBy(imageId: imageId, callback: { (jsonData) in
+        getImageBy(database: database, imageId: imageId, callback: { (jsonData) in
             print("data: \(jsonData)")
-            if let imageData = jsonData {
-
-//                let msg = Notification.Message(alert:"asd", url:"asd")
-//                
-//                let gcmExample = Notification.Settings.Gcm(collapseKey: "collapseKey", delayWhileIdle: true, payload: "payload", priority: GcmPriority.DEFAULT, sound: "sound.mp3", timeToLive: 1.0)
-//                
-//                
-//                let apnsExample = Notification.Settings.Apns(badge: 1, category: "category", iosActionKey: "iosActionKey", sound: "sound.mp3", type: ApnsType.DEFAULT, payload: ["key": "value"])
-
-                //                let settingsExample = Notification.Settings(apns: apnsExample, gcm: gcmExample)
-//                let targetExample = Notification.Target(deviceIds: ["device1", "device2"], platforms: [TargetPlatform.Apple, TargetPlatform.Google], tagNames: ["tag1", "tag2"], userIds: ["user1", "user2"])
-//                let messageExample = Notification.Message(alert: "Testing BluemixPushNotifications", url: "url")
-//                
-//                let notificationExample = Notification(message: messageExample, target: targetExample, settings: settingsExample)
-
+            if let imageData = jsonData, authContext = request.userInfo["mcaAuthContext"] as? AuthorizationContext, userID = authContext.userIdentity?.id {
+                print("DeviceID: \(userID)")
                 
-//                do {
-//                    try response.status(HTTPStatusCode.OK).send(json: imageData).end()
-//                }
-//                catch {
-//                    Log.error("Failed to send response to client.")
-//                    response.error = generateInternalError()
-//                }
+                let apnsSettings = Notification.Settings.Apns(badge: nil, category: "imageProcessed", iosActionKey: nil, sound: nil, type: ApnsType.DEFAULT, payload: imageData.dictionaryObject)
+                let settings = Notification.Settings(apns: apnsSettings, gcm: nil)
+                let target = Notification.Target(deviceIds: nil, platforms: [TargetPlatform.Apple], tagNames: nil, userIds: [userID])
+                let message = Notification.Message(alert: "Your image has finished processing and is ready to view!", url: nil)
+                let notification = Notification(message: message, target: target, settings: settings)
+
+                pushNotificationsClient.send(notification: notification) { (error) in
+                    if error != nil {
+                        print("Failed to send push notification. Error: \(error!)")
+                    }
+                }
+                
             } else {
                 Log.error("Could not get image data")
                 response.error = generateInternalError()

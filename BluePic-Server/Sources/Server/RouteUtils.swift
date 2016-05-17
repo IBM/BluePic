@@ -36,6 +36,38 @@ func processImage(withId imageId: String, forUser userId: String) {
   Log.verbose("imageId: \(imageId), userId: \(userId)")
 }
 
+/**
+ Helper method to actually communicate with the database to get a specific image
+ 
+ - parameter database: instance of our database
+ - parameter imageId:  id of image to pull out
+ - parameter callback: callback to use within async method
+ */
+func getImageBy(database: Database, imageId: String, callback: ((jsonData : JSON?) -> ())) {
+    
+    let queryParams: [Database.QueryParameters] =
+        [.descending(true), .includeDocs(true), .endKey([imageId, 0]), .startKey([imageId, NSObject()])]
+    database.queryByView("images_by_id", ofDesign: "main_design", usingParameters: queryParams) { (document, error) in
+        if let document = document where error == nil {
+            do {
+                let json = try parseImages(document: document)
+                let images = json["records"].arrayValue
+                if images.count == 1 {
+                    callback(jsonData: images[0])
+                } else {
+                    throw ProcessingError.Image("Image not found!")
+                }
+            }
+            catch {
+                Log.error("Failed to get specific Image")
+                callback(jsonData: nil)
+            }
+        } else {
+            callback(jsonData: nil)
+        }
+    }
+}
+
 func parseImages(document: JSON) throws -> JSON {
   guard let rows = document["rows"].array else {
     throw ProcessingError.Image("Invalid images document returned from Cloudant!")
