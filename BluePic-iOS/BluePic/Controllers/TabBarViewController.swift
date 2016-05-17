@@ -145,17 +145,79 @@ extension TabBarViewController: UITabBarControllerDelegate {
      */
     func tabBarController(tabBarController: UITabBarController, shouldSelectViewController viewController: UIViewController) -> Bool {
         if let _ = viewController as? CameraViewController { //if camera tab is selected, show camera picker
-            return checkIfUserPressedSignInLater(true)
+            handleCameraTabBeingSelected()
+            return false
         }
         else if let _ = viewController as? ProfileNavigationController {
-            return checkIfUserPressedSignInLater(false)
+            return shouldShowProfileViewControllerAndHandleIfShouldnt()
         }
         else { //if feed selected, actually show it everytime
             return true
         }
     }
     
+    func shouldShowProfileViewControllerAndHandleIfShouldnt() -> Bool {
+        if(viewModel.didUserPressLoginLater() == true){
+            presentLoginVCAnimated()
+            return false
+        }
+        else{
+            return true
+        }
+    }
     
+    
+    
+    func handleCameraTabBeingSelected(){
+        
+        if(viewModel.didUserPressLoginLater() == true){
+            presentLoginVCAnimated()
+        }
+        else{
+ 
+            LocationDataManager.SharedInstance.isLocationServicesEnabledAndIfNotHandleIt({ isEnabled in
+                
+                if(isEnabled){
+                    CameraDataManager.SharedInstance.showImagePickerActionSheet(self)
+                }
+                else{
+                    self.showLocationServiceRequiredAlert()
+                    
+                }
+ 
+            })
+  
+        }
+    }
+    
+    
+    func showLocationServiceRequiredAlert(){
+        
+        let alertController = UIAlertController(title: "Location Services Required", message: "Please go to Settings to enable Location Services for BluePic", preferredStyle: .Alert)
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { (action) in
+            // ...
+        }
+        alertController.addAction(cancelAction)
+        
+        let OKAction = UIAlertAction(title: "Settings", style: .Default) { (action) in
+            
+            let settingsUrl = NSURL(string: UIApplicationOpenSettingsURLString)
+            
+            UIApplication.sharedApplication().openURL(settingsUrl!)
+
+        }
+        alertController.addAction(OKAction)
+        
+        self.presentViewController(alertController, animated: true) {
+            // ...
+        }
+
+    }
+    
+
+
+
     /**
      Check if user has pressed sign in later button previously, and if he/she has, will show login if user taps camera or profile
      

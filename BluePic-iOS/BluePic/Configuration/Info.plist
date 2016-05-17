@@ -127,6 +127,6 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>We need your location to tag images with locations</string>
+	<string>Location Services required to upload photos with BluePic to tag photos with a Location</string>
 </dict>
 </plist>
