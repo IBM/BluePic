@@ -20,13 +20,12 @@ class LocationDataManager: NSObject {
         
     }()
     
-    private let locationManager = CLLocationManager()
+    private var locationManager : CLLocationManager!
     
     private let kImperialUnitOfMeasurement = "e"
     private let kMetricUnitOfMeasurement = "m"
     
-    private var locationCallback : ((location : CLLocation?)->())!
-    
+    private var isLocationServicesEnabledAndIfNotHandleItCallback : ((isEnabled : Bool)->())!
     
     func getUnitsOfMeasurement() -> String{
         let locale = NSLocale.currentLocale()
@@ -53,26 +52,64 @@ class LocationDataManager: NSObject {
     }
     
     
-    func requestWhenInUseAuthorizationAndStartUpdatingLocation(){
-        
-        locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+    func requestWhenInUseAuthorization(){
+        initLocationManagerIfNil()
         locationManager.requestWhenInUseAuthorization()
-        locationManager.startUpdatingLocation()
-        
     }
     
+    func startUpdatingLocation(){
+        initLocationManagerIfNil()
+        self.locationManager.startUpdatingLocation()
+    }
+    
+    func initLocationManagerIfNil(){
+        if(locationManager == nil){
+            locationManager = CLLocationManager()
+            self.locationManager.delegate = self
+            locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+        }
+    }
+    
+    
     func getUsersCurrentLocation() -> CLLocation? {
-        
         if CLLocationManager.locationServicesEnabled() {
-          return locationManager.location
+            if(locationManager != nil){
+                return locationManager.location
+            }
+            else{
+                return nil
+            }
         }
         else{
            return nil
         }
+    }
+    
+    func isLocationServicesEnabledAndIfNotHandleIt(callback : ((isEnabled : Bool) -> ())){
+        
+        isLocationServicesEnabledAndIfNotHandleItCallback = callback
+        
+        if(CLLocationManager.authorizationStatus() == CLAuthorizationStatus.AuthorizedWhenInUse || CLLocationManager.authorizationStatus() == CLAuthorizationStatus.AuthorizedAlways){
+            self.startUpdatingLocation()
+            isLocationServicesEnabledAndIfNotHandleItCallback(isEnabled: true)
+            isLocationServicesEnabledAndIfNotHandleItCallback = nil
+        }
+        else if(CLLocationManager.authorizationStatus() == CLAuthorizationStatus.Denied){
+            isLocationServicesEnabledAndIfNotHandleItCallback(isEnabled: false)
+            isLocationServicesEnabledAndIfNotHandleItCallback = nil
+        }
+        else if(CLLocationManager.authorizationStatus() == CLAuthorizationStatus.NotDetermined){
+            dispatch_async(dispatch_get_main_queue()) {
+            self.requestWhenInUseAuthorization()
+            }
+        }
 
     }
     
+    
+    func isLocationServicesEnabled() -> Bool {
+        return CLLocationManager.locationServicesEnabled()
+    }
     
     
     func getPlaceMarkFromLocation(location : CLLocation, callback : ((placemark : CLPlacemark?)->())){
@@ -96,10 +133,7 @@ class LocationDataManager: NSObject {
         })
 
     }
-    
-    
 
-   
 }
 
 
@@ -111,5 +145,22 @@ extension LocationDataManager : CLLocationManagerDelegate {
     }
     
     
+    func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
     
+        if(status == CLAuthorizationStatus.AuthorizedWhenInUse || status == CLAuthorizationStatus.AuthorizedAlways){
+            if(isLocationServicesEnabledAndIfNotHandleItCallback != nil){
+                self.startUpdatingLocation()
+                isLocationServicesEnabledAndIfNotHandleItCallback(isEnabled: true)
+                isLocationServicesEnabledAndIfNotHandleItCallback = nil
+            }
+        }
+        else if(status == CLAuthorizationStatus.Denied){
+            if(isLocationServicesEnabledAndIfNotHandleItCallback != nil){
+                isLocationServicesEnabledAndIfNotHandleItCallback(isEnabled: false)
+                isLocationServicesEnabledAndIfNotHandleItCallback = nil
+            }
+        }
+ 
+    }
+  
 }
