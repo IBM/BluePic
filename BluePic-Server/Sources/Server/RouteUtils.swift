@@ -251,6 +251,9 @@ private func constructDocument(records: [JSON]) -> JSON {
   return jsonDocument
 }
 
+/**
+* Connects to object storage service and upon completion, invokes the completionHandler closure.
+*/
 private func connectToObjectStorage(completionHandler: (objStore: ObjectStorage?) -> Void) {
   // Create object store instance and connect
   let objStore = ObjectStorage(projectId: objStorageConnProps.projectId)
