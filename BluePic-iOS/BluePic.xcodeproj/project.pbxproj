@@ -31,6 +31,7 @@
 		1BC7AF5F1C0E480800DDFD02 /* ImageFeedCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC7AF5D1C0E480800DDFD02 /* ImageFeedCollectionViewCell.swift */; };
 		1BC7AF601C0E480800DDFD02 /* ImageFeedCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1BC7AF5E1C0E480800DDFD02 /* ImageFeedCollectionViewCell.xib */; };
 		1BF00D0A1CEACF68009472B5 /* ProfileNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BF00D091CEACF68009472B5 /* ProfileNavigationController.swift */; };
+		1BF00D0C1CEAD27E009472B5 /* FeedNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BF00D0B1CEAD27E009472B5 /* FeedNavigationController.swift */; };
 		1BF01ED51CE8CE4700386D78 /* KTLeftAlignedFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BF01ED41CE8CE4700386D78 /* KTLeftAlignedFlowLayout.m */; };
 		2E26F6081CC82C8B00650494 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E26F6071CC82C8B00650494 /* Pods.framework */; };
 		2E71D6171CE1197800EEBD2B /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E71D6161CE1197800EEBD2B /* SearchViewController.swift */; };
@@ -111,6 +112,7 @@
 		1BC7AF5D1C0E480800DDFD02 /* ImageFeedCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageFeedCollectionViewCell.swift; sourceTree = "<group>"; };
 		1BC7AF5E1C0E480800DDFD02 /* ImageFeedCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageFeedCollectionViewCell.xib; sourceTree = "<group>"; };
 		1BF00D091CEACF68009472B5 /* ProfileNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileNavigationController.swift; sourceTree = "<group>"; };
+		1BF00D0B1CEAD27E009472B5 /* FeedNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedNavigationController.swift; sourceTree = "<group>"; };
 		1BF01ED31CE8CE4700386D78 /* KTLeftAlignedFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTLeftAlignedFlowLayout.h; sourceTree = "<group>"; };
 		1BF01ED41CE8CE4700386D78 /* KTLeftAlignedFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTLeftAlignedFlowLayout.m; sourceTree = "<group>"; };
 		2E26F6071CC82C8B00650494 /* Pods.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Pods.framework; path = "Pods/../build/Debug-iphoneos/Pods.framework"; sourceTree = "<group>"; };
@@ -263,6 +265,7 @@
 				2E71D6161CE1197800EEBD2B /* SearchViewController.swift */,
 				1B40BF811CE37AE30097F435 /* ImageDetailViewController.swift */,
 				1BF00D091CEACF68009472B5 /* ProfileNavigationController.swift */,
+				1BF00D0B1CEAD27E009472B5 /* FeedNavigationController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -565,6 +568,7 @@
 				1BC7AF5F1C0E480800DDFD02 /* ImageFeedCollectionViewCell.swift in Sources */,
 				347472EF1BFA8DEF0018B7F6 /* Utils.swift in Sources */,
 				346F947C1C0F868C004999A8 /* CameraDataManager.swift in Sources */,
+				1BF00D0C1CEAD27E009472B5 /* FeedNavigationController.swift in Sources */,
 				347472E71BFA8DEF0018B7F6 /* UIImageExtension.swift in Sources */,
 				1B9199231CC6EB1B005CC4AC /* FacebookAuthenticationManager.swift in Sources */,
 				1B0432E51C17E967007643B1 /* ProfileCollectionViewCell.swift in Sources */,
