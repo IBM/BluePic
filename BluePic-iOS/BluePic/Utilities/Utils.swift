@@ -208,4 +208,6 @@ class Utils: NSObject {
                       {return longDegrees >= 0 ? NSLocalizedString("E", comment: "first letter of the word East") : NSLocalizedString("W", comment: "first letter of the word West")}() )
     }
     
+
+    
 }
