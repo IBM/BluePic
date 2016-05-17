@@ -37,9 +37,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
      */
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
-        //Request Authorization for When In Use Location Tracking
-        LocationDataManager.SharedInstance.requestWhenInUseAuthorizationAndStartUpdatingLocation()
-    
         let notificationTypes: UIUserNotificationType = [UIUserNotificationType.Badge, UIUserNotificationType.Alert, UIUserNotificationType.Sound]
         let notificationSettings: UIUserNotificationSettings = UIUserNotificationSettings(forTypes: notificationTypes, categories: nil)
         application.registerUserNotificationSettings(notificationSettings)
