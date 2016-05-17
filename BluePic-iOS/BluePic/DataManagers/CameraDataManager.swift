@@ -63,6 +63,8 @@ class CameraDataManager: NSObject {
     // An array of photos that need to be uploaded to object storage and cloudant
     var imageUploadQueue : [Image] = []
     
+    var imagesTheUserDecidedToPostQueue : [Image] = []
+    
     
     /**
      Method to show the image picker action sheet so user can choose from Photo Library or Camera
@@ -270,40 +272,16 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject])
     {
         picker.dismissViewControllerAnimated(true, completion: nil)
-        
-//        self.lastImageTaken = Image()
-//        
-//        lastImageTaken.usersId = CurrentUser.facebookUserId
-//        lastImageTaken.usersName = CurrentUser.fullName
+
         
         //show image on confirmationView, save a copy
         if let takenImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
-//            print("original image width: \(takenImage.size.width) height: \(takenImage.size.height)")
-//            if (takenImage.size.width > kResizeAllImagesToThisWidth) { //if image too big, shrink it down
-//                self.lastImageTaken.image = UIImage.resizeImage(takenImage, newWidth: kResizeAllImagesToThisWidth)
-//            }
-//            else {
-//                self.lastImageTaken.image = takenImage
-//            }
-            
-//            //rotate image if necessary and then save photo
-//            self.lastImageTaken.image = self.rotateImageIfNecessary(self.lastImageTaken.image)
-//            
-//            //save width and height of photo
-//            self.lastImageTaken.width = self.lastImageTaken.image?.size.width
-//            self.lastImageTaken.height = self.lastImageTaken.image?.size.height
-            
+
             //set the confirmation view's photoImageView with the photo just chosen/taken
             
             lastImageTakenOriginalUIImage = takenImage
             self.confirmationView.photoImageView.image = takenImage
         
-//            //save name of image as current date and time
-//            let dateFormatter = NSDateFormatter()
-//            dateFormatter.dateFormat = "MM-dd-yyyy_HHmmss"
-//            let todaysDate = NSDate()
-//            self.lastImageTaken.fileName = dateFormatter.stringFromDate(todaysDate) + ".png"
-//
             }
             //if image isn't available (iCloud photo in Photo stream not loaded yet)
             else { 
