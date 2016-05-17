@@ -15,13 +15,14 @@
 **/
 
 public struct ObjectStorageConnProps {
-
+  // Instace variables
   public let accessPoint = "dal.objectstorage.open.softlayer.com"
   public let projectId: String
   public let userId: String
   public let password: String
   public let publicURL: String
 
+  // Constructor
   public init(projectId: String, userId: String, password: String) {
     self.projectId = projectId
     self.userId = userId
@@ -31,12 +32,13 @@ public struct ObjectStorageConnProps {
 }
 
 public struct MobileClientAccessProps {
-    
+  // Instace variables
   public let secret: String
   public let serverUrl: String
   public let clientId: String
   public let adminUrl: String
 
+  // Constructor
   public init(secret: String, serverUrl: String, clientId: String) {
     self.secret = secret
     self.serverUrl = serverUrl
@@ -46,11 +48,12 @@ public struct MobileClientAccessProps {
 }
 
 public struct IbmPushProps {
-    
+  // Instace variables
   public let url: String
   public let adminUrl: String
   public let secret: String
 
+  // Constructor
   public init(url: String, adminUrl: String, secret: String) {
     self.url = url
     self.adminUrl = adminUrl
