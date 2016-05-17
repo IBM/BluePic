@@ -63,11 +63,8 @@ class ProfileViewController: UIViewController {
         
     }
     
-    override func viewDidAppear(animated: Bool) {
-        
+    override func viewWillAppear(animated: Bool) {
         UIApplication.sharedApplication().statusBarStyle = UIStatusBarStyle.Default
-        
-        
     }
 
     
@@ -298,8 +295,9 @@ extension ProfileViewController : UIScrollViewDelegate {
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         
-        let imageDetailVC = viewModel.prepareImageDetailViewControllerSelectedCellAtIndexPath(indexPath)
-        self.navigationController?.pushViewController(imageDetailVC, animated: true)
+        if let imageDetailVC = viewModel.prepareImageDetailViewControllerSelectedCellAtIndexPath(indexPath){
+            self.navigationController?.pushViewController(imageDetailVC, animated: true)
+        }
 
     }
     

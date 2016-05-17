@@ -15,11 +15,18 @@ struct Tag {
 }
 
 struct Location {
-    var temperature: String?
     var name: String?
-    var latitude : Double?
-    var longitude: Double?
-    var weather : String?
+    var latitude : String?
+    var longitude: String?
+    var weather : Weather?
+    var city : String?
+    var state : String?
+}
+
+struct Weather {
+    var temperature: Int?
+    var iconId: Int?
+    var description: String?
 }
 
 class Image: NSObject {
@@ -32,10 +39,6 @@ class Image: NSObject {
     var width : CGFloat?
     var height : CGFloat?
     var image : UIImage?
-    var latitude : String?
-    var longitude : String?
-    var city : String?
-    var state : String?
     var location : Location?
     var tags : [Tag]?
     var user : User?
@@ -80,24 +83,40 @@ class Image: NSObject {
     
                 //Parse location data
                 if let location = dict["location"] as? [String : AnyObject]{
-                        if let name = location["name"] as? String,
-                        let latitude = location["latitude"] as? String,
-                        let longitude = location["longitude"] as? String {
-          
-                        var loc = Location()
                     
+                    var loc = Location()
+                    
+                    //Parse name
+                    if let name = location["name"] as? String {
                         loc.name = name
-                        loc.latitude = Double(latitude)
-                        loc.longitude = Double(longitude)
-                        if let temperature = location["temperature"] as? String {
-                            loc.temperature = temperature
-                        }
-                        if let weather = location["weather"] as? String {
-                            loc.weather = weather
-                        }
-                        
-                        self.location = loc
                     }
+                    
+                    
+                    //Parse Lat/Long
+                    if let latitude = location["latitude"] as? CGFloat,
+                    let longitude = location["longitude"] as? CGFloat {
+                        loc.latitude = "\(latitude)"
+                        loc.longitude = "\(longitude)"
+                    }
+                    
+                    //Parse weather object
+                    var weatherObject = Weather()
+                    if let weather = location["weather"] as? [String : AnyObject] {
+                        if let temperature = weather["temperature"] as? Int {
+                            weatherObject.temperature = temperature
+                        }
+                        if let iconId = weather["iconId"] as? Int {
+                            weatherObject.iconId = iconId
+                        }
+                        if let description = weather["description"] as? String {
+                            weatherObject.description = description
+                        }
+                    }
+                            
+                    loc.weather = weatherObject
+                        
+                    self.location = loc
+     
                 }
                 
                 //Parse tags data
