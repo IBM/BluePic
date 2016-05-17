@@ -21,6 +21,7 @@ import KituraNet
 import LoggerAPI
 import SwiftyJSON
 import BluemixObjectStorage
+import MobileClientAccess
 
 /**
 * This method should kick off asynchronously an OpenWhisk sequence
@@ -38,13 +39,13 @@ func processImage(withId imageId: String, forUser userId: String) {
 
 /**
  Helper method to actually communicate with the database to get a specific image
- 
+
  - parameter database: instance of our database
  - parameter imageId:  id of image to pull out
  - parameter callback: callback to use within async method
  */
 func getImageBy(database: Database, imageId: String, callback: ((jsonData : JSON?) -> ())) {
-    
+
     let queryParams: [Database.QueryParameters] =
         [.descending(true), .includeDocs(true), .endKey([imageId, 0]), .startKey([imageId, NSObject()])]
     database.queryByView("images_by_id", ofDesign: "main_design", usingParameters: queryParams) { (document, error) in
@@ -118,7 +119,8 @@ func getImageJSON(fromRequest request: RouterRequest) throws -> JSON {
   let width = Float(w),
   let height = Float(h),
   let latitude = Float(lat),
-  let longitude = Float(long) else {
+  let longitude = Float(long),
+  let authContext = request.userInfo["mcaAuthContext"] as? AuthorizationContext else {
     throw ProcessingError.Image("Invalid image document!")
   }
 
@@ -130,10 +132,11 @@ func getImageJSON(fromRequest request: RouterRequest) throws -> JSON {
   let imageName = StringUtils.decodeWhiteSpace(inString: caption)
   let locationName = StringUtils.decodeWhiteSpace(inString: location)
   let imageURL = generateUrl(forContainer: userId, forImage: fileName)
+  let deviceId = authContext.deviceIdentity.id
 
   let whereabouts: JSONDictionary = ["latitude": latitude, "longitude": longitude, "name": locationName]
   let imageDocument: JSONDictionary = ["location": whereabouts, "contentType": contentType, "url": imageURL,
-  "fileName": fileName, "userId": userId, "caption": imageName, "uploadedTs": uploadedTs,
+  "fileName": fileName, "userId": userId, "deviceId": deviceId, "caption": imageName, "uploadedTs": uploadedTs,
   "width": width, "height": height, "type": "image"]
 
   return JSON(imageDocument)

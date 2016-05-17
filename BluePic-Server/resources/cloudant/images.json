@@ -38,6 +38,7 @@
       },
       "uploadedTs": "2016-04-05T01:25:43",
       "userId": "1000",
+      "deviceId": "3000",
       "type": "image"
     },
     {
@@ -74,6 +75,7 @@
       },
       "uploadedTs": "2016-04-07T16:25:43",
       "userId": "1001",
+      "deviceId": "3001",
       "type": "image"
     },
     {
@@ -102,6 +104,7 @@
       },
       "uploadedTs": "2016-04-09T15:25:43",
       "userId": "1002",
+      "deviceId": "3002",
       "type": "image"
     },
     {
@@ -138,6 +141,7 @@
       },
       "uploadedTs": "2016-04-10T21:25:43",
       "userId": "1000",
+      "deviceId": "3000",
       "type": "image"
     },
     {
@@ -161,6 +165,7 @@
       },
       "uploadedTs": "2016-04-13T03:25:43",
       "userId": "1001",
+      "deviceId": "3001",
       "type": "image"
     },
     {
@@ -189,6 +194,7 @@
       },
       "uploadedTs": "2016-04-20T06:25:43",
       "userId": "1002",
+      "deviceId": "3002",
       "type": "image"
     },
     {
@@ -221,6 +227,7 @@
       },
       "uploadedTs": "2016-04-29T22:25:43",
       "userId": "1000",
+      "deviceId": "3000",
       "type": "image"
     },
     {
@@ -253,6 +260,7 @@
       },
       "uploadedTs": "2016-05-01T20:25:43",
       "userId": "1001",
+      "deviceId": "3001",
       "type": "image"
     },
     {
@@ -293,6 +301,7 @@
       },
       "uploadedTs": "2016-05-02T18:25:43",
       "userId": "1002",
+      "deviceId": "3002",
       "type": "image"
     },
     {
@@ -321,6 +330,7 @@
       },
       "uploadedTs": "2016-05-04T11:25:43",
       "userId": "1000",
+      "deviceId": "3000",
       "type": "image"
     },
     {
@@ -353,6 +363,7 @@
       },
       "uploadedTs": "2016-05-05T13:25:43",
       "userId": "1001",
+      "deviceId": "3001",
       "type": "image"
     }
   ]
