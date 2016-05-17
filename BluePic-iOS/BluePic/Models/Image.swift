@@ -84,14 +84,14 @@ class Image: NSObject {
                 //Parse location data
                 if let location = dict["location"] as? [String : AnyObject]{
                         if let name = location["name"] as? String,
-                        let latitude = location["latitude"] as? String,
-                        let longitude = location["longitude"] as? String {
+                        let latitude = location["latitude"] as? CGFloat,
+                        let longitude = location["longitude"] as? CGFloat {
           
                         var loc = Location()
                     
                         loc.name = name
-                        loc.latitude = latitude
-                        loc.longitude = longitude
+                        loc.latitude = "\(latitude)"
+                        loc.longitude = "\(longitude)"
                             
                             
                         var weatherObject = Weather()
@@ -110,6 +110,8 @@ class Image: NSObject {
                         loc.weather = weatherObject
                         
                         self.location = loc
+                            
+                            
                     }
                 }
                 
