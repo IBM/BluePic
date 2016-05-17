@@ -178,13 +178,12 @@ func defineRoutes() {
       return
     }
 
-    readImage(database: database, imageId: imageId, callback: { (jsonData) in
-      if let imageData = jsonData {
-        // TODO: Get user ID off of imageData object once task #121 is complete
-        let apnsSettings = Notification.Settings.Apns(badge: nil, category: "imageProcessed", iosActionKey: nil, sound: nil, type: ApnsType.DEFAULT, payload: imageData.dictionaryObject)
+    readImage(database: database, imageId: imageId, callback: { (jsonImage) in
+      if let jsonImage = jsonImage {
+        let apnsSettings = Notification.Settings.Apns(badge: nil, category: "imageProcessed", iosActionKey: nil, sound: nil, type: ApnsType.DEFAULT, payload: jsonImage.dictionaryObject)
         let settings = Notification.Settings(apns: apnsSettings, gcm: nil)
-        let target = Notification.Target(deviceIds: nil, platforms: [TargetPlatform.Apple], tagNames: nil, userIds: ["<userID>"])
-        let message = Notification.Message(alert: "Your image has finished processing and is ready to view!", url: nil)
+        let target = Notification.Target(deviceIds: [jsonImage["deviceId"].stringValue], platforms: [TargetPlatform.Apple], tagNames: nil, userIds: [jsonImage["userId"].stringValue])
+        let message = Notification.Message(alert: "Your image was processed; check it out!", url: nil)
         let notification = Notification(message: message, target: target, settings: settings)
         pushNotificationsClient.send(notification: notification) { (error) in
           if error != nil {
@@ -266,7 +265,7 @@ func defineRoutes() {
     do {
       var imageJSON = try getImageJSON(fromRequest: request)
 
-      // Determine facebook ID from MCA and provided userId in URL match
+      // Determine facebook ID from MCA; verify that provided userId in URL match facebook ID.
       let userId = imageJSON["userId"].stringValue
       guard let authContext = request.userInfo["mcaAuthContext"] as? AuthorizationContext,
       userIdentity = authContext.userIdentity?.id where userId == userIdentity else {
@@ -316,7 +315,9 @@ func defineRoutes() {
     }
   }
 
-  // Get all picture documents for a given user
+  /**
+  * Route for getting all image documents for a given user.
+  */
   router.get("/users/:userId/images") { request, response, next in
     guard let userId = request.params["userId"] else {
       response.error = generateInternalError()
