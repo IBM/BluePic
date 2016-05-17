@@ -30,7 +30,7 @@ import BluemixPushNotifications
 * Function for setting up the different routes for this app.
 */
 func defineRoutes() {
-    
+
   let credentials = Credentials()
   credentials.register(plugin: MobileClientAccessKituraCredentialsPlugin())
 
@@ -41,7 +41,7 @@ func defineRoutes() {
 
   // Test closure
   let closure = { (request: RouterRequest, response: RouterResponse, next: () -> Void) -> Void in
-//    response.headers.append("Content-Type", value: "text/plain; charset=utf-8")
+    response.headers.append("Content-Type", value: "text/plain; charset=utf-8")
     do {
       try response.status(HTTPStatusCode.OK).send("Hello World, from BluePic-Server! Original URL: \(request.originalUrl)").end()
     }
@@ -77,6 +77,8 @@ func defineRoutes() {
             let tag2: JSON = $1
             return tag1["value"].intValue > tag2["value"].intValue
           }
+          // Slice tags array
+
           // Send sorted tags to client
           var tagsDocument = JSON([:])
           tagsDocument["records"] = JSON(tags)
@@ -147,8 +149,8 @@ func defineRoutes() {
   }
 
   /**
-   * Route for getting a specific image document.
-   */
+  * Route for getting a specific image document.
+  */
   router.get("/images/:imageId") { request, response, next in
     guard let imageId = request.params["imageId"] else {
       response.error = generateInternalError()
@@ -157,53 +159,74 @@ func defineRoutes() {
     }
 
     getImageBy(database: database, imageId: imageId, callback: { (jsonData) in
-        print("data: \(jsonData)")
-        if let jsonData = jsonData {
-            response.status(HTTPStatusCode.OK).send(json: jsonData)
-        } else {
-            Log.error("Could not get image data")
-            response.error = generateInternalError()
-        }
-        next()
+      print("data: \(jsonData)")
+      if let jsonData = jsonData {
+        response.status(HTTPStatusCode.OK).send(json: jsonData)
+      } else {
+        Log.error("Could not get image data")
+        response.error = generateInternalError()
+      }
+      next()
     })
   }
-    
-    // Endpoint for sending push notification (this will use the server Push SDK)
-    router.post("/push/images/:imageId") { request, response, next in
-        guard let imageId = request.params["imageId"] else {
-            response.error = generateInternalError()
-            next()
-            return
-        }
-        
-        getImageBy(database: database, imageId: imageId, callback: { (jsonData) in
-            print("data: \(jsonData)")
-            if let imageData = jsonData, authContext = request.userInfo["mcaAuthContext"] as? AuthorizationContext, userID = authContext.userIdentity?.id {
-                print("DeviceID: \(userID)")
-                
-                let apnsSettings = Notification.Settings.Apns(badge: nil, category: "imageProcessed", iosActionKey: nil, sound: nil, type: ApnsType.DEFAULT, payload: imageData.dictionaryObject)
-                let settings = Notification.Settings(apns: apnsSettings, gcm: nil)
-                let target = Notification.Target(deviceIds: nil, platforms: [TargetPlatform.Apple], tagNames: nil, userIds: [userID])
-                let message = Notification.Message(alert: "Your image has finished processing and is ready to view!", url: nil)
-                let notification = Notification(message: message, target: target, settings: settings)
 
-                pushNotificationsClient.send(notification: notification) { (error) in
-                    if error != nil {
-                        print("Failed to send push notification. Error: \(error!)")
-                    }
-                }
-                
-            } else {
-                Log.error("Could not get image data")
-                response.error = generateInternalError()
-            }
-        })
-        
+  // Endpoint for sending push notification (this will use the server Push SDK)
+  router.post("/push/images/:imageId") { request, response, next in
+    guard let imageId = request.params["imageId"] else {
+      response.error = generateInternalError()
+      next()
+      return
     }
 
+    getImageBy(database: database, imageId: imageId, callback: { (jsonData) in
+      print("data: \(jsonData)")
+      if let imageData = jsonData, authContext = request.userInfo["mcaAuthContext"] as? AuthorizationContext, userID = authContext.userIdentity?.id {
+        print("DeviceID: \(userID)")
+
+        /*
+        Had to comment out the code below... it is throwing compilation errors:
+
+        /Users/olivieri/git/BluePic-IBM-Swift/BluePic-Server/Sources/Server/Routes.swift:186:58: error: type of expression is ambiguous without more context
+                let apnsSettings = Notification.Settings.Apns(badge: nil, category: "imageProcessed", iosActionKey: nil, sound: nil, type: ApnsType.DEFAULT, payload: imageData.dictionaryObject)
+                                   ~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/olivieri/git/BluePic-IBM-Swift/BluePic-Server/Sources/Server/Routes.swift:188:43: error: type of expression is ambiguous without more context
+                let target = Notification.Target(deviceIds: nil, platforms: [TargetPlatform.Apple], tagNames: nil, userIds: [userID])
+                             ~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/olivieri/git/BluePic-IBM-Swift/BluePic-Server/Sources/Server/Routes.swift:189:44: error: type of expression is ambiguous without more context
+                let message = Notification.Message(alert: "Your image has finished processing and is ready to view!", url: nil)
+                              ~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+<unknown>:0: error: build had 1 command failures
+error: exit(1): /Library/Developer/Toolchains/swift-DEVELOPMENT-SNAPSHOT-2016-05-03-a.xctoolchain/usr/bin/swift-build-tool -f /Users/olivieri/git/BluePic-IBM-Swift/BluePic-Server/.build/debug.yaml
+make: *** [build] Error 1
+
+
+
+
+        */
+
+        // let apnsSettings = Notification.Settings.Apns(badge: nil, category: "imageProcessed", iosActionKey: nil, sound: nil, type: ApnsType.DEFAULT, payload: imageData.dictionaryObject)
+        // let settings = Notification.Settings(apns: apnsSettings, gcm: nil)
+        // let target = Notification.Target(deviceIds: nil, platforms: [TargetPlatform.Apple], tagNames: nil, userIds: [userID])
+        // let message = Notification.Message(alert: "Your image has finished processing and is ready to view!", url: nil)
+        // let notification = Notification(message: message, target: target, settings: settings)
+        //
+        // pushNotificationsClient.send(notification: notification) { (error) in
+        //   if error != nil {
+        //     print("Failed to send push notification. Error: \(error!)")
+        //   }
+        // }
+
+      } else {
+        Log.error("Could not get image data")
+        response.error = generateInternalError()
+      }
+    })
+
+  }
+
   /**
-   * Route for getting all user documents.
-   */
+  * Route for getting all user documents.
+  */
   router.get("/users", middleware: credentials)
   router.get("/users") { request, response, next in
     database.queryByView("users", ofDesign: "main_design", usingParameters: [.descending(true), .includeDocs(false)]) { (document, error) in
@@ -272,179 +295,179 @@ func defineRoutes() {
 
       // Determine facebook ID from MCA and passed in userId match
       /*let userId = imageJSON["userId"].stringValue
-      guard let authContext = request.userInfo["mcaAuthContext"] as? AuthorizationContext, 
+      guard let authContext = request.userInfo["mcaAuthContext"] as? AuthorizationContext,
       userIdentity = authContext.userIdentity?.id where userId == userIdentity else {
-        Log.error("User is not authorized to post image")
-        response.error = generateInternalError()
-        next()
-        return
-      }
-      print("fbID: \(userId) and \(userIdentity)")*/
-
-      // Determine facebook ID from MCA and passed in userId match
-      let userId = imageJSON["userId"].stringValue
-      guard let authContext = request.userInfo["mcaAuthContext"] as? AuthorizationContext, 
-      userIdentity = authContext.userIdentity?.id where userId == userIdentity else {
-        Log.error("User is not authorized to post image")
-        response.error = generateInternalError()
-        next()
-        return
-      }
-      print("fbID: \(userId) and \(userIdentity)")
-
-      // Get image binary from request body
-      let image = try BodyParser.readBodyData(with: request)
-      // Create closure
-      let completionHandler = { (success: Bool) -> Void in
-        if success {
-          // Add image record to database
-          database.create(imageJSON) { (id, revision, doc, error) in
-            guard let id = id, revision = revision where error == nil else {
-              Log.error("Failed to create image record in Cloudant database.")
-              if let error = error {
-                Log.error("Error domain: \(error._domain); error code: \(error._code).")
-              }
-              response.error = generateInternalError()
-              next()
-              return
-            }
-            // Contine processing of image (async request for OpenWhisk)
-            processImage(withId: id, forUser: imageJSON["userId"].stringValue)
-            // Return image document to caller
-            // Update JSON image document with _id, and _rev
-            imageJSON["_id"].stringValue = id
-            imageJSON["_rev"].stringValue = revision
-            response.status(HTTPStatusCode.OK).send(json: imageJSON)
-          }
-        } else {
-          Log.error("Failed to create image record in Cloudant database.")
-          response.error = generateInternalError()
-        }
-        next()
-      }
-      // Create container for user before creating image record in database
-      store(image: image, withName: imageJSON["fileName"].stringValue, inContainer: imageJSON["userId"].stringValue, completionHandler: completionHandler)
-    } catch {
-      Log.error("Failed to add image record.")
-      response.error = generateInternalError()
-      next()
-    }
-  }
-
-  // Get all picture documents for a given user
-  router.get("/users/:userId/images") { request, response, next in
-    guard let userId = request.params["userId"] else {
+      Log.error("User is not authorized to post image")
       response.error = generateInternalError()
       next()
       return
     }
+    print("fbID: \(userId) and \(userIdentity)")*/
 
-    let queryParams: [Database.QueryParameters] = [.descending(true), .endKey([userId, "0"]), .startKey([userId, NSObject()])]
-    database.queryByView("images_per_user", ofDesign: "main_design", usingParameters: queryParams) { (document, error) in
-      if let document = document where error == nil {
-        do {
-          let images = try parseImages(forUserId: userId, usingDocument: document)
-          response.status(HTTPStatusCode.OK).send(json: images)
-        }
-        catch {
-          Log.error("Failed to get images for \(userId).")
-          response.error = generateInternalError()
+    // Determine facebook ID from MCA and passed in userId match
+    let userId = imageJSON["userId"].stringValue
+    guard let authContext = request.userInfo["mcaAuthContext"] as? AuthorizationContext,
+    userIdentity = authContext.userIdentity?.id where userId == userIdentity else {
+      Log.error("User is not authorized to post image")
+      response.error = generateInternalError()
+      next()
+      return
+    }
+    print("fbID: \(userId) and \(userIdentity)")
+
+    // Get image binary from request body
+    let image = try BodyParser.readBodyData(with: request)
+    // Create closure
+    let completionHandler = { (success: Bool) -> Void in
+      if success {
+        // Add image record to database
+        database.create(imageJSON) { (id, revision, doc, error) in
+          guard let id = id, revision = revision where error == nil else {
+            Log.error("Failed to create image record in Cloudant database.")
+            if let error = error {
+              Log.error("Error domain: \(error._domain); error code: \(error._code).")
+            }
+            response.error = generateInternalError()
+            next()
+            return
+          }
+          // Contine processing of image (async request for OpenWhisk)
+          processImage(withId: id, forUser: imageJSON["userId"].stringValue)
+          // Return image document to caller
+          // Update JSON image document with _id, and _rev
+          imageJSON["_id"].stringValue = id
+          imageJSON["_rev"].stringValue = revision
+          response.status(HTTPStatusCode.OK).send(json: imageJSON)
         }
       } else {
-        Log.error("Failed to get images for \(userId).")
+        Log.error("Failed to create image record in Cloudant database.")
         response.error = generateInternalError()
       }
       next()
     }
+    // Create container for user before creating image record in database
+    store(image: image, withName: imageJSON["fileName"].stringValue, inContainer: imageJSON["userId"].stringValue, completionHandler: completionHandler)
+  } catch {
+    Log.error("Failed to add image record.")
+    response.error = generateInternalError()
+    next()
+  }
+}
+
+// Get all picture documents for a given user
+router.get("/users/:userId/images") { request, response, next in
+  guard let userId = request.params["userId"] else {
+    response.error = generateInternalError()
+    next()
+    return
   }
 
-  /**
-  * Route for creating a new user document in the database.
-  */
-  router.post("/users", middleware: credentials)
-  router.post("/users") { request, response, next in
-    do {
-      let rawUserData = try BodyParser.readBodyData(with: request)
-      var userJson = JSON(data: rawUserData)
-
-      // Verify JSON has required fields
-      guard let _ = userJson["name"].string,
-      let userId = userJson["_id"].string else {
-        throw ProcessingError.User("Invalid user document!")
+  let queryParams: [Database.QueryParameters] = [.descending(true), .endKey([userId, "0"]), .startKey([userId, NSObject()])]
+  database.queryByView("images_per_user", ofDesign: "main_design", usingParameters: queryParams) { (document, error) in
+    if let document = document where error == nil {
+      do {
+        let images = try parseImages(forUserId: userId, usingDocument: document)
+        response.status(HTTPStatusCode.OK).send(json: images)
       }
-      userJson["type"] = "user"
-
-      // Keep only those keys that are valid for the user document
-      let validKeys = ["_id", "name", "type", "language", "unitsOfMeasurement"]
-      for (key, _) in userJson {
-        if validKeys.index(of: key) == nil {
-          userJson.dictionaryObject?.removeValue(forKey: key)
-        }
+      catch {
+        Log.error("Failed to get images for \(userId).")
+        response.error = generateInternalError()
       }
+    } else {
+      Log.error("Failed to get images for \(userId).")
+      response.error = generateInternalError()
+    }
+    next()
+  }
+}
 
-      // Create completion handler closure
-      let completionHandler = { (success: Bool) -> Void in
-        if success {
-          // Persist user document to database
-          database.create(userJson) { (id, revision, document, error) in
-            do {
-              if let document = document where error == nil {
-                // Add revision number response document
-                userJson["_rev"] = document["rev"]
-                // Return user document back to caller
-                try response.status(HTTPStatusCode.OK).send(json: userJson).end()
-                next()
-              } else {
-                Log.error("Failed to add user to the system of records.")
-                response.error = error ?? generateInternalError()
-                next()
-              }
-            } catch {
+/**
+* Route for creating a new user document in the database.
+*/
+router.post("/users", middleware: credentials)
+router.post("/users") { request, response, next in
+  do {
+    let rawUserData = try BodyParser.readBodyData(with: request)
+    var userJson = JSON(data: rawUserData)
+
+    // Verify JSON has required fields
+    guard let _ = userJson["name"].string,
+    let userId = userJson["_id"].string else {
+      throw ProcessingError.User("Invalid user document!")
+    }
+    userJson["type"] = "user"
+
+    // Keep only those keys that are valid for the user document
+    let validKeys = ["_id", "name", "type", "language", "unitsOfMeasurement"]
+    for (key, _) in userJson {
+      if validKeys.index(of: key) == nil {
+        userJson.dictionaryObject?.removeValue(forKey: key)
+      }
+    }
+
+    // Create completion handler closure
+    let completionHandler = { (success: Bool) -> Void in
+      if success {
+        // Persist user document to database
+        database.create(userJson) { (id, revision, document, error) in
+          do {
+            if let document = document where error == nil {
+              // Add revision number response document
+              userJson["_rev"] = document["rev"]
+              // Return user document back to caller
+              try response.status(HTTPStatusCode.OK).send(json: userJson).end()
+              next()
+            } else {
               Log.error("Failed to add user to the system of records.")
-              response.error = generateInternalError()
+              response.error = error ?? generateInternalError()
               next()
             }
+          } catch {
+            Log.error("Failed to add user to the system of records.")
+            response.error = generateInternalError()
+            next()
           }
-        } else {
-          Log.error("Failed to add user to the system of records.")
-          response.error = generateInternalError()
-          next()
         }
+      } else {
+        Log.error("Failed to add user to the system of records.")
+        response.error = generateInternalError()
+        next()
       }
-      // Create container for user before adding record to database
-      createContainer(withName: userId, completionHandler: completionHandler)
-    } catch let error {
-      Log.error("Failed to create new user document.")
-      Log.error("Error domain: \(error._domain); error code: \(error._code).")
-      response.error = generateInternalError()
-      next()
     }
+    // Create container for user before adding record to database
+    createContainer(withName: userId, completionHandler: completionHandler)
+  } catch let error {
+    Log.error("Failed to create new user document.")
+    Log.error("Error domain: \(error._domain); error code: \(error._code).")
+    response.error = generateInternalError()
+    next()
   }
+}
 
-  // Get image binary. Note that it is not technically possible to serve attachments from Cloudant
-  // without requiring authentication (unless the authentication settings for the entire database
-  // are changed). Hence, the need for this proxy method.
-  // router.get("/images/:imageId/:attachmentName") { request, response, next in
-  //   guard let imageId = request.params["imageId"],
-  //   let attachmentName = request.params["attachmentName"] else {
-  //     response.error = generateInternalError()
-  //     next()
-  //     return
-  //   }
-  //
-  //   database.retrieveAttachment(imageId, attachmentName: attachmentName) { (image, error, contentType) in
-  //     if let image = image where error == nil {
-  //       // Add content type to response header
-  //       if let contentType = contentType {
-  //         response.setHeader("Content-Type", value: contentType)
-  //       }
-  //       response.status(HTTPStatusCode.OK).send(data: image)
-  //     }
-  //     else {
-  //       response.error = error ?? generateInternalError()
-  //     }
-  //     next()
-  //   }
-  // }
+// Get image binary. Note that it is not technically possible to serve attachments from Cloudant
+// without requiring authentication (unless the authentication settings for the entire database
+// are changed). Hence, the need for this proxy method.
+// router.get("/images/:imageId/:attachmentName") { request, response, next in
+//   guard let imageId = request.params["imageId"],
+//   let attachmentName = request.params["attachmentName"] else {
+//     response.error = generateInternalError()
+//     next()
+//     return
+//   }
+//
+//   database.retrieveAttachment(imageId, attachmentName: attachmentName) { (image, error, contentType) in
+//     if let image = image where error == nil {
+//       // Add content type to response header
+//       if let contentType = contentType {
+//         response.setHeader("Content-Type", value: contentType)
+//       }
+//       response.status(HTTPStatusCode.OK).send(data: image)
+//     }
+//     else {
+//       response.error = error ?? generateInternalError()
+//     }
+//     next()
+//   }
+// }
 
 }
