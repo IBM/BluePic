@@ -41,7 +41,7 @@ func defineRoutes() {
 
   // Test closure
   let closure = { (request: RouterRequest, response: RouterResponse, next: () -> Void) -> Void in
-    response.headers.append("Content-Type", value: "text/plain; charset=utf-8")
+//    response.headers.append("Content-Type", value: "text/plain; charset=utf-8")
     do {
       try response.status(HTTPStatusCode.OK).send("Hello World, from BluePic-Server! Original URL: \(request.originalUrl)").end()
     }
@@ -144,33 +144,6 @@ func defineRoutes() {
         next()
       }
     }
-  }
-
-<<<<<<< 001245dabe7aea3cca2572af001e29fb38a8b7b3
-  func getImageBy(imageId: String, callback: ((jsonData : JSON?) -> ())) {
-
-    let queryParams: [Database.QueryParameters] =
-        [.descending(true), .includeDocs(true), .endKey([imageId, 0]), .startKey([imageId, NSObject()])]
-    database.queryByView("images_by_id", ofDesign: "main_design", usingParameters: queryParams) { (document, error) in
-        if let document = document where error == nil {
-            do {
-                let json = try parseImages(document: document)
-                let images = json["records"].arrayValue
-                if images.count == 1 {
-                    callback(jsonData: images[0])
-                } else {
-                    throw ProcessingError.Image("Image not found!")
-                }
-            }
-            catch {
-                Log.error("Failed to get specific Image")
-                callback(jsonData: nil)
-            }
-        } else {
-            callback(jsonData: nil)
-        }
-    }
-
   }
 
   /**
@@ -307,6 +280,17 @@ func defineRoutes() {
         return
       }
       print("fbID: \(userId) and \(userIdentity)")*/
+
+      // Determine facebook ID from MCA and passed in userId match
+      let userId = imageJSON["userId"].stringValue
+      guard let authContext = request.userInfo["mcaAuthContext"] as? AuthorizationContext, 
+      userIdentity = authContext.userIdentity?.id where userId == userIdentity else {
+        Log.error("User is not authorized to post image")
+        response.error = generateInternalError()
+        next()
+        return
+      }
+      print("fbID: \(userId) and \(userIdentity)")
 
       // Get image binary from request body
       let image = try BodyParser.readBodyData(with: request)
