@@ -25,6 +25,7 @@ class ImageDetailViewController: UIViewController {
     @IBOutlet weak var tagCollectionView: UICollectionView!
 
     private let kWeatherIconNamePrefix = "weather_icon_"
+    private let kDegreeSymbolString = "°"
     
     private let kByUserLabelPrefixString = NSLocalizedString("by", comment: "")
     private let kDateLabelPrefixString = NSLocalizedString("on", comment: "")
@@ -231,6 +232,13 @@ extension ImageDetailViewController {
             }
  
         }
+        
+        if let temperature = image.location?.weather?.temperature {
+            
+            temperatureLabel.text = "\(temperature)" + kDegreeSymbolString
+        
+        }
+ 
     }
     
 }

@@ -24,7 +24,7 @@ struct Location {
 }
 
 struct Weather {
-    var temperature: String?
+    var temperature: Int?
     var iconId: Int?
     var description: String?
 }
@@ -102,7 +102,7 @@ class Image: NSObject {
                     //Parse weather object
                     var weatherObject = Weather()
                     if let weather = location["weather"] as? [String : AnyObject] {
-                        if let temperature = weather["temperature"] as? String {
+                        if let temperature = weather["temperature"] as? Int {
                             weatherObject.temperature = temperature
                         }
                         if let iconId = weather["iconId"] as? Int {

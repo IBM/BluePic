@@ -413,10 +413,17 @@ class BluemixDataManager: NSObject {
   
         request.headers = ["Content-Type" : "image/png"]
         
+        print("beginning upload)")
+        
         request.sendData(UIImagePNGRepresentation(image.image!)!, completionHandler: { (response, error) -> Void in
             
             if(error != nil){
+                print(cityStateString)
+                print(requestURL)
+                print(error)
                 NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImageUploadFailure.rawValue, object: nil)
+                
+                
             } else {
   
                 self.removeImageFromImageUploadQueue(image)
