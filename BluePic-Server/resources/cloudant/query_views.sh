@@ -30,7 +30,7 @@ echo
 
 # Get all users
 echo "Querying users view..."
-curl -X GET https://$username.cloudant.com/$database/_design/main_design/_view/users?include_docs=true -u $username:$password
+curl -X GET https://$username.cloudant.com/$database/_design/main_design/_view/users?include_docs=false -u $username:$password
 echo
 echo
 
