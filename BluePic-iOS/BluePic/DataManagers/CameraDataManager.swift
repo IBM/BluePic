@@ -172,13 +172,13 @@ class CameraDataManager: NSObject {
     
         let image = prepareImageObjectFromPickerInfoDictionary({ image in
             
-            BluemixDataManager.SharedInstance.queueImageForUpload(image)
+            //BluemixDataManager.SharedInstance.queueImageForUpload(image)
         
             BluemixDataManager.SharedInstance.beginUploadingImagesFromQueueIfUploadHasntAlreadyBegan()
         
         })
         
-        //BluemixDataManager.SharedInstance.queueImageForUpload(image)
+        BluemixDataManager.SharedInstance.queueImageForUpload(image)
         
         NSNotificationCenter.defaultCenter().postNotificationName(CameraDataManagerNotification.UserPressedPostPhoto.rawValue, object: nil)
         

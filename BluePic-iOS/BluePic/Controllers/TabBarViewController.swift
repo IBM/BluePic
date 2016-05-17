@@ -116,9 +116,13 @@ class TabBarViewController: UITabBarController {
         
     }
     
-    func switchToFeedTab(){
+    func switchToFeedTabAndPopToRootViewController(){
         
         self.selectedIndex = 0
+        
+        if let feedNavigationVC = self.viewControllers![0] as? FeedNavigationController {
+            feedNavigationVC.popToRootViewControllerAnimated(false)
+        }
         
     }
 
@@ -195,7 +199,7 @@ extension TabBarViewController {
             hideBackgroundImage()
         }
         else if(tabBarNotification == TabBarViewModelNotification.SwitchToFeedTab){
-            switchToFeedTab()
+            switchToFeedTabAndPopToRootViewController()
         }
         
     }

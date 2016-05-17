@@ -543,10 +543,10 @@
             </objects>
             <point key="canvasLocation" x="2383" y="87"/>
         </scene>
-        <!--Profile Navigation Controller-->
+        <!--Feed Navigation Controller-->
         <scene sceneID="kHV-2J-pRr">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="cJB-KH-xpj" customClass="ProfileNavigationController" customModule="BluePic" customModuleProvider="target" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="cJB-KH-xpj" customClass="FeedNavigationController" customModule="BluePic" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="" image="home" id="LM7-29-glG">
                         <inset key="imageInsets" minX="0.0" minY="6" maxX="0.0" maxY="-6"/>
                     </tabBarItem>
