@@ -19,7 +19,7 @@
                             <constraint firstAttribute="height" constant="33" id="ecd-A3-zI1"/>
                         </constraints>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Snap a pic or select one from your library!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lob-X5-HPS">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lob-X5-HPS">
                         <rect key="frame" x="29" y="193" width="324" height="50"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="324" id="Etz-Dq-dHW"/>
@@ -40,6 +40,9 @@
                 <constraint firstAttribute="bottom" secondItem="eyO-Ua-w8U" secondAttribute="bottom" constant="5" id="vBx-Gk-ydE"/>
             </constraints>
             <size key="customSize" width="383" height="272"/>
+            <connections>
+                <outlet property="userHasNoImagesLabel" destination="lob-X5-HPS" id="PJt-59-hOW"/>
+            </connections>
             <point key="canvasLocation" x="517.5" y="533"/>
         </collectionViewCell>
     </objects>

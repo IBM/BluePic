@@ -14,7 +14,7 @@
                         <viewControllerLayoutGuide type="bottom" id="FM8-p5-wjj"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="g4t-4c-UGB">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="551"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="f5a-5Z-S74">
@@ -146,6 +146,7 @@
                             <constraint firstItem="zly-lq-htn" firstAttribute="centerX" secondItem="g4t-4c-UGB" secondAttribute="centerX" id="zJN-JX-bEf"/>
                         </constraints>
                     </view>
+                    <extendedEdge key="edgesForExtendedLayout" top="YES"/>
                     <navigationItem key="navigationItem" id="uKy-qm-bVM"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
@@ -304,14 +305,14 @@
                                         <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="KfL-4y-Ubp">
-                                        <rect key="frame" x="183" y="163" width="51" height="50"/>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="KfL-4y-Ubp">
+                                        <rect key="frame" x="196" y="168" width="40" height="40"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="51" id="F2h-SA-qTE"/>
-                                            <constraint firstAttribute="height" constant="50" id="gsQ-H6-hot"/>
+                                            <constraint firstAttribute="width" constant="40" id="F2h-SA-qTE"/>
+                                            <constraint firstAttribute="height" constant="40" id="gsQ-H6-hot"/>
                                         </constraints>
                                     </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="73 F" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vgc-t0-cYj">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vgc-t0-cYj">
                                         <rect key="frame" x="244" y="163" width="82" height="50"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="6in-zU-hCF"/>
@@ -334,9 +335,9 @@
                                     <constraint firstItem="ARm-GP-M6F" firstAttribute="width" secondItem="RsH-Gz-PYp" secondAttribute="width" id="NkN-DG-B51"/>
                                     <constraint firstItem="B6E-Ci-LKJ" firstAttribute="top" secondItem="RsH-Gz-PYp" secondAttribute="top" constant="8" id="RUE-6I-uWA"/>
                                     <constraint firstItem="aVr-rZ-Jhg" firstAttribute="centerX" secondItem="RsH-Gz-PYp" secondAttribute="centerX" id="SxA-Ky-OCW"/>
-                                    <constraint firstItem="KfL-4y-Ubp" firstAttribute="top" secondItem="ARm-GP-M6F" secondAttribute="bottom" constant="29" id="Tep-RQ-TTg"/>
+                                    <constraint firstItem="KfL-4y-Ubp" firstAttribute="top" secondItem="ARm-GP-M6F" secondAttribute="bottom" constant="34" id="Tep-RQ-TTg"/>
                                     <constraint firstAttribute="height" constant="222" id="dj4-vX-zkw"/>
-                                    <constraint firstItem="vgc-t0-cYj" firstAttribute="leading" secondItem="KfL-4y-Ubp" secondAttribute="trailing" constant="10" id="eAU-jQ-10S"/>
+                                    <constraint firstItem="vgc-t0-cYj" firstAttribute="leading" secondItem="KfL-4y-Ubp" secondAttribute="trailing" constant="8" id="eAU-jQ-10S"/>
                                     <constraint firstItem="RQQ-1s-b3E" firstAttribute="top" secondItem="aVr-rZ-Jhg" secondAttribute="bottom" constant="28" id="i3n-LS-xhO"/>
                                     <constraint firstItem="B6E-Ci-LKJ" firstAttribute="width" secondItem="RsH-Gz-PYp" secondAttribute="width" id="iB6-gL-GNZ"/>
                                     <constraint firstItem="RQQ-1s-b3E" firstAttribute="width" secondItem="RsH-Gz-PYp" secondAttribute="width" id="kYv-X3-FK7"/>
@@ -542,10 +543,10 @@
             </objects>
             <point key="canvasLocation" x="2383" y="87"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Feed Navigation Controller-->
         <scene sceneID="kHV-2J-pRr">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="cJB-KH-xpj" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="cJB-KH-xpj" customClass="FeedNavigationController" customModule="BluePic" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="" image="home" id="LM7-29-glG">
                         <inset key="imageInsets" minX="0.0" minY="6" maxX="0.0" maxY="-6"/>
                     </tabBarItem>

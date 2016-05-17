@@ -171,6 +171,8 @@ class CameraDataManager: NSObject {
         
     
         let image = prepareImageObjectFromPickerInfoDictionary({ image in
+            
+            //BluemixDataManager.SharedInstance.queueImageForUpload(image)
         
             BluemixDataManager.SharedInstance.beginUploadingImagesFromQueueIfUploadHasntAlreadyBegan()
         
@@ -411,21 +413,24 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
     func setLatLongCityAndStateForImage(image : Image, callback : ((image : Image)->())){
         
         let location = LocationDataManager.SharedInstance.getUsersCurrentLocation()
+        
+        image.location = Location()
         if let location = location {
-            image.latitude = "\(location.coordinate.latitude)"
-            image.longitude = "\(location.coordinate.longitude)"
+            
+            image.location!.latitude = "\(location.coordinate.latitude)"
+            image.location!.longitude = "\(location.coordinate.longitude)"
             
             LocationDataManager.SharedInstance.getPlaceMarkFromLocation(location, callback: { placemark in
                 
                 if let placemark = placemark, let city = placemark.locality, let state = placemark.administrativeArea {
                     
-                    image.city = city
-                    image.state = state
+                    image.location!.city = city
+                    image.location!.state = state
                     
                 }
                 else{
-                    image.city = ""
-                    image.state = ""
+                    image.location!.city = ""
+                    image.location!.state = ""
                 }
                 
                 callback(image: image)
@@ -433,10 +438,10 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
             })
         }
         else{
-            image.latitude = ""
-            image.longitude = ""
-            image.city = ""
-            image.state = ""
+            image.location!.latitude = ""
+            image.location!.longitude = ""
+            image.location!.city = ""
+            image.location!.state = ""
             callback(image: image)
         }
   

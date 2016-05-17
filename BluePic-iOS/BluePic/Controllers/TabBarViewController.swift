@@ -116,9 +116,13 @@ class TabBarViewController: UITabBarController {
         
     }
     
-    func switchToFeedTab(){
+    func switchToFeedTabAndPopToRootViewController(){
         
         self.selectedIndex = 0
+        
+        if let feedNavigationVC = self.viewControllers![0] as? FeedNavigationController {
+            feedNavigationVC.popToRootViewControllerAnimated(false)
+        }
         
     }
 
@@ -143,7 +147,7 @@ extension TabBarViewController: UITabBarControllerDelegate {
         if let _ = viewController as? CameraViewController { //if camera tab is selected, show camera picker
             return checkIfUserPressedSignInLater(true)
         }
-        else if let _ = viewController as? ProfileViewController {
+        else if let _ = viewController as? ProfileNavigationController {
             return checkIfUserPressedSignInLater(false)
         }
         else { //if feed selected, actually show it everytime
@@ -195,7 +199,7 @@ extension TabBarViewController {
             hideBackgroundImage()
         }
         else if(tabBarNotification == TabBarViewModelNotification.SwitchToFeedTab){
-            switchToFeedTab()
+            switchToFeedTabAndPopToRootViewController()
         }
         
     }
