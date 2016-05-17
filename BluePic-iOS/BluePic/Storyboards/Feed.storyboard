@@ -312,7 +312,7 @@
                                             <constraint firstAttribute="height" constant="40" id="gsQ-H6-hot"/>
                                         </constraints>
                                     </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="73 F" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vgc-t0-cYj">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vgc-t0-cYj">
                                         <rect key="frame" x="244" y="163" width="82" height="50"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="6in-zU-hCF"/>
@@ -543,10 +543,10 @@
             </objects>
             <point key="canvasLocation" x="2383" y="87"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Profile Navigation Controller-->
         <scene sceneID="kHV-2J-pRr">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="cJB-KH-xpj" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="cJB-KH-xpj" customClass="ProfileNavigationController" customModule="BluePic" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="" image="home" id="LM7-29-glG">
                         <inset key="imageInsets" minX="0.0" minY="6" maxX="0.0" maxY="-6"/>
                     </tabBarItem>
