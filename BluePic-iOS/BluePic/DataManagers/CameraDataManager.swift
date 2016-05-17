@@ -171,6 +171,8 @@ class CameraDataManager: NSObject {
         
     
         let image = prepareImageObjectFromPickerInfoDictionary({ image in
+            
+            //BluemixDataManager.SharedInstance.queueImageForUpload(image)
         
             BluemixDataManager.SharedInstance.beginUploadingImagesFromQueueIfUploadHasntAlreadyBegan()
         
