@@ -143,7 +143,7 @@ extension TabBarViewController: UITabBarControllerDelegate {
         if let _ = viewController as? CameraViewController { //if camera tab is selected, show camera picker
             return checkIfUserPressedSignInLater(true)
         }
-        else if let _ = viewController as? ProfileViewController {
+        else if let _ = viewController as? ProfileNavigationController {
             return checkIfUserPressedSignInLater(false)
         }
         else { //if feed selected, actually show it everytime
