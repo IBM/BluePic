@@ -24,14 +24,6 @@ func main(args:[String:Any]) -> [String:Any] {
     requestOptions.append(.Method("POST"))
     requestOptions.append(.Path("/\(cloudantDbName!)/"))
     
-    /*requestOptions.append(.Username("58ef911e-4f5c-4e16-b8f7-3c85eafb8bb1-bluemix"))
-    requestOptions.append(.Password("10a7cd236fbbe7692eb81fe2f64d0e43384f70239afb9e9ed1b34381e9d75da6"))
-    requestOptions.append(.Schema("https://"))
-    requestOptions.append(.Hostname("58ef911e-4f5c-4e16-b8f7-3c85eafb8bb1-bluemix.cloudant.com"))
-    requestOptions.append(.Port(443))
-    requestOptions.append(.Method("POST"))
-    requestOptions.append(.Path("/bluepic/"))*/
-    
     var headers = [String:String]()
     headers["Accept"] = "application/json"
     headers["Content-Type"] = "application/json"
