@@ -182,7 +182,7 @@ func defineRoutes() {
       if let jsonImage = jsonImage {
         let apnsSettings = Notification.Settings.Apns(badge: nil, category: "imageProcessed", iosActionKey: nil, sound: nil, type: ApnsType.DEFAULT, payload: jsonImage.dictionaryObject)
         let settings = Notification.Settings(apns: apnsSettings, gcm: nil)
-        let target = Notification.Target(deviceIds: [jsonImage["deviceId"].stringValue], platforms: [TargetPlatform.Apple], tagNames: nil, userIds: [jsonImage["userId"].stringValue])
+        let target = Notification.Target(deviceIds: [jsonImage["deviceId"].stringValue], platforms: [TargetPlatform.Apple], tagNames: nil, userIds: nil)
         let message = Notification.Message(alert: "Your image was processed; check it out!", url: nil)
         let notification = Notification(message: message, target: target, settings: settings)
         pushNotificationsClient.send(notification: notification) { (error) in
@@ -265,8 +265,9 @@ func defineRoutes() {
     do {
       var imageJSON = try getImageJSON(fromRequest: request)
 
+      print("IN ROUTE")
       // Determine facebook ID from MCA; verify that provided userId in URL match facebook ID.
-      let userId = imageJSON["userId"].stringValue
+      /*let userId = imageJSON["userId"].stringValue
       guard let authContext = request.userInfo["mcaAuthContext"] as? AuthorizationContext,
       userIdentity = authContext.userIdentity?.id where userId == userIdentity else {
         Log.error("User is not authorized to post image.")
@@ -274,7 +275,7 @@ func defineRoutes() {
         next()
         return
       }
-      Log.verbose("userId: '\(userId)', userIdentity: '\(userIdentity)'.")
+      Log.verbose("userId: '\(userId)', userIdentity: '\(userIdentity)'.")*/
 
       // Get image binary from request body
       let image = try BodyParser.readBodyData(with: request)
