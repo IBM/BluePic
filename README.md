@@ -64,7 +64,7 @@ In order to have the iOS application authenticate with Facebook, you must create
 
 1. Once you entered the bundle ID on the Facebook quick start page, click `next`.
 
-[TODO: ADD DETAILS about the need for an iOS provisioning profile that has capabilities for Push APNS].
+TODO: ADD DETAILS about the need for an iOS provisioning profile that has capabilities for Push APNS
 
 #### 3. Create BluePic application on Bluemix
 
