@@ -9,6 +9,13 @@
 import UIKit
 import CoreLocation
 
+
+enum LocationDataManagerError {
+    
+    case GetCurrentLatLongCityAndStateFailure
+    
+}
+
 class LocationDataManager: NSObject {
 
     /// Shared instance of data manager
@@ -20,12 +27,18 @@ class LocationDataManager: NSObject {
         
     }()
     
+    override init() {
+        super.init()
+        self.setupLocationManager()
+    }
+    
     private var locationManager : CLLocationManager!
     
     private let kImperialUnitOfMeasurement = "e"
     private let kMetricUnitOfMeasurement = "m"
     
     private var isLocationServicesEnabledAndIfNotHandleItCallback : ((isEnabled : Bool)->())!
+    private var getUsersCurrentLocationCallback : ((location : CLLocation?)->())!
     
     func getUnitsOfMeasurement() -> String{
         let locale = NSLocale.currentLocale()
@@ -47,50 +60,56 @@ class LocationDataManager: NSObject {
     }
     
     
+    private func setupLocationManager(){
+         dispatch_async(dispatch_get_main_queue()) {
+            self.locationManager = CLLocationManager()
+            self.locationManager.delegate = self
+            self.locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+        }
+    }
+    
+    
     func getLanguageLocale() -> String {
         return NSLocale.preferredLanguages()[0]
     }
     
     
     func requestWhenInUseAuthorization(){
-        initLocationManagerIfNil()
         locationManager.requestWhenInUseAuthorization()
     }
     
     func startUpdatingLocation(){
-        initLocationManagerIfNil()
         self.locationManager.startUpdatingLocation()
     }
     
-    func initLocationManagerIfNil(){
-        if(locationManager == nil){
-            locationManager = CLLocationManager()
-            self.locationManager.delegate = self
-            locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
-        }
+
+    func requestLocation(){
+        //locationManager = CLLocationManager()
+        //locationManager.delegate = self
+        locationManager.requestLocation()
     }
     
     
-    func getUsersCurrentLocation() -> CLLocation? {
-        if CLLocationManager.locationServicesEnabled() {
-            if(locationManager != nil){
-                return locationManager.location
-            }
-            else{
-                return nil
-            }
-        }
-        else{
-           return nil
-        }
-    }
+//    func getUsersCurrentLocation() -> CLLocation? {
+//        if CLLocationManager.locationServicesEnabled() {
+//            return locationManager.location
+//        }
+//        else{
+//           return nil
+//        }
+//    }
+    
+    
+    
+   
     
     func isLocationServicesEnabledAndIfNotHandleIt(callback : ((isEnabled : Bool) -> ())){
         
         isLocationServicesEnabledAndIfNotHandleItCallback = callback
         
         if(CLLocationManager.authorizationStatus() == CLAuthorizationStatus.AuthorizedWhenInUse || CLLocationManager.authorizationStatus() == CLAuthorizationStatus.AuthorizedAlways){
-            self.startUpdatingLocation()
+      
+            //self.locationManager.requestLocation()
             isLocationServicesEnabledAndIfNotHandleItCallback(isEnabled: true)
             isLocationServicesEnabledAndIfNotHandleItCallback = nil
         }
@@ -112,26 +131,73 @@ class LocationDataManager: NSObject {
     }
     
     
-    func getPlaceMarkFromLocation(location : CLLocation, callback : ((placemark : CLPlacemark?)->())){
+    private func getUsersCurrentLocation(callback : (location : CLLocation?)-> ()){
+        
+        getUsersCurrentLocationCallback = callback
+        locationManager.requestLocation()
+        
+    }
+    
+    private func getPlaceMarkFromLocation(location : CLLocation, callback : ((placemark : CLPlacemark?)->())){
         
         CLGeocoder().reverseGeocodeLocation(location, completionHandler: {(placemarks, error) -> Void in
             print(location)
             
+            //failure
             if error != nil {
                 print("Reverse geocoder failed with error" + error!.localizedDescription)
                 callback(placemark: nil)
+            
+            }
+            else if let placemarks = placemarks {
+                //success
+                if placemarks.count > 0 {
+                    let placemark = placemarks[0]
+                    callback(placemark: placemark)
+                }
+                //failure
+                else {
+                    callback(placemark: nil)
+                    print("Problem with the data received from geocoder")
+                }
+            }
+            //failure
+            else{
+                callback(placemark: nil)
             }
             
-            if placemarks!.count > 0 {
-                let placemark = placemarks![0]
-                callback(placemark: placemark)
-            }
-            else {
-                callback(placemark: nil)
-                print("Problem with the data received from geocoder")
-            }
+            
         })
 
+    }
+    
+    
+    
+    func getCurrentLatLongCityAndState(callback : ((latitude : CLLocationDegrees?, longitude : CLLocationDegrees?, city : String?, state : String?, error : LocationDataManagerError?)->())){
+        
+        getUsersCurrentLocation(){ location in
+            
+            if let location = location {
+                
+                self.getPlaceMarkFromLocation(location, callback: { placemark in
+                    
+                        //success
+                        if let placemark = placemark, let city = placemark.locality, let state = placemark.administrativeArea {
+                            callback(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude, city: city, state: state, error: nil)
+                        }
+                        //failure
+                        else{
+                            callback(latitude: nil, longitude: nil, city: nil, state: nil, error: LocationDataManagerError.GetCurrentLatLongCityAndStateFailure)
+                        }
+
+                })
+            }
+            //failure
+            else{
+                callback(latitude: nil, longitude: nil, city: nil, state: nil, error: LocationDataManagerError.GetCurrentLatLongCityAndStateFailure)
+            }
+        }
+    
     }
 
 }
@@ -141,7 +207,24 @@ extension LocationDataManager : CLLocationManagerDelegate {
     
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
-        print("did update")
+        if(getUsersCurrentLocationCallback != nil){
+            //success
+            if(locations.count > 0){
+                let location = locations[0]
+                getUsersCurrentLocationCallback(location : location)
+                getUsersCurrentLocationCallback = nil
+            }
+        }
+    }
+    
+    
+    func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
+        
+        if(getUsersCurrentLocationCallback != nil){
+            getUsersCurrentLocationCallback(location : nil)
+            getUsersCurrentLocationCallback = nil
+        }
+        
     }
     
     
@@ -149,7 +232,6 @@ extension LocationDataManager : CLLocationManagerDelegate {
     
         if(status == CLAuthorizationStatus.AuthorizedWhenInUse || status == CLAuthorizationStatus.AuthorizedAlways){
             if(isLocationServicesEnabledAndIfNotHandleItCallback != nil){
-                self.startUpdatingLocation()
                 isLocationServicesEnabledAndIfNotHandleItCallback(isEnabled: true)
                 isLocationServicesEnabledAndIfNotHandleItCallback = nil
             }
