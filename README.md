@@ -38,6 +38,7 @@ If you are using Linux as your development platform, you can find full details o
 * `./BluePic-Server` - Contains the Kitura-based server application and its dependencies. This folder contains the artifacts that are deployed to Bluemix.
 * `./BluePic-OpenWhisk` - Contains the OpenWhisk actions and sequence code written in Swift.
 * `./Docs` - Contains additional project documentation.
+* `./Imgs` - Contains images referenced in this `README` file.
 
 ## Getting Started
 
@@ -55,6 +56,8 @@ In order to have the iOS application authenticate with Facebook, you must create
 
 1. On the screen that follows, in the `Configure your info.plist` section under `step 2`, copy the information into your `info.plist` file. You can find the `info.plist` file in `Configuration` folder of the Xcode project. Your `info.plist` file should now look like this:
 <p align="center"><img src="Imgs/infoplist.png"  alt="Drawing" height=150 border=0 /></p>
+
+TODO: Validate this section
 
 1. Next scroll to the bottom of the quick start page where it says `Supply us with your Bundle Identifier` and enter the app's bundle identifier. To find the bundle identifier in the Xcode project you can do the following:
     * Make sure the project navigator folder icon is selected in the top left of Xcode. Select the BluePic project at the top of the file structure and then select the BluePic target. Under the identity section, you should see a text field for the bundle identifier that is empty. You can make the bundle identifier anything you want, `com.KituraBluePic` for example.
