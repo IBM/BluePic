@@ -65,7 +65,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
-        print("Received notification from server with contents: \(userInfo)")
+        print("Received notification from server")
+        if let payload = userInfo["payload"], data = payload.dataUsingEncoding(NSUTF8StringEncoding) {
+            do {
+                let anyObject = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments)
+                if let dictionary = anyObject as? [String : AnyObject], image = Image(dictionary) {
+                    
+                    guard let tabBarController = self.window?.rootViewController as? TabBarViewController, feedNav = tabBarController.viewControllers?.first as? FeedNavigationController else {
+                        return
+                    }
+                    print(tabBarController.viewControllers)
+                    let imageDetailVC = Utils.vcWithNameFromStoryboardWithName("ImageDetailViewController", storyboardName: "Feed") as! ImageDetailViewController
+                    imageDetailVC.image = image
+                    tabBarController.selectedIndex = 0
+                    feedNav.popToRootViewControllerAnimated(false)
+                    feedNav.pushViewController(imageDetailVC, animated: true)
+                }
+            }
+            catch {
+               print("Error converting NSData to json object")
+            }
+        }
         completionHandler(UIBackgroundFetchResult.NewData)
     }
     
@@ -87,7 +107,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
      Method to initialize Bluemix Mobile Client Access with Facebook
      */
     func initializeBackendForFacebookAuth(application: UIApplication, launchOptions: [NSObject: AnyObject]?) -> Bool {
-//        //Initialize backend
+        //Initialize backend
         BluemixDataManager.SharedInstance.initilizeBluemixAppRoute()
 
         //Initialize Facebook
