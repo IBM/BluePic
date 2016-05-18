@@ -325,6 +325,7 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
         
         resetStateVariables()
         
+        
         //show image on confirmationView, save a copy
         if let takenImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
 
@@ -390,6 +391,25 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
      
     }
     
+    func tryToDetermineLocationAgainAndSetLatLongCityAndState(){
+        
+        SVProgressHUD.show()
+        self.confirmationView.postButton.enabled = false
+        
+        self.setLatLongCityAndStateForImage(self.imageUserDecidedtoPost, callback: { success in
+            SVProgressHUD.dismiss()
+            self.confirmationView.postButton.enabled = true
+            if(success == true){
+                self.tryToPostPhoto()
+            }
+            else{
+                self.showCantDetermineLocationAlert()
+            }
+            
+        })
+        
+    }
+    
     
     
     func showCantDetermineLocationAlert(){
@@ -402,16 +422,7 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
         
         alert.addAction(UIAlertAction(title: NSLocalizedString("Try Again", comment: ""), style: .Default, handler: { (action: UIAlertAction!) in
             
-            self.setLatLongCityAndStateForImage(self.imageUserDecidedtoPost, callback: { success in
-                
-                if(success == true){
-                    self.tryToPostPhoto()
-                }
-                else{
-                    self.showCantDetermineLocationAlert()
-                }
-
-            })
+            self.tryToDetermineLocationAgainAndSetLatLongCityAndState()
             
         }))
         
@@ -424,7 +435,7 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
     
     func showStillDeterminingLocationAlert(){
         
-        let alert = UIAlertController(title: nil, message: NSLocalizedString("Still Determining Location", comment: "Please try again"), preferredStyle: UIAlertControllerStyle.Alert)
+        let alert = UIAlertController(title: nil, message: NSLocalizedString("Still Determining Location", comment: "Please wait a moment"), preferredStyle: UIAlertControllerStyle.Alert)
         
         alert.addAction(UIAlertAction(title: NSLocalizedString("Ok", comment: ""), style: .Default, handler: { (action: UIAlertAction!) in
             
@@ -438,12 +449,8 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
     
     
     func setLatLongCityAndStateForImage(image : Image, callback : ((success : Bool)->())){
-        
-        callback(success : false)
-        return
-      
+   
         LocationDataManager.SharedInstance.getCurrentLatLongCityAndState(){ (latitude : CLLocationDegrees?, longitude : CLLocationDegrees?, city : String?, state : String?, error : LocationDataManagerError?) in
-            
             
             //failure
             if(error != nil){
