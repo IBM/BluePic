@@ -14,6 +14,7 @@ declared-services:
     plan: Basic
 applications:
 - name: BluePic
+  path: ./BluePic-Server
   random-route: true
   memory: 512M
   disk_quota: 1024M
