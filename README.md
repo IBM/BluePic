@@ -75,15 +75,15 @@ Note that the [Bluemix buildpack for Swift](https://github.com/IBM-Swift/swift-b
 
 #### 4. Configure Bluemix MCA
 
-<TODO: ADD CONTENTS>
+TODO: ADD CONTENTS
 
 #### 5. Configure Bluemix Push service
 
-<TODO: ADD CONTENTS>
+TODO: ADD CONTENTS
 
 #### 6. Configure OpenWhisk
 
-<TODO: ADD CONTENTS>
+TODO: ADD CONTENTS
 
 #### 7. Populate Cloudant database
 
@@ -102,7 +102,9 @@ Execute the following shell script:
 ./BluePic-Server/resources/cloudant/populate_containers.sh --userid=<object storage username> --password=<object storage password> --projectid=<object storage projectid>
 ```
 
-#### 9. After deploying BluePic to Bluemix and configuring its services, you also have the option to run the Kitura-based server locally for development and testing purposes. To run the Kitura-based server locally, you'd need to update the credentials for each one of the services listed in the ```BluePic-Server/config.json``` file:
+#### 9. Update `BluePic-Server/config.json` file
+
+After deploying BluePic to Bluemix and configuring its services, you also have the option to run the Kitura-based server locally for development and testing purposes. To run the Kitura-based server locally, you'd need to update the credentials for each one of the services listed in the ```BluePic-Server/config.json``` file:
 
 ```json
 ...
