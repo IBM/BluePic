@@ -206,7 +206,8 @@ class LocationDataManager: NSObject {
 extension LocationDataManager : CLLocationManagerDelegate {
     
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        
+    
+        print("did update location")
         if(getUsersCurrentLocationCallback != nil){
             //success
             if(locations.count > 0){
@@ -219,6 +220,8 @@ extension LocationDataManager : CLLocationManagerDelegate {
     
     
     func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
+        
+        print(error)
         
         if(getUsersCurrentLocationCallback != nil){
             getUsersCurrentLocationCallback(location : nil)
