@@ -137,6 +137,7 @@ extension SearchViewController: UITextFieldDelegate {
             self.navigationController?.pushViewController(vc, animated: true)
         } else {
             print("Invalid search query")
+            textField.shakeView()
         }
         
         return true

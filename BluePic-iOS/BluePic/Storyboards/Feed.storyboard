@@ -131,11 +131,18 @@
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No images were found." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X9n-fS-9dC">
+                                <rect key="frame" x="221" y="120" width="158" height="17"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="zly-lq-htn" firstAttribute="top" secondItem="Omw-XB-9gH" secondAttribute="bottom" id="9nJ-c1-aY1"/>
                             <constraint firstItem="FM8-p5-wjj" firstAttribute="top" secondItem="zly-lq-htn" secondAttribute="bottom" id="Hpc-Ib-GcE"/>
+                            <constraint firstItem="X9n-fS-9dC" firstAttribute="centerX" secondItem="g4t-4c-UGB" secondAttribute="centerX" id="JHw-R0-b9J"/>
                             <constraint firstItem="f5a-5Z-S74" firstAttribute="leading" secondItem="g4t-4c-UGB" secondAttribute="leading" id="KNu-nO-fZD"/>
                             <constraint firstItem="Omw-XB-9gH" firstAttribute="centerX" secondItem="g4t-4c-UGB" secondAttribute="centerX" id="LPC-GM-uJK"/>
                             <constraint firstAttribute="trailing" secondItem="f5a-5Z-S74" secondAttribute="trailing" id="WpR-4e-qIK"/>
@@ -143,6 +150,7 @@
                             <constraint firstItem="f5a-5Z-S74" firstAttribute="top" secondItem="g4t-4c-UGB" secondAttribute="top" id="huk-0b-Ac1"/>
                             <constraint firstItem="zly-lq-htn" firstAttribute="width" secondItem="g4t-4c-UGB" secondAttribute="width" id="k4W-8w-RaU"/>
                             <constraint firstItem="Omw-XB-9gH" firstAttribute="width" secondItem="g4t-4c-UGB" secondAttribute="width" id="wGz-n4-uyp"/>
+                            <constraint firstItem="X9n-fS-9dC" firstAttribute="top" secondItem="8wL-91-O7K" secondAttribute="bottom" constant="100" id="wLx-8f-nib"/>
                             <constraint firstItem="zly-lq-htn" firstAttribute="centerX" secondItem="g4t-4c-UGB" secondAttribute="centerX" id="zJN-JX-bEf"/>
                         </constraints>
                     </view>
@@ -155,6 +163,7 @@
                         <outlet property="collectionViewTopSpaceConstraint" destination="9nJ-c1-aY1" id="L29-za-k4F"/>
                         <outlet property="defaultTopBarView" destination="Omw-XB-9gH" id="wbM-PZ-m3R"/>
                         <outlet property="logoImageView" destination="lgu-fG-Ypn" id="Gt6-WJ-PvK"/>
+                        <outlet property="noResultsLabel" destination="X9n-fS-9dC" id="zhp-2T-y4T"/>
                         <outlet property="outerEyeImageView" destination="Bcc-wa-nkC" id="4dd-Wr-u4s"/>
                         <outlet property="outerEyeImageViewTopSpaceConstraint" destination="ibQ-nd-4ew" id="43V-eG-oYv"/>
                         <outlet property="searchTopBarView" destination="f5a-5Z-S74" id="GXK-lm-2BG"/>
