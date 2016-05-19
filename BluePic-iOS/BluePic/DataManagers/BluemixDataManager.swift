@@ -165,8 +165,14 @@ class BluemixDataManager: NSObject {
                 if let text = response?.responseText, data = text.dataUsingEncoding(NSUTF8StringEncoding) {
                     do {
                         let jsonObject = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
-                        if let result = jsonObject as? [String] {
-                            self.tags = result.map({ $0.uppercaseString })
+                        if let result = jsonObject as? [String:AnyObject], records = result["records"] as? [[String:AnyObject]] {
+                            // Extract string tags from server results
+                            self.tags = records.flatMap { value in
+                                if let key = value["key"] as? String {
+                                    return key.uppercaseString
+                                }
+                                return nil
+                            }
                             NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.PopularTagsReceived.rawValue, object: nil)
                         }
                     } catch {
