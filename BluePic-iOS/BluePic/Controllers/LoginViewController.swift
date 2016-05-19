@@ -65,14 +65,41 @@ class LoginViewController: UIViewController {
     func handleLoginViewModelNotifications(loginViewModelNotification : LoginViewModelNotification){
         
         if(loginViewModelNotification == LoginViewModelNotification.LoginSuccess){
-            dismissViewControllerAnimated(true, completion: nil)
-            
+            handleLoginSuccess()
         }
         else if(loginViewModelNotification == LoginViewModelNotification.LoginFailure){
-            //show error message
-            welcomeLabel.text = "Oops, an error occurred! Try again."
-            facebookButton.hidden = false
-            signInLaterButton.hidden = false
+            handleLoginFailure()
+        }
+        else if(loginViewModelNotification == LoginViewModelNotification.UserCanceledLogin){
+            handleUserCanceledLogin()
+        }
+        
+    }
+    
+    func handleLoginSuccess(){
+        dispatch_async(dispatch_get_main_queue()) {
+            self.dismissViewControllerAnimated(true, completion: nil)
+        }
+    }
+    
+    func handleUserCanceledLogin(){
+        dispatch_async(dispatch_get_main_queue()) {
+            self.welcomeLabel.hidden = true
+            self.facebookButton.hidden = false
+            self.signInLaterButton.hidden = false
+            self.connectingLabel.hidden = true
+        }
+    }
+    
+    
+    func handleLoginFailure(){
+        
+        dispatch_async(dispatch_get_main_queue()) {
+            self.welcomeLabel.text = "Oops, an error occurred! Try again."
+            self.welcomeLabel.hidden = false
+            self.facebookButton.hidden = false
+            self.signInLaterButton.hidden = false
+            self.connectingLabel.hidden = true
         }
         
     }

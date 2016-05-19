@@ -79,7 +79,11 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
         self.setImageView(url, fileName: fileName)
 
         //set the captionLabel's text
-        captionLabel.text = caption ?? ""
+        var cap = caption ?? ""
+        if(cap == CameraDataManager.SharedInstance.kEmptyCaptionPlaceHolder){
+            cap = ""
+        }
+        captionLabel.text = cap
         
         //set the photographerNameLabel's text
         var ownerNameString = ""
