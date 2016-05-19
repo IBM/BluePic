@@ -182,7 +182,7 @@ class CameraDataManager: NSObject {
     
     
     
-    func tryToPostPhoto(){
+    private func tryToPostPhoto(){
         
         //location determined and user pressed post photo button
         if(imageUserDecidedtoPost.location != nil && userPressedPostPhoto == true){
@@ -193,9 +193,25 @@ class CameraDataManager: NSObject {
             self.showCantDetermineLocationAlert()
         }
         //location still being determined
-        else {
-            showStillDeterminingLocationAlert()
+        else if(userPressedPostPhoto == true) {
+            showProgressHudAndDisableUI()
         }
+        
+    }
+    
+    
+    private func showProgressHudAndDisableUI(){
+        self.confirmationView.titleTextField.resignFirstResponder()
+        self.confirmationView.disableUI()
+        
+        SVProgressHUD.show()
+        
+    }
+    
+    private func dismissProgressHUDAndReEnableUI(){
+        
+        self.confirmationView.enableUI()
+        SVProgressHUD.dismiss()
         
     }
     
@@ -204,6 +220,7 @@ class CameraDataManager: NSObject {
      Method called when user presses "post Photo" on confirmation view
      */
     func postPhoto() {
+        dismissProgressHUDAndReEnableUI()
        // self.lastImageTaken.caption = self.confirmationView.titleTextField.text //save caption text
         self.confirmationView.endEditing(true) //dismiss keyboard first if shown
         self.confirmationView.userInteractionEnabled = false
@@ -386,23 +403,27 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
             if(!success){
                 self.failureGettingUserLocation = true
             }
+            self.tryToPostPhoto()
           
         })
      
     }
     
-    func tryToDetermineLocationAgainAndSetLatLongCityAndState(){
+    private func tryToDetermineLocationAgainAndSetLatLongCityAndState(){
         
-        SVProgressHUD.show()
-        self.confirmationView.postButton.enabled = false
+        showProgressHudAndDisableUI()
         
-        self.setLatLongCityAndStateForImage(self.imageUserDecidedtoPost, callback: { success in
-            SVProgressHUD.dismiss()
-            self.confirmationView.postButton.enabled = true
+        failureGettingUserLocation = false
+        
+        setLatLongCityAndStateForImage(self.imageUserDecidedtoPost, callback: { success in
+            
+            self.dismissProgressHUDAndReEnableUI()
+            
             if(success == true){
                 self.tryToPostPhoto()
             }
             else{
+                self.failureGettingUserLocation = true
                 self.showCantDetermineLocationAlert()
             }
             
@@ -413,6 +434,8 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
     
     
     func showCantDetermineLocationAlert(){
+        
+        dismissProgressHUDAndReEnableUI()
         
         let alert = UIAlertController(title: nil, message: NSLocalizedString("Can't Determine Location", comment: "Location is required to upload a photo"), preferredStyle: UIAlertControllerStyle.Alert)
         

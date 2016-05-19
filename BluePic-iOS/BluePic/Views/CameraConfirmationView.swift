@@ -162,6 +162,24 @@ class CameraConfirmationView: UIView, UITextFieldDelegate {
     }
     
     
+    func enableUI(){
+        
+        self.cancelButton.enabled = true
+        self.postButton.enabled = true
+        self.titleTextField.enabled = true
+        
+    }
+    
+    
+    func disableUI(){
+        
+        self.cancelButton.enabled = false
+        self.postButton.enabled = false
+        self.titleTextField.enabled = false
+ 
+    }
+    
+    
 
 
 
