@@ -51,7 +51,7 @@ class CameraDataManager: NSObject {
     /// ConfirmationView to be shown after selecting or taking a photo (add a caption here)
     var confirmationView: CameraConfirmationView!
     
-    var imageUserDecidedtoPost : Image!
+    var imageUserDecidedToPost : Image!
     
     var failureGettingUserLocation = false
     
@@ -164,39 +164,10 @@ class CameraDataManager: NSObject {
     
     func resetStateVariables(){
         
-        imageUserDecidedtoPost = nil
+        imageUserDecidedToPost = nil
         failureGettingUserLocation = false
         userPressedPostPhoto = false
   
-    }
-    
-    
-    
-    func postPhotoButtonAction(){
-        
-        userPressedPostPhoto = true
-        
-        tryToPostPhoto()
-        
-    }
-    
-    
-    
-    private func tryToPostPhoto(){
-        
-        //location determined and user pressed post photo button
-        if(imageUserDecidedtoPost.location != nil && userPressedPostPhoto == true){
-            postPhoto()
-        }
-        //failure getting user location
-        else if(failureGettingUserLocation == true){
-            self.showCantDetermineLocationAlert()
-        }
-        //location still being determined
-        else if(userPressedPostPhoto == true) {
-            showProgressHudAndDisableUI()
-        }
-        
     }
     
     
@@ -287,6 +258,8 @@ class CameraDataManager: NSObject {
 }
 
 
+
+//All methods related to uploading an image
 extension CameraDataManager: UIImagePickerControllerDelegate {
     
     
@@ -302,55 +275,51 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
         
         resetStateVariables()
         
-        
         //show image on confirmationView, save a copy
         if let takenImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
 
-            //set the confirmation view's photoImageView with the photo just chosen/taken
-            
-           // lastImageTakenOriginalUIImage = takenImage
-            
-            prepareImageObjectFromPickerInfoDictionary(takenImage)
+            prepareimageUserDecidedToPost(takenImage)
  
+            //set the confirmation view's photoImageView with the photo just chosen/taken
             self.confirmationView.photoImageView.image = takenImage
         
-            }
+        }
             //if image isn't available (iCloud photo in Photo stream not loaded yet)
-            else { 
-                self.destroyConfirmationView()
-                picker.dismissViewControllerAnimated(true, completion: { _ in
+        else {
+            self.destroyConfirmationView()
+            picker.dismissViewControllerAnimated(true, completion: { _ in
                 
-                    })
-                self.showPhotoCouldntBeChosenAlert()
-                print("picker canceled - photo not available!")
+            })
+            self.showPhotoCouldntBeChosenAlert()
+            print("picker canceled - photo not available!")
             
-            }
+        }
     }
     
 
-    func prepareImageObjectFromPickerInfoDictionary(takenImage : UIImage) {
+    func prepareimageUserDecidedToPost(takenImage : UIImage) {
         
-        imageUserDecidedtoPost = Image()
+        imageUserDecidedToPost = Image()
         
-        imageUserDecidedtoPost.user?.facebookID = CurrentUser.facebookUserId
-        imageUserDecidedtoPost.user?.name = CurrentUser.fullName
+        imageUserDecidedToPost.user?.facebookID = CurrentUser.facebookUserId
+        imageUserDecidedToPost.user?.name = CurrentUser.fullName
         
         if (takenImage.size.width > kResizeAllImagesToThisWidth) { //if image too big, shrink it down
-            imageUserDecidedtoPost.image = UIImage.resizeImage(takenImage, newWidth: kResizeAllImagesToThisWidth)
+            imageUserDecidedToPost.image = UIImage.resizeImage(takenImage, newWidth: kResizeAllImagesToThisWidth)
         }
         else {
-            imageUserDecidedtoPost.image = takenImage
+            imageUserDecidedToPost.image = takenImage
         }
         
-        imageUserDecidedtoPost.image = self.rotateImageIfNecessary(imageUserDecidedtoPost.image)
-        imageUserDecidedtoPost.width = imageUserDecidedtoPost.image!.size.width
-        imageUserDecidedtoPost.height = imageUserDecidedtoPost.image!.size.height
+        imageUserDecidedToPost.image = self.rotateImageIfNecessary(imageUserDecidedToPost.image)
+        imageUserDecidedToPost.width = imageUserDecidedToPost.image!.size.width
+        imageUserDecidedToPost.height = imageUserDecidedToPost.image!.size.height
         
         //save name of image as current date and time
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "MM-dd-yyyy_HHmmss"
         let todaysDate = NSDate()
-        imageUserDecidedtoPost.fileName = dateFormatter.stringFromDate(todaysDate) + ".png"
+        imageUserDecidedToPost.fileName = dateFormatter.stringFromDate(todaysDate) + ".png"
     
         //image.caption = self.confirmationView.titleTextField.text
         
@@ -358,7 +327,7 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
         NSNotificationCenter.defaultCenter().postNotificationName(CameraDataManagerNotification.UserPressedPostPhoto.rawValue, object: nil)
         }
         
-        setLatLongCityAndStateForImage(imageUserDecidedtoPost, callback: { success in
+        setLatLongCityAndStateForImage(imageUserDecidedToPost, callback: { success in
           
             if(!success){
                 self.failureGettingUserLocation = true
@@ -367,6 +336,36 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
           
         })
      
+    }
+    
+    func postPhotoButtonAction(){
+        userPressedPostPhoto = true
+        
+        tryToPostPhoto()
+    }
+    
+    
+    private func tryToPostPhoto(){
+        
+        //only post photo if user has chosen to
+        if(userPressedPostPhoto){
+            
+            //failure getting user location
+            if(failureGettingUserLocation == true){
+                self.showCantDetermineLocationAlert()
+            }
+            //location determined
+            else if(imageUserDecidedToPost.location != nil){
+                postPhoto()
+            }
+            //location still being determined
+            else if(imageUserDecidedToPost.location == nil) {
+                showProgressHudAndDisableUI()
+            }
+            
+            
+        }
+        
     }
     
     
@@ -385,9 +384,9 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
         self.confirmationView.postButton.hidden = true
         
         //add caption of image
-        imageUserDecidedtoPost.caption = self.confirmationView.titleTextField.text
+        imageUserDecidedToPost.caption = self.confirmationView.titleTextField.text
         
-        BluemixDataManager.SharedInstance.queueImageForUpload(imageUserDecidedtoPost)
+        BluemixDataManager.SharedInstance.queueImageForUpload(imageUserDecidedToPost)
         BluemixDataManager.SharedInstance.beginUploadingImagesFromQueueIfUploadHasntAlreadyBegan()
         
         NSNotificationCenter.defaultCenter().postNotificationName(CameraDataManagerNotification.UserPressedPostPhoto.rawValue, object: nil)
@@ -397,37 +396,12 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
         
     }
     
-    
-    
-    private func tryToDetermineLocationAgainAndSetLatLongCityAndState(){
-        
-        showProgressHudAndDisableUI()
-        
-        failureGettingUserLocation = false
-        
-        setLatLongCityAndStateForImage(self.imageUserDecidedtoPost, callback: { success in
-            
-            self.dismissProgressHUDAndReEnableUI()
-            
-            if(success == true){
-                self.tryToPostPhoto()
-            }
-            else{
-                self.failureGettingUserLocation = true
-                self.showCantDetermineLocationAlert()
-            }
-            
-        })
-        
-    }
-    
-    
-    
+ 
     func showCantDetermineLocationAlert(){
         
         dismissProgressHUDAndReEnableUI()
         
-        let alert = UIAlertController(title: nil, message: NSLocalizedString("Can't Determine Location", comment: "Location is required to upload a photo"), preferredStyle: UIAlertControllerStyle.Alert)
+        let alert = UIAlertController(title: "Location Not Found", message: "Location is required to post a photo", preferredStyle: UIAlertControllerStyle.Alert)
         
         alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .Default, handler: { (action: UIAlertAction!) in
          
@@ -446,22 +420,7 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
     }
     
     
-    func showStillDeterminingLocationAlert(){
-        
-        let alert = UIAlertController(title: nil, message: NSLocalizedString("Still Determining Location", comment: "Please wait a moment"), preferredStyle: UIAlertControllerStyle.Alert)
-        
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Ok", comment: ""), style: .Default, handler: { (action: UIAlertAction!) in
-            
-        }))
-        
-        dispatch_async(dispatch_get_main_queue()) {
-            self.tabVC.presentViewController(alert, animated: true, completion: nil)
-        }
-        
-    }
-    
-    
-    func setLatLongCityAndStateForImage(image : Image, callback : ((success : Bool)->())){
+    private func setLatLongCityAndStateForImage(image : Image, callback : ((success : Bool)->())){
    
         LocationDataManager.SharedInstance.getCurrentLatLongCityAndState(){ (latitude : CLLocationDegrees?, longitude : CLLocationDegrees?, city : String?, state : String?, error : LocationDataManagerError?) in
             
@@ -492,7 +451,35 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
     }
     
     
+    private func tryToDetermineLocationAgainAndSetLatLongCityAndState(){
+        
+        showProgressHudAndDisableUI()
+        
+        failureGettingUserLocation = false
+        
+        setLatLongCityAndStateForImage(self.imageUserDecidedToPost, callback: { success in
+            
+            self.dismissProgressHUDAndReEnableUI()
+            
+            if(success == false){
+                self.failureGettingUserLocation = true
+            }
+            self.tryToPostPhoto()
+            
+//            if(success == true){
+//                self.failureGettingUserLocation = false
+//                self.tryToPostPhoto()
+//            }
+//            else{
+//                self.failureGettingUserLocation = true
+//                self.showCantDetermineLocationAlert()
+//            }
+            
+        })
+        
+    }
     
+
     
     /**
      Method is called when the user decides to cancel taking a photo or choosing a photo from their photo library.

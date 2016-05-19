@@ -141,8 +141,7 @@ class Image: NSObject {
                 dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
                 dateFormatter.timeZone = NSTimeZone(abbreviation: "UTC")
                 if let date = dateFormatter.dateFromString(timeStamp) {
-                    
-                    print("image date for \(caption) is \(date)")
+            
                     self.timeStamp = date
                 }
                 
