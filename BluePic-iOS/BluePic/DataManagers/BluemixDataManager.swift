@@ -53,8 +53,9 @@ class BluemixDataManager: NSObject {
     /// photos that were taken during this app session
     var imagesTakenDuringAppSessionById = [String : UIImage]()
     
-    // An array of photos that need to be uploaded to object storage and cloudant
-    var imageUploadQueue : [Image] = []
+ 
+    var imagesCurrentlyUploading : [Image] = []
+    var imagesThatFailuredToUpload : [Image] = []
     
     var tags = [String]()
     
@@ -339,8 +340,6 @@ class BluemixDataManager: NSObject {
         
         let request = Request(url: requestURL, method: HttpMethod.POST)
         
-        //request.headers = ["Content-Type" : "application/json"]
-        //"language": "en-US", "unitsOfMeasurement": "e"
         let json = ["_id": userId, "name": name, "language" : language, "unitsOfMeasurement" : unitsOfMeasurement]
 
         
@@ -394,17 +393,12 @@ class BluemixDataManager: NSObject {
     
     func postNewImage(image : Image){
         
+        addImageToImagesCurrentlyUploading(image)
+        
         NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImageUploadBegan.rawValue, object: nil)
         
-        var cityStateString = ""
+        let cityStateString = image.location!.city! + ", " + image.location!.state!
      
-            cityStateString = image.location!.city!
-            
-            if(image.location!.state!.characters.count > 0){
-                cityStateString = cityStateString + ", " + image.location!.state!
-            }
-   
-
         let tempURL = getBluemixBaseRequestURL() + "/" + kUsersEndPoint + "/" + CurrentUser.facebookUserId! + "/" + kImagesEndPoint + "/" + image.fileName! + "/" + image.caption! + "/" + "\(image.width!)" + "/" + "\(image.height!)" + "/" + image.location!.latitude! + "/" + image.location!.longitude! + "/" + cityStateString
         
         let requestURL = tempURL.stringByAddingPercentEncodingWithAllowedCharacters( NSCharacterSet.URLQueryAllowedCharacterSet())!
@@ -417,18 +411,23 @@ class BluemixDataManager: NSObject {
         
         request.sendData(UIImagePNGRepresentation(image.image!)!, completionHandler: { (response, error) -> Void in
             
+            //failure
             if(error != nil){
-                print(cityStateString)
+          
                 print(requestURL)
                 print(error)
+                
+                self.removeImageFromImagesCurrentlyUploading(image)
+                self.addImageToImagesThatFailedToUpload(image)
+                
                 NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImageUploadFailure.rawValue, object: nil)
                 
-                
-            } else {
+            }
+            //success
+            else {
   
-                self.removeImageFromImageUploadQueue(image)
-                
-                self.uploadImagesIfThereAreAnyLeftInTheQueue()
+                self.addImageToImageTakenDuringAppSessionByIdDictionary(image)
+                self.removeImageFromImagesCurrentlyUploading(image)
                 
                 NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImageUploadSuccess.rawValue, object: nil)
  
@@ -436,54 +435,62 @@ class BluemixDataManager: NSObject {
         })
     
     }
-    
-    
- 
-    
+  
 }
 
 
 //UPLOADING IMAGES
 extension BluemixDataManager {
-    
-    func queueImageForUpload(image : Image){
-        
-        self.addImageToImageTakenDuringAppSessionByIdDictionary(image)
-        self.addImageToImageUploadQueue(image)
-        
-    }
-    
-    
-    func beginUploadingImagesFromQueueIfUploadHasntAlreadyBegan(){
-        
-//        self.addImageToImageTakenDuringAppSessionByIdDictionary(image)
-//        self.addImageToImageUploadQueue(image)
 
-        tryToPostNewImageFromImageUploadQueue()
+    func retryUploadingImagesThatFailedToUpload(){
+        
+        for image in imagesThatFailuredToUpload {
+            removeImageFromImagesThatFailedToUpload(image)
+            postNewImage(image)
+   
+        }
  
     }
     
-    private func tryToPostNewImageFromImageUploadQueue(){
+    func cancelUploadingImagesThatFailedToUpload(){
         
-        if(imageUploadQueue.count == 1){
-            
-            let image = imageUploadQueue[0]
-            postNewImage(image)
+        for image in imagesThatFailuredToUpload {
+            removeImageFromImagesThatFailedToUpload(image) 
         }
-    }
-
-    
-    private func removeImageFromImageUploadQueue(image: Image){
         
-        imageUploadQueue = imageUploadQueue.filter({ $0 !== image})
+    }
+ 
+    
+    private func addImageToImagesThatFailedToUpload(image : Image){
+        
+        imagesThatFailuredToUpload.append(image)
+        
+    }
+    
+    private func removeImageFromImagesThatFailedToUpload(image : Image){
+        
+        imagesThatFailuredToUpload = imagesThatFailuredToUpload.filter({ $0 !== image})
+        
+    }
+    
+    private func addImageToImagesCurrentlyUploading(image : Image){
+        
+        imagesCurrentlyUploading.append(image)
+        
+    }
+    
+
+    private func removeImageFromImagesCurrentlyUploading(image: Image){
+        
+        imagesCurrentlyUploading = imagesCurrentlyUploading.filter({ $0 !== image})
         
     }
     
     
     private func uploadImagesIfThereAreAnyLeftInTheQueue(){
         
-        if(imageUploadQueue.count > 0){
-            postNewImage(imageUploadQueue[0])
+        if(imagesCurrentlyUploading.count > 0){
+            postNewImage(imagesCurrentlyUploading[0])
         }
     }
     
@@ -498,15 +505,6 @@ extension BluemixDataManager {
             imagesTakenDuringAppSessionById[id] = image.image
             
         }
-    }
-    
-    /**
-     Method creates a new picture object and adds it to the picture upload queue
-     
-     - returns: Picture
-     */
-    private func addImageToImageUploadQueue(image : Image) {
-        imageUploadQueue.append(image)
     }
 
 

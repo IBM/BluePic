@@ -244,8 +244,29 @@ extension TabBarViewController: UITabBarControllerDelegate {
     
     }
     
+    func showImageUploadFailureAlert(){
+        
+        let alert = UIAlertController(title: "Image Upload Failure", message: "", preferredStyle: UIAlertControllerStyle.Alert)
+        
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .Default, handler: { (action: UIAlertAction!) in
+            
+            self.viewModel.tellBluemixDataManagerToCancelUploadingImagesThatFailedToUpload()
+            
+        }))
+        
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Try Again", comment: ""), style: .Default, handler: { (action: UIAlertAction!) in
+            
+            self.viewModel.tellBluemixDataManagerToRetryUploadingImagesThatFailedToUpload()
+            
+        }))
+        
+        dispatch_async(dispatch_get_main_queue()) {
+            self.presentViewController(alert, animated: true, completion: nil)
+        }
+        
+    }
     
-    
+ 
 }
 
 //ViewModel -> View Controller Communication
@@ -263,7 +284,9 @@ extension TabBarViewController {
         else if(tabBarNotification == TabBarViewModelNotification.SwitchToFeedTab){
             switchToFeedTabAndPopToRootViewController()
         }
-        
+        else if(tabBarNotification == TabBarViewModelNotification.ShowImageUploadFailureAlert){
+            showImageUploadFailureAlert()
+        }
     }
  
 }

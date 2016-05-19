@@ -386,10 +386,9 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
         //add caption of image
         imageUserDecidedToPost.caption = self.confirmationView.titleTextField.text
         
-        BluemixDataManager.SharedInstance.queueImageForUpload(imageUserDecidedToPost)
-        BluemixDataManager.SharedInstance.beginUploadingImagesFromQueueIfUploadHasntAlreadyBegan()
+        BluemixDataManager.SharedInstance.postNewImage(imageUserDecidedToPost)
         
-        NSNotificationCenter.defaultCenter().postNotificationName(CameraDataManagerNotification.UserPressedPostPhoto.rawValue, object: nil)
+        //NSNotificationCenter.defaultCenter().postNotificationName(CameraDataManagerNotification.UserPressedPostPhoto.rawValue, object: nil)
         
         //Dismiss Camera Confirmation View when user presses post photo to bring user back to image feed
         dismissCameraConfirmation()

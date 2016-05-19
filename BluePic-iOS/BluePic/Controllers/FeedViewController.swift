@@ -173,7 +173,7 @@ class FeedViewController: UIViewController {
      */
     func tryToStartLoadingAnimation(){
         
-        if(BluemixDataManager.SharedInstance.imageUploadQueue.count > 0){
+        if(BluemixDataManager.SharedInstance.imagesCurrentlyUploading.count > 0){
             logoImageView.startRotating(1)
         }
         
@@ -185,7 +185,7 @@ class FeedViewController: UIViewController {
      */
     func tryToStopLoadingAnimation(){
         
-        if(BluemixDataManager.SharedInstance.imageUploadQueue.count == 0){
+        if(BluemixDataManager.SharedInstance.imagesCurrentlyUploading.count == 0){
             
             logoImageView.stopRotating()
             
