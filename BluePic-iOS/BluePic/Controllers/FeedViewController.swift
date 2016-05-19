@@ -74,7 +74,7 @@ class FeedViewController: UIViewController {
             searchTopBarView.frame = defaultTopBarView.frame
             defaultTopBarView.hidden = true
             searchTopBarView.hidden = false
-            wordTagLabel.text = query
+            wordTagLabel.text = query.uppercaseString
             Utils.kernLabelString(wordTagLabel, spacingValue: 1.4)
             self.view.addSubview(searchTopBarView)
         }
@@ -298,6 +298,9 @@ extension FeedViewController {
         }
         else if(feedViewModelNotification == FeedViewModelNotification.UploadingPhotoFinished){
             tryToStopLoadingAnimation()
+        }
+        else if(feedViewModelNotification == FeedViewModelNotification.NoSearchResults){
+            // do alert
         }
         
     }
