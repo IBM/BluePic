@@ -163,10 +163,16 @@ extension ImageDetailViewController {
     
     func setupCaptionLabelWithData(){
         
-        let caption = image.caption?.uppercaseString ?? ""
+        if let imageCaption = image.caption {
+
+            let caption = ""
+            if (imageCaption != CameraDataManager.SharedInstance.kEmptyCaptionPlaceHolder){
+                let caption = image.caption?.uppercaseString ?? ""
+            }
         
         captionLabel.attributedText = NSAttributedString.createAttributedStringWithLetterAndLineSpacingWithCentering(caption, letterSpacing: kCaptionLabelLetterSpacing, lineSpacing: kCaptionLabelLineSpacing, centered: true)
         
+        }
     }
     
     func setupDateLabelWithData(){

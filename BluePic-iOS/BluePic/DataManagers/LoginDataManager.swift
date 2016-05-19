@@ -22,11 +22,11 @@ class LoginDataManager: NSObject {
     
     
 
-    func login(callback : ((success : Bool)->())){
+    func login(callback : ((error : FacebookAuthenticationError?)->())){
         
         ///Check if user is already authenticated from previous sesssions, aka check nsuserdefaults for user info
         if(isUserAlreadyAuthenticated()){
-            callback(success: true)
+            callback(error: nil)
         }
             //user not already authenticated from previous sessions
         else{
@@ -36,7 +36,7 @@ class LoginDataManager: NSObject {
                 
                 //facebook authentication failure
                 if(error != nil){
-                    callback(success: false)
+                    callback(error: error)
                 }
                 //facebook authentication success
                 else{
@@ -57,7 +57,7 @@ class LoginDataManager: NSObject {
                         
                         print("success finding user")
                        
-                        callback(success: success)
+                        callback(error: nil)
                     })
                 }
 

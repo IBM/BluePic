@@ -70,6 +70,8 @@ class CameraDataManager: NSObject {
     
     var imagesTheUserDecidedToPostQueue : [Image] = []
     
+    let kEmptyCaptionPlaceHolder = "[n/a]"
+    
     
     /**
      Method to show the image picker action sheet so user can choose from Photo Library or Camera
@@ -384,7 +386,12 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
         self.confirmationView.postButton.hidden = true
         
         //add caption of image
-        imageUserDecidedToPost.caption = self.confirmationView.titleTextField.text
+        if(self.confirmationView.titleTextField.text != ""){
+            imageUserDecidedToPost.caption = self.confirmationView.titleTextField.text
+        }
+        else{
+            imageUserDecidedToPost.caption = kEmptyCaptionPlaceHolder
+        }
         
         BluemixDataManager.SharedInstance.postNewImage(imageUserDecidedToPost)
         
