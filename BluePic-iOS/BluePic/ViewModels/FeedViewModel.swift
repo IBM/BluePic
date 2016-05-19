@@ -27,6 +27,9 @@ enum FeedViewModelNotification {
     
     //called when a photo is finished uploading to object storage
     case UploadingPhotoFinished
+    
+    //called when there are no search results for a particular searchQuery
+    case NoSearchResults
 }
 
 class FeedViewModel: NSObject {
@@ -101,12 +104,15 @@ class FeedViewModel: NSObject {
         
         self.imageDataArray = searchQuery == nil ? BluemixDataManager.SharedInstance.images : BluemixDataManager.SharedInstance.searchResultImages
         
-        self.notifyViewControllerToTriggerReloadCollectionView()
+        if searchQuery != nil && self.imageDataArray.count < 1 {
+            print("No results for search parameters")
+            self.notifiyViewControllerToTriggerAlert()
+        } else {
+            self.notifyViewControllerToTriggerReloadCollectionView()
+        }
     }
     
 }
-
-
 
 
 //ViewController -> ViewModel Communication
@@ -115,7 +121,6 @@ extension FeedViewModel {
     func shouldBeginLoading() -> Bool {
         return !BluemixDataManager.SharedInstance.hasReceievedInitialImages
     }
-    
     
     func repullForNewData() {
         if let query = self.searchQuery {
@@ -318,7 +323,12 @@ extension FeedViewModel {
         }
     }
     
-    
+    func notifiyViewControllerToTriggerAlert() {
+        dispatch_async(dispatch_get_main_queue()) {
+            self.notifyFeedVC(feedViewModelNotification : FeedViewModelNotification.NoSearchResults)
+        }
+
+    }
     
     
 }
