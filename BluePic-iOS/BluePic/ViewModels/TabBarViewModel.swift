@@ -20,6 +20,7 @@ enum TabBarViewModelNotification {
     case ShowLoginVC
     case HideLoginVC
     case SwitchToFeedTab
+    case ShowImageUploadFailureAlert
     
 }
 
@@ -48,17 +49,21 @@ class TabBarViewModel: NSObject {
     
     func suscribeToBluemixDataManagerNotifications(){
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(TabBarViewModel.notifyTabBarVCToSwitchToFeedTab), name: CameraDataManagerNotification.UserPressedPostPhoto.rawValue, object: nil)
-
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(TabBarViewModel.notifyTabBarVCToSwitchToFeedTab), name: BluemixDataManagerNotification.ImageUploadBegan.rawValue, object: nil)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(TabBarViewModel.notifyTabbarVCToShowImageUploadFailureAlert), name: BluemixDataManagerNotification.ImageUploadFailure.rawValue, object: nil)
+    
     }
     
     
     func notifyTabBarVCToSwitchToFeedTab(){
-        
         notifyTabBarVC(tabBarViewModelNotification : TabBarViewModelNotification.SwitchToFeedTab)
-        
     }
     
+    
+    func notifyTabbarVCToShowImageUploadFailureAlert(){
+        notifyTabBarVC(tabBarViewModelNotification : TabBarViewModelNotification.ShowImageUploadFailureAlert)
+    }
 
     func tryToShowLogin(){
 
@@ -78,6 +83,16 @@ class TabBarViewModel: NSObject {
         
        return CurrentUser.willLoginLater
 
+    }
+    
+    func tellBluemixDataManagerToRetryUploadingImagesThatFailedToUpload(){
+        BluemixDataManager.SharedInstance.retryUploadingImagesThatFailedToUpload()
+    }
+    
+    func tellBluemixDataManagerToCancelUploadingImagesThatFailedToUpload(){
+        
+        BluemixDataManager.SharedInstance.cancelUploadingImagesThatFailedToUpload()
+        
     }
     
  

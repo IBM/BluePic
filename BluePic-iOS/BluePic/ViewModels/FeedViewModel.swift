@@ -92,7 +92,9 @@ class FeedViewModel: NSObject {
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(FeedViewModel.repullForNewData), name: BluemixDataManagerNotification.ImageUploadSuccess.rawValue, object: nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(FeedViewModel.notifyViewControllerToTriggerLoadingAnimation), name: CameraDataManagerNotification.UserPressedPostPhoto.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(FeedViewModel.notifyViewControllerToTriggerLoadingAnimation), name: BluemixDataManagerNotification.ImageUploadBegan.rawValue, object: nil)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(FeedViewModel.notifyViewControllerToTriggerReloadCollectionView), name: BluemixDataManagerNotification.ImageUploadFailure.rawValue, object: nil)
         
     }
 
@@ -145,7 +147,7 @@ extension FeedViewModel {
     func numberOfItemsInSection(section : Int) -> Int {
         //if the section is 0, then it depends on how many items are in the picture upload queue
         if(section == 0){
-            return BluemixDataManager.SharedInstance.imageUploadQueue.count
+            return BluemixDataManager.SharedInstance.imagesCurrentlyUploading.count
         }
             // if the section is 1, then it depends how many items are in the pictureDataArray
         else{
@@ -229,7 +231,7 @@ extension FeedViewModel {
             cell = collectionView.dequeueReusableCellWithReuseIdentifier("PictureUploadQueueImageFeedCollectionViewCell", forIndexPath: indexPath) as! PictureUploadQueueImageFeedCollectionViewCell
             
             
-            let image = BluemixDataManager.SharedInstance.imageUploadQueue[indexPath.row]
+            let image = BluemixDataManager.SharedInstance.imagesCurrentlyUploading[indexPath.row]
             
             cell.setupData(image.image, caption: image.caption)
             
