@@ -49,10 +49,14 @@ class LoginDataManager: NSObject {
                     BluemixDataManager.SharedInstance.checkIfUserAlreadyExistsIfNotCreateNewUser(facebookUserId!, name: facebookUserFullName!, language: language, unitsOfMeasurement: unitsOfMeasurement, callback: { success in
                         //return the result of this which will determine whether login was a success or not
                         
+                        if(success){
+                            CurrentUser.willLoginLater = false
+                            CurrentUser.facebookUserId = facebookUserId!
+                            CurrentUser.fullName = facebookUserFullName!
+                        }
+                        
                         print("success finding user")
-                        CurrentUser.willLoginLater = false
-                        CurrentUser.facebookUserId = facebookUserId!
-                        CurrentUser.fullName = facebookUserFullName!
+                       
                         callback(success: success)
                     })
                 }
