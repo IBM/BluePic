@@ -339,7 +339,7 @@ class BluemixDataManager: NSObject {
         let requestURL = getBluemixBaseRequestURL() + "/" + kUsersEndPoint
         
         let request = Request(url: requestURL, method: HttpMethod.POST)
-        
+         
         let json = ["_id": userId, "name": name, "language" : language, "unitsOfMeasurement" : unitsOfMeasurement]
 
         

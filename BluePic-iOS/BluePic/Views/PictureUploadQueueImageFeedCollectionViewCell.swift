@@ -32,7 +32,11 @@ class PictureUploadQueueImageFeedCollectionViewCell: UICollectionViewCell {
         }
         
         //set the captionLabel's text
-        captionLabel.text = caption ?? ""
+        var cap = caption ?? ""
+        if(cap == CameraDataManager.SharedInstance.kEmptyCaptionPlaceHolder){
+            cap = ""
+        }
+        captionLabel.text = cap
         
     }
     

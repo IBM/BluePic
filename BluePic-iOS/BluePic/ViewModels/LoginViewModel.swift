@@ -20,6 +20,7 @@ import UIKit
 enum LoginViewModelNotification {
     case LoginSuccess
     case LoginFailure
+    case UserCanceledLogin
 }
 
 class LoginViewModel: NSObject {
@@ -50,10 +51,13 @@ class LoginViewModel: NSObject {
      */
     func authenticateWithFacebook() {
         
-        LoginDataManager.SharedInstance.login({ success in
+        LoginDataManager.SharedInstance.login({ error in
         
-            if(success){
+            if(error == nil){
                 self.notifyLoginVC(loginViewModelNotification: LoginViewModelNotification.LoginSuccess)
+            }
+            else if(error == FacebookAuthenticationError.UserCanceledLogin){
+                self.notifyLoginVC(loginViewModelNotification: LoginViewModelNotification.UserCanceledLogin)
             }
             else{
                 self.notifyLoginVC(loginViewModelNotification: LoginViewModelNotification.LoginFailure)
