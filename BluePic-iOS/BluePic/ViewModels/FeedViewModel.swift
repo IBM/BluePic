@@ -56,7 +56,7 @@ class FeedViewModel: NSObject {
     let kEmptyFeedCollectionViewCellBufferToAllowForScrolling : CGFloat = 1
     
     //constant that defines the number of cells there is when the user has no photos
-    let kNumberOfCellsWhenUserHasNoPhotos = 1
+    var numberOfCellsWhenUserHasNoPhotos = 0
     
     //constant that defines the number of sections there are in the collection view
     let kNumberOfSectionsInCollectionView = 2
@@ -80,9 +80,11 @@ class FeedViewModel: NSObject {
         suscribeToBluemixDataManagerNotifications()
         
         if let query = searchQuery {
+            numberOfCellsWhenUserHasNoPhotos = 0
             BluemixDataManager.SharedInstance.getImagesByTags([query])
         } else {
             //Grab any data from BluemixDataManager if it has any and then tell view controller to reload its collection view
+            numberOfCellsWhenUserHasNoPhotos = 1
             updateImageDataArrayAndNotifyViewControllerToReloadCollectionView()
         }
         
@@ -105,7 +107,6 @@ class FeedViewModel: NSObject {
         self.imageDataArray = searchQuery == nil ? BluemixDataManager.SharedInstance.images : BluemixDataManager.SharedInstance.searchResultImages
         
         if searchQuery != nil && self.imageDataArray.count < 1 {
-            print("No results for search parameters")
             self.notifiyViewControllerToTriggerAlert()
         } else {
             self.notifyViewControllerToTriggerReloadCollectionView()
@@ -156,7 +157,7 @@ extension FeedViewModel {
         else{
             
             if(imageDataArray.count == 0) && BluemixDataManager.SharedInstance.hasReceievedInitialImages{
-                return kNumberOfCellsWhenUserHasNoPhotos
+                return numberOfCellsWhenUserHasNoPhotos
             }
             else{
                 return imageDataArray.count
@@ -245,7 +246,7 @@ extension FeedViewModel {
         else{
             
             //return EmptyFeedCollectionViewCell
-            if(imageDataArray.count == 0){
+            if(imageDataArray.count == 0 && searchQuery == nil){
                 
                 let cell : EmptyFeedCollectionViewCell
                 
