@@ -64,7 +64,7 @@ class LocationDataManager: NSObject {
          dispatch_async(dispatch_get_main_queue()) {
             self.locationManager = CLLocationManager()
             self.locationManager.delegate = self
-            self.locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+            self.locationManager.desiredAccuracy = kCLLocationAccuracyKilometer//kCLLocationAccuracyNearestTenMeters
         }
     }
     
