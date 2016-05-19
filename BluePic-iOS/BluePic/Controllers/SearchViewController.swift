@@ -85,7 +85,12 @@ extension SearchViewController {
     }
     
     func updateWithTagData() {
-        popularTags = BluemixDataManager.SharedInstance.tags
+        dispatch_async(dispatch_get_main_queue(),{
+            self.popularTags = BluemixDataManager.SharedInstance.tags
+            self.tagCollectionView.performBatchUpdates({
+                self.tagCollectionView.reloadSections(NSIndexSet(index: 0))
+            }, completion: nil)
+        })
     }
     
 }
