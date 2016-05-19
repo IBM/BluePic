@@ -215,47 +215,7 @@ class CameraDataManager: NSObject {
         
     }
     
-    
-    /**
-     Method called when user presses "post Photo" on confirmation view
-     */
-    func postPhoto() {
-        dismissProgressHUDAndReEnableUI()
-       // self.lastImageTaken.caption = self.confirmationView.titleTextField.text //save caption text
-        self.confirmationView.endEditing(true) //dismiss keyboard first if shown
-        self.confirmationView.userInteractionEnabled = false
-        self.tabVC.view.userInteractionEnabled = false
-        self.confirmationView.loadingIndicator.startAnimating()
-        self.confirmationView.cancelButton.hidden = true
-        self.confirmationView.postButton.hidden = true
-        
-        
-        //add caption of image
-        imageUserDecidedtoPost.caption = self.confirmationView.titleTextField.text
-        
-    
-        BluemixDataManager.SharedInstance.queueImageForUpload(imageUserDecidedtoPost)
-        
-        BluemixDataManager.SharedInstance.beginUploadingImagesFromQueueIfUploadHasntAlreadyBegan()
-        
-        
-//        let image = prepareImageObjectFromPickerInfoDictionary({ image in
-//            
-//            BluemixDataManager.SharedInstance.queueImageForUpload(image)
-//        
-//            BluemixDataManager.SharedInstance.beginUploadingImagesFromQueueIfUploadHasntAlreadyBegan()
-//        
-//        })
-//        
-//        BluemixDataManager.SharedInstance.queueImageForUpload(image)
-        
-        NSNotificationCenter.defaultCenter().postNotificationName(CameraDataManagerNotification.UserPressedPostPhoto.rawValue, object: nil)
-        
-        //Dismiss Camera Confirmation View when user presses post photo to bring user back to image feed
-        dismissCameraConfirmation()
-    
-    }
-    
+
     /**
      Method to hide the confirmation view when cancelling or done uploading
      */
@@ -408,6 +368,36 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
         })
      
     }
+    
+    
+    /**
+     Method called when user presses "post Photo" on confirmation view
+     */
+    func postPhoto() {
+        
+        dismissProgressHUDAndReEnableUI()
+        
+        self.confirmationView.endEditing(true) //dismiss keyboard first if shown
+        self.confirmationView.userInteractionEnabled = false
+        self.tabVC.view.userInteractionEnabled = false
+        self.confirmationView.loadingIndicator.startAnimating()
+        self.confirmationView.cancelButton.hidden = true
+        self.confirmationView.postButton.hidden = true
+        
+        //add caption of image
+        imageUserDecidedtoPost.caption = self.confirmationView.titleTextField.text
+        
+        BluemixDataManager.SharedInstance.queueImageForUpload(imageUserDecidedtoPost)
+        BluemixDataManager.SharedInstance.beginUploadingImagesFromQueueIfUploadHasntAlreadyBegan()
+        
+        NSNotificationCenter.defaultCenter().postNotificationName(CameraDataManagerNotification.UserPressedPostPhoto.rawValue, object: nil)
+        
+        //Dismiss Camera Confirmation View when user presses post photo to bring user back to image feed
+        dismissCameraConfirmation()
+        
+    }
+    
+    
     
     private func tryToDetermineLocationAgainAndSetLatLongCityAndState(){
         

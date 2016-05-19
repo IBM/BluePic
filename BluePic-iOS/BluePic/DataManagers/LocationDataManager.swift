@@ -84,24 +84,10 @@ class LocationDataManager: NSObject {
     
 
     func requestLocation(){
-        //locationManager = CLLocationManager()
-        //locationManager.delegate = self
         locationManager.requestLocation()
     }
     
-    
-//    func getUsersCurrentLocation() -> CLLocation? {
-//        if CLLocationManager.locationServicesEnabled() {
-//            return locationManager.location
-//        }
-//        else{
-//           return nil
-//        }
-//    }
-    
-    
-    
-   
+
     
     func isLocationServicesEnabledAndIfNotHandleIt(callback : ((isEnabled : Bool) -> ())){
         
