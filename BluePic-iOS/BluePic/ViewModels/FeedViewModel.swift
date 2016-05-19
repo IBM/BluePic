@@ -27,6 +27,9 @@ enum FeedViewModelNotification {
     
     //called when a photo is finished uploading to object storage
     case UploadingPhotoFinished
+    
+    //called when there are no search results for a particular searchQuery
+    case NoSearchResults
 }
 
 class FeedViewModel: NSObject {
@@ -53,7 +56,7 @@ class FeedViewModel: NSObject {
     let kEmptyFeedCollectionViewCellBufferToAllowForScrolling : CGFloat = 1
     
     //constant that defines the number of cells there is when the user has no photos
-    let kNumberOfCellsWhenUserHasNoPhotos = 1
+    var numberOfCellsWhenUserHasNoPhotos = 0
     
     //constant that defines the number of sections there are in the collection view
     let kNumberOfSectionsInCollectionView = 2
@@ -77,9 +80,11 @@ class FeedViewModel: NSObject {
         suscribeToBluemixDataManagerNotifications()
         
         if let query = searchQuery {
+            numberOfCellsWhenUserHasNoPhotos = 0
             BluemixDataManager.SharedInstance.getImagesByTags([query])
         } else {
             //Grab any data from BluemixDataManager if it has any and then tell view controller to reload its collection view
+            numberOfCellsWhenUserHasNoPhotos = 1
             updateImageDataArrayAndNotifyViewControllerToReloadCollectionView()
         }
         
@@ -103,12 +108,14 @@ class FeedViewModel: NSObject {
         
         self.imageDataArray = searchQuery == nil ? BluemixDataManager.SharedInstance.images : BluemixDataManager.SharedInstance.searchResultImages
         
-        self.notifyViewControllerToTriggerReloadCollectionView()
+        if searchQuery != nil && self.imageDataArray.count < 1 {
+            self.notifiyViewControllerToTriggerAlert()
+        } else {
+            self.notifyViewControllerToTriggerReloadCollectionView()
+        }
     }
     
 }
-
-
 
 
 //ViewController -> ViewModel Communication
@@ -117,7 +124,6 @@ extension FeedViewModel {
     func shouldBeginLoading() -> Bool {
         return !BluemixDataManager.SharedInstance.hasReceievedInitialImages
     }
-    
     
     func repullForNewData() {
         if let query = self.searchQuery {
@@ -153,7 +159,7 @@ extension FeedViewModel {
         else{
             
             if(imageDataArray.count == 0) && BluemixDataManager.SharedInstance.hasReceievedInitialImages{
-                return kNumberOfCellsWhenUserHasNoPhotos
+                return numberOfCellsWhenUserHasNoPhotos
             }
             else{
                 return imageDataArray.count
@@ -242,7 +248,7 @@ extension FeedViewModel {
         else{
             
             //return EmptyFeedCollectionViewCell
-            if(imageDataArray.count == 0){
+            if(imageDataArray.count == 0 && searchQuery == nil){
                 
                 let cell : EmptyFeedCollectionViewCell
                 
@@ -320,7 +326,12 @@ extension FeedViewModel {
         }
     }
     
-    
+    func notifiyViewControllerToTriggerAlert() {
+        dispatch_async(dispatch_get_main_queue()) {
+            self.notifyFeedVC(feedViewModelNotification : FeedViewModelNotification.NoSearchResults)
+        }
+
+    }
     
     
 }
