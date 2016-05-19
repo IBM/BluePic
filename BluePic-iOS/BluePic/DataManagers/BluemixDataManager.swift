@@ -163,16 +163,15 @@ class BluemixDataManager: NSObject {
             if let error = error {
                 print ("Error :: \(error)")
             } else {
-                if let text = response?.responseText, data = text.dataUsingEncoding(NSUTF8StringEncoding) {
-                    do {
-                        let jsonObject = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
-                        if let result = jsonObject as? [String] {
-                            self.tags = result.map({ $0.uppercaseString })
-                            NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.PopularTagsReceived.rawValue, object: nil)
+                if let text = response?.responseText, result = Utils.convertStringToDictionary(text), records = result["records"] as? [[String:AnyObject]] {
+                    // Extract string tags from server results
+                    self.tags = records.flatMap { value in
+                        if let key = value["key"] as? String {
+                            return key.uppercaseString
                         }
-                    } catch {
-                        print("Failed to convert data to json object: \(error)")
+                        return nil
                     }
+                    NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.PopularTagsReceived.rawValue, object: nil)
                 }
 
             }
@@ -204,9 +203,9 @@ class BluemixDataManager: NSObject {
         var requestURL = getBluemixBaseRequestURL() + "/" + kImagesEndPoint + "?tag="
         for (index, tag) in tags.enumerate() {
             if index == 0 {
-                requestURL.appendContentsOf(tag)
+                requestURL.appendContentsOf(tag.lowercaseString)
             } else {
-                requestURL.appendContentsOf(",\(tag)")
+                requestURL.appendContentsOf(",\(tag.lowercaseString)")
             }
         }
         let request = Request(url: requestURL, method: HttpMethod.GET)

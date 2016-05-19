@@ -34,12 +34,19 @@ class FeedViewController: UIViewController {
     //constraint outlet for the collection view's top space
     @IBOutlet weak var collectionViewTopSpaceConstraint: NSLayoutConstraint!
     
+    //top bar that shows on intial load of the app
     @IBOutlet weak var defaultTopBarView: UIView!
     
+    //top bar that shows when displaying search results
     @IBOutlet var searchTopBarView: UIView!
     
+    //label used to show searchQuery
     @IBOutlet weak var wordTagLabel: UILabel!
     
+    //label to give user feedback on the results they wanted
+    @IBOutlet weak var noResultsLabel: UILabel!
+    
+    //search query parameters that will be sent to the server for results
     var searchQuery: String?
     
     //view model of the Feed View controller. It will keep track of state and handle data for this view controller
@@ -74,7 +81,7 @@ class FeedViewController: UIViewController {
             searchTopBarView.frame = defaultTopBarView.frame
             defaultTopBarView.hidden = true
             searchTopBarView.hidden = false
-            wordTagLabel.text = query
+            wordTagLabel.text = query.uppercaseString
             Utils.kernLabelString(wordTagLabel, spacingValue: 1.4)
             self.view.addSubview(searchTopBarView)
         }
@@ -298,6 +305,10 @@ extension FeedViewController {
         }
         else if(feedViewModelNotification == FeedViewModelNotification.UploadingPhotoFinished){
             tryToStopLoadingAnimation()
+        }
+        else if(feedViewModelNotification == FeedViewModelNotification.NoSearchResults){
+            // do alert
+            noResultsLabel.hidden = false
         }
         
     }
