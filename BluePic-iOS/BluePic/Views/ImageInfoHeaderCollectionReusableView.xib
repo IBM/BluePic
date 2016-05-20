@@ -31,7 +31,7 @@
                             </constraints>
                         </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PACIFIC NORTHWEST" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I64-wv-jB1">
-                            <rect key="frame" x="0.0" y="-1" width="520" height="35"/>
+                            <rect key="frame" x="-39" y="-1" width="599" height="35"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="35" id="esh-L4-G04"/>
                             </constraints>
@@ -50,7 +50,7 @@
                         <constraint firstItem="tqR-wi-fZZ" firstAttribute="top" secondItem="I64-wv-jB1" secondAttribute="bottom" constant="-8" id="Ysc-aa-iOH"/>
                         <constraint firstItem="e0c-Ce-Oll" firstAttribute="top" secondItem="tqR-wi-fZZ" secondAttribute="bottom" constant="10" id="ZsX-hH-Cag"/>
                         <constraint firstItem="tqR-wi-fZZ" firstAttribute="centerX" secondItem="h7Q-NK-YAa" secondAttribute="centerX" id="mmG-ws-gjP"/>
-                        <constraint firstItem="I64-wv-jB1" firstAttribute="width" secondItem="h7Q-NK-YAa" secondAttribute="width" id="nkP-to-HEr"/>
+                        <constraint firstItem="I64-wv-jB1" firstAttribute="width" secondItem="h7Q-NK-YAa" secondAttribute="width" constant="79" id="nkP-to-HEr"/>
                         <constraint firstItem="I64-wv-jB1" firstAttribute="top" secondItem="h7Q-NK-YAa" secondAttribute="top" constant="-1" id="oYX-uQ-fa0"/>
                     </constraints>
                     <variation key="default">
@@ -63,7 +63,7 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ksl-mr-hEt">
                     <rect key="frame" x="40" y="143" width="520" height="222"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Portland, Oregan" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E2R-6b-EJR">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Portland, Oregan" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="18" translatesAutoresizingMaskIntoConstraints="NO" id="E2R-6b-EJR">
                             <rect key="frame" x="0.0" y="8" width="520" height="32"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="32" id="Sbk-QP-GwB"/>
@@ -170,7 +170,7 @@
                 <outlet property="timeLabel" destination="1NH-GQ-JA3" id="FDq-1U-R5j"/>
                 <outlet property="weatherImageView" destination="TSB-eY-aU8" id="9x3-sm-VDG"/>
             </connections>
-            <point key="canvasLocation" x="368" y="1022"/>
+            <point key="canvasLocation" x="368" y="1021.5"/>
         </collectionReusableView>
     </objects>
 </document>
