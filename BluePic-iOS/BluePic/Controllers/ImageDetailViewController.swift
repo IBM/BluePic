@@ -13,43 +13,19 @@ class ImageDetailViewController: UIViewController {
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var dimView: UIView!
     @IBOutlet weak var backButton: UIButton!
-    @IBOutlet weak var captionLabel: UILabel!
-    @IBOutlet weak var byUserLabel: UILabel!
-    @IBOutlet weak var cityStateLabel: UILabel!
-    @IBOutlet weak var coordinatesLabel: UILabel!
-    @IBOutlet weak var dateLabel: UILabel!
-    @IBOutlet weak var timeLabel: UILabel!
-    @IBOutlet weak var weatherImageView: UIImageView!
-    @IBOutlet weak var temperatureLabel: UILabel!
-
+    @IBOutlet weak var imageDetailInfoView: ImageDetailInfoView!
     @IBOutlet weak var tagCollectionView: UICollectionView!
 
-    private let kWeatherIconNamePrefix = "weather_icon_"
-    private let kDegreeSymbolString = "°"
-    
-    private let kByUserLabelPrefixString = NSLocalizedString("by", comment: "")
-    private let kDateLabelPrefixString = NSLocalizedString("on", comment: "")
-    private let kTimeLabelPrefixString = NSLocalizedString("at", comment: "")
-    
-    
     private let kCellPadding: CGFloat = 60
-    
-    
-    
-    
-    private let kCaptionLabelLetterSpacing : CGFloat = 1.7
-    private let kCaptionLabelLineSpacing : CGFloat = 10.0
-    
+
     var image : Image!
     
-
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        setupSubviewsWithImageData()
+        setupSubViews()
         setupTagCollectionView()
-
+        
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -70,69 +46,40 @@ class ImageDetailViewController: UIViewController {
         tagCollectionView.setCollectionViewLayout(layout, animated: false)
         tagCollectionView.delegate = self
         tagCollectionView.dataSource = self
-        
-        //Utils.kernLabelString(tagsButton.titleLabel!, spacingValue: 1.7)
+
         Utils.registerNibWithCollectionView("TagCollectionViewCell", collectionView: tagCollectionView)
         
     }
     
-    func setupSubviewsWithImageData(){
+    func setupSubViews(){
         
-        if let urlString = image.url {
-            
-            let nsurl = NSURL(string: urlString)
-            
-            imageView.sd_setImageWithURL(nsurl)
-        }
-        
+        setupImageView()
         setupBlurView()
+        setupImageDetailInfoView()
         
-        //setup captionLabel
-        setupCaptionLabelWithData()
-    
-        //setup byUserLabel
-        let userFullName = image.user?.name ?? ""
-        byUserLabel.text = kByUserLabelPrefixString + " " + userFullName
-    
-        //setup locationLabel
-        let locationName = image.location?.name ?? ""
-        cityStateLabel.text = locationName
-        
-        //setup coordinatesLabel
-        setupCoordintesLabel()
-    
-        //setup dateLabel
-        setupDateLabelWithData()
-        
-        //setup timeLabel
-        setupTimeLabelWithData()
-        
-        //setup weatherImageView and Temperature Label
-        setupWeatherImageViewAndTemperatureLabel()
         
     }
     
+    func setupImageDetailInfoView(){
+        
+        imageDetailInfoView.setupWithData(image.caption, userFullName: image.user?.name, locationName: image.location?.name, latitude: image.location?.latitude, longitude: image.location?.longitude, timeStamp: image.timeStamp, weatherIconId: image.location?.weather?.iconId, temperature: image.location?.weather?.temperature)
+        
+    }
     
-    
-    
-    
+    func setupImageView(){
+        
+        if let urlString = image.url {
+            let nsurl = NSURL(string: urlString)
+            imageView.sd_setImageWithURL(nsurl)
+        }
+    }
+
     @IBAction func backButtonAction(sender: AnyObject) {
         
         self.navigationController?.popViewControllerAnimated(true)
   
     }
    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
 
 
@@ -155,102 +102,14 @@ extension ImageDetailViewController {
         
         blurViewHolderView.addSubview(blurView)
         
-        
         imageView.addSubview(blurViewHolderView)
         
     }
-    
-    func setupCaptionLabelWithData(){
-        
-        if let imageCaption = image.caption {
-
-            var caption = ""
-            if (imageCaption != CameraDataManager.SharedInstance.kEmptyCaptionPlaceHolder){
-                caption = image.caption?.uppercaseString ?? ""
-            }
-        
-        captionLabel.attributedText = NSAttributedString.createAttributedStringWithLetterAndLineSpacingWithCentering(caption, letterSpacing: kCaptionLabelLetterSpacing, lineSpacing: kCaptionLabelLineSpacing, centered: true)
-        
-        }
-    }
-    
-    func setupDateLabelWithData(){
-        
-        if let date = image.timeStamp {
-            let dateFormatter = NSDateFormatter()
-            dateFormatter.dateStyle = NSDateFormatterStyle.LongStyle
-            let locale = LocationDataManager.SharedInstance.getLanguageLocale()
-            dateFormatter.locale = NSLocale(localeIdentifier: locale)
-            let dateString = dateFormatter.stringFromDate(date)
-            
-            dateLabel.text = kDateLabelPrefixString + " " + dateString
-        }
-        else{
-            dateLabel.text = ""
-        }
-        
-    }
-    
-    func setupTimeLabelWithData(){
-        
-        if let date = image.timeStamp {
-            let dateFormatter = NSDateFormatter()
-            dateFormatter.timeStyle = .ShortStyle
-            let locale = LocationDataManager.SharedInstance.getLanguageLocale()
-            dateFormatter.locale = NSLocale(localeIdentifier: locale)
-            //dateFormatter.dateFormat = "h:mm a"
-            let dateString = dateFormatter.stringFromDate(date)
-            timeLabel.text = kTimeLabelPrefixString + " " + dateString
-   
-        }
-        else{
-            timeLabel.text = ""
-        }
-        
-    }
-    
-    
-    func setupCoordintesLabel(){
-        
-        if let latitude = image.location?.latitude,
-        let longitude = image.location?.longitude,
-        let lat = Double(latitude),
-        let long = Double(longitude) {
-            
-            let formattedCordinatesString = Utils.coordinateString(lat, longitude: long)
-            
-            coordinatesLabel.attributedText = NSAttributedString.createAttributedStringWithLetterAndLineSpacingWithCentering(formattedCordinatesString, letterSpacing: 1.4, lineSpacing: 5, centered: true)
-       
-        }
-        else{
-            coordinatesLabel.text = ""
-        }
-    }
-    
-    func setupWeatherImageViewAndTemperatureLabel(){
-        
-        if let iconId = image.location?.weather?.iconId {
-            let imageName = kWeatherIconNamePrefix + "\(iconId)"
-            
-            if let image = UIImage(named: imageName){
-                weatherImageView.image = image
-            }
- 
-        }
-        
-        if let temperature = image.location?.weather?.temperature {
-            
-            temperatureLabel.text = "\(temperature)" + kDegreeSymbolString
-        
-        }
- 
-    }
-    
+  
 }
 
 
 extension ImageDetailViewController : UICollectionViewDataSource {
-    
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
        
