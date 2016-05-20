@@ -183,13 +183,6 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		1B578C271C1A759C000F6076 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Resources;
-			sourceTree = "<group>";
-		};
 		347472811BFA8C6A0018B7F6 = {
 			isa = PBXGroup;
 			children = (
@@ -214,7 +207,6 @@
 			isa = PBXGroup;
 			children = (
 				347E276C1C1F9CD10089EC3D /* BluePic.entitlements */,
-				1B578C271C1A759C000F6076 /* Resources */,
 				1B3BA0741C0F5FBD0064C850 /* Models */,
 				3474728D1BFA8C6A0018B7F6 /* AppDelegate.swift */,
 				347472941BFA8C6A0018B7F6 /* Assets.xcassets */,
