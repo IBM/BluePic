@@ -17,6 +17,7 @@ class ImageDetailViewModel: UIView {
     
     private let kCellPadding: CGFloat = 60
     
+    private let kImageInfoHeaderViewMinimumHeight : CGFloat = 340
     
     
     /**
@@ -83,6 +84,33 @@ class ImageDetailViewModel: UIView {
         let size = NSString(string: tags[indexPath.item].label!).sizeWithAttributes(nil)
         return CGSizeMake(size.width + kCellPadding, 30.0)
  
+    }
+    
+    
+    func referenceSizeForHeaderInSection(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, section: Int, superViewHeight : CGFloat) -> CGSize {
+        
+        
+        let collectionWidth = collectionView.frame.size.width
+        
+        if(section == 0){
+            
+            let headerHeight = superViewHeight * 0.60
+            
+            if(headerHeight < kImageInfoHeaderViewMinimumHeight){
+                 return CGSizeMake(collectionWidth, kImageInfoHeaderViewMinimumHeight)
+            }
+            else{
+                 return CGSizeMake(collectionWidth, headerHeight)
+            }
+            
+        }
+        else{
+            return CGSizeMake(collectionWidth, 0)
+        }
+        
+        
+        
+        
     }
 
 

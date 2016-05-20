@@ -157,21 +157,12 @@ extension ImageDetailViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         
         return viewModel.sizeForItemAtIndexPath(indexPath, collectionView: collectionView)
-        
     }
     
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize{
         
-        let collectionWidth = collectionView.frame.size.width
-        
-        if(section == 0){
-            return CGSizeMake(collectionWidth, self.view.frame.size.height/2 + kHeaderViewInfoViewHeight) //kHeaderViewHeight
-        }
-        else{
-            return CGSizeMake(collectionWidth, 0)
-        }
-        
+       return viewModel.referenceSizeForHeaderInSection(collectionView, layout: collectionViewLayout, section: section, superViewHeight: self.view.frame.size.height)
     }
     
     
