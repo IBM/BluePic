@@ -1,5 +1,5 @@
 /**
- * Stub code for reading data from Cloudant in a whisk action
+ * read data from Cloudant 
  */
 
 import KituraNet
@@ -40,18 +40,15 @@ func main(args:[String:Any]) -> [String:Any] {
         req.end();
     }
     
-    var cloudantResult:[String:Any]?
-    
-    // Convert to NSData
-    let data = str.bridge().dataUsingEncoding(NSUTF8StringEncoding)
-     do {
-        cloudantResult = try NSJSONSerialization.jsonObject(with: data!, options: []) as? [String: Any]
-    } catch {
-        print("Error \(error)")
-    }
-    
     let result:[String:Any] = [
-        "cloudantResult": cloudantResult!
+        "userId":  args["userId"],
+        "userDoc": args["userDoc"],
+        "imageId":  args["imageId"],
+        "imageDoc": args["imageDoc"],
+        "alchemyResult": args["alchemyResult"],
+        "weatherResult": args["weatherResult"],
+        "cloudantId": args["cloudantId"],
+        "cloudantResult": str
     ]
     return result
 }
