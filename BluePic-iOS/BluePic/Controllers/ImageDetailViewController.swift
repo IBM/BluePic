@@ -13,16 +13,18 @@ class ImageDetailViewController: UIViewController {
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var dimView: UIView!
     @IBOutlet weak var backButton: UIButton!
-    @IBOutlet weak var imageDetailInfoView: ImageDetailInfoView!
     @IBOutlet weak var tagCollectionView: UICollectionView!
-
-    private let kCellPadding: CGFloat = 60
+    
+    let kHeaderViewInfoViewHeight : CGFloat = 105
 
     var image : Image!
+    
+    var viewModel : ImageDetailViewModel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupViewModel()
         setupSubViews()
         setupTagCollectionView()
         
@@ -37,6 +39,12 @@ class ImageDetailViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    
+    func setupViewModel(){
+        viewModel = ImageDetailViewModel()
+        viewModel.image = image
+    }
+    
     func setupTagCollectionView(){
         
         let layout = KTCenterFlowLayout()
@@ -46,6 +54,8 @@ class ImageDetailViewController: UIViewController {
         tagCollectionView.setCollectionViewLayout(layout, animated: false)
         tagCollectionView.delegate = self
         tagCollectionView.dataSource = self
+        
+        Utils.registerSupplementaryElementOfKindNibWithCollectionView("ImageInfoHeaderCollectionReusableView", kind: UICollectionElementKindSectionHeader, collectionView: tagCollectionView)
 
         Utils.registerNibWithCollectionView("TagCollectionViewCell", collectionView: tagCollectionView)
         
@@ -62,7 +72,7 @@ class ImageDetailViewController: UIViewController {
     
     func setupImageDetailInfoView(){
         
-        imageDetailInfoView.setupWithData(image.caption, userFullName: image.user?.name, locationName: image.location?.name, latitude: image.location?.latitude, longitude: image.location?.longitude, timeStamp: image.timeStamp, weatherIconId: image.location?.weather?.iconId, temperature: image.location?.weather?.temperature)
+//        imageDetailInfoView.setupWithData(image.caption, userFullName: image.user?.name, locationName: image.location?.name, latitude: image.location?.latitude, longitude: image.location?.longitude, timeStamp: image.timeStamp, weatherIconId: image.location?.weather?.iconId, temperature: image.location?.weather?.temperature)
         
     }
     
@@ -112,44 +122,59 @@ extension ImageDetailViewController {
 extension ImageDetailViewController : UICollectionViewDataSource {
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-       
-        if let tags = image.tags {
-            return tags.count
-        }
-        else{
-            return 0
-        }
-        
+        return viewModel.numberOfItemsInSection(section)
     }
     
     
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        return 1
+        return viewModel.numberOfSectionsInCollectionView()
+    }
+    
+    func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
+        return viewModel.setUpSectionHeaderViewForIndexPath(
+            indexPath,
+            kind: kind,
+            collectionView: collectionView
+        )
     }
 
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCellWithReuseIdentifier("TagCollectionViewCell", forIndexPath: indexPath) as? TagCollectionViewCell else {
-            return UICollectionViewCell()
-        }
-        
-        let tags = image.tags!
-        
-        cell.tagLabel.text = tags[indexPath.item].label?.uppercaseString
-        return cell
-        
+        return viewModel.setUpCollectionViewCell(indexPath, collectionView: collectionView)
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        
-        let tags = image.tags!
-        
-        let size = NSString(string: tags[indexPath.item].label!).sizeWithAttributes(nil)
-        return CGSizeMake(size.width + kCellPadding, 30.0)
-    }
+    
+    
     
     
 
+}
+
+
+extension ImageDetailViewController: UICollectionViewDelegateFlowLayout {
+    
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        
+        return viewModel.sizeForItemAtIndexPath(indexPath, collectionView: collectionView)
+        
+    }
+    
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize{
+        
+        let collectionWidth = collectionView.frame.size.width
+        
+        if(section == 0){
+            return CGSizeMake(collectionWidth, self.view.frame.size.height/2 + kHeaderViewInfoViewHeight) //kHeaderViewHeight
+        }
+        else{
+            return CGSizeMake(collectionWidth, 0)
+        }
+        
+    }
+    
+    
 }
 
 
