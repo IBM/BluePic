@@ -109,7 +109,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     /**
-     Method preloads keyboard to prevant the keybaord on the camera confirmation screen to be laggy when touching the text field for the first time
+     Method preloads keyboard to prevent the keyboard on the camera confirmation screen to be laggy when touching the text field for the first time
      */
     func preLoadKeyboardToPrevantLaggyKeyboardInCameraConfirmationScreen(){
         
@@ -120,7 +120,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         lagFreeField.removeFromSuperview()
         
     }
-    
     
     /**
      Method to initialize Bluemix Mobile Client Access with Facebook
@@ -136,7 +135,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         return FacebookAuthenticationManager.sharedInstance.onFinishLaunching(application, withOptions:  launchOptions)
     }
-
 
     func applicationWillResignActive(application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -158,7 +156,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UIApplication.sharedApplication().applicationIconBadgeNumber = 0
     }
     
-    
     /**
      Method handles opening a facebook url for facebook login
      
@@ -173,11 +170,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return FacebookAuthenticationManager.sharedInstance.onOpenURL(application, url: url, sourceApplication: sourceApplication, annotation: annotation)
     }
     
-    
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-
 
 }
 

@@ -1,5 +1,5 @@
 //
-//  PictureUploadQueueImageFeedCollectionViewCell.swift
+//  ImagesCurrentlyUploadingImageFeedCollectionViewCell.swift
 //  BluePic
 //
 //  Created by Alex Buck on 12/20/15.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PictureUploadQueueImageFeedCollectionViewCell: UICollectionViewCell {
+class ImagesCurrentlyUploadingImageFeedCollectionViewCell: UICollectionViewCell {
 
     @IBOutlet weak var imageView: UIImageView!
     
