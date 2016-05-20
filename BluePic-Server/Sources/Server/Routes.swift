@@ -49,6 +49,61 @@ func defineRoutes() {
   // Hello endpoint
   router.get("/hello", handler: closure)
 
+  // This code will be moved to the OpenWhisk actions/sequence Andy is working on
+  // Just keeping it here for testing purposes
+  router.get("/token") { request, response, next in
+    //http://stackoverflow.com/questions/29365145/how-to-encode-string-to-base64-in-swift
+    let authHeader="NzVlZWY1MmMtMmVkMS00NTE4LTk1ODctY2U1NWNjNjY0NzlkOmtCTFRXWTF2Uk8yZzVnRmRSYnBWOFE="
+    let appGuid="75eef52c-2ed1-4518-9587-ce55cc66479d"
+
+    // Request options
+    var requestOptions = [ClientRequestOptions]()
+    requestOptions.append(.method("POST"))
+    requestOptions.append(.schema("http://"))
+    requestOptions.append(.hostname("imf-authserver.ng.bluemix.net"))
+    requestOptions.append(.port(80))
+    requestOptions.append(.path("/imf-authserver/authorization/v1/apps/\(appGuid)/token"))
+    var headers = [String:String]()
+    headers["Accept"] = "application/json"
+    headers["Content-Type"] = "application/x-www-form-urlencoded; charset=utf-8"
+    headers["Authorization"] = "Basic \(authHeader)"
+    requestOptions.append(.headers(headers))
+
+    // Body required for getting MCA token
+    let requestBody = "grant_type=client_credentials"
+
+    // Make REST call
+    let req = HTTP.request(requestOptions) { resp in
+      var errorResponse = JSON([:])
+      errorResponse["error"].stringValue = "Failed to retrieve MCA token."
+      if let resp = resp where resp.statusCode == HTTPStatusCode.OK {
+        do {
+          let body = NSMutableData()
+          try resp.readAllData(into: body)
+          let jsonResponse = JSON(data: body)
+          //let accessToken = json["accessToken"].stringValue
+          print("MCA response: \(jsonResponse)")
+          response.status(HTTPStatusCode.OK).send(json: jsonResponse)
+        } catch {
+          Log.error("Bad JSON document received from MCA server.")
+          response.status(resp.statusCode).send(json: errorResponse)
+        }
+      } else {
+        Log.error("Status error code or nil reponse received from MCA server.")
+        if let resp = resp {
+          Log.error("Status code: \(resp.statusCode)")
+          if let rawUserData = try? BodyParser.readBodyData(with: resp) {
+            let str = NSString(data: rawUserData, encoding: NSUTF8StringEncoding)
+            print("Response from MCA server: \(str)")
+          }
+        }
+        response.status(HTTPStatusCode.internalServerError).send(json: errorResponse)
+      }
+      next()
+    }
+    req.end(requestBody)
+  }
+
   /**
   * Route for getting the top 10 most popular tags. The following URLs are kept
   * here as reference:
@@ -274,168 +329,168 @@ func defineRoutes() {
       /*let userId = imageJSON["userId"].stringValue
       guard let authContext = request.userInfo["mcaAuthContext"] as? AuthorizationContext,
       userIdentity = authContext.userIdentity?.id where userId == userIdentity else {
-        Log.error("User is not authorized to post image.")
-        response.error = generateInternalError()
-        next()
-        return
-      }
-      Log.verbose("userId: '\(userId)', userIdentity: '\(userIdentity)'.")*/
-
-      // Get image binary from request body
-      let image = try BodyParser.readBodyData(with: request)
-      // Create closure
-      let completionHandler = { (success: Bool) -> Void in
-        if success {
-          // Add image record to database
-          database.create(imageJSON) { (id, revision, doc, error) in
-            guard let id = id, revision = revision where error == nil else {
-              Log.error("Failed to create image record in Cloudant database.")
-              if let error = error {
-                Log.error("Error domain: \(error._domain); error code: \(error._code).")
-              }
-              response.error = generateInternalError()
-              next()
-              return
-            }
-            // Contine processing of image (async request for OpenWhisk)
-            processImage(withId: id, forUser: imageJSON["userId"].stringValue)
-            // Return image document to caller
-            // Update JSON image document with _id, and _rev
-            imageJSON["_id"].stringValue = id
-            imageJSON["_rev"].stringValue = revision
-            response.status(HTTPStatusCode.OK).send(json: imageJSON)
-          }
-        } else {
-          Log.error("Failed to create image record in Cloudant database.")
-          response.error = generateInternalError()
-        }
-        next()
-      }
-      // Create container for user before creating image record in database
-      store(image: image, withName: imageJSON["fileName"].stringValue, inContainer: imageJSON["userId"].stringValue, completionHandler: completionHandler)
-    } catch {
-      Log.error("Failed to add image record.")
-      response.error = generateInternalError()
-      next()
-    }
-  }
-
-  /**
-  * Route for getting all image documents for a given user.
-  */
-  router.get("/users/:userId/images") { request, response, next in
-    guard let userId = request.params["userId"] else {
+      Log.error("User is not authorized to post image.")
       response.error = generateInternalError()
       next()
       return
     }
+    Log.verbose("userId: '\(userId)', userIdentity: '\(userIdentity)'.")*/
 
-    let queryParams: [Database.QueryParameters] = [.descending(true), .endKey([userId, "0"]), .startKey([userId, NSObject()])]
-    database.queryByView("images_per_user", ofDesign: "main_design", usingParameters: queryParams) { (document, error) in
-      if let document = document where error == nil {
-        do {
-          let images = try parseImages(forUserId: userId, usingDocument: document)
-          response.status(HTTPStatusCode.OK).send(json: images)
-        }
-        catch {
-          Log.error("Failed to get images for \(userId).")
-          response.error = generateInternalError()
+    // Get image binary from request body
+    let image = try BodyParser.readBodyData(with: request)
+    // Create closure
+    let completionHandler = { (success: Bool) -> Void in
+      if success {
+        // Add image record to database
+        database.create(imageJSON) { (id, revision, doc, error) in
+          guard let id = id, revision = revision where error == nil else {
+            Log.error("Failed to create image record in Cloudant database.")
+            if let error = error {
+              Log.error("Error domain: \(error._domain); error code: \(error._code).")
+            }
+            response.error = generateInternalError()
+            next()
+            return
+          }
+          // Contine processing of image (async request for OpenWhisk)
+          processImage(withId: id, forUser: imageJSON["userId"].stringValue)
+          // Return image document to caller
+          // Update JSON image document with _id, and _rev
+          imageJSON["_id"].stringValue = id
+          imageJSON["_rev"].stringValue = revision
+          response.status(HTTPStatusCode.OK).send(json: imageJSON)
         }
       } else {
-        Log.error("Failed to get images for \(userId).")
+        Log.error("Failed to create image record in Cloudant database.")
         response.error = generateInternalError()
       }
       next()
     }
+    // Create container for user before creating image record in database
+    store(image: image, withName: imageJSON["fileName"].stringValue, inContainer: imageJSON["userId"].stringValue, completionHandler: completionHandler)
+  } catch {
+    Log.error("Failed to add image record.")
+    response.error = generateInternalError()
+    next()
+  }
+}
+
+/**
+* Route for getting all image documents for a given user.
+*/
+router.get("/users/:userId/images") { request, response, next in
+  guard let userId = request.params["userId"] else {
+    response.error = generateInternalError()
+    next()
+    return
   }
 
-  /**
-  * Route for creating a new user document in the database.
-  */
-  //router.post("/users", middleware: credentials)
-  router.post("/users") { request, response, next in
-    do {
-      let rawUserData = try BodyParser.readBodyData(with: request)
-      var userJson = JSON(data: rawUserData)
-
-      // Verify JSON has required fields
-      guard let _ = userJson["name"].string,
-      let userId = userJson["_id"].string else {
-        throw ProcessingError.User("Invalid user document!")
+  let queryParams: [Database.QueryParameters] = [.descending(true), .endKey([userId, "0"]), .startKey([userId, NSObject()])]
+  database.queryByView("images_per_user", ofDesign: "main_design", usingParameters: queryParams) { (document, error) in
+    if let document = document where error == nil {
+      do {
+        let images = try parseImages(forUserId: userId, usingDocument: document)
+        response.status(HTTPStatusCode.OK).send(json: images)
       }
-      userJson["type"] = "user"
-
-      // Keep only those keys that are valid for the user document
-      let validKeys = ["_id", "name", "type", "language", "unitsOfMeasurement"]
-      for (key, _) in userJson {
-        if validKeys.index(of: key) == nil {
-          userJson.dictionaryObject?.removeValue(forKey: key)
-        }
+      catch {
+        Log.error("Failed to get images for \(userId).")
+        response.error = generateInternalError()
       }
+    } else {
+      Log.error("Failed to get images for \(userId).")
+      response.error = generateInternalError()
+    }
+    next()
+  }
+}
 
-      // Create completion handler closure
-      let completionHandler = { (success: Bool) -> Void in
-        if success {
-          // Persist user document to database
-          database.create(userJson) { (id, revision, document, error) in
-            do {
-              if let document = document where error == nil {
-                // Add revision number response document
-                userJson["_rev"] = document["rev"]
-                // Return user document back to caller
-                try response.status(HTTPStatusCode.OK).send(json: userJson).end()
-                next()
-              } else {
-                Log.error("Failed to add user to the system of records.")
-                response.error = error ?? generateInternalError()
-                next()
-              }
-            } catch {
+/**
+* Route for creating a new user document in the database.
+*/
+//router.post("/users", middleware: credentials)
+router.post("/users") { request, response, next in
+  do {
+    let rawUserData = try BodyParser.readBodyData(with: request)
+    var userJson = JSON(data: rawUserData)
+
+    // Verify JSON has required fields
+    guard let _ = userJson["name"].string,
+    let userId = userJson["_id"].string else {
+      throw ProcessingError.User("Invalid user document!")
+    }
+    userJson["type"] = "user"
+
+    // Keep only those keys that are valid for the user document
+    let validKeys = ["_id", "name", "type", "language", "unitsOfMeasurement"]
+    for (key, _) in userJson {
+      if validKeys.index(of: key) == nil {
+        userJson.dictionaryObject?.removeValue(forKey: key)
+      }
+    }
+
+    // Create completion handler closure
+    let completionHandler = { (success: Bool) -> Void in
+      if success {
+        // Persist user document to database
+        database.create(userJson) { (id, revision, document, error) in
+          do {
+            if let document = document where error == nil {
+              // Add revision number response document
+              userJson["_rev"] = document["rev"]
+              // Return user document back to caller
+              try response.status(HTTPStatusCode.OK).send(json: userJson).end()
+              next()
+            } else {
               Log.error("Failed to add user to the system of records.")
-              response.error = generateInternalError()
+              response.error = error ?? generateInternalError()
               next()
             }
+          } catch {
+            Log.error("Failed to add user to the system of records.")
+            response.error = generateInternalError()
+            next()
           }
-        } else {
-          Log.error("Failed to add user to the system of records.")
-          response.error = generateInternalError()
-          next()
         }
+      } else {
+        Log.error("Failed to add user to the system of records.")
+        response.error = generateInternalError()
+        next()
       }
-      // Create container for user before adding record to database
-      createContainer(withName: userId, completionHandler: completionHandler)
-    } catch let error {
-      Log.error("Failed to create new user document.")
-      Log.error("Error domain: \(error._domain); error code: \(error._code).")
-      response.error = generateInternalError()
-      next()
     }
+    // Create container for user before adding record to database
+    createContainer(withName: userId, completionHandler: completionHandler)
+  } catch let error {
+    Log.error("Failed to create new user document.")
+    Log.error("Error domain: \(error._domain); error code: \(error._code).")
+    response.error = generateInternalError()
+    next()
   }
+}
 
-  // Get image binary. Note that it is not technically possible to serve attachments from Cloudant
-  // without requiring authentication (unless the authentication settings for the entire database
-  // are changed). Hence, the need for this proxy method.
-  // router.get("/images/:imageId/:attachmentName") { request, response, next in
-  //   guard let imageId = request.params["imageId"],
-  //   let attachmentName = request.params["attachmentName"] else {
-  //     response.error = generateInternalError()
-  //     next()
-  //     return
-  //   }
-  //
-  //   database.retrieveAttachment(imageId, attachmentName: attachmentName) { (image, error, contentType) in
-  //     if let image = image where error == nil {
-  //       // Add content type to response header
-  //       if let contentType = contentType {
-  //         response.setHeader("Content-Type", value: contentType)
-  //       }
-  //       response.status(HTTPStatusCode.OK).send(data: image)
-  //     }
-  //     else {
-  //       response.error = error ?? generateInternalError()
-  //     }
-  //     next()
-  //   }
-  // }
+// Get image binary. Note that it is not technically possible to serve attachments from Cloudant
+// without requiring authentication (unless the authentication settings for the entire database
+// are changed). Hence, the need for this proxy method.
+// router.get("/images/:imageId/:attachmentName") { request, response, next in
+//   guard let imageId = request.params["imageId"],
+//   let attachmentName = request.params["attachmentName"] else {
+//     response.error = generateInternalError()
+//     next()
+//     return
+//   }
+//
+//   database.retrieveAttachment(imageId, attachmentName: attachmentName) { (image, error, contentType) in
+//     if let image = image where error == nil {
+//       // Add content type to response header
+//       if let contentType = contentType {
+//         response.setHeader("Content-Type", value: contentType)
+//       }
+//       response.status(HTTPStatusCode.OK).send(data: image)
+//     }
+//     else {
+//       response.error = error ?? generateInternalError()
+//     }
+//     next()
+//   }
+// }
 
 }
