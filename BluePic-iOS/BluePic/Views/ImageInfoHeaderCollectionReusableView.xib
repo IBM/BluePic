@@ -7,11 +7,11 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <collectionReusableView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ImageInfoHeaderCollectionReusableView" id="X47-ss-Z7Q" customClass="ImageInfoHeaderCollectionReusableView" customModule="BluePic" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="600" height="509"/>
+            <rect key="frame" x="0.0" y="0.0" width="600" height="395"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="h7Q-NK-YAa">
-                    <rect key="frame" x="40" y="36" width="520" height="72"/>
+                    <rect key="frame" x="40" y="54" width="520" height="72"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="by Alex Buck" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tqR-wi-fZZ">
                             <rect key="frame" x="0.0" y="26" width="520" height="21"/>
@@ -45,6 +45,7 @@
                         <constraint firstItem="tqR-wi-fZZ" firstAttribute="width" secondItem="h7Q-NK-YAa" secondAttribute="width" id="For-TH-d4v"/>
                         <constraint firstItem="e0c-Ce-Oll" firstAttribute="centerX" secondItem="h7Q-NK-YAa" secondAttribute="centerX" id="M30-as-GQx"/>
                         <constraint firstAttribute="height" constant="72" id="Mji-hJ-kkM"/>
+                        <constraint firstItem="I64-wv-jB1" firstAttribute="top" secondItem="h7Q-NK-YAa" secondAttribute="top" constant="-1" id="NzY-gy-a38"/>
                         <constraint firstItem="I64-wv-jB1" firstAttribute="centerX" secondItem="h7Q-NK-YAa" secondAttribute="centerX" id="Su0-Zj-z4k"/>
                         <constraint firstItem="tqR-wi-fZZ" firstAttribute="top" secondItem="I64-wv-jB1" secondAttribute="bottom" constant="-8" id="Ysc-aa-iOH"/>
                         <constraint firstItem="e0c-Ce-Oll" firstAttribute="top" secondItem="tqR-wi-fZZ" secondAttribute="bottom" constant="10" id="ZsX-hH-Cag"/>
@@ -55,11 +56,12 @@
                     <variation key="default">
                         <mask key="constraints">
                             <exclude reference="4Jp-A8-V9t"/>
+                            <exclude reference="oYX-uQ-fa0"/>
                         </mask>
                     </variation>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ksl-mr-hEt">
-                    <rect key="frame" x="40" y="125" width="520" height="222"/>
+                    <rect key="frame" x="40" y="143" width="520" height="222"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Portland, Oregan" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E2R-6b-EJR">
                             <rect key="frame" x="0.0" y="8" width="520" height="32"/>
@@ -150,8 +152,14 @@
                 <constraint firstAttribute="trailing" secondItem="Ksl-mr-hEt" secondAttribute="trailing" constant="40" id="Bve-NL-la3"/>
                 <constraint firstAttribute="trailing" secondItem="h7Q-NK-YAa" secondAttribute="trailing" constant="40" id="Cpw-8j-lnR"/>
                 <constraint firstItem="h7Q-NK-YAa" firstAttribute="leading" secondItem="X47-ss-Z7Q" secondAttribute="leading" constant="40" id="TlO-e7-faf"/>
+                <constraint firstAttribute="bottom" secondItem="Ksl-mr-hEt" secondAttribute="bottom" constant="30" id="gwe-Gt-TlD"/>
                 <constraint firstItem="h7Q-NK-YAa" firstAttribute="top" secondItem="X47-ss-Z7Q" secondAttribute="top" constant="36" id="zbS-9J-3YD"/>
             </constraints>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="zbS-9J-3YD"/>
+                </mask>
+            </variation>
             <connections>
                 <outlet property="byUserLabel" destination="tqR-wi-fZZ" id="hdt-bM-HV5"/>
                 <outlet property="captionLabel" destination="I64-wv-jB1" id="J4R-RA-N7E"/>
@@ -162,7 +170,7 @@
                 <outlet property="timeLabel" destination="1NH-GQ-JA3" id="FDq-1U-R5j"/>
                 <outlet property="weatherImageView" destination="TSB-eY-aU8" id="9x3-sm-VDG"/>
             </connections>
-            <point key="canvasLocation" x="368" y="1089.5"/>
+            <point key="canvasLocation" x="368" y="1022"/>
         </collectionReusableView>
     </objects>
 </document>
