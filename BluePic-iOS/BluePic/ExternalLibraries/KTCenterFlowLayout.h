@@ -13,6 +13,6 @@
 @interface KTCenterFlowLayout : UICollectionViewFlowLayout
 
 
-
+@property(nonatomic) BOOL leftAlignedLayout;
 
 @end
