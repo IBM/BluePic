@@ -28,6 +28,10 @@ class ImageDetailViewController: UIViewController {
         setupSubViews()
         setupTagCollectionView()
         
+
+  
+        image.tags = image.tags! + image!.tags! + image!.tags!
+        
     }
     
     override func viewWillAppear(animated: Bool) {
