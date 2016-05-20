@@ -165,9 +165,9 @@ extension ImageDetailViewController {
         
         if let imageCaption = image.caption {
 
-            let caption = ""
+            var caption = ""
             if (imageCaption != CameraDataManager.SharedInstance.kEmptyCaptionPlaceHolder){
-                let caption = image.caption?.uppercaseString ?? ""
+                caption = image.caption?.uppercaseString ?? ""
             }
         
         captionLabel.attributedText = NSAttributedString.createAttributedStringWithLetterAndLineSpacingWithCentering(caption, letterSpacing: kCaptionLabelLetterSpacing, lineSpacing: kCaptionLabelLineSpacing, centered: true)

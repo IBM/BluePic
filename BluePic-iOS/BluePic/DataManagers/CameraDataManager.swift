@@ -70,7 +70,7 @@ class CameraDataManager: NSObject {
     
     var imagesTheUserDecidedToPostQueue : [Image] = []
     
-    let kEmptyCaptionPlaceHolder = "[n/a]"
+    let kEmptyCaptionPlaceHolder = "No-Caption"
     
     
     /**
