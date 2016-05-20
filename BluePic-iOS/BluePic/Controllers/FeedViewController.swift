@@ -131,7 +131,7 @@ class FeedViewController: UIViewController {
         
         Utils.registerNibWithCollectionView("ImageFeedCollectionViewCell", collectionView: collectionView)
         
-        Utils.registerNibWithCollectionView("PictureUploadQueueImageFeedCollectionViewCell", collectionView: collectionView)
+        Utils.registerNibWithCollectionView("ImagesCurrentlyUploadingImageFeedCollectionViewCell", collectionView: collectionView)
         
         self.refreshControl = UIRefreshControl()
         self.refreshControl.addTarget(self, action: #selector(FeedViewController.userTriggeredRefresh), forControlEvents: UIControlEvents.ValueChanged)
