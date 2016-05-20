@@ -67,12 +67,10 @@ class BluemixDataManager: NSObject {
     
     var tags = [String]()
     
-    
     //End Points
     private let kImagesEndPoint = "images"
     private let kUsersEndPoint = "users"
     private let kTagsEndPoint = "tags"
-    
     
     //Plist Keys
     private let kKeysPlistName = "keys"
@@ -85,8 +83,6 @@ class BluemixDataManager: NSObject {
     
     //State Variables
     var hasReceievedInitialImages = false
-    
-    
     
     func initilizeBluemixAppRoute(){
         
@@ -125,41 +121,6 @@ class BluemixDataManager: NSObject {
     
     func getBluemixAppRegion() -> String {
         return Utils.getStringValueWithKeyFromPlist(kKeysPlistName, key: kBluemixAppRegionKey)
-    }
-    
-    func localHostHelloTest(){
-        
-        let appRoute = "http://localhost:8090"//Utils.getKeyFromPlist("keys", key: "backend_route")
-        let appGuid =  ""//Utils.getKeyFromPlist("keys", key: "GUID")
-        
-        //        let appRoute = "https://greatapp.mybluemix.net"
-        //        let appGuid = "2fe35477-5410-4c87-1234-aca59511433b"
-        let bluemixRegion = BMSClient.REGION_US_SOUTH
-        
-        BMSClient.sharedInstance
-            .initializeWithBluemixAppRoute(appRoute,
-                                           bluemixAppGUID: appGuid,
-                                           bluemixRegion: bluemixRegion)
-        
-        let request = Request(url: "/images", method: HttpMethod.GET)
-        //request.headers = ["foo":"bar"]
-        //request.queryParameters = ["foo":"bar"]
-        
-        request.sendWithCompletionHandler { (response, error) -> Void in
-            if let error = error {
-                print ("Error :: \(error)")
-            } else {
-                print ("Success :: \(response?.responseText)")
-            }
-        }
-        
-        //        let logger = Logger.loggerForName("FirstLogger")
-        //
-        //        logger.debug("This is a debug message")
-        //        logger.error("This is an error message")
-        //        logger.info("This is an info message")
-        //        logger.warn("This is a warning message")
-        
     }
     
     func getPopularTags() {
