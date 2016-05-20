@@ -31,12 +31,13 @@ class ProfileCollectionViewCell: UICollectionViewCell {
     //label that displays the amount of time since the photo was taken
     @IBOutlet weak var timeSincePostedLabel: UILabel!
     
-    //button that triggers the options display for a photo (currently hidden and not in use)
-    @IBOutlet weak var moreButton: UIButton!
-    
+    //label shows the number of tags an image has
+    @IBOutlet weak var numberOfTagsLabel: UILabel!
+   
     //the view that is shown while we wait for the image to download and display
     @IBOutlet weak var loadingView: UIView!
     
+    private let kNumberOfTagsPostFix = NSLocalizedString("Tags", comment: "")
     
     /**
      Method is called when the view wakes from nib
@@ -55,7 +56,22 @@ class ProfileCollectionViewCell: UICollectionViewCell {
      - parameter timeStamp:   Double?
      - parameter fileName:    String?
      */
-    func setupData(url : String?, image : UIImage?, caption : String?, timeStamp: NSDate?, fileName : String?){
+    func setupData(url : String?, image : UIImage?, caption : String?, numberOfTags : Int?, timeStamp: NSDate?, fileName : String?){
+        
+        if let numOfTags = numberOfTags {
+            
+            if(numOfTags == 0){
+                numberOfTagsLabel.hidden = true
+            }
+            else{
+                numberOfTagsLabel.hidden = false
+                numberOfTagsLabel.text = "\(numOfTags)" + " " + kNumberOfTagsPostFix
+            }
+        }
+        else{
+            numberOfTagsLabel.hidden = true
+        }
+    
         
         //set the image view's image
         setImageView(url, fileName: fileName)

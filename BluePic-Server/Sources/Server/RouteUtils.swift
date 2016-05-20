@@ -21,6 +21,7 @@ import KituraNet
 import LoggerAPI
 import SwiftyJSON
 import BluemixObjectStorage
+import MobileClientAccess
 
 /**
 * This method should kick off asynchronously an OpenWhisk sequence
@@ -29,11 +30,43 @@ import BluemixObjectStorage
 * completes execution, the sequence should invoke the '/push' endpoint to generate
 * a push notification for the iOS client.
 */
-func process(imageURL: String, withImageId imageId: String, withUserId userId: String) {
+func processImage(withId imageId: String, forUser userId: String) {
   // TODO Invoke OpenWhisk action
   // TODO OpenWhisk reads user document from cloudant to obtain language and units of measure...
   Log.verbose("process() not implemented yet...")
   Log.verbose("imageId: \(imageId), userId: \(userId)")
+}
+
+/**
+* Gets a specific image document from the Cloudant database.
+*
+* - parameter database: Database instance
+* - parameter imageId:  String id of the image document to retrieve.
+* - parameter callback: Callback to use within async method.
+*/
+func readImage(database: Database, imageId: String, callback: ((jsonData : JSON?) -> ())) {
+  let queryParams: [Database.QueryParameters] =
+  [.descending(true), .includeDocs(true), .endKey([imageId, 0]), .startKey([imageId, NSObject()])]
+  database.queryByView("images_by_id", ofDesign: "main_design", usingParameters: queryParams) { (document, error) in
+    if let document = document where error == nil {
+      do {
+        let json = try parseImages(document: document)
+        let images = json["records"].arrayValue
+        if images.count == 1 {
+          callback(jsonData: images[0])
+        } else {
+          throw ProcessingError.Image("Image not found!")
+        }
+      }
+      catch {
+        Log.error("Failed to get specific image document.")
+        callback(jsonData: nil)
+      }
+    } else {
+      Log.error("Failed to get specific image document.")
+      callback(jsonData: nil)
+    }
+  }
 }
 
 func parseImages(document: JSON) throws -> JSON {
@@ -86,7 +119,8 @@ func getImageJSON(fromRequest request: RouterRequest) throws -> JSON {
   let width = Float(w),
   let height = Float(h),
   let latitude = Float(lat),
-  let longitude = Float(long) else {
+  let longitude = Float(long),
+  let authContext = request.userInfo["mcaAuthContext"] as? AuthorizationContext else {
     throw ProcessingError.Image("Invalid image document!")
   }
 
@@ -97,10 +131,12 @@ func getImageJSON(fromRequest request: RouterRequest) throws -> JSON {
   let uploadedTs = StringUtils.currentTimestamp()
   let imageName = StringUtils.decodeWhiteSpace(inString: caption)
   let locationName = StringUtils.decodeWhiteSpace(inString: location)
+  let imageURL = generateUrl(forContainer: userId, forImage: fileName)
+  let deviceId = authContext.deviceIdentity.id
 
   let whereabouts: JSONDictionary = ["latitude": latitude, "longitude": longitude, "name": locationName]
-  let imageDocument: JSONDictionary = ["location": whereabouts, "contentType": contentType,
-  "fileName": fileName, "userId": userId, "caption": imageName, "uploadedTs": uploadedTs,
+  let imageDocument: JSONDictionary = ["location": whereabouts, "contentType": contentType, "url": imageURL,
+  "fileName": fileName, "userId": userId, "deviceId": deviceId, "caption": imageName, "uploadedTs": uploadedTs,
   "width": width, "height": height, "type": "image"]
 
   return JSON(imageDocument)
@@ -215,6 +251,9 @@ private func constructDocument(records: [JSON]) -> JSON {
   return jsonDocument
 }
 
+/**
+* Connects to object storage service and upon completion, invokes the completionHandler closure.
+*/
 private func connectToObjectStorage(completionHandler: (objStore: ObjectStorage?) -> Void) {
   // Create object store instance and connect
   let objStore = ObjectStorage(projectId: objStorageConnProps.projectId)

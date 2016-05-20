@@ -34,6 +34,21 @@ class FeedViewController: UIViewController {
     //constraint outlet for the collection view's top space
     @IBOutlet weak var collectionViewTopSpaceConstraint: NSLayoutConstraint!
     
+    //top bar that shows on intial load of the app
+    @IBOutlet weak var defaultTopBarView: UIView!
+    
+    //top bar that shows when displaying search results
+    @IBOutlet var searchTopBarView: UIView!
+    
+    //label used to show searchQuery
+    @IBOutlet weak var wordTagLabel: UILabel!
+    
+    //label to give user feedback on the results they wanted
+    @IBOutlet weak var noResultsLabel: UILabel!
+    
+    //search query parameters that will be sent to the server for results
+    var searchQuery: String?
+    
     //view model of the Feed View controller. It will keep track of state and handle data for this view controller
     var viewModel : FeedViewModel!
     
@@ -54,9 +69,24 @@ class FeedViewController: UIViewController {
         setupViewModel()
         
         startLoadingAnimationAtAppLaunch()
-        
+        determineFeedMode()
     }
     
+    /**
+     Method to determine if we should put the search top bar up because we just performed a search query
+     */
+    func determineFeedMode() {
+        
+        if let query = searchQuery {
+            searchTopBarView.frame = defaultTopBarView.frame
+            defaultTopBarView.hidden = true
+            searchTopBarView.hidden = false
+            wordTagLabel.text = query.uppercaseString
+            Utils.kernLabelString(wordTagLabel, spacingValue: 1.4)
+            self.view.addSubview(searchTopBarView)
+        }
+        
+    }
     
     /**
      Method called upon view will appear. It trys to start the loading animation if there are any photos in the camera data manager's picture upload queue
@@ -66,11 +96,12 @@ class FeedViewController: UIViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
+        UIApplication.sharedApplication().statusBarStyle = UIStatusBarStyle.Default
+        
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         tryToStartLoadingAnimation()
 
     }
-    
 
     /**
      Method called as a callback from the OS when the app receives a memeory warning from the OS
@@ -84,7 +115,7 @@ class FeedViewController: UIViewController {
      Method sets up the view model, passes the callback we want ot be called when there are notifications from the feed view model
      */
     func setupViewModel(){
-        viewModel = FeedViewModel(notifyFeedVC: handleFeedViewModelNotifications)
+        viewModel = FeedViewModel(notifyFeedVC: handleFeedViewModelNotifications, searchQuery: searchQuery)
     }
     
     
@@ -169,10 +200,14 @@ class FeedViewController: UIViewController {
     }
     
     @IBAction func transitionToSearch(sender: AnyObject) {
-        let vc = UIStoryboard(name: "Feed", bundle: nil).instantiateViewControllerWithIdentifier("SearchViewController") as! SearchViewController
+        let vc = Utils.vcWithNameFromStoryboardWithName("SearchViewController", storyboardName: "Feed")!
         self.navigationController?.pushViewController(vc, animated: true)
     }
 
+    @IBAction func popVC(sender: AnyObject) {
+        self.navigationController?.popViewControllerAnimated(true)
+    }
+    
 }
 
 
@@ -217,6 +252,19 @@ extension FeedViewController: UICollectionViewDataSource {
     
 }
 
+extension FeedViewController: UICollectionViewDelegate {
+    
+    
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        
+        if let imageDetailVC = viewModel.prepareImageDetailViewControllerSelectedCellAtIndexPath(indexPath){
+            self.navigationController?.pushViewController(imageDetailVC, animated: true)
+        }
+        
+    }
+    
+
+}
 
 
 extension FeedViewController: UICollectionViewDelegateFlowLayout {
@@ -257,6 +305,10 @@ extension FeedViewController {
         }
         else if(feedViewModelNotification == FeedViewModelNotification.UploadingPhotoFinished){
             tryToStopLoadingAnimation()
+        }
+        else if(feedViewModelNotification == FeedViewModelNotification.NoSearchResults){
+            // do alert
+            noResultsLabel.hidden = false
         }
         
     }

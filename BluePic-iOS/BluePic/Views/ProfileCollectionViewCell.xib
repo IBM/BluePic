@@ -15,14 +15,6 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SNP-0Q-2Ln">
                         <rect key="frame" x="0.0" y="304" width="398" height="60"/>
                         <subviews>
-                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9yv-kJ-p3s">
-                                <rect key="frame" x="15" y="0.0" width="58" height="32"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="58" id="H2e-GK-tHj"/>
-                                    <constraint firstAttribute="height" constant="32" id="iqF-Ny-Cpd"/>
-                                </constraints>
-                                <state key="normal" title="Button" image="moreIcon"/>
-                            </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="15m" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YEf-nq-eTc">
                                 <rect key="frame" x="348" y="9" width="40" height="21"/>
                                 <constraints>
@@ -47,19 +39,28 @@
                                     <constraint firstAttribute="width" constant="20" id="HHs-dX-U1e"/>
                                 </constraints>
                             </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3 Tags" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MSs-Lm-dbG">
+                                <rect key="frame" x="10" y="9" width="52" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="k9Z-KH-fzb"/>
+                                    <constraint firstAttribute="width" constant="52" id="qIc-xS-OdZ"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" weight="light" pointSize="13"/>
+                                <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="9yv-kJ-p3s" firstAttribute="leading" secondItem="SNP-0Q-2Ln" secondAttribute="leading" constant="15" id="8v7-gx-rHo"/>
+                            <constraint firstItem="MSs-Lm-dbG" firstAttribute="top" secondItem="SNP-0Q-2Ln" secondAttribute="top" constant="9" id="4tV-qb-AlJ"/>
                             <constraint firstItem="0yj-qx-X14" firstAttribute="top" secondItem="SNP-0Q-2Ln" secondAttribute="top" constant="12" id="BR4-sY-qU1"/>
-                            <constraint firstItem="0yj-qx-X14" firstAttribute="leading" secondItem="9yv-kJ-p3s" secondAttribute="trailing" constant="-11" id="Gbu-zg-J3N"/>
                             <constraint firstItem="0yj-qx-X14" firstAttribute="centerX" secondItem="SNP-0Q-2Ln" secondAttribute="centerX" id="K3Q-33-RvL"/>
                             <constraint firstItem="YEf-nq-eTc" firstAttribute="top" secondItem="SNP-0Q-2Ln" secondAttribute="top" constant="9" id="LNC-Ik-iAW"/>
+                            <constraint firstItem="MSs-Lm-dbG" firstAttribute="leading" secondItem="SNP-0Q-2Ln" secondAttribute="leading" constant="10" id="Ou7-fG-PBH"/>
                             <constraint firstAttribute="trailing" secondItem="YEf-nq-eTc" secondAttribute="trailing" constant="10" id="Sod-Fx-yvd"/>
                             <constraint firstItem="Y9p-i1-dDt" firstAttribute="top" secondItem="0yj-qx-X14" secondAttribute="bottom" constant="15.5" id="YKN-J9-hkg"/>
                             <constraint firstItem="YEf-nq-eTc" firstAttribute="leading" secondItem="0yj-qx-X14" secondAttribute="trailing" constant="12" id="a6m-yt-SSd"/>
                             <constraint firstItem="Y9p-i1-dDt" firstAttribute="centerX" secondItem="SNP-0Q-2Ln" secondAttribute="centerX" id="fxY-ZW-nxa"/>
-                            <constraint firstItem="9yv-kJ-p3s" firstAttribute="top" secondItem="SNP-0Q-2Ln" secondAttribute="top" id="qrx-8s-1us"/>
                             <constraint firstAttribute="height" constant="60" id="yqy-4I-Uwf"/>
                         </constraints>
                     </view>
@@ -104,7 +105,7 @@
                 <outlet property="captionLabel" destination="0yj-qx-X14" id="HD4-pd-HI4"/>
                 <outlet property="imageView" destination="sgl-tr-fsw" id="75h-mM-mqu"/>
                 <outlet property="loadingView" destination="wIp-df-0eX" id="YQn-gx-P52"/>
-                <outlet property="moreButton" destination="9yv-kJ-p3s" id="Z4y-sL-ubN"/>
+                <outlet property="numberOfTagsLabel" destination="MSs-Lm-dbG" id="8dh-aT-sKe"/>
                 <outlet property="timeSincePostedLabel" destination="YEf-nq-eTc" id="xzc-Iq-ivL"/>
             </connections>
             <point key="canvasLocation" x="465" y="552"/>
@@ -112,6 +113,5 @@
     </objects>
     <resources>
         <image name="bee" width="360" height="210"/>
-        <image name="moreIcon" width="21" height="5"/>
     </resources>
 </document>

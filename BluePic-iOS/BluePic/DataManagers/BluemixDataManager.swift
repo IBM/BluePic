@@ -20,6 +20,7 @@ enum BluemixDataManagerNotification : String {
     case ImageUploadBegan = "ImageUploadBegan"
     case ImageUploadSuccess = "ImageUploadSuccess"
     case ImageUploadFailure = "ImageUploadFailure"
+    case PopularTagsReceived = "PopularTagsReceived"
 }
 
 
@@ -36,10 +37,12 @@ class BluemixDataManager: NSObject {
     //Data Variables
     var images = [Image]()
     
+    var searchResultImages = [Image]()
+    
     var currentUserImages : [Image] {
         get {
             if(CurrentUser.facebookUserId != nil){
-                return images.filter({ $0.usersId! == CurrentUser.facebookUserId!})
+                return images.filter({ $0.user?.facebookID! == CurrentUser.facebookUserId!})
             }
             else{
                 return []
@@ -50,13 +53,16 @@ class BluemixDataManager: NSObject {
     /// photos that were taken during this app session
     var imagesTakenDuringAppSessionById = [String : UIImage]()
     
-    // An array of photos that need to be uploaded to object storage and cloudant sync
+    // An array of photos that need to be uploaded to object storage and cloudant
     var imageUploadQueue : [Image] = []
+    
+    var tags = [String]()
     
     
     //End Points
     private let kImagesEndPoint = "images"
     private let kUsersEndPoint = "users"
+    private let kTagsEndPoint = "tags"
     
     
     //Plist Keys
@@ -146,12 +152,40 @@ class BluemixDataManager: NSObject {
         //        logger.warn("This is a warning message")
         
     }
+    
+    func getPopularTags() {
+        
+        let requestURL = getBluemixBaseRequestURL() + "/" + kTagsEndPoint
+        let request = Request(url: requestURL, method: HttpMethod.GET)
+        
+        request.sendWithCompletionHandler { (response, error) -> Void in
+            if let error = error {
+                print ("Error :: \(error)")
+            } else {
+                if let text = response?.responseText, result = Utils.convertStringToDictionary(text), records = result["records"] as? [[String:AnyObject]] {
+                    // Extract string tags from server results
+                    self.tags = records.flatMap { value in
+                        if let key = value["key"] as? String {
+                            return key.uppercaseString
+                        }
+                        return nil
+                    }
+                    NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.PopularTagsReceived.rawValue, object: nil)
+                }
+
+            }
+        }
+        
+    }
 
     func getImages(){
         
         NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.GetAllImagesStarted.rawValue, object: nil)
         
-        self.getImages({ images in
+        let requestURL = getBluemixBaseRequestURL() + "/" + kImagesEndPoint
+        let request = Request(url: requestURL, method: HttpMethod.GET)
+        
+        self.getImages(request) { images in
             
             if let images = images {
                 self.images = images
@@ -159,23 +193,39 @@ class BluemixDataManager: NSObject {
                 NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImagesRefreshed.rawValue, object: nil)
             }
  
-        })
+        }
         
     }
     
-    
-    
-    func getImages(result : (images : [Image]?)-> ()){
+    func getImagesByTags(tags: [String]) {
         
-        let requestURL = getBluemixBaseRequestURL() + "/" + kImagesEndPoint
+        var requestURL = getBluemixBaseRequestURL() + "/" + kImagesEndPoint + "?tag="
+        for (index, tag) in tags.enumerate() {
+            if index == 0 {
+                requestURL.appendContentsOf(tag.lowercaseString)
+            } else {
+                requestURL.appendContentsOf(",\(tag.lowercaseString)")
+            }
+        }
         let request = Request(url: requestURL, method: HttpMethod.GET)
         
+        self.getImages(request) { images in
+            if let images = images {
+                self.searchResultImages = images
+                self.hasReceievedInitialImages = true
+                NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImagesRefreshed.rawValue, object: nil)
+            }
+        }
+        
+    }
+    
+    func getImages(request: Request, result : (images : [Image]?)-> ()){
+
         request.sendWithCompletionHandler { (response, error) -> Void in
             if let error = error {
                 result(images: nil)
                 print ("Error :: \(error)")
             } else {
-                
                 let images = self.parseGetImagesResponse(response, userId: nil, usersName: nil)
                 result(images: images)
             }
@@ -282,15 +332,15 @@ class BluemixDataManager: NSObject {
     }
     
     
-    private func createNewUser(userId : String, name : String, result : ((user : User?) -> ())){
+    private func createNewUser(userId : String, name : String, language : String, unitsOfMeasurement : String, result : ((user : User?) -> ())){
         
         let requestURL = getBluemixBaseRequestURL() + "/" + kUsersEndPoint
         
         let request = Request(url: requestURL, method: HttpMethod.POST)
         
         //request.headers = ["Content-Type" : "application/json"]
-        
-        let json = ["_id": userId, "name": name]
+        //"language": "en-US", "unitsOfMeasurement": "e"
+        let json = ["_id": userId, "name": name, "language" : language, "unitsOfMeasurement" : unitsOfMeasurement]
 
         
         do{
@@ -315,7 +365,7 @@ class BluemixDataManager: NSObject {
     }
     
     
-    func checkIfUserAlreadyExistsIfNotCreateNewUser(userId : String, name : String, callback : ((success : Bool) -> ())){
+    func checkIfUserAlreadyExistsIfNotCreateNewUser(userId : String, name : String, language: String, unitsOfMeasurement : String, callback : ((success : Bool) -> ())){
 
         getUserById(userId, result: { user in
             
@@ -323,7 +373,7 @@ class BluemixDataManager: NSObject {
                callback(success: true)
             }
             else{
-                self.createNewUser(userId, name: name, result: { user in
+                self.createNewUser(userId, name: name, language: language, unitsOfMeasurement: unitsOfMeasurement, result: { user in
                     
                     if(user != nil){
                         callback(success: true)
@@ -339,36 +389,22 @@ class BluemixDataManager: NSObject {
 
     }
     
-    
 
-    func createNewUserIfUserDoesntAlreadyExistElseReturnExistingUser(userId : String, name : String, result : ((user : User?) -> ())){
-        
-        getUserById(userId, result: { user in
-            
-            if let user = user {
-                result(user: user)
-            }
-            else{
-                self.createNewUser(userId, name: name, result: { user in
-                    result(user: user)
-                })
-            }
-   
-        })
-    }
-    
-    
     
     func postNewImage(image : Image){
         
         NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImageUploadBegan.rawValue, object: nil)
-    
-        //TEMP HARDCODED
-        let latitude = "37.864851"
-        let longitude = "119.538523"
-        let city = "Austin"
         
-        let tempURL = getBluemixBaseRequestURL() + "/" + kUsersEndPoint + "/" + CurrentUser.facebookUserId! + "/" + kImagesEndPoint + "/" + image.fileName! + "/" + image.caption! + "/" + "\(image.width!)" + "/" + "\(image.height!)" + "/" + latitude + "/" + longitude + "/" + city
+        var cityStateString = ""
+     
+            cityStateString = image.location!.city!
+            
+            if(image.location!.state!.characters.count > 0){
+                cityStateString = cityStateString + ", " + image.location!.state!
+            }
+   
+
+        let tempURL = getBluemixBaseRequestURL() + "/" + kUsersEndPoint + "/" + CurrentUser.facebookUserId! + "/" + kImagesEndPoint + "/" + image.fileName! + "/" + image.caption! + "/" + "\(image.width!)" + "/" + "\(image.height!)" + "/" + image.location!.latitude! + "/" + image.location!.longitude! + "/" + cityStateString
         
         let requestURL = tempURL.stringByAddingPercentEncodingWithAllowedCharacters( NSCharacterSet.URLQueryAllowedCharacterSet())!
 
@@ -376,10 +412,17 @@ class BluemixDataManager: NSObject {
   
         request.headers = ["Content-Type" : "image/png"]
         
+        print("beginning upload)")
+        
         request.sendData(UIImagePNGRepresentation(image.image!)!, completionHandler: { (response, error) -> Void in
             
             if(error != nil){
+                print(cityStateString)
+                print(requestURL)
+                print(error)
                 NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImageUploadFailure.rawValue, object: nil)
+                
+                
             } else {
   
                 self.removeImageFromImageUploadQueue(image)
@@ -402,19 +445,28 @@ class BluemixDataManager: NSObject {
 //UPLOADING IMAGES
 extension BluemixDataManager {
     
-    
-    func uploadImage(image : Image){
+    func queueImageForUpload(image : Image){
         
         self.addImageToImageTakenDuringAppSessionByIdDictionary(image)
         self.addImageToImageUploadQueue(image)
+        
+    }
+    
+    
+    func beginUploadingImagesFromQueueIfUploadHasntAlreadyBegan(){
+        
+//        self.addImageToImageTakenDuringAppSessionByIdDictionary(image)
+//        self.addImageToImageUploadQueue(image)
 
-        tryToPostNewImage(image)
+        tryToPostNewImageFromImageUploadQueue()
  
     }
     
-    private func tryToPostNewImage(image : Image){
+    private func tryToPostNewImageFromImageUploadQueue(){
         
         if(imageUploadQueue.count == 1){
+            
+            let image = imageUploadQueue[0]
             postNewImage(image)
         }
     }
@@ -439,7 +491,7 @@ extension BluemixDataManager {
      */
     private func addImageToImageTakenDuringAppSessionByIdDictionary(image : Image){
         
-        if let fileName = image.fileName, let userID = image.usersId {
+        if let fileName = image.fileName, let userID = image.user?.facebookID {
             
             let id = fileName + userID
             imagesTakenDuringAppSessionById[id] = image.image

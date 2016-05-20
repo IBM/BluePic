@@ -36,7 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
      - returns: Bool
      */
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-    
+        
         let notificationTypes: UIUserNotificationType = [UIUserNotificationType.Badge, UIUserNotificationType.Alert, UIUserNotificationType.Sound]
         let notificationSettings: UIUserNotificationSettings = UIUserNotificationSettings(forTypes: notificationTypes, categories: nil)
         application.registerUserNotificationSettings(notificationSettings)
@@ -65,8 +65,47 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
-        print("Received notification from server with contents: \(userInfo)")
+
+        guard let tabBarController = self.window?.rootViewController as? TabBarViewController, feedNav = tabBarController.viewControllers?.first as? FeedNavigationController else {
+            completionHandler(UIBackgroundFetchResult.Failed)
+            return
+        }
+        
+        if application.applicationState == UIApplicationState.Background || application.applicationState == UIApplicationState.Inactive {
+            loadImageDetail(userInfo, tabBarController: tabBarController ,feedNav: feedNav)
+        } else {
+            if let aps = userInfo["aps"], category = aps["category"] as? String where category == "imageProcessed" {
+                
+                let alert = UIAlertController(title: NSLocalizedString("Your image was processed!", comment: ""),
+                                              message: NSLocalizedString("Would you like to view your image now?", comment: ""),
+                                              preferredStyle: UIAlertControllerStyle.Alert)
+                
+                alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil))
+                alert.addAction(UIAlertAction(title: "Yes", style: UIAlertActionStyle.Default, handler: { (action) in
+                    self.loadImageDetail(userInfo, tabBarController: tabBarController, feedNav: feedNav)
+                }))
+                feedNav.presentViewController(alert, animated: true, completion: nil)
+            }
+        }
         completionHandler(UIBackgroundFetchResult.NewData)
+    }
+    
+    /**
+     Loads image detail view for image mentioned in userInfo dictionary
+     
+     - parameter userInfo:         dictionary of info from a push notification
+     - parameter tabBarController: primary tab bar controller for application
+     - parameter feedNav:          root navigation controller for feed flow
+     */
+    func loadImageDetail(userInfo: [NSObject : AnyObject], tabBarController: TabBarViewController, feedNav: FeedNavigationController) {
+        if let payload = userInfo["payload"] as? String, dictionary = Utils.convertStringToDictionary(payload), image = Image(dictionary) {
+            
+            let imageDetailVC = Utils.vcWithNameFromStoryboardWithName("ImageDetailViewController", storyboardName: "Feed") as! ImageDetailViewController
+            imageDetailVC.image = image
+            tabBarController.selectedIndex = 0
+            feedNav.popToRootViewControllerAnimated(false)
+            feedNav.pushViewController(imageDetailVC, animated: true)
+        }
     }
     
     /**
@@ -87,7 +126,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
      Method to initialize Bluemix Mobile Client Access with Facebook
      */
     func initializeBackendForFacebookAuth(application: UIApplication, launchOptions: [NSObject: AnyObject]?) -> Bool {
-//        //Initialize backend
+        //Initialize backend
         BluemixDataManager.SharedInstance.initilizeBluemixAppRoute()
 
         //Initialize Facebook

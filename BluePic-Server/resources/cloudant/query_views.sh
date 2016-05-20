@@ -30,7 +30,7 @@ echo
 
 # Get all users
 echo "Querying users view..."
-curl -X GET https://$username.cloudant.com/$database/_design/main_design/_view/users?include_docs=true -u $username:$password
+curl -X GET https://$username.cloudant.com/$database/_design/main_design/_view/users?include_docs=false -u $username:$password
 echo
 echo
 
@@ -47,6 +47,16 @@ echo
 
 echo "Querying images_by_id view for image 2000..."
 curl -g -X GET "https://$username.cloudant.com/$database/_design/main_design/_view/images_by_id?include_docs=true&descending=false&startkey=[\"2000\",0]&endkey=[\"2000\",{}]" -u $username:$password
+echo
+echo
+
+echo "Querying tags view"
+curl -g -X GET "https://$username.cloudant.com/$database/_design/main_design/_view/tags?group=true&group_level=1" -u $username:$password
+echo
+echo
+
+echo "Querying images_by_tags view"
+curl -g -X GET "https://$username.cloudant.com/$database/_design/main_design/_view/images_by_tags?include_docs=true&descending=true&reduce=false&endkey=[\"mountain\",\"0\",\"0\",0]&startkey=[\"mountain\",{}]" -u $username:$password
 echo
 echo
 
