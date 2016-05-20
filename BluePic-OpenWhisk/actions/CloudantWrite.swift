@@ -1,5 +1,5 @@
 /**
- * Stub code for reading data from Cloudant in a whisk action
+ * write data to Cloudant
  */
 
 import KituraNet
@@ -13,7 +13,7 @@ func main(args:[String:Any]) -> [String:Any] {
     let cloudantPassword: String? = args["cloudantPassword"] as? String
     let cloudantHost: String? = args["cloudantHost"] as? String
     let cloudantId: String? = args["cloudantId"] as? String
-    
+    let cloudantBody: String? = args["cloudantBody"] as? String
     
     var requestOptions = [ClientRequestOptions]()
     requestOptions.append(.Username(cloudantUsername!))
@@ -29,35 +29,32 @@ func main(args:[String:Any]) -> [String:Any] {
     headers["Content-Type"] = "application/json"
     requestOptions.append(.Headers(headers))
     
-    //todo get rid of hardcoded data and replace with actual values for insert
-    //cloduant document JSON as string
-    let requestBody:String = "{\"_id\":\"0ccd7c2b94e126d8f6d06016c449dc72\", \"_rev\": \"3-d0bf831fb4e2a7d9e539fa90ff3237e2\",\"foo\": \"bar2\"}"
-    let requestData:NSData = requestBody.dataUsingEncoding(NSUTF8StringEncoding)!
     
     var str = "" 
-    dispatch_sync(dispatch_get_global_queue(0, 0)) {
-        let req = Http.request(requestOptions) { response in
-            do {
-                str = try response!.readString()!
-            } catch {
-                print("Error \(error)")
+    if let body = cloudantBody {
+        let requestData:NSData? = body.dataUsingEncoding(NSUTF8StringEncoding)
+        
+        if let data = requestData {
+            
+            dispatch_sync(dispatch_get_global_queue(0, 0)) {
+                let req = Http.request(requestOptions) { response in
+                    do {
+                        str = try response!.readString()!
+                    } catch {
+                        print("Error \(error)")
+                    }
+                }
+                req.end(data);
             }
         }
-        req.end(requestData);
     }
-    
-    var cloudantResult:[String:Any]?
-    
-    // Convert to NSData
-    let data = str.bridge().dataUsingEncoding(NSUTF8StringEncoding)
-     do {
-        cloudantResult = try NSJSONSerialization.jsonObject(with: data!, options: []) as? [String: Any]
-    } catch {
-        print("Error \(error)")
+    else {
+        str = "Error: Unable to serialize cloudantBody parameter as a String instance"
     }
     
     let result:[String:Any] = [
-        "cloudantResult": cloudantResult!
+        "cloudantId": args["cloudantId"],
+        "cloudantResult": str
     ]
     return result
 }

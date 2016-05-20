@@ -1,5 +1,5 @@
 /**
- * Stub code for requesting weather data from a whisk action
+ * fetch current weather observation from weather service
  */
 
 import KituraNet
@@ -7,8 +7,6 @@ import Dispatch
 import Foundation
 
 func main(args:[String:Any]) -> [String:Any] {
-
-    print("inside weather action")
 
     let weatherUsername: Any? = args["weatherUsername"]
     let weatherPassword: Any? = args["weatherPassword"]
@@ -19,10 +17,10 @@ func main(args:[String:Any]) -> [String:Any] {
     var units: Any? = args["units"]
     
     if latitude == nil {
-        latitude = 0.0
+        latitude = "0.0"
     }
     if longitude == nil {
-        longitude = 0.0
+        longitude = "0.0"
     }
     if language == nil {
         language = "en-US"
@@ -31,35 +29,32 @@ func main(args:[String:Any]) -> [String:Any] {
         units = "e"
     }
     
-    let url = "https://\(weatherUsername!):\(weatherPassword!)@twcservice.mybluemix.net/api/weather/v2/observations/current?geocode=\(latitude!),\(longitude!)&language=\(language!)&units=\(units!)"
-    
     var str = ""
-    var weather:[String:Any]?
     dispatch_sync(dispatch_get_global_queue(0, 0)) {
-        Http.get(url) { response in
+
+        Http.get("https://\(weatherUsername!):\(weatherPassword!)@twcservice.mybluemix.net/api/weather/v2/observations/current?geocode=\(latitude!),\(longitude!)&language=\(language!)&units=\(units!)") { response in
+
             do {
                 str = try response!.readString()!
             } catch {
                 print("Error \(error)")
             }
+
         }
     }
     
-    /*
-    // Convert to NSData
-    let data = str.bridge().dataUsingEncoding(NSUTF8StringEncoding)!
-    do {
-        weather = try NSJSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
-    } catch {
-        print("Error \(error)")
-    }*/
-    
     let result:[String:Any] = [
-        "latitude": latitude,
-        "longitude": longitude,
-        "language": language,
-        "units": units,
-        "weather" : str
+        "userId":  args["userId"],
+        "userDoc": args["userDoc"],
+        "imageId":  args["userId"],
+        "imageDoc": args["imageDoc"],
+        "alchemyResult": args["alchemyResult"],
+        "weatherResult": "\(str)",
+        "language": args["language"],
+        "units":  args["units"],
+        "latitude": args["latitude"],
+        "longitude": args["longitude"],
+        "imageURL": args["imageURL"]
     ]
     
     // return, which should be a dictionary

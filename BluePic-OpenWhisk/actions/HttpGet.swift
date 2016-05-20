@@ -13,7 +13,7 @@ func main(args:[String:Any]) -> [String:Any] {
     var str = "No response"
     dispatch_sync(dispatch_get_global_queue(0, 0)) {
 
-            Http.get("https://httpbin.org/get") { response in
+            Http.get("https://gateway-a.watsonplatform.net/calls/url/URLGetRankedImageKeywords?url=http://i.telegraph.co.uk/multimedia/archive/03541/Barack-Obama-gets-_3541878k.jpg&outputMode=json&apikey=e74a1e5d8d81292aa8f203f1491203b9779b8975") { response in
 
                 do {
                    str = try response!.readString()!
