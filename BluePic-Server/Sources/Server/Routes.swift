@@ -226,6 +226,7 @@ func defineRoutes() {
   //router.get("/users/:userId", middleware: credentials)
   router.get("/users/:userId") { request, response, next in
     guard let userId = request.params["userId"] else {
+      response.status(HTTPStatusCode.badRequest)
       response.error = generateInternalError()
       next()
       return
@@ -240,13 +241,15 @@ func defineRoutes() {
           if users.count == 1 {
             response.status(HTTPStatusCode.OK).send(json: users[0])
           } else {
-            throw ProcessingError.Image("User not found!")
+            throw ProcessingError.User("User not found!")
           }
         } catch {
-          Log.error("Failed to read requested user document.")
+          response.status(HTTPStatusCode.notFound)
+          Log.error("User with id \(userId) was not found.")
           response.error = generateInternalError()
         }
       } else {
+        response.status(HTTPStatusCode.internalServerError)
         Log.error("Failed to read requested user document.")
         response.error = generateInternalError()
       }
