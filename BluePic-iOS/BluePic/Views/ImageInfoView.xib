@@ -4,21 +4,20 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ImageDetailInfoView" customModule="BluePic" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner">
             <connections>
                 <outlet property="byUserLabel" destination="WE5-cQ-NHT" id="voo-vT-cVZ"/>
                 <outlet property="captionLabel" destination="bAD-7h-RF8" id="irS-UW-hCr"/>
                 <outlet property="cityStateLabel" destination="SFt-6q-eyc" id="NZd-1z-RTE"/>
                 <outlet property="coordinatesLabel" destination="qcX-7b-5lC" id="PoQ-C5-ovT"/>
                 <outlet property="dateLabel" destination="g0N-sb-awh" id="P4T-yF-JIG"/>
-                <outlet property="temperatureLabel" destination="xlK-1e-Nmy" id="uht-Su-Cs0"/>
                 <outlet property="timeLabel" destination="van-WJ-bJI" id="gxC-IC-aLp"/>
                 <outlet property="view" destination="iN0-l3-epB" id="clx-cP-yEp"/>
                 <outlet property="weatherImageView" destination="RfN-8K-XG2" id="nZn-Iw-mWv"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="iN0-l3-epB">
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="ImageInfoHeaderCollectionReusableView" customModule="BluePic" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
@@ -156,7 +155,6 @@
                     </variation>
                 </view>
             </subviews>
-            <color key="backgroundColor" red="0.0" green="0.56862745100000001" blue="0.91764705879999997" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstItem="PYa-sb-z44" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="40" id="0hj-Yk-SsB"/>
                 <constraint firstAttribute="trailing" secondItem="YlN-az-eLY" secondAttribute="trailing" constant="40" id="9RS-sU-LfM"/>
