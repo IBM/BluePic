@@ -1,5 +1,5 @@
 /**
- * Copyright IBM Corporation 2015
+ * Copyright IBM Corporation 2016
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -91,7 +91,6 @@ class CameraConfirmationView: UIView, UITextFieldDelegate {
         adjustingHeight(false, notification: notification)
     }
     
-    
     /**
      Method called when touches began to hide keyboard
      
@@ -117,7 +116,6 @@ class CameraConfirmationView: UIView, UITextFieldDelegate {
         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)
     }
-    
     
     /**
      Method to move the whole view up/down when user pulls the keyboard up/down
@@ -147,7 +145,6 @@ class CameraConfirmationView: UIView, UITextFieldDelegate {
             })
         }
     }
-    
 
     /**
      Method called when text field should return (return tapped) to hide the keyboard
@@ -161,7 +158,6 @@ class CameraConfirmationView: UIView, UITextFieldDelegate {
         return true
     }
     
-    
     func enableUI(){
         
         self.cancelButton.enabled = true
@@ -170,7 +166,6 @@ class CameraConfirmationView: UIView, UITextFieldDelegate {
         
     }
     
-    
     func disableUI(){
         
         self.cancelButton.enabled = false
@@ -178,9 +173,5 @@ class CameraConfirmationView: UIView, UITextFieldDelegate {
         self.titleTextField.enabled = false
  
     }
-    
-    
-
-
 
 }
