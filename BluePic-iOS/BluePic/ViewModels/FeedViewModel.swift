@@ -286,7 +286,7 @@ extension FeedViewModel {
     
     func prepareImageDetailViewModelForSelectedCellAtIndexPath(indexPath : NSIndexPath) -> ImageDetailViewModel? {
         
-        if((imageDataArray.count - 1 ) > indexPath.row ){
+        if((imageDataArray.count - 1 ) >= indexPath.row ){
             
             let viewModel = ImageDetailViewModel()
             viewModel.image = imageDataArray[indexPath.row]

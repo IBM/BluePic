@@ -110,16 +110,12 @@ class ImageDetailViewModel: UIView {
     private func getTagForIndexPath(indexPath : NSIndexPath) -> String? {
         
         if let tags = image.tags {
-            
             if((tags.count - 1) >= indexPath.row){
-                
                 return tags[indexPath.row].label
             }
-      
         }
         
         return nil
-     
     }
     
     
@@ -139,13 +135,9 @@ class ImageDetailViewModel: UIView {
 
     }
     
+    
     func getImageURLString() -> String? {
         return image.url
     }
-    
-    
-    
-    
-
 
 }
