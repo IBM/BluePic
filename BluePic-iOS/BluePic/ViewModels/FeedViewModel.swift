@@ -1,5 +1,5 @@
 /**
- * Copyright IBM Corporation 2015
+ * Copyright IBM Corporation 2016
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -232,9 +232,9 @@ extension FeedViewModel {
         //Section 0 corresponds to showing picture upload queue image feed collection view cells. These cells show when there are pictures in the picture upload queue of the camera data manager
         if(indexPath.section == 0){
             
-            let cell : PictureUploadQueueImageFeedCollectionViewCell
+            let cell : ImagesCurrentlyUploadingImageFeedCollectionViewCell
             
-            cell = collectionView.dequeueReusableCellWithReuseIdentifier("PictureUploadQueueImageFeedCollectionViewCell", forIndexPath: indexPath) as! PictureUploadQueueImageFeedCollectionViewCell
+            cell = collectionView.dequeueReusableCellWithReuseIdentifier("ImagesCurrentlyUploadingImageFeedCollectionViewCell", forIndexPath: indexPath) as! ImagesCurrentlyUploadingImageFeedCollectionViewCell
             
             
             let image = BluemixDataManager.SharedInstance.imagesCurrentlyUploading[indexPath.row]

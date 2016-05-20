@@ -1,5 +1,5 @@
 /**
- * Copyright IBM Corporation 2015
+ * Copyright IBM Corporation 2016
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  **/
-
 
 import UIKit
 
@@ -131,7 +130,7 @@ class FeedViewController: UIViewController {
         
         Utils.registerNibWithCollectionView("ImageFeedCollectionViewCell", collectionView: collectionView)
         
-        Utils.registerNibWithCollectionView("PictureUploadQueueImageFeedCollectionViewCell", collectionView: collectionView)
+        Utils.registerNibWithCollectionView("ImagesCurrentlyUploadingImageFeedCollectionViewCell", collectionView: collectionView)
         
         self.refreshControl = UIRefreshControl()
         self.refreshControl.addTarget(self, action: #selector(FeedViewController.userTriggeredRefresh), forControlEvents: UIControlEvents.ValueChanged)
