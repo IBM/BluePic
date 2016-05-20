@@ -102,7 +102,7 @@ class ImageDetailViewModel: UIView {
             else{
                  return CGSizeMake(collectionWidth, headerHeight)
             }
-            
+        
         }
         else{
             return CGSizeMake(collectionWidth, 0)
