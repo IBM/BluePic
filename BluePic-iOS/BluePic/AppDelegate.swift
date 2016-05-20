@@ -1,5 +1,5 @@
 /**
- * Copyright IBM Corporation 2015
+ * Copyright IBM Corporation 2016
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,10 @@
  * limitations under the License.
  **/
 
-
 import UIKit
 import BMSCore
 import BMSSecurity
 import BMSPush
-
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
