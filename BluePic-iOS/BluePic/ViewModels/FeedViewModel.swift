@@ -27,6 +27,9 @@ enum FeedViewModelNotification {
     
     //called when a photo is finished uploading to object storage
     case UploadingPhotoFinished
+    
+    //called when there are no search results for a particular searchQuery
+    case NoSearchResults
 }
 
 class FeedViewModel: NSObject {
@@ -36,6 +39,9 @@ class FeedViewModel: NSObject {
     
     //callback used to inform the Feed VC of notifications from its view model
     var notifyFeedVC : ((feedViewModelNotification : FeedViewModelNotification)->())!
+    
+    //string that holds the search query if it is present, meaning we are looking at search results
+    var searchQuery: String?
     
     //constant that represents the height of the info view in the collection view cell that shows the photos caption and photographer name
     let kCollectionViewCellInfoViewHeight : CGFloat = 76
@@ -50,30 +56,37 @@ class FeedViewModel: NSObject {
     let kEmptyFeedCollectionViewCellBufferToAllowForScrolling : CGFloat = 1
     
     //constant that defines the number of cells there is when the user has no photos
-    let kNumberOfCellsWhenUserHasNoPhotos = 1
+    var numberOfCellsWhenUserHasNoPhotos = 0
     
     //constant that defines the number of sections there are in the collection view
     let kNumberOfSectionsInCollectionView = 2
     
     
     /**
-     Method called upon init. It sets a callback to inform the VC of new noti
+     Method called upon init. It sets a callback to inform the VC of new notification
      
      - parameter passFeedViewModelNotificationToTabBarVCCallback: ((feedViewModelNotification : FeedViewModelNotification)->())
      
      - returns:
      */
-    init(notifyFeedVC : ((feedViewModelNotification : FeedViewModelNotification)->())){
+    init(notifyFeedVC : ((feedViewModelNotification : FeedViewModelNotification)->()), searchQuery: String?){
         super.init()
-        
+
         //save callback to notify Feed View Controller of events
         self.notifyFeedVC = notifyFeedVC
+        self.searchQuery = searchQuery
      
         //suscribe to events that happen in the BluemixDataManager
         suscribeToBluemixDataManagerNotifications()
         
-        //Grab any data from BluemixDataManager if it has any and then tell view controller to reload its collection view
-        updateImageDataArrayAndNotifyViewControllerToReloadCollectionView()
+        if let query = searchQuery {
+            numberOfCellsWhenUserHasNoPhotos = 0
+            BluemixDataManager.SharedInstance.getImagesByTags([query])
+        } else {
+            //Grab any data from BluemixDataManager if it has any and then tell view controller to reload its collection view
+            numberOfCellsWhenUserHasNoPhotos = 1
+            updateImageDataArrayAndNotifyViewControllerToReloadCollectionView()
+        }
         
     }
     
@@ -84,21 +97,23 @@ class FeedViewModel: NSObject {
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(FeedViewModel.repullForNewData), name: BluemixDataManagerNotification.ImageUploadSuccess.rawValue, object: nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(FeedViewModel.notifyViewControllerToTriggerLoadingAnimation), name: BluemixDataManagerNotification.ImageUploadBegan.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(FeedViewModel.notifyViewControllerToTriggerLoadingAnimation), name: CameraDataManagerNotification.UserPressedPostPhoto.rawValue, object: nil)
         
     }
 
     
     func updateImageDataArrayAndNotifyViewControllerToReloadCollectionView(){
         
-        self.imageDataArray = BluemixDataManager.SharedInstance.images
+        self.imageDataArray = searchQuery == nil ? BluemixDataManager.SharedInstance.images : BluemixDataManager.SharedInstance.searchResultImages
         
-        self.notifyViewControllerToTriggerReloadCollectionView()
+        if searchQuery != nil && self.imageDataArray.count < 1 {
+            self.notifiyViewControllerToTriggerAlert()
+        } else {
+            self.notifyViewControllerToTriggerReloadCollectionView()
+        }
     }
     
 }
-
-
 
 
 //ViewController -> ViewModel Communication
@@ -108,9 +123,12 @@ extension FeedViewModel {
         return !BluemixDataManager.SharedInstance.hasReceievedInitialImages
     }
     
-    
     func repullForNewData() {
-        BluemixDataManager.SharedInstance.getImages()
+        if let query = self.searchQuery {
+            BluemixDataManager.SharedInstance.getImagesByTags([query])
+        } else {
+            BluemixDataManager.SharedInstance.getImages()
+        }
     }
     
     /**
@@ -139,7 +157,7 @@ extension FeedViewModel {
         else{
             
             if(imageDataArray.count == 0) && BluemixDataManager.SharedInstance.hasReceievedInitialImages{
-                return kNumberOfCellsWhenUserHasNoPhotos
+                return numberOfCellsWhenUserHasNoPhotos
             }
             else{
                 return imageDataArray.count
@@ -228,7 +246,7 @@ extension FeedViewModel {
         else{
             
             //return EmptyFeedCollectionViewCell
-            if(imageDataArray.count == 0){
+            if(imageDataArray.count == 0 && searchQuery == nil){
                 
                 let cell : EmptyFeedCollectionViewCell
                 
@@ -237,7 +255,6 @@ extension FeedViewModel {
                 return cell
                 
             }
-                //return ImageFeedCollectionViewCell
             else{
                 
                 let cell: ImageFeedCollectionViewCell
@@ -250,7 +267,8 @@ extension FeedViewModel {
                     image.url,
                     image: nil, //MIGHT NEED TO FIX
                     caption: image.caption,
-                    usersName: image.usersName,
+                    usersName: image.user?.name,
+                    numberOfTags: image.tags?.count,
                     timeStamp: image.timeStamp,
                     fileName: image.fileName
                 )
@@ -262,6 +280,27 @@ extension FeedViewModel {
             }
         }
     }
+    
+    
+    func prepareImageDetailViewControllerSelectedCellAtIndexPath(indexPath : NSIndexPath) -> ImageDetailViewController? {
+        
+        if(imageDataArray.count > 0 ){
+            let imageDetailVC = Utils.vcWithNameFromStoryboardWithName("ImageDetailViewController", storyboardName: "Feed") as! ImageDetailViewController
+        
+            imageDetailVC.image = imageDataArray[indexPath.row]
+        
+        
+            return imageDetailVC
+            
+        }
+        else{
+            return nil
+        }
+        
+    }
+    
+    
+    
   
  
 }
@@ -285,7 +324,12 @@ extension FeedViewModel {
         }
     }
     
-    
+    func notifiyViewControllerToTriggerAlert() {
+        dispatch_async(dispatch_get_main_queue()) {
+            self.notifyFeedVC(feedViewModelNotification : FeedViewModelNotification.NoSearchResults)
+        }
+
+    }
     
     
 }

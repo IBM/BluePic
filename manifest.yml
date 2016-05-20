@@ -1,0 +1,27 @@
+---
+declared-services:
+  cloudantNoSQLDB:
+    label: Cloudant NoSQL DB-fz
+    plan: Shared
+  Object-Storage:
+    label: Object Storage-bv
+    plan: standard
+  AdvancedMobileAccess:
+    label: Mobile Client Access-ag
+    plan: Gold
+  imfpush:
+    label: IBM Push Notifications-12
+    plan: Basic
+applications:
+- name: BluePic
+  path: ./BluePic-Server
+  random-route: true
+  memory: 512M
+  disk_quota: 1024M
+  instances: 1
+  buildpack: https://github.com/IBM-Swift/swift-buildpack.git
+  services:
+  - Cloudant NoSQL DB-fz
+  - Object Storage-bv
+  - Mobile Client Access-ag
+  - IBM Push Notifications-12

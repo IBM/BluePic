@@ -93,6 +93,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods/FBSDKLoginKit.framework"
   install_framework "Pods/RNCryptor.framework"
   install_framework "Pods/SDWebImage.framework"
+  install_framework "Pods/SVProgressHUD.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods/BMSAnalyticsAPI.framework"
@@ -104,4 +105,5 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods/FBSDKLoginKit.framework"
   install_framework "Pods/RNCryptor.framework"
   install_framework "Pods/SDWebImage.framework"
+  install_framework "Pods/SVProgressHUD.framework"
 fi
