@@ -89,7 +89,6 @@ class ImageDetailViewModel: UIView {
     
     func referenceSizeForHeaderInSection(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, section: Int, superViewHeight : CGFloat) -> CGSize {
         
-        
         let collectionWidth = collectionView.frame.size.width
         
         if(section == 0){
@@ -107,10 +106,7 @@ class ImageDetailViewModel: UIView {
         else{
             return CGSizeMake(collectionWidth, 0)
         }
-        
-        
-        
-        
+    
     }
 
 
