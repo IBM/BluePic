@@ -308,7 +308,8 @@ class BluemixDataManager: NSObject {
         
         request.sendWithCompletionHandler { (response, error) -> Void in
             if let error = error {
-                print ("Error Getting User By Id :: \(error)")
+                print ("Error Getting User By Id :: \(error.localizedDescription)")
+                print(error.code)
                result(user: nil)
             } else {
                 let user = User(response)
