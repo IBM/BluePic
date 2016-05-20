@@ -21,18 +21,19 @@ import CouchDB
 import LoggerAPI
 import SwiftyJSON
 import KituraSys
-import MobileClientAccessKituraCredentialsPlugin
-import MobileClientAccess
-import Credentials
 import BluemixPushNotifications
+// import MobileClientAccessKituraCredentialsPlugin
+// import MobileClientAccess
+// import Credentials
 
 /**
 * Function for setting up the different routes for this app.
 */
 func defineRoutes() {
   // Credentials, database, and PushNotifications client...
-  let credentials = Credentials()
-  credentials.register(plugin: MobileClientAccessKituraCredentialsPlugin())
+  // Temporarily removing credentials and MCA code... see https://github.com/IBM-Swift/Kitura/issues/487
+  // let credentials = Credentials()
+  // credentials.register(plugin: MobileClientAccessKituraCredentialsPlugin())
   let pushNotificationsClient =
   PushNotifications(bluemixRegion: PushNotifications.Region.US_SOUTH, bluemixAppGuid: mobileClientAccessProps.clientId, bluemixAppSecret: ibmPushProps.secret)
   let dbClient = CouchDBClient(connectionProperties: couchDBConnProps)
@@ -108,7 +109,7 @@ func defineRoutes() {
   router.get("/images") { request, response, next in
     if let tag = request.queryParams["tag"] {
       // Get images by tag
-      //let _ = tag.characters.split(separator: ",").map(String.init)
+      // let _ = tag.characters.split(separator: ",").map(String.init)
       let queryParams: [Database.QueryParameters] =
       [.descending(true), .includeDocs(true), .reduce(false), .endKey([tag, "0", "0", 0]), .startKey([tag, NSObject()])]
       database.queryByView("images_by_tags", ofDesign: "main_design", usingParameters: queryParams) { (document, error) in
@@ -199,7 +200,7 @@ func defineRoutes() {
   /**
   * Route for getting all user documents.
   */
-  router.get("/users", middleware: credentials)
+  //router.get("/users", middleware: credentials)
   router.get("/users") { request, response, next in
     database.queryByView("users", ofDesign: "main_design", usingParameters: [.descending(true), .includeDocs(false)]) { (document, error) in
       if let document = document where error == nil {
@@ -222,7 +223,7 @@ func defineRoutes() {
   /**
   * Route for getting a specific user document.
   */
-  router.get("/users/:userId", middleware: credentials)
+  //router.get("/users/:userId", middleware: credentials)
   router.get("/users/:userId") { request, response, next in
     guard let userId = request.params["userId"] else {
       response.error = generateInternalError()
@@ -260,7 +261,7 @@ func defineRoutes() {
   * to send the image metadata, while the body of the request only
   * contains the binary data for the image. I know, yuck...
   */
-  router.post("/users/:userId/images/:fileName/:caption/:width/:height/:latitude/:longitude/:location", middleware: credentials)
+  //router.post("/users/:userId/images/:fileName/:caption/:width/:height/:latitude/:longitude/:location", middleware: credentials)
   router.post("/users/:userId/images/:fileName/:caption/:width/:height/:latitude/:longitude/:location") { request, response, next in
     do {
       var imageJSON = try getImageJSON(fromRequest: request)
@@ -348,7 +349,7 @@ func defineRoutes() {
   /**
   * Route for creating a new user document in the database.
   */
-  router.post("/users", middleware: credentials)
+  //router.post("/users", middleware: credentials)
   router.post("/users") { request, response, next in
     do {
       let rawUserData = try BodyParser.readBodyData(with: request)
