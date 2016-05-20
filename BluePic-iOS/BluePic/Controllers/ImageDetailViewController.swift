@@ -24,14 +24,9 @@ class ImageDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupViewModel()
         setupSubViews()
         setupTagCollectionView()
-        
 
-  
-        image.tags = image.tags! + image!.tags! + image!.tags!
-        
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -41,12 +36,6 @@ class ImageDetailViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-    }
-    
-    
-    func setupViewModel(){
-        viewModel = ImageDetailViewModel()
-        viewModel.image = image
     }
     
     func setupTagCollectionView(){
@@ -69,25 +58,18 @@ class ImageDetailViewController: UIViewController {
         
         setupImageView()
         setupBlurView()
-        setupImageDetailInfoView()
-        
-        
-    }
     
-    func setupImageDetailInfoView(){
-        
-//        imageDetailInfoView.setupWithData(image.caption, userFullName: image.user?.name, locationName: image.location?.name, latitude: image.location?.latitude, longitude: image.location?.longitude, timeStamp: image.timeStamp, weatherIconId: image.location?.weather?.iconId, temperature: image.location?.weather?.temperature)
-        
     }
     
     func setupImageView(){
         
-        if let urlString = image.url {
+        if let urlString = viewModel.getImageURLString() {
             let nsurl = NSURL(string: urlString)
             imageView.sd_setImageWithURL(nsurl)
         }
     }
 
+    
     @IBAction func backButtonAction(sender: AnyObject) {
         
         self.navigationController?.popViewControllerAnimated(true)
@@ -146,17 +128,11 @@ extension ImageDetailViewController : UICollectionViewDataSource {
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         return viewModel.setUpCollectionViewCell(indexPath, collectionView: collectionView)
     }
-    
-    
-    
-    
-    
 
 }
 
 
 extension ImageDetailViewController: UICollectionViewDelegateFlowLayout {
-    
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         
@@ -169,20 +145,15 @@ extension ImageDetailViewController: UICollectionViewDelegateFlowLayout {
        return viewModel.referenceSizeForHeaderInSection(collectionView, layout: collectionViewLayout, section: section, superViewHeight: self.view.frame.size.height)
     }
     
-    
 }
 
 
 extension ImageDetailViewController : UICollectionViewDelegate {
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        
-        let tag = image.tags![indexPath.row]
-        
-        let vc = Utils.vcWithNameFromStoryboardWithName("FeedViewController", storyboardName: "Feed") as! FeedViewController
-        vc.searchQuery = tag.label!
-        self.navigationController?.pushViewController(vc, animated: true)
-  
+        if let vc = viewModel.getFeedViewControllerForTagSearchAtIndexPath(indexPath){
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
     }
 
 }

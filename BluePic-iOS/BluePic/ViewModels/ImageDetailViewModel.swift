@@ -13,10 +13,8 @@ class ImageDetailViewModel: UIView {
     var image : Image!
     
     //constant that represents the number of sections in the collection view
-    let kNumberOfSectionsInCollectionView = 1
-    
+    private let kNumberOfSectionsInCollectionView = 1
     private let kCellPadding: CGFloat = 60
-    
     private let kImageInfoHeaderViewMinimumHeight : CGFloat = 340
     
     
@@ -108,6 +106,46 @@ class ImageDetailViewModel: UIView {
         }
     
     }
+    
+    private func getTagForIndexPath(indexPath : NSIndexPath) -> String? {
+        
+        if let tags = image.tags {
+            
+            if((tags.count - 1) >= indexPath.row){
+                
+                return tags[indexPath.row].label
+            }
+      
+        }
+        
+        return nil
+     
+    }
+    
+    
+    func getFeedViewControllerForTagSearchAtIndexPath(indexPath : NSIndexPath) -> FeedViewController? {
+        
+        let tagString = getTagForIndexPath(indexPath)
+        
+        let vc = Utils.vcWithNameFromStoryboardWithName("FeedViewController", storyboardName: "Feed") as! FeedViewController
+        
+        if let tagString = tagString {
+            vc.searchQuery = tagString
+            return vc
+        }
+        else{
+            return nil
+        }
+
+    }
+    
+    func getImageURLString() -> String? {
+        return image.url
+    }
+    
+    
+    
+    
 
 
 }
