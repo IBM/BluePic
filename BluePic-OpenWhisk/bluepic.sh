@@ -47,40 +47,31 @@ function install() {
     -p cloudantUsername $CLOUDANT_username\
     -p cloudantPassword $CLOUDANT_password\
     -p cloudantDbName $CLOUDANT_db
-    
-  # we will need to listen to cloudant event
-  #echo "Binding cloudant"
-  # /whisk.system/cloudant
-  #wsk package bind /whisk.system/cloudant \
-  #  bluepic-cloudant\
-  #  -p username $CLOUDANT_username\
-  #  -p password $CLOUDANT_password\
-  #  -p host $CLOUDANT_host   
-  #  -p watsonUsername $WATSON_username\
-  #  -p watsonPassword $WATSON_password\
-
-  #echo "Creating trigger"
-  #wsk trigger create bluepic-cloudant-trigger --feed bluepic-cloudant/changes -p dbname $CLOUDANT_db -p includeDoc true
 
   echo "Creating actions"
   #this is just a test action to make sure we can make HTTP requests leveraging kitura networking
+  wsk action create --kind swift:3 bluepic/prepareReadUser actions/PrepareToReadUser.swift
+  wsk action create --kind swift:3 bluepic/prepareReadImage actions/PrepareToReadImage.swift
+  wsk action create --kind swift:3 bluepic/prepareWeatherRequest actions/PrepareWeatherRequest.swift
+  wsk action create --kind swift:3 bluepic/prepareCloudantWrite actions/PrepareToWriteImage.swift
   wsk action create --kind swift:3 bluepic/httpGet actions/HttpGet.swift
   wsk action create --kind swift:3 bluepic/weather actions/Weather.swift
   wsk action create --kind swift:3 bluepic/alchemy actions/Alchemy.swift
   wsk action create --kind swift:3 bluepic/cloudantRead actions/CloudantRead.swift
   wsk action create --kind swift:3 bluepic/cloudantWrite actions/CloudantWrite.swift
   
-  wsk action create processEntry --sequence bluepic/cloudantRead,bluepic/weather,bluepic/alchemy,bluepic/cloudantWrite
   
-  
-  #wsk action create bluepic/analysis analysis.js
-  
-  #echo "Creating change listener action"
-  #wsk action create bluepic-cloudant-changelistener changelistener.js\
-  # -p targetNamespace $CURRENT_NAMESPACE
-    
-  #echo "Enabling change listener"
-  #wsk rule create bluepic-rule bluepic-cloudant-trigger bluepic-cloudant-changelistener --enable
+  #create sequences to tie everything together - lots of these are for testing
+  wsk action create bluepic/processRequest --sequence bluepic/prepareReadUser,bluepic/cloudantRead,bluepic/prepareReadImage,bluepic/cloudantRead,bluepic/prepareWeatherRequest,bluepic/weather,bluepic/alchemy,bluepic/prepareCloudantWrite,bluepic/cloudantWrite
+  wsk action create bluepic/processRequestThroughCloudantWrite --sequence bluepic/prepareReadUser,bluepic/cloudantRead,bluepic/prepareReadImage,bluepic/cloudantRead,bluepic/prepareWeatherRequest,bluepic/weather,bluepic/alchemy,bluepic/prepareCloudantWrite,bluepic/cloudantWrite
+  wsk action create bluepic/processRequestToCloudantWrite --sequence bluepic/prepareReadUser,bluepic/cloudantRead,bluepic/prepareReadImage,bluepic/cloudantRead,bluepic/prepareWeatherRequest,bluepic/weather,bluepic/alchemy,bluepic/prepareCloudantWrite
+  wsk action create bluepic/processRequestThroughAlchemy --sequence bluepic/prepareReadUser,bluepic/cloudantRead,bluepic/prepareReadImage,bluepic/cloudantRead,bluepic/prepareWeatherRequest,bluepic/weather,bluepic/alchemy
+  wsk action create bluepic/processRequestThroughWeather --sequence bluepic/prepareReadUser,bluepic/cloudantRead,bluepic/prepareReadImage,bluepic/cloudantRead,bluepic/prepareWeatherRequest,bluepic/weather
+  wsk action create bluepic/processRequestToWeather --sequence bluepic/prepareReadUser,bluepic/cloudantRead,bluepic/prepareReadImage,bluepic/cloudantRead,bluepic/prepareWeatherRequest
+  wsk action create bluepic/processRequestThroughReadImage --sequence bluepic/prepareReadUser,bluepic/cloudantRead,bluepic/prepareReadImage,bluepic/cloudantRead
+  wsk action create bluepic/processRequestToReadImage --sequence bluepic/prepareReadUser,bluepic/cloudantRead,bluepic/prepareReadImage
+  wsk action create bluepic/processRequestThroughReadUser --sequence bluepic/prepareReadUser,bluepic/cloudantRead
+  wsk action create bluepic/processFinalWrite --sequence bluepic/prepareCloudantWrite,bluepic/cloudantWrite
   
   echo -e "${GREEN}Install Complete${NC}"
   wsk list
@@ -90,30 +81,27 @@ function uninstall() {
   echo -e "${RED}Uninstalling..."
   
   echo "Removing actions..."
+  wsk action delete bluepic/prepareReadUser
+  wsk action delete bluepic/prepareReadImage
+  wsk action delete bluepic/prepareWeatherRequest
+  wsk action delete bluepic/prepareCloudantWrite
   wsk action delete bluepic/httpGet
   wsk action delete bluepic/weather
   wsk action delete bluepic/alchemy
   wsk action delete bluepic/cloudantRead
   wsk action delete bluepic/cloudantWrite
   
-  wsk action delete processEntry
+  wsk action delete bluepic/processRequest
+  wsk action delete bluepic/processRequestThroughCloudantWrite
+  wsk action delete bluepic/processRequestToCloudantWrite
+  wsk action delete bluepic/processRequestThroughAlchemy
+  wsk action delete bluepic/processRequestThroughWeather
+  wsk action delete bluepic/processRequestToWeather
+  wsk action delete bluepic/processRequestThroughReadImage
+  wsk action delete bluepic/processRequestToReadImage
+  wsk action delete bluepic/processRequestThroughReadUser
+  wsk action delete bluepic/processFinalWrite
   
-  
-  
-  #wsk action delete bluepic/analysis
-  
-  #echo "Removing rule..."
-  #wsk rule disable bluepic-rule
-  #wsk rule delete bluepic-rule
-  
-  #echo "Removing change listener..."
-  #wsk action delete bluepic-cloudant-changelistener
-  
-  #echo "Removing trigger..."
-  #wsk trigger delete bluepic-cloudant-trigger
-  
-  #echo "Removing packages..."
-  #wsk package delete bluepic-cloudant
   wsk package delete bluepic
   
   echo -e "${GREEN}Uninstall Complete${NC}"
@@ -129,8 +117,6 @@ function showenv() {
   echo ALCHEMY_key=$ALCHEMY_key
   echo WEATHER_username=$WEATHER_username
   echo WEATHER_password=$WEATHER_password
-  #echo WATSON_username=$WATSON_username
-  #echo WATSON_password=$WATSON_password
   echo -e "${NC}"
 }
 
