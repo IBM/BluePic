@@ -8,20 +8,40 @@
 
 import UIKit
 
+
+struct Tag {
+    var label: String?
+    var confidence: CGFloat?
+}
+
+struct Location {
+    var name: String?
+    var latitude : String?
+    var longitude: String?
+    var weather : Weather?
+    var city : String?
+    var state : String?
+}
+
+struct Weather {
+    var temperature: Int?
+    var iconId: Int?
+    var description: String?
+}
+
 class Image: NSObject {
 
-    
     var id : String?
     var caption : String?
     var fileName : String?
     var timeStamp : NSDate?
     var url : String?
-    var usersName : String?
-    var usersId : String?
     var width : CGFloat?
     var height : CGFloat?
     var image : UIImage?
-    
+    var location : Location?
+    var tags : [Tag]?
+    var user : User?
     
     override init() {
         
@@ -30,55 +50,98 @@ class Image: NSObject {
     init?(_ dict : [String : AnyObject]) {
         
         super.init()
-        
-        //if let dict = Utils.convertResponseToDictionary(response){
-            
+  
             if let id = dict["_id"] as? String,
                 let caption = dict["caption"] as? String,
                 let fileName = dict["fileName"] as? String,
                 let url = dict["url"] as? String,
                 let timeStamp = dict["uploadedTs"] as? String,
-                let user = dict["user"] as? [String : AnyObject],
-                let usersName = user["name"] as? String,
-                let usersId = user["_id"] as? String {
-                
+                let user = dict["user"] as? [String : AnyObject] {
+            
                 self.id = id
                 self.caption = caption
                 self.fileName = fileName
                 self.url = url
-                self.usersName = usersName
-                self.usersId = usersId
                 
-//                ,
-//                let widthNSNumber = NSNumberFormatter().numberFromString(width),
-//                let heightNSNumber = NSNumberFormatter().numberFromString(height) {
+                let userObject = User()
+                if let usersName = user["name"] as? String,
+                    let usersId = user["_id"] as? String{
+                    
+                    userObject.name = usersName
+                    userObject.facebookID = usersId
+                    
+                }
+                self.user = userObject
                 
+                //Parse widht and height data
                 if let width = dict["width"] as? CGFloat,
                     let height = dict["height"] as? CGFloat {
+                        self.width = width
+                        self.height = height
+                }
+                
+    
+                //Parse location data
+                if let location = dict["location"] as? [String : AnyObject]{
                     
-                    self.width = width
-                    self.height = height
+                    var loc = Location()
+                    
+                    //Parse name
+                    if let name = location["name"] as? String {
+                        loc.name = name
+                    }
+                    
+                    
+                    //Parse Lat/Long
+                    if let latitude = location["latitude"] as? CGFloat,
+                    let longitude = location["longitude"] as? CGFloat {
+                        loc.latitude = "\(latitude)"
+                        loc.longitude = "\(longitude)"
+                    }
+                    
+                    //Parse weather object
+                    var weatherObject = Weather()
+                    if let weather = location["weather"] as? [String : AnyObject] {
+                        if let temperature = weather["temperature"] as? Int {
+                            weatherObject.temperature = temperature
+                        }
+                        if let iconId = weather["iconId"] as? Int {
+                            weatherObject.iconId = iconId
+                        }
+                        if let description = weather["description"] as? String {
+                            weatherObject.description = description
+                        }
+                    }
+                            
+                    loc.weather = weatherObject
+                        
+                    self.location = loc
+     
+                }
+                
+                //Parse tags data
+                var tagsArray = [Tag]()
+                if let tags = dict["tags"] as? [[String: AnyObject]] {
+                    for tag in tags {
+                        if let label = tag["label"] as? String,
+                            let confidence = tag["confidence"] as? CGFloat {
+                        
+                            var tag = Tag()
+                            tag.label = label
+                            tag.confidence = confidence
+                            tagsArray.append(tag)
+    
+                        }
+                    }
+                }
+                self.tags = tagsArray
 
-                }
-                
-                if let width = dict["width"] as? String,
-                let height = dict["height"] as? String,
-                let widthNSNumber = NSNumberFormatter().numberFromString(width),
-                let heightNSNumber = NSNumberFormatter().numberFromString(height) {
- 
-                    self.width = CGFloat(widthNSNumber)
-                    self.height = CGFloat(heightNSNumber)
-                
-                }
-                
-                
                 //set timeStamp
                 let dateFormatter = NSDateFormatter()
-                dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss" //"yyyy-MM-dd'T'HH:mm:ss.SSSSSSZ"
+                dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
                 dateFormatter.timeZone = NSTimeZone(abbreviation: "UTC")
                 if let date = dateFormatter.dateFromString(timeStamp) {
-                    
-                    print("image date for \(caption) is \(date)")
+            
                     self.timeStamp = date
                 }
                 
@@ -87,11 +150,6 @@ class Image: NSObject {
                 print("invalid image json")
                 return nil
             }
-            
-//        }
-//        else{
-//            return nil
-//        }
         
     }
 

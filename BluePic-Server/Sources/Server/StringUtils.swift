@@ -20,11 +20,7 @@ import LoggerAPI
 public struct StringUtils {
 
   static func decodeWhiteSpace(inString str: String) -> String {
-    #if os(Linux)
-    let decodedStr = str.stringByReplacingOccurrencesOfString("%20", withString: " ")
-    #else
     let decodedStr = str.replacingOccurrences(of: "%20", with: " ")
-    #endif
     Log.verbose("Decoded (whitespace) in string: '\(str)' to '\(decodedStr)'.")
     return decodedStr
   }
@@ -32,11 +28,10 @@ public struct StringUtils {
   static func currentTimestamp() -> String {
     #if os(Linux)
     let dateStr = NSDate().descriptionWithLocale(nil).bridge()
-    let ts = dateStr.substringToIndex(10) + "T" + dateStr.substringWithRange(NSMakeRange(11, 8))
     #else
     let dateStr = NSDate().description.bridge()
-    let ts = dateStr.substring(to: 10) + "T" + dateStr.substring(with: NSMakeRange(11, 8))
     #endif
+    let ts = dateStr.substring(to: 10) + "T" + dateStr.substring(with: NSMakeRange(11, 8))
     Log.verbose("Current time string: \(dateStr)")
     Log.verbose("Current timestamp generated: \(ts)")
     return ts

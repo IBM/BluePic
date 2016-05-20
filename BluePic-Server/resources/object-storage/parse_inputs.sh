@@ -38,9 +38,9 @@ esac
 done
 
 # Variables (tmp)
-userid=69435710c71c4ed2b78856520f9cae25
-password=F*nt4gmY-Oss4{v.
-projectid=742fffae2c24438b83a2c43491119a82
+#userid=69435710c71c4ed2b78856520f9cae25
+#password=F*nt4gmY-Oss4{v.
+#projectid=742fffae2c24438b83a2c43491119a82
 
 echo "Variables:"
 echo -e "  userid: $userid"

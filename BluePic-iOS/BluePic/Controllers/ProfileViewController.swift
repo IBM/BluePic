@@ -60,7 +60,11 @@ class ProfileViewController: UIViewController {
         setupHeaderView()
         
         setupStatusBarBackgroundView()
-
+        
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        UIApplication.sharedApplication().statusBarStyle = UIStatusBarStyle.Default
     }
 
     
@@ -287,6 +291,16 @@ extension ProfileViewController: UICollectionViewDelegateFlowLayout {
 
 extension ProfileViewController : UIScrollViewDelegate {
 
+
+    
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        
+        if let imageDetailVC = viewModel.prepareImageDetailViewControllerSelectedCellAtIndexPath(indexPath){
+            self.navigationController?.pushViewController(imageDetailVC, animated: true)
+        }
+
+    }
+    
 
     /**
      Method that is called when the scrollView scrolls. When the scrollView scrolls we call the updateImageViewFrameWithScrollViewDidScroll method
