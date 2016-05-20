@@ -52,9 +52,24 @@ func defineRoutes() {
   // This code will be moved to the OpenWhisk actions/sequence Andy is working on
   // Just keeping it here for testing purposes
   router.get("/token") { request, response, next in
-    //http://stackoverflow.com/questions/29365145/how-to-encode-string-to-base64-in-swift
-    let authHeader="NzVlZWY1MmMtMmVkMS00NTE4LTk1ODctY2U1NWNjNjY0NzlkOmtCTFRXWTF2Uk8yZzVnRmRSYnBWOFE="
-    let appGuid="75eef52c-2ed1-4518-9587-ce55cc66479d"
+    // Define error response just in case...
+    var errorResponse = JSON([:])
+    errorResponse["error"].stringValue = "Failed to retrieve MCA token."
+
+    let baseStr = "\(mobileClientAccessProps.clientId):\(mobileClientAccessProps.secret)"
+    print("baseStr: \(baseStr)")
+    let utf8BaseStr = baseStr.data(using: NSUTF8StringEncoding)
+    guard let authHeader = utf8BaseStr?.base64EncodedString(NSDataBase64EncodingOptions(rawValue: 0)) else {
+      print("Could not generate authHeader...")
+      response.status(HTTPStatusCode.internalServerError).send(json: errorResponse)
+      next()
+      return
+    }
+    //let authHeader="NzVlZWY1MmMtMmVkMS00NTE4LTk1ODctY2U1NWNjNjY0NzlkOmtCTFRXWTF2Uk8yZzVnRmRSYnBWOFE="
+    //let appGuid="75eef52c-2ed1-4518-9587-ce55cc66479d"
+    let appGuid = mobileClientAccessProps.clientId
+    print("authHeader: \(authHeader)")
+    print("appGuid: \(appGuid)")
 
     // Request options
     var requestOptions = [ClientRequestOptions]()
@@ -74,8 +89,6 @@ func defineRoutes() {
 
     // Make REST call
     let req = HTTP.request(requestOptions) { resp in
-      var errorResponse = JSON([:])
-      errorResponse["error"].stringValue = "Failed to retrieve MCA token."
       if let resp = resp where resp.statusCode == HTTPStatusCode.OK {
         do {
           let body = NSMutableData()
