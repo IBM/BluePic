@@ -55,7 +55,7 @@ class LoginViewModel: NSObject {
             if(error == nil){
                 self.notifyLoginVC(loginViewModelNotification: LoginViewModelNotification.LoginSuccess)
             }
-            else if(error == FacebookAuthenticationError.UserCanceledLogin){
+            else if(error == LoginDataManagerError.UserCanceledLogin){
                 self.notifyLoginVC(loginViewModelNotification: LoginViewModelNotification.UserCanceledLogin)
             }
             else{
