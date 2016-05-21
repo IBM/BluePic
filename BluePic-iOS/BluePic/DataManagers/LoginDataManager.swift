@@ -71,11 +71,11 @@ class LoginDataManager: NSObject {
                     if let facebookUserId = facebookUserId, let facebookUserFullName = facebookUserFullName {
                     
                         //try to register user with backend if the user doesn't already exist
-                        BluemixDataManager.SharedInstance.checkIfUserAlreadyExistsIfNotCreateNewUser("9949", name: facebookUserFullName, language: language, unitsOfMeasurement: unitsOfMeasurement, callback: { success in
+                        BluemixDataManager.SharedInstance.checkIfUserAlreadyExistsIfNotCreateNewUser(facebookUserId, name: facebookUserFullName, language: language, unitsOfMeasurement: unitsOfMeasurement, callback: { success in
                         
                             if(success){
                                 CurrentUser.willLoginLater = false
-                                CurrentUser.facebookUserId = "9949"
+                                CurrentUser.facebookUserId = facebookUserId
                                 CurrentUser.fullName = facebookUserFullName
                                 callback(error: nil)
                             }
