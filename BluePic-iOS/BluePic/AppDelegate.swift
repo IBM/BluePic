@@ -35,15 +35,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
      */
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
-        
-        
-//        BluemixDataManager.SharedInstance.getUserById(CurrentUser.facebookUserId!, result: {  user in
-//            
-//            
-//            
-//            
-//        })
-        
         let notificationTypes: UIUserNotificationType = [UIUserNotificationType.Badge, UIUserNotificationType.Alert, UIUserNotificationType.Sound]
         let notificationSettings: UIUserNotificationSettings = UIUserNotificationSettings(forTypes: notificationTypes, categories: nil)
         application.registerUserNotificationSettings(notificationSettings)

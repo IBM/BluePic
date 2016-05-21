@@ -20,6 +20,8 @@ import BMSCore
 
 enum BlueMixDataManagerError: ErrorType {
     case DocDoesNotExist
+    case UserDoesNotExist
+    case ConnectionFailure
 }
 
 enum BluemixDataManagerNotification : String {
@@ -269,38 +271,40 @@ class BluemixDataManager: NSObject {
         
     }
     
-    func getUserById(userId : String, result: (user : User?) -> ()){
+    func getUserById(userId : String, result: (user : User?, error : BlueMixDataManagerError?) -> ()){
         
         let requestURL = getBluemixBaseRequestURL() + "/" + kUsersEndPoint + "/" + userId
         
         let request = Request(url: requestURL, method: HttpMethod.GET)
         
         request.sendWithCompletionHandler { (response, error) -> Void in
-            if let error = error {
-                print ("Error Getting User By Id :: \(error.localizedDescription)")
-                print(error.code)
-               result(user: nil)
-            } else {
+            if(error != nil){
+                 if let response = response,
+                    let statusCode = response.statusCode {
+                    
+                    //user does not exist
+                    if(statusCode == 404){
+                        result(user: nil, error: BlueMixDataManagerError.UserDoesNotExist)
+                    }
+                    //any other error code means that it was a connection failure
+                    else{
+                        result(user: nil, error: BlueMixDataManagerError.ConnectionFailure)
+                    }
+                    
+                }
+            //connection failure
+                else{
+                    result(user: nil, error: BlueMixDataManagerError.ConnectionFailure)
+                }
+            }
+             else {
                 let user = User(response)
-                result(user: user)
+                result(user: user, error: nil)
                 print ("Success :: \(response?.responseText)")
             }
         }
     }
-    
-    func doesUserAlreadyExist(userId : String, result : (doesUserAlreadyExist : Bool) -> ()){
-    
-        getUserById(userId, result: { user in
-            
-            if user != nil {
-                result(doesUserAlreadyExist: true)
-            }
-            else{
-                result(doesUserAlreadyExist: false)
-            }
-            
-        })
-    }
+
     
     
     private func createNewUser(userId : String, name : String, language : String, unitsOfMeasurement : String, result : ((user : User?) -> ())){
@@ -311,7 +315,6 @@ class BluemixDataManager: NSObject {
          
         let json = ["_id": userId, "name": name, "language" : language, "unitsOfMeasurement" : unitsOfMeasurement]
 
-        
         do{
             let jsonData = try NSJSONSerialization.dataWithJSONObject(json, options: .PrettyPrinted)
             
@@ -336,26 +339,32 @@ class BluemixDataManager: NSObject {
     
     func checkIfUserAlreadyExistsIfNotCreateNewUser(userId : String, name : String, language: String, unitsOfMeasurement : String, callback : ((success : Bool) -> ())){
 
-        getUserById(userId, result: { user in
+        getUserById(userId, result: { (user, error) in
             
-            if(user != nil){
-               callback(success: true)
+            if let error = error {
+                
+                //user does not exist so create new user
+                if(error == BlueMixDataManagerError.UserDoesNotExist){
+                    self.createNewUser(userId, name: name, language: language, unitsOfMeasurement: unitsOfMeasurement, result: { user in
+                        
+                        if(user != nil){
+                            callback(success: true)
+                        }
+                        else{
+                            callback(success: false)
+                        }
+                
+                    })
+                }
+                else if(error == BlueMixDataManagerError.ConnectionFailure){
+                    callback(success: false)
+                }
             }
-            else{
-                self.createNewUser(userId, name: name, language: language, unitsOfMeasurement: unitsOfMeasurement, result: { user in
-                    
-                    if(user != nil){
-                        callback(success: true)
-                    }
-                    else{
-                        callback(success: false)
-                    }
+            else {
+                callback(success: true)
+            }
 
-                })
-            }
-            
         })
-
     }
     
 
