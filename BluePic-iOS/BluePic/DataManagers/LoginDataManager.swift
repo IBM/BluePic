@@ -16,6 +16,14 @@
 
 import UIKit
 
+enum LoginDataManagerError {
+    
+    case FacebookAuthenticationError
+    case UserCanceledLogin
+    case ConnectionFailure
+
+}
+
 class LoginDataManager: NSObject {
 
     
@@ -30,7 +38,7 @@ class LoginDataManager: NSObject {
     
     
 
-    func login(callback : ((error : FacebookAuthenticationError?)->())){
+    func login(callback : ((error : LoginDataManagerError?)->())){
         
         ///Check if user is already authenticated from previous sesssions, aka check nsuserdefaults for user info
         if(isUserAlreadyAuthenticated()){
@@ -43,8 +51,15 @@ class LoginDataManager: NSObject {
             FacebookDataManager.SharedInstance.loginWithFacebook({ (facebookUserId: String?, facebookUserFullName : String?, error: FacebookAuthenticationError?) in
                 
                 //facebook authentication failure
-                if(error != nil){
-                    callback(error: error)
+                if let error = error {
+                    
+                    if(error == FacebookAuthenticationError.UserCanceledLogin){
+                        callback(error: LoginDataManagerError.UserCanceledLogin)
+                    }
+                    else{
+                        callback(error: LoginDataManagerError.FacebookAuthenticationError)
+                    }
+                    
                 }
                 //facebook authentication success
                 else{
@@ -52,21 +67,28 @@ class LoginDataManager: NSObject {
                     let language = LocationDataManager.SharedInstance.getLanguageLocale()
                     let unitsOfMeasurement = LocationDataManager.SharedInstance.getUnitsOfMeasurement()
                     
-                    //try to register user with backend if the user doesn't already exist
-                    //We know facebookUserId and facebookUserFullName aren't nil because there wasn't an error
-                    BluemixDataManager.SharedInstance.checkIfUserAlreadyExistsIfNotCreateNewUser(facebookUserId!, name: facebookUserFullName!, language: language, unitsOfMeasurement: unitsOfMeasurement, callback: { success in
-                        //return the result of this which will determine whether login was a success or not
+                    //Check to make sure facebook id and name aren't nil
+                    if let facebookUserId = facebookUserId, let facebookUserFullName = facebookUserFullName {
+                    
+                        //try to register user with backend if the user doesn't already exist
+                        BluemixDataManager.SharedInstance.checkIfUserAlreadyExistsIfNotCreateNewUser("9949", name: facebookUserFullName, language: language, unitsOfMeasurement: unitsOfMeasurement, callback: { success in
                         
-                        if(success){
-                            CurrentUser.willLoginLater = false
-                            CurrentUser.facebookUserId = facebookUserId!
-                            CurrentUser.fullName = facebookUserFullName!
-                        }
-                        
-                        print("success finding user")
+                            if(success){
+                                CurrentUser.willLoginLater = false
+                                CurrentUser.facebookUserId = "9949"
+                                CurrentUser.fullName = facebookUserFullName
+                                callback(error: nil)
+                            }
+                            else{
+                                callback(error: LoginDataManagerError.ConnectionFailure )
+                            }
                        
-                        callback(error: nil)
-                    })
+                        })
+                    }
+                    //Facebook id and name were nil
+                    else{
+                        callback(error: LoginDataManagerError.FacebookAuthenticationError)
+                    }
                 }
 
             })
