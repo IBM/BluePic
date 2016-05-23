@@ -376,7 +376,7 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
     func postPhoto() {
         
         dismissProgressHUDAndReEnableUI()
-        
+    
         self.confirmationView.endEditing(true) //dismiss keyboard first if shown
         self.confirmationView.userInteractionEnabled = false
         self.tabVC.view.userInteractionEnabled = false
@@ -392,7 +392,9 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
             imageUserDecidedToPost.caption = kEmptyCaptionPlaceHolder
         }
         
-        BluemixDataManager.SharedInstance.postNewImage(imageUserDecidedToPost)
+        dispatch_async(dispatch_get_main_queue()) {
+            BluemixDataManager.SharedInstance.postNewImage(self.imageUserDecidedToPost)
+        }
         
         //NSNotificationCenter.defaultCenter().postNotificationName(CameraDataManagerNotification.UserPressedPostPhoto.rawValue, object: nil)
         
