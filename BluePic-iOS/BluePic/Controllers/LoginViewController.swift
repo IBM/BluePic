@@ -39,6 +39,9 @@ class LoginViewController: UIViewController {
     var viewModel: LoginViewModel!
     
     
+    private let kLoginErrorMessage = NSLocalizedString("Oops, an error occurred! Try again.", comment: "")
+    
+    
     /**
      Method called upon view did load. In this case we set up the view model.
      */
@@ -94,7 +97,7 @@ class LoginViewController: UIViewController {
     func handleLoginFailure(){
         
         dispatch_async(dispatch_get_main_queue()) {
-            self.welcomeLabel.text = "Oops, an error occurred! Try again."
+            self.welcomeLabel.text = self.kLoginErrorMessage
             self.welcomeLabel.hidden = false
             self.facebookButton.hidden = false
             self.signInLaterButton.hidden = false
