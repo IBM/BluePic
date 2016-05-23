@@ -207,6 +207,12 @@ class FeedViewController: UIViewController {
         self.navigationController?.popViewControllerAnimated(true)
     }
     
+    func scrollCollectionViewToTop(){
+        
+        collectionView.contentOffset.y = 0
+        
+    }
+    
 }
 
 
@@ -304,6 +310,7 @@ extension FeedViewController {
         }
         else if(feedViewModelNotification == FeedViewModelNotification.UploadingPhotoStarted){
             collectionView.reloadData()
+            scrollCollectionViewToTop()
             tryToStartLoadingAnimation()
         }
         else if(feedViewModelNotification == FeedViewModelNotification.UploadingPhotoFinished){
