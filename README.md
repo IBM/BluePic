@@ -2,14 +2,14 @@
 
 **This repo is not ready for consumption yet and please note that this README is still under construction This is a new development effort that has not completed yet. If you are looking for the Kitura-BluePic repo, please visit this URL: https://github.com/IBM-Swift/Kitura-BluePic.**
 
-BluePic is a photo and image sharing sample application that allows you to take photos and share them with other BluePic users. This sample application demonstrates how to leverage a Kitura-based server application [written in Swift] in a mobile iOS (v9) application.
+BluePic is a photo and image sharing sample application that allows you to take photos and share them with other BluePic users. This sample application demonstrates how to leverage a Kitura-based server application [written in Swift] in a mobile iOS 9 application.
 
 ## Table of Contents
 
 * [Dependencies](#dependencies)
-* [Project Structure](#project-structure)
+* [Project Structure](#project-folder-structure)
 * [Getting Started](#getting-started)
-* [Using BluePic](#using-kitura-bluepic)
+* [Using BluePic](#using-bluepic)
 * [Architecture](#architecture)
 * [License](#license)
 
@@ -54,17 +54,13 @@ In order to have the iOS application authenticate with Facebook, you must create
 
 1. Go to [Facebook's Quick Start for iOS](https://developers.facebook.com/quickstarts/?platform=ios) page. Type `BluePic` as the name of your new Facebook app and click the `Create New Facebook App ID` button.
 
-1. On the screen that follows, in the `Configure your info.plist` section under `step 2`, copy the information into your `info.plist` file. You can find the `info.plist` file in `Configuration` folder of the Xcode project. Your `info.plist` file should now look like this:
+1. On the screen that follows, you **do not** need to download the Facebook SDK, the necessary components are included in the MCA framework. Next, in the `Configure your info.plist` section under `step 2`, copy the information into your `info.plist` file. You can find the `info.plist` file in `Configuration` folder of the Xcode project. Among other values, your `info.plist` file should contain the following:
 <p align="center"><img src="Imgs/infoplist.png"  alt="Drawing" height=150 border=0 /></p>
-
-TODO: Validate this section
-
+ 
 1. Next scroll to the bottom of the quick start page where it says `Supply us with your Bundle Identifier` and enter the app's bundle identifier. To find the bundle identifier in the Xcode project you can do the following:
-    * Make sure the project navigator folder icon is selected in the top left of Xcode. Select the BluePic project at the top of the file structure and then select the BluePic target. Under the identity section, you should see a text field for the bundle identifier that is empty. You can make the bundle identifier anything you want, `com.KituraBluePic` for example.
+    * Make sure the project navigator folder icon is selected in the top left of Xcode. Select the BluePic project at the top of the file structure and then select the BluePic target. Under the identity section, you should see a text field for the bundle identifier that is empty. You can make the bundle identifier anything you want, `com.BluePic` for example.
 
 1. Once you entered the bundle ID on the Facebook quick start page, click `next`.
-
-TODO: ADD DETAILS about the need for an iOS provisioning profile that has capabilities for Push APNS
 
 #### 3. Create BluePic application on Bluemix
 
@@ -82,7 +78,12 @@ TODO: ADD CONTENTS
 
 #### 5. Configure Bluemix Push service
 
-TODO: ADD CONTENTS
+It is important to note that we will need to configure a notification provider before we can really use the Bluemix Push service. In our case, we need to configure credentials for the Apple Push Notification Service (APNS). Luckily, Bluemix has instructions to walk you though that process, you can find that [here](https://console.ng.bluemix.net/docs/services/mobilepush/t_push_provider_ios.html).
+
+Do not forget to upload the .p12 certificate to Bluemix as well as enter the password for that certificate, as mentioned in instructions, linked to above.
+Once you have completed the appropriate steps with Apple and Bluemix, just make sure the `keys.plist` was correctly updated in step 4.
+
+Lastly, remember that push notifications will only show up on a physical iOS device.
 
 #### 6. Configure OpenWhisk
 
@@ -200,38 +201,7 @@ open BluePic.xcworkspace
 
 ## Using BluePic
 
-BluePic was designed so that anyone can quickly launch the app and view photos posted without needing to log in. However, to view the profile or post photos, the user can easily login with his/her Facebook. This is only used to uniquely identify the user by obtaining the Facebook ID and the user's full name.
-
-<p align="center">
-<img src="Imgs/KituraBluePic.PNG"  alt="Drawing" height=550 border=0 />
-</p>
-<p align="center">Figure 1. Welcome page.</p>
-
-<br>
-
-### View Feed
-
-The feed (first tab) shows all the latest photos posted to the BluePic community (regardless if logged in or not).
-
-<p align="center">
-<img src="Imgs/feed.PNG"  alt="Drawing" height=550 border=0 /></p>
-<p align="center">Figure 2. Main feed view.</p>
-
-### Post a Photo
-
-Posting to the BluePic community is easy. Tap the middle tab in the tab bar and choose to either pick a photo from the camera roll or take a photo using the device's camera. You can optionally enter a caption before posting the picture.
-
-<p align="center">
-<img src="Imgs/post.PNG"  alt="Drawing" height=550 border=0 /></p>
-<p align="center">Figure 3. Posting a photo.</p>
-
-### View Profile
-
-By tapping the third tab, you can view your profile. This shows your Facebook profile photo, lists how many photos you've posted, and shows all the photos you've posted to Kitura BluePic.
-
-<p align="center">
-<img src="Imgs/profile.PNG"  alt="Drawing" height=550 border=0 /></p>
-<p align="center">Figure 4. Profile feed.</p>
+BluePic was designed with a lot of useful features, so to view them all, check out our walkthrough on [Using Bluepic](Docs/Using-Bluepic.md)
 
 ## Architecture
 
