@@ -18,7 +18,11 @@
 
 set -e
 
-# Compile server code (Kitura-based server)
-cd "$(dirname "$0")"
-cd BluePic-Server
-make clean && make
+# Set serverFolder variable
+serverFolder=`dirname $( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )`/BluePic-Server
+echo "serverFolder: $serverFolder"
+cd $serverFolder
+
+kill `ps aux | grep -F '.build/debug/Server' | grep -v -F 'grep' | awk '{ print $2 }'` || true
+echo 'Running Kitura-based server in the background.'
+.build/debug/Server &

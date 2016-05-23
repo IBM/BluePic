@@ -18,11 +18,10 @@
 
 set -e
 
-# Install system level dependencies
-brew install curl
+# Set serverFolder variable
+serverFolder=`dirname $( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )`/BluePic-Server
+echo "serverFolder: $serverFolder"
+cd $serverFolder
 
 # Compile server code (Kitura-based server)
-./compile-server.sh
-
-# Start server!
-./run-server.sh $1
+make clean && make
