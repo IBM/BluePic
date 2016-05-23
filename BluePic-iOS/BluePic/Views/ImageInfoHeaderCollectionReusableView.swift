@@ -19,9 +19,6 @@ class ImageInfoHeaderCollectionReusableView: UICollectionReusableView{
     @IBOutlet weak var weatherImageView: UIImageView!
     @IBOutlet weak var temperatureLabel: UILabel!
     
-
-    
-    
     private let kCaptionLabelLetterSpacing : CGFloat = 1.7
     private let kCaptionLabelLineSpacing : CGFloat = 10.0
     
@@ -30,15 +27,6 @@ class ImageInfoHeaderCollectionReusableView: UICollectionReusableView{
     private let kByUserLabelPrefixString = NSLocalizedString("by", comment: "")
     private let kDateLabelPrefixString = NSLocalizedString("on", comment: "")
     private let kTimeLabelPrefixString = NSLocalizedString("at", comment: "")
-    
-    
-//    required init?(coder aDecoder: NSCoder) {
-//        super.init(coder: aDecoder)
-//        
-//        NSBundle.mainBundle().loadNibNamed("ImageDetailInfoView", owner: self, options: nil)[0] as! UIView
-//        self.addSubview(view)
-//        view.frame = self.bounds
-//    }
     
     
     /**
@@ -126,7 +114,6 @@ class ImageInfoHeaderCollectionReusableView: UICollectionReusableView{
             dateFormatter.timeStyle = .ShortStyle
             let locale = LocationDataManager.SharedInstance.getLanguageLocale()
             dateFormatter.locale = NSLocale(localeIdentifier: locale)
-            //dateFormatter.dateFormat = "h:mm a"
             let dateString = dateFormatter.stringFromDate(date)
             timeLabel.text = kTimeLabelPrefixString + " " + dateString
             

@@ -33,7 +33,6 @@
 		1BF00D0A1CEACF68009472B5 /* ProfileNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BF00D091CEACF68009472B5 /* ProfileNavigationController.swift */; };
 		1BF00D0C1CEAD27E009472B5 /* FeedNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BF00D0B1CEAD27E009472B5 /* FeedNavigationController.swift */; };
 		1BF00D0E1CEF5F52009472B5 /* ImageInfoHeaderCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BF00D0D1CEF5F52009472B5 /* ImageInfoHeaderCollectionReusableView.swift */; };
-		1BF00D101CEF5F64009472B5 /* ImageInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1BF00D0F1CEF5F64009472B5 /* ImageInfoView.xib */; };
 		1BF00D121CEF7939009472B5 /* ImageDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BF00D111CEF7939009472B5 /* ImageDetailViewModel.swift */; };
 		1BF00D141CEF7C0C009472B5 /* ImageInfoHeaderCollectionReusableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1BF00D131CEF7C0C009472B5 /* ImageInfoHeaderCollectionReusableView.xib */; };
 		2E26F6081CC82C8B00650494 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E26F6071CC82C8B00650494 /* Pods.framework */; };
@@ -117,7 +116,6 @@
 		1BF00D091CEACF68009472B5 /* ProfileNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileNavigationController.swift; sourceTree = "<group>"; };
 		1BF00D0B1CEAD27E009472B5 /* FeedNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedNavigationController.swift; sourceTree = "<group>"; };
 		1BF00D0D1CEF5F52009472B5 /* ImageInfoHeaderCollectionReusableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageInfoHeaderCollectionReusableView.swift; sourceTree = "<group>"; };
-		1BF00D0F1CEF5F64009472B5 /* ImageInfoView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageInfoView.xib; sourceTree = "<group>"; };
 		1BF00D111CEF7939009472B5 /* ImageDetailViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageDetailViewModel.swift; sourceTree = "<group>"; };
 		1BF00D131CEF7C0C009472B5 /* ImageInfoHeaderCollectionReusableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageInfoHeaderCollectionReusableView.xib; sourceTree = "<group>"; };
 		2E26F6071CC82C8B00650494 /* Pods.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Pods.framework; path = "Pods/../build/Debug-iphoneos/Pods.framework"; sourceTree = "<group>"; };
@@ -349,7 +347,6 @@
 				2E7C95601CE13DCE0044F6ED /* TagCollectionViewCell.swift */,
 				2E7C95611CE13DCE0044F6ED /* TagCollectionViewCell.xib */,
 				1BF00D0D1CEF5F52009472B5 /* ImageInfoHeaderCollectionReusableView.swift */,
-				1BF00D0F1CEF5F64009472B5 /* ImageInfoView.xib */,
 				1BF00D131CEF7C0C009472B5 /* ImageInfoHeaderCollectionReusableView.xib */,
 			);
 			path = Views;
@@ -481,7 +478,6 @@
 				1B6132171C270DD300B57231 /* ImagesCurrentlyUploadingImageFeedCollectionViewCell.xib in Resources */,
 				3435C7CB1C0368DA004923BD /* Camera.storyboard in Resources */,
 				3435C7CD1C03690F004923BD /* Profile.storyboard in Resources */,
-				1BF00D101CEF5F64009472B5 /* ImageInfoView.xib in Resources */,
 				1B057E0A1C17C03400AC21EE /* ProfileHeaderCollectionReusableView.xib in Resources */,
 				3435C7C91C0368B1004923BD /* Feed.storyboard in Resources */,
 				346F94801C0F9211004999A8 /* CameraConfirmationView.xib in Resources */,
