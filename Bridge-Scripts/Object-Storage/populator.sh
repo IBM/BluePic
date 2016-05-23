@@ -16,9 +16,6 @@
 # limitations under the License.
 ##
 
-# If any commands fail, we want the shell script to exit immediately.
-set -e
-
 # References:
 # https://console.ng.bluemix.net/docs/services/ObjectStorage/objectstorge_usingobjectstorage.html
 # https://console.ng.bluemix.net/docs/services/ObjectStorage/objectstorge_usingobjectstorage.html#using-swift-restapi
@@ -27,8 +24,15 @@ set -e
 # Example URL for accessing an object/image
 # https://<access point>/<API version>/AUTH_<project ID>/<container namespace>/<object namespace>
 
+# If any commands fail, we want the shell script to exit immediately.
+set -e
+
+# Set scripts folder variable
+scriptsFolder="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+echo "scriptsFolder: $scriptsFolder"
+
 # Parse input parameters
-source ./parse_inputs.sh
+source $scriptsFolder/parse_inputs.sh
 
 # Variables
 authUrl=https://identity.open.softlayer.com/v3/auth/tokens
@@ -51,7 +55,6 @@ authToken=`curl -i -H "Content-Type: application/json" -d "{ \"auth\": { \"ident
 declare -a containers=($container1 $container2 $container3 $container4)
 
 for container in "${containers[@]}"; do
-
   # Delete container (this operation fails unless the container is empty)
   #curl -i $publicUrl/$container -X DELETE -H "Content-Length: 0" -H "X-Auth-Token: $authToken"
 
@@ -67,7 +70,8 @@ done
 
 # Upload images to containers
 # Note that container4 does not have any images
-imagesFolder=`dirname $( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )`/images
+#imagesFolder=`dirname $( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )`/images
+imagesFolder=$scriptsFolder/images
 echo "imagesFolder: $imagesFolder"
 declare -a images=("$container1:person.png:image/png" "$container1:flower_1.png:image/png" "$container1:church.png:image/png" "$container1:rush.png:image/png" \
   "$container2:road.png:image/png" "$container2:flower_2.png:image/png" "$container2:city.png:image/png" "$container2:bridge.png:image/png" \
@@ -78,6 +82,7 @@ for record in "${images[@]}"; do
   container=${image[0]}
   fileName=${image[1]}
   contentType=${image[2]}
+  echo "Uploading $fileName to $container..."
   curl -i $publicUrl/$container/$fileName --data-binary @$imagesFolder/$fileName -X PUT -H "Content-Type: $contentType" -H "X-Auth-Token: $authToken"
 done
 
