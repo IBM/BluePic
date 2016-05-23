@@ -2,14 +2,14 @@
 
 **This repo is not ready for consumption yet and please note that this README is still under construction This is a new development effort that has not completed yet. If you are looking for the Kitura-BluePic repo, please visit this URL: https://github.com/IBM-Swift/Kitura-BluePic.**
 
-BluePic is a photo and image sharing sample application that allows you to take photos and share them with other BluePic users. This sample application demonstrates how to leverage a Kitura-based server application [written in Swift] in a mobile iOS (v9) application.
+BluePic is a photo and image sharing sample application that allows you to take photos and share them with other BluePic users. This sample application demonstrates how to leverage a Kitura-based server application [written in Swift] in a mobile iOS 9 application.
 
 ## Table of Contents
 
 * [Dependencies](#dependencies)
-* [Project Structure](#project-structure)
+* [Project Structure](#project-folder-structure)
 * [Getting Started](#getting-started)
-* [Using BluePic](#using-kitura-bluepic)
+* [Using BluePic](#using-bluepic)
 * [Architecture](#architecture)
 * [License](#license)
 
@@ -64,8 +64,6 @@ TODO: Validate this section
 
 1. Once you entered the bundle ID on the Facebook quick start page, click `next`.
 
-TODO: ADD DETAILS about the need for an iOS provisioning profile that has capabilities for Push APNS
-
 #### 3. Create BluePic application on Bluemix
 
 You can click the magical button below to automatically deploy the BluePic application to Bluemix:
@@ -82,7 +80,11 @@ TODO: ADD CONTENTS
 
 #### 5. Configure Bluemix Push service
 
-TODO: ADD CONTENTS
+It is important to note that we will need to configure a notification provider before we can really use the Bluemix Push service. In our case, we need to configure credentials for the Apple Push Notification Service (APNS). Luckily, Bluemix has instructions to walk you though that process, you can find that [here](https://console.ng.bluemix.net/docs/services/mobilepush/t_push_provider_ios.html).
+
+Once you have completed the appropriate steps with Apple and Bluemix, just make sure the `keys.plist` was correctly updated in step 4.
+
+Lastly, remember that push notifications will only show up on a physical iOS device.
 
 #### 6. Configure OpenWhisk
 
