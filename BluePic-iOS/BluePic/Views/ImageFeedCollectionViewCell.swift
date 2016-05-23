@@ -38,6 +38,8 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
     
     private let kNumberOfTagsPostFix = NSLocalizedString("Tags", comment: "")
     
+    private let kByString = NSLocalizedString("by", comment: "")
+    
 
     /**
      Method is called when the view wakes from nib
@@ -87,7 +89,7 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
         //set the photographerNameLabel's text
         var ownerNameString = ""
         if let name = usersName {
-            ownerNameString = NSLocalizedString("by", comment: "") + " \(name)"
+            ownerNameString = kByString + " \(name)"
         }
         photographerNameLabel.text = ownerNameString
         

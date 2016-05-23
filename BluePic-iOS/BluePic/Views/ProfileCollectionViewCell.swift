@@ -71,7 +71,6 @@ class ProfileCollectionViewCell: UICollectionViewCell {
             numberOfTagsLabel.hidden = true
         }
     
-        
         //set the image view's image
         setImageView(url, fileName: fileName)
         
