@@ -81,7 +81,7 @@ TODO: ADD CONTENTS
 It is important to note that we will need to configure a notification provider before we can really use the Bluemix Push service. In our case, we need to configure credentials for the Apple Push Notification Service (APNS). Luckily, Bluemix has instructions to walk you though that process, you can find that [here](https://console.ng.bluemix.net/docs/services/mobilepush/t_push_provider_ios.html).
 
 Do not forget to upload the .p12 certificate to Bluemix as well as enter the password for that certificate, as mentioned in instructions, linked to above.
-Once you have completed the appropriate steps with Apple and Bluemix, just make sure the `keys.plist` was correctly updated in step 4.
+Once you have completed the appropriate steps with Apple and Bluemix, just make sure the `bluemix.plist` was correctly updated in step 4.
 
 Lastly, remember that push notifications will only show up on a physical iOS device.
 
@@ -199,6 +199,15 @@ Go to the BluePic-iOS directory and open the BluePic workspace using Xcode:
 open BluePic.xcworkspace
 ```
 
+#### 12.1 Simulate Location on Simulator
+If you try to post a photo within the iOS simulator and the app doesn't know your location, it won't work. To fix this simulator specific issue, simply set a location in the simulator's debug menu:
+
+<p align="center">
+<img src="Imgs/location-simulate.png"  alt="Drawing"  border=0 /></p>
+<p align="center">Figure 1. Set simulated location</p>
+
+Any location should work fine, but remember this may have to be done on each initial launch of a certain simulator, if you want to be able to post images. Running Bluepic on a physical device avoids this issue entirely.
+
 ## Using BluePic
 
 BluePic was designed with a lot of useful features, so to view them all, check out our walkthrough on [Using Bluepic](Docs/Using-Bluepic.md)
@@ -207,7 +216,7 @@ BluePic was designed with a lot of useful features, so to view them all, check o
 
 <p align="center">
 <img src="Imgs/architecture.png"  alt="Drawing" height=450 border=0 /></p>
-<p align="center">Figure 1. BluePic Architecture Diagram.</p>
+<p align="center">Figure 2. BluePic Architecture Diagram.</p>
 
 ## License
 
