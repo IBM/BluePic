@@ -175,19 +175,19 @@ extension ProfileViewModel {
     func setUpCollectionViewCell(indexPath : NSIndexPath, collectionView : UICollectionView) -> UICollectionViewCell {
         
         if(imageDataArray.count == 0){
-            
-            let cell: EmptyFeedCollectionViewCell
-            
-            cell = collectionView.dequeueReusableCellWithReuseIdentifier("EmptyFeedCollectionViewCell", forIndexPath: indexPath) as! EmptyFeedCollectionViewCell
+                        
+            guard let cell = collectionView.dequeueReusableCellWithReuseIdentifier("EmptyFeedCollectionViewCell", forIndexPath: indexPath) as? EmptyFeedCollectionViewCell else {
+                return EmptyFeedCollectionViewCell()
+            }
             
             return cell
             
         }
         else{
             
-            let cell: ProfileCollectionViewCell
-            
-            cell = collectionView.dequeueReusableCellWithReuseIdentifier("ProfileCollectionViewCell", forIndexPath: indexPath) as! ProfileCollectionViewCell
+            guard let cell = collectionView.dequeueReusableCellWithReuseIdentifier("ProfileCollectionViewCell", forIndexPath: indexPath) as? ProfileCollectionViewCell else {
+                return ProfileCollectionViewCell()
+            }
             
             let image = imageDataArray[indexPath.row]
             
@@ -218,12 +218,12 @@ extension ProfileViewModel {
      - returns: TripDetailSupplementaryView
      */
     func setUpSectionHeaderViewForIndexPath(indexPath : NSIndexPath, kind: String, collectionView : UICollectionView) -> ProfileHeaderCollectionReusableView {
+
+        guard let header = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "ProfileHeaderCollectionReusableView", forIndexPath: indexPath) as? ProfileHeaderCollectionReusableView else {
+            return ProfileHeaderCollectionReusableView()
+        }
         
-        let header : ProfileHeaderCollectionReusableView
-        
-        header = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "ProfileHeaderCollectionReusableView", forIndexPath: indexPath) as! ProfileHeaderCollectionReusableView
-        
-        header.setupData(CurrentUser.fullName!, numberOfShots: imageDataArray.count, profilePictureURL : CurrentUser.facebookProfilePictureURL)
+        header.setupData(CurrentUser.fullName, numberOfShots: imageDataArray.count, profilePictureURL : CurrentUser.facebookProfilePictureURL)
         
         return header
     }
@@ -244,6 +244,5 @@ extension ProfileViewModel {
         }
         
     }
-  
     
 }

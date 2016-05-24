@@ -46,7 +46,7 @@ class CameraConfirmationView: UIView, UITextFieldDelegate {
      - returns: an instance of this view
      */
     static func instanceFromNib() -> CameraConfirmationView {
-        return UINib(nibName: "CameraConfirmationView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! CameraConfirmationView
+        return UINib(nibName: "CameraConfirmationViewz", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! CameraConfirmationView
     }
     
     /**
@@ -56,7 +56,6 @@ class CameraConfirmationView: UIView, UITextFieldDelegate {
         super.awakeFromNib()
         self.setupView()
         self.addKeyboardObservers()
-    
     }
     
     /**
@@ -124,14 +123,14 @@ class CameraConfirmationView: UIView, UITextFieldDelegate {
      */
     func adjustingHeight(show:Bool, notification:NSNotification) {
         // 1
-        var userInfo = notification.userInfo!
+        if let userInfo = notification.userInfo,
+            keyboardFrameValue = userInfo[UIKeyboardFrameBeginUserInfoKey] as? NSValue,
+            animationDuration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSTimeInterval {
         // 2
-        let keyboardFrame:CGRect = (userInfo[UIKeyboardFrameBeginUserInfoKey] as! NSValue).CGRectValue()
+        let keyboardFrame  = keyboardFrameValue.CGRectValue()
         // 3
-        let animationDuration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as! NSTimeInterval
-        // 4
         let changeInHeight = (CGRectGetHeight(keyboardFrame)) * (show ? -1 : 1)
-        //5
+        //4
         if (show){
         UIView.animateWithDuration(animationDuration, animations: { () -> Void in
             self.frame = CGRect(x: 0, y: 0 + changeInHeight, width: self.frame.width, height: self.frame.height)
@@ -142,6 +141,7 @@ class CameraConfirmationView: UIView, UITextFieldDelegate {
                 self.frame = self.originalFrame
 
             })
+        }
         }
     }
 

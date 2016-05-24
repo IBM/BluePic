@@ -281,10 +281,9 @@ extension FeedViewModel {
         //Section 0 corresponds to showing picture upload queue image feed collection view cells. These cells show when there are pictures in the picture upload queue of the camera data manager
         if(indexPath.section == 0){
             
-            let cell : ImagesCurrentlyUploadingImageFeedCollectionViewCell
-            
-            cell = collectionView.dequeueReusableCellWithReuseIdentifier("ImagesCurrentlyUploadingImageFeedCollectionViewCell", forIndexPath: indexPath) as! ImagesCurrentlyUploadingImageFeedCollectionViewCell
-            
+            guard let cell = collectionView.dequeueReusableCellWithReuseIdentifier("ImagesCurrentlyUploadingImageFeedCollectionViewCell", forIndexPath: indexPath) as? ImagesCurrentlyUploadingImageFeedCollectionViewCell else {
+                return UICollectionViewCell()
+            }
             
             let image = BluemixDataManager.SharedInstance.imagesCurrentlyUploading[indexPath.row]
             
@@ -296,21 +295,20 @@ extension FeedViewModel {
             //section 1 corresponds to either the empty feed collection view cell or the standard image feed collection view cell depending on how many images are in the picture data array
         else{
             
-            //return EmptyFeedCollectionViewCell
             if(imageDataArray.count == 0 && searchQuery == nil){
                 
-                let cell : EmptyFeedCollectionViewCell
-                
-                cell = collectionView.dequeueReusableCellWithReuseIdentifier("EmptyFeedCollectionViewCell", forIndexPath: indexPath) as! EmptyFeedCollectionViewCell
+                guard let cell = collectionView.dequeueReusableCellWithReuseIdentifier("EmptyFeedCollectionViewCell", forIndexPath: indexPath) as? EmptyFeedCollectionViewCell else {
+                    return UICollectionViewCell()
+                }
                 
                 return cell
                 
             }
             else{
                 
-                let cell: ImageFeedCollectionViewCell
-                
-                cell = collectionView.dequeueReusableCellWithReuseIdentifier("ImageFeedCollectionViewCell", forIndexPath: indexPath) as! ImageFeedCollectionViewCell
+                guard let cell = collectionView.dequeueReusableCellWithReuseIdentifier("ImageFeedCollectionViewCell", forIndexPath: indexPath) as? ImageFeedCollectionViewCell else {
+                    return UICollectionViewCell()
+                }
                 
                 let image = imageDataArray[indexPath.row]
                 

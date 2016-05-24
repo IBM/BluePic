@@ -138,8 +138,8 @@ class LocationDataManager: NSObject {
             print(location)
             
             //failure
-            if error != nil {
-                print("Reverse geocoder failed with error" + error!.localizedDescription)
+            if let error = error {
+                print("Reverse geocoder failed with error" + error.localizedDescription)
                 callback(placemark: nil)
             
             }

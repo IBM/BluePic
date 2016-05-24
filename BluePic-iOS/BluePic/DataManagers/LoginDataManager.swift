@@ -36,7 +36,6 @@ class LoginDataManager: NSObject {
         
     }()
     
-    
 
     func login(callback : ((error : LoginDataManagerError?)->())){
         
@@ -122,9 +121,5 @@ class LoginDataManager: NSObject {
             return false
         }
     }
-    
-    
-    
-    
  
 }

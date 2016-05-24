@@ -32,9 +32,9 @@ extension NSDate {
      
      - parameter fromDate: NSDate
      
-     - returns: NSDateComponents!
+     - returns: NSDateComponents
      */
-    private class func components(fromDate fromDate: NSDate) -> NSDateComponents! {
+    private class func components(fromDate fromDate: NSDate) -> NSDateComponents {
         return NSCalendar.currentCalendar().components(NSDate.componentFlags(), fromDate: fromDate)
     }
     
@@ -45,7 +45,7 @@ extension NSDate {
      - returns: NSDateComponents
      */
     private func components() -> NSDateComponents  {
-        return NSDate.components(fromDate: self)!
+        return NSDate.components(fromDate: self)
     }
 
     

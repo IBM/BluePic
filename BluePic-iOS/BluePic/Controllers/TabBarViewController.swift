@@ -32,7 +32,7 @@ class TabBarViewController: UITabBarController {
         
         viewModel = TabBarViewModel(notifyTabBarVC: handleTabBarViewModelNotifications)
         
-        self.tabBar.tintColor! = UIColor.whiteColor()
+        self.tabBar.tintColor = UIColor.whiteColor()
         
         self.addBackgroundImageView()
         
@@ -73,7 +73,6 @@ class TabBarViewController: UITabBarController {
     }
 
 
-
     /**
      Method hides the background image
      */
@@ -91,13 +90,14 @@ class TabBarViewController: UITabBarController {
      */
     func presentLoginVC(){
         
-        let loginVC = Utils.vcWithNameFromStoryboardWithName("loginVC", storyboardName: "Main") as! LoginViewController
+        if let loginVC = Utils.vcWithNameFromStoryboardWithName("loginVC", storyboardName: "Main") as? LoginViewController {
         
-        self.presentViewController(loginVC, animated: false, completion: { _ in
-            
-            self.hideBackgroundImage()
-            print(NSLocalizedString("user needs to log into Facebook, showing login", comment: ""))
-        })
+            self.presentViewController(loginVC, animated: false, completion: { _ in
+                
+                self.hideBackgroundImage()
+                print(NSLocalizedString("user needs to log into Facebook, showing login", comment: ""))
+            })
+        }
    
     }
     
@@ -107,11 +107,12 @@ class TabBarViewController: UITabBarController {
      */
     func presentLoginVCAnimated(){
         
-        let loginVC = Utils.vcWithNameFromStoryboardWithName("loginVC", storyboardName: "Main") as! LoginViewController
-        self.presentViewController(loginVC, animated: true, completion: { _ in
-            self.hideBackgroundImage()
-            print(NSLocalizedString("user needs to log into Facebook, showing login", comment: ""))
-        })
+        if let loginVC = Utils.vcWithNameFromStoryboardWithName("loginVC", storyboardName: "Main") as? LoginViewController {
+            self.presentViewController(loginVC, animated: true, completion: { _ in
+                self.hideBackgroundImage()
+                print(NSLocalizedString("user needs to log into Facebook, showing login", comment: ""))
+            })
+        }
         
     }
     
@@ -119,7 +120,7 @@ class TabBarViewController: UITabBarController {
         
         self.selectedIndex = 0
         
-        if let feedNavigationVC = self.viewControllers![0] as? FeedNavigationController {
+        if let feedNavigationVC = self.viewControllers?[0] as? FeedNavigationController {
             feedNavigationVC.popToRootViewControllerAnimated(false)
         }
         
@@ -194,28 +195,22 @@ extension TabBarViewController: UITabBarControllerDelegate {
         
         let alertController = UIAlertController(title: NSLocalizedString("Location Services Required", comment: ""), message: NSLocalizedString("Please go to Settings to enable Location Services for BluePic", comment: ""), preferredStyle: .Alert)
         
-        let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .Cancel) { (action) in
-            // ...
-        }
+        let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .Cancel, handler: nil)
         alertController.addAction(cancelAction)
         
         let OKAction = UIAlertAction(title: NSLocalizedString("Settings", comment: ""), style: .Default) { (action) in
             
-            let settingsUrl = NSURL(string: UIApplicationOpenSettingsURLString)
-            
-            UIApplication.sharedApplication().openURL(settingsUrl!)
+            if let settingsUrl = NSURL(string: UIApplicationOpenSettingsURLString) {
+                UIApplication.sharedApplication().openURL(settingsUrl)
+            }
 
         }
         alertController.addAction(OKAction)
-        
-        self.presentViewController(alertController, animated: true) {
-            // ...
-        }
+
+        self.presentViewController(alertController, animated: true, completion: nil)
 
     }
     
-
-
 
     /**
      Check if user has pressed sign in later button previously, and if he/she has, will show login if user taps camera or profile
@@ -224,7 +219,7 @@ extension TabBarViewController: UITabBarControllerDelegate {
      
      - returns: Returns a boolean -- true if tab bar with show the selected tab, and false if it will not
      */
-    func checkIfUserPressedSignInLater(showCameraPicker: Bool!) -> Bool! {
+    func checkIfUserPressedSignInLater(showCameraPicker: Bool) -> Bool {
         if viewModel.didUserPressLoginLater() {
             print("user not logged in, prompt login now!")
             presentLoginVCAnimated()
@@ -247,13 +242,13 @@ extension TabBarViewController: UITabBarControllerDelegate {
         
         let alert = UIAlertController(title: NSLocalizedString("Failed To Upload Image", comment: ""), message: "", preferredStyle: UIAlertControllerStyle.Alert)
         
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .Default, handler: { (action: UIAlertAction!) in
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .Default, handler: { (action: UIAlertAction) in
             
             self.viewModel.tellBluemixDataManagerToCancelUploadingImagesThatFailedToUpload()
             
         }))
         
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Try Again", comment: ""), style: .Default, handler: { (action: UIAlertAction!) in
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Try Again", comment: ""), style: .Default, handler: { (action: UIAlertAction) in
             
             self.viewModel.tellBluemixDataManagerToRetryUploadingImagesThatFailedToUpload()
             
