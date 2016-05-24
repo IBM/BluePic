@@ -6,21 +6,21 @@
         "disk": 1024,
         "fds": 16384
       },
-      "application_id": "2347246-359784jkj",
-      "application_version": "8785h4-hwoeh73hu21",
+      "application_id": "e58223416a-9731-443f-8df1-7br2r23r8e",
+      "application_version": "e5e034d1-4a1a-5005-5f78-7655d550183f",
       "application_name": "BluePic",
       "application_uris": [
-        "<application_uri>"
+        "bluepic.mybluemix.net"
       ],
-      "version": "655d550183fb-38yhj3h29",
+      "version": "e5e034d1-4a1a-5005-5f78-7655d550183f",
       "name": "BluePic",
       "space_name": "dev",
-      "space_id": "<space_id>",
+      "space_id": "b15e5trt-cbf3-67d6-bafe-7b467f6d78e4",
       "uris": [
-        "<application_uri>"
+        "bluepic.mybluemix.net"
       ],
       "users": null,
-      "instance_id": "8aaf1d7354a79sy9u82he9pufn",
+      "instance_id": "7d44cfba06wre45sgg63533af1d7354a",
       "instance_index": 0,
       "host": "0.0.0.0",
       "port": 8090,
