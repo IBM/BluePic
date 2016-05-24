@@ -298,18 +298,23 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
     func prepareimageUserDecidedToPost(takenImage : UIImage) {
         
         imageUserDecidedToPost = Image()
+        var facebookID: String?
+        var name: String?
+        var image: UIImage
         
-        imageUserDecidedToPost.user?.facebookID = CurrentUser.facebookUserId
-        imageUserDecidedToPost.user?.name = CurrentUser.fullName
+        if let userId = CurrentUser.facebookUserId, fullName = CurrentUser.fullName {
+            facebookID = userId
+            name = fullName
+        }
         
         if (takenImage.size.width > kResizeAllImagesToThisWidth) { //if image too big, shrink it down
-            imageUserDecidedToPost.image = UIImage.resizeImage(takenImage, newWidth: kResizeAllImagesToThisWidth)
+            image = UIImage.resizeImage(takenImage, newWidth: kResizeAllImagesToThisWidth)
         }
         else {
-            imageUserDecidedToPost.image = takenImage
+            image = takenImage
         }
-        
-        imageUserDecidedToPost.image = self.rotateImageIfNecessary(imageUserDecidedToPost.image!)
+        // WIP
+        image = self.rotateImageIfNecessary(image)
         imageUserDecidedToPost.width = imageUserDecidedToPost.image!.size.width
         imageUserDecidedToPost.height = imageUserDecidedToPost.image!.size.height
         
@@ -322,7 +327,7 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
         //image.caption = self.confirmationView.titleTextField.text
         
         dispatch_async(dispatch_get_main_queue()) {
-        NSNotificationCenter.defaultCenter().postNotificationName(CameraDataManagerNotification.UserPressedPostPhoto.rawValue, object: nil)
+            NSNotificationCenter.defaultCenter().postNotificationName(CameraDataManagerNotification.UserPressedPostPhoto.rawValue, object: nil)
         }
         
         setLatLongCityAndStateForImage(imageUserDecidedToPost, callback: { success in
