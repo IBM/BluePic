@@ -16,14 +16,10 @@
 # limitations under the License.
 ##
 
+# If any commands fail, we want the shell script to exit immediately.
 set -e
-cd "$(dirname "$0")"
-cd BluePic-Server
-kill `ps aux | grep -F '.build/debug/Server' | grep -v -F 'grep' | awk '{ print $2 }'` || true
-if [[ "$1" = "xcode" ]]; then
-	echo 'Running Kitura-based server in the foreground (xcode)'
-	.build/debug/Server
-else
-	echo 'Running Kitura-based server in the background'
-	.build/debug/Server &
-fi
+
+# Parse input parameters
+source ./parse_inputs.sh
+
+curl -X GET "https://$username.cloudant.com/bluepic_db/_design/main_design" -u $username:$password > main_design.json

@@ -19,8 +19,12 @@
 # If any commands fail, we want the shell script to exit immediately.
 set -e
 
+# Set scripts folder variable
+scriptsFolder="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+echo "scriptsFolder: $scriptsFolder"
+
 # Parse input parameters
-source ./parse_inputs.sh
+source $scriptsFolder/parse_inputs.sh
 
 # Variables (object storage - these are needed for storing URL in Cloudant database)
 accessPoint=dal.objectstorage.open.softlayer.com
@@ -28,7 +32,6 @@ publicUrl=https://$accessPoint/v1/AUTH_$projectid
 
 # Load images JSON file and expand variables in the JSON document
 # As a reference, see http://stackoverflow.com/questions/10683349/forcing-bash-to-expand-variables-in-a-string-loaded-from-a-file
-scriptsFolder="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 imagesJSON=$(<$scriptsFolder/images.json)
 delimiter="__apply_shell_expansion_delimiter__"
 imagesJSON=`eval "cat <<$delimiter"$'\n'"$imagesJSON"$'\n'"$delimiter"`
@@ -40,10 +43,10 @@ curl -X DELETE https://$username.cloudant.com/$database -u $username:$password
 curl -X PUT https://$username.cloudant.com/$database -u $username:$password
 
 # Upload design document
-curl -X PUT "https://$username.cloudant.com/bluepic_db/_design/main_design" -u $username:$password -d @main_design.json
+curl -X PUT "https://$username.cloudant.com/bluepic_db/_design/main_design" -u $username:$password -d @$scriptsFolder/main_design.json
 
 # Create user documents
-curl -H "Content-Type: application/json" -d @users.json -X POST https://$username.cloudant.com/$database/_bulk_docs -u $username:$password
+curl -H "Content-Type: application/json" -d @$scriptsFolder/users.json -X POST https://$username.cloudant.com/$database/_bulk_docs -u $username:$password
 
 # Create image documents
 curl -H "Content-Type: application/json" --data "$imagesJSON" -X POST https://$username.cloudant.com/$database/_bulk_docs -u $username:$password
