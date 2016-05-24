@@ -59,7 +59,6 @@ do
   # Delete all objects in the container
   for object in $objects
   do
-    echo $object
     echo "Deleting $object..."
     curl -i $publicUrl/$container/$object -X DELETE -H "Content-Length: 0" -H "X-Auth-Token: $authToken"
   done
@@ -74,10 +73,8 @@ declare -a containers=($container1 $container2 $container3 $container4)
 for container in "${containers[@]}"; do
   # Create container
   curl -i $publicUrl/$container -X PUT -H "Content-Length: 0" -H "X-Auth-Token: $authToken"
-
   # Configure container for web hosting
   curl -i $publicUrl/$container -X POST -H "Content-Length: 0" -H "X-Auth-Token: $authToken" -H  "X-Container-Meta-Web-Listings: true"
-
   # Configure container for public access
   curl -i $publicUrl/$container -X POST -H "Content-Length: 0" -H "X-Auth-Token: $authToken" -H  "X-Container-Read: .r:*,.rlistings"
 done
