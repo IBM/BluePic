@@ -169,7 +169,7 @@ class BluemixDataManager: NSObject {
         
     }
     
-    func getImagesByTags(tags: [String]) {
+    func getImagesByTags(tags: [String], callback : (images : [Image]?)->()) {
         
         var requestURL = getBluemixBaseRequestURL() + "/" + kImagesEndPoint + "?tag="
         for (index, tag) in tags.enumerate() {
@@ -182,11 +182,13 @@ class BluemixDataManager: NSObject {
         let request = Request(url: requestURL, method: HttpMethod.GET)
         
         self.getImages(request) { images in
-            if let images = images {
-                self.searchResultImages = images
-                self.hasReceievedInitialImages = true
-                NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImagesRefreshed.rawValue, object: nil)
-            }
+            callback(images: images)
+            
+//            if let images = images {
+//                self.searchResultImages = images
+//                self.hasReceievedInitialImages = true
+//                NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImagesRefreshed.rawValue, object: nil)
+//            }
         }
         
     }
@@ -477,7 +479,7 @@ extension BluemixDataManager {
      */
     private func addImageToImageTakenDuringAppSessionByIdDictionary(image : Image){
         
-        if let fileName = image.fileName, let userID = image.user?.facebookID {
+        if let fileName = image.fileName, let userID = CurrentUser.facebookUserId {
             
             let id = fileName + userID
             imagesTakenDuringAppSessionById[id] = image.image
