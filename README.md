@@ -15,9 +15,12 @@ BluePic is a photo and image sharing sample application that allows you to take 
 
 ## Project folder Structure
 
+These are the main folders in this repo:
+
 * `./BluePic-iOS` - Contains the iOS client application.
 * `./BluePic-Server` - Contains the Kitura-based server application and its dependencies. This folder contains the artifacts that are deployed to Bluemix.
 * `./BluePic-OpenWhisk` - Contains the OpenWhisk actions and sequence code written in Swift.
+* `./Bridge-Scripts` - Contains the scripts to be leveraged by the IBM Cloud Bridge tool.
 * `./Docs` - Contains additional project documentation.
 * `./Imgs` - Contains images referenced in this `README` file.
 
@@ -33,6 +36,8 @@ The following Swift packages are used in BluePic:
 - [Swift SDK for Bluemix Push Notifications Service](https://github.com/ibm-bluemix-mobile-services/bms-pushnotifications-serversdk-swift.git)
 
 ## Getting Started
+
+#### Using the IBM Cloud Bridge tool... to ADD
 
 #### 1. Install system dependencies
 
