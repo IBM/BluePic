@@ -6,9 +6,9 @@ BluePic is a photo and image sharing sample application that allows you to take 
 
 ## Getting Started
 
-There are two ways you can compile and provision BluePic. The quickest way is using the IBM Cloud Bridge tool. The second approach takes longer but you get to understand exactly the steps that are happening behind the scenes.
+There are two ways you can compile and provision BluePic on Bluemix. The first approach uses the IBM Cloud Bridge tool. This is the easiest and quickest path to get BluePic up and running. The second approach is manual and takes longer but you get to understand exactly the steps that are happening behind the scenes.
 
-### Using the IBM Cloud Bridge tool
+### IBM Cloud Bridge
 TO ADD
 
 ### Manual deployment
