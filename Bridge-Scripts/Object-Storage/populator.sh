@@ -51,13 +51,27 @@ echo "publicUrl: $publicUrl"
 # Get access token
 authToken=`curl -i -H "Content-Type: application/json" -d "{ \"auth\": { \"identity\": { \"methods\": [ \"password\" ], \"password\": { \"user\": { \"id\": \"$userid\", \"password\": \"$password\" } } }, \"scope\": { \"project\": { \"id\": \"$projectid\" } } } }" $authUrl | grep X-Subject-Token | awk '{print $2}' | tr -cd '[[:alnum:]]._-'`
 
+# Get all containers in this account and delete their contents (and delete them as well)
+containers=$(curl $publicUrl -X GET -H "Content-Length: 0" -H "X-Auth-Token: $authToken")
+for container in $containers
+do
+  objects=$(curl $publicUrl/$container -X GET -H "Content-Length: 0" -H "X-Auth-Token: $authToken")
+  # Delete all objects in the container
+  for object in $objects
+  do
+    echo $object
+    echo "Deleting $object..."
+    curl -i $publicUrl/$container/$object -X DELETE -H "Content-Length: 0" -H "X-Auth-Token: $authToken"
+  done
+  # Now delete the container (note this operation fails unless the container is empty)
+  echo "Deleting $container..."
+  curl -i $publicUrl/$container -X DELETE -H "Content-Length: 0" -H "X-Auth-Token: $authToken"
+done
+
 # Create and configure containers
 declare -a containers=($container1 $container2 $container3 $container4)
 
 for container in "${containers[@]}"; do
-  # Delete container (this operation fails unless the container is empty)
-  #curl -i $publicUrl/$container -X DELETE -H "Content-Length: 0" -H "X-Auth-Token: $authToken"
-
   # Create container
   curl -i $publicUrl/$container -X PUT -H "Content-Length: 0" -H "X-Auth-Token: $authToken"
 
@@ -70,7 +84,6 @@ done
 
 # Upload images to containers
 # Note that container4 does not have any images
-#imagesFolder=`dirname $( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )`/images
 imagesFolder=$scriptsFolder/images
 echo "imagesFolder: $imagesFolder"
 declare -a images=("$container1:person.png:image/png" "$container1:flower_1.png:image/png" "$container1:church.png:image/png" "$container1:rush.png:image/png" \
