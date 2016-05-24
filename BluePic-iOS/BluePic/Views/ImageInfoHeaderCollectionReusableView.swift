@@ -18,6 +18,7 @@ class ImageInfoHeaderCollectionReusableView: UICollectionReusableView{
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var weatherImageView: UIImageView!
     @IBOutlet weak var temperatureLabel: UILabel!
+    @IBOutlet weak var tagsLabel: UILabel!
     
     private let kCaptionLabelLetterSpacing : CGFloat = 1.7
     private let kCaptionLabelLineSpacing : CGFloat = 10.0
@@ -36,7 +37,7 @@ class ImageInfoHeaderCollectionReusableView: UICollectionReusableView{
         super.awakeFromNib()
     }
 
-    func setupWithData(caption : String?, userFullName : String?, locationName : String?, latitude : String?, longitude : String?, timeStamp : NSDate?, weatherIconId : Int?, temperature : Int?){
+    func setupWithData(caption : String?, userFullName : String?, locationName : String?, latitude : String?, longitude : String?, timeStamp : NSDate?, weatherIconId : Int?, temperature : Int?, tags : [Tag]?){
   
         //setup captionLabel
         setupCaptionLabelWithData(caption)
@@ -59,6 +60,7 @@ class ImageInfoHeaderCollectionReusableView: UICollectionReusableView{
         //setup weatherImageView and Temperature Label
         setupWeatherImageViewAndTemperatureLabel(weatherIconId, temperature: temperature)
         
+        setupTagsLabel(tags)
         
     }
 
@@ -157,6 +159,23 @@ class ImageInfoHeaderCollectionReusableView: UICollectionReusableView{
             temperatureLabel.text = "\(temperature)" + kDegreeSymbolString
         }
         
+    }
+    
+    private func setupTagsLabel(tags : [Tag]?){
+        
+        if let tags = tags {
+            
+            if tags.count > 0 {
+                tagsLabel.hidden = false
+            }
+            else{
+                tagsLabel.hidden = true
+            }
+        }
+        else{
+            tagsLabel.hidden = true
+        }
+
     }
 
 
