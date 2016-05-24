@@ -1,0 +1,24 @@
+
+/* Class = "UITextField"; placeholder = "Type something..."; ObjectID = "G98-jD-Yfs"; */
+"G98-jD-Yfs.placeholder" = "Type something...";
+
+/* Class = "UILabel"; text = "Popular Tags"; ObjectID = "Now-tq-8qq"; */
+"Now-tq-8qq.text" = "Popular Tags";
+
+/* Class = "UILabel"; text = "No images were found."; ObjectID = "X9n-fS-9dC"; */
+"X9n-fS-9dC.text" = "No images were found.";
+
+/* Class = "UIButton"; normalTitle = "Back"; ObjectID = "ZEd-Aa-Utg"; */
+"ZEd-Aa-Utg.normalTitle" = "Back";
+
+/* Class = "UIButton"; normalTitle = "TAGS"; ObjectID = "aeY-1c-lIB"; */
+"aeY-1c-lIB.normalTitle" = "TAGS";
+
+/* Class = "UIButton"; normalTitle = "Back"; ObjectID = "ek3-lN-qZu"; */
+"ek3-lN-qZu.normalTitle" = "Back";
+
+/* Class = "UIButton"; normalTitle = "Back"; ObjectID = "lvr-uH-u7R"; */
+"lvr-uH-u7R.normalTitle" = "Back";
+
+/* Class = "UILabel"; text = "WordTag"; ObjectID = "vKy-dt-Sq6"; */
+"vKy-dt-Sq6.text" = "WordTag";
