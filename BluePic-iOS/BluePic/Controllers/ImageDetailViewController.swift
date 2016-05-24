@@ -22,10 +22,7 @@ class ImageDetailViewController: UIViewController {
     @IBOutlet weak var dimView: UIView!
     @IBOutlet weak var backButton: UIButton!
     @IBOutlet weak var tagCollectionView: UICollectionView!
-    
-    let kHeaderViewInfoViewHeight : CGFloat = 105
 
-    var image : Image!
     
     var viewModel : ImageDetailViewModel!
     

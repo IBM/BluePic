@@ -157,12 +157,12 @@ extension NSDate {
      - returns: String
      */
     class func timeSinceDateString(date:NSDate) -> String {
-        if weeksFrom(date)   > 0 { return "\(weeksFrom(date))w"   }
-        if daysFrom(date)    > 0 { return "\(daysFrom(date))d"    }
-        if hoursFrom(date)   > 0 { return "\(hoursFrom(date))h"   }
-        if minutesFrom(date) > 0 { return "\(minutesFrom(date))m" }
-        if secondsFrom(date) > 0 { return "\(secondsFrom(date))s" }
-        return "now"
+        if weeksFrom(date)   > 0 { return "\(weeksFrom(date))" + NSLocalizedString("w", comment: "first letter of the word week")}
+        if daysFrom(date)    > 0 { return "\(daysFrom(date))" +  NSLocalizedString("d", comment: "first letter of the word day")}
+        if hoursFrom(date)   > 0 { return "\(hoursFrom(date))" +  NSLocalizedString("h", comment: "first letter of the word hour")}
+        if minutesFrom(date) > 0 { return "\(minutesFrom(date))" +  NSLocalizedString("m", comment: "first letter of the word minutes")}
+        if secondsFrom(date) > 0 { return "\(secondsFrom(date))" +  NSLocalizedString("s", comment: "first letter of the word seconds")}
+        return NSLocalizedString("now", comment: "word representing this moment in time")
     }
 
 }

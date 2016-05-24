@@ -7,13 +7,13 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <collectionReusableView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ImageInfoHeaderCollectionReusableView" id="X47-ss-Z7Q" customClass="ImageInfoHeaderCollectionReusableView" customModule="BluePic" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="600" height="395"/>
+            <rect key="frame" x="0.0" y="0.0" width="600" height="412"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="h7Q-NK-YAa">
                     <rect key="frame" x="40" y="54" width="520" height="72"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="by Alex Buck" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tqR-wi-fZZ">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tqR-wi-fZZ">
                             <rect key="frame" x="0.0" y="26" width="520" height="21"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="21" id="9tS-9D-3vR"/>
@@ -145,14 +145,26 @@
                         </mask>
                     </variation>
                 </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tags:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GfT-yh-l3i">
+                    <rect key="frame" x="269" y="383" width="62" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="62" id="B5t-Kf-IuP"/>
+                        <constraint firstAttribute="height" constant="21" id="UTm-AT-S56"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="italicSystem" pointSize="13"/>
+                    <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <constraints>
                 <constraint firstItem="Ksl-mr-hEt" firstAttribute="top" secondItem="h7Q-NK-YAa" secondAttribute="bottom" constant="17" id="87J-3R-yhS"/>
                 <constraint firstItem="Ksl-mr-hEt" firstAttribute="leading" secondItem="X47-ss-Z7Q" secondAttribute="leading" constant="40" id="BiG-GB-Fib"/>
                 <constraint firstAttribute="trailing" secondItem="Ksl-mr-hEt" secondAttribute="trailing" constant="40" id="Bve-NL-la3"/>
                 <constraint firstAttribute="trailing" secondItem="h7Q-NK-YAa" secondAttribute="trailing" constant="40" id="Cpw-8j-lnR"/>
+                <constraint firstItem="GfT-yh-l3i" firstAttribute="centerX" secondItem="X47-ss-Z7Q" secondAttribute="centerX" id="LU9-DH-M7T"/>
+                <constraint firstAttribute="bottom" secondItem="GfT-yh-l3i" secondAttribute="bottom" constant="8" id="MhH-ta-nfp"/>
                 <constraint firstItem="h7Q-NK-YAa" firstAttribute="leading" secondItem="X47-ss-Z7Q" secondAttribute="leading" constant="40" id="TlO-e7-faf"/>
-                <constraint firstAttribute="bottom" secondItem="Ksl-mr-hEt" secondAttribute="bottom" constant="30" id="gwe-Gt-TlD"/>
+                <constraint firstAttribute="bottom" secondItem="Ksl-mr-hEt" secondAttribute="bottom" constant="47" id="gwe-Gt-TlD"/>
                 <constraint firstItem="h7Q-NK-YAa" firstAttribute="top" secondItem="X47-ss-Z7Q" secondAttribute="top" constant="36" id="zbS-9J-3YD"/>
             </constraints>
             <variation key="default">
@@ -166,11 +178,12 @@
                 <outlet property="cityStateLabel" destination="E2R-6b-EJR" id="fKE-TZ-urY"/>
                 <outlet property="coordinatesLabel" destination="dPd-eg-1Tb" id="ULr-tU-HI3"/>
                 <outlet property="dateLabel" destination="Pno-bN-ySx" id="jwy-Z2-lOD"/>
+                <outlet property="tagsLabel" destination="GfT-yh-l3i" id="ynp-lc-Zk4"/>
                 <outlet property="temperatureLabel" destination="TQh-mU-ClV" id="TTR-cs-9F6"/>
                 <outlet property="timeLabel" destination="1NH-GQ-JA3" id="FDq-1U-R5j"/>
                 <outlet property="weatherImageView" destination="TSB-eY-aU8" id="9x3-sm-VDG"/>
             </connections>
-            <point key="canvasLocation" x="368" y="1021.5"/>
+            <point key="canvasLocation" x="368" y="1030"/>
         </collectionReusableView>
     </objects>
 </document>

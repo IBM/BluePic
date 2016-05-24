@@ -192,14 +192,14 @@ extension TabBarViewController: UITabBarControllerDelegate {
     
     func showLocationServiceRequiredAlert(){
         
-        let alertController = UIAlertController(title: "Location Services Required", message: "Please go to Settings to enable Location Services for BluePic", preferredStyle: .Alert)
+        let alertController = UIAlertController(title: NSLocalizedString("Location Services Required", comment: ""), message: NSLocalizedString("Please go to Settings to enable Location Services for BluePic", comment: ""), preferredStyle: .Alert)
         
-        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { (action) in
+        let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .Cancel) { (action) in
             // ...
         }
         alertController.addAction(cancelAction)
         
-        let OKAction = UIAlertAction(title: "Settings", style: .Default) { (action) in
+        let OKAction = UIAlertAction(title: NSLocalizedString("Settings", comment: ""), style: .Default) { (action) in
             
             let settingsUrl = NSURL(string: UIApplicationOpenSettingsURLString)
             
@@ -245,7 +245,7 @@ extension TabBarViewController: UITabBarControllerDelegate {
     
     func showImageUploadFailureAlert(){
         
-        let alert = UIAlertController(title: "Image Upload Failure", message: "", preferredStyle: UIAlertControllerStyle.Alert)
+        let alert = UIAlertController(title: NSLocalizedString("Image Upload Failure", comment: ""), message: "", preferredStyle: UIAlertControllerStyle.Alert)
         
         alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .Default, handler: { (action: UIAlertAction!) in
             
