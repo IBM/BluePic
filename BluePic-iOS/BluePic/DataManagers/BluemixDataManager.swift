@@ -52,7 +52,7 @@ class BluemixDataManager: NSObject {
     var currentUserImages : [Image] {
         get {
             if let currentUserFbId = CurrentUser.facebookUserId {
-                return images.filter({ $0.user?.facebookID! == currentUserFbId})
+                return images.filter({ $0.user?.facebookID == currentUserFbId})
             }
             else{
                 return []
@@ -273,9 +273,12 @@ class BluemixDataManager: NSObject {
                 }
             }
              else {
-                let user = User(response)
-                result(user: user, error: nil)
-                print ("Success :: \(response?.responseText)")
+                if let user = User(response) {
+                    result(user: user, error: nil)
+                    print ("Success :: \(response?.responseText)")
+                } else {
+                    result(user: nil, error: BlueMixDataManagerError.ConnectionFailure)
+                }
             }
         }
     }
@@ -298,9 +301,13 @@ class BluemixDataManager: NSObject {
                     result(user: nil)
                     print ("Error  Creating New User :: \(error)")
                 } else {
-                    let user = User(response)
-                    result(user: user)
-                    print ("Success :: \(response?.responseText)")
+                    if let user = User(response) {
+                        result(user: user)
+                        print ("Success :: \(response?.responseText)")
+                    } else {
+                        result(user: nil)
+                        print("Response didn't contain all the necessary values")
+                    }
                 }
             })
             
