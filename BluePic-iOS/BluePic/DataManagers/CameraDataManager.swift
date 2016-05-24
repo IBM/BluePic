@@ -408,7 +408,7 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
         
         dismissProgressHUDAndReEnableUI()
         
-        let alert = UIAlertController(title: "Location Not Found", message: "Location is required to post a photo", preferredStyle: UIAlertControllerStyle.Alert)
+        let alert = UIAlertController(title: NSLocalizedString("Location Not Found", comment: ""), message: NSLocalizedString("Location is required to post a photo", comment: ""), preferredStyle: UIAlertControllerStyle.Alert)
         
         alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .Default, handler: { (action: UIAlertAction!) in
          

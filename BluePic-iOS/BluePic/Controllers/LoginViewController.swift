@@ -35,12 +35,16 @@ class LoginViewController: UIViewController {
     /// Label to tell user that the application is connecting with Facebook while loading
     @IBOutlet weak var connectingLabel: UILabel!
     
+    @IBOutlet weak var aboutBluePicLabel: UILabel!
+    
     /// ViewModel for this VC, responsible for holding data and any state
     var viewModel: LoginViewModel!
     
-    
     private let kLoginErrorMessage = NSLocalizedString("Oops, an error occurred! Try again.", comment: "")
     
+    private let kAboutBluePicLabelText = NSLocalizedString("BluePic is an amazing app for taking\n pictures and sharing them to the\n BluePic community. BluePic is\n also built on IBM Bluemix services.", comment: "")
+   
+
     
     /**
      Method called upon view did load. In this case we set up the view model.
@@ -49,6 +53,7 @@ class LoginViewController: UIViewController {
         super.viewDidLoad()
         
         setupViewModel()
+        setupAboutBluePicLabel()
    
     }
     
@@ -105,6 +110,15 @@ class LoginViewController: UIViewController {
         }
         
     }
+    
+    
+    private func setupAboutBluePicLabel(){
+    
+        aboutBluePicLabel.text = kAboutBluePicLabelText
+        aboutBluePicLabel.setLineHeight(1.5)
+    
+    }
+    
     
     /**
      Method to save to user defaults when user has pressed sign in later
