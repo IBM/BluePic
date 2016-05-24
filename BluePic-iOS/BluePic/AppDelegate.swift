@@ -40,7 +40,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         application.registerUserNotificationSettings(notificationSettings)
         application.registerForRemoteNotifications()
         
-        preLoadKeyboardToPrevantLaggyKeyboardInCameraConfirmationScreen()
+        preLoadKeyboardToPreventLaggyKeyboardInCameraConfirmationScreen()
         
         BluemixDataManager.SharedInstance.getImages()
         
@@ -96,9 +96,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
      - parameter feedNav:          root navigation controller for feed flow
      */
     func loadImageDetail(userInfo: [NSObject : AnyObject], tabBarController: TabBarViewController, feedNav: FeedNavigationController) {
-        if let payload = userInfo["payload"] as? String, dictionary = Utils.convertStringToDictionary(payload), image = Image(dictionary) {
+        if let payload = userInfo["payload"] as? String, dictionary = Utils.convertStringToDictionary(payload), image = Image(dictionary),
+            imageDetailVC = Utils.vcWithNameFromStoryboardWithName("ImageDetailViewController", storyboardName: "Feed") as? ImageDetailViewController {
             
-            let imageDetailVC = Utils.vcWithNameFromStoryboardWithName("ImageDetailViewController", storyboardName: "Feed") as! ImageDetailViewController
             let imageDetailViewModel = ImageDetailViewModel()
             imageDetailViewModel.image = image
             imageDetailVC.viewModel = imageDetailViewModel
@@ -111,7 +111,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /**
      Method preloads keyboard to prevent the keyboard on the camera confirmation screen to be laggy when touching the text field for the first time
      */
-    func preLoadKeyboardToPrevantLaggyKeyboardInCameraConfirmationScreen(){
+    func preLoadKeyboardToPreventLaggyKeyboardInCameraConfirmationScreen(){
         
         let lagFreeField = UITextField()
         self.window?.addSubview(lagFreeField)
