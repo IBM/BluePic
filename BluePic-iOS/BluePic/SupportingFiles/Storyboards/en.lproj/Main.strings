@@ -1,0 +1,21 @@
+
+/* Class = "UITabBarItem"; title = "Item"; ObjectID = "9Vc-qh-fBO"; */
+"9Vc-qh-fBO.title" = "Item";
+
+/* Class = "UILabel"; text = "Connecting to Facebook"; ObjectID = "LMk-mW-Kmu"; */
+"LMk-mW-Kmu.text" = "Connecting to Facebook";
+
+/* Class = "UIButton"; normalTitle = "SIGN IN WITH FACEBOOK"; ObjectID = "Wjw-Zr-PRg"; */
+"Wjw-Zr-PRg.normalTitle" = "SIGN IN WITH FACEBOOK";
+
+/* Class = "UITabBarItem"; title = "Item"; ObjectID = "XX6-5F-xys"; */
+"XX6-5F-xys.title" = "Item";
+
+/* Class = "UILabel"; text = "Welcome to BluePic"; ObjectID = "cIW-Ou-STz"; */
+"cIW-Ou-STz.text" = "Welcome to BluePic";
+
+/* Class = "UIButton"; normalTitle = "I’ll sign in later"; ObjectID = "neQ-m5-2vk"; */
+"neQ-m5-2vk.normalTitle" = "I’ll sign in later";
+
+/* Class = "UITabBarItem"; title = "Item"; ObjectID = "y2u-Ya-NoP"; */
+"y2u-Ya-NoP.title" = "Item";
