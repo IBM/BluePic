@@ -198,6 +198,7 @@ also built on IBM Bluemix services.</string>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="600" height="667"/>
                     <connections>
+                        <outlet property="aboutBluePicLabel" destination="JA3-DV-7dk" id="NVo-4J-LDd"/>
                         <outlet property="connectingLabel" destination="LMk-mW-Kmu" id="GaH-SG-lzf"/>
                         <outlet property="facebookButton" destination="Wjw-Zr-PRg" id="JWS-FC-pxj"/>
                         <outlet property="loadingIndicator" destination="g2J-LJ-jge" id="ghq-Sm-EkT"/>
