@@ -15,7 +15,7 @@ class ImageDetailViewModel: UIView {
     //constant that represents the number of sections in the collection view
     private let kNumberOfSectionsInCollectionView = 1
     private let kCellPadding: CGFloat = 60
-    private let kImageInfoHeaderViewMinimumHeight : CGFloat = 340
+    private let kImageInfoHeaderViewMinimumHeight : CGFloat = 357//340
     
     
     /**
