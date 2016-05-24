@@ -46,7 +46,7 @@ class CameraConfirmationView: UIView, UITextFieldDelegate {
      - returns: an instance of this view
      */
     static func instanceFromNib() -> CameraConfirmationView {
-        return UINib(nibName: "CameraConfirmationViewz", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! CameraConfirmationView
+        return UINib(nibName: "CameraConfirmationView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! CameraConfirmationView
     }
     
     /**

@@ -26,7 +26,7 @@ struct Location {
     var name: String?
     var latitude : String?
     var longitude: String?
-    var weather : Weather?
+    var weather : Weather? // nil
     var city : String?
     var state : String?
 }
@@ -39,47 +39,55 @@ struct Weather {
 
 class Image: NSObject {
 
-    var id : String?
+    var id : String? // nil
     var caption : String?
     var fileName : String?
-    var timeStamp : NSDate?
-    var url : String?
+    var timeStamp : NSDate? // nil
+    var url : String? // nil
     var width : CGFloat?
     var height : CGFloat?
     var image : UIImage?
     var location : Location?
-    var tags : [Tag]?
+    var tags : [Tag]? // nil
     var user : User?
     
     override init() {
         
     }
     
+//    init(id: String) {
+//        self.id = id
+//    }
+    
     init?(_ dict : [String : AnyObject]) {
         
-        super.init()
+//        super.init()
   
             if let id = dict["_id"] as? String,
                 let caption = dict["caption"] as? String,
                 let fileName = dict["fileName"] as? String,
                 let url = dict["url"] as? String,
                 let timeStamp = dict["uploadedTs"] as? String,
-                let user = dict["user"] as? [String : AnyObject] {
+                let user = dict["user"] as? [String : AnyObject],
+                usersName = user["name"] as? String,
+                usersId = user["_id"] as? String{
             
                 self.id = id
                 self.caption = caption
                 self.fileName = fileName
                 self.url = url
+                self.user = User(facebookID: usersId, name: usersName)
+
                 
-                let userObject = User()
-                if let usersName = user["name"] as? String,
-                    let usersId = user["_id"] as? String{
-                    
-                    userObject.name = usersName
-                    userObject.facebookID = usersId
-                    
-                }
-                self.user = userObject
+//                let userObject = User()
+//                if let usersName = user["name"] as? String,
+//                    let usersId = user["_id"] as? String{
+//                    userObject.name = usersName
+//                    userObject.facebookID = usersId
+//                    
+//                }
+
+//                self.user = userObject
                 
                 //Parse widht and height data
                 if let width = dict["width"] as? CGFloat,
