@@ -36,7 +36,10 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
     //the view that is shown while we wait for the image to download and display
     @IBOutlet weak var loadingView: UIView!
     
-    private let kNumberOfTagsPostFix = NSLocalizedString("Tags", comment: "")
+    private let kNumberOfTagsPostFix_MultipleTags = NSLocalizedString("Tags", comment: "")
+    private let kNumberOfTagsPostFix_OneTag = NSLocalizedString("Tag", comment: "")
+    
+    private let kByString = NSLocalizedString("by", comment: "")
     
 
     /**
@@ -64,9 +67,13 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
             if(numOfTags == 0){
                 numberOfTagsLabel.hidden = true
             }
+            else if (numOfTags == 1){
+                numberOfTagsLabel.hidden = false
+                numberOfTagsLabel.text = "\(numOfTags)" + " " + kNumberOfTagsPostFix_OneTag
+            }
             else{
                 numberOfTagsLabel.hidden = false
-                numberOfTagsLabel.text = "\(numOfTags)" + " " + kNumberOfTagsPostFix
+                numberOfTagsLabel.text = "\(numOfTags)" + " " + kNumberOfTagsPostFix_MultipleTags
             }
         }
         else{
@@ -87,7 +94,7 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
         //set the photographerNameLabel's text
         var ownerNameString = ""
         if let name = usersName {
-            ownerNameString = NSLocalizedString("by", comment: "") + " \(name)"
+            ownerNameString = kByString + " \(name)"
         }
         photographerNameLabel.text = ownerNameString
         

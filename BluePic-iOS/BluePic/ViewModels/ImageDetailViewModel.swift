@@ -15,7 +15,7 @@ class ImageDetailViewModel: UIView {
     //constant that represents the number of sections in the collection view
     private let kNumberOfSectionsInCollectionView = 1
     private let kCellPadding: CGFloat = 60
-    private let kImageInfoHeaderViewMinimumHeight : CGFloat = 340
+    private let kImageInfoHeaderViewMinimumHeight : CGFloat = 357//340
     
     
     /**
@@ -54,7 +54,7 @@ class ImageDetailViewModel: UIView {
         
         header = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "ImageInfoHeaderCollectionReusableView", forIndexPath: indexPath) as! ImageInfoHeaderCollectionReusableView
         
-        header.setupWithData(image.caption, userFullName: image.user?.name, locationName: image.location?.name, latitude: image.location?.latitude, longitude: image.location?.longitude, timeStamp: image.timeStamp, weatherIconId: image.location?.weather?.iconId, temperature: image.location?.weather?.temperature)
+        header.setupWithData(image.caption, userFullName: image.user?.name, locationName: image.location?.name, latitude: image.location?.latitude, longitude: image.location?.longitude, timeStamp: image.timeStamp, weatherIconId: image.location?.weather?.iconId, temperature: image.location?.weather?.temperature, tags: image.tags)
         
         return header
     }
