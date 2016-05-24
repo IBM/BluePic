@@ -75,7 +75,7 @@ class BluemixDataManager: NSObject {
     private let kTagsEndPoint = "tags"
     
     //Plist Keys
-    private let kKeysPlistName = "keys"
+    private let kBluemixKeysPlistName = "bluemix"
     private let kIsLocalKey = "isLocal"
     private let kBluemixBaseRequestURLKey_local = "bluemixBaseRequestURL_local"
     private let kBluemixBaseRequestURLKey_remote = "bluemixBaseRequestURL_remote"
@@ -101,28 +101,28 @@ class BluemixDataManager: NSObject {
     
     
     private func isLocal() -> Bool {
-        return Utils.getBoolValueWithKeyFromPlist(kKeysPlistName, key: kIsLocalKey)
+        return Utils.getBoolValueWithKeyFromPlist(kBluemixKeysPlistName, key: kIsLocalKey)
     }
     
     func getBluemixBaseRequestURL() -> String {
         if(isLocal()){
-            return Utils.getStringValueWithKeyFromPlist(kKeysPlistName, key: kBluemixBaseRequestURLKey_local)
+            return Utils.getStringValueWithKeyFromPlist(kBluemixKeysPlistName, key: kBluemixBaseRequestURLKey_local)
         }
         else{
-            return Utils.getStringValueWithKeyFromPlist(kKeysPlistName, key: kBluemixBaseRequestURLKey_remote)
+            return Utils.getStringValueWithKeyFromPlist(kBluemixKeysPlistName, key: kBluemixBaseRequestURLKey_remote)
         }
     }
     
     func getBluemixAppRoute() -> String {
-        return Utils.getStringValueWithKeyFromPlist(kKeysPlistName, key: kBluemixAppRouteKey)
+        return Utils.getStringValueWithKeyFromPlist(kBluemixKeysPlistName, key: kBluemixAppRouteKey)
     }
     
     func getBluemixAppGUID() -> String {
-        return Utils.getStringValueWithKeyFromPlist(kKeysPlistName, key: kBluemixAppGUIDKey)
+        return Utils.getStringValueWithKeyFromPlist(kBluemixKeysPlistName, key: kBluemixAppGUIDKey)
     }
     
     func getBluemixAppRegion() -> String {
-        return Utils.getStringValueWithKeyFromPlist(kKeysPlistName, key: kBluemixAppRegionKey)
+        return Utils.getStringValueWithKeyFromPlist(kBluemixKeysPlistName, key: kBluemixAppRegionKey)
     }
     
     func getPopularTags() {
