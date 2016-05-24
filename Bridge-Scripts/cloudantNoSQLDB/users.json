@@ -3,29 +3,21 @@
     {
       "_id": "1000",
       "name": "John Smith",
-      "language": "en-US",
-      "unitsOfMeasurement": "e",
       "type": "user"
     },
     {
       "_id": "1001",
       "name": "Peter Adams",
-      "language": "en-US",
-      "unitsOfMeasurement": "e",
       "type": "user"
     },
     {
       "_id": "1002",
       "name": "Sharon den Adel",
-      "language": "en-US",
-      "unitsOfMeasurement": "e",
       "type": "user"
     },
     {
       "_id": "1003",
       "name": "Kevin White",
-      "language": "en-US",
-      "unitsOfMeasurement": "e",
       "type": "user"
     }
   ]
