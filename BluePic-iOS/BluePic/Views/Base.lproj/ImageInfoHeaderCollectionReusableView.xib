@@ -13,7 +13,7 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="h7Q-NK-YAa">
                     <rect key="frame" x="40" y="54" width="520" height="72"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="by Alex Buck" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tqR-wi-fZZ">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tqR-wi-fZZ">
                             <rect key="frame" x="0.0" y="26" width="520" height="21"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="21" id="9tS-9D-3vR"/>
@@ -178,6 +178,7 @@
                 <outlet property="cityStateLabel" destination="E2R-6b-EJR" id="fKE-TZ-urY"/>
                 <outlet property="coordinatesLabel" destination="dPd-eg-1Tb" id="ULr-tU-HI3"/>
                 <outlet property="dateLabel" destination="Pno-bN-ySx" id="jwy-Z2-lOD"/>
+                <outlet property="tagsLabel" destination="GfT-yh-l3i" id="ynp-lc-Zk4"/>
                 <outlet property="temperatureLabel" destination="TQh-mU-ClV" id="TTR-cs-9F6"/>
                 <outlet property="timeLabel" destination="1NH-GQ-JA3" id="FDq-1U-R5j"/>
                 <outlet property="weatherImageView" destination="TSB-eY-aU8" id="9x3-sm-VDG"/>
