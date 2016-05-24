@@ -216,8 +216,9 @@ class FeedViewController: UIViewController {
     }
     
     @IBAction func transitionToSearch(sender: AnyObject) {
-        let vc = Utils.vcWithNameFromStoryboardWithName("SearchViewController", storyboardName: "Feed")!
-        self.navigationController?.pushViewController(vc, animated: true)
+        if let vc = Utils.vcWithNameFromStoryboardWithName("SearchViewController", storyboardName: "Feed") as? SearchViewController {
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
     }
 
     @IBAction func popVC(sender: AnyObject) {
@@ -279,11 +280,10 @@ extension FeedViewController: UICollectionViewDelegate {
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         
-        if let imageDetailViewModel = viewModel.prepareImageDetailViewModelForSelectedCellAtIndexPath(indexPath){
+        if let imageDetailViewModel = viewModel.prepareImageDetailViewModelForSelectedCellAtIndexPath(indexPath),
+            imageDetailVC = Utils.vcWithNameFromStoryboardWithName("ImageDetailViewController", storyboardName: "Feed") as? ImageDetailViewController{
             
-            let imageDetailVC = Utils.vcWithNameFromStoryboardWithName("ImageDetailViewController", storyboardName: "Feed") as! ImageDetailViewController
             imageDetailVC.viewModel = imageDetailViewModel
-            
             self.navigationController?.pushViewController(imageDetailVC, animated: true)
         }
         

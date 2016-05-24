@@ -55,12 +55,11 @@ class ImageDetailViewModel: UIView {
     }
     
     
-    
     func setUpSectionHeaderViewForIndexPath(indexPath : NSIndexPath, kind: String, collectionView : UICollectionView) -> ImageInfoHeaderCollectionReusableView {
         
-        let header : ImageInfoHeaderCollectionReusableView
-        
-        header = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "ImageInfoHeaderCollectionReusableView", forIndexPath: indexPath) as! ImageInfoHeaderCollectionReusableView
+        guard let header = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "ImageInfoHeaderCollectionReusableView", forIndexPath: indexPath) as? ImageInfoHeaderCollectionReusableView else {
+            return ImageInfoHeaderCollectionReusableView()
+        }
         
         header.setupWithData(image.caption, userFullName: image.user?.name, locationName: image.location?.name, latitude: image.location?.latitude, longitude: image.location?.longitude, timeStamp: image.timeStamp, weatherIconId: image.location?.weather?.iconId, temperature: image.location?.weather?.temperature, tags: image.tags)
         
@@ -68,14 +67,11 @@ class ImageDetailViewModel: UIView {
     }
     
     
-    
     func setUpCollectionViewCell(indexPath : NSIndexPath, collectionView : UICollectionView) -> UICollectionViewCell {
         
-        guard let cell = collectionView.dequeueReusableCellWithReuseIdentifier("TagCollectionViewCell", forIndexPath: indexPath) as? TagCollectionViewCell else {
+        guard let cell = collectionView.dequeueReusableCellWithReuseIdentifier("TagCollectionViewCell", forIndexPath: indexPath) as? TagCollectionViewCell, tags = image.tags else {
             return UICollectionViewCell()
         }
-        
-        let tags = image.tags!
         
         cell.tagLabel.text = tags[indexPath.item].label?.uppercaseString
         return cell
@@ -85,11 +81,11 @@ class ImageDetailViewModel: UIView {
     
     func sizeForItemAtIndexPath(indexPath : NSIndexPath, collectionView : UICollectionView) -> CGSize {
         
-        let tags = image.tags!
-        
-        let size = NSString(string: tags[indexPath.item].label!).sizeWithAttributes(nil)
-        return CGSizeMake(size.width + kCellPadding, 30.0)
- 
+        if let tags = image.tags, name = tags[indexPath.item].label {
+            let size = NSString(string: name).sizeWithAttributes(nil)
+            return CGSizeMake(size.width + kCellPadding, 30.0)
+        }
+        return CGSizeZero
     }
     
     
@@ -131,15 +127,11 @@ class ImageDetailViewModel: UIView {
         
         let tagString = getTagForIndexPath(indexPath)
         
-        let vc = Utils.vcWithNameFromStoryboardWithName("FeedViewController", storyboardName: "Feed") as! FeedViewController
-        
-        if let tagString = tagString {
+        if let vc = Utils.vcWithNameFromStoryboardWithName("FeedViewController", storyboardName: "Feed") as? FeedViewController, tagString = tagString {
             vc.searchQuery = tagString
             return vc
         }
-        else{
-            return nil
-        }
+        return nil
 
     }
     

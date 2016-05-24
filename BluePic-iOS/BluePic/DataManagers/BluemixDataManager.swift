@@ -51,8 +51,8 @@ class BluemixDataManager: NSObject {
     
     var currentUserImages : [Image] {
         get {
-            if(CurrentUser.facebookUserId != nil){
-                return images.filter({ $0.user?.facebookID! == CurrentUser.facebookUserId!})
+            if let currentUserFbId = CurrentUser.facebookUserId {
+                return images.filter({ $0.user?.facebookID! == currentUserFbId})
             }
             else{
                 return []
@@ -69,60 +69,33 @@ class BluemixDataManager: NSObject {
     
     var tags = [String]()
     
+    let bluemixConfig = BluemixConfiguration()
+    
     //End Points
     private let kImagesEndPoint = "images"
     private let kUsersEndPoint = "users"
     private let kTagsEndPoint = "tags"
-    
-    //Plist Keys
-    private let kBluemixKeysPlistName = "bluemix"
-    private let kIsLocalKey = "isLocal"
-    private let kBluemixBaseRequestURLKey_local = "bluemixBaseRequestURL_local"
-    private let kBluemixBaseRequestURLKey_remote = "bluemixBaseRequestURL_remote"
-    private let kBluemixAppRouteKey = "bluemixAppRoute"
-    private let kBluemixAppGUIDKey = "bluemixAppGUID"
-    private let kBluemixAppRegionKey = "bluemixAppRegion"
     
     //State Variables
     var hasReceievedInitialImages = false
     
     func initilizeBluemixAppRoute(){
         
-        let appRoute = getBluemixAppRoute()
-        let appGuid =  getBluemixAppGUID()
-        let bluemixRegion = getBluemixAppRegion()
-        
         BMSClient.sharedInstance
-            .initializeWithBluemixAppRoute(appRoute,
-                                           bluemixAppGUID: appGuid,
-                                           bluemixRegion: bluemixRegion)
+            .initializeWithBluemixAppRoute(bluemixConfig.appRoute,
+                                           bluemixAppGUID: bluemixConfig.appGUID,
+                                           bluemixRegion: bluemixConfig.appRegion)
         
-    }
-    
-    
-    private func isLocal() -> Bool {
-        return Utils.getBoolValueWithKeyFromPlist(kBluemixKeysPlistName, key: kIsLocalKey)
     }
     
     func getBluemixBaseRequestURL() -> String {
-        if(isLocal()){
-            return Utils.getStringValueWithKeyFromPlist(kBluemixKeysPlistName, key: kBluemixBaseRequestURLKey_local)
+        
+        if bluemixConfig.isLocal {
+            return bluemixConfig.localBaseRequestURL
         }
         else{
-            return Utils.getStringValueWithKeyFromPlist(kBluemixKeysPlistName, key: kBluemixBaseRequestURLKey_remote)
+            return bluemixConfig.remoteBaseRequestURL
         }
-    }
-    
-    func getBluemixAppRoute() -> String {
-        return Utils.getStringValueWithKeyFromPlist(kBluemixKeysPlistName, key: kBluemixAppRouteKey)
-    }
-    
-    func getBluemixAppGUID() -> String {
-        return Utils.getStringValueWithKeyFromPlist(kBluemixKeysPlistName, key: kBluemixAppGUIDKey)
-    }
-    
-    func getBluemixAppRegion() -> String {
-        return Utils.getStringValueWithKeyFromPlist(kBluemixKeysPlistName, key: kBluemixAppRegionKey)
     }
     
     func getPopularTags() {
@@ -486,8 +459,6 @@ extension BluemixDataManager {
             
         }
     }
-
-
     
 }
 

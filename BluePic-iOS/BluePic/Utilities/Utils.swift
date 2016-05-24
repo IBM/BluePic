@@ -23,43 +23,52 @@ class Utils: NSObject {
     /**
      Method gets a key from a plist, both specified in parameters
      
-     - parameter plist: String!
-     - parameter key:   String!
+     - parameter plist: String
+     - parameter key:   String
      
-     - returns: String
+     - returns: String?
      */
-    class func getKeyFromPlist (plist: String!, key: String!) -> String {
-        let path: String = NSBundle.mainBundle().pathForResource(plist, ofType: "plist")!
-        let keyList = NSDictionary(contentsOfFile: path)
-        return keyList!.objectForKey(key) as! String
+    class func getKeyFromPlist(plist: String, key: String) -> String? {
+        if let path: String = NSBundle.mainBundle().pathForResource(plist, ofType: "plist"),
+            keyList = NSDictionary(contentsOfFile: path),
+            key = keyList.objectForKey(key) as? String {
+            return key
+        }
+        return nil
     }
     
     /**
      Method gets a key from a plist, both specified in parameters
      
-     - parameter plist: String!
-     - parameter key:   String!
+     - parameter plist: String
+     - parameter key:   String
      
-     - returns: Bool
+     - returns: Bool?
      */
-    class func getBoolValueWithKeyFromPlist (plist: String!, key: String!) -> Bool {
-        let path: String = NSBundle.mainBundle().pathForResource(plist, ofType: "plist")!
-        let keyList = NSDictionary(contentsOfFile: path)
-        return keyList!.objectForKey(key) as! Bool
+    class func getBoolValueWithKeyFromPlist(plist: String, key: String) -> Bool? {
+        if let path: String = NSBundle.mainBundle().pathForResource(plist, ofType: "plist"),
+            keyList = NSDictionary(contentsOfFile: path),
+            key = keyList.objectForKey(key) as? Bool {
+            return key
+        }
+        return nil
     }
     
     /**
      Method gets a key from a plist, both specified in parameters
      
-     - parameter plist: String!
-     - parameter key:   String!
+     - parameter plist: String
+     - parameter key:   String
      
      - returns: String
      */
-    class func getStringValueWithKeyFromPlist (plist: String!, key: String!) -> String {
-        let path: String = NSBundle.mainBundle().pathForResource(plist, ofType: "plist")!
-        let keyList = NSDictionary(contentsOfFile: path)
-        return keyList!.objectForKey(key) as! String
+    class func getStringValueWithKeyFromPlist(plist: String, key: String) -> String? {
+        if let path: String = NSBundle.mainBundle().pathForResource(plist, ofType: "plist"),
+            keyList = NSDictionary(contentsOfFile: path),
+            key = keyList.objectForKey(key) as? String {
+            return key
+        }
+        return nil
     }
     
     
@@ -98,7 +107,7 @@ class Utils: NSObject {
     */
     class func vcWithNameFromStoryboardWithName(vcName : String, storyboardName : String) -> UIViewController?{
         let storyboard = storyboardBoardWithName(storyboardName)
-        let viewController: AnyObject! = storyboard.instantiateViewControllerWithIdentifier(vcName)
+        let viewController: AnyObject = storyboard.instantiateViewControllerWithIdentifier(vcName)
         return viewController as? UIViewController
     }
     
@@ -178,9 +187,11 @@ class Utils: NSObject {
     // Kerning helper method
     class func kernLabelString(label: UILabel, spacingValue: CGFloat) {
         
-        let attributedString = NSMutableAttributedString(string: label.text!)
-        attributedString.addAttribute(NSKernAttributeName, value: spacingValue, range: NSRange(location: 0, length: attributedString.length))
-        label.attributedText = attributedString
+        if let text = label.text {
+            let attributedString = NSMutableAttributedString(string: text)
+            attributedString.addAttribute(NSKernAttributeName, value: spacingValue, range: NSRange(location: 0, length: attributedString.length))
+            label.attributedText = attributedString
+        }
         
     }
     

@@ -32,7 +32,6 @@ class CameraDataManager: NSObject {
         
         var manager = CameraDataManager()
         
-        
         return manager
         
     }()
@@ -77,7 +76,7 @@ class CameraDataManager: NSObject {
      
      - parameter presentingVC: tab VC to present over top of
      */
-    func showImagePickerActionSheet(presentingVC: TabBarViewController!) {
+    func showImagePickerActionSheet(presentingVC: TabBarViewController) {
         self.tabVC = presentingVC
         self.picker = UIImagePickerController()
         let alert:UIAlertController=UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
@@ -117,11 +116,10 @@ class CameraDataManager: NSObject {
     /**
      Method called when user wants to take a photo with the camera
      */
-    func openCamera()
-    {
+    func openCamera() {
         if(UIImagePickerController .isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera))
         {
-            picker!.sourceType = UIImagePickerControllerSourceType.Camera
+            picker.sourceType = UIImagePickerControllerSourceType.Camera
             self.tabVC.presentViewController(picker, animated: true, completion: { _ in
                 self.showCameraConfirmation()
             })
@@ -136,9 +134,8 @@ class CameraDataManager: NSObject {
     /**
      Method called when user wants to choose a photo from Photo Album for posting
      */
-    func openGallery()
-    {
-        picker!.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
+    func openGallery() {
+        picker.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
         self.tabVC.presentViewController(picker, animated: true, completion:{ _ in
             self.showCameraConfirmation()
         })
@@ -222,7 +219,7 @@ class CameraDataManager: NSObject {
     func showPhotoCouldntBeChosenAlert() {
         let alert = UIAlertController(title: nil, message: NSLocalizedString("This photo couldn't be loaded. Please use a different one!", comment: ""), preferredStyle: UIAlertControllerStyle.Alert)
         
-        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .Default, handler: { (action: UIAlertAction!) in
+        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .Default, handler: { (action: UIAlertAction) in
             self.openGallery()
         }))
         
@@ -236,11 +233,11 @@ class CameraDataManager: NSObject {
     /**
      Method to rotate image taken if necessary
      
-     - parameter imageToRotate: UIImage!
+     - parameter imageToRotate: UIImage
      
-     - returns: UIImage1
+     - returns: UIImage
      */
-    func rotateImageIfNecessary(imageToRotate: UIImage!) -> UIImage! {
+    func rotateImageIfNecessary(imageToRotate: UIImage) -> UIImage {
         let imageOrientation = imageToRotate.imageOrientation.rawValue
         switch imageOrientation {
         case 0: //Up
@@ -312,7 +309,7 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
             imageUserDecidedToPost.image = takenImage
         }
         
-        imageUserDecidedToPost.image = self.rotateImageIfNecessary(imageUserDecidedToPost.image)
+        imageUserDecidedToPost.image = self.rotateImageIfNecessary(imageUserDecidedToPost.image!)
         imageUserDecidedToPost.width = imageUserDecidedToPost.image!.size.width
         imageUserDecidedToPost.height = imageUserDecidedToPost.image!.size.height
         
@@ -410,11 +407,11 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
         
         let alert = UIAlertController(title: NSLocalizedString("Location Not Found", comment: ""), message: NSLocalizedString("Location is required to post a photo", comment: ""), preferredStyle: UIAlertControllerStyle.Alert)
         
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .Default, handler: { (action: UIAlertAction!) in
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .Default, handler: { (action: UIAlertAction) in
          
         }))
         
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Try Again", comment: ""), style: .Default, handler: { (action: UIAlertAction!) in
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Try Again", comment: ""), style: .Default, handler: { (action: UIAlertAction) in
             
             self.tryToDetermineLocationAgainAndSetLatLongCityAndState()
             
@@ -437,15 +434,16 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
             }
             //success
             else if let latitude = latitude,
-                let longitude = longitude,
-                let city = city,
-                let state = state {
+                longitude = longitude,
+                city = city,
+                state = state {
                 
-                image.location = Location()
-                image.location!.latitude = "\(latitude)"
-                image.location!.longitude = "\(longitude)"
-                image.location!.city = city
-                image.location!.state = state
+                var location = Location()
+                location.latitude = "\(latitude)"
+                location.longitude = "\(longitude)"
+                location.city = city
+                location.state = state
+                image.location = location
                 
                 callback(success: true)
             }
