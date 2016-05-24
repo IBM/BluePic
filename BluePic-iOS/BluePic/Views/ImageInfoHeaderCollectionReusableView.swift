@@ -18,9 +18,7 @@ class ImageInfoHeaderCollectionReusableView: UICollectionReusableView{
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var weatherImageView: UIImageView!
     @IBOutlet weak var temperatureLabel: UILabel!
-    
-
-    
+    @IBOutlet weak var tagsLabel: UILabel!
     
     private let kCaptionLabelLetterSpacing : CGFloat = 1.7
     private let kCaptionLabelLineSpacing : CGFloat = 10.0
@@ -32,15 +30,6 @@ class ImageInfoHeaderCollectionReusableView: UICollectionReusableView{
     private let kTimeLabelPrefixString = NSLocalizedString("at", comment: "")
     
     
-//    required init?(coder aDecoder: NSCoder) {
-//        super.init(coder: aDecoder)
-//        
-//        NSBundle.mainBundle().loadNibNamed("ImageDetailInfoView", owner: self, options: nil)[0] as! UIView
-//        self.addSubview(view)
-//        view.frame = self.bounds
-//    }
-    
-    
     /**
      Method is called when the view wakes from nib
      */
@@ -48,7 +37,7 @@ class ImageInfoHeaderCollectionReusableView: UICollectionReusableView{
         super.awakeFromNib()
     }
 
-    func setupWithData(caption : String?, userFullName : String?, locationName : String?, latitude : String?, longitude : String?, timeStamp : NSDate?, weatherIconId : Int?, temperature : Int?){
+    func setupWithData(caption : String?, userFullName : String?, locationName : String?, latitude : String?, longitude : String?, timeStamp : NSDate?, weatherIconId : Int?, temperature : Int?, tags : [Tag]?){
   
         //setup captionLabel
         setupCaptionLabelWithData(caption)
@@ -71,6 +60,7 @@ class ImageInfoHeaderCollectionReusableView: UICollectionReusableView{
         //setup weatherImageView and Temperature Label
         setupWeatherImageViewAndTemperatureLabel(weatherIconId, temperature: temperature)
         
+        setupTagsLabel(tags)
         
     }
 
@@ -126,7 +116,6 @@ class ImageInfoHeaderCollectionReusableView: UICollectionReusableView{
             dateFormatter.timeStyle = .ShortStyle
             let locale = LocationDataManager.SharedInstance.getLanguageLocale()
             dateFormatter.locale = NSLocale(localeIdentifier: locale)
-            //dateFormatter.dateFormat = "h:mm a"
             let dateString = dateFormatter.stringFromDate(date)
             timeLabel.text = kTimeLabelPrefixString + " " + dateString
             
@@ -170,6 +159,23 @@ class ImageInfoHeaderCollectionReusableView: UICollectionReusableView{
             temperatureLabel.text = "\(temperature)" + kDegreeSymbolString
         }
         
+    }
+    
+    private func setupTagsLabel(tags : [Tag]?){
+        
+        if let tags = tags {
+            
+            if tags.count > 0 {
+                tagsLabel.hidden = false
+            }
+            else{
+                tagsLabel.hidden = true
+            }
+        }
+        else{
+            tagsLabel.hidden = true
+        }
+
     }
 
 
