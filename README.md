@@ -6,23 +6,15 @@ BluePic is a photo and image sharing sample application that allows you to take 
 
 ## Table of Contents
 
-* [Dependencies](#dependencies)
+* [System Dependencies](#system-dependencies)
 * [Project Structure](#project-folder-structure)
+* [Swift Packages](#swift-packages)
 * [Getting Started](#getting-started)
 * [Using BluePic](#using-bluepic)
 * [Architecture](#architecture)
 * [License](#license)
 
-## Dependencies
-
-The following Swift packages are used in BluePic:
-
-- [Kitura-CouchDB](https://github.com/IBM-Swift/Kitura-CouchDB)
-- [Kitura](https://github.com/IBM-Swift/Kitura.git)
-- [Swift-cfenv](https://github.com/IBM-Swift/Swift-cfenv.git)
-- [Swift SDK for Bluemix Object Storage Service](https://github.com/ibm-bluemix-mobile-services/bluemix-objectstorage-swift-sdk.git)
-- [Kitura Credentials plugin for the Mobile Client Access service](https://github.com/ibm-bluemix-mobile-services/bms-mca-kitura-credentials-plugin.git)
-- [Swift SDK for Bluemix Push Notifications Service](https://github.com/ibm-bluemix-mobile-services/bms-pushnotifications-serversdk-swift.git)
+## System Dependencies
 
 The following system level dependencies should be installed on OS X using [Homebrew](http://brew.sh/):
 
@@ -40,6 +32,17 @@ If you are using Linux as your development platform, you can find full details o
 * `./Docs` - Contains additional project documentation.
 * `./Imgs` - Contains images referenced in this `README` file.
 
+## Swift Packages
+
+The following Swift packages are used in BluePic:
+
+- [Kitura-CouchDB](https://github.com/IBM-Swift/Kitura-CouchDB)
+- [Kitura](https://github.com/IBM-Swift/Kitura.git)
+- [Swift-cfenv](https://github.com/IBM-Swift/Swift-cfenv.git)
+- [Swift SDK for Bluemix Object Storage Service](https://github.com/ibm-bluemix-mobile-services/bluemix-objectstorage-swift-sdk.git)
+- [Kitura Credentials plugin for the Mobile Client Access service](https://github.com/ibm-bluemix-mobile-services/bms-mca-kitura-credentials-plugin.git)
+- [Swift SDK for Bluemix Push Notifications Service](https://github.com/ibm-bluemix-mobile-services/bms-pushnotifications-serversdk-swift.git)
+
 ## Getting Started
 
 #### 1. Clone the BluePic Git repository
@@ -56,7 +59,7 @@ In order to have the iOS application authenticate with Facebook, you must create
 
 1. On the screen that follows, you **do not** need to download the Facebook SDK, the necessary components are included in the MCA framework. Next, in the `Configure your info.plist` section under `step 2`, copy the information into your `info.plist` file. You can find the `info.plist` file in `Configuration` folder of the Xcode project. Among other values, your `info.plist` file should contain the following:
 <p align="center"><img src="Imgs/infoplist.png"  alt="Drawing" height=150 border=0 /></p>
- 
+
 1. Next scroll to the bottom of the quick start page where it says `Supply us with your Bundle Identifier` and enter the app's bundle identifier. To find the bundle identifier in the Xcode project you can do the following:
     * Make sure the project navigator folder icon is selected in the top left of Xcode. Select the BluePic project at the top of the file structure and then select the BluePic target. Under the identity section, you should see a text field for the bundle identifier that is empty. You can make the bundle identifier anything you want, `com.BluePic` for example.
 
