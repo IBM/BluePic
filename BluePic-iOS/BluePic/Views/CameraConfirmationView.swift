@@ -36,6 +36,8 @@ class CameraConfirmationView: UIView, UITextFieldDelegate {
     
     /// Reference to the original frame
     var originalFrame: CGRect!
+    
+    private let kTextFieldPlaceholderText = NSLocalizedString("GIVE IT A TITLE", comment: "")
 
     
     /**
@@ -54,9 +56,6 @@ class CameraConfirmationView: UIView, UITextFieldDelegate {
         super.awakeFromNib()
         self.setupView()
         self.addKeyboardObservers()
-        
-        
-        //titleTextField.resignFirstResponder()
     
     }
     
@@ -64,7 +63,7 @@ class CameraConfirmationView: UIView, UITextFieldDelegate {
      Method to setup the view and its outlets
      */
     func setupView() {
-        let localizedString = NSLocalizedString("GIVE IT A TITLE", comment: "")
+        let localizedString = kTextFieldPlaceholderText
         self.titleTextField.attributedPlaceholder = NSAttributedString(string:localizedString,
             attributes:[NSForegroundColorAttributeName: UIColor.grayColor()])
         self.translatesAutoresizingMaskIntoConstraints = true
