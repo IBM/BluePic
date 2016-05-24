@@ -6,23 +6,12 @@ BluePic is a photo and image sharing sample application that allows you to take 
 
 ## Table of Contents
 
-* [System Dependencies](#system-dependencies)
 * [Project Structure](#project-folder-structure)
 * [Swift Packages](#swift-packages)
 * [Getting Started](#getting-started)
 * [Using BluePic](#using-bluepic)
 * [Architecture](#architecture)
 * [License](#license)
-
-## System Dependencies
-
-The following system level dependencies should be installed on OS X using [Homebrew](http://brew.sh/):
-
-```bash
-brew install curl
-```
-
-If you are using Linux as your development platform, you can find full details on how to set up your environment for building Kitura-based applications at [Getting started with Kitura](https://github.com/IBM-Swift/Kitura).
 
 ## Project folder Structure
 
@@ -45,13 +34,23 @@ The following Swift packages are used in BluePic:
 
 ## Getting Started
 
-#### 1. Clone the BluePic Git repository
+#### 1. Install system dependencies
+
+The following system level dependencies should be installed on OS X using [Homebrew](http://brew.sh/):
+
+```bash
+brew install curl
+```
+
+If you are using Linux as your development platform, you can find full details on how to set up your environment for building Kitura-based applications at [Getting started with Kitura](https://github.com/IBM-Swift/Kitura).
+
+#### 2. Clone the BluePic Git repository
 
 ```bash
 git clone https://github.com/IBM-Swift/BluePic.git
 ```
 
-#### 2. Create an application instance on Facebook
+#### 3. Create an application instance on Facebook
 
 In order to have the iOS application authenticate with Facebook, you must create an application instance on Facebook's website.
 
@@ -65,7 +64,7 @@ In order to have the iOS application authenticate with Facebook, you must create
 
 1. Once you entered the bundle ID on the Facebook quick start page, click `next`.
 
-#### 3. Create BluePic application on Bluemix
+#### 4. Create BluePic application on Bluemix
 
 You can click the magical button below to automatically deploy the BluePic application to Bluemix:
 
@@ -75,11 +74,11 @@ When automatically deploying to Bluemix, the `manifest.yml` file [included in th
 
 Note that the [Bluemix buildpack for Swift](https://github.com/IBM-Swift/swift-buildpack) is used for the deployment of BluePic to Bluemix.
 
-#### 4. Configure Bluemix MCA
+#### 5. Configure Bluemix MCA
 
 TODO: ADD CONTENTS
 
-#### 5. Configure Bluemix Push service
+#### 6. Configure Bluemix Push service
 
 It is important to note that we will need to configure a notification provider before we can really use the Bluemix Push service. In our case, we need to configure credentials for the Apple Push Notification Service (APNS). Luckily, Bluemix has instructions to walk you though that process, you can find that [here](https://console.ng.bluemix.net/docs/services/mobilepush/t_push_provider_ios.html).
 
@@ -88,11 +87,11 @@ Once you have completed the appropriate steps with Apple and Bluemix, just make 
 
 Lastly, remember that push notifications will only show up on a physical iOS device.
 
-#### 6. Configure OpenWhisk
+#### 7. Configure OpenWhisk
 
 TODO: ADD CONTENTS
 
-#### 7. Populate Cloudant database
+#### 8. Populate Cloudant database
 
 Execute the following shell script:
 
@@ -101,7 +100,7 @@ Execute the following shell script:
 
 ```
 
-#### 8. Populate Object Storage
+#### 9. Populate Object Storage
 
 Execute the following shell script:
 
@@ -109,7 +108,7 @@ Execute the following shell script:
 ./BluePic-Server/resources/cloudant/populate_containers.sh --userid=<object storage username> --password=<object storage password> --projectid=<object storage projectid>
 ```
 
-#### 9. Update `BluePic-Server/config.json` file
+#### 10. Update `BluePic-Server/config.json` file
 
 After deploying BluePic to Bluemix and configuring its services, you also have the option to run the Kitura-based server locally for development and testing purposes. To run the Kitura-based server locally, you'd need to update the credentials for each one of the services listed in the ```BluePic-Server/config.json``` file:
 
@@ -178,7 +177,7 @@ After deploying BluePic to Bluemix and configuring its services, you also have t
 ...
 ```
 
-#### 10. Build the BluePic-Server
+#### 11. Build the BluePic-Server
 
 To build the BluePic-Server, go to the `BluePic-Server` directory of the cloned repository and run:
 
@@ -186,7 +185,7 @@ To build the BluePic-Server, go to the `BluePic-Server` directory of the cloned 
 make
 ```
 
-#### 11. Run the BluePic-Server
+#### 12. Run the BluePic-Server
 
 From the `BluePic-Server` directory of the cloned repository, run:
 
@@ -194,7 +193,7 @@ From the `BluePic-Server` directory of the cloned repository, run:
 .build/debug/Server
 ```
 
-#### 12. Run the iOS app
+#### 13. Run the iOS app
 
 Go to the BluePic-iOS directory and open the BluePic workspace using Xcode:
 
@@ -202,7 +201,7 @@ Go to the BluePic-iOS directory and open the BluePic workspace using Xcode:
 open BluePic.xcworkspace
 ```
 
-#### 12.1 Simulate Location on Simulator
+#### 13.1 Simulate Location on Simulator
 If you try to post a photo within the iOS simulator and the app doesn't know your location, it won't work. To fix this simulator specific issue, simply set a location in the simulator's debug menu:
 
 <p align="center">
