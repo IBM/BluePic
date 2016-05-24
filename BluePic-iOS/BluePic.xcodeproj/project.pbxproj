@@ -63,7 +63,7 @@
 		347472EF1BFA8DEF0018B7F6 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347472D71BFA8DEF0018B7F6 /* Utils.swift */; };
 		347472F11BFA8E320018B7F6 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347472F01BFA8E320018B7F6 /* LoginViewController.swift */; };
 		347AD2221C18F98600C3B473 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347AD2211C18F98600C3B473 /* LoginViewModel.swift */; };
-		34C8094D1BFCEA0400C48004 /* keys.plist in Resources */ = {isa = PBXBuildFile; fileRef = 34C8094C1BFCEA0400C48004 /* keys.plist */; };
+		34C8094D1BFCEA0400C48004 /* bluemix.plist in Resources */ = {isa = PBXBuildFile; fileRef = 34C8094C1BFCEA0400C48004 /* bluemix.plist */; };
 		34C809551BFD0F2400C48004 /* FacebookDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C809541BFD0F2400C48004 /* FacebookDataManager.swift */; };
 /* End PBXBuildFile section */
 
@@ -153,7 +153,7 @@
 		347AD2211C18F98600C3B473 /* LoginViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		347E276C1C1F9CD10089EC3D /* BluePic.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = BluePic.entitlements; sourceTree = "<group>"; };
 		34C8094A1BFCD9A300C48004 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		34C8094C1BFCEA0400C48004 /* keys.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = keys.plist; sourceTree = "<group>"; };
+		34C8094C1BFCEA0400C48004 /* bluemix.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = bluemix.plist; sourceTree = "<group>"; };
 		34C809541BFD0F2400C48004 /* FacebookDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookDataManager.swift; sourceTree = "<group>"; };
 		4DF2008F9A93E25237957424 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		548428B896D4182B293AB59E /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
@@ -245,7 +245,7 @@
 		347472BB1BFA8DEF0018B7F6 /* Configuration */ = {
 			isa = PBXGroup;
 			children = (
-				34C8094C1BFCEA0400C48004 /* keys.plist */,
+				34C8094C1BFCEA0400C48004 /* bluemix.plist */,
 				34C8094A1BFCD9A300C48004 /* Info.plist */,
 			);
 			path = Configuration;
@@ -478,14 +478,14 @@
 				1B2DC2541C1F360D00B4E77B /* EmptyFeedCollectionViewCell.xib in Resources */,
 				1B0432E61C17E967007643B1 /* ProfileCollectionViewCell.xib in Resources */,
 				1BF00D141CEF7C0C009472B5 /* ImageInfoHeaderCollectionReusableView.xib in Resources */,
-				1B6132171C270DD300B57231 /* PictureUploadQueueImageFeedCollectionViewCell.xib in Resources */,
+				1B6132171C270DD300B57231 /* ImagesCurrentlyUploadingImageFeedCollectionViewCell.xib in Resources */,
 				3435C7CB1C0368DA004923BD /* Camera.storyboard in Resources */,
 				3435C7CD1C03690F004923BD /* Profile.storyboard in Resources */,
 				1BF00D101CEF5F64009472B5 /* ImageInfoView.xib in Resources */,
 				1B057E0A1C17C03400AC21EE /* ProfileHeaderCollectionReusableView.xib in Resources */,
 				3435C7C91C0368B1004923BD /* Feed.storyboard in Resources */,
 				346F94801C0F9211004999A8 /* CameraConfirmationView.xib in Resources */,
-				34C8094D1BFCEA0400C48004 /* keys.plist in Resources */,
+				34C8094D1BFCEA0400C48004 /* bluemix.plist in Resources */,
 				347472ED1BFA8DEF0018B7F6 /* Main.storyboard in Resources */,
 				1B3BA0761C0F5FBD0064C850 /* .gitkeep in Resources */,
 				347472981BFA8C6A0018B7F6 /* LaunchScreen.storyboard in Resources */,
