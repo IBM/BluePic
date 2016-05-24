@@ -16,11 +16,17 @@
 # limitations under the License.
 ##
 
-# If any commands fail, we want the shell script to exit immediately.
 set -e
 
-# Parse input parameters
-source ./parse_inputs.sh
+# Install system level dependencies
+brew install curl
 
-curl -X GET "https://$username.cloudant.com/bluepic_db/_design/main_design" -u $username:$password > main_design.json
-#curl -X GET "https://455a9bcb-1b79-4da9-a2aa-3babd429db1f-bluemix.cloudant.com/attendee/_design/attendee_main_design" -u 455a9bcb-1b79-4da9-a2aa-3babd429db1f-bluemix:e20b951230d1eb08e414eb373c0ee8ff368b33534440ebd556dde32af88eb40e > attendee_main_design.json
+# Set scripts folder variable
+scriptsFolder="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+echo "scriptsFolder: $scriptsFolder"
+
+# Compile server code (Kitura-based server)
+$scriptsFolder/compile-server.sh
+
+# Start server
+$scriptsFolder/run-server.sh
