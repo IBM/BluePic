@@ -130,20 +130,11 @@
 		1BF00D2D1CF38D57009472B5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/CameraConfirmationView.strings; sourceTree = "<group>"; };
 		1BF00D2F1CF38DBA009472B5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/ImagesCurrentlyUploadingImageFeedCollectionViewCell.xib; sourceTree = "<group>"; };
 		1BF00D321CF38DBE009472B5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/ImagesCurrentlyUploadingImageFeedCollectionViewCell.strings; sourceTree = "<group>"; };
-		1BF00D391CF4A475009472B5 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
-		1BF00D3A1CF4A475009472B5 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Main.strings; sourceTree = "<group>"; };
-		1BF00D3B1CF4A475009472B5 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Feed.strings; sourceTree = "<group>"; };
-		1BF00D3C1CF4A475009472B5 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Camera.strings; sourceTree = "<group>"; };
-		1BF00D3D1CF4A475009472B5 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Profile.strings; sourceTree = "<group>"; };
-		1BF00D3E1CF4A476009472B5 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/CameraConfirmationView.strings; sourceTree = "<group>"; };
-		1BF00D3F1CF4A476009472B5 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/ImagesCurrentlyUploadingImageFeedCollectionViewCell.strings; sourceTree = "<group>"; };
 		1BF00D481CF4B60D009472B5 /* UILabelExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UILabelExtension.swift; sourceTree = "<group>"; };
 		1BF00D4D1CF4B755009472B5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		1BF00D4F1CF4B758009472B5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
-		1BF00D501CF4B759009472B5 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		1BF00D521CF4BEEA009472B5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/ImageInfoHeaderCollectionReusableView.xib; sourceTree = "<group>"; };
 		1BF00D551CF4BEEC009472B5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/ImageInfoHeaderCollectionReusableView.strings; sourceTree = "<group>"; };
-		1BF00D571CF4BEED009472B5 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/ImageInfoHeaderCollectionReusableView.strings; sourceTree = "<group>"; };
 		2E26F6071CC82C8B00650494 /* Pods.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Pods.framework; path = "Pods/../build/Debug-iphoneos/Pods.framework"; sourceTree = "<group>"; };
 		2E71D6161CE1197800EEBD2B /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		2E7C95601CE13DCE0044F6ED /* TagCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -478,7 +469,6 @@
 			knownRegions = (
 				en,
 				Base,
-				es,
 			);
 			mainGroup = 347472811BFA8C6A0018B7F6;
 			productRefGroup = 3474728B1BFA8C6A0018B7F6 /* Products */;
@@ -644,7 +634,6 @@
 			children = (
 				1BF00D161CF38CDD009472B5 /* Base */,
 				1BF00D191CF38CE1009472B5 /* en */,
-				1BF00D3A1CF4A475009472B5 /* es */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -654,7 +643,6 @@
 			children = (
 				1BF00D1B1CF38D0B009472B5 /* Base */,
 				1BF00D1E1CF38D0D009472B5 /* en */,
-				1BF00D3B1CF4A475009472B5 /* es */,
 			);
 			name = Feed.storyboard;
 			sourceTree = "<group>";
@@ -664,7 +652,6 @@
 			children = (
 				1BF00D201CF38D30009472B5 /* Base */,
 				1BF00D231CF38D31009472B5 /* en */,
-				1BF00D3C1CF4A475009472B5 /* es */,
 			);
 			name = Camera.storyboard;
 			sourceTree = "<group>";
@@ -674,7 +661,6 @@
 			children = (
 				1BF00D251CF38D40009472B5 /* Base */,
 				1BF00D281CF38D45009472B5 /* en */,
-				1BF00D3D1CF4A475009472B5 /* es */,
 			);
 			name = Profile.storyboard;
 			sourceTree = "<group>";
@@ -684,7 +670,6 @@
 			children = (
 				1BF00D2A1CF38D56009472B5 /* Base */,
 				1BF00D2D1CF38D57009472B5 /* en */,
-				1BF00D3E1CF4A476009472B5 /* es */,
 			);
 			name = CameraConfirmationView.xib;
 			sourceTree = "<group>";
@@ -694,7 +679,6 @@
 			children = (
 				1BF00D2F1CF38DBA009472B5 /* Base */,
 				1BF00D321CF38DBE009472B5 /* en */,
-				1BF00D3F1CF4A476009472B5 /* es */,
 			);
 			name = ImagesCurrentlyUploadingImageFeedCollectionViewCell.xib;
 			sourceTree = "<group>";
@@ -704,7 +688,6 @@
 			children = (
 				1BF00D4D1CF4B755009472B5 /* Base */,
 				1BF00D4F1CF4B758009472B5 /* en */,
-				1BF00D501CF4B759009472B5 /* es */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -714,7 +697,6 @@
 			children = (
 				1BF00D521CF4BEEA009472B5 /* Base */,
 				1BF00D551CF4BEEC009472B5 /* en */,
-				1BF00D571CF4BEED009472B5 /* es */,
 			);
 			name = ImageInfoHeaderCollectionReusableView.xib;
 			sourceTree = "<group>";
@@ -723,7 +705,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				347472971BFA8C6A0018B7F6 /* Base */,
-				1BF00D391CF4A475009472B5 /* es */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
