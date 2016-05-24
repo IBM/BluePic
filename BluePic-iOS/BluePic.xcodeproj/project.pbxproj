@@ -40,6 +40,8 @@
 		1BF00D241CF38D40009472B5 /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1BF00D261CF38D40009472B5 /* Profile.storyboard */; };
 		1BF00D291CF38D56009472B5 /* CameraConfirmationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1BF00D2B1CF38D56009472B5 /* CameraConfirmationView.xib */; };
 		1BF00D2E1CF38DBA009472B5 /* ImagesCurrentlyUploadingImageFeedCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1BF00D301CF38DBA009472B5 /* ImagesCurrentlyUploadingImageFeedCollectionViewCell.xib */; };
+		1BF00D491CF4B60D009472B5 /* UILabelExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BF00D481CF4B60D009472B5 /* UILabelExtension.swift */; };
+		1BF00D4C1CF4B755009472B5 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1BF00D4E1CF4B755009472B5 /* Localizable.strings */; };
 		2E26F6081CC82C8B00650494 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E26F6071CC82C8B00650494 /* Pods.framework */; };
 		2E71D6171CE1197800EEBD2B /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E71D6161CE1197800EEBD2B /* SearchViewController.swift */; };
 		2E7C95621CE13DCE0044F6ED /* TagCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7C95601CE13DCE0044F6ED /* TagCollectionViewCell.swift */; };
@@ -129,6 +131,17 @@
 		1BF00D2D1CF38D57009472B5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/CameraConfirmationView.strings; sourceTree = "<group>"; };
 		1BF00D2F1CF38DBA009472B5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/ImagesCurrentlyUploadingImageFeedCollectionViewCell.xib; sourceTree = "<group>"; };
 		1BF00D321CF38DBE009472B5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/ImagesCurrentlyUploadingImageFeedCollectionViewCell.strings; sourceTree = "<group>"; };
+		1BF00D391CF4A475009472B5 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		1BF00D3A1CF4A475009472B5 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Main.strings; sourceTree = "<group>"; };
+		1BF00D3B1CF4A475009472B5 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Feed.strings; sourceTree = "<group>"; };
+		1BF00D3C1CF4A475009472B5 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Camera.strings; sourceTree = "<group>"; };
+		1BF00D3D1CF4A475009472B5 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Profile.strings; sourceTree = "<group>"; };
+		1BF00D3E1CF4A476009472B5 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/CameraConfirmationView.strings; sourceTree = "<group>"; };
+		1BF00D3F1CF4A476009472B5 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/ImagesCurrentlyUploadingImageFeedCollectionViewCell.strings; sourceTree = "<group>"; };
+		1BF00D481CF4B60D009472B5 /* UILabelExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UILabelExtension.swift; sourceTree = "<group>"; };
+		1BF00D4D1CF4B755009472B5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
+		1BF00D4F1CF4B758009472B5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		1BF00D501CF4B759009472B5 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		2E26F6071CC82C8B00650494 /* Pods.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Pods.framework; path = "Pods/../build/Debug-iphoneos/Pods.framework"; sourceTree = "<group>"; };
 		2E71D6161CE1197800EEBD2B /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		2E7C95601CE13DCE0044F6ED /* TagCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -278,6 +291,7 @@
 				347472CB1BFA8DEF0018B7F6 /* UIImageExtension.swift */,
 				347472CE1BFA8DEF0018B7F6 /* UIViewExtensions.swift */,
 				1B40BF851CE4DDB10097F435 /* NSAttributedStringExtension.swift */,
+				1BF00D481CF4B60D009472B5 /* UILabelExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -361,6 +375,7 @@
 		34F6972B1BFB8E6C00A2D2EC /* SupportingFiles */ = {
 			isa = PBXGroup;
 			children = (
+				1BF00D4E1CF4B755009472B5 /* Localizable.strings */,
 				BDC4B5F21BFBC77200CC1648 /* BluePic-Bridging-Header.h */,
 			);
 			path = SupportingFiles;
@@ -461,6 +476,7 @@
 			knownRegions = (
 				en,
 				Base,
+				es,
 			);
 			mainGroup = 347472811BFA8C6A0018B7F6;
 			productRefGroup = 3474728B1BFA8C6A0018B7F6 /* Products */;
@@ -478,6 +494,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1BF00D4C1CF4B755009472B5 /* Localizable.strings in Resources */,
 				1B2DC2541C1F360D00B4E77B /* EmptyFeedCollectionViewCell.xib in Resources */,
 				1B0432E61C17E967007643B1 /* ProfileCollectionViewCell.xib in Resources */,
 				1BF00D141CEF7C0C009472B5 /* ImageInfoHeaderCollectionReusableView.xib in Resources */,
@@ -584,6 +601,7 @@
 				3435C7D71C041116004923BD /* CameraViewController.swift in Sources */,
 				1BF00D0E1CEF5F52009472B5 /* ImageInfoHeaderCollectionReusableView.swift in Sources */,
 				347472EA1BFA8DEF0018B7F6 /* UIViewExtensions.swift in Sources */,
+				1BF00D491CF4B60D009472B5 /* UILabelExtension.swift in Sources */,
 				347472F11BFA8E320018B7F6 /* LoginViewController.swift in Sources */,
 				3474728E1BFA8C6A0018B7F6 /* AppDelegate.swift in Sources */,
 				3435C7D51C04110C004923BD /* FeedViewController.swift in Sources */,
@@ -624,6 +642,7 @@
 			children = (
 				1BF00D161CF38CDD009472B5 /* Base */,
 				1BF00D191CF38CE1009472B5 /* en */,
+				1BF00D3A1CF4A475009472B5 /* es */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -633,6 +652,7 @@
 			children = (
 				1BF00D1B1CF38D0B009472B5 /* Base */,
 				1BF00D1E1CF38D0D009472B5 /* en */,
+				1BF00D3B1CF4A475009472B5 /* es */,
 			);
 			name = Feed.storyboard;
 			sourceTree = "<group>";
@@ -642,6 +662,7 @@
 			children = (
 				1BF00D201CF38D30009472B5 /* Base */,
 				1BF00D231CF38D31009472B5 /* en */,
+				1BF00D3C1CF4A475009472B5 /* es */,
 			);
 			name = Camera.storyboard;
 			sourceTree = "<group>";
@@ -651,6 +672,7 @@
 			children = (
 				1BF00D251CF38D40009472B5 /* Base */,
 				1BF00D281CF38D45009472B5 /* en */,
+				1BF00D3D1CF4A475009472B5 /* es */,
 			);
 			name = Profile.storyboard;
 			sourceTree = "<group>";
@@ -660,6 +682,7 @@
 			children = (
 				1BF00D2A1CF38D56009472B5 /* Base */,
 				1BF00D2D1CF38D57009472B5 /* en */,
+				1BF00D3E1CF4A476009472B5 /* es */,
 			);
 			name = CameraConfirmationView.xib;
 			sourceTree = "<group>";
@@ -669,14 +692,26 @@
 			children = (
 				1BF00D2F1CF38DBA009472B5 /* Base */,
 				1BF00D321CF38DBE009472B5 /* en */,
+				1BF00D3F1CF4A476009472B5 /* es */,
 			);
 			name = ImagesCurrentlyUploadingImageFeedCollectionViewCell.xib;
+			sourceTree = "<group>";
+		};
+		1BF00D4E1CF4B755009472B5 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1BF00D4D1CF4B755009472B5 /* Base */,
+				1BF00D4F1CF4B758009472B5 /* en */,
+				1BF00D501CF4B759009472B5 /* es */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 		347472961BFA8C6A0018B7F6 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				347472971BFA8C6A0018B7F6 /* Base */,
+				1BF00D391CF4A475009472B5 /* es */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";

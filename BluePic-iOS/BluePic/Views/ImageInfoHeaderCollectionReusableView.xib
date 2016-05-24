@@ -145,12 +145,24 @@
                         </mask>
                     </variation>
                 </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tags:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GfT-yh-l3i">
+                    <rect key="frame" x="269" y="366" width="62" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="62" id="B5t-Kf-IuP"/>
+                        <constraint firstAttribute="height" constant="21" id="UTm-AT-S56"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <constraints>
                 <constraint firstItem="Ksl-mr-hEt" firstAttribute="top" secondItem="h7Q-NK-YAa" secondAttribute="bottom" constant="17" id="87J-3R-yhS"/>
                 <constraint firstItem="Ksl-mr-hEt" firstAttribute="leading" secondItem="X47-ss-Z7Q" secondAttribute="leading" constant="40" id="BiG-GB-Fib"/>
                 <constraint firstAttribute="trailing" secondItem="Ksl-mr-hEt" secondAttribute="trailing" constant="40" id="Bve-NL-la3"/>
                 <constraint firstAttribute="trailing" secondItem="h7Q-NK-YAa" secondAttribute="trailing" constant="40" id="Cpw-8j-lnR"/>
+                <constraint firstItem="GfT-yh-l3i" firstAttribute="centerX" secondItem="X47-ss-Z7Q" secondAttribute="centerX" id="LU9-DH-M7T"/>
+                <constraint firstAttribute="bottom" secondItem="GfT-yh-l3i" secondAttribute="bottom" constant="8" id="MhH-ta-nfp"/>
                 <constraint firstItem="h7Q-NK-YAa" firstAttribute="leading" secondItem="X47-ss-Z7Q" secondAttribute="leading" constant="40" id="TlO-e7-faf"/>
                 <constraint firstAttribute="bottom" secondItem="Ksl-mr-hEt" secondAttribute="bottom" constant="30" id="gwe-Gt-TlD"/>
                 <constraint firstItem="h7Q-NK-YAa" firstAttribute="top" secondItem="X47-ss-Z7Q" secondAttribute="top" constant="36" id="zbS-9J-3YD"/>

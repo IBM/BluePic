@@ -36,7 +36,9 @@ class ProfileCollectionViewCell: UICollectionViewCell {
     //the view that is shown while we wait for the image to download and display
     @IBOutlet weak var loadingView: UIView!
     
-    private let kNumberOfTagsPostFix = NSLocalizedString("Tags", comment: "")
+    private let kNumberOfTagsPostFix_MultipleTags = NSLocalizedString("Tags", comment: "")
+    
+    private let kNumberOfTagsPostFix_OneTag = NSLocalizedString("Tag", comment: "")
     
     /**
      Method is called when the view wakes from nib
@@ -62,10 +64,15 @@ class ProfileCollectionViewCell: UICollectionViewCell {
             if(numOfTags == 0){
                 numberOfTagsLabel.hidden = true
             }
+            else if (numOfTags == 1){
+                numberOfTagsLabel.hidden = false
+                numberOfTagsLabel.text = "\(numOfTags)" + " " + kNumberOfTagsPostFix_OneTag
+            }
             else{
                 numberOfTagsLabel.hidden = false
-                numberOfTagsLabel.text = "\(numOfTags)" + " " + kNumberOfTagsPostFix
+                numberOfTagsLabel.text = "\(numOfTags)" + " " + kNumberOfTagsPostFix_MultipleTags
             }
+
         }
         else{
             numberOfTagsLabel.hidden = true
