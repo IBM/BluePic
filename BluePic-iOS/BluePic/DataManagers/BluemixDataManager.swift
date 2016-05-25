@@ -146,22 +146,22 @@ class BluemixDataManager: NSObject {
         
         var requestURL = getBluemixBaseRequestURL() + "/" + kImagesEndPoint + "?tag="
         for (index, tag) in tags.enumerate() {
+            
+            guard let encodedTag = tag.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet()) else {
+                print("Failed to encode search tag")
+                continue
+            }
+
             if index == 0 {
-                requestURL.appendContentsOf(tag.lowercaseString)
+                requestURL.appendContentsOf(encodedTag.lowercaseString)
             } else {
-                requestURL.appendContentsOf(",\(tag.lowercaseString)")
+                requestURL.appendContentsOf(",\(encodedTag.lowercaseString)")
             }
         }
         let request = Request(url: requestURL, method: HttpMethod.GET)
         
         self.getImages(request) { images in
             callback(images: images)
-            
-//            if let images = images {
-//                self.searchResultImages = images
-//                self.hasReceievedInitialImages = true
-//                NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImagesRefreshed.rawValue, object: nil)
-//            }
         }
         
     }
@@ -365,7 +365,7 @@ class BluemixDataManager: NSObject {
         
         let tempURL = getBluemixBaseRequestURL() + "/" + kUsersEndPoint + "/" + facebookId + "/" + kImagesEndPoint + "/" + image.fileName + "/" + image.caption + "/" + "\(image.width)" + "/" + "\(image.height)" + "/" + image.location.latitude + "/" + image.location.longitude + "/" + image.location.name
         
-        guard let requestURL = tempURL.stringByAddingPercentEncodingWithAllowedCharacters( NSCharacterSet.URLQueryAllowedCharacterSet()) else {
+        guard let requestURL = tempURL.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet()) else {
             print("Failed to encode request URL")
             NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImageUploadFailure.rawValue, object: nil)
             return
