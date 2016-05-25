@@ -36,5 +36,5 @@ BluePic was designed with a lot of useful features, so to view them all, check o
 ## Architecture
 
 <p align="center">
-<img src="Imgs/architecture.png"  alt="Drawing" height=450 border=0 /></p>
+<img src="../Imgs/architecture.png"  alt="Drawing" height=450 border=0 /></p>
 <p align="center">Figure 2. BluePic Architecture Diagram.</p>
