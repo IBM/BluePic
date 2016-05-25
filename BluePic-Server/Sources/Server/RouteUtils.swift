@@ -21,7 +21,7 @@ import KituraNet
 import LoggerAPI
 import SwiftyJSON
 import BluemixObjectStorage
-//import MobileClientAccess
+import MobileClientAccess
 
 /**
 * This method should kick off asynchronously an OpenWhisk sequence
@@ -119,8 +119,8 @@ func getImageJSON(fromRequest request: RouterRequest) throws -> JSON {
   let width = Float(w),
   let height = Float(h),
   let latitude = Float(lat),
-  let longitude = Float(long) else {
-  // let authContext = request.userInfo["mcaAuthContext"] as? AuthorizationContext else {
+  let longitude = Float(long), // else {
+  let authContext = request.userInfo["mcaAuthContext"] as? AuthorizationContext else {
     throw ProcessingError.Image("Invalid image document!")
   }
 
@@ -132,8 +132,8 @@ func getImageJSON(fromRequest request: RouterRequest) throws -> JSON {
   let imageName = StringUtils.decodeWhiteSpace(inString: caption)
   let locationName = StringUtils.decodeWhiteSpace(inString: location)
   let imageURL = generateUrl(forContainer: userId, forImage: fileName)
-  // let deviceId = authContext.deviceIdentity.id
-  let deviceId = "3003"
+  let deviceId = authContext.deviceIdentity.id
+  // let deviceId = "3003"
 
   let whereabouts: JSONDictionary = ["latitude": latitude, "longitude": longitude, "name": locationName]
   let imageDocument: JSONDictionary = ["location": whereabouts, "contentType": contentType, "url": imageURL,
