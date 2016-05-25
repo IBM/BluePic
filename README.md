@@ -122,27 +122,15 @@ TODO: ADD CONTENTS
 
 #### 12. Build the BluePic-Server
 
-You can now build the BluePic-Server by going to the `BluePic-Server` directory of the cloned repository and running this command:
-
-```bash
-make
-```
+You can now build the BluePic-Server by going to the `BluePic-Server` directory of the cloned repository and running `make`.
 
 #### 13. Run the BluePic-Server
 
-To start the Kitura-based server for the BluePic app, go to the `BluePic-Server` directory of the cloned repository and run the following command:
-
-```bash
-.build/debug/Server
-```
+To start the Kitura-based server for the BluePic app, go to the `BluePic-Server` directory of the cloned repository and run `.build/debug/Server`.
 
 #### 15. Run the iOS app
 
-If you don't have the iOS project already open, go to the BluePic-iOS directory and open the BluePic workspace with Xcode:
-
-```bash
-open BluePic.xcworkspace
-```
+If you don't have the iOS project already open, go to the BluePic-iOS directory and open the BluePic workspace using `open BluePic.xcworkspace`.
 
 You can now build and run the iOS app using the Xcode capabilities you are used to!
 
