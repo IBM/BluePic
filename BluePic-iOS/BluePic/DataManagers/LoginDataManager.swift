@@ -63,14 +63,11 @@ class LoginDataManager: NSObject {
                 //facebook authentication success
                 else{
                     
-                    let language = LocationDataManager.SharedInstance.getLanguageLocale()
-                    let unitsOfMeasurement = LocationDataManager.SharedInstance.getUnitsOfMeasurement()
-                    
                     //Check to make sure facebook id and name aren't nil
                     if let facebookUserId = facebookUserId, let facebookUserFullName = facebookUserFullName {
                     
                         //try to register user with backend if the user doesn't already exist
-                        BluemixDataManager.SharedInstance.checkIfUserAlreadyExistsIfNotCreateNewUser(facebookUserId, name: facebookUserFullName, language: language, unitsOfMeasurement: unitsOfMeasurement, callback: { success in
+                        BluemixDataManager.SharedInstance.checkIfUserAlreadyExistsIfNotCreateNewUser(facebookUserId, name: facebookUserFullName, callback: { success in
                         
                             if(success){
                                 CurrentUser.willLoginLater = false
