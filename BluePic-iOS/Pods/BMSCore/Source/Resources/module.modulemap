@@ -1,5 +1,5 @@
 framework module BMSCore {
-    ///umbrella header "BMSCore.h"
+    //umbrella header "BMSCore.h"
     
     //export *
     //module * { export * }

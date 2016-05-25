@@ -31,9 +31,14 @@ public class Request: BaseRequest {
     // MARK: Method overrides
     
     // This is required since the other custom Request initializer overrides this superclass initializer
-    public override init(url: String, headers: [String: String]?, queryParameters: [String: String]?, method: HttpMethod = HttpMethod.GET, timeout: Double = BMSClient.sharedInstance.defaultRequestTimeout) {
+    public override init(url: String,
+                         headers: [String: String]?,
+                         queryParameters: [String: String]?,
+                         method: HttpMethod = HttpMethod.GET,
+                         timeout: Double = BMSClient.sharedInstance.defaultRequestTimeout,
+                         cachePolicy: NSURLRequestCachePolicy = NSURLRequestCachePolicy.UseProtocolCachePolicy) {
      
-        super.init(url: url, headers: headers, queryParameters: queryParameters, method: method, timeout: timeout)
+		super.init(url: url, headers: headers, queryParameters: queryParameters, method: method, timeout: timeout, cachePolicy: cachePolicy)
     }
     
     public override func sendWithCompletionHandler(callback: BmsCompletionHandler?) {
@@ -75,7 +80,7 @@ public class Request: BaseRequest {
             let authCallback: BmsCompletionHandler = {(response: Response?, error:NSError?) in
                 if error == nil {
                     if let myRequestBody = self.requestBody {
-                        self.sendData(myRequestBody, completionHandler: nil)
+                        self.sendData(myRequestBody, completionHandler: callback)
                     }
                     else {
                         self.sendWithCompletionHandler(callback)

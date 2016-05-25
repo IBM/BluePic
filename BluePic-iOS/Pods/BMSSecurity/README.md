@@ -68,6 +68,9 @@ mcaAuthManager.logout(<callBack>)
 ## Sample app
 You can use 'pod try BMSSecurity' to get a sample application. A readme file with details on how to run the sample application is available in the app's folder.
 
+## Known limitation
+Currently Swift SDK does not submit monitoring data. This is a work in progress and will be delivered in following months. If you’d like to continue receiving monitoring data in the service dashboard you can continue using Objective-C SDK.
+
 =======================
 
 Copyright 2016 IBM Corp.
