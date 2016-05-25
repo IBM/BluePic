@@ -81,7 +81,7 @@ class FeedViewModel: NSObject {
         
         if let query = searchQuery {
             numberOfCellsWhenUserHasNoPhotos = 0
-            BluemixDataManager.SharedInstance.getImagesByTags([query])
+            BluemixDataManager.SharedInstance.getImagesByTags([query], callback: handleSearchResultsResponse)
         } else {
             //Grab any data from BluemixDataManager if it has any and then tell view controller to reload its collection view
             numberOfCellsWhenUserHasNoPhotos = 1
@@ -99,21 +99,65 @@ class FeedViewModel: NSObject {
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(FeedViewModel.notifyViewControllerToTriggerLoadingAnimation), name: BluemixDataManagerNotification.ImageUploadBegan.rawValue, object: nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(FeedViewModel.notifyViewControllerToTriggerReloadCollectionView), name: BluemixDataManagerNotification.ImageUploadFailure.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(FeedViewModel.handleImageUploadFailure), name: BluemixDataManagerNotification.ImageUploadFailure.rawValue, object: nil)
+        
+    }
+    
+    func handleImageUploadFailure(){
+        
+        if(isShowingSearchResults() == false){
+            self.notifyViewControllerToTriggerReloadCollectionView()
+        }
         
     }
 
     
     func updateImageDataArrayAndNotifyViewControllerToReloadCollectionView(){
         
-        self.imageDataArray = searchQuery == nil ? BluemixDataManager.SharedInstance.images : BluemixDataManager.SharedInstance.searchResultImages
-        
-        if searchQuery != nil && self.imageDataArray.count < 1 {
-            self.notifiyViewControllerToTriggerAlert()
-        } else {
+        if(isShowingSearchResults() == false){
+            self.imageDataArray = BluemixDataManager.SharedInstance.images
             self.notifyViewControllerToTriggerReloadCollectionView()
         }
+
     }
+
+}
+
+
+//methods related to if we have to display search results
+extension FeedViewModel {
+    
+    
+    private func isShowingSearchResults() -> Bool {
+        
+        if(searchQuery != nil){
+            return true
+        }
+        else{
+            return false
+        }
+        
+    }
+    
+    private func handleSearchResultsResponse(images : [Image]?){
+        
+        if let images = images {
+            imageDataArray = images
+            
+            if(imageDataArray.count < 1){
+                self.notifiyViewControllerToTriggerAlert()
+            }
+            else{
+                self.notifyViewControllerToTriggerReloadCollectionView()
+            }
+        }
+        else{
+            self.notifiyViewControllerToTriggerAlert()
+        }
+
+    }
+    
+    
     
 }
 
@@ -127,7 +171,7 @@ extension FeedViewModel {
     
     func repullForNewData() {
         if let query = self.searchQuery {
-            BluemixDataManager.SharedInstance.getImagesByTags([query])
+            BluemixDataManager.SharedInstance.getImagesByTags([query], callback: handleSearchResultsResponse)
         } else {
             BluemixDataManager.SharedInstance.getImages()
         }
@@ -153,7 +197,12 @@ extension FeedViewModel {
     func numberOfItemsInSection(section : Int) -> Int {
         //if the section is 0, then it depends on how many items are in the picture upload queue
         if(section == 0){
-            return BluemixDataManager.SharedInstance.imagesCurrentlyUploading.count
+            if(isShowingSearchResults()){
+                return 0
+            }
+            else{
+                return BluemixDataManager.SharedInstance.imagesCurrentlyUploading.count
+            }
         }
             // if the section is 1, then it depends how many items are in the pictureDataArray
         else{
@@ -310,8 +359,10 @@ extension FeedViewModel {
     
     func notifyViewControllerToTriggerLoadingAnimation(){
         
-        dispatch_async(dispatch_get_main_queue()) {
-            self.notifyFeedVC(feedViewModelNotification: FeedViewModelNotification.UploadingPhotoStarted)
+        if(isShowingSearchResults() == false){
+            dispatch_async(dispatch_get_main_queue()) {
+                self.notifyFeedVC(feedViewModelNotification: FeedViewModelNotification.UploadingPhotoStarted)
+            }
         }
     }
     
