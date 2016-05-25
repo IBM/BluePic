@@ -202,7 +202,8 @@ If you try to post a photo within the iOS simulator and the app doesn't know you
 Any location should work fine, but remember this may have to be done on each initial launch of a certain simulator, if you want to be able to post images. Running Bluepic on a physical device avoids this issue entirely.
 
 ## About
-[About Bluepic](Docs/About.md)
+
+To learn more about BluePic's folder structure, its architecture, the Swift packages it depends on, and details on how to use the iOS app component, see the [About](Docs/About.md) page.
 
 ## License
 
