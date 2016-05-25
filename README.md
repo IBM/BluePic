@@ -75,7 +75,7 @@ You can obtain the above credentials by accessing your application's page on Blu
 
 #### 6. Update `BluePic-Server/config.json` file
 
-You should now update the credentials for each one of the services listed in the `BluePic-Server/config.json` file. Doing so will allow you to run the Kitura-based server locally for development and testing purposes. You will find placeholders in the `config.json` file (e.g. `<username>`, `<projectId>`) for each of the credential values that should be provided. 
+You should now update the credentials for each one of the services listed in the `BluePic-Server/config.json` file. Doing so will allow you to run the Kitura-based server locally for development and testing purposes. You will find placeholders in the `config.json` file (e.g. `<username>`, `<projectId>`) for each of the credential values that should be provided.
 
 Remember that you can obtain the credentials for each service listed in the `config.json` file by accessing your application's page on Bluemix and clicking on the `Show Credentials` twisty found on each of the service instances bound to the BluePic app.
 
@@ -148,7 +148,7 @@ You can now build and run the iOS app using the Xcode capabilities you are used 
 
 ## About BluePic
 
-To learn more about BluePic's folder structure, its architecture, the Swift packages it depends on, and details on how to use the iOS app component, see the [About](Docs/About.md) page.
+To learn more about BluePic's folder structure, its architecture, the Swift packages it depends on, and details on how to use the iOS app, see the [About](Docs/About.md) page.
 
 ## License
 
