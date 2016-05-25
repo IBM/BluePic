@@ -285,13 +285,13 @@ class BluemixDataManager: NSObject {
 
     
     
-    private func createNewUser(userId : String, name : String, language : String, unitsOfMeasurement : String, result : ((user : User?) -> ())){
+    private func createNewUser(userId : String, name : String, result : ((user : User?) -> ())){
         
         let requestURL = getBluemixBaseRequestURL() + "/" + kUsersEndPoint
         
         let request = Request(url: requestURL, method: HttpMethod.POST)
          
-        let json = ["_id": userId, "name": name, "language" : language, "unitsOfMeasurement" : unitsOfMeasurement]
+        let json = ["_id": userId, "name": name]
 
         do{
             let jsonData = try NSJSONSerialization.dataWithJSONObject(json, options: .PrettyPrinted)
@@ -319,7 +319,7 @@ class BluemixDataManager: NSObject {
     }
     
     
-    func checkIfUserAlreadyExistsIfNotCreateNewUser(userId : String, name : String, language: String, unitsOfMeasurement : String, callback : ((success : Bool) -> ())){
+    func checkIfUserAlreadyExistsIfNotCreateNewUser(userId : String, name : String, callback : ((success : Bool) -> ())){
 
         getUserById(userId, result: { (user, error) in
             
@@ -327,7 +327,7 @@ class BluemixDataManager: NSObject {
                 
                 //user does not exist so create new user
                 if(error == BlueMixDataManagerError.UserDoesNotExist){
-                    self.createNewUser(userId, name: name, language: language, unitsOfMeasurement: unitsOfMeasurement, result: { user in
+                    self.createNewUser(userId, name: name, result: { user in
                         
                         if(user != nil){
                             callback(success: true)
