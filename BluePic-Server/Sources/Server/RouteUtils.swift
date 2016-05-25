@@ -171,9 +171,9 @@ func createContainer(withName name: String, completionHandler: (success: Bool) -
   }
 
   // Create container
-  let createContainer = { (objStore: ObjectStorage?) -> Void in
-    if let objStore = objStore {
-      objStore.createContainer(name: name) { (error, container) in
+  let createContainer = { (objStorage: ObjectStorage?) -> Void in
+    if let objStorage = objStorage {
+      objStorage.createContainer(name: name) { (error, container) in
         if let container = container where error == nil {
           configureContainer(container)
         } else {
@@ -206,9 +206,9 @@ func store(image: NSData, withName name: String, inContainer containerName: Stri
   }
 
   // Get reference to container
-  let retrieveContainer = { (objStore: ObjectStorage?) -> Void in
-    if let objStore = objStore {
-      objStore.retrieveContainer(name: containerName) { (error, container) in
+  let retrieveContainer = { (objStorage: ObjectStorage?) -> Void in
+    if let objStorage = objStorage {
+      objStorage.retrieveContainer(name: containerName) { (error, container) in
         if let container = container where error == nil {
           storeImage(container)
         } else {
@@ -255,16 +255,16 @@ private func constructDocument(records: [JSON]) -> JSON {
 /**
 * Connects to object storage service and upon completion, invokes the completionHandler closure.
 */
-private func connectToObjectStorage(completionHandler: (objStore: ObjectStorage?) -> Void) {
-  // Create object store instance and connect
-  let objStore = ObjectStorage(projectId: objStorageConnProps.projectId)
-  objStore.connect(userId: objStorageConnProps.userId, password: objStorageConnProps.password, region: ObjectStorage.REGION_DALLAS) { (error) in
+private func connectToObjectStorage(completionHandler: (objStorage: ObjectStorage?) -> Void) {
+  // Create object storage instance and connect
+  let objStorage = ObjectStorage(projectId: objStorageConnProps.projectId)
+  objStorage.connect(userId: objStorageConnProps.userId, password: objStorageConnProps.password, region: ObjectStorage.REGION_DALLAS) { (error) in
     if let error = error {
       let errorMsg = "Could not connect to Object Storage."
       Log.error("\(errorMsg) Error was: '\(error)'.")
-      completionHandler(objStore: nil)
+      completionHandler(objStorage: nil)
     } else {
-      completionHandler(objStore: objStore)
+      completionHandler(objStorage: objStorage)
     }
   }
 }
