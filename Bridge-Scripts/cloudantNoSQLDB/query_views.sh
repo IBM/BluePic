@@ -55,8 +55,13 @@ curl -g -X GET "https://$username.cloudant.com/$database/_design/main_design/_vi
 echo
 echo
 
-echo "Querying images_by_tags view"
+echo "Querying images_by_tags view (mountain)"
 curl -g -X GET "https://$username.cloudant.com/$database/_design/main_design/_view/images_by_tags?include_docs=true&descending=true&reduce=false&endkey=[\"mountain\",\"0\",\"0\",0]&startkey=[\"mountain\",{}]" -u $username:$password
+echo
+echo
+
+echo "Querying images_by_tags view (progressive rock)"
+curl -g -X GET "https://$username.cloudant.com/$database/_design/main_design/_view/images_by_tags?include_docs=true&descending=true&reduce=false&endkey=[\"progressive%20rock\",\"0\",\"0\",0]&startkey=[\"progressive%20rock\",{}]" -u $username:$password
 echo
 echo
 
