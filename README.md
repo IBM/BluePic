@@ -76,7 +76,7 @@ To populate your Cloudant database instance with sample data, you can execute th
 - ```password``` - The Cloudant password.
 - ```projectid``` - The project ID for your Object Storage instance.
 
-You can obtain the above credentials by accessing your application's page on Bluemix and cliking on the ```Show Credentials``` twisty found on each service instance.
+You can obtain the above credentials by accessing your application's page on Bluemix and clicking on the ```Show Credentials``` twisty found on your Cloudant service and Object Storage instances.
 
 ```bash
 ./Bridge-Scripts/cloudantNoSQLDB/populator.sh --username=<cloudant username> --password=<cloudant password> --projectid=<object storage projectid>
@@ -91,7 +91,7 @@ To populate your Object Storage instance with sample data, you can execute the `
 - ```password``` - The Object Storage password.
 - ```projectid``` - The project ID for your Object Storage instance.
 
-You can obtain the above credentials by accessing your application's page on Bluemix and cliking on the ```Show Credentials``` twisty found on each service instance.
+You can obtain the above credentials by accessing your application's page on Bluemix and clicking on the ```Show Credentials``` twisty found on your Object Storage instance.
 
 ```bash
 ./Bridge-Scripts/Object-Storage/populator.sh --userid=<object storage username> --password=<object storage password> --projectid=<object storage projectid>
@@ -99,7 +99,9 @@ You can obtain the above credentials by accessing your application's page on Blu
 
 #### 10. Update `BluePic-Server/config.json` file
 
-After deploying BluePic to Bluemix and configuring its services, you also have the option to run the Kitura-based server locally for development and testing purposes. To run the Kitura-based server locally, you'd need to update the credentials for each one of the services listed in the ```BluePic-Server/config.json``` file:
+After deploying BluePic to Bluemix and configuring its services, you also have the option to run the Kitura-based server locally for development and testing purposes. To run the Kitura-based server locally, you'd need to update the credentials for each one of the services listed in the ```BluePic-Server/config.json``` file.
+
+Remember that you can obtain the credentials for each service listed in the ```config.json``` file by accessing your application's page on Bluemix and clicking on the ```Show Credentials``` twisty found on each of the services instances.
 
 ```json
 ...
