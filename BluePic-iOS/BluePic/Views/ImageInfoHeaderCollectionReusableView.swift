@@ -163,8 +163,15 @@ class ImageInfoHeaderCollectionReusableView: UICollectionReusableView{
             }
         }
         
-        if let temperature = temperature {
-            temperatureLabel.text = "\(temperature)" + kDegreeSymbolString
+        if var temperature = temperature {
+            
+            let unitOfMeasure = LocationDataManager.SharedInstance.getUnitsOfMeasurement()
+            if unitOfMeasure == kImperialUnitOfMeasurement {
+                temperatureLabel.text = "\(temperature)" + kDegreeSymbolString + "F"
+            } else if unitOfMeasure == kMetricUnitOfMeasurement {
+                temperature = Int(round((Float(temperature) - 32.0) / 1.8))
+                temperatureLabel.text = "\(temperature)" + kDegreeSymbolString + "C"
+            }
         }
         
     }
