@@ -70,11 +70,13 @@ TODO: ADD CONTENTS
 
 #### 8. Populate Cloudant database
 
-To populate the Cloudant database, you can execute the ```populator.sh``` shell script. Please note that this script requires three parameters:
+To populate your Cloudant database instance with sample data, you can execute the ```populator.sh``` shell script. Please note that this script requires three parameters:
 
-- username - The Cloudant username.
-- password - The Cloudant password.
-- projectid - The project ID for the Object Storage.
+- ```username``` - The Cloudant username.
+- ```password``` - The Cloudant password.
+- ```projectid``` - The project ID for your Object Storage instance.
+
+You can obtain the above credentials by accessing your application's page on Bluemix and cliking on the ```Show Credentials``` twisty found on each service instance.
 
 ```bash
 ./Bridge-Scripts/cloudantNoSQLDB/populator.sh --username=<cloudant username> --password=<cloudant password> --projectid=<object storage projectid>
@@ -83,11 +85,13 @@ To populate the Cloudant database, you can execute the ```populator.sh``` shell 
 
 #### 9. Populate Object Storage
 
-To populate Object Storage, you can execute the ```populator.sh``` shell script. Please note that this script requires three parameters:
+To populate your Object Storage instance with sample data, you can execute the ```populator.sh``` shell script. Please note that this script requires three parameters:
 
-- userid - The Object Storage username.
-- password - The Object Storage password.
-- projectid - The project ID for the Object Storage.
+- ```userid``` - The Object Storage username.
+- ```password``` - The Object Storage password.
+- ```projectid``` - The project ID for your Object Storage instance.
+
+You can obtain the above credentials by accessing your application's page on Bluemix and cliking on the ```Show Credentials``` twisty found on each service instance.
 
 ```bash
 ./Bridge-Scripts/Object-Storage/populator.sh --userid=<object storage username> --password=<object storage password> --projectid=<object storage projectid>
