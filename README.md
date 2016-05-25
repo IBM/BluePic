@@ -75,7 +75,7 @@ You can obtain the above credentials by accessing your application's page on Blu
 
 #### 6. Update `BluePic-Server/config.json` file
 
-You should now update the credentials for each one of the services listed in the `BluePic-Server/config.json` file. Doing so will allow you to run the Kitura-based server locally for development and testing purposes.
+You should now update the credentials for each one of the services listed in the `BluePic-Server/config.json` file. Doing so will allow you to run the Kitura-based server locally for development and testing purposes. You will find placeholders in the `config.json` file (e.g. `<username>`, `<projectId>`) for each of the credential values that should be provided. 
 
 Remember that you can obtain the credentials for each service listed in the `config.json` file by accessing your application's page on Bluemix and clicking on the `Show Credentials` twisty found on each of the service instances bound to the BluePic app.
 
