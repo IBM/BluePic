@@ -285,10 +285,13 @@ extension FeedViewModel {
             
             cell = collectionView.dequeueReusableCellWithReuseIdentifier("ImagesCurrentlyUploadingImageFeedCollectionViewCell", forIndexPath: indexPath) as! ImagesCurrentlyUploadingImageFeedCollectionViewCell
             
+            //let image : Image?
             
-            let image = BluemixDataManager.SharedInstance.imagesCurrentlyUploading[indexPath.row]
-            
-            cell.setupData(image.image, caption: image.caption)
+            if((BluemixDataManager.SharedInstance.imagesCurrentlyUploading.count - 1) >= indexPath.row){
+                let image = BluemixDataManager.SharedInstance.imagesCurrentlyUploading[indexPath.row]
+                cell.setupData(image.image, caption: image.caption)
+            }
+        
             
             return cell
             
