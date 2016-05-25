@@ -61,7 +61,7 @@ class ImageDetailViewModel: UIView {
             return ImageInfoHeaderCollectionReusableView()
         }
         
-        header.setupWithData(image.caption, userFullName: image.user?.name, locationName: image.location?.name, latitude: image.location?.latitude, longitude: image.location?.longitude, timeStamp: image.timeStamp, weatherIconId: image.location?.weather?.iconId, temperature: image.location?.weather?.temperature, tags: image.tags)
+        header.setupWithData(image.caption, userFullName: image.user.name, locationName: image.location.name, latitude: image.location.latitude, longitude: image.location.longitude, timeStamp: image.timeStamp, weatherIconId: image.location.weather?.iconId, temperature: image.location.weather?.temperature, tags: image.tags)
         
         return header
     }
@@ -73,7 +73,7 @@ class ImageDetailViewModel: UIView {
             return UICollectionViewCell()
         }
         
-        cell.tagLabel.text = tags[indexPath.item].label?.uppercaseString
+        cell.tagLabel.text = tags[indexPath.item].label.uppercaseString
         return cell
 
     }
@@ -81,8 +81,8 @@ class ImageDetailViewModel: UIView {
     
     func sizeForItemAtIndexPath(indexPath : NSIndexPath, collectionView : UICollectionView) -> CGSize {
         
-        if let tags = image.tags, name = tags[indexPath.item].label {
-            let size = NSString(string: name).sizeWithAttributes(nil)
+        if let tags = image.tags {
+            let size = NSString(string: tags[indexPath.item].label).sizeWithAttributes(nil)
             return CGSizeMake(size.width + kCellPadding, 30.0)
         }
         return CGSizeZero
