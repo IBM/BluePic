@@ -247,22 +247,16 @@ extension FeedViewModel {
                 
                 let image = imageDataArray[indexPath.row]
                 
-                if let width = image.width, let height = image.height {
-                    
-                    let ratio = height / width
-                    
-                    var height = collectionView.frame.width * ratio
-                    
-                    if(height > kCollectionViewCellHeightLimit){
-                        height = kCollectionViewCellHeightLimit
-                    }
-                    
-                    return CGSize(width: collectionView.frame.width, height: height + kCollectionViewCellInfoViewHeight)
-                    
+                let ratio = image.height / image.width
+                
+                var height = collectionView.frame.width * ratio
+                
+                if(height > kCollectionViewCellHeightLimit){
+                    height = kCollectionViewCellHeightLimit
                 }
-                else{
-                    return CGSize(width: collectionView.frame.width, height: collectionView.frame.width + kCollectionViewCellInfoViewHeight)
-                }
+                
+                return CGSize(width: collectionView.frame.width, height: height + kCollectionViewCellInfoViewHeight)
+
             }
         }
     }
@@ -316,7 +310,7 @@ extension FeedViewModel {
                     image.url,
                     image: nil, //MIGHT NEED TO FIX
                     caption: image.caption,
-                    usersName: image.user?.name,
+                    usersName: image.user.name,
                     numberOfTags: image.tags?.count,
                     timeStamp: image.timeStamp,
                     fileName: image.fileName
