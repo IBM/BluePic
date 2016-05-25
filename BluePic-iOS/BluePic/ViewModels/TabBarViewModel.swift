@@ -85,12 +85,15 @@ class TabBarViewModel: NSObject {
     }
     
     func tellBluemixDataManagerToRetryUploadingImagesThatFailedToUpload(){
-        BluemixDataManager.SharedInstance.retryUploadingImagesThatFailedToUpload()
+        dispatch_async(dispatch_get_main_queue()) {
+            BluemixDataManager.SharedInstance.retryUploadingImagesThatFailedToUpload()
+        }
     }
     
     func tellBluemixDataManagerToCancelUploadingImagesThatFailedToUpload(){
-        
-        BluemixDataManager.SharedInstance.cancelUploadingImagesThatFailedToUpload()
+        dispatch_async(dispatch_get_main_queue()) {
+            BluemixDataManager.SharedInstance.cancelUploadingImagesThatFailedToUpload()
+        }
         
     }
     
