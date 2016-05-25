@@ -46,13 +46,13 @@ Note that the [Bluemix buildpack for Swift](https://github.com/IBM-Swift/swift-b
 
 #### 4. Populate Cloudant database
 
-To populate your Cloudant database instance with sample data, execute the ```populator.sh``` script. Please note that this script requires three parameters:
+To populate your Cloudant database instance with sample data, execute the `populator.sh` script. Please note that this script requires three parameters:
 
-- ```username``` - The username for your Cloudant instance.
-- ```password``` - The password for your Cloudant instance.
-- ```projectid``` - The project ID for your Object Storage instance.
+- `username` - The username for your Cloudant instance.
+- `password` - The password for your Cloudant instance.
+- `projectid` - The project ID for your Object Storage instance.
 
-You can obtain the above credentials by accessing your application's page on Bluemix and clicking on the ```Show Credentials``` twisty found on your Cloudant service and Object Storage service instances. Once you have these credentials, execute the ```populator.sh``` script:
+You can obtain the above credentials by accessing your application's page on Bluemix and clicking on the `Show Credentials` twisty found on your Cloudant service and Object Storage service instances. Once you have these credentials, execute the `populator.sh` script:
 
 ```bash
 ./Bridge-Scripts/cloudantNoSQLDB/populator.sh --username=<cloudant username> --password=<cloudant password> --projectid=<object storage projectid>
@@ -61,13 +61,13 @@ You can obtain the above credentials by accessing your application's page on Blu
 
 #### 5. Populate Object Storage
 
-To populate your Object Storage instance with sample data, execute the ```populator.sh``` script. Please note that this script requires three parameters:
+To populate your Object Storage instance with sample data, execute the `populator.sh` script. Please note that this script requires three parameters:
 
-- ```userid``` - The username for your Object Storage instance.
-- ```password``` - The password for your Object Storage instance.
-- ```projectid``` - The project ID for your Object Storage instance.
+- `userid` - The username for your Object Storage instance.
+- `password` - The password for your Object Storage instance.
+- `projectid` - The project ID for your Object Storage instance.
 
-You can obtain the above credentials by accessing your application's page on Bluemix and clicking on the ```Show Credentials``` twisty found on your Object Storage instance. Once you have these credentials, execute the ```populator.sh``` script:
+You can obtain the above credentials by accessing your application's page on Bluemix and clicking on the `Show Credentials` twisty found on your Object Storage instance. Once you have these credentials, execute the `populator.sh` script:
 
 ```bash
 ./Bridge-Scripts/Object-Storage/populator.sh --userid=<object storage username> --password=<object storage password> --projectid=<object storage projectid>
@@ -75,17 +75,17 @@ You can obtain the above credentials by accessing your application's page on Blu
 
 #### 6. Update `BluePic-Server/config.json` file
 
-You should now update the credentials for each one of the services listed in the ```BluePic-Server/config.json``` file. Doing so will allow you to run the Kitura-based server locally for development and testing purposes.
+You should now update the credentials for each one of the services listed in the `BluePic-Server/config.json` file. Doing so will allow you to run the Kitura-based server locally for development and testing purposes.
 
-Remember that you can obtain the credentials for each service listed in the ```config.json``` file by accessing your application's page on Bluemix and clicking on the ```Show Credentials``` twisty found on each of the service instances bound to the BluePic app.
+Remember that you can obtain the credentials for each service listed in the `config.json` file by accessing your application's page on Bluemix and clicking on the `Show Credentials` twisty found on each of the service instances bound to the BluePic app.
 
-You can take a look at the contents of the ```config.json``` file by clicking [here](BluePic-Server/config.json).
+You can take a look at the contents of the `config.json` file by clicking [here](BluePic-Server/config.json).
 
 #### 7. Configure Bluemix Push service
 
 To utilize push notification capabilities on Bluemix, you need to configure a notification provider. For BluePic, you should configure credentials for the Apple Push Notification Service (APNS). As part of this configuration step, you will choose a **bundle identifier** (aka App ID) for your app. Please take note of the **bundle identifier** you choose for your BluePic app instance.
 
-Luckily, Bluemix has [instructions](https://console.ng.bluemix.net/docs/services/mobilepush/t_push_provider_ios.html) to walk you through that process. Please note that you'd need to upload a ```.p12``` certificate to Bluemix and enter the password for it, as described in the Bluemix instructions.
+Luckily, Bluemix has [instructions](https://console.ng.bluemix.net/docs/services/mobilepush/t_push_provider_ios.html) to walk you through that process. Please note that you'd need to upload a `.p12` certificate to Bluemix and enter the password for it, as described in the Bluemix instructions.
 
 Lastly, remember that push notifications will only show up on a physical iOS device.
 
@@ -111,18 +111,14 @@ TODO: ADD CONTENTS
 
 #### 11. Update configuration for iOS app
 
-1. Go to the BluePic-iOS directory and open the BluePic workspace with Xcode:
-
-```bash
-open BluePic.xcworkspace
-```
+1. Go to the BluePic-iOS directory and open the BluePic workspace with Xcode using `open BluePic.xcworkspace`.
 
 1. Let's now copy the Facebook app information from step 8 into the `info.plist` file of the iOS app. You can find the `info.plist` file in `Configuration` folder of the Xcode project. After updating this file, it should contain the following [among other values]:
 <p align="center"><img src="Imgs/infoplist.png"  alt="Drawing" height=150 border=0 /></p>
 
 1. You can now update the bundle identifier in the Xcode project (remember, this is the bundle identifier you choose in step 7 above). Make sure the project navigator folder icon is selected in the top left of Xcode; then select the BluePic project at the top of the file structure and then select the BluePic target. Under the identity section, you should see a text field for the bundle identifier. Update this field with the corresponding value.
 
-1. Let's finally update the ```bluemix.plist``` in the Xcode project. TODO: Add contents
+1. Let's finally update the `bluemix.plist` in the Xcode project. TODO: Add contents
 
 #### 12. Build the BluePic-Server
 
