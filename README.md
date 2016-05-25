@@ -70,19 +70,27 @@ TODO: ADD CONTENTS
 
 #### 8. Populate Cloudant database
 
-Execute the following shell script:
+To populate the Cloudant database, you can execute the ```populator.sh``` shell script. Please note that this script requires three parameters:
+
+- username - The Cloudant username.
+- password - The Cloudant password.
+- projectid - The project ID for the Object Storage.
 
 ```bash
-./BluePic-Server/resources/cloudant/populate_db.sh --username=<cloudant username> --password=<cloudant password> --projectid=<object storage projectid>
+./Bridge-Scripts/cloudantNoSQLDB/populator.sh --username=<cloudant username> --password=<cloudant password> --projectid=<object storage projectid>
 
 ```
 
 #### 9. Populate Object Storage
 
-Execute the following shell script:
+To populate Object Storage, you can execute the ```populator.sh``` shell script. Please note that this script requires three parameters:
+
+- userid - The Object Storage username.
+- password - The Object Storage password.
+- projectid - The project ID for the Object Storage.
 
 ```bash
-./BluePic-Server/resources/cloudant/populate_containers.sh --userid=<object storage username> --password=<object storage password> --projectid=<object storage projectid>
+./Bridge-Scripts/Object-Storage/populator.sh --userid=<object storage username> --password=<object storage password> --projectid=<object storage projectid>
 ```
 
 #### 10. Update `BluePic-Server/config.json` file
