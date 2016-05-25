@@ -1,11 +1,4 @@
 
-## Table of Contents
-
-* [Project folder structure](#project-folder-structure)
-* [Swift packages](#swift-packages)
-* [Architecture](#architecture)
-* [Using BluePic](#using-bluepic)
-
 ## Project folder structure
 
 These are the main folders in this repo:
