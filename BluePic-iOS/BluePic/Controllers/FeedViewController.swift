@@ -69,6 +69,8 @@ class FeedViewController: UIViewController {
         
         startLoadingAnimationAtAppLaunch()
         determineFeedMode()
+        
+        observeWhenApplicationBecomesActive()
     }
     
     /**
@@ -85,6 +87,21 @@ class FeedViewController: UIViewController {
             self.view.addSubview(searchTopBarView)
         }
         
+    }
+    
+    func observeWhenApplicationBecomesActive(){
+        
+        let notificationCenter = NSNotificationCenter.defaultCenter()
+
+        notificationCenter.addObserver(self,
+                                       selector:#selector(FeedViewController.didBecomeActive),
+                                       name:UIApplicationDidBecomeActiveNotification,
+                                       object:nil)
+
+    }
+    
+    func didBecomeActive(){
+        tryToStartLoadingAnimation()
     }
     
     /**

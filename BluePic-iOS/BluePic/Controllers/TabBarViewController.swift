@@ -245,7 +245,7 @@ extension TabBarViewController: UITabBarControllerDelegate {
     
     func showImageUploadFailureAlert(){
         
-        let alert = UIAlertController(title: NSLocalizedString("Image Upload Failure", comment: ""), message: "", preferredStyle: UIAlertControllerStyle.Alert)
+        let alert = UIAlertController(title: NSLocalizedString("Failed To Upload Image", comment: ""), message: "", preferredStyle: UIAlertControllerStyle.Alert)
         
         alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .Default, handler: { (action: UIAlertAction!) in
             
