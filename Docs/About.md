@@ -1,4 +1,6 @@
 
+# About
+
 ## Project folder structure
 
 These are the main folders in this repo:
