@@ -24,7 +24,7 @@ brew install curl
 
 If you are using Linux as your development platform, you can find full details on how to set up your environment for building Kitura-based applications at [Getting started with Kitura](https://github.com/IBM-Swift/Kitura).
 
-#### 2. Clone the BluePic Git repository
+#### 1. Clone the BluePic Git repository
 
 Execute the following command to clone the Git repository:
 
@@ -34,7 +34,7 @@ git clone https://github.com/IBM-Swift/BluePic.git
 
 If you'd like to, you can spend a few minutes to get familiar with the folder structure of the repo as described in the [About](Docs/About.md) page.
 
-#### 3. Create an application instance on Facebook
+#### 1. Create an application instance on Facebook
 
 In order to have the iOS application authenticate with Facebook, you must create an application instance on Facebook's website.
 
@@ -71,10 +71,6 @@ Lastly, remember that push notifications will only show up on a physical iOS dev
 
 TODO: ADD CONTENTS
 
-#### 8. Update bluemix.plist in Xcode project
-
-TODO: Add contents
-
 #### 9. Populate Cloudant database
 
 To populate your Cloudant database instance with sample data, you can execute the ```populator.sh``` shell script. Please note that this script requires three parameters:
@@ -108,7 +104,7 @@ You can obtain the above credentials by accessing your application's page on Blu
 
 After deploying BluePic to Bluemix and configuring its services, you also have the option to run the Kitura-based server locally for development and testing purposes. To run the Kitura-based server locally, you'd need to update the credentials for each one of the services listed in the ```BluePic-Server/config.json``` file.
 
-Remember that you can obtain the credentials for each service listed in the ```config.json``` file by accessing your application's page on Bluemix and clicking on the ```Show Credentials``` twisty found on each of the services instances.
+Remember that you can obtain the credentials for each service listed in the ```config.json``` file by accessing your application's page on Bluemix and clicking on the ```Show Credentials``` twisty found on each of the service instances.
 
 ```json
 ...
@@ -177,7 +173,7 @@ Remember that you can obtain the credentials for each service listed in the ```c
 
 #### 12. Build the BluePic-Server
 
-To build the BluePic-Server, go to the `BluePic-Server` directory of the cloned repository and run:
+You can now build the BluePic-Server by going to the `BluePic-Server` directory of the cloned repository and running this command:
 
 ```bash
 make
@@ -185,7 +181,7 @@ make
 
 #### 13. Run the BluePic-Server
 
-From the `BluePic-Server` directory of the cloned repository, run:
+To start the Kitura-based server for the BluePic app, go to the `BluePic-Server` directory of the cloned repository and run the following command:
 
 ```bash
 .build/debug/Server
@@ -193,11 +189,17 @@ From the `BluePic-Server` directory of the cloned repository, run:
 
 #### 14. Run the iOS app
 
-Go to the BluePic-iOS directory and open the BluePic workspace using Xcode:
+Go to the BluePic-iOS directory and open the BluePic workspace with Xcode:
 
 ```bash
 open BluePic.xcworkspace
 ```
+
+Before running the iOS app, you should update the ```bluemix.plist``` in the Xcode project.
+
+TODO: Add contents
+
+You can now build and run the iOS app using the Xcode capabilities you are used to!
 
 #### 14.1 Simulate Location on Simulator
 If you try to post a photo within the iOS simulator and the app doesn't know your location, it won't work. To fix this simulator specific issue, simply set a location in the simulator's debug menu:
