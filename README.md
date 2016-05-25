@@ -12,7 +12,7 @@ There are two ways you can compile and provision BluePic on Bluemix. The first a
 TODO: ADD Contents
 
 ### Step by step instructions for configuration and deployment
-Instead of using the IBM Cloud Bridge for seamless compilation and provisioning, you can follow the steps outlined in this section if you'd like to take a peek under the hood!
+Instead of using the IBM Cloud Bridge, which gives you a seamless compilation and provisioning experience, you can follow the steps outlined in this section if you'd like to take a peek under the hood!
 
 #### 1. Install system dependencies
 
