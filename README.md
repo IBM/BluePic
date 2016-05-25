@@ -26,9 +26,13 @@ If you are using Linux as your development platform, you can find full details o
 
 #### 2. Clone the BluePic Git repository
 
+Execute the following command to clone the Git repository:
+
 ```bash
 git clone https://github.com/IBM-Swift/BluePic.git
 ```
+
+If you'd like to, you can spend a few minutes to get familiar with the folder structure of the repo as described in the [About](Docs/About.md) page.
 
 #### 3. Create an application instance on Facebook
 
@@ -39,9 +43,9 @@ In order to have the iOS application authenticate with Facebook, you must create
 1. Note that you **do not** need to download the Facebook SDK. The Mobile Client Access framework (already included in the iOS project) has all the code needed to support Facebook authentication. In the `Configure your info.plist` section under `step 2`, copy the information into the `info.plist` file. You can find the `info.plist` file in `Configuration` folder of the Xcode project. Among other values, your `info.plist` file should contain the following:
 <p align="center"><img src="Imgs/infoplist.png"  alt="Drawing" height=150 border=0 /></p>
 
-1. Scroll to the bottom of the quick start page where it says `Supply us with your Bundle Identifier` and enter the app's bundle identifier. To find the bundle identifier in the Xcode project, make sure the project navigator folder icon is selected in the top left of Xcode. Select the BluePic project at the top of the file structure and then select the BluePic target. Under the identity section, you should see a text field for the bundle identifier that is empty. You can make the bundle identifier anything you want, `com.BluePic` for example.
+1. Scroll to the bottom of the quick start page where it says `Supply us with your Bundle Identifier` and enter the app's bundle ID. To find the bundle ID in the Xcode project, make sure the project navigator folder icon is selected in the top left of Xcode. Select the BluePic project at the top of the file structure and then select the BluePic target. Under the identity section, you should see a text field for the bundle ID that is empty. You can make the bundle ID anything you want, `com.BluePic` for example.
 
-1. Once you entered the bundle ID on the Facebook quick start page, click `next`.
+1. Once you've entered the bundle ID on the Facebook quick start page, click `next` to create the Facebook app.
 
 #### 4. Create BluePic application on Bluemix
 
@@ -57,10 +61,9 @@ TODO: ADD CONTENTS
 
 #### 6. Configure Bluemix Push service
 
-It is important to note that we will need to configure a notification provider before we can really use the Bluemix Push service. In our case, we need to configure credentials for the Apple Push Notification Service (APNS). Luckily, Bluemix has instructions to walk you though that process, you can find that [here](https://console.ng.bluemix.net/docs/services/mobilepush/t_push_provider_ios.html).
+To utilize push notification capabilities on Bluemix, you need to configure a notification provider. For BluePic, you should configure credentials for the Apple Push Notification Service (APNS). Luckily, Bluemix has [instructions](https://console.ng.bluemix.net/docs/services/mobilepush/t_push_provider_ios.html) to walk you through that process.
 
-Do not forget to upload the .p12 certificate to Bluemix as well as enter the password for that certificate, as mentioned in instructions, linked to above.
-Once you have completed the appropriate steps with Apple and Bluemix, just make sure the `bluemix.plist` was correctly updated in step 4.
+Please note that you'd need to upload a ```.p12``` certificate to Bluemix and enter the password for it, as mentioned in the [instructions](https://console.ng.bluemix.net/docs/services/mobilepush/t_push_provider_ios.html). Once you've completed the appropriate steps with Apple and Bluemix, just make sure the `bluemix.plist` was correctly updated in step 5.
 
 Lastly, remember that push notifications will only show up on a physical iOS device.
 
