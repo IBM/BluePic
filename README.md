@@ -201,50 +201,9 @@ If you try to post a photo within the iOS simulator and the app doesn't know you
 
 Any location should work fine, but remember this may have to be done on each initial launch of a certain simulator, if you want to be able to post images. Running Bluepic on a physical device avoids this issue entirely.
 
+## About
+[About Bluepic](Docs/About.md)
+
 ## License
 
 This application is licensed under Apache 2.0. Full license text is available in [LICENSE](LICENSE).
-
-## Content below to be moved to another page:
-
-## Table of Contents
-
-* [Project Structure](#project-folder-structure)
-* [Swift Packages](#swift-packages)
-* [Getting Started](#getting-started)
-* [Using BluePic](#using-bluepic)
-* [Architecture](#architecture)
-* [License](#license)
-
-## Project folder structure
-
-These are the main folders in this repo:
-
-* `./BluePic-iOS` - Contains the iOS client application.
-* `./BluePic-Server` - Contains the Kitura-based server application and its dependencies. This folder contains the artifacts that are deployed to Bluemix.
-* `./BluePic-OpenWhisk` - Contains the OpenWhisk actions and sequence code written in Swift.
-* `./Bridge-Scripts` - Contains the scripts to be leveraged by the IBM Cloud Bridge tool.
-* `./Docs` - Contains additional project documentation.
-* `./Imgs` - Contains images referenced in this `README` file.
-
-## Swift packages
-
-The following Swift packages are used in BluePic:
-
-- [Kitura-CouchDB](https://github.com/IBM-Swift/Kitura-CouchDB)
-- [Kitura](https://github.com/IBM-Swift/Kitura.git)
-- [Swift-cfenv](https://github.com/IBM-Swift/Swift-cfenv.git)
-- [Swift SDK for Bluemix Object Storage Service](https://github.com/ibm-bluemix-mobile-services/bluemix-objectstorage-swift-sdk.git)
-- [Kitura Credentials plugin for the Mobile Client Access service](https://github.com/ibm-bluemix-mobile-services/bms-mca-kitura-credentials-plugin.git)
-- [Swift SDK for Bluemix Push Notifications Service](https://github.com/ibm-bluemix-mobile-services/bms-pushnotifications-serversdk-swift.git)
-
-
-## Using BluePic
-
-BluePic was designed with a lot of useful features, so to view them all, check out our walkthrough on [Using Bluepic](Docs/Using-Bluepic.md)
-
-## Architecture
-
-<p align="center">
-<img src="Imgs/architecture.png"  alt="Drawing" height=450 border=0 /></p>
-<p align="center">Figure 2. BluePic Architecture Diagram.</p>
