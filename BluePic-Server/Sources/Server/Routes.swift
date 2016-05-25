@@ -35,8 +35,6 @@ func defineRoutes() {
   credentials.register(plugin: MobileClientAccessKituraCredentialsPlugin())
   let pushNotificationsClient =
   PushNotifications(bluemixRegion: PushNotifications.Region.US_SOUTH, bluemixAppGuid: mobileClientAccessProps.clientId, bluemixAppSecret: ibmPushProps.secret)
-  let dbClient = CouchDBClient(connectionProperties: couchDBConnProps)
-  let database = dbClient.database("bluepic_db")
 
   // Assign middleware instance (for securing endpoints)
   router.get("/users", middleware: credentials)
@@ -250,7 +248,7 @@ func defineRoutes() {
       return
     }
 
-    readImage(database: database, imageId: imageId, callback: { (jsonImage) in
+    readImage(database: database, imageId: imageId) { (jsonImage) in
       if let jsonImage = jsonImage {
         let apnsSettings = Notification.Settings.Apns(badge: nil, category: "imageProcessed", iosActionKey: nil, sound: nil, type: ApnsType.DEFAULT, payload: jsonImage.dictionaryObject)
         let settings = Notification.Settings(apns: apnsSettings, gcm: nil)
@@ -258,14 +256,20 @@ func defineRoutes() {
         let message = Notification.Message(alert: "Your image was processed; check it out!", url: nil)
         let notification = Notification(message: message, target: target, settings: settings)
         pushNotificationsClient.send(notification: notification) { (error) in
-          if error != nil {
-            print("Failed to send push notification. Error: \(error!)")
+          if let error = error {
+            print("Failed to send push notification: \(error)")
+            response.error = generateInternalError()
+            next()
+          } else {
+            response.status(HTTPStatusCode.OK)
+            next()
           }
         }
       } else {
         response.error = generateInternalError()
+        next()
       }
-    })
+    }
   }
 
   /**
@@ -340,7 +344,7 @@ func defineRoutes() {
       // Determine facebook ID from MCA; verify that provided userId in URL matches facebook ID.
       let userId = imageJSON["userId"].stringValue
       guard let authContext = request.userInfo["mcaAuthContext"] as? AuthorizationContext,
-        userIdentity = authContext.userIdentity?.id where userId == userIdentity else {
+      userIdentity = authContext.userIdentity?.id where userId == userIdentity else {
         Log.error("User is not authorized to post image.")
         response.error = generateInternalError()
         next()
