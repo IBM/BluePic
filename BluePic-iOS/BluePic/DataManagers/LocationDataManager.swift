@@ -24,6 +24,9 @@ enum LocationDataManagerError {
     
 }
 
+let kImperialUnitOfMeasurement = "e"
+let kMetricUnitOfMeasurement = "m"
+
 class LocationDataManager: NSObject {
 
     /// Shared instance of data manager
@@ -41,9 +44,6 @@ class LocationDataManager: NSObject {
     }
     
     private var locationManager : CLLocationManager!
-    
-    private let kImperialUnitOfMeasurement = "e"
-    private let kMetricUnitOfMeasurement = "m"
     
     private var isLocationServicesEnabledAndIfNotHandleItCallback : ((isEnabled : Bool)->())!
     private var getUsersCurrentLocationCallback : ((location : CLLocation?)->())!
