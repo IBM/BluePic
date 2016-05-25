@@ -91,7 +91,7 @@ Lastly, remember that push notifications will only show up on a physical iOS dev
 
 #### 8. Create an application instance on Facebook
 
-In order to have the iOS application authenticate with Facebook, you must create an application instance on Facebook's website.
+In order to have the iOS application authenticate with Facebook, you must create an application instance on Facebook's website as described below:
 
 1. Go to [Facebook's Quick Start for iOS](https://developers.facebook.com/quickstarts/?platform=ios) page. Type `BluePic` as the name of your new Facebook app and click the `Create New Facebook App ID` button.
 
