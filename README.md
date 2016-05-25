@@ -6,13 +6,13 @@ BluePic is a photo and image sharing sample application that allows you to take 
 
 ## Getting started
 
-There are two ways you can compile and provision BluePic on Bluemix. The first approach uses the IBM Cloud Bridge tool. This is the easiest and quickest path to get BluePic up and running. The second approach is manual and takes longer but you get to understand exactly the steps that are happening behind the scenes.
+There are two ways you can compile and provision BluePic on Bluemix. The first approach uses the IBM Cloud Bridge tool. Using the IBM Cloud Bridge tool is the easiest and quickest path to get BluePic up and running. The second approach is manual, does not leverage this  tool, and, therefore, takes longer but you get to understand exactly the steps that are happening behind the scenes.
 
 ### IBM Cloud Bridge
-TO ADD
+TODO: ADD Contents
 
 ### Step by step instructions for configuration and deployment
-Instead of using the IBM Cloud Bridge for seamless compilation and provisioning, you can follow the steps outlined in this section if you'd like to take a peek under the hood.
+Instead of using the IBM Cloud Bridge for seamless compilation and provisioning, you can follow the steps outlined in this section if you'd like to take a peek under the hood!
 
 #### 1. Install system dependencies
 
@@ -36,7 +36,7 @@ In order to have the iOS application authenticate with Facebook, you must create
 
 1. Go to [Facebook's Quick Start for iOS](https://developers.facebook.com/quickstarts/?platform=ios) page. Type `BluePic` as the name of your new Facebook app and click the `Create New Facebook App ID` button.
 
-1. Note that you **do not** need to download the Facebook SDK (the necessary components are included in the Mobile Client Access framework). Next, in the `Configure your info.plist` section under `step 2`, copy the information into the `info.plist` file. You can find the `info.plist` file in `Configuration` folder of the Xcode project. Among other values, your `info.plist` file should contain the following:
+1. Note that you **do not** need to download the Facebook SDK. The Mobile Client Access framework (already included in the iOS project) has all the code needed to support Facebook authentication. In the `Configure your info.plist` section under `step 2`, copy the information into the `info.plist` file. You can find the `info.plist` file in `Configuration` folder of the Xcode project. Among other values, your `info.plist` file should contain the following:
 <p align="center"><img src="Imgs/infoplist.png"  alt="Drawing" height=150 border=0 /></p>
 
 1. Next scroll to the bottom of the quick start page where it says `Supply us with your Bundle Identifier` and enter the app's bundle identifier. To find the bundle identifier in the Xcode project, make sure the project navigator folder icon is selected in the top left of Xcode. Select the BluePic project at the top of the file structure and then select the BluePic target. Under the identity section, you should see a text field for the bundle identifier that is empty. You can make the bundle identifier anything you want, `com.BluePic` for example.
