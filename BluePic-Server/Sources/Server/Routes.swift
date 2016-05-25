@@ -337,16 +337,15 @@ func defineRoutes() {
     do {
       var imageJSON = try getImageJSON(fromRequest: request)
 
-      // Determine facebook ID from MCA; verify that provided userId in URL match facebook ID.
-      // let userId = imageJSON["userId"].stringValue
-      // guard let authContext = request.userInfo["mcaAuthContext"] as? AuthorizationContext,
-      // userIdentity = authContext.userIdentity?.id where userId == userIdentity else {
-      // Log.error("User is not authorized to post image.")
-      // response.error = generateInternalError()
-      // next()
-      // return
-      // }
-      // Log.verbose("userId: '\(userId)', userIdentity: '\(userIdentity)'.")
+      // Determine facebook ID from MCA; verify that provided userId in URL matches facebook ID.
+      let userId = imageJSON["userId"].stringValue
+      guard let authContext = request.userInfo["mcaAuthContext"] as? AuthorizationContext,
+        userIdentity = authContext.userIdentity?.id where userId == userIdentity else {
+        Log.error("User is not authorized to post image.")
+        response.error = generateInternalError()
+        next()
+        return
+      }
 
       // Get image binary from request body
       let image = try BodyParser.readBodyData(with: request)
