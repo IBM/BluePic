@@ -63,7 +63,7 @@ TODO: ADD CONTENTS
 
 To utilize push notification capabilities on Bluemix, you need to configure a notification provider. For BluePic, you should configure credentials for the Apple Push Notification Service (APNS). Luckily, Bluemix has [instructions](https://console.ng.bluemix.net/docs/services/mobilepush/t_push_provider_ios.html) to walk you through that process.
 
-Please note that you'd need to upload a ```.p12``` certificate to Bluemix and enter the password for it, as mentioned in the [instructions](https://console.ng.bluemix.net/docs/services/mobilepush/t_push_provider_ios.html). Once you've completed the appropriate steps with Apple and Bluemix, just make sure the `bluemix.plist` was correctly updated in step 5.
+Please note that you'd need to upload a ```.p12``` certificate to Bluemix and enter the password for it, as mentioned in the [instructions](https://console.ng.bluemix.net/docs/services/mobilepush/t_push_provider_ios.html).
 
 Lastly, remember that push notifications will only show up on a physical iOS device.
 
@@ -71,7 +71,11 @@ Lastly, remember that push notifications will only show up on a physical iOS dev
 
 TODO: ADD CONTENTS
 
-#### 8. Populate Cloudant database
+#### 8. Update bluemix.plist in Xcode project
+
+TODO: Add contents
+
+#### 9. Populate Cloudant database
 
 To populate your Cloudant database instance with sample data, you can execute the ```populator.sh``` shell script. Please note that this script requires three parameters:
 
@@ -86,7 +90,7 @@ You can obtain the above credentials by accessing your application's page on Blu
 
 ```
 
-#### 9. Populate Object Storage
+#### 10. Populate Object Storage
 
 To populate your Object Storage instance with sample data, you can execute the ```populator.sh``` shell script. Please note that this script requires three parameters:
 
@@ -100,7 +104,7 @@ You can obtain the above credentials by accessing your application's page on Blu
 ./Bridge-Scripts/Object-Storage/populator.sh --userid=<object storage username> --password=<object storage password> --projectid=<object storage projectid>
 ```
 
-#### 10. Update `BluePic-Server/config.json` file
+#### 11. Update `BluePic-Server/config.json` file
 
 After deploying BluePic to Bluemix and configuring its services, you also have the option to run the Kitura-based server locally for development and testing purposes. To run the Kitura-based server locally, you'd need to update the credentials for each one of the services listed in the ```BluePic-Server/config.json``` file.
 
@@ -171,7 +175,7 @@ Remember that you can obtain the credentials for each service listed in the ```c
 ...
 ```
 
-#### 11. Build the BluePic-Server
+#### 12. Build the BluePic-Server
 
 To build the BluePic-Server, go to the `BluePic-Server` directory of the cloned repository and run:
 
@@ -179,7 +183,7 @@ To build the BluePic-Server, go to the `BluePic-Server` directory of the cloned 
 make
 ```
 
-#### 12. Run the BluePic-Server
+#### 13. Run the BluePic-Server
 
 From the `BluePic-Server` directory of the cloned repository, run:
 
@@ -187,7 +191,7 @@ From the `BluePic-Server` directory of the cloned repository, run:
 .build/debug/Server
 ```
 
-#### 13. Run the iOS app
+#### 14. Run the iOS app
 
 Go to the BluePic-iOS directory and open the BluePic workspace using Xcode:
 
@@ -195,7 +199,7 @@ Go to the BluePic-iOS directory and open the BluePic workspace using Xcode:
 open BluePic.xcworkspace
 ```
 
-#### 13.1 Simulate Location on Simulator
+#### 14.1 Simulate Location on Simulator
 If you try to post a photo within the iOS simulator and the app doesn't know your location, it won't work. To fix this simulator specific issue, simply set a location in the simulator's debug menu:
 
 <p align="center">
