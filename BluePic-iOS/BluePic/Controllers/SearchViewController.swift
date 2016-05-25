@@ -138,7 +138,7 @@ extension SearchViewController: UITextFieldDelegate {
         if let query = textField.text, vc = Utils.vcWithNameFromStoryboardWithName("FeedViewController", storyboardName: "Feed") as? FeedViewController
             where query.characters.count > 0 {
         
-            vc.searchQuery = textField.text
+            vc.searchQuery = query
             self.navigationController?.pushViewController(vc, animated: true)
         } else {
             print("Invalid search query")
@@ -149,10 +149,10 @@ extension SearchViewController: UITextFieldDelegate {
     }
     
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
-        if string.containsString(" ") {
-            return false
+        if let text = textField.text where text.characters.count + string.characters.count <= 40 {
+            return true
         }
-        return true
+        return false
     }
     
 }
