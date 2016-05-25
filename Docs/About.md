@@ -1,5 +1,5 @@
 
-# About
+# About BluePic
 
 ## Project folder structure
 
@@ -32,4 +32,4 @@ The following diagram captures the architecture for the BluePic app:
 
 ## Using BluePic
 
-BluePic was designed with a lot of useful features, so to view them all, check out our walkthrough on [Using Bluepic](Using-Bluepic.md).
+BluePic was designed with a lot of useful features, so to view them all, check out our walkthrough on [Using Bluepic](Usage.md).
