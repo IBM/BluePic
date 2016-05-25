@@ -36,7 +36,7 @@ Posting to the BluePic community is easy. Tap the middle tab in the tab bar and 
 Please note that while trying to post a photo using the iOS simulator, the app may not be able to obtain your location. To fix this simulator specific issue, simply set a location in the simulator's debug menu:
 
 <p align="center">
-<img src="Imgs/location-simulate.png"  alt="Drawing"  border=0 /></p>
+<img src="../Imgs/location-simulate.png"  alt="Drawing"  border=0 /></p>
 <p align="center">Figure 1. Set simulated location</p>
 
 Any location should work fine, but remember this may have to be done for each launch of the iOS simulator. Running BluePic on a physical device avoids this issue entirely.
