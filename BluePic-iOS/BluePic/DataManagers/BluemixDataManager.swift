@@ -52,7 +52,7 @@ class BluemixDataManager: NSObject {
     var currentUserImages : [Image] {
         get {
             if let currentUserFbId = CurrentUser.facebookUserId {
-                return images.filter({ $0.user?.facebookID == currentUserFbId})
+                return images.filter({ $0.user.facebookID == currentUserFbId})
             }
             else{
                 return []
@@ -357,11 +357,19 @@ class BluemixDataManager: NSObject {
         
         NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImageUploadBegan.rawValue, object: nil)
         
-        let cityStateString = image.location!.city! + ", " + image.location!.state!
-     
-        let tempURL = getBluemixBaseRequestURL() + "/" + kUsersEndPoint + "/" + CurrentUser.facebookUserId! + "/" + kImagesEndPoint + "/" + image.fileName! + "/" + image.caption! + "/" + "\(image.width!)" + "/" + "\(image.height!)" + "/" + image.location!.latitude! + "/" + image.location!.longitude! + "/" + cityStateString
+        guard let facebookId = CurrentUser.facebookUserId, uiImage = image.image, imageData = UIImagePNGRepresentation(uiImage) else {
+            print("We don't have all the info necessary to post this image")
+            NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImageUploadFailure.rawValue, object: nil)
+            return
+        }
         
-        let requestURL = tempURL.stringByAddingPercentEncodingWithAllowedCharacters( NSCharacterSet.URLQueryAllowedCharacterSet())!
+        let tempURL = getBluemixBaseRequestURL() + "/" + kUsersEndPoint + "/" + facebookId + "/" + kImagesEndPoint + "/" + image.fileName + "/" + image.caption + "/" + "\(image.width)" + "/" + "\(image.height)" + "/" + image.location.latitude + "/" + image.location.longitude + "/" + image.location.name
+        
+        guard let requestURL = tempURL.stringByAddingPercentEncodingWithAllowedCharacters( NSCharacterSet.URLQueryAllowedCharacterSet()) else {
+            print("Failed to encode request URL")
+            NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImageUploadFailure.rawValue, object: nil)
+            return
+        }
 
         let request = Request(url: requestURL, method: HttpMethod.POST)
   
@@ -369,7 +377,7 @@ class BluemixDataManager: NSObject {
         
         print("beginning upload)")
         
-        request.sendData(UIImagePNGRepresentation(image.image!)!, completionHandler: { (response, error) -> Void in
+        request.sendData(imageData, completionHandler: { (response, error) -> Void in
             
             //failure
             if(error != nil){
@@ -459,11 +467,10 @@ extension BluemixDataManager {
      */
     private func addImageToImageTakenDuringAppSessionByIdDictionary(image : Image){
         
-        if let fileName = image.fileName, let userID = CurrentUser.facebookUserId {
-            
-            let id = fileName + userID
+        if let userID = CurrentUser.facebookUserId {
+
+            let id = image.fileName + userID
             imagesTakenDuringAppSessionById[id] = image.image
-            
         }
     }
     
