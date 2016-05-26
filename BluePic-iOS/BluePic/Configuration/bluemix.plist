@@ -7,7 +7,7 @@
 	<key>bluemixBaseRequestURL_remote</key>
 	<string>https://IBM-BluePic.mybluemix.net</string>
 	<key>bluemixBaseRequestURL_local</key>
-	<string>http://192.168.1.66:8090</string>
+	<string>http://localhost:8090</string>
 	<key>bluemixAppRoute</key>
 	<string>https://IBM-BluePic.mybluemix.net</string>
 	<key>bluemixAppGUID</key>
