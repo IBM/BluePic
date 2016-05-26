@@ -32,7 +32,7 @@
     "services": {
       "AdvancedMobileAccess": [
         {
-          "name": "Mobile Client Access-ag",
+          "name": "BluePic-Mobile-Client-Access",
           "label": "AdvancedMobileAccess",
           "plan": "Gold",
           "credentials": {
@@ -46,7 +46,7 @@
       ],
       "imfpush": [
         {
-          "name": "IBM Push Notifications-12",
+          "name": "BluePic-IBM-Push",
           "label": "imfpush",
           "plan": "Basic",
           "credentials": {
@@ -58,7 +58,7 @@
       ],
       "cloudantNoSQLDB": [
         {
-          "name": "Cloudant NoSQL DB-fz",
+          "name": "BluePic-Cloudant",
           "label": "cloudantNoSQLDB",
           "plan": "Shared",
           "credentials": {
@@ -72,7 +72,7 @@
       ],
       "Object-Storage": [
         {
-          "name": "Object Storage-bv",
+          "name": "BluePic-Object-Storage",
           "label": "Object-Storage",
           "plan": "standard",
           "credentials": {
