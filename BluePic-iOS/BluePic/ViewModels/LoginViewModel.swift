@@ -27,11 +27,11 @@ class LoginViewModel: NSObject {
     var notifyLoginVC : ((loginViewModelNotification : LoginViewModelNotification) -> ())!
     
     /**
-     Method to initialize view model with the appropriate callback
+     Method sets up the callback method to notify the login vc of login view model notifications
      
-     - parameter fbAuthCallback: callback to be executed on completion of trying to authenticate with Facebook
+     - parameter notifyLoginVC: ((loginViewModelNotification : LoginViewModelNotification) -> ())
      
-     - returns: an instance of this view model
+     - returns: LoginViewModel
      */
     init(notifyLoginVC: ((loginViewModelNotification : LoginViewModelNotification) -> ())) {
         super.init()
@@ -40,13 +40,16 @@ class LoginViewModel: NSObject {
         
     }
     
+    /**
+     Method informs the LoginDataManager that the user decided to login later
+     */
     func loginLater(){
         LoginDataManager.SharedInstance.loginLater()
     }
     
     
     /**
-     Method to attempt authenticating with Facebook and call the callback if failure, otherwise will continue to object storage container creation
+     Method tells the LoginDataManager to begin the login process. We will eventually receieve the result of the login and we we handle errors or success by notifying the login vc appropriately. 
      */
     func authenticateWithFacebook() {
         
