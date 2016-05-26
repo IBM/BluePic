@@ -19,30 +19,29 @@ import UIKit
 class ProfileViewModel: NSObject {
     
     //array that holds all that pictures that are displayed in the collection view
-    //var pictureDataArray = [Picture]()
-    var imageDataArray = [Image]()
+    private var imageDataArray = [Image]()
     
     //callback used to tell the ProfileViewController when to refresh its collection view
-    var refreshVCCallback : (()->())!
+    private var refreshVCCallback : (()->())!
     
     //constant that represents the number of sections in the collection view
-    let kNumberOfSectionsInCollectionView = 1
+    private let kNumberOfSectionsInCollectionView = 1
     
     //constant that represents the height of the info view in the collection view cell that shows the photos caption and photographer name
-    let kCollectionViewCellInfoViewHeight : CGFloat = 60
+    private let kCollectionViewCellInfoViewHeight : CGFloat = 60
     
     //constant that represents the limit of how big the colection view cell height can be
-    let kCollectionViewCellHeightLimit : CGFloat = 480
+    private let kCollectionViewCellHeightLimit : CGFloat = 480
     
     //constant that represents a value added to the height of the EmptyFeedCollectionViewCell when its given a size in the sizeForItemAtIndexPath method, this value allows the collection view to scroll
-    let kEmptyFeedCollectionViewCellBufferToAllowForScrolling : CGFloat = 1
+    private let kEmptyFeedCollectionViewCellBufferToAllowForScrolling : CGFloat = 1
     
     //constant that represents the number of cells in the collection view when there is no photos
-    let kNumberOfCellsWhenUserHasNoPhotos = 1
+    private let kNumberOfCellsWhenUserHasNoPhotos = 1
     
     
     /**
-     Method called upon init, it sets up the callback to refresh the profile collection view
+     Method called upon init, it sets up the method used to inform the profile vc of events, suscribes to BlueMixDataManager notifications, and updates the image data araay and tells the profile vc to reload its collection view
      
      - parameter refreshVCCallback: (()->())
      
@@ -59,6 +58,9 @@ class ProfileViewModel: NSObject {
         
     }
     
+    /**
+     Method suscribes to the event notifications from the BluemixDataManager
+     */
     func suscribeToBluemixDataManagerNotifications(){
         
          NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ProfileViewModel.updateImageArrayAndNotifyViewControllerToReloadCollectionView), name: BluemixDataManagerNotification.ImagesRefreshed.rawValue, object: nil)
@@ -66,13 +68,14 @@ class ProfileViewModel: NSObject {
     }
     
     
+    /**
+     Method updates the imageDataArray to the latest currentUserImages from the BluemixDataManager and then tells the profile vc to reload its collection view
+     */
     func updateImageArrayAndNotifyViewControllerToReloadCollectionView(){
         
         self.imageDataArray = BluemixDataManager.SharedInstance.currentUserImages
         
-        dispatch_async(dispatch_get_main_queue()) {
-            self.callRefreshCallBack()
-        }
+        self.callRefreshCallBack()
         
     }
 
@@ -82,7 +85,9 @@ class ProfileViewModel: NSObject {
      */
     func callRefreshCallBack(){
         if let callback = refreshVCCallback {
-            callback()
+            dispatch_async(dispatch_get_main_queue()) {
+                callback()
+            }
         }
     }
  
@@ -132,10 +137,12 @@ extension ProfileViewModel {
      */
     func sizeForItemAtIndexPath(indexPath : NSIndexPath, collectionView : UICollectionView, heightForEmptyProfileCollectionViewCell : CGFloat) -> CGSize {
         
+        //no images so show empty feed collection view cell
         if(imageDataArray.count == 0) {
             
             return CGSize(width: collectionView.frame.width, height: heightForEmptyProfileCollectionViewCell + kEmptyFeedCollectionViewCellBufferToAllowForScrolling)
         }
+        //there are images so show profile collection view
         else{
             
             let picture = imageDataArray[indexPath.row]
@@ -156,7 +163,7 @@ extension ProfileViewModel {
     
     
     /**
-     Method sets up the collection view cell for indexPath. If the pictureDataArray.count is equal to 0 then we return an instance EmptyfeedCollectionviewCell
+     Method sets up the collection view cell for indexPath. If the imageDataArray.count is equal to 0 then we return an instance EmptyfeedCollectionviewCell
      
      - parameter indexPath:      NSIndexPath
      - parameter collectionView: UICollectionViewCell
@@ -220,6 +227,13 @@ extension ProfileViewModel {
     }
     
     
+    /**
+     Method return an ImageDetailViewModel for the image at the indexPath parameter
+     
+     - parameter indexPath: NSIndexPath
+     
+     - returns: ImageDetailViewModel?
+     */
     func prepareImageDetailViewModelForSelectedCellAtIndexPath(indexPath : NSIndexPath) -> ImageDetailViewModel? {
         
         if((imageDataArray.count - 1 ) >= indexPath.row ){
@@ -228,12 +242,10 @@ extension ProfileViewModel {
             viewModel.image = imageDataArray[indexPath.row]
             
             return viewModel
-            
         }
         else{
             return nil
         }
-        
     }
     
 }
