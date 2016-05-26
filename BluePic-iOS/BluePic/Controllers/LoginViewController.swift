@@ -122,17 +122,6 @@ class LoginViewController: UIViewController {
     
     
     /**
-     Method to stop the loading animation and setup UI for done loading state
-     */
-//    func stopLoading() {
-//        loadingIndicator.stopAnimating()
-//        loadingIndicator.hidden = true
-//        welcomeLabel.hidden = false
-//        connectingLabel.hidden = true
-//    }
-
-    
-    /**
      Method is called when the app receives a memory warning from the OS
      */
     override func didReceiveMemoryWarning() {

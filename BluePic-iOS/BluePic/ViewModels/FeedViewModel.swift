@@ -181,12 +181,35 @@ extension FeedViewModel {
 //ViewController -> ViewModel Communication
 extension FeedViewModel {
     
+    
+    func shouldStartLoadingAnimation() -> Bool {
+        
+        if(BluemixDataManager.SharedInstance.imagesCurrentlyUploading.count > 0){
+            return true
+        }
+        else{
+            return false
+        }
+ 
+    }
+    
+    func shouldStopLoadingAnimation() -> Bool {
+        
+        if(BluemixDataManager.SharedInstance.imagesCurrentlyUploading.count == 0){
+            return true
+        }
+        else{
+            return false
+        }
+        
+    }
+    
     /**
      Method returns if the feed vc should begin loading or not upon app launch
      
      - returns: Bool
      */
-    func shouldBeginLoading() -> Bool {
+    func shouldBeginLoadingAtAppLaunch() -> Bool {
         return !BluemixDataManager.SharedInstance.hasReceievedInitialImages
     }
     
