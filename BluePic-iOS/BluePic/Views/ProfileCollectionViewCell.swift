@@ -36,8 +36,10 @@ class ProfileCollectionViewCell: UICollectionViewCell {
     //the view that is shown while we wait for the image to download and display
     @IBOutlet weak var loadingView: UIView!
     
+    //string that is added to the numberOfTagsLabel at the end if there are multiple tags
     private let kNumberOfTagsPostFix_MultipleTags = NSLocalizedString("Tags", comment: "")
     
+    //String that is added to the numberOfTagsLabel at the end if there is one tag
     private let kNumberOfTagsPostFix_OneTag = NSLocalizedString("Tag", comment: "")
     
     /**
