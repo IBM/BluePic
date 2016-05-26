@@ -35,18 +35,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
      */
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
+        //register for remote notifications aka prompt user to give permission for notifications
         let notificationTypes: UIUserNotificationType = [UIUserNotificationType.Badge, UIUserNotificationType.Alert, UIUserNotificationType.Sound]
         let notificationSettings: UIUserNotificationSettings = UIUserNotificationSettings(forTypes: notificationTypes, categories: nil)
         application.registerUserNotificationSettings(notificationSettings)
         application.registerForRemoteNotifications()
         
-        preLoadKeyboardToPreventLaggyKeyboardInCameraConfirmationScreen()
+        //pre load the keyboard on the camera confirmayion screen to prevent laggy behavior
+        //preLoadKeyboardToPrevantLaggyKeyboardInCameraConfirmationScreen()
         
+        //Fetch images on app launch
         BluemixDataManager.SharedInstance.getImages()
         
+        //inialialize Bluemix Mobile Client Access to allow for facebook Authentication
         return self.initializeBackendForFacebookAuth(application, launchOptions: launchOptions)
     }
     
+    /**
+     Method called when the user registers from remote notifications
+     
+     - parameter application:
+     - parameter deviceToken:
+     */
     func application (application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData){
         let push =  BMSPushClient.sharedInstance
         push.registerDeviceToken(deviceToken) { (response, statusCode, error) -> Void in
@@ -62,13 +72,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
     }
     
+    /**
+     Method called when device receives a remote notification
+     
+     - parameter application:
+     - parameter userInfo:
+     - parameter completionHandler:
+     */
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
 
+        //could not grab instance of tab bar fail silently
         guard let tabBarController = self.window?.rootViewController as? TabBarViewController, feedNav = tabBarController.viewControllers?.first as? FeedNavigationController else {
             completionHandler(UIBackgroundFetchResult.Failed)
             return
         }
         
+        //handle a push notification by showing an alert that says your image was processed
         if application.applicationState == UIApplicationState.Background || application.applicationState == UIApplicationState.Inactive {
             loadImageDetail(userInfo, tabBarController: tabBarController ,feedNav: feedNav)
         } else {
@@ -121,6 +140,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
     }
     
+    
     /**
      Method to initialize Bluemix Mobile Client Access with Facebook
      */
@@ -136,6 +156,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return FacebookAuthenticationManager.sharedInstance.onFinishLaunching(application, withOptions:  launchOptions)
     }
 
+    
     func applicationWillResignActive(application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
