@@ -267,22 +267,16 @@ extension FeedViewModel {
                 
                 let image = imageDataArray[indexPath.row]
                 
-                if let width = image.width, let height = image.height {
-                    
-                    let ratio = height / width
-                    
-                    var height = collectionView.frame.width * ratio
-                    
-                    if(height > kCollectionViewCellHeightLimit){
-                        height = kCollectionViewCellHeightLimit
-                    }
-                    
-                    return CGSize(width: collectionView.frame.width, height: height + kCollectionViewCellInfoViewHeight)
-                    
+                let ratio = image.height / image.width
+                
+                var height = collectionView.frame.width * ratio
+                
+                if(height > kCollectionViewCellHeightLimit){
+                    height = kCollectionViewCellHeightLimit
                 }
-                else{
-                    return CGSize(width: collectionView.frame.width, height: collectionView.frame.width + kCollectionViewCellInfoViewHeight)
-                }
+                
+                return CGSize(width: collectionView.frame.width, height: height + kCollectionViewCellInfoViewHeight)
+
             }
         }
     }
@@ -316,12 +310,11 @@ extension FeedViewModel {
             //section 1 corresponds to either the empty feed collection view cell or the standard image feed collection view cell depending on how many images are in the image data array
         else{
             
-            //return EmptyFeedCollectionViewCell
             if(imageDataArray.count == 0 && searchQuery == nil){
                 
-                let cell : EmptyFeedCollectionViewCell
-                
-                cell = collectionView.dequeueReusableCellWithReuseIdentifier("EmptyFeedCollectionViewCell", forIndexPath: indexPath) as! EmptyFeedCollectionViewCell
+                guard let cell = collectionView.dequeueReusableCellWithReuseIdentifier("EmptyFeedCollectionViewCell", forIndexPath: indexPath) as? EmptyFeedCollectionViewCell else {
+                    return UICollectionViewCell()
+                }
                 
                 return cell
                 
@@ -329,9 +322,9 @@ extension FeedViewModel {
                 //return ImageFeedCollectionViewCell
             else{
                 
-                let cell: ImageFeedCollectionViewCell
-                
-                cell = collectionView.dequeueReusableCellWithReuseIdentifier("ImageFeedCollectionViewCell", forIndexPath: indexPath) as! ImageFeedCollectionViewCell
+                guard let cell = collectionView.dequeueReusableCellWithReuseIdentifier("ImageFeedCollectionViewCell", forIndexPath: indexPath) as? ImageFeedCollectionViewCell else {
+                    return UICollectionViewCell()
+                }
                 
                 let image = imageDataArray[indexPath.row]
                 
@@ -339,7 +332,7 @@ extension FeedViewModel {
                     image.url,
                     image: nil, //MIGHT NEED TO FIX
                     caption: image.caption,
-                    usersName: image.user?.name,
+                    usersName: image.user.name,
                     numberOfTags: image.tags?.count,
                     timeStamp: image.timeStamp,
                     fileName: image.fileName

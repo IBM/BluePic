@@ -19,29 +19,29 @@ import BMSCore
 
 class User: NSObject {
 
-    var facebookID : String?
-    var name : String?
+    var facebookID : String
+    var name : String
     
-    override init() {
-        
+    init(facebookID: String, name: String) {
+        self.facebookID = facebookID
+        self.name = name
     }
     
-    init(_ response: Response?) {
+    init?(_ response: Response?) {
         
-        super.init()
-        
-        if let dict = Utils.convertResponseToDictionary(response){
-        
-            let facebookID = dict["_id"] as? String ?? ""
-            let name = dict["name"] as? String ?? ""
+        if let dict = Utils.convertResponseToDictionary(response),
+            facebookID = dict["_id"] as? String,
+            name = dict["name"] as? String {
             
             self.facebookID = facebookID
             self.name = name
            
+            super.init()
         }
         else{
             
             print("invalid JSON")
+            return nil
         }
    
     }

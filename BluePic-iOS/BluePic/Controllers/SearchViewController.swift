@@ -43,7 +43,9 @@ class SearchViewController: UIViewController {
         layout.sectionInset = UIEdgeInsets(top: 0, left: 15.0, bottom: 0, right: 15.0)
         tagCollectionView.setCollectionViewLayout(layout, animated: false)
         
-        Utils.kernLabelString(tagsButton.titleLabel!, spacingValue: 1.7)
+        if let label = tagsButton.titleLabel {
+            Utils.kernLabelString(label, spacingValue: 1.7)
+        }
         Utils.registerNibWithCollectionView("TagCollectionViewCell", collectionView: tagCollectionView)
     }
     
@@ -120,9 +122,10 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         collectionView.deselectItemAtIndexPath(indexPath, animated: true)
         // open feed of items with selected tag
-        let vc = Utils.vcWithNameFromStoryboardWithName("FeedViewController", storyboardName: "Feed") as! FeedViewController
-        vc.searchQuery = popularTags[indexPath.item]
-        self.navigationController?.pushViewController(vc, animated: true)
+        if let vc = Utils.vcWithNameFromStoryboardWithName("FeedViewController", storyboardName: "Feed") as? FeedViewController {
+            vc.searchQuery = popularTags[indexPath.item]
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
     }
     
 }
@@ -132,10 +135,10 @@ extension SearchViewController: UITextFieldDelegate {
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         
-        if let query = textField.text where query.characters.count > 0 {
+        if let query = textField.text, vc = Utils.vcWithNameFromStoryboardWithName("FeedViewController", storyboardName: "Feed") as? FeedViewController
+            where query.characters.count > 0 {
         
-            let vc = Utils.vcWithNameFromStoryboardWithName("FeedViewController", storyboardName: "Feed") as! FeedViewController
-            vc.searchQuery = textField.text
+            vc.searchQuery = query
             self.navigationController?.pushViewController(vc, animated: true)
         } else {
             print("Invalid search query")
@@ -146,10 +149,10 @@ extension SearchViewController: UITextFieldDelegate {
     }
     
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
-        if string.containsString(" ") {
-            return false
+        if let text = textField.text where text.characters.count + string.characters.count <= 40 {
+            return true
         }
-        return true
+        return false
     }
     
 }
