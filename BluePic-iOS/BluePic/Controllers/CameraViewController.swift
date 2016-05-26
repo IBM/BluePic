@@ -18,15 +18,12 @@ import UIKit
 
 /// Not actually holding any logical code since technically tab bar never switches to Camera tab
 class CameraViewController: UIViewController {
-
     
     /**
      Method called upon view did load
      */
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
     }
 
     /**
@@ -34,7 +31,6 @@ class CameraViewController: UIViewController {
      */
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
 }

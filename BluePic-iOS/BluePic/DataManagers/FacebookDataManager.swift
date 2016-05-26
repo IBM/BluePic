@@ -35,7 +35,6 @@ class FacebookDataManager: NSObject {
         
         var manager = FacebookDataManager()
         
-        
         return manager
         
     }()
@@ -59,32 +58,35 @@ class FacebookDataManager: NSObject {
      - returns: true if configured, false if not
      */
     private func isFacebookConfigured() -> Bool {
-        let facebookAppID = NSBundle.mainBundle().objectForInfoDictionaryKey("FacebookAppID") as? NSString
-        let facebookDisplayName = NSBundle.mainBundle().objectForInfoDictionaryKey("FacebookDisplayName") as? NSString
-        let urlTypes = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleURLTypes") as? NSArray
         
-        let urlTypes0 = urlTypes!.firstObject as? NSDictionary
-        let urlSchemes = urlTypes0!["CFBundleURLSchemes"] as? NSArray
-        let facebookURLScheme = urlSchemes!.firstObject as? NSString
-        
-        if (facebookAppID == nil || facebookAppID!.isEqualToString("") || facebookAppID == "123456789") {
-            print("Authentication is not configured in Info.plist. You have to configure Info.plist with the same Authentication method configured on Bluemix such as Facebook")
-            return false
-        }
-        if (facebookDisplayName == nil || facebookDisplayName!.isEqualToString("")) {
+        guard let facebookAppID = NSBundle.mainBundle().objectForInfoDictionaryKey("FacebookAppID") as? NSString,
+            facebookDisplayName = NSBundle.mainBundle().objectForInfoDictionaryKey("FacebookDisplayName") as? NSString,
+            urlTypes = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleURLTypes") as? NSArray,
+            firstUrlType = urlTypes.firstObject as? NSDictionary,
+            urlSchemes = firstUrlType["CFBundleURLSchemes"] as? NSArray,
+            facebookURLScheme = urlSchemes.firstObject as? NSString else {
             print("Authentication is not configured in Info.plist. You have to configure Info.plist with the same Authentication method configured on Bluemix such as Facebook")
             return false
         }
         
-        if (facebookURLScheme == nil || facebookURLScheme!.isEqualToString("") || facebookURLScheme!.isEqualToString("fb123456789") || !(facebookURLScheme!.hasPrefix("fb"))) {
+        if (facebookAppID.isEqualToString("") || facebookAppID == "123456789") {
+            print("Authentication is not configured in Info.plist. You have to configure Info.plist with the same Authentication method configured on Bluemix such as Facebook")
+            return false
+        }
+        if (facebookDisplayName.isEqualToString("")) {
+            print("Authentication is not configured in Info.plist. You have to configure Info.plist with the same Authentication method configured on Bluemix such as Facebook")
+            return false
+        }
+        
+        if (facebookURLScheme.isEqualToString("") || facebookURLScheme.isEqualToString("fb123456789") || !(facebookURLScheme.hasPrefix("fb"))) {
             print("Authentication is not configured in Info.plist. You have to configure Info.plist with the same Authentication method configured on Bluemix such as Facebook")
             return false
         }
         
         //success if made it past this point
         
-        print("Facebook Auth configured, getting ready to show native FB Login:\nFacebookAppID \(facebookAppID!)\nFacebookDisplayName \(facebookDisplayName!)\nFacebookURLScheme \(facebookURLScheme!)")
-        return true;
+        print("Facebook Auth configured, getting ready to show native FB Login:\nFacebookAppID \(facebookAppID)\nFacebookDisplayName \(facebookDisplayName)\nFacebookURLScheme \(facebookURLScheme)")
+        return true
     }
     
 

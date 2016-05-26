@@ -21,7 +21,7 @@ import KituraNet
 import LoggerAPI
 import SwiftyJSON
 import BluemixObjectStorage
-//import MobileClientAccess
+import MobileClientAccess
 
 /**
 * This method should kick off asynchronously an OpenWhisk sequence
@@ -119,8 +119,8 @@ func getImageJSON(fromRequest request: RouterRequest) throws -> JSON {
   let width = Float(w),
   let height = Float(h),
   let latitude = Float(lat),
-  let longitude = Float(long) else {
-  // let authContext = request.userInfo["mcaAuthContext"] as? AuthorizationContext else {
+  let longitude = Float(long), // else {
+  let authContext = request.userInfo["mcaAuthContext"] as? AuthorizationContext else {
     throw ProcessingError.Image("Invalid image document!")
   }
 
@@ -132,8 +132,8 @@ func getImageJSON(fromRequest request: RouterRequest) throws -> JSON {
   let imageName = StringUtils.decodeWhiteSpace(inString: caption)
   let locationName = StringUtils.decodeWhiteSpace(inString: location)
   let imageURL = generateUrl(forContainer: userId, forImage: fileName)
-  // let deviceId = authContext.deviceIdentity.id
-  let deviceId = "3003"
+  let deviceId = authContext.deviceIdentity.id
+  // let deviceId = "3003"
 
   let whereabouts: JSONDictionary = ["latitude": latitude, "longitude": longitude, "name": locationName]
   let imageDocument: JSONDictionary = ["location": whereabouts, "contentType": contentType, "url": imageURL,
@@ -171,24 +171,14 @@ func createContainer(withName name: String, completionHandler: (success: Bool) -
   }
 
   // Create container
-  let createContainer = { (objStorage: ObjectStorage?) -> Void in
-    if let objStorage = objStorage {
-      objStorage.createContainer(name: name) { (error, container) in
-        if let container = container where error == nil {
-          configureContainer(container)
-        } else {
-          Log.error("Could not create container named '\(name)'.")
-          completionHandler(success: false)
-        }
-      }
+  objStorage.createContainer(name: name) { (error, container) in
+    if let container = container where error == nil {
+      configureContainer(container)
     } else {
-      Log.verbose("Created successfully container named '\(name)'.")
+      Log.error("Could not create container named '\(name)'.")
       completionHandler(success: false)
     }
   }
-
-  // Connect, create, and configure container
-  connectToObjectStorage(completionHandler: createContainer)
 }
 
 func store(image: NSData, withName name: String, inContainer containerName: String, completionHandler: (success: Bool) -> Void) {
@@ -206,23 +196,14 @@ func store(image: NSData, withName name: String, inContainer containerName: Stri
   }
 
   // Get reference to container
-  let retrieveContainer = { (objStorage: ObjectStorage?) -> Void in
-    if let objStorage = objStorage {
-      objStorage.retrieveContainer(name: containerName) { (error, container) in
-        if let container = container where error == nil {
-          storeImage(container)
-        } else {
-          Log.error("Could not find container named '\(containerName)'.")
-          completionHandler(success: false)
-        }
-      }
+  objStorage.retrieveContainer(name: containerName) { (error, container) in
+    if let container = container where error == nil {
+      storeImage(container)
     } else {
+      Log.error("Could not find container named '\(containerName)'.")
       completionHandler(success: false)
     }
   }
-
-  // Connect, create, and configure container
-  connectToObjectStorage(completionHandler: retrieveContainer)
 }
 
 private func massageImageRecord(containerName: String, record: inout JSON) {
@@ -250,21 +231,4 @@ private func constructDocument(records: [JSON]) -> JSON {
   jsonDocument["number_of_records"].int = records.count
   jsonDocument["records"] = JSON(records)
   return jsonDocument
-}
-
-/**
-* Connects to object storage service and upon completion, invokes the completionHandler closure.
-*/
-private func connectToObjectStorage(completionHandler: (objStorage: ObjectStorage?) -> Void) {
-  // Create object storage instance and connect
-  let objStorage = ObjectStorage(projectId: objStorageConnProps.projectId)
-  objStorage.connect(userId: objStorageConnProps.userId, password: objStorageConnProps.password, region: ObjectStorage.REGION_DALLAS) { (error) in
-    if let error = error {
-      let errorMsg = "Could not connect to Object Storage."
-      Log.error("\(errorMsg) Error was: '\(error)'.")
-      completionHandler(objStorage: nil)
-    } else {
-      completionHandler(objStorage: objStorage)
-    }
-  }
 }
