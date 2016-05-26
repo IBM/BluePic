@@ -25,9 +25,6 @@ enum FeedViewModelNotification {
     //called when a photo is uploading to object storage
     case UploadingPhotoStarted
     
-    //called when a photo is finished uploading to object storage
-    case UploadingPhotoFinished
-    
     //called when there are no search results for a particular searchQuery
     case NoSearchResults
 }
@@ -46,7 +43,7 @@ class FeedViewModel: NSObject {
     //constant that represents the height of the info view in the collection view cell that shows the photos caption and photographer name
     let kCollectionViewCellInfoViewHeight : CGFloat = 76
     
-    //constant that represents the height of the picture upload queue image feed collection view cell
+    //constant that represents the height of the ImagesCurrentlyUploadingImageFeedCollectionViewCell
     let kPictureUploadCollectionViewCellHeight : CGFloat = 60
     
     //constant that represents the limit of how tall a collection view cell's height can be
@@ -63,11 +60,12 @@ class FeedViewModel: NSObject {
     
     
     /**
-     Method called upon init. It sets a callback to inform the VC of new notification
+      Method called upon init. It sets a callback to inform the VC of new notification
      
-     - parameter passFeedViewModelNotificationToTabBarVCCallback: ((feedViewModelNotification : FeedViewModelNotification)->())
+     - parameter notifyFeedVC: ((feedViewModelNotification : FeedViewModelNotification)->()
+     - parameter searchQuery:  String?
      
-     - returns:
+     - returns: FeedViewModel
      */
     init(notifyFeedVC : ((feedViewModelNotification : FeedViewModelNotification)->()), searchQuery: String?){
         super.init()
@@ -79,10 +77,13 @@ class FeedViewModel: NSObject {
         //suscribe to events that happen in the BluemixDataManager
         suscribeToBluemixDataManagerNotifications()
         
+        //if this view controller needs to show search results
         if let query = searchQuery {
             numberOfCellsWhenUserHasNoPhotos = 0
             BluemixDataManager.SharedInstance.getImagesByTags([query], callback: handleSearchResultsResponse)
-        } else {
+        }
+        //doesn't need to show search results so set up like a normal feed vc
+        else {
             //Grab any data from BluemixDataManager if it has any and then tell view controller to reload its collection view
             numberOfCellsWhenUserHasNoPhotos = 1
             updateImageDataArrayAndNotifyViewControllerToReloadCollectionView()
@@ -91,6 +92,9 @@ class FeedViewModel: NSObject {
     }
     
     
+    /**
+    Method suscribes to all event notifications that come from the Bluemix DataManager
+     */
     func suscribeToBluemixDataManagerNotifications(){
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(FeedViewModel.updateImageDataArrayAndNotifyViewControllerToReloadCollectionView), name: BluemixDataManagerNotification.ImagesRefreshed.rawValue, object: nil)
@@ -103,6 +107,9 @@ class FeedViewModel: NSObject {
         
     }
     
+    /**
+     Method handles if there is an image upload failure if this vc is set up like a normal feed vc and doesn't show search results
+     */
     func handleImageUploadFailure(){
         
         if(isShowingSearchResults() == false){
@@ -111,14 +118,15 @@ class FeedViewModel: NSObject {
         
     }
 
-    
+    /**
+     Method will update the image data array and notify the feed vc to refresh if this vc is setup like a normal feed vc and doesn't show search results
+     */
     func updateImageDataArrayAndNotifyViewControllerToReloadCollectionView(){
         
         if(isShowingSearchResults() == false){
             self.imageDataArray = BluemixDataManager.SharedInstance.images
             self.notifyViewControllerToTriggerReloadCollectionView()
         }
-
     }
 
 }
@@ -127,7 +135,11 @@ class FeedViewModel: NSObject {
 //methods related to if we have to display search results
 extension FeedViewModel {
     
-    
+    /**
+     Method returns true if the feed vc is showing search results, false if it is set up like a normal feed vc
+     
+     - returns: Bool
+     */
     private func isShowingSearchResults() -> Bool {
         
         if(searchQuery != nil){
@@ -136,9 +148,13 @@ extension FeedViewModel {
         else{
             return false
         }
-        
     }
     
+    /**
+     Method is called when there is a response receieving for search for images by tags. This method handles this response and will either trigger the "there are no images found" message or update the imageDataArray with the search results and tell the feed vc to reload its collection view
+     
+     - parameter images: [Image]?
+     */
     private func handleSearchResultsResponse(images : [Image]?){
         
         if let images = images {
@@ -154,7 +170,7 @@ extension FeedViewModel {
         else{
             self.notifiyViewControllerToTriggerAlert()
         }
-
+        
     }
     
     
@@ -165,10 +181,18 @@ extension FeedViewModel {
 //ViewController -> ViewModel Communication
 extension FeedViewModel {
     
+    /**
+     Method returns if the feed vc should begin loading or not upon app launch
+     
+     - returns: Bool
+     */
     func shouldBeginLoading() -> Bool {
         return !BluemixDataManager.SharedInstance.hasReceievedInitialImages
     }
     
+    /**
+     Method will either research for images by tag or get all images depending on if the feed vc is setup like a normal feed vc or to show search results
+     */
     func repullForNewData() {
         if let query = self.searchQuery {
             BluemixDataManager.SharedInstance.getImagesByTags([query], callback: handleSearchResultsResponse)
@@ -186,7 +210,6 @@ extension FeedViewModel {
         return kNumberOfSectionsInCollectionView
     }
     
-    
     /**
      Method returns the number of items in a section
      
@@ -195,7 +218,7 @@ extension FeedViewModel {
      - returns: Int
      */
     func numberOfItemsInSection(section : Int) -> Int {
-        //if the section is 0, then it depends on how many items are in the picture upload queue
+        //if the section is 0, then it depends on how many items are in imagesCurrentlyUploading array of the BluemixDataManager
         if(section == 0){
             if(isShowingSearchResults()){
                 return 0
@@ -204,7 +227,7 @@ extension FeedViewModel {
                 return BluemixDataManager.SharedInstance.imagesCurrentlyUploading.count
             }
         }
-            // if the section is 1, then it depends how many items are in the pictureDataArray
+            // if the section is 1, then it depends how many items are in the imageDataArray
         else{
             
             if(imageDataArray.count == 0) && BluemixDataManager.SharedInstance.hasReceievedInitialImages{
@@ -228,19 +251,16 @@ extension FeedViewModel {
      */
     func sizeForItemAtIndexPath(indexPath : NSIndexPath, collectionView : UICollectionView) -> CGSize {
         
-        //Section 0 corresponds to showing picture upload queue image feed collection view cells. These cells show when there are pictures in the picture upload queue of the camera data manager
+        //Section 0 corresponds to showing ImagesCurrentlyUploadingImageFeedCollectionViewCell collection view cells. These cells show when there are images in the imagesCurrentlyUploading array of the BluemixDataManager
         if(indexPath.section == 0){
             return CGSize(width: collectionView.frame.width, height: kPictureUploadCollectionViewCellHeight)
         }
-            
-            //section 1 corresponds to either the empty feed collection view cell or the standard image feed collection view cell depending on how many images are in the picture data array
+            //section 1 corresponds to either the empty feed collection view cell or the standard image feed collection view cell depending on how many images are in the image data array
         else{
             
             //return size for empty feed collection view cell
             if(imageDataArray.count == 0){
-                
                 return CGSize(width: collectionView.frame.width, height: collectionView.frame.height + kEmptyFeedCollectionViewCellBufferToAllowForScrolling)
-                
             }
                 //return size for image feed collection view cell
             else{
@@ -263,7 +283,7 @@ extension FeedViewModel {
     
     
     /**
-     Method sets up the collection view for indexPath. If the the pictureDataArray is 0, then it shows the EmptyFeedCollectionViewCell
+     Method sets up the collection view for indexPath. If the the imgageDataArray is 0, then it shows the EmptyFeedCollectionViewCell
      
      - parameter indexPath:      indexPath
      - parameter collectionView: UICollectionView
@@ -272,7 +292,7 @@ extension FeedViewModel {
      */
     func setUpCollectionViewCell(indexPath : NSIndexPath, collectionView : UICollectionView) -> UICollectionViewCell {
         
-        //Section 0 corresponds to showing picture upload queue image feed collection view cells. These cells show when there are pictures in the picture upload queue of the camera data manager
+        //Section 0 corresponds to showing ImagesCurrentlyUploadingImageFeedCollectionViewCell collection view cells. These cells show when there are images in the imagesCurrentlyUploading array of the BluemixDataManager
         if(indexPath.section == 0){
             
             guard let cell = collectionView.dequeueReusableCellWithReuseIdentifier("ImagesCurrentlyUploadingImageFeedCollectionViewCell", forIndexPath: indexPath) as? ImagesCurrentlyUploadingImageFeedCollectionViewCell else {
@@ -286,7 +306,7 @@ extension FeedViewModel {
             return cell
             
         }
-            //section 1 corresponds to either the empty feed collection view cell or the standard image feed collection view cell depending on how many images are in the picture data array
+            //section 1 corresponds to either the empty feed collection view cell or the standard image feed collection view cell depending on how many images are in the image data array
         else{
             
             if(imageDataArray.count == 0 && searchQuery == nil){
@@ -298,6 +318,7 @@ extension FeedViewModel {
                 return cell
                 
             }
+                //return ImageFeedCollectionViewCell
             else{
                 
                 guard let cell = collectionView.dequeueReusableCellWithReuseIdentifier("ImageFeedCollectionViewCell", forIndexPath: indexPath) as? ImageFeedCollectionViewCell else {
@@ -325,6 +346,13 @@ extension FeedViewModel {
     }
     
     
+    /**
+     Method return an ImageDetailViewModel for the image at the indexPath parameter
+     
+     - parameter indexPath: NSIndexPath
+     
+     - returns: ImageDetailViewModel?
+     */
     func prepareImageDetailViewModelForSelectedCellAtIndexPath(indexPath : NSIndexPath) -> ImageDetailViewModel? {
         
         if((imageDataArray.count - 1 ) >= indexPath.row ){
@@ -338,9 +366,8 @@ extension FeedViewModel {
         else{
             return nil
         }
-        
     }
-
+    
 }
 
 
@@ -349,6 +376,9 @@ extension FeedViewModel {
 //View Model -> ViewController Communication
 extension FeedViewModel {
     
+    /**
+     Method notifies the feed vc to trigger the loading aniamtion when an image has began uploading
+     */
     func notifyViewControllerToTriggerLoadingAnimation(){
         
         if(isShowingSearchResults() == false){
@@ -358,17 +388,22 @@ extension FeedViewModel {
         }
     }
     
+    /**
+     Method notifies the feed vc to reload the collection view
+     */
     func notifyViewControllerToTriggerReloadCollectionView(){
         dispatch_async(dispatch_get_main_queue()) {
             self.notifyFeedVC(feedViewModelNotification : FeedViewModelNotification.ReloadCollectionView)
         }
     }
     
+    /**
+     Method notifies the feed vc that there were no search results
+     */
     func notifiyViewControllerToTriggerAlert() {
         dispatch_async(dispatch_get_main_queue()) {
             self.notifyFeedVC(feedViewModelNotification : FeedViewModelNotification.NoSearchResults)
         }
-
     }
     
     

@@ -330,9 +330,6 @@ extension FeedViewController {
             scrollCollectionViewToTop()
             tryToStartLoadingAnimation()
         }
-        else if(feedViewModelNotification == FeedViewModelNotification.UploadingPhotoFinished){
-            tryToStopLoadingAnimation()
-        }
         else if(feedViewModelNotification == FeedViewModelNotification.NoSearchResults){
             // do alert
             noResultsLabel.hidden = false
