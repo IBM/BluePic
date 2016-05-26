@@ -21,10 +21,10 @@ import UIKit
 
 //// MARK: - Rotating animation
 extension UIView {
-    
+
     /**
      Method starts rotating a uiview 360 degrees until it is told to stop
-     
+
      - parameter duration: Double
      */
     func startRotating(duration: Double = 1) {
@@ -37,21 +37,21 @@ extension UIView {
             animate.fromValue = 0.0
             animate.toValue = Float(M_PI * 2.0)
             self.layer.addAnimation(animate, forKey: kAnimationKey)
-            
+
         }
     }
-    
+
     /**
      Method stops rotating a uiview 360 degrees
      */
     func stopRotating() {
         let kAnimationKey = "rotation"
-        
+
         if self.layer.animationForKey(kAnimationKey) != nil {
             self.layer.removeAnimationForKey(kAnimationKey)
         }
     }
-    
+
     /**
      Method to simply shake a view back and forth. Most useful on textField to show invalid input
      */
@@ -64,17 +64,17 @@ extension UIView {
         animation.toValue = NSValue(CGPoint: CGPointMake(self.center.x + 10, self.center.y))
         self.layer.addAnimation(animation, forKey: "position")
     }
-    
+
 }
 
 /**
- 
+
  MARK: IBInspectable
- 
+
  */
 extension UIView {
-    
-    
+
+
     /// Allows you to modify the corner radius of a view in storyboard
     @IBInspectable var cornerRadius: CGFloat {
         get { return layer.cornerRadius }
@@ -83,5 +83,5 @@ extension UIView {
             layer.masksToBounds = newValue > 0
         }
     }
-    
+
 }
