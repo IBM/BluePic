@@ -1,10 +1,5 @@
 
-## Table of Contents
-
-* [Project folder structure](#project-folder-structure)
-* [Swift packages](#swift-packages)
-* [Using BluePic](#using-bluepic)
-* [Architecture](#architecture)
+# About BluePic
 
 ## Project folder structure
 
@@ -28,13 +23,13 @@ The following Swift packages are used in BluePic:
 - [Kitura Credentials plugin for the Mobile Client Access service](https://github.com/ibm-bluemix-mobile-services/bms-mca-kitura-credentials-plugin.git)
 - [Swift SDK for Bluemix Push Notifications Service](https://github.com/ibm-bluemix-mobile-services/bms-pushnotifications-serversdk-swift.git)
 
-
-## Using BluePic
-
-BluePic was designed with a lot of useful features, so to view them all, check out our walkthrough on [Using Bluepic](Using-Bluepic.md)
-
 ## Architecture
 
+The following diagram captures the architecture for the BluePic app:
 <p align="center">
 <img src="../Imgs/architecture.png"  alt="Drawing" height=450 border=0 /></p>
 <p align="center">Figure 2. BluePic Architecture Diagram.</p>
+
+## Using BluePic
+
+BluePic was designed with a lot of useful features, so to view them all, check out our walkthrough on [Using Bluepic](Usage.md).

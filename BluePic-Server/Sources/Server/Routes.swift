@@ -22,22 +22,23 @@ import LoggerAPI
 import SwiftyJSON
 import KituraSys
 import BluemixPushNotifications
-// import MobileClientAccessKituraCredentialsPlugin
-// import MobileClientAccess
-// import Credentials
+import MobileClientAccessKituraCredentialsPlugin
+import MobileClientAccess
+import Credentials
 
 /**
 * Function for setting up the different routes for this app.
 */
 func defineRoutes() {
   // Credentials, database, and PushNotifications client...
-  // Temporarily removing credentials and MCA code... see https://github.com/IBM-Swift/Kitura/issues/487
-  // let credentials = Credentials()
-  // credentials.register(plugin: MobileClientAccessKituraCredentialsPlugin())
+  let credentials = Credentials()
+  credentials.register(plugin: MobileClientAccessKituraCredentialsPlugin())
   let pushNotificationsClient =
   PushNotifications(bluemixRegion: PushNotifications.Region.US_SOUTH, bluemixAppGuid: mobileClientAccessProps.clientId, bluemixAppSecret: ibmPushProps.secret)
-  let dbClient = CouchDBClient(connectionProperties: couchDBConnProps)
-  let database = dbClient.database("bluepic_db")
+
+  // Assign middleware instance (for securing endpoints)
+  router.get("/users", middleware: credentials)
+  router.post("/users", middleware: credentials)
 
   // Hello closure
   let closure = { (request: RouterRequest, response: RouterResponse, next: () -> Void) -> Void in
@@ -247,7 +248,7 @@ func defineRoutes() {
       return
     }
 
-    readImage(database: database, imageId: imageId, callback: { (jsonImage) in
+    readImage(database: database, imageId: imageId) { (jsonImage) in
       if let jsonImage = jsonImage {
         let apnsSettings = Notification.Settings.Apns(badge: nil, category: "imageProcessed", iosActionKey: nil, sound: nil, type: ApnsType.DEFAULT, payload: jsonImage.dictionaryObject)
         let settings = Notification.Settings(apns: apnsSettings, gcm: nil)
@@ -255,20 +256,25 @@ func defineRoutes() {
         let message = Notification.Message(alert: "Your image was processed; check it out!", url: nil)
         let notification = Notification(message: message, target: target, settings: settings)
         pushNotificationsClient.send(notification: notification) { (error) in
-          if error != nil {
-            print("Failed to send push notification. Error: \(error!)")
+          if let error = error {
+            print("Failed to send push notification: \(error)")
+            response.error = generateInternalError()
+            next()
+          } else {
+            response.status(HTTPStatusCode.OK)
+            next()
           }
         }
       } else {
         response.error = generateInternalError()
+        next()
       }
-    })
+    }
   }
 
   /**
   * Route for getting all user documents.
   */
-  //router.get("/users", middleware: credentials)
   router.get("/users") { request, response, next in
     database.queryByView("users", ofDesign: "main_design", usingParameters: [.descending(true), .includeDocs(false)]) { (document, error) in
       if let document = document where error == nil {
@@ -291,7 +297,6 @@ func defineRoutes() {
   /**
   * Route for getting a specific user document.
   */
-  //router.get("/users/:userId", middleware: credentials)
   router.get("/users/:userId") { request, response, next in
     guard let userId = request.params["userId"] else {
       response.status(HTTPStatusCode.badRequest)
@@ -332,21 +337,19 @@ func defineRoutes() {
   * to send the image metadata, while the body of the request only
   * contains the binary data for the image. I know, yuck...
   */
-  //router.post("/users/:userId/images/:fileName/:caption/:width/:height/:latitude/:longitude/:location", middleware: credentials)
   router.post("/users/:userId/images/:fileName/:caption/:width/:height/:latitude/:longitude/:location") { request, response, next in
     do {
       var imageJSON = try getImageJSON(fromRequest: request)
-      
-      // Determine facebook ID from MCA; verify that provided userId in URL match facebook ID.
-      // let userId = imageJSON["userId"].stringValue
-      // guard let authContext = request.userInfo["mcaAuthContext"] as? AuthorizationContext,
-      // userIdentity = authContext.userIdentity?.id where userId == userIdentity else {
-      // Log.error("User is not authorized to post image.")
-      // response.error = generateInternalError()
-      // next()
-      // return
-      // }
-      // Log.verbose("userId: '\(userId)', userIdentity: '\(userIdentity)'.")
+
+      // Determine facebook ID from MCA; verify that provided userId in URL matches facebook ID.
+      let userId = imageJSON["userId"].stringValue
+      guard let authContext = request.userInfo["mcaAuthContext"] as? AuthorizationContext,
+      userIdentity = authContext.userIdentity?.id where userId == userIdentity else {
+        Log.error("User is not authorized to post image.")
+        response.error = generateInternalError()
+        next()
+        return
+      }
 
       // Get image binary from request body
       let image = try BodyParser.readBodyData(with: request)
@@ -371,6 +374,7 @@ func defineRoutes() {
             imageJSON["_id"].stringValue = id
             imageJSON["_rev"].stringValue = revision
             response.status(HTTPStatusCode.OK).send(json: imageJSON)
+            next()
           }
         } else {
           Log.error("Failed to create image record in Cloudant database.")
@@ -419,7 +423,6 @@ func defineRoutes() {
   /**
   * Route for creating a new user document in the database.
   */
-  //router.post("/users", middleware: credentials)
   router.post("/users") { request, response, next in
     do {
       let rawUserData = try BodyParser.readBodyData(with: request)

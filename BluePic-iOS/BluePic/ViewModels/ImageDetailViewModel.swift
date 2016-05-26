@@ -99,11 +99,11 @@ extension ImageDetailViewModel {
      */
     func setUpSectionHeaderViewForIndexPath(indexPath : NSIndexPath, kind: String, collectionView : UICollectionView) -> ImageInfoHeaderCollectionReusableView {
         
-        let header : ImageInfoHeaderCollectionReusableView
+        guard let header = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "ImageInfoHeaderCollectionReusableView", forIndexPath: indexPath) as? ImageInfoHeaderCollectionReusableView else {
+            return ImageInfoHeaderCollectionReusableView()
+        }
         
-        header = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "ImageInfoHeaderCollectionReusableView", forIndexPath: indexPath) as! ImageInfoHeaderCollectionReusableView
-        
-        header.setupWithData(image.caption, userFullName: image.user?.name, locationName: image.location?.name, latitude: image.location?.latitude, longitude: image.location?.longitude, timeStamp: image.timeStamp, weatherIconId: image.location?.weather?.iconId, temperature: image.location?.weather?.temperature, tags: image.tags)
+        header.setupWithData(image.caption, userFullName: image.user.name, locationName: image.location.name, latitude: image.location.latitude, longitude: image.location.longitude, timeStamp: image.timeStamp, weatherIconId: image.location.weather?.iconId, temperature: image.location.weather?.temperature, tags: image.tags)
         
         return header
     }
@@ -119,13 +119,11 @@ extension ImageDetailViewModel {
      */
     func setUpCollectionViewCell(indexPath : NSIndexPath, collectionView : UICollectionView) -> UICollectionViewCell {
         
-        guard let cell = collectionView.dequeueReusableCellWithReuseIdentifier("TagCollectionViewCell", forIndexPath: indexPath) as? TagCollectionViewCell else {
+        guard let cell = collectionView.dequeueReusableCellWithReuseIdentifier("TagCollectionViewCell", forIndexPath: indexPath) as? TagCollectionViewCell, tags = image.tags else {
             return UICollectionViewCell()
         }
         
-        let tags = image.tags!
-        
-        cell.tagLabel.text = tags[indexPath.item].label?.uppercaseString
+        cell.tagLabel.text = tags[indexPath.item].label.uppercaseString
         return cell
         
     }

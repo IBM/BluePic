@@ -179,7 +179,6 @@ class ProfileViewController: UIViewController {
 }
 
 
-
 extension ProfileViewController: UICollectionViewDataSource {
     
     
@@ -199,7 +198,6 @@ extension ProfileViewController: UICollectionViewDataSource {
             collectionView: collectionView
         )
     }
-    
     
     
     /**
@@ -287,18 +285,15 @@ extension ProfileViewController: UICollectionViewDelegateFlowLayout {
 }
 
 
-
 extension ProfileViewController : UIScrollViewDelegate {
-
 
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         
-        if let imageDetailViewModel = viewModel.prepareImageDetailViewModelForSelectedCellAtIndexPath(indexPath){
+        if let imageDetailViewModel = viewModel.prepareImageDetailViewModelForSelectedCellAtIndexPath(indexPath),
+            imageDetailVC = Utils.vcWithNameFromStoryboardWithName("ImageDetailViewController", storyboardName: "Feed") as? ImageDetailViewController {
             
-            let imageDetailVC = Utils.vcWithNameFromStoryboardWithName("ImageDetailViewController", storyboardName: "Feed") as! ImageDetailViewController
             imageDetailVC.viewModel = imageDetailViewModel
-            
             self.navigationController?.pushViewController(imageDetailVC, animated: true)
         }
         
@@ -351,9 +346,3 @@ extension ProfileViewController : UIScrollViewDelegate {
     }
 
 }
-
-
-
-
-
-
