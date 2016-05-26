@@ -176,9 +176,10 @@ func defineRoutes() {
   * http://stackoverflow.com/questions/1468684/multiple-key-ranges-as-parameters-to-a-couchdb-view
   */
   router.get("/images") { request, response, next in
-    if let tag = request.queryParams["tag"] {
+    if var tag = request.queryParams["tag"] {
       // Get images by tag
       // let _ = tag.characters.split(separator: ",").map(String.init)
+      tag = StringUtils.decodeWhiteSpace(inString: tag)
       let queryParams: [Database.QueryParameters] =
       [.descending(true), .includeDocs(true), .reduce(false), .endKey([tag, "0", "0", 0]), .startKey([tag, NSObject()])]
       database.queryByView("images_by_tags", ofDesign: "main_design", usingParameters: queryParams) { (document, error) in
