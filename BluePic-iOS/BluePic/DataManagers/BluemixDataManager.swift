@@ -48,8 +48,6 @@ class BluemixDataManager: NSObject {
     //Data Variables
     var images = [Image]()
     
-    var searchResultImages = [Image]()
-    
     var currentUserImages : [Image] {
         get {
             if let currentUserFbId = CurrentUser.facebookUserId {
