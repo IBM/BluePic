@@ -16,8 +16,6 @@
 
 import UIKit
 
-
-/// Responsible for initiating Facebook login. VC which allows user to either login later or login with Facebook
 class LoginViewController: UIViewController {
 
     /// Loading indicator when connecting to Facebook
@@ -35,19 +33,21 @@ class LoginViewController: UIViewController {
     /// Label to tell user that the application is connecting with Facebook while loading
     @IBOutlet weak var connectingLabel: UILabel!
     
+    //label that tells the user what bluepic is
     @IBOutlet weak var aboutBluePicLabel: UILabel!
     
     /// ViewModel for this VC, responsible for holding data and any state
     var viewModel: LoginViewModel!
     
+    //error message shown to user when there is an error
     private let kLoginErrorMessage = NSLocalizedString("Oops, an error occurred! Try again.", comment: "")
     
+    //string shown in the aboutBluePicLabel
     private let kAboutBluePicLabelText = NSLocalizedString("BluePic is an amazing app for taking\n pictures and sharing them to the\n BluePic community. BluePic is\n also built on IBM Bluemix services.", comment: "")
    
 
-    
     /**
-     Method called upon view did load. In this case we set up the view model.
+     Method called upon view did load. In this case we set up the view model and the aboutBluePicLabel
      */
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,61 +57,26 @@ class LoginViewController: UIViewController {
    
     }
     
+    /**
+     Method sets the status bar to white
+     
+     - parameter animated: Bool
+     */
     override func viewWillAppear(animated: Bool) {
         UIApplication.sharedApplication().statusBarStyle = .LightContent
     }
 
     
     /**
-     Method to setup this VC's viewModel and provide it a callback method to execute
+     Method to setup this VC's viewModel and provide it a callback method to all the vc to receive notifications from its view model
      */
     func setupViewModel() {
         viewModel = LoginViewModel(notifyLoginVC: handleLoginViewModelNotifications)
     }
     
-    func handleLoginViewModelNotifications(loginViewModelNotification : LoginViewModelNotification){
-        
-        if(loginViewModelNotification == LoginViewModelNotification.LoginSuccess){
-            handleLoginSuccess()
-        }
-        else if(loginViewModelNotification == LoginViewModelNotification.LoginFailure){
-            handleLoginFailure()
-        }
-        else if(loginViewModelNotification == LoginViewModelNotification.UserCanceledLogin){
-            handleUserCanceledLogin()
-        }
-        
-    }
-    
-    func handleLoginSuccess(){
-        dispatch_async(dispatch_get_main_queue()) {
-            self.dismissViewControllerAnimated(true, completion: nil)
-        }
-    }
-    
-    func handleUserCanceledLogin(){
-        dispatch_async(dispatch_get_main_queue()) {
-            self.welcomeLabel.hidden = true
-            self.facebookButton.hidden = false
-            self.signInLaterButton.hidden = false
-            self.connectingLabel.hidden = true
-        }
-    }
-    
-    
-    func handleLoginFailure(){
-        
-        dispatch_async(dispatch_get_main_queue()) {
-            self.welcomeLabel.text = self.kLoginErrorMessage
-            self.welcomeLabel.hidden = false
-            self.facebookButton.hidden = false
-            self.signInLaterButton.hidden = false
-            self.connectingLabel.hidden = true
-        }
-        
-    }
-    
-    
+    /**
+     Method sets up the aboutBluePicLabel's text with the kAboutBluePicLabelText property
+     */
     private func setupAboutBluePicLabel(){
     
         aboutBluePicLabel.text = kAboutBluePicLabelText
@@ -159,12 +124,12 @@ class LoginViewController: UIViewController {
     /**
      Method to stop the loading animation and setup UI for done loading state
      */
-    func stopLoading() {
-        loadingIndicator.stopAnimating()
-        loadingIndicator.hidden = true
-        welcomeLabel.hidden = false
-        connectingLabel.hidden = true
-    }
+//    func stopLoading() {
+//        loadingIndicator.stopAnimating()
+//        loadingIndicator.hidden = true
+//        welcomeLabel.hidden = false
+//        connectingLabel.hidden = true
+//    }
 
     
     /**
@@ -175,4 +140,70 @@ class LoginViewController: UIViewController {
     }
 
     
+}
+
+// MARK: - ViewModel -> View Controller Communication
+extension LoginViewController {
+    
+    /**
+     Method that is called by the view model when the view model wants to notifiy this vc with notifications of events that have occurred
+     
+     - parameter loginViewModelNotification: LoginViewModelNotification
+     */
+    func handleLoginViewModelNotifications(loginViewModelNotification : LoginViewModelNotification){
+        
+        if(loginViewModelNotification == LoginViewModelNotification.LoginSuccess){
+            handleLoginSuccess()
+        }
+        else if(loginViewModelNotification == LoginViewModelNotification.LoginFailure){
+            handleLoginFailure()
+        }
+        else if(loginViewModelNotification == LoginViewModelNotification.UserCanceledLogin){
+            handleUserCanceledLogin()
+        }
+        
+    }
+    
+    /**
+     Method handles when there was a login success
+     */
+    func handleLoginSuccess(){
+        dispatch_async(dispatch_get_main_queue()) {
+            self.dismissViewControllerAnimated(true, completion: nil)
+        }
+    }
+    
+    
+    /**
+     Method handles when the user canceled login
+     */
+    func handleUserCanceledLogin(){
+        dispatch_async(dispatch_get_main_queue()) {
+            self.welcomeLabel.hidden = true
+            self.facebookButton.hidden = false
+            self.signInLaterButton.hidden = false
+            self.connectingLabel.hidden = true
+            self.loadingIndicator.stopAnimating()
+            self.loadingIndicator.hidden = true
+
+        }
+    }
+    
+    
+    /**
+     Method handles when there was a login failure
+     */
+    func handleLoginFailure(){
+        
+        dispatch_async(dispatch_get_main_queue()) {
+            self.welcomeLabel.text = self.kLoginErrorMessage
+            self.welcomeLabel.hidden = false
+            self.facebookButton.hidden = false
+            self.signInLaterButton.hidden = false
+            self.connectingLabel.hidden = true
+            self.loadingIndicator.stopAnimating()
+            self.loadingIndicator.hidden = true
+        }
+        
+    }
 }
