@@ -12,6 +12,12 @@ declared-services:
   imfpush:
     label: IBM Push Notifications-12
     plan: Basic
+  watson_vision_combined:
+    label: Visual Recognition-pv
+    plan: free
+  weatherinsights:
+    label: Insights for Weather-tt
+    plan: Free
 applications:
 - name: BluePic
   path: ./BluePic-Server
@@ -25,3 +31,5 @@ applications:
   - Object Storage-bv
   - Mobile Client Access-ag
   - IBM Push Notifications-12
+  - Visual Recognition-pv
+  - Insights for Weather-tt
