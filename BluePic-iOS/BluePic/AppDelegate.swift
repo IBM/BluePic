@@ -42,7 +42,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         application.registerForRemoteNotifications()
         
         //pre load the keyboard on the camera confirmayion screen to prevent laggy behavior
-        preLoadKeyboardToPrevantLaggyKeyboardInCameraConfirmationScreen()
+        //preLoadKeyboardToPrevantLaggyKeyboardInCameraConfirmationScreen()
         
         //Fetch images on app launch
         BluemixDataManager.SharedInstance.getImages()

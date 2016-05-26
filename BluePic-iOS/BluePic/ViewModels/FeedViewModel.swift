@@ -295,15 +295,14 @@ extension FeedViewModel {
         //Section 0 corresponds to showing ImagesCurrentlyUploadingImageFeedCollectionViewCell collection view cells. These cells show when there are images in the imagesCurrentlyUploading array of the BluemixDataManager
         if(indexPath.section == 0){
             
-            let cell : ImagesCurrentlyUploadingImageFeedCollectionViewCell
-            
-            cell = collectionView.dequeueReusableCellWithReuseIdentifier("ImagesCurrentlyUploadingImageFeedCollectionViewCell", forIndexPath: indexPath) as! ImagesCurrentlyUploadingImageFeedCollectionViewCell
-            
-            if((BluemixDataManager.SharedInstance.imagesCurrentlyUploading.count - 1) >= indexPath.row){
-                let image = BluemixDataManager.SharedInstance.imagesCurrentlyUploading[indexPath.row]
-                cell.setupData(image.image, caption: image.caption)
+            guard let cell = collectionView.dequeueReusableCellWithReuseIdentifier("ImagesCurrentlyUploadingImageFeedCollectionViewCell", forIndexPath: indexPath) as? ImagesCurrentlyUploadingImageFeedCollectionViewCell else {
+                return UICollectionViewCell()
             }
-
+            
+            let image = BluemixDataManager.SharedInstance.imagesCurrentlyUploading[indexPath.row]
+            
+            cell.setupData(image.image, caption: image.caption)
+            
             return cell
             
         }
