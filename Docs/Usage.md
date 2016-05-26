@@ -37,7 +37,7 @@ Please note that while trying to post a photo using the iOS simulator, the app m
 
 <p align="center">
 <img src="../Imgs/location-simulate.png"  alt="Drawing"  border=0 /></p>
-<p align="center">Figure 1. Set simulated location</p>
+<p align="center">Figure 5. Set simulated location</p>
 
 Any location should work fine, but remember this may have to be done for each launch of the iOS simulator. Running BluePic on a physical device avoids this issue entirely.
 
@@ -47,7 +47,7 @@ By tapping the third tab, you can view your profile. This shows your Facebook pr
 
 <p align="center">
 <img src="../Imgs/profile.PNG"  alt="Drawing" height=550 border=0 /></p>
-<p align="center">Figure 5. Profile feed.</p>
+<p align="center">Figure 6. Profile feed.</p>
 
 ### View Popular Tags
 
@@ -55,7 +55,7 @@ By tapping on the magnifing glass icon on feed view, we can navigate to the sear
 
 <p align="center">
 <img src="../Imgs/tags.png"  alt="tags" height=550 border=0 /></p>
-<p align="center">Figure 6. Popular tags and search.</p>
+<p align="center">Figure 7. Popular tags and search.</p>
 
 ### View Search Results
 
@@ -63,4 +63,4 @@ Once the search has been performed, all the results are listed in a view just li
 
 <p align="center">
 <img src="../Imgs/search.png"  alt="search-results" height=550 border=0 /></p>
-<p align="center">Figure 7. Search results.</p>
+<p align="center">Figure 8. Search results.</p>
