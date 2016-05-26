@@ -62,6 +62,11 @@ class ProfileViewController: UIViewController {
         
     }
     
+    /**
+     Method called upon view will appear, it sets the status bar to black
+     
+     - parameter animated: <#animated description#>
+     */
     override func viewWillAppear(animated: Bool) {
         UIApplication.sharedApplication().statusBarStyle = UIStatusBarStyle.Default
     }
@@ -77,7 +82,7 @@ class ProfileViewController: UIViewController {
     
     
     /**
-     Method called sets up the viewModel and passes it a method to call when there is new data and we need to reload the collection view
+     Method called sets up the viewModel and passes it a method to call when there is new data and we need to reload the collection view of the profile vc
      */
     func setupViewModel(){
         
@@ -266,7 +271,7 @@ extension ProfileViewController: UICollectionViewDelegateFlowLayout {
     
     
     /**
-     Method
+     Method sets the size for item at indexpath, either for the empty feed colelction view cell or the profile collection cell by asking its view model for the size
      
      - parameter collectionView:       UICollectionview
      - parameter collectionViewLayout: UICollectionviewLayout
@@ -287,7 +292,12 @@ extension ProfileViewController: UICollectionViewDelegateFlowLayout {
 
 extension ProfileViewController : UIScrollViewDelegate {
 
-    
+    /**
+     Method is called upon when a cell in the collection view is selected. It this case we segue to the image detail, first asking the view model to set up the view model of the image detail vc were about to segue to
+     
+     - parameter collectionView: UICollectionView
+     - parameter indexPath:      NSIndexPath
+     */
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         
         if let imageDetailViewModel = viewModel.prepareImageDetailViewModelForSelectedCellAtIndexPath(indexPath),
