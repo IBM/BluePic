@@ -1,22 +1,22 @@
 ---
 declared-services:
   cloudantNoSQLDB:
-    label: Cloudant NoSQL DB-fz
+    label: BluePic-Cloudant
     plan: Shared
   Object-Storage:
-    label: Object Storage-bv
+    label: BluePic-Object-Storage
     plan: standard
   AdvancedMobileAccess:
-    label: Mobile Client Access-ag
+    label: BluePic-Mobile-Client-Access
     plan: Gold
   imfpush:
-    label: IBM Push Notifications-12
+    label: BluePic-IBM-Push
     plan: Basic
   watson_vision_combined:
-    label: Visual Recognition-pv
+    label: BluePic-Visual-Recognition
     plan: free
   weatherinsights:
-    label: Insights for Weather-tt
+    label: BluePic-Insights-for-Weather
     plan: Free
 applications:
 - name: BluePic
@@ -27,9 +27,9 @@ applications:
   instances: 1
   buildpack: https://github.com/IBM-Swift/swift-buildpack.git
   services:
-  - Cloudant NoSQL DB-fz
-  - Object Storage-bv
-  - Mobile Client Access-ag
-  - IBM Push Notifications-12
-  - Visual Recognition-pv
-  - Insights for Weather-tt
+  - BluePic-Cloudant
+  - BluePic-Object-Storage
+  - BluePic-Mobile-Client-Access
+  - BluePic-IBM-Push
+  - BluePic-Visual-Recognition
+  - BluePic-Insights-for-Weather
