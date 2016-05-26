@@ -19,6 +19,9 @@ import PackageDescription
 let package = Package(
     name: "BluePic-Server",
     dependencies: [
+      //stopgap solution
+      .Package(url: "https://github.com/IBM-Swift/Kitura-Credentials.git", "0.15.0"),
+      //stopgap solution
       .Package(url: "https://github.com/IBM-Swift/Kitura.git", majorVersion: 0, minor: 15),
       .Package(url: "https://github.com/IBM-Swift/Kitura-CouchDB.git", majorVersion: 0, minor: 15),
       .Package(url: "https://github.com/IBM-Swift/Swift-cfenv.git", majorVersion: 1),
