@@ -4,11 +4,9 @@
 <dict>
 	<key>isLocal</key>
 	<true/>
-	<key>bluemixBaseRequestURL_remote</key>
-	<string>https://IBM-BluePic.mybluemix.net</string>
-	<key>bluemixBaseRequestURL_local</key>
+	<key>appRouteLocal</key>
 	<string>http://localhost:8090</string>
-	<key>bluemixAppRoute</key>
+	<key>appRouteRemote</key>
 	<string>https://IBM-BluePic.mybluemix.net</string>
 	<key>bluemixAppGUID</key>
 	<string>75eef52c-2ed1-4518-9587-ce55cc66479d</string>

@@ -83,7 +83,7 @@ class BluemixDataManager: NSObject {
     func initilizeBluemixAppRoute(){
         
         BMSClient.sharedInstance
-            .initializeWithBluemixAppRoute(bluemixConfig.appRoute,
+            .initializeWithBluemixAppRoute(bluemixConfig.remoteBaseRequestURL,
                                            bluemixAppGUID: bluemixConfig.appGUID,
                                            bluemixRegion: bluemixConfig.appRegion)
         

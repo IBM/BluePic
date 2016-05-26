@@ -28,7 +28,7 @@ The following Swift packages are used in BluePic:
 The following diagram captures the architecture for the BluePic app:
 <p align="center">
 <img src="../Imgs/architecture.png"  alt="Drawing" height=450 border=0 /></p>
-<p align="center">Figure 2. BluePic Architecture Diagram.</p>
+<p align="center">Figure 1. BluePic Architecture Diagram.</p>
 
 ## Using BluePic
 

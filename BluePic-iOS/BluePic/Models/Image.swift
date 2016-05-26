@@ -16,7 +16,6 @@
 
 import UIKit
 
-
 struct Tag {
     var label: String
     var confidence: CGFloat
@@ -36,7 +35,6 @@ struct Weather {
 }
 
 class Image: NSObject {
-
     var id : String?
     var caption : String
     var fileName : String
@@ -48,7 +46,7 @@ class Image: NSObject {
     var location : Location
     var tags : [Tag]?
     var user : User
-    
+
     init(caption: String, fileName: String, width: CGFloat, height: CGFloat, image: UIImage, location: Location, user: User) {
         self.caption = caption
         self.fileName = fileName
@@ -58,83 +56,79 @@ class Image: NSObject {
         self.location = location
         self.user = user
     }
-    
+
     init?(_ dict : [String : AnyObject]) {
-        
-            // MARK: Set optional properties
-        
-            if let url = dict["url"] as? String {
-                self.url = url
+
+        // MARK: Set optional properties
+
+        if let url = dict["url"] as? String {
+            self.url = url
+        }
+        if let timeStamp = dict["uploadedTs"] as? String {
+            let dateFormatter = NSDateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+            dateFormatter.timeZone = NSTimeZone(abbreviation: "UTC")
+            if let date = dateFormatter.dateFromString(timeStamp) {
+                self.timeStamp = date
             }
-            if let timeStamp = dict["uploadedTs"] as? String {
-                
-                let dateFormatter = NSDateFormatter()
-                dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
-                dateFormatter.timeZone = NSTimeZone(abbreviation: "UTC")
-                if let date = dateFormatter.dateFromString(timeStamp) {
-                    self.timeStamp = date
+        }
+
+        //Parse tags data
+        var tagsArray = [Tag]()
+        if let tags = dict["tags"] as? [[String: AnyObject]] {
+            for tag in tags {
+                if let label = tag["label"] as? String,
+                let confidence = tag["confidence"] as? CGFloat {
+                    let tag = Tag(label: label, confidence: confidence)
+                    tagsArray.append(tag)
                 }
             }
-        
-            //Parse tags data
-            var tagsArray = [Tag]()
-            if let tags = dict["tags"] as? [[String: AnyObject]] {
-                for tag in tags {
-                    if let label = tag["label"] as? String,
-                        let confidence = tag["confidence"] as? CGFloat {
-                        
-                        let tag = Tag(label: label, confidence: confidence)
-                        tagsArray.append(tag)
-                        
-                    }
+        }
+        self.tags = tagsArray
+
+        // MARK: Set required properties
+
+        if let id = dict["_id"] as? String,
+            let caption = dict["caption"] as? String,
+            let fileName = dict["fileName"] as? String,
+            let width = dict["width"] as? CGFloat,
+            let height = dict["height"] as? CGFloat,
+            let user = dict["user"] as? [String : AnyObject],
+            usersName = user["name"] as? String,
+            usersId = user["_id"] as? String {
+
+            self.id = id
+            self.caption = caption
+            self.fileName = fileName
+            self.width = width
+            self.height = height
+            self.user = User(facebookID: usersId, name: usersName)
+
+            //Parse location data
+            if let location = dict["location"] as? [String : AnyObject],
+                name = location["name"] as? String,
+                latitude = location["latitude"] as? CGFloat,
+                longitude = location["longitude"] as? CGFloat{
+
+                //Parse weather object
+                var weatherObject: Weather?
+                if let weather = location["weather"] as? [String : AnyObject],
+                temperature = weather["temperature"] as? Int,
+                iconId = weather["iconId"] as? Int,
+                description = weather["description"] as? String {
+                    weatherObject = Weather(temperature: temperature, iconId: iconId, description: description)
                 }
-            }
-            self.tags = tagsArray
-        
-            // MARK: Set required properties
-        
-            if let id = dict["_id"] as? String,
-                let caption = dict["caption"] as? String,
-                let fileName = dict["fileName"] as? String,
-                let width = dict["width"] as? CGFloat,
-                let height = dict["height"] as? CGFloat,
-                let user = dict["user"] as? [String : AnyObject],
-                usersName = user["name"] as? String,
-                usersId = user["_id"] as? String{
-            
-                self.id = id
-                self.caption = caption
-                self.fileName = fileName
-                self.width = width
-                self.height = height
-                self.user = User(facebookID: usersId, name: usersName)
-    
-                //Parse location data
-                if let location = dict["location"] as? [String : AnyObject],
-                    name = location["name"] as? String,
-                    latitude = location["latitude"] as? CGFloat,
-                    longitude = location["longitude"] as? CGFloat{
-                    
-                    //Parse weather object
-                    var weatherObject: Weather?
-                    if let weather = location["weather"] as? [String : AnyObject],
-                    temperature = weather["temperature"] as? Int,
-                    iconId = weather["iconId"] as? Int,
-                    description = weather["description"] as? String {
-                        weatherObject = Weather(temperature: temperature, iconId: iconId, description: description)
-                    }
-                    
-                    self.location = Location(name: name, latitude: "\(latitude)", longitude: "\(longitude)", weather: weatherObject)
-     
-                } else {
-                    print("invalid image json")
-                    return nil
-                }
+
+                self.location = Location(name: name, latitude: "\(latitude)", longitude: "\(longitude)", weather: weatherObject)
 
             } else {
                 print("invalid image json")
                 return nil
             }
-        
+
+        } else {
+            print("invalid image json")
+            return nil
+        }
     }
 }
