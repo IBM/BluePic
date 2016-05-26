@@ -16,9 +16,25 @@
 # limitations under the License.
 ##
 
+# If any commands fail, we want the shell script to exit immediately.
+set -e
+
+# Delete services first
+echo "Deleting services..."
+cf delete-service -f "Cloudant NoSQL DB-fz"
+cf delete-service -f "Object Storage-bv"
+cf delete-service -f "Mobile Client Access-ag"
+cf delete-service -f "IBM Push Notifications-12"
+cf delete-service -f "Visual Recognition-pv"
+cf delete-service -f "Insights for Weather-tt"
+echo "Services deleted."
+
+# Create services
+echo "Creating services..."
 cf create-service cloudantNoSQLDB Shared "Cloudant NoSQL DB-fz"
 cf create-service Object-Storage standard "Object Storage-bv"
 cf create-service AdvancedMobileAccess Gold "Mobile Client Access-ag"
 cf create-service imfpush Basic "IBM Push Notifications-12"
 cf create-service watson_vision_combined free "Visual Recognition-pv"
 cf create-service weatherinsights Free "Insights for Weather-tt"
+echo "Services created."
