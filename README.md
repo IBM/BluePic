@@ -109,7 +109,15 @@ TODO: ADD CONTENTS
 
 TODO: ADD CONTENTS
 
-#### 11. Update configuration for iOS app
+#### 11. Build the BluePic-Server
+
+You can now build the BluePic-Server by going to the `BluePic-Server` directory of the cloned repository and running `make`.
+
+#### 12. Run the BluePic-Server
+
+To start the Kitura-based server for the BluePic app, go to the `BluePic-Server` directory of the cloned repository and run `.build/debug/Server`.
+
+#### 13. Update configuration for iOS app
 
 1. Go to the BluePic-iOS directory and open the BluePic workspace with Xcode using `open BluePic.xcworkspace`.
 
@@ -120,15 +128,7 @@ TODO: ADD CONTENTS
 
 1. Let's finally update the `bluemix.plist` in the Xcode project. TODO: Add contents
 
-#### 12. Build the BluePic-Server
-
-You can now build the BluePic-Server by going to the `BluePic-Server` directory of the cloned repository and running `make`.
-
-#### 13. Run the BluePic-Server
-
-To start the Kitura-based server for the BluePic app, go to the `BluePic-Server` directory of the cloned repository and run `.build/debug/Server`.
-
-#### 15. Run the iOS app
+#### 14. Run the iOS app
 
 If you don't have the iOS project already open, go to the BluePic-iOS directory and open the BluePic workspace using `open BluePic.xcworkspace`.
 
