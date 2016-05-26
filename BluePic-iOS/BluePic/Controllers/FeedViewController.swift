@@ -59,7 +59,7 @@ class FeedViewController: UIViewController {
     
     
     /**
-     Method called upon view did load. It sets up the collection view and sets up the view model
+     Method called upon view did load. It sets up the collection view, sets up the view model, starts the loading animation at app launch, determines the feed model, and observes when the application becomes active
      */
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -89,6 +89,9 @@ class FeedViewController: UIViewController {
         
     }
     
+    /**
+     Method observes when the application becomes active. It does this so we can restart the loading animation
+     */
     func observeWhenApplicationBecomesActive(){
         
         let notificationCenter = NSNotificationCenter.defaultCenter()
@@ -100,12 +103,15 @@ class FeedViewController: UIViewController {
 
     }
     
+    /**
+     Method is called when the application did become active. It trys to restart the loading animation
+     */
     func didBecomeActive(){
         tryToStartLoadingAnimation()
     }
     
     /**
-     Method called upon view will appear. It trys to start the loading animation if there are any photos in the camera data manager's picture upload queue
+     Method called upon view will appear. It trys to start the loading animation if there are any photos in the BluemixDataManager's imagesCurrentlyUploading property. It also sets the status bar to white and sets the navigation bar to hidden
      
      - parameter animated: Bool
      */
@@ -128,7 +134,7 @@ class FeedViewController: UIViewController {
 
 
     /**
-     Method sets up the view model, passes the callback we want ot be called when there are notifications from the feed view model
+     Method sets up the view model, passes the callback we want to be called when there are notifications from the feed view model
      */
     func setupViewModel(){
         viewModel = FeedViewModel(notifyFeedVC: handleFeedViewModelNotifications, searchQuery: searchQuery)
@@ -182,8 +188,11 @@ class FeedViewController: UIViewController {
         
     }
     
+    /**
+     Method starts the loading animation at app launch
+     */
     func startLoadingAnimationAtAppLaunch(){
-        if(viewModel.shouldBeginLoading()){
+        if(viewModel.shouldBeginLoadingAtAppLaunch()){
             dispatch_async(dispatch_get_main_queue()) {
                 self.logoImageView.startRotating(1)
             }
@@ -192,11 +201,11 @@ class FeedViewController: UIViewController {
    
     
     /**
-     Method will try to start the loading animation if there are any photos in the picture upload queue. This allows for the loading animation to start up again if the user switches between the image feed and profile vc
+     Method will try to start the loading animation if there are any images in the imagesCurrentlyUploading property of the BluemixDataManager. This allows for the loading animation to start up again if the user switches between the image feed and profile vc
      */
     func tryToStartLoadingAnimation(){
         
-        if(BluemixDataManager.SharedInstance.imagesCurrentlyUploading.count > 0){
+        if(viewModel.shouldStartLoadingAnimation()){
             logoImageView.startRotating(1)
         }
         
@@ -204,27 +213,40 @@ class FeedViewController: UIViewController {
     
     
     /**
-     Method will only allow the loading animation of the eye to stop if the picture upload queue is empty. This is because if the picture upload queue has picture in it, then we want to ensure the eye continues to spin until all the photos in the picture upload queue have finished uploading
+     Method will only allow the loading animation of the eye to stop if the imagesCurrentlyUploading property of the BluemixDataManager is empty. This is because if the imagesCurrentlyUploading has picture in it, then we want to ensure the eye continues to spin until all the images in the imagesCurrentlyUploading property have finished uploading
      */
     func tryToStopLoadingAnimation(){
         
-        if(BluemixDataManager.SharedInstance.imagesCurrentlyUploading.count == 0){
+        if(viewModel.shouldStopLoadingAnimation()){
             
             logoImageView.stopRotating()
             
         } 
     }
     
+    /**
+     Method is caleld when the search icon in the top right corner is pressed
+     
+     - parameter sender: AnyObject
+     */
     @IBAction func transitionToSearch(sender: AnyObject) {
         if let vc = Utils.vcWithNameFromStoryboardWithName("SearchViewController", storyboardName: "Feed") as? SearchViewController {
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }
 
+    /**
+     Method pops the vc on the navigation stack when the back button is pressed when search results are shown
+     
+     - parameter sender: AnyObject
+     */
     @IBAction func popVC(sender: AnyObject) {
         self.navigationController?.popViewControllerAnimated(true)
     }
-    
+
+    /**
+     Method scrolls the collection view to the top
+     */
     func scrollCollectionViewToTop(){
         
         collectionView.contentOffset.y = 0
@@ -278,6 +300,12 @@ extension FeedViewController: UICollectionViewDataSource {
 extension FeedViewController: UICollectionViewDelegate {
     
     
+    /**
+     Method is called when a cell in the collection view is selected
+     
+     - parameter collectionView: UICollectionView
+     - parameter indexPath:      NSIndexPath
+     */
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         
         if let imageDetailViewModel = viewModel.prepareImageDetailViewModelForSelectedCellAtIndexPath(indexPath),
