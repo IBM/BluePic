@@ -18,8 +18,12 @@ import UIKit
 
 class TagCollectionViewCell: UICollectionViewCell {
 
+    //label that displays the tag string
     @IBOutlet weak var tagLabel: UILabel!
     
+    /**
+     Method called upon awake from nib
+     */
     override func awakeFromNib() {
         super.awakeFromNib()
     }
