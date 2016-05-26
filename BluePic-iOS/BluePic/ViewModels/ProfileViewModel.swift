@@ -149,27 +149,16 @@ extension ProfileViewModel {
                 
             let ratio = picture.height / picture.width
             
-            if let width = picture.width, let height = picture.height {
-                
-                let ratio = height / width
-                
-                var height = collectionView.frame.width * ratio
-                
-                if(height > kCollectionViewCellHeightLimit){
-                    height = kCollectionViewCellHeightLimit
-                }
-                
-                return CGSize(width: collectionView.frame.width, height: height + kCollectionViewCellInfoViewHeight)
-                
-            }
-            else{
-                return CGSize(width: collectionView.frame.width, height: collectionView.frame.width + kCollectionViewCellInfoViewHeight)
+            var height = collectionView.frame.width * ratio
+            
+            if(height > kCollectionViewCellHeightLimit){
+                height = kCollectionViewCellHeightLimit
             }
             
             return CGSize(width: collectionView.frame.width, height: height + kCollectionViewCellInfoViewHeight)
             
         }
-   
+        
     }
     
     

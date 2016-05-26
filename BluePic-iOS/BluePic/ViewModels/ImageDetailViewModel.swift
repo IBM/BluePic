@@ -138,11 +138,11 @@ extension ImageDetailViewModel {
      */
     func sizeForItemAtIndexPath(indexPath : NSIndexPath, collectionView : UICollectionView) -> CGSize {
         
-        let tags = image.tags!
-        
-        let size = NSString(string: tags[indexPath.item].label!).sizeWithAttributes(nil)
-        return CGSizeMake(size.width + kCellPadding, 30.0)
-        
+        if let tags = image.tags {
+            let size = NSString(string: tags[indexPath.item].label).sizeWithAttributes(nil)
+            return CGSizeMake(size.width + kCellPadding, 30.0)
+        }
+        return CGSizeZero
     }
     
     /**
@@ -187,15 +187,11 @@ extension ImageDetailViewModel {
      */
     func getFeedViewControllerForTagSearchAtIndexPath(indexPath : NSIndexPath) -> FeedViewController? {
         
-        let vc = Utils.vcWithNameFromStoryboardWithName("FeedViewController", storyboardName: "Feed") as! FeedViewController
-        
-        if let tagString = getTagForIndexPath(indexPath) {
+        if let vc = Utils.vcWithNameFromStoryboardWithName("FeedViewController", storyboardName: "Feed") as? FeedViewController, tagString = getTagForIndexPath(indexPath) {
             vc.searchQuery = tagString
             return vc
         }
-        else{
-            return nil
-        }
-        
+        return nil
+
     }
 }
