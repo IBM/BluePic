@@ -153,6 +153,13 @@ class Utils: NSObject {
     }
     
     
+    /**
+     Method converts a string to a dictionary
+     
+     - parameter text: String
+     
+     - returns: [String:AnyObject]?
+     */
     class func convertStringToDictionary(text: String) -> [String:AnyObject]? {
         if let data = text.dataUsingEncoding(NSUTF8StringEncoding) {
             do {
@@ -167,7 +174,13 @@ class Utils: NSObject {
     
     
     
-    
+    /**
+     Method converts a response to a dictionary
+     
+     - parameter response: Response?
+     
+     - returns: [String : AnyObject]
+     */
     class func convertResponseToDictionary(response : Response?) -> [String : AnyObject]? {
         
         if let resp = response {
@@ -184,7 +197,12 @@ class Utils: NSObject {
   
     }
     
-    // Kerning helper method
+    /**
+     Method takes in a label and a spacing value and kerns the labels text to this value
+     
+     - parameter label:        UILabel
+     - parameter spacingValue: CGFloat
+     */
     class func kernLabelString(label: UILabel, spacingValue: CGFloat) {
         
         if let text = label.text {
@@ -195,7 +213,14 @@ class Utils: NSObject {
         
     }
     
-    
+    /**
+     Method takes in latitude and longitude and formats these coordinates into a fancy format
+     
+     - parameter latitude:  Double
+     - parameter longitude: Double
+     
+     - returns: String
+     */
     class func coordinateString(latitude:Double, longitude:Double) -> String {
         var latSeconds = Int(latitude * 3600)
         let latDegrees = latSeconds / 3600
