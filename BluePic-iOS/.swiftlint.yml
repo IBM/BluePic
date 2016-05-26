@@ -1,0 +1,17 @@
+disabled_rules: # rule identifiers to exclude from running
+  - line_length
+  - control_statement
+  - legacy_constructor
+  - file_length
+  - variable_name
+  - valid_docs
+  - function_parameter_count
+  - function_body_length
+
+type_name:
+  max_length: # warning and error
+    warning: 60
+    error: 80
+
+excluded: # paths to ignore during linting. Takes precedence over `included`.
+  - Pods
