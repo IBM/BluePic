@@ -26,7 +26,6 @@ enum LoginDataManagerError {
 
 class LoginDataManager: NSObject {
 
-
     /// Shared instance of data manager
     static let SharedInstance: LoginDataManager = {
 
@@ -83,19 +82,13 @@ class LoginDataManager: NSObject {
                         callback(error: LoginDataManagerError.FacebookAuthenticationError)
                     }
                 }
-
             })
-
         }
     }
 
-
     func loginLater() {
-
         CurrentUser.willLoginLater = true
-
     }
-
 
     func isUserAuthenticatedOrPressedSignInLater() -> Bool {
         if isUserAlreadyAuthenticated() || CurrentUser.willLoginLater {
@@ -104,7 +97,6 @@ class LoginDataManager: NSObject {
            return false
         }
     }
-
 
     private func isUserAlreadyAuthenticated() -> Bool {
         if CurrentUser.facebookUserId != nil && CurrentUser.fullName != nil {

@@ -20,7 +20,6 @@ import UIKit
 
 extension UIImage {
 
-
     /**
      Resizes a UIImage given a height
 
@@ -39,8 +38,6 @@ extension UIImage {
 
         return newImage
     }
-
-
 
     /**
      Method rotates image by degrees provided in the parameter. As will it will flip it with true or not with false.
@@ -88,6 +85,5 @@ extension UIImage {
 
         return newImage
     }
-
 
 }

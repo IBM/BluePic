@@ -23,7 +23,6 @@ class ImageDetailViewController: UIViewController {
     @IBOutlet weak var backButton: UIButton!
     @IBOutlet weak var tagCollectionView: UICollectionView!
 
-
     var viewModel: ImageDetailViewModel!
 
     override func viewDidLoad() {
@@ -82,7 +81,6 @@ class ImageDetailViewController: UIViewController {
 
 }
 
-
 //UI Setup Methods
 extension ImageDetailViewController {
 
@@ -108,13 +106,11 @@ extension ImageDetailViewController {
 
 }
 
-
 extension ImageDetailViewController : UICollectionViewDataSource {
 
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel.numberOfItemsInSection(section)
     }
-
 
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         return viewModel.numberOfSectionsInCollectionView()
@@ -128,13 +124,11 @@ extension ImageDetailViewController : UICollectionViewDataSource {
         )
     }
 
-
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         return viewModel.setUpCollectionViewCell(indexPath, collectionView: collectionView)
     }
 
 }
-
 
 extension ImageDetailViewController: UICollectionViewDelegateFlowLayout {
 
@@ -143,14 +137,12 @@ extension ImageDetailViewController: UICollectionViewDelegateFlowLayout {
         return viewModel.sizeForItemAtIndexPath(indexPath, collectionView: collectionView)
     }
 
-
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
 
        return viewModel.referenceSizeForHeaderInSection(collectionView, layout: collectionViewLayout, section: section, superViewHeight: self.view.frame.size.height)
     }
 
 }
-
 
 extension ImageDetailViewController : UICollectionViewDelegate {
 

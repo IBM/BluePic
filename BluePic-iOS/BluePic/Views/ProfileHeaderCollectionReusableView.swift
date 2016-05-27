@@ -68,8 +68,5 @@ class ProfileHeaderCollectionReusableView: UICollectionReusableView {
             profilePictureImageView.sd_setImageWithURL(url)
 
         }
-
     }
-
-
 }

@@ -17,7 +17,6 @@
 import UIKit
 import BMSCore
 
-
 enum BlueMixDataManagerError: ErrorType {
     case DocDoesNotExist
     case UserDoesNotExist
@@ -32,7 +31,6 @@ enum BluemixDataManagerNotification: String {
     case ImageUploadFailure = "ImageUploadFailure"
     case PopularTagsReceived = "PopularTagsReceived"
 }
-
 
 class BluemixDataManager: NSObject {
 
@@ -61,7 +59,6 @@ class BluemixDataManager: NSObject {
 
     /// photos that were taken during this app session
     var imagesTakenDuringAppSessionById = [String : UIImage]()
-
 
     var imagesCurrentlyUploading: [Image] = []
     var imagesThatFailuredToUpload: [Image] = []
@@ -216,7 +213,6 @@ class BluemixDataManager: NSObject {
 
                 }
 
-
                 if let image = Image(record) {
                     images.append(image)
                 }
@@ -226,7 +222,6 @@ class BluemixDataManager: NSObject {
 
         return images
     }
-
 
     func getUsers() {
 
@@ -280,8 +275,6 @@ class BluemixDataManager: NSObject {
         }
     }
 
-
-
     private func createNewUser(userId: String, name: String, result : ((user: User?) -> ())) {
 
         let requestURL = getBluemixBaseRequestURL() + "/" + kUsersEndPoint
@@ -315,7 +308,6 @@ class BluemixDataManager: NSObject {
 
     }
 
-
     func checkIfUserAlreadyExistsIfNotCreateNewUser(userId: String, name: String, callback : ((success: Bool) -> ())) {
 
         getUserById(userId, result: { (user, error) in
@@ -342,8 +334,6 @@ class BluemixDataManager: NSObject {
 
         })
     }
-
-
 
     func postNewImage(image: Image) {
 
@@ -399,7 +389,6 @@ class BluemixDataManager: NSObject {
 
 }
 
-
 //UPLOADING IMAGES
 extension BluemixDataManager {
 
@@ -421,7 +410,6 @@ extension BluemixDataManager {
 
     }
 
-
     private func addImageToImagesThatFailedToUpload(image: Image) {
 
         imagesThatFailuredToUpload.append(image)
@@ -440,13 +428,11 @@ extension BluemixDataManager {
 
     }
 
-
     private func removeImageFromImagesCurrentlyUploading(image: Image) {
 
         imagesCurrentlyUploading = imagesCurrentlyUploading.filter({ $0 !== image})
 
     }
-
 
     private func uploadImagesIfThereAreAnyLeftInTheQueue() {
 

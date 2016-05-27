@@ -24,7 +24,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
     /**
      Method called when app finishes up launching. In this case we initialize Bluemix Mobile Client Access with Facebook
 
@@ -139,7 +138,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     }
 
-
     /**
      Method to initialize Bluemix Mobile Client Access with Facebook
      */
@@ -154,7 +152,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         return FacebookAuthenticationManager.sharedInstance.onFinishLaunching(application, withOptions:  launchOptions)
     }
-
 
     func applicationWillResignActive(application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

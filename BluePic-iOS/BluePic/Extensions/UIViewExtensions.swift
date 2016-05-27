@@ -18,8 +18,6 @@ import CoreFoundation
 import Foundation
 import UIKit
 
-
-//// MARK: - Rotating animation
 extension UIView {
 
     /**
@@ -73,7 +71,6 @@ extension UIView {
 
  */
 extension UIView {
-
 
     /// Allows you to modify the corner radius of a view in storyboard
     @IBInspectable var cornerRadius: CGFloat {

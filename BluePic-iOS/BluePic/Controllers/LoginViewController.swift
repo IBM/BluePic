@@ -66,7 +66,6 @@ class LoginViewController: UIViewController {
         UIApplication.sharedApplication().statusBarStyle = .LightContent
     }
 
-
     /**
      Method to setup this VC's viewModel and provide it a callback method to all the vc to receive notifications from its view model
      */
@@ -83,7 +82,6 @@ class LoginViewController: UIViewController {
         aboutBluePicLabel.setLineHeight(1.5)
 
     }
-
 
     /**
      Method to save to user defaults when user has pressed sign in later
@@ -128,7 +126,6 @@ class LoginViewController: UIViewController {
         super.didReceiveMemoryWarning()
     }
 
-
 }
 
 // MARK: - ViewModel -> View Controller Communication
@@ -160,7 +157,6 @@ extension LoginViewController {
         }
     }
 
-
     /**
      Method handles when the user canceled login
      */
@@ -175,7 +171,6 @@ extension LoginViewController {
 
         }
     }
-
 
     /**
      Method handles when there was a login failure
