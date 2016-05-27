@@ -77,7 +77,7 @@ class BluemixDataManager: NSObject {
     var imagesCurrentlyUploading : [Image] = []
     
     //array that stores all the images that failed to upload. This is used so users can rety try uploading images that failed.
-    var imagesThatFailuredToUpload : [Image] = []
+    var imagesThatFailedToUpload : [Image] = []
     
     //stores the most popular tags
     var tags = [String]()
@@ -417,12 +417,15 @@ extension BluemixDataManager {
 
 }
 
-//UPLOADING IMAGES
+// MARK: - Methods related to uploading images
 extension BluemixDataManager {
 
+    /**
+     Method will retry to upload each image in the imagesThatFailedToUpload array
+     */
     func retryUploadingImagesThatFailedToUpload(){
         
-        for image in imagesThatFailuredToUpload {
+        for image in imagesThatFailedToUpload {
             removeImageFromImagesThatFailedToUpload(image)
             postNewImage(image)
 
@@ -430,47 +433,63 @@ extension BluemixDataManager {
 
     }
 
+    /**
+     Method will remove each image in the imagesThatFailedToUpload array
+     */
     func cancelUploadingImagesThatFailedToUpload() {
 
-        for image in imagesThatFailuredToUpload {
+        for image in imagesThatFailedToUpload {
             removeImageFromImagesThatFailedToUpload(image)
         }
 
     }
 
+    /**
+     Method will add the image parameter to the imagesThatFailedToUpload array
+     
+     - parameter image: Image
+     */
     private func addImageToImagesThatFailedToUpload(image: Image) {
 
-        imagesThatFailuredToUpload.append(image)
+        imagesThatFailedToUpload.append(image)
 
     }
 
+    /**
+     Method will remove the image parameter from the imagesThatFailedToUpload array
+     
+     - parameter image: Image
+     */
     private func removeImageFromImagesThatFailedToUpload(image: Image) {
 
-        imagesThatFailuredToUpload = imagesThatFailuredToUpload.filter({ $0 !== image})
+        imagesThatFailedToUpload = imagesThatFailedToUpload.filter({ $0 !== image})
 
     }
 
+    /**
+     Method will add the image parameter to the imagesCurrentlyUploading array
+     
+     - parameter image: Image
+     */
     private func addImageToImagesCurrentlyUploading(image: Image) {
 
         imagesCurrentlyUploading.append(image)
 
     }
 
+    /**
+     Method will remove the image parameter from the imagesCurrentlyUploading array
+     
+     - parameter image: Image
+     */
     private func removeImageFromImagesCurrentlyUploading(image: Image) {
 
         imagesCurrentlyUploading = imagesCurrentlyUploading.filter({ $0 !== image})
 
     }
 
-    private func uploadImagesIfThereAreAnyLeftInTheQueue() {
-
-        if imagesCurrentlyUploading.count > 0 {
-            postNewImage(imagesCurrentlyUploading[0])
-        }
-    }
-
     /**
-     Method adds the photo to the picturesTakenDuringAppSessionById cache to display the photo in the image feed while we wait for the photo to upload to.
+     Method adds the photo to the imagesTakenDuringAppSessionById cache to display the photo in the image feed or profile feed while we wait for the photo to upload to.
      */
     private func addImageToImageTakenDuringAppSessionByIdDictionary(image: Image) {
 
