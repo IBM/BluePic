@@ -78,7 +78,7 @@ class ImageInfoHeaderCollectionReusableView: UICollectionReusableView {
         if let imageCaption = caption {
 
             var cap = ""
-            if (imageCaption != CameraDataManager.SharedInstance.kEmptyCaptionPlaceHolder) {
+            if imageCaption != CameraDataManager.SharedInstance.kEmptyCaptionPlaceHolder {
                 cap = caption ?? ""
                 cap = cap.uppercaseString
             }

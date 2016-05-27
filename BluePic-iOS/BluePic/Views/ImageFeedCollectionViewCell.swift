@@ -64,9 +64,9 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
 
         if let numOfTags = image.tags?.count {
 
-            if(numOfTags == 0) {
+            if numOfTags == 0 {
                 numberOfTagsLabel.hidden = true
-            } else if (numOfTags == 1) {
+            } else if numOfTags == 1 {
                 numberOfTagsLabel.hidden = false
                 numberOfTagsLabel.text = "\(numOfTags)" + " " + kNumberOfTagsPostFix_OneTag
             } else {
@@ -83,7 +83,7 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
 
         //set the captionLabel's text
         var cap = image.caption ?? ""
-        if(cap == CameraDataManager.SharedInstance.kEmptyCaptionPlaceHolder) {
+        if cap == CameraDataManager.SharedInstance.kEmptyCaptionPlaceHolder {
             cap = ""
         }
         captionLabel.text = cap
@@ -164,7 +164,7 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
         let urlString = url ?? ""
 
         //check if string is empty, if it is, then its not a valid url
-        if(urlString != "") {
+        if urlString != "" {
 
             //check if we can turn the string into a valid NSURL
             if let nsurl = NSURL(string: urlString) {

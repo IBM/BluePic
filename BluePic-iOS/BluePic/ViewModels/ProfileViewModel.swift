@@ -117,7 +117,7 @@ extension ProfileViewModel {
      */
     func numberOfItemsInSection(section: Int) -> Int {
 
-        if(imageDataArray.count == 0) {
+        if imageDataArray.count == 0 {
             return kNumberOfCellsWhenUserHasNoPhotos
         } else {
             return imageDataArray.count
@@ -137,7 +137,7 @@ extension ProfileViewModel {
     func sizeForItemAtIndexPath(indexPath: NSIndexPath, collectionView: UICollectionView, heightForEmptyProfileCollectionViewCell: CGFloat) -> CGSize {
 
         //no images so show empty feed collection view cell
-        if(imageDataArray.count == 0) {
+        if imageDataArray.count == 0 {
 
             return CGSize(width: collectionView.frame.width, height: heightForEmptyProfileCollectionViewCell + kEmptyFeedCollectionViewCellBufferToAllowForScrolling)
         }
@@ -150,7 +150,7 @@ extension ProfileViewModel {
 
             var height = collectionView.frame.width * ratio
 
-            if(height > kCollectionViewCellHeightLimit) {
+            if height > kCollectionViewCellHeightLimit {
                 height = kCollectionViewCellHeightLimit
             }
 
@@ -170,7 +170,7 @@ extension ProfileViewModel {
      */
     func setUpCollectionViewCell(indexPath: NSIndexPath, collectionView: UICollectionView) -> UICollectionViewCell {
 
-        if(imageDataArray.count == 0) {
+        if imageDataArray.count == 0 {
 
             guard let cell = collectionView.dequeueReusableCellWithReuseIdentifier("EmptyFeedCollectionViewCell", forIndexPath: indexPath) as? EmptyFeedCollectionViewCell else {
                 return EmptyFeedCollectionViewCell()
@@ -227,7 +227,7 @@ extension ProfileViewModel {
      */
     func prepareImageDetailViewModelForSelectedCellAtIndexPath(indexPath: NSIndexPath) -> ImageDetailViewModel? {
 
-        if((imageDataArray.count - 1 ) >= indexPath.row ) {
+        if (imageDataArray.count - 1 ) >= indexPath.row {
 
             let viewModel = ImageDetailViewModel()
             viewModel.image = imageDataArray[indexPath.row]

@@ -41,7 +41,7 @@ class ImageDetailViewModel: UIView {
     private func getTagForIndexPath(indexPath: NSIndexPath) -> String? {
 
         if let tags = image.tags {
-            if((tags.count - 1) >= indexPath.row) {
+            if (tags.count - 1) >= indexPath.row {
                 return tags[indexPath.row].label
             }
         }
@@ -138,7 +138,7 @@ extension ImageDetailViewModel {
 
         if let tags = image.tags {
             let size = NSString(string: tags[indexPath.item].label).sizeWithAttributes(nil)
-            return CGSizeMake(size.width + kCellPadding, 30.0)
+            return CGSize(width: size.width + kCellPadding, height: 30.0)
         }
         return CGSize.zero
     }
@@ -157,18 +157,18 @@ extension ImageDetailViewModel {
 
         let collectionWidth = collectionView.frame.size.width
 
-        if(section == 0) {
+        if section == 0 {
 
             let headerHeight = superViewHeight * 0.60
 
-            if(headerHeight < kImageInfoHeaderViewMinimumHeight) {
-                return CGSizeMake(collectionWidth, kImageInfoHeaderViewMinimumHeight)
+            if headerHeight < kImageInfoHeaderViewMinimumHeight {
+                return CGSize(width: collectionWidth, height: kImageInfoHeaderViewMinimumHeight)
             } else {
-                return CGSizeMake(collectionWidth, headerHeight)
+                return CGSize(width: collectionWidth, height: headerHeight)
             }
 
         } else {
-            return CGSizeMake(collectionWidth, 0)
+            return CGSize(width: collectionWidth, height: 0)
         }
 
     }
