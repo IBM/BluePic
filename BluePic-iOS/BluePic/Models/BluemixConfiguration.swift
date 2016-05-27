@@ -49,7 +49,6 @@ class BluemixConfiguration: NSObject {
         } else {
             fatalError("Could not load bluemix plist into object properties")
         }
-
     }
 
 }

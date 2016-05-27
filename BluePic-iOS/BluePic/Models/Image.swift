@@ -125,7 +125,7 @@ class Image: NSObject {
                 print("invalid image json")
                 return nil
             }
-
+            
         } else {
             print("invalid image json")
             return nil

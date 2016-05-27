@@ -48,6 +48,9 @@
 		2E7C95631CE13DCE0044F6ED /* TagCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2E7C95611CE13DCE0044F6ED /* TagCollectionViewCell.xib */; };
 		2EAAC0E81CE39C13006A0B41 /* KTCenterFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EAAC0E71CE39C13006A0B41 /* KTCenterFlowLayout.m */; };
 		2EFFCE0A1CF4F74E00820BCE /* BluemixConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EFFCE091CF4F74E00820BCE /* BluemixConfiguration.swift */; };
+		3435C7C91C0368B1004923BD /* Feed.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3435C7C81C0368B1004923BD /* Feed.storyboard */; };
+		3435C7CB1C0368DA004923BD /* Camera.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3435C7CA1C0368DA004923BD /* Camera.storyboard */; };
+		3435C7CD1C03690F004923BD /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3435C7CC1C03690F004923BD /* Profile.storyboard */; };
 		3435C7CF1C036A60004923BD /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3435C7CE1C036A60004923BD /* TabBarViewController.swift */; };
 		3435C7D51C04110C004923BD /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3435C7D41C04110C004923BD /* FeedViewController.swift */; };
 		3435C7D71C041116004923BD /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3435C7D61C041116004923BD /* CameraViewController.swift */; };
@@ -143,6 +146,9 @@
 		2EAAC0E61CE39C13006A0B41 /* KTCenterFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTCenterFlowLayout.h; sourceTree = "<group>"; };
 		2EAAC0E71CE39C13006A0B41 /* KTCenterFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTCenterFlowLayout.m; sourceTree = "<group>"; };
 		2EFFCE091CF4F74E00820BCE /* BluemixConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluemixConfiguration.swift; sourceTree = "<group>"; };
+		3435C7C81C0368B1004923BD /* Feed.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Feed.storyboard; sourceTree = "<group>"; };
+		3435C7CA1C0368DA004923BD /* Camera.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Camera.storyboard; sourceTree = "<group>"; };
+		3435C7CC1C03690F004923BD /* Profile.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Profile.storyboard; sourceTree = "<group>"; };
 		3435C7CE1C036A60004923BD /* TabBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		3435C7D41C04110C004923BD /* FeedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
 		3435C7D61C041116004923BD /* CameraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };

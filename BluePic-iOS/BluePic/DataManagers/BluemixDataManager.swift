@@ -251,12 +251,12 @@ class BluemixDataManager: NSObject {
         let request = Request(url: requestURL, method: HttpMethod.GET)
 
         request.sendWithCompletionHandler { (response, error) -> Void in
-            if(error != nil) {
+            if error != nil {
                  if let response = response,
                     let statusCode = response.statusCode {
 
                     //user does not exist
-                    if(statusCode == 404) {
+                    if statusCode == 404 {
                         result(user: nil, error: BlueMixDataManagerError.UserDoesNotExist)
                     }
                     //any other error code means that it was a connection failure
@@ -323,17 +323,17 @@ class BluemixDataManager: NSObject {
             if let error = error {
 
                 //user does not exist so create new user
-                if(error == BlueMixDataManagerError.UserDoesNotExist) {
+                if error == BlueMixDataManagerError.UserDoesNotExist {
                     self.createNewUser(userId, name: name, result: { user in
 
-                        if(user != nil) {
+                        if user != nil {
                             callback(success: true)
                         } else {
                             callback(success: false)
                         }
 
                     })
-                } else if(error == BlueMixDataManagerError.ConnectionFailure) {
+                } else if error == BlueMixDataManagerError.ConnectionFailure {
                     callback(success: false)
                 }
             } else {
@@ -370,11 +370,10 @@ class BluemixDataManager: NSObject {
         request.headers = ["Content-Type" : "image/png"]
 
         print("beginning upload)")
-
         request.sendData(imageData, completionHandler: { (response, error) -> Void in
 
             //failure
-            if(error != nil) {
+            if error != nil {
 
                 print(requestURL)
                 print(error)
@@ -451,7 +450,7 @@ extension BluemixDataManager {
 
     private func uploadImagesIfThereAreAnyLeftInTheQueue() {
 
-        if(imagesCurrentlyUploading.count > 0) {
+        if imagesCurrentlyUploading.count > 0 {
             postNewImage(imagesCurrentlyUploading[0])
         }
     }
@@ -467,5 +466,4 @@ extension BluemixDataManager {
             imagesTakenDuringAppSessionById[id] = image.image
         }
     }
-
 }

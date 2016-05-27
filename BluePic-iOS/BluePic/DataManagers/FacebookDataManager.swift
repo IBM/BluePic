@@ -45,7 +45,7 @@ class FacebookDataManager: NSObject {
 
     func loginWithFacebook(callback : ((facebookUserId: String?, facebookUserFullName: String?, error: FacebookAuthenticationError?) -> ())) {
 
-        if(isFacebookConfigured()) {
+        if isFacebookConfigured() {
             authenticateFacebookUser(callback)
 
         }
@@ -65,26 +65,26 @@ class FacebookDataManager: NSObject {
             firstUrlType = urlTypes.firstObject as? NSDictionary,
             urlSchemes = firstUrlType["CFBundleURLSchemes"] as? NSArray,
             facebookURLScheme = urlSchemes.firstObject as? NSString else {
+
             print("Authentication is not configured in Info.plist. You have to configure Info.plist with the same Authentication method configured on Bluemix such as Facebook")
             return false
         }
 
-        if (facebookAppID.isEqualToString("") || facebookAppID == "123456789") {
+        if facebookAppID.isEqualToString("") || facebookAppID == "123456789" {
             print("Authentication is not configured in Info.plist. You have to configure Info.plist with the same Authentication method configured on Bluemix such as Facebook")
             return false
         }
-        if (facebookDisplayName.isEqualToString("")) {
+        if facebookDisplayName.isEqualToString("") {
             print("Authentication is not configured in Info.plist. You have to configure Info.plist with the same Authentication method configured on Bluemix such as Facebook")
             return false
         }
 
-        if (facebookURLScheme.isEqualToString("") || facebookURLScheme.isEqualToString("fb123456789") || !(facebookURLScheme.hasPrefix("fb"))) {
+        if facebookURLScheme.isEqualToString("") || facebookURLScheme.isEqualToString("fb123456789") || !(facebookURLScheme.hasPrefix("fb")) {
             print("Authentication is not configured in Info.plist. You have to configure Info.plist with the same Authentication method configured on Bluemix such as Facebook")
             return false
         }
 
         //success if made it past this point
-
         print("Facebook Auth configured, getting ready to show native FB Login:\nFacebookAppID \(facebookAppID)\nFacebookDisplayName \(facebookDisplayName)\nFacebookURLScheme \(facebookURLScheme)")
         return true
     }
@@ -99,7 +99,7 @@ class FacebookDataManager: NSObject {
             //error
             if let errorObject = error {
                 //user canceled login
-                if(errorObject.code == -1) {
+                if errorObject.code == -1 {
                     callback(facebookUserId: nil, facebookUserFullName: nil, error: FacebookAuthenticationError.UserCanceledLogin)
                 } else {
                     //"Error obtaining Authentication Header.\nCheck Bundle Identifier and Bundle version string\n\n"

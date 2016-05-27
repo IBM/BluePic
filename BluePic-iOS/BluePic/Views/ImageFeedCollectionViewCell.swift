@@ -60,9 +60,9 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
      - parameter timeStamp:   Double?
      - parameter fileName:    String?
      */
-    func setupData(url: String?, image: UIImage?, caption: String?, usersName: String?, numberOfTags: Int?, timeStamp: NSDate?, fileName: String?) {
+    func setupDataWith(image: Image) {
 
-        if let numOfTags = numberOfTags {
+        if let numOfTags = image.tags?.count {
 
             if(numOfTags == 0) {
                 numberOfTagsLabel.hidden = true
@@ -79,24 +79,21 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
 
 
         //set the image view's image
-        self.setImageView(url, fileName: fileName)
+        self.setImageView(image.url, fileName: image.fileName)
 
         //set the captionLabel's text
-        var cap = caption ?? ""
+        var cap = image.caption ?? ""
         if(cap == CameraDataManager.SharedInstance.kEmptyCaptionPlaceHolder) {
             cap = ""
         }
         captionLabel.text = cap
 
         //set the photographerNameLabel's text
-        var ownerNameString = ""
-        if let name = usersName {
-            ownerNameString = kByString + " \(name)"
-        }
+        let ownerNameString = kByString + " \(image.user.name)"
         photographerNameLabel.text = ownerNameString
 
         //set the time since posted label's text
-        if let tStamp = timeStamp {
+        if let tStamp = image.timeStamp {
            timeSincePostedLabel.text = NSDate.timeSinceDateString(tStamp)
         }
 

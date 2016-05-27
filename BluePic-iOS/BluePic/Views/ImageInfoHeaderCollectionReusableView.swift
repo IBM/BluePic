@@ -45,30 +45,30 @@ class ImageInfoHeaderCollectionReusableView: UICollectionReusableView {
         super.awakeFromNib()
     }
 
-    func setupWithData(caption: String?, userFullName: String?, locationName: String?, latitude: String?, longitude: String?, timeStamp: NSDate?, weatherIconId: Int?, temperature: Int?, tags: [Tag]?) {
+    func setupWith(image: Image) {
 
         //setup captionLabel
-        setupCaptionLabelWithData(caption)
+        setupCaptionLabelWithData(image.caption)
 
         //setup byUserLabel
-        setupByUserLabel(userFullName)
+        setupByUserLabel(image.user.name)
 
         //setup locationLabel
-        setupCityAndStateLabel(locationName)
+        setupCityAndStateLabel(image.location.name)
 
         //setup coordinatesLabel
-        setupCoordintesLabel(latitude, longitude: longitude)
+        setupCoordintesLabel(image.location.latitude, longitude: image.location.longitude)
 
         //setup dateLabel
-        setupDateLabelWithData(timeStamp)
+        setupDateLabelWithData(image.timeStamp)
 
         //setup timeLabel
-        setupTimeLabelWithData(timeStamp)
+        setupTimeLabelWithData(image.timeStamp)
 
         //setup weatherImageView and Temperature Label
-        setupWeatherImageViewAndTemperatureLabel(weatherIconId, temperature: temperature)
+        setupWeatherImageViewAndTemperatureLabel(image.location.weather?.iconId, temperature: image.location.weather?.temperature)
 
-        setupTagsLabel(tags)
+        setupTagsLabel(image.tags)
 
     }
 

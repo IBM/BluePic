@@ -57,9 +57,9 @@ class ProfileCollectionViewCell: UICollectionViewCell {
      - parameter timeStamp:   Double?
      - parameter fileName:    String?
      */
-    func setupData(url: String?, image: UIImage?, caption: String?, numberOfTags: Int?, timeStamp: NSDate?, fileName: String?) {
+    func setupDataWith(image: Image) {
 
-        if let numOfTags = numberOfTags {
+        if let numOfTags = image.tags?.count {
 
             if(numOfTags == 0) {
                 numberOfTagsLabel.hidden = true
@@ -76,17 +76,17 @@ class ProfileCollectionViewCell: UICollectionViewCell {
         }
 
         //set the image view's image
-        setImageView(url, fileName: fileName)
+        setImageView(image.url, fileName: image.fileName)
 
         //label that displays the photos caption
-        var cap = caption ?? ""
+        var cap = image.caption ?? ""
         if(cap == CameraDataManager.SharedInstance.kEmptyCaptionPlaceHolder) {
             cap = ""
         }
         captionLabel.text = cap
 
         //set the time since posted label's text
-        if let tStamp = timeStamp {
+        if let tStamp = image.timeStamp {
             timeSincePostedLabel.text = NSDate.timeSinceDateString(tStamp)
         }
 

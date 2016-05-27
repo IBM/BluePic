@@ -54,7 +54,7 @@ class LocationDataManager: NSObject {
         if let isMetricString = locale.objectForKey(NSLocaleUsesMetricSystem),
             let isMetricBool = isMetricString.boolValue {
 
-            if(isMetricBool) {
+            if isMetricBool {
                 return kMetricUnitOfMeasurement
             } else {
                 return kImperialUnitOfMeasurement
@@ -99,15 +99,15 @@ class LocationDataManager: NSObject {
 
         isLocationServicesEnabledAndIfNotHandleItCallback = callback
 
-        if(CLLocationManager.authorizationStatus() == CLAuthorizationStatus.AuthorizedWhenInUse || CLLocationManager.authorizationStatus() == CLAuthorizationStatus.AuthorizedAlways) {
+        if CLLocationManager.authorizationStatus() == CLAuthorizationStatus.AuthorizedWhenInUse || CLLocationManager.authorizationStatus() == CLAuthorizationStatus.AuthorizedAlways {
 
             //self.locationManager.requestLocation()
             isLocationServicesEnabledAndIfNotHandleItCallback(isEnabled: true)
             isLocationServicesEnabledAndIfNotHandleItCallback = nil
-        } else if(CLLocationManager.authorizationStatus() == CLAuthorizationStatus.Denied) {
+        } else if CLLocationManager.authorizationStatus() == CLAuthorizationStatus.Denied {
             isLocationServicesEnabledAndIfNotHandleItCallback(isEnabled: false)
             isLocationServicesEnabledAndIfNotHandleItCallback = nil
-        } else if(CLLocationManager.authorizationStatus() == CLAuthorizationStatus.NotDetermined) {
+        } else if CLLocationManager.authorizationStatus() == CLAuthorizationStatus.NotDetermined {
             dispatch_async(dispatch_get_main_queue()) {
             self.requestWhenInUseAuthorization()
             }
@@ -197,9 +197,9 @@ extension LocationDataManager : CLLocationManagerDelegate {
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
 
         print("did update location")
-        if(getUsersCurrentLocationCallback != nil) {
+        if getUsersCurrentLocationCallback != nil {
             //success
-            if(locations.count > 0) {
+            if locations.count > 0 {
                 let location = locations[0]
                 getUsersCurrentLocationCallback(location : location)
                 getUsersCurrentLocationCallback = nil
@@ -212,7 +212,7 @@ extension LocationDataManager : CLLocationManagerDelegate {
 
         print(error)
 
-        if(getUsersCurrentLocationCallback != nil) {
+        if getUsersCurrentLocationCallback != nil {
             getUsersCurrentLocationCallback(location : nil)
             getUsersCurrentLocationCallback = nil
         }
@@ -222,13 +222,13 @@ extension LocationDataManager : CLLocationManagerDelegate {
 
     func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
 
-        if(status == CLAuthorizationStatus.AuthorizedWhenInUse || status == CLAuthorizationStatus.AuthorizedAlways) {
-            if(isLocationServicesEnabledAndIfNotHandleItCallback != nil) {
+        if status == CLAuthorizationStatus.AuthorizedWhenInUse || status == CLAuthorizationStatus.AuthorizedAlways {
+            if isLocationServicesEnabledAndIfNotHandleItCallback != nil {
                 isLocationServicesEnabledAndIfNotHandleItCallback(isEnabled: true)
                 isLocationServicesEnabledAndIfNotHandleItCallback = nil
             }
-        } else if(status == CLAuthorizationStatus.Denied) {
-            if(isLocationServicesEnabledAndIfNotHandleItCallback != nil) {
+        } else if status == CLAuthorizationStatus.Denied {
+            if isLocationServicesEnabledAndIfNotHandleItCallback != nil {
                 isLocationServicesEnabledAndIfNotHandleItCallback(isEnabled: false)
                 isLocationServicesEnabledAndIfNotHandleItCallback = nil
             }

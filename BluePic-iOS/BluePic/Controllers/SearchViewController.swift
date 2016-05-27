@@ -116,7 +116,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
 
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         let size = NSString(string: popularTags[indexPath.item]).sizeWithAttributes(nil)
-        return CGSizeMake(size.width + kCellPadding, 30.0)
+        return CGSize(width: size.width + kCellPadding, height: 30.0)
     }
 
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
@@ -139,6 +139,7 @@ extension SearchViewController: UITextFieldDelegate {
             where query.characters.count > 0 {
 
             vc.searchQuery = query
+
             self.navigationController?.pushViewController(vc, animated: true)
         } else {
             print("Invalid search query")

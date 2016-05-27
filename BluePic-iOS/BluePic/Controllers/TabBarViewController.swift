@@ -102,7 +102,6 @@ class TabBarViewController: UITabBarController {
                 print(NSLocalizedString("user needs to log into Facebook, showing login", comment: ""))
             })
         }
-
     }
 
 
@@ -117,7 +116,6 @@ class TabBarViewController: UITabBarController {
                 print(NSLocalizedString("user needs to log into Facebook, showing login", comment: ""))
             })
         }
-
     }
 
     /**
@@ -126,7 +124,6 @@ class TabBarViewController: UITabBarController {
     func switchToFeedTabAndPopToRootViewController() {
 
         self.selectedIndex = 0
-
         if let feedNavigationVC = self.viewControllers?[0] as? FeedNavigationController {
             feedNavigationVC.popToRootViewControllerAnimated(false)
         }
@@ -167,7 +164,7 @@ extension TabBarViewController: UITabBarControllerDelegate {
      - returns: Bool
      */
     func shouldShowProfileViewControllerAndHandleIfShouldnt() -> Bool {
-        if(viewModel.didUserPressLoginLater() == true) {
+        if viewModel.didUserPressLoginLater() == true {
             presentLoginVCAnimated()
             return false
         } else {
@@ -179,12 +176,12 @@ extension TabBarViewController: UITabBarControllerDelegate {
      Method handles the camera tab being selected. If the user pressed login later, then we present to the user the login vc. If the user didn't press login later, then we check if location services had been enabled or not. If it has been enabled, we show them the image picker action sheet. Else we show the user the location services required alert
      */
     func handleCameraTabBeingSelected() {
-        if(viewModel.didUserPressLoginLater() == true) {
+        if viewModel.didUserPressLoginLater() == true {
             presentLoginVCAnimated()
         } else {
             LocationDataManager.SharedInstance.isLocationServicesEnabledAndIfNotHandleIt({ isEnabled in
 
-                if(isEnabled) {
+                if isEnabled {
                     CameraDataManager.SharedInstance.showImagePickerActionSheet(self)
                 } else {
                     self.showLocationServiceRequiredAlert()
@@ -205,7 +202,7 @@ extension TabBarViewController: UITabBarControllerDelegate {
         alertController.addAction(cancelAction)
 
         let OKAction = UIAlertAction(title: NSLocalizedString("Settings", comment: ""), style: .Default) { (action) in
-
+            
             if let settingsUrl = NSURL(string: UIApplicationOpenSettingsURLString) {
                 UIApplication.sharedApplication().openURL(settingsUrl)
             }
@@ -215,6 +212,32 @@ extension TabBarViewController: UITabBarControllerDelegate {
 
         self.presentViewController(alertController, animated: true, completion: nil)
 
+    }
+    
+    /**
+     Check if user has pressed sign in later button previously, and if he/she has, will show login if user taps camera or profile
+     
+     - parameter showCameraPicker: whether or not to show the camera picker (camera tab or profile tab tapped)
+     
+     - returns: Returns a boolean -- true if tab bar with show the selected tab, and false if it will not
+     */
+    func checkIfUserPressedSignInLater(showCameraPicker: Bool) -> Bool {
+        if viewModel.didUserPressLoginLater() {
+            print("user not logged in, prompt login now!")
+            presentLoginVCAnimated()
+            return false
+        }
+        else { //only show camera picker if user has not pressed "sign in later"
+            if (showCameraPicker == true) { //only show camera picker if tapped the camera tab
+                print("Opening camera picker...")
+                CameraDataManager.SharedInstance.showImagePickerActionSheet(self)
+                return false
+            }
+            else { //if tapping profile page and logged in, show that tab
+                return true
+            }
+        }
+        
     }
 
     /**
@@ -242,7 +265,6 @@ extension TabBarViewController: UITabBarControllerDelegate {
 
     }
 
-
 }
 
 //ViewModel -> View Controller Communication
@@ -255,13 +277,13 @@ extension TabBarViewController {
      */
     func handleTabBarViewModelNotifications(tabBarNotification: TabBarViewModelNotification) {
 
-        if(tabBarNotification == TabBarViewModelNotification.ShowLoginVC) {
+        if tabBarNotification == TabBarViewModelNotification.ShowLoginVC {
             presentLoginVC()
-        } else if(tabBarNotification == TabBarViewModelNotification.HideLoginVC) {
+        } else if tabBarNotification == TabBarViewModelNotification.HideLoginVC {
             hideBackgroundImage()
-        } else if(tabBarNotification == TabBarViewModelNotification.SwitchToFeedTab) {
+        } else if tabBarNotification == TabBarViewModelNotification.SwitchToFeedTab {
             switchToFeedTabAndPopToRootViewController()
-        } else if(tabBarNotification == TabBarViewModelNotification.ShowImageUploadFailureAlert) {
+        } else if tabBarNotification == TabBarViewModelNotification.ShowImageUploadFailureAlert {
             showImageUploadFailureAlert()
         }
     }
