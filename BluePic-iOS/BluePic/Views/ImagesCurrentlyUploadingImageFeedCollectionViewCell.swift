@@ -18,14 +18,22 @@ import UIKit
 
 class ImagesCurrentlyUploadingImageFeedCollectionViewCell: UICollectionViewCell {
 
+    //imageView that shows a circle thumbnail of the image currently uplaoding
     @IBOutlet weak var imageView: UIImageView!
 
+    //label that shows the caption the user has chosen for the image currently uploading
     @IBOutlet weak var captionLabel: UILabel!
 
     override func awakeFromNib() {
         super.awakeFromNib()
     }
 
+    /**
+     Method that sets up the data for this cell
+
+     - parameter image:   UIImage?
+     - parameter caption: String?
+     */
     func setupData(image: UIImage?, caption: String?) {
 
         if let img = image {

@@ -16,7 +16,7 @@
 
 import UIKit
 
-/// Not actually holding any logical code since technically tab bar never switches to Camera tab
+/// Not actually holding any logical code since technically tab bar never switches to Camera tab vc
 class CameraViewController: UIViewController {
 
     /**

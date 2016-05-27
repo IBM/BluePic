@@ -37,6 +37,7 @@ class CameraConfirmationView: UIView, UITextFieldDelegate {
     /// Reference to the original frame
     var originalFrame: CGRect!
 
+    /// Placeholder text for the titleTextField
     private let kTextFieldPlaceholderText = NSLocalizedString("GIVE IT A TITLE", comment: "")
 
 
@@ -112,7 +113,7 @@ class CameraConfirmationView: UIView, UITextFieldDelegate {
     }
 
     /**
-     Method to removed show and hide keyboard observers
+     Method to remove show and hide keyboard observers
      */
     func removeKeyboardObservers() {
         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillShowNotification, object: nil)
@@ -133,7 +134,7 @@ class CameraConfirmationView: UIView, UITextFieldDelegate {
         // 2
         let keyboardFrame  = keyboardFrameValue.CGRectValue()
         // 3
-        let changeInHeight = (CGRectGetHeight(keyboardFrame)) * (show ? -1 : 1)
+        let changeInHeight = (keyboardFrame.height) * (show ? -1 : 1)
         //4
         if show {
             UIView.animateWithDuration(animationDuration, animations: { () -> Void in
@@ -160,6 +161,9 @@ class CameraConfirmationView: UIView, UITextFieldDelegate {
         return true
     }
 
+    /**
+     Method enables the UI to be interacted with
+     */
     func enableUI() {
 
         self.cancelButton.enabled = true
@@ -168,6 +172,9 @@ class CameraConfirmationView: UIView, UITextFieldDelegate {
 
     }
 
+    /**
+     Method disables the UI to be interacted with
+     */
     func disableUI() {
 
         self.cancelButton.enabled = false

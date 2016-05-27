@@ -19,12 +19,17 @@ import CoreLocation
 
 enum LocationDataManagerError {
 
+    //Error when there is a failure getting the latitude, logitude, city and state
     case GetCurrentLatLongCityAndStateFailure
 
 }
 
+//string that represents imperial unit of measurement
 let kImperialUnitOfMeasurement = "e"
+
+//string that represents metric unit of measurement
 let kMetricUnitOfMeasurement = "m"
+
 
 class LocationDataManager: NSObject {
 
@@ -37,16 +42,32 @@ class LocationDataManager: NSObject {
 
     }()
 
+    //instance of the CLLocationManager class
+    private var locationManager: CLLocationManager!
+
+    //callback to inform that location services has been enabled or denied
+    private var isLocationServicesEnabledAndIfNotHandleItCallback : ((isEnabled: Bool)->())!
+
+    //callback to return the user's current location
+    private var getUsersCurrentLocationCallback : ((location: CLLocation?)->())!
+
+
+    /**
+     Upon init, we call the setupLocationManager method
+
+     - returns: LocationDataManager
+     */
     override init() {
         super.init()
         self.setupLocationManager()
     }
 
-    private var locationManager: CLLocationManager!
 
-    private var isLocationServicesEnabledAndIfNotHandleItCallback : ((isEnabled: Bool)->())!
-    private var getUsersCurrentLocationCallback : ((location: CLLocation?)->())!
+    /**
+     Method returns the user's unit of measurement
 
+     - returns: String
+     */
     func getUnitsOfMeasurement() -> String {
         let locale = NSLocale.currentLocale()
 
@@ -64,6 +85,9 @@ class LocationDataManager: NSObject {
         }
     }
 
+    /**
+     Method setups up the locationManager property
+     */
     private func setupLocationManager() {
          dispatch_async(dispatch_get_main_queue()) {
             self.locationManager = CLLocationManager()
@@ -72,29 +96,40 @@ class LocationDataManager: NSObject {
         }
     }
 
+    /**
+     Method returns the user's language locale
+
+     - returns: String
+     */
     func getLanguageLocale() -> String {
         return NSLocale.preferredLanguages()[0]
     }
 
+    /**
+     Method requests when in use location services (this will display an alert to the user to authorize location services)
+     */
     func requestWhenInUseAuthorization() {
         locationManager.requestWhenInUseAuthorization()
     }
 
-    func startUpdatingLocation() {
-        self.locationManager.startUpdatingLocation()
-    }
-
+    /**
+     Method triggers the locationManager to requestLocation
+     */
     func requestLocation() {
         locationManager.requestLocation()
     }
 
+    /**
+     Method checks if location services is enabled. If it is then it returns true in the callback parameter. If location services isn't enabled then it calls the requestWhenInUseAuthorization. When the CLLocationManagerDelegate methods didUpdateLocations or didFailWithError methods are called, the isLocationServicesEnabledAndIfNotHandleItCallback will be called with the result
+
+     - parameter callback: ((isEnabled : Bool) -> ())
+     */
     func isLocationServicesEnabledAndIfNotHandleIt(callback : ((isEnabled: Bool) -> ())) {
 
         isLocationServicesEnabledAndIfNotHandleItCallback = callback
 
         if CLLocationManager.authorizationStatus() == CLAuthorizationStatus.AuthorizedWhenInUse || CLLocationManager.authorizationStatus() == CLAuthorizationStatus.AuthorizedAlways {
 
-            //self.locationManager.requestLocation()
             isLocationServicesEnabledAndIfNotHandleItCallback(isEnabled: true)
             isLocationServicesEnabledAndIfNotHandleItCallback = nil
         } else if CLLocationManager.authorizationStatus() == CLAuthorizationStatus.Denied {
@@ -107,10 +142,12 @@ class LocationDataManager: NSObject {
         }
     }
 
-    func isLocationServicesEnabled() -> Bool {
-        return CLLocationManager.locationServicesEnabled()
-    }
+    /**
+     Method gets the user's current location by calling the locationManager's requestLocation method. When the CLLocationManagerDelegate methods didUpdateLocations or didFailWithError methods are called, the isLocationServicesEnabledAndIfNotHandleItCallback will be called with the result
 
+
+     - parameter callback: (location : CLLocation?)-> ()
+     */
     private func getUsersCurrentLocation(callback : (location: CLLocation?)-> ()) {
 
         getUsersCurrentLocationCallback = callback
@@ -118,6 +155,12 @@ class LocationDataManager: NSObject {
 
     }
 
+    /**
+     Method gets the location placemark from the location parameter. It will return the result in the callback parameter
+
+     - parameter location: CLLocation
+     - parameter callback: ((placemark : CLPlacemark?)->())
+     */
     private func getPlaceMarkFromLocation(location: CLLocation, callback : ((placemark: CLPlacemark?)->())) {
 
         CLGeocoder().reverseGeocodeLocation(location, completionHandler: {(placemarks, error) -> Void in
@@ -150,6 +193,12 @@ class LocationDataManager: NSObject {
 
     }
 
+
+    /**
+     Method gets the latitude, longitude, city and state from the user's current location. It will return the result in the callback parameter
+
+     - parameter callback: ((latitude : CLLocationDegrees?, longitude : CLLocationDegrees?, city : String?, state : String?, error : LocationDataManagerError?)->())
+     */
     func getCurrentLatLongCityAndState(callback : ((latitude: CLLocationDegrees?, longitude: CLLocationDegrees?, city: String?, state: String?, error: LocationDataManagerError?)->())) {
 
         getUsersCurrentLocation() { location in
@@ -178,6 +227,12 @@ class LocationDataManager: NSObject {
 
 extension LocationDataManager : CLLocationManagerDelegate {
 
+    /**
+     Method is called after the locationManager requests location and the locationManager was successful at getting the user's location. It will return the user's location by calling the getUsersCurrentLocationCallback
+
+     - parameter manager:   CLLocationManager
+     - parameter locations: [CLLocation]
+     */
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
 
         print("did update location")
@@ -191,17 +246,27 @@ extension LocationDataManager : CLLocationManagerDelegate {
         }
     }
 
+    /**
+     Method is called after the locationManager requests location and the locationManager failed at getting the user's location. It will return that there was an error by calling the getUsersCurrentLocationCallback
+
+     - parameter manager: CLLocationManager
+     - parameter error:   NSError
+     */
     func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
 
-        print(error)
-
-        if getUsersCurrentLocationCallback != nil {
+        if(getUsersCurrentLocationCallback != nil) {
             getUsersCurrentLocationCallback(location : nil)
             getUsersCurrentLocationCallback = nil
         }
 
     }
 
+    /**
+     Method is called after the user has either authorized or denied location services. It will return the result of this authorization change by calling the isLocationServicedEnabledAndIfNotHandleItCallback.
+
+     - parameter manager: CLLocationManager
+     - parameter status:  CLAuthorizationStatus
+     */
     func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
 
         if status == CLAuthorizationStatus.AuthorizedWhenInUse || status == CLAuthorizationStatus.AuthorizedAlways {
