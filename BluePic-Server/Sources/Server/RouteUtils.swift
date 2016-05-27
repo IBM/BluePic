@@ -31,10 +31,52 @@ import MobileClientAccess
 * a push notification for the iOS client.
 */
 func processImage(withId imageId: String, forUser userId: String) {
-  // TODO Invoke OpenWhisk action
   // TODO OpenWhisk reads user document from cloudant to obtain language and units of measure...
-  Log.verbose("process() not implemented yet...")
   Log.verbose("imageId: \(imageId), userId: \(userId)")
+  
+  let hostName = "openwhisk.ng.bluemix.net"
+  let path = "/api/v1/namespaces/cmjaun%40us.ibm.com_cmjaun%40us.ibm.com/actions/bluepic/processImage?blocking=true"
+  let authToken = "NmFhZWE3OGQtOTk3ZC00NjAxLTgwZWMtNjU2MDgzNmRiZmNjOkJaMXE5alpqeVRKalpkNXVlMHBDTUFRekFyMWE1WVlqSVZBbXg5aTB6b2FRVUJrV0RVYUJSOHJ2UXU5Y0l1UEk="
+  
+  var requestOptions = [ClientRequestOptions]()
+  requestOptions.append(.method("POST"))
+  requestOptions.append(.schema("https://"))
+  requestOptions.append(.hostname(hostName))
+  requestOptions.append(.port(443))
+  requestOptions.append(.path(path))
+  var headers = [String:String]()
+  headers["Content-Type"] = "application/json"
+  headers["Authorization"] = "Basic \(authToken)"
+  requestOptions.append(.headers(headers))
+
+  guard let requestBody = JSON(["imageId":imageId]).rawString() else {
+    Log.error("Failed to create json string with imageId")
+    return
+  }
+  
+  // Make REST call
+  let req = HTTP.request(requestOptions) { resp in
+    if let resp = resp where resp.statusCode == HTTPStatusCode.OK {
+      do {
+        let body = NSMutableData()
+        try resp.readAllData(into: body)
+        let jsonResponse = JSON(data: body)
+        print("OpenWhisk response: \(jsonResponse)")
+      } catch {
+        Log.error("Bad JSON document received from OpenWhisk.")
+      }
+    } else {
+      Log.error("Status error code or nil reponse received from OpenWhisk.")
+      if let resp = resp {
+        Log.error("Status code: \(resp.statusCode)")
+        if let rawUserData = try? BodyParser.readBodyData(with: resp) {
+          let str = NSString(data: rawUserData, encoding: NSUTF8StringEncoding)
+          print("Response from OpenWhisk: \(str)")
+        }
+      }
+    }
+  }
+  req.end(requestBody)
 }
 
 /**
