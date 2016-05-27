@@ -37,7 +37,7 @@ class ImagesCurrentlyUploadingImageFeedCollectionViewCell: UICollectionViewCell 
 
         //set the captionLabel's text
         var cap = caption ?? ""
-        if(cap == CameraDataManager.SharedInstance.kEmptyCaptionPlaceHolder) {
+        if cap == CameraDataManager.SharedInstance.kEmptyCaptionPlaceHolder {
             cap = ""
         }
         captionLabel.text = cap

@@ -135,7 +135,7 @@ class CameraConfirmationView: UIView, UITextFieldDelegate {
         // 3
         let changeInHeight = (CGRectGetHeight(keyboardFrame)) * (show ? -1 : 1)
         //4
-        if (show) {
+        if show {
             UIView.animateWithDuration(animationDuration, animations: { () -> Void in
                 self.frame = CGRect(x: 0, y: 0 + changeInHeight, width: self.frame.width, height: self.frame.height)
             })

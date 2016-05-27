@@ -76,7 +76,7 @@ class TabBarViewModel: NSObject {
      */
     func tryToShowLogin() {
 
-        if(LoginDataManager.SharedInstance.isUserAuthenticatedOrPressedSignInLater()) {
+        if LoginDataManager.SharedInstance.isUserAuthenticatedOrPressedSignInLater() {
             notifyTabBarVC(tabBarViewModelNotification: TabBarViewModelNotification.HideLoginVC)
         } else {
             notifyTabBarVC(tabBarViewModelNotification: TabBarViewModelNotification.ShowLoginVC)
