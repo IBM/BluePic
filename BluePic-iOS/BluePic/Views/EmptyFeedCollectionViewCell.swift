@@ -17,9 +17,9 @@
 import UIKit
 
 class EmptyFeedCollectionViewCell: UICollectionViewCell {
-    
+
     @IBOutlet weak var userHasNoImagesLabel: UILabel!
-    
+
     private let kUserHasNoImagesLabelText = NSLocalizedString("Snap a pic or select one from your library!", comment: "message that describes to the user to upload a picture to begin")
 
     /**
@@ -27,7 +27,7 @@ class EmptyFeedCollectionViewCell: UICollectionViewCell {
      */
     override func awakeFromNib() {
         super.awakeFromNib()
-        
+
         userHasNoImagesLabel.text = kUserHasNoImagesLabelText
     }
 
