@@ -18,29 +18,70 @@ import UIKit
 
 class ImageDetailViewController: UIViewController {
 
+    //Image view that shows the image
     @IBOutlet weak var imageView: UIImageView!
+
+    //dim view that dims the images with a see-through black view
     @IBOutlet weak var dimView: UIView!
+
+    //back button that when pressed pops the vc on the navigation stack
     @IBOutlet weak var backButton: UIButton!
+
+    //colection view that shows the tags for the current image displayed
     @IBOutlet weak var tagCollectionView: UICollectionView!
 
+    //view model that will keep all state and data handling for the image detail vc
     var viewModel: ImageDetailViewModel!
 
+
+    /**
+     Method called upon view did load. It sets up the subviews and the tag collection view
+     */
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setupSubViews()
         setupTagCollectionView()
-
     }
 
+    /**
+     Method called upon view will appear. It sets the status bar to be white color
+
+     - parameter animated: Bool
+     */
     override func viewWillAppear(animated: Bool) {
         UIApplication.sharedApplication().statusBarStyle = .LightContent
     }
 
+    /**
+     Method called by the OS when the application receieves a memory warning
+     */
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
 
+
+
+    /**
+     Method is called when the back button is pressed
+
+     - parameter sender: AnyObject
+     */
+    @IBAction func backButtonAction(sender: AnyObject) {
+
+        self.navigationController?.popViewControllerAnimated(true)
+
+    }
+
+}
+
+
+//UI Setup Methods
+extension ImageDetailViewController {
+
+    /**
+     Method sets up the tag collection view
+     */
     func setupTagCollectionView() {
 
         let layout = KTCenterFlowLayout()
@@ -57,6 +98,9 @@ class ImageDetailViewController: UIViewController {
 
     }
 
+    /**
+     Method sets up subviews
+     */
     func setupSubViews() {
 
         setupImageView()
@@ -64,6 +108,10 @@ class ImageDetailViewController: UIViewController {
 
     }
 
+
+    /**
+     Method sets up the image view
+     */
     func setupImageView() {
 
         if let urlString = viewModel.getImageURLString() {
@@ -72,18 +120,9 @@ class ImageDetailViewController: UIViewController {
         }
     }
 
-
-    @IBAction func backButtonAction(sender: AnyObject) {
-
-        self.navigationController?.popViewControllerAnimated(true)
-
-    }
-
-}
-
-//UI Setup Methods
-extension ImageDetailViewController {
-
+    /**
+     Method sets up the blur view
+     */
     func setupBlurView() {
 
         dimView.hidden = true
@@ -108,14 +147,39 @@ extension ImageDetailViewController {
 
 extension ImageDetailViewController : UICollectionViewDataSource {
 
+
+    /**
+     Method asks the view model for the number of items in the section
+
+     - parameter collectionView: UICollectionView
+     - parameter section:        Int
+
+     - returns: Int
+     */
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel.numberOfItemsInSection(section)
     }
 
+    /**
+     Method asks the viewModel for the number of sections in the collection view
+
+     - parameter collectionView: UICollectionView
+
+     - returns: Int
+     */
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         return viewModel.numberOfSectionsInCollectionView()
     }
 
+    /**
+     Method asks the view model to set up the view for supplementary element of kind, aka the header view
+
+     - parameter collectionView: UICollectionView
+     - parameter kind:           String
+     - parameter indexPath:      NSIndexPath
+
+     - returns: UICollectionReusableView
+     */
     func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
         return viewModel.setUpSectionHeaderViewForIndexPath(
             indexPath,
@@ -124,6 +188,14 @@ extension ImageDetailViewController : UICollectionViewDataSource {
         )
     }
 
+    /**
+     Method asks the viewModel to set up the collection view for indexPath
+
+     - parameter collectionView: UICollectionView
+     - parameter indexPath:      NSIndexPath
+
+     - returns: UICollectionViewCell
+     */
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         return viewModel.setUpCollectionViewCell(indexPath, collectionView: collectionView)
     }
@@ -132,11 +204,29 @@ extension ImageDetailViewController : UICollectionViewDataSource {
 
 extension ImageDetailViewController: UICollectionViewDelegateFlowLayout {
 
+    /**
+     Method asks the viewModel for the size for item at indexPath
+
+     - parameter collectionView:       UICollectionView
+     - parameter collectionViewLayout: UICollectionViewLayout
+     - parameter indexPath:            NSIndexPath
+
+     - returns: CGSize
+     */
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
 
         return viewModel.sizeForItemAtIndexPath(indexPath, collectionView: collectionView)
     }
 
+    /**
+     Method asks the viewMOdel for the reference size for header in section
+
+     - parameter collectionView:       UICollectionView
+     - parameter collectionViewLayout: UICollectionViewLayout
+     - parameter section:              Int
+
+     - returns: CGSize
+     */
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
 
        return viewModel.referenceSizeForHeaderInSection(collectionView, layout: collectionViewLayout, section: section, superViewHeight: self.view.frame.size.height)
@@ -146,6 +236,12 @@ extension ImageDetailViewController: UICollectionViewDelegateFlowLayout {
 
 extension ImageDetailViewController : UICollectionViewDelegate {
 
+    /**
+     Method is called when a cell in the collection view is selected
+
+     - parameter collectionView: UICollectionView
+     - parameter indexPath:      NSIndexPath
+     */
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         if let vc = viewModel.getFeedViewControllerForTagSearchAtIndexPath(indexPath) {
             self.navigationController?.pushViewController(vc, animated: true)
