@@ -251,11 +251,11 @@ func defineRoutes() {
         let apnsSettings = Notification.Settings.Apns(badge: nil, category: "imageProcessed", iosActionKey: nil, sound: nil, type: ApnsType.DEFAULT, payload: jsonImage.dictionaryObject)
         let settings = Notification.Settings(apns: apnsSettings, gcm: nil)
         let target = Notification.Target(deviceIds: [jsonImage["deviceId"].stringValue], platforms: [TargetPlatform.Apple], tagNames: nil, userIds: nil)
-        let message = Notification.Message(alert: "Your image was processed; check it out!", url: nil)
+        let message = Notification.Message(alert: NSLocalizedString("Your image was processed; check it out!", comment: ""), url: nil)
         let notification = Notification(message: message, target: target, settings: settings)
         pushNotificationsClient.send(notification: notification) { (error) in
           if let error = error {
-            print("Failed to send push notification: \(error)")
+            Log.error("Failed to send push notification: \(error)")
             response.error = generateInternalError()
             next()
           } else {
