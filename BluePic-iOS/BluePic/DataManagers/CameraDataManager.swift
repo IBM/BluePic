@@ -34,38 +34,38 @@ class CameraDataManager: NSObject {
         return manager
 
     }()
-    
+
     //reference to the tab bar vc
     var tabVC: TabBarViewController!
-    
+
     //image picker
     var picker: UIImagePickerController!
-    
+
     //confirmationView to be shown after selecting or taking a photo
     var confirmationView: CameraConfirmationView!
-    
+
     //instance of the image the user decided to post
-    var imageUserDecidedToPost : Image!
-    
+    var imageUserDecidedToPost: Image!
+
     //state variables
     var failureGettingUserLocation = false
 
     var userPressedPostPhoto = false
-    
+
     //Constant for how wide all images should be constrained to when compressing for upload (600 results in ~1.2 MB photos)
     let kResizeAllImagesToThisWidth = CGFloat(600)
-    
+
     //what we make the image objects caption if the user doesn't put a caption
     let kEmptyCaptionPlaceHolder = "No-Caption"
-    
+
     /**
      prevents others from using the default '()' initializer for this class
-     
+
      - returns:
      */
     private override init() {}
-    
-    
+
+
     /**
      Method to show the image picker action sheet so user can choose from Photo Library or Camera
 
@@ -144,40 +144,40 @@ class CameraDataManager: NSObject {
         //show view
         self.tabVC.view.addSubview(self.confirmationView)
     }
-    
-    
+
+
     /**
      Method resets the state variables
      */
-    private func resetStateVariables(){
-        
+    private func resetStateVariables() {
+
         imageUserDecidedToPost = nil
         failureGettingUserLocation = false
         userPressedPostPhoto = false
 
     }
-    
+
     /**
      Method shows the progress hud and disables UI
      */
-    private func showProgressHudAndDisableUI(){
+    private func showProgressHudAndDisableUI() {
         self.confirmationView.titleTextField.resignFirstResponder()
         self.confirmationView.disableUI()
 
         SVProgressHUD.show()
 
     }
-    
+
     /**
      Method dismisses the progress hud and re-enables the UI
      */
-    private func dismissProgressHUDAndReEnableUI(){
-        
+    private func dismissProgressHUDAndReEnableUI() {
+
         self.confirmationView.enableUI()
         SVProgressHUD.dismiss()
 
     }
-    
+
     /**
      Method to hide the confirmation view when cancelling or done uploading
      */
@@ -247,7 +247,7 @@ class CameraDataManager: NSObject {
 
 //All methods related to uploading an image
 extension CameraDataManager: UIImagePickerControllerDelegate {
-    
+
     /**
      Method is called after the user takes a photo or chooses a photo from their photo library. This method will save information about the photo taken which will help us handle errors if the photo fails to save and upload to cloudant and object storage
 
@@ -282,11 +282,11 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
 
     /**
      Method creates an image open from the the image the user decided to post and preps all of its properties with data
-     
+
      - parameter takenImage: UIImage
      */
-    func prepareimageUserDecidedToPost(takenImage : UIImage) {
-        
+    func prepareimageUserDecidedToPost(takenImage: UIImage) {
+
         guard let userId = CurrentUser.facebookUserId, fullName = CurrentUser.fullName else {
             print("Failed to create user object")
             return
@@ -307,9 +307,9 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
         dateFormatter.dateFormat = "MM-dd-yyyy_HHmmss"
         let todaysDate = NSDate()
         let fileName = dateFormatter.stringFromDate(todaysDate) + ".png"
-        
+
         setLatLongAndLocationNameForImage { location in
-          
+
             if let location = location {
                 self.imageUserDecidedToPost = Image(caption: "", fileName: fileName, width: image.size.width, height: image.size.height, image: image, location: location, user: userObject)
 
@@ -322,22 +322,22 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
         }
 
     }
-    
-    
+
+
     /**
      Method is called when the post button is pressed
      */
-    func postPhotoButtonAction(){
+    func postPhotoButtonAction() {
         userPressedPostPhoto = true
 
         tryToPostPhoto()
     }
-    
+
     /**
      Method tries to post the photo only if the user has pressed the post photo button already.
      */
-    private func tryToPostPhoto(){
-        
+    private func tryToPostPhoto() {
+
         //only post photo if user has chosen to
         if userPressedPostPhoto {
 
@@ -386,13 +386,13 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
         dismissCameraConfirmation()
 
     }
-    
- 
+
+
     /**
      Method shows the location can't be determined alert
      */
-    func showCantDetermineLocationAlert(){
-        
+    func showCantDetermineLocationAlert() {
+
         dismissProgressHUDAndReEnableUI()
 
         let alert = UIAlertController(title: NSLocalizedString("Location Not Found", comment: ""), message: NSLocalizedString("Location is required to post a photo", comment: ""), preferredStyle: UIAlertControllerStyle.Alert)
@@ -402,9 +402,9 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
         }))
 
         alert.addAction(UIAlertAction(title: NSLocalizedString("Try Again", comment: ""), style: .Default, handler: { (action: UIAlertAction) in
-            
+
             self.tryToDetermineLocationAgainAndSetLatLongAndLocationName()
-            
+
         }))
 
         dispatch_async(dispatch_get_main_queue()) {
@@ -412,16 +412,16 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
         }
 
     }
-    
+
     /**
      Method sets the latitude, longitude, and location name for the image by asking the LocationDataManager for this information
-     
+
      - parameter callback: ((location : Location?)->())
      */
-    private func setLatLongAndLocationNameForImage(callback : ((location : Location?)->())){
-   
-        LocationDataManager.SharedInstance.getCurrentLatLongCityAndState(){ (latitude : CLLocationDegrees?, longitude : CLLocationDegrees?, city : String?, state : String?, error : LocationDataManagerError?) in
-            
+    private func setLatLongAndLocationNameForImage(callback : ((location: Location?)->())) {
+
+        LocationDataManager.SharedInstance.getCurrentLatLongCityAndState() { (latitude: CLLocationDegrees?, longitude: CLLocationDegrees?, city: String?, state: String?, error: LocationDataManagerError?) in
+
             //failure
             if error != nil {
                 callback(location: nil)
@@ -443,25 +443,25 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
 
         }
     }
-    
+
     /**
      Method is called from can't determine location alert if the user chooses to retry getting the location for the image
      */
-    private func tryToDetermineLocationAgainAndSetLatLongAndLocationName(){
-        
+    private func tryToDetermineLocationAgainAndSetLatLongAndLocationName() {
+
         showProgressHudAndDisableUI()
 
         failureGettingUserLocation = false
-        
+
         setLatLongAndLocationNameForImage { location in
-            
+
             self.dismissProgressHUDAndReEnableUI()
 
             if location == nil {
                 self.failureGettingUserLocation = true
             }
             self.tryToPostPhoto()
-            
+
         }
 
     }

@@ -18,16 +18,16 @@ import UIKit
 import BMSCore
 
 enum FacebookAuthenticationError {
-    
+
     //Error when the Authentiction header is not found
     case AuthenticationHeaderNotFound
-    
+
     //Error when the facebook user id is not found
     case FacebookUserIdNotFound
-    
+
     //Error when the facebook user identity is not found
     case FacebookuserIdentifyNotFound
-    
+
     //Error when user canceled login
     case UserCanceledLogin
 
@@ -44,23 +44,23 @@ class FacebookDataManager: NSObject {
         return manager
 
     }()
-    
+
     /**
      Method prevents others from using the default '()' initializer for this class.
-     
+
      - returns:
      */
     private override init() {}
 
-    
+
     /**
      Method will authenticate used with Facebook if the app has Facebook configured in the plist. It will return the facebook user id and facebook user full name if authentication was a success, else it will return a FacebookAuthenticationError.
-     
+
      - parameter callback: ((facebookUserId : String?, facebookUserFullName : String?, error : FacebookAuthenticationError?) -> ())
      */
-    func loginWithFacebook(callback : ((facebookUserId : String?, facebookUserFullName : String?, error : FacebookAuthenticationError?) -> ())){
-        
-        if(isFacebookConfigured()){
+    func loginWithFacebook(callback : ((facebookUserId: String?, facebookUserFullName: String?, error: FacebookAuthenticationError?) -> ())) {
+
+        if isFacebookConfigured() {
             authenticateFacebookUser(callback)
 
         }
@@ -68,7 +68,7 @@ class FacebookDataManager: NSObject {
 
     /**
      Method to check if Facebook SDK is setup on native iOS side and that all required keys have been added to the plist
-     
+
      - returns: true if configured, false if not
      */
     private func isFacebookConfigured() -> Bool {
@@ -105,11 +105,11 @@ class FacebookDataManager: NSObject {
 
     /**
      Method authenticates user with facebook and returns the facebook user id and facebook user full name if authentication was a success, else it will return a FacebookAuthenticationError.
-     
+
      - parameter callback: ((facebookUserId : String?, facebookUserFullName : String?, error : FacebookAuthenticationError?) -> ())
      */
-    private func authenticateFacebookUser(callback : ((facebookUserId : String?, facebookUserFullName : String?, error : FacebookAuthenticationError?) -> ())) {
-        
+    private func authenticateFacebookUser(callback : ((facebookUserId: String?, facebookUserFullName: String?, error: FacebookAuthenticationError?) -> ())) {
+
         let authManager = BMSClient.sharedInstance.authorizationManager
         authManager
         authManager.obtainAuthorization(completionHandler: {(response: Response?, error: NSError?) in
@@ -138,7 +138,7 @@ class FacebookDataManager: NSObject {
                         print("Valid Authentication Header and userIdentity, but id not found")
                         callback(facebookUserId: nil, facebookUserFullName: nil, error: FacebookAuthenticationError.FacebookUserIdNotFound)
                     }
-                    
+
                 }
                 //error
                 else {
@@ -146,7 +146,7 @@ class FacebookDataManager: NSObject {
                     callback(facebookUserId: nil, facebookUserFullName: nil, error: FacebookAuthenticationError.FacebookuserIdentifyNotFound)
                 }
             }
-    
+
         })
     }
 }

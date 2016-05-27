@@ -36,7 +36,7 @@ class CameraConfirmationView: UIView, UITextFieldDelegate {
 
     /// Reference to the original frame
     var originalFrame: CGRect!
-    
+
     /// Placeholder text for the titleTextField
     private let kTextFieldPlaceholderText = NSLocalizedString("GIVE IT A TITLE", comment: "")
 
@@ -134,7 +134,7 @@ class CameraConfirmationView: UIView, UITextFieldDelegate {
         // 2
         let keyboardFrame  = keyboardFrameValue.CGRectValue()
         // 3
-        let changeInHeight = (CGRectGetHeight(keyboardFrame)) * (show ? -1 : 1)
+        let changeInHeight = (keyboardFrame.height) * (show ? -1 : 1)
         //4
         if show {
             UIView.animateWithDuration(animationDuration, animations: { () -> Void in
@@ -160,23 +160,23 @@ class CameraConfirmationView: UIView, UITextFieldDelegate {
         self.endEditing(true)
         return true
     }
-    
+
     /**
      Method enables the UI to be interacted with
      */
-    func enableUI(){
-        
+    func enableUI() {
+
         self.cancelButton.enabled = true
         self.postButton.enabled = true
         self.titleTextField.enabled = true
 
     }
-    
+
     /**
      Method disables the UI to be interacted with
      */
-    func disableUI(){
-        
+    func disableUI() {
+
         self.cancelButton.enabled = false
         self.postButton.enabled = false
         self.titleTextField.enabled = false
