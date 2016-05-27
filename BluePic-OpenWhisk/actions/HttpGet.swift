@@ -7,7 +7,7 @@ import KituraNet
 import Dispatch
 import Foundation
 
-func main(args:[String:Any]) -> [String:Any] {
+func main(args: [String:Any]) -> [String:Any] {
 
     // Force KituraNet call to run synchronously on a global queue
     var str = "No response"
@@ -26,7 +26,7 @@ func main(args:[String:Any]) -> [String:Any] {
 
     // Assume string is JSON
     print("Got string \(str)")
-    var result:[String:Any]?
+    var result: [String:Any]?
 
     // Convert to NSData
     let data = str.bridge().dataUsingEncoding(NSUTF8StringEncoding)!

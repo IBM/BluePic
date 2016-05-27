@@ -23,48 +23,45 @@ enum LoginViewModelNotification {
 }
 
 class LoginViewModel: NSObject {
-    
-    var notifyLoginVC : ((loginViewModelNotification : LoginViewModelNotification) -> ())!
-    
+
+    var notifyLoginVC : ((loginViewModelNotification: LoginViewModelNotification) -> ())!
+
     /**
      Method sets up the callback method to notify the login vc of login view model notifications
-     
+
      - parameter notifyLoginVC: ((loginViewModelNotification : LoginViewModelNotification) -> ())
-     
+
      - returns: LoginViewModel
      */
-    init(notifyLoginVC: ((loginViewModelNotification : LoginViewModelNotification) -> ())) {
+    init(notifyLoginVC: ((loginViewModelNotification: LoginViewModelNotification) -> ())) {
         super.init()
-        
+
         self.notifyLoginVC = notifyLoginVC
-        
+
     }
-    
+
     /**
      Method informs the LoginDataManager that the user decided to login later
      */
-    func loginLater(){
+    func loginLater() {
         LoginDataManager.SharedInstance.loginLater()
     }
-    
-    
+
     /**
-     Method tells the LoginDataManager to begin the login process. We will eventually receieve the result of the login and we we handle errors or success by notifying the login vc appropriately. 
+     Method tells the LoginDataManager to begin the login process. We will eventually receieve the result of the login and we we handle errors or success by notifying the login vc appropriately.
      */
     func authenticateWithFacebook() {
-        
+
         LoginDataManager.SharedInstance.login({ error in
-        
-            if(error == nil){
+
+            if error == nil {
                 self.notifyLoginVC(loginViewModelNotification: LoginViewModelNotification.LoginSuccess)
-            }
-            else if(error == LoginDataManagerError.UserCanceledLogin){
+            } else if error == LoginDataManagerError.UserCanceledLogin {
                 self.notifyLoginVC(loginViewModelNotification: LoginViewModelNotification.UserCanceledLogin)
-            }
-            else{
+            } else {
                 self.notifyLoginVC(loginViewModelNotification: LoginViewModelNotification.LoginFailure)
             }
-        
+
         })
     }
 

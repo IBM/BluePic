@@ -17,43 +17,38 @@
 import UIKit
 
 class BluemixConfiguration: NSObject {
-    
+
     //Plist Keys
     private let kBluemixKeysPlistName = "bluemix"
     private let kIsLocalKey = "isLocal"
-    private let kBluemixBaseRequestURLKey_local = "bluemixBaseRequestURL_local"
-    private let kBluemixBaseRequestURLKey_remote = "bluemixBaseRequestURL_remote"
-    private let kBluemixAppRouteKey = "bluemixAppRoute"
+    private let kAppRouteLocal = "appRouteLocal"
+    private let kAppRouteRemote = "appRouteRemote"
     private let kBluemixAppGUIDKey = "bluemixAppGUID"
     private let kBluemixAppRegionKey = "bluemixAppRegion"
-    
+
     let localBaseRequestURL: String!
     let remoteBaseRequestURL: String!
-    let appRoute: String!
     let appGUID: String!
     let appRegion: String!
     var isLocal: Bool = true
-    
+
     override init() {
-        
-        if let localBaseRequestURL = Utils.getStringValueWithKeyFromPlist(kBluemixKeysPlistName, key: kBluemixBaseRequestURLKey_local),
-                remoteBaseRequestURL = Utils.getStringValueWithKeyFromPlist(kBluemixKeysPlistName, key: kBluemixBaseRequestURLKey_remote),
-                appRoute = Utils.getStringValueWithKeyFromPlist(kBluemixKeysPlistName, key: kBluemixAppRouteKey),
+
+        if let localBaseRequestURL = Utils.getStringValueWithKeyFromPlist(kBluemixKeysPlistName, key: kAppRouteLocal),
+                remoteBaseRequestURL = Utils.getStringValueWithKeyFromPlist(kBluemixKeysPlistName, key: kAppRouteRemote),
                 appGUID = Utils.getStringValueWithKeyFromPlist(kBluemixKeysPlistName, key: kBluemixAppGUIDKey),
                 appRegion = Utils.getStringValueWithKeyFromPlist(kBluemixKeysPlistName, key: kBluemixAppRegionKey),
                 isLocal = Utils.getBoolValueWithKeyFromPlist(kBluemixKeysPlistName, key: kIsLocalKey) {
             self.localBaseRequestURL = localBaseRequestURL
             self.remoteBaseRequestURL = remoteBaseRequestURL
-            self.appRoute = appRoute
             self.appGUID = appGUID
             self.appRegion = appRegion
             self.isLocal = isLocal
-            
+
             super.init()
         } else {
             fatalError("Could not load bluemix plist into object properties")
         }
-        
     }
 
 }

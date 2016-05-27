@@ -46,7 +46,7 @@ Note that the [Bluemix buildpack for Swift](https://github.com/IBM-Swift/swift-b
 
 #### 4. Populate Cloudant database
 
-To populate your Cloudant database instance with sample data, execute the `populator.sh` script. Please note that this script requires three parameters:
+To populate your Cloudant database instance with sample data, execute the `populator.sh` script in the `./Bridge-Scripts/cloudantNoSQLDB/` directory. Please note that this script requires three parameters:
 
 - `username` - The username for your Cloudant instance.
 - `password` - The password for your Cloudant instance.
@@ -61,7 +61,7 @@ You can obtain the above credentials by accessing your application's page on Blu
 
 #### 5. Populate Object Storage
 
-To populate your Object Storage instance with sample data, execute the `populator.sh` script. Please note that this script requires three parameters:
+To populate your Object Storage instance with sample data, execute the `populator.sh` script in the `./Bridge-Scripts/Object-Storage/` directory. Please note that this script requires three parameters:
 
 - `userid` - The username for your Object Storage instance.
 - `password` - The password for your Object Storage instance.
@@ -124,9 +124,18 @@ To start the Kitura-based server for the BluePic app, go to the `BluePic-Server`
 1. Let's now copy the Facebook app information from step 8 into the `info.plist` file of the iOS app. You can find the `info.plist` file in `Configuration` folder of the Xcode project. After updating this file, it should contain the following [among other values]:
 <p align="center"><img src="Imgs/infoplist.png"  alt="Drawing" height=150 border=0 /></p>
 
-1. You can now update the bundle identifier in the Xcode project (remember, this is the bundle identifier you choose in step 7 above). Make sure the project navigator folder icon is selected in the top left of Xcode; then select the BluePic project at the top of the file structure and then select the BluePic target. Under the identity section, you should see a text field for the bundle identifier. Update this field with the corresponding value.
+1. You can now update the bundle identifier in the Xcode project (remember, this is the bundle identifier you chose in step 7 above). Make sure the project navigator folder icon is selected in the top left of Xcode; then select the BluePic project at the top of the file structure and then select the BluePic target. Under the identity section, you should see a text field for the bundle identifier. Update this field with the corresponding value.
 
-1. Let's finally update the `bluemix.plist` in the Xcode project. TODO: Add contents
+1. Let's finally update the `bluemix.plist` in the Xcode project.
+    1. You can set the `isLocal` value to `YES` if you want to use a locally running server or set the value to `NO` if you want to use your server instance running on Bluemix.
+    2. You shouldn't have to change the `appRouteLocal` value, it is using the default port for Kitura.
+    3. To get the `appRouteRemote` and `bluemixAppGUID` value, you need to go to your Bluemix dashboard and open the application you created in [step 3](#3-create-bluepic-application-on-bluemix). Once on your application's page, there should be a "Mobile Options" button near the top right, that you can tap on. It should then open up a view that displays your Route which maps to the `appRouteRemote` key in the plist. You will also see a App GUID value which maps to the `bluemixAppGUID` key in the plist.
+    4. Lastly, we need to get the value for `bluemixAppRegion`, which can be one of three options currently: 
+
+		REGION US SOUTH | REGION UK | REGION SYDNEY
+		--- | --- | ---
+		`.ng.bluemix.net` | `.eu-gb.bluemix.net` | `.au-syd.bluemix.net`
+		You can find the one you need in multiple ways, the first, by just looking at the URL you use to access your Bluemix dashboard. Another way is to look at the `config.json` file you modifed earlier. If you look at the credentials under your `AdvancedMobileAccess` service, there is a value called `serverUrl` which should contain one of the regions mentioned above. Once you insert your `bluemixAppRegion` value into the `bluemix.plist`, your app should be configured.
 
 #### 14. Run the iOS app
 

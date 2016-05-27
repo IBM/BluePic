@@ -19,41 +19,29 @@ import BMSCore
 
 class User: NSObject {
 
-    var facebookID : String
-    var name : String
-    
+    let facebookID: String
+    let name: String
+
     init(facebookID: String, name: String) {
         self.facebookID = facebookID
         self.name = name
     }
-    
+
     init?(_ response: Response?) {
-        
+
         if let dict = Utils.convertResponseToDictionary(response),
             facebookID = dict["_id"] as? String,
             name = dict["name"] as? String {
-            
+
             self.facebookID = facebookID
             self.name = name
-           
+
             super.init()
-        }
-        else{
-            
+        } else {
             print("invalid JSON")
             return nil
         }
-   
+
     }
-        
+
 }
-
-    
-    
-    
-    
-    
-    
-    
-    
-

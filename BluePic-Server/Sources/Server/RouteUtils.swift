@@ -44,7 +44,7 @@ func processImage(withId imageId: String, forUser userId: String) {
 * - parameter imageId:  String id of the image document to retrieve.
 * - parameter callback: Callback to use within async method.
 */
-func readImage(database: Database, imageId: String, callback: ((jsonData : JSON?) -> ())) {
+func readImage(database: Database, imageId: String, callback: ((jsonData: JSON?) -> ())) {
   let queryParams: [Database.QueryParameters] =
   [.descending(true), .includeDocs(true), .endKey([imageId, 0]), .startKey([imageId, NSObject()])]
   database.queryByView("images_by_id", ofDesign: "main_design", usingParameters: queryParams) { (document, error) in
@@ -57,8 +57,7 @@ func readImage(database: Database, imageId: String, callback: ((jsonData : JSON?
         } else {
           throw ProcessingError.Image("Image not found!")
         }
-      }
-      catch {
+      } catch {
         Log.error("Failed to get specific image document.")
         callback(jsonData: nil)
       }
@@ -158,7 +157,7 @@ func generateUrl(forContainer containerName: String, forImage imageName: String)
 func createContainer(withName name: String, completionHandler: (success: Bool) -> Void) {
   // Cofigure container for public access and web hosting
   let configureContainer = { (container: ObjectStorageContainer) -> Void in
-    let metadata:Dictionary<String, String> = ["X-Container-Meta-Web-Listings" : "true", "X-Container-Read" : ".r:*,.rlistings"]
+    let metadata: Dictionary<String, String> = ["X-Container-Meta-Web-Listings" : "true", "X-Container-Read" : ".r:*,.rlistings"]
     container.updateMetadata(metadata: metadata) { (error) in
       if let _ = error {
         Log.error("Could not configure container named '\(name)' for public access and web hosting.")

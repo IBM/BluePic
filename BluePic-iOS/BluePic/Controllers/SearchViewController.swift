@@ -42,7 +42,7 @@ class SearchViewController: UIViewController {
      */
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         setupPopularTags()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
         initializeDataRetrieval()
@@ -52,14 +52,14 @@ class SearchViewController: UIViewController {
      Method sets up the popular tags collection view
      */
     func setupPopularTags() {
-        
+
         let layout = KTCenterFlowLayout()
         layout.leftAlignedLayout = true
         layout.minimumInteritemSpacing = 10.0
         layout.minimumLineSpacing = 10.0
         layout.sectionInset = UIEdgeInsets(top: 0, left: 15.0, bottom: 0, right: 15.0)
         tagCollectionView.setCollectionViewLayout(layout, animated: false)
-        
+
         if let label = tagsButton.titleLabel {
             Utils.kernLabelString(label, spacingValue: 1.7)
         }
@@ -118,9 +118,9 @@ extension SearchViewController {
      - returns:
      */
     func initializeDataRetrieval() {
-        
+
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(updateWithTagData), name: BluemixDataManagerNotification.PopularTagsReceived.rawValue, object: nil)
-        
+
         BluemixDataManager.SharedInstance.getPopularTags()
     }
     
@@ -128,14 +128,14 @@ extension SearchViewController {
      Method is called when the BluemixDataManager has successfully received tags. It updates the tag collection view with this new data
      */
     func updateWithTagData() {
-        dispatch_async(dispatch_get_main_queue(),{
+        dispatch_async(dispatch_get_main_queue(), {
             self.popularTags = BluemixDataManager.SharedInstance.tags
             self.tagCollectionView.performBatchUpdates({
                 self.tagCollectionView.reloadSections(NSIndexSet(index: 0))
             }, completion: nil)
         })
     }
-    
+
 }
 
 extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
@@ -164,7 +164,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
         guard let cell = collectionView.dequeueReusableCellWithReuseIdentifier("TagCollectionViewCell", forIndexPath: indexPath) as? TagCollectionViewCell else {
             return UICollectionViewCell()
         }
-        
+
         cell.tagLabel.text = popularTags[indexPath.item]
         return cell
     }
@@ -180,7 +180,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
      */
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         let size = NSString(string: popularTags[indexPath.item]).sizeWithAttributes(nil)
-        return CGSizeMake(size.width + kCellPadding, 30.0)
+        return CGSize(width: size.width + kCellPadding, height: 30.0)
     }
     
     /**
@@ -197,7 +197,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }
-    
+
 }
 
 extension SearchViewController: UITextFieldDelegate {
@@ -211,17 +211,18 @@ extension SearchViewController: UITextFieldDelegate {
      */
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
-        
+
         if let query = textField.text, vc = Utils.vcWithNameFromStoryboardWithName("FeedViewController", storyboardName: "Feed") as? FeedViewController
             where query.characters.count > 0 {
-        
+
             vc.searchQuery = query
+
             self.navigationController?.pushViewController(vc, animated: true)
         } else {
             print("Invalid search query")
             textField.shakeView()
         }
-        
+
         return true
     }
     
@@ -240,5 +241,5 @@ extension SearchViewController: UITextFieldDelegate {
         }
         return false
     }
-    
+
 }

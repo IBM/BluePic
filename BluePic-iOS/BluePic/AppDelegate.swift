@@ -24,57 +24,55 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-    
     /**
      Method called when app finishes up launching. In this case we initialize Bluemix Mobile Client Access with Facebook
-     
+
      - parameter application:   UIApplication.
      - parameter launchOptions: [NSObject: Anyobject]?
-     
+
      - returns: Bool
      */
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        
+
         //register for remote notifications aka prompt user to give permission for notifications
         let notificationTypes: UIUserNotificationType = [UIUserNotificationType.Badge, UIUserNotificationType.Alert, UIUserNotificationType.Sound]
         let notificationSettings: UIUserNotificationSettings = UIUserNotificationSettings(forTypes: notificationTypes, categories: nil)
         application.registerUserNotificationSettings(notificationSettings)
         application.registerForRemoteNotifications()
-        
+
         //pre load the keyboard on the camera confirmayion screen to prevent laggy behavior
         preLoadKeyboardToPreventLaggyKeyboardInCameraConfirmationScreen()
         
         //Fetch images on app launch
         BluemixDataManager.SharedInstance.getImages()
-        
+
         //inialialize Bluemix Mobile Client Access to allow for facebook Authentication
         return self.initializeBackendForFacebookAuth(application, launchOptions: launchOptions)
     }
-    
+
     /**
      Method called when the user registers from remote notifications
-     
+
      - parameter application:
      - parameter deviceToken:
      */
-    func application (application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData){
+    func application (application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
         let push =  BMSPushClient.sharedInstance
         push.registerDeviceToken(deviceToken) { (response, statusCode, error) -> Void in
             if error.isEmpty {
                 print( "Response during device registration : \(response)")
                 print( "status code during device registration : \(statusCode)")
-            }
-            else{
+            } else {
                 print( "Error during device registration \(error) ")
                 print( "Error during device registration \n  - status code: \(statusCode) \n Error :\(error) \n")
             }
         }
-        
+
     }
-    
+
     /**
      Method called when device receives a remote notification
-     
+
      - parameter application:
      - parameter userInfo:
      - parameter completionHandler:
@@ -86,17 +84,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             completionHandler(UIBackgroundFetchResult.Failed)
             return
         }
-        
+
         //handle a push notification by showing an alert that says your image was processed
         if application.applicationState == UIApplicationState.Background || application.applicationState == UIApplicationState.Inactive {
-            loadImageDetail(userInfo, tabBarController: tabBarController ,feedNav: feedNav)
+            loadImageDetail(userInfo, tabBarController: tabBarController, feedNav: feedNav)
         } else {
             if let aps = userInfo["aps"], category = aps["category"] as? String where category == "imageProcessed" {
-                
+
                 let alert = UIAlertController(title: NSLocalizedString("Your image was processed!", comment: ""),
                                               message: NSLocalizedString("Would you like to view your image now?", comment: ""),
                                               preferredStyle: UIAlertControllerStyle.Alert)
-                
+
                 alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil))
                 alert.addAction(UIAlertAction(title: "Yes", style: UIAlertActionStyle.Default, handler: { (action) in
                     self.loadImageDetail(userInfo, tabBarController: tabBarController, feedNav: feedNav)
@@ -106,10 +104,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         completionHandler(UIBackgroundFetchResult.NewData)
     }
-    
+
     /**
      Loads image detail view for image mentioned in userInfo dictionary
-     
+
      - parameter userInfo:         dictionary of info from a push notification
      - parameter tabBarController: primary tab bar controller for application
      - parameter feedNav:          root navigation controller for feed flow
@@ -117,7 +115,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func loadImageDetail(userInfo: [NSObject : AnyObject], tabBarController: TabBarViewController, feedNav: FeedNavigationController) {
         if let payload = userInfo["payload"] as? String, dictionary = Utils.convertStringToDictionary(payload), image = Image(dictionary),
             imageDetailVC = Utils.vcWithNameFromStoryboardWithName("ImageDetailViewController", storyboardName: "Feed") as? ImageDetailViewController {
-            
+
             let imageDetailViewModel = ImageDetailViewModel()
             imageDetailViewModel.image = image
             imageDetailVC.viewModel = imageDetailViewModel
@@ -126,21 +124,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             feedNav.pushViewController(imageDetailVC, animated: true)
         }
     }
-    
+
     /**
      Method preloads keyboard to prevent the keyboard on the camera confirmation screen to be laggy when touching the text field for the first time
      */
-    func preLoadKeyboardToPreventLaggyKeyboardInCameraConfirmationScreen(){
-        
+    func preLoadKeyboardToPreventLaggyKeyboardInCameraConfirmationScreen() {
+
         let lagFreeField = UITextField()
         self.window?.addSubview(lagFreeField)
         lagFreeField.becomeFirstResponder()
         lagFreeField.resignFirstResponder()
         lagFreeField.removeFromSuperview()
-        
+
     }
-    
-    
+
     /**
      Method to initialize Bluemix Mobile Client Access with Facebook
      */
@@ -152,11 +149,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         BMSClient.sharedInstance.authorizationManager = MCAAuthorizationManager.sharedInstance
         //IMFFacebookAuthenticationHandler.sharedInstance().registerWithDefaultDelegate()
         FacebookAuthenticationManager.sharedInstance.register()
-        
+
         return FacebookAuthenticationManager.sharedInstance.onFinishLaunching(application, withOptions:  launchOptions)
     }
 
-    
     func applicationWillResignActive(application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
@@ -176,24 +172,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //FBAppEvents.activateApp()
         UIApplication.sharedApplication().applicationIconBadgeNumber = 0
     }
-    
+
     /**
      Method handles opening a facebook url for facebook login
-     
+
      - parameter application:       UIApplication
      - parameter url:               NSURL
      - parameter sourceApplication: String?
      - parameter annotation:        AnyObject
-     
+
      - returns: Bool
      */
-    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?,annotation: AnyObject) -> Bool {
+    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
         return FacebookAuthenticationManager.sharedInstance.onOpenURL(application, url: url, sourceApplication: sourceApplication, annotation: annotation)
     }
-    
+
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
 }
-

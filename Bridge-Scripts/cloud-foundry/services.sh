@@ -16,7 +16,25 @@
 # limitations under the License.
 ##
 
-cf create-service cloudantNoSQLDB Shared "Cloudant NoSQL DB-fz"
-cf create-service Object-Storage standard "Object Storage-bv"
-cf create-service AdvancedMobileAccess Gold "Mobile Client Access-ag"
-cf create-service imfpush Basic "IBM Push Notifications-12"
+# If any commands fail, we want the shell script to exit immediately.
+set -e
+
+# Delete services first
+echo "Deleting services..."
+cf delete-service -f "BluePic-Cloudant"
+cf delete-service -f "BluePic-Object-Storage"
+cf delete-service -f "BluePic-Mobile-Client-Access"
+cf delete-service -f "BluePic-IBM-Push"
+cf delete-service -f "BluePic-Visual-Recognition"
+cf delete-service -f "BluePic-Insights-for-Weather"
+echo "Services deleted."
+
+# Create services
+echo "Creating services..."
+cf create-service cloudantNoSQLDB Shared "BluePic-Cloudant"
+cf create-service Object-Storage standard "BluePic-Object-Storage"
+cf create-service AdvancedMobileAccess Gold "BluePic-Mobile-Client-Access"
+cf create-service imfpush Basic "BluePic-IBM-Push"
+cf create-service watson_vision_combined free "BluePic-Visual-Recognition"
+cf create-service weatherinsights Free "BluePic-Insights-for-Weather"
+echo "Services created."
