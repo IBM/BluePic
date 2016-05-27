@@ -18,7 +18,6 @@ import UIKit
 import ImageIO
 import CoreLocation
 
-
 enum CameraDataManagerNotification: String {
     case UserPressedPostPhoto = "UserPressedPostPhoto"
 
@@ -36,9 +35,7 @@ class CameraDataManager: NSObject {
 
     }()
 
-
     private override init() {} //This prevents others from using the default '()' initializer for this class.
-
 
     /// reference to the tab bar vc
     var tabVC: TabBarViewController!
@@ -108,8 +105,6 @@ class CameraDataManager: NSObject {
 
     }
 
-
-
     /**
      Method called when user wants to take a photo with the camera
      */
@@ -125,7 +120,6 @@ class CameraDataManager: NSObject {
         }
     }
 
-
     /**
      Method called when user wants to choose a photo from Photo Album for posting
      */
@@ -136,7 +130,6 @@ class CameraDataManager: NSObject {
         })
 
     }
-
 
     /**
      Method to show the camera confirmation view for adding a caption and posting
@@ -153,7 +146,6 @@ class CameraDataManager: NSObject {
         //show view
         self.tabVC.view.addSubview(self.confirmationView)
     }
-
 
     func resetStateVariables() {
 
@@ -179,7 +171,6 @@ class CameraDataManager: NSObject {
 
     }
 
-
     /**
      Method to hide the confirmation view when cancelling or done uploading
      */
@@ -197,7 +188,6 @@ class CameraDataManager: NSObject {
 
     }
 
-
     /**
      Method to remove the confirmation view from memory when finished with it
      */
@@ -206,7 +196,6 @@ class CameraDataManager: NSObject {
         self.confirmationView.removeFromSuperview()
         self.confirmationView = nil
     }
-
 
     /**
      Alert to be shown if photo couldn't be loaded from disk (iCloud photo stream photo not loaded, for example)
@@ -223,7 +212,6 @@ class CameraDataManager: NSObject {
         }
 
     }
-
 
     /**
      Method to rotate image taken if necessary
@@ -250,11 +238,8 @@ class CameraDataManager: NSObject {
 
 }
 
-
-
 //All methods related to uploading an image
 extension CameraDataManager: UIImagePickerControllerDelegate {
-
 
     /**
      Method is called after the user takes a photo or chooses a photo from their photo library. This method will save information about the photo taken which will help us handle errors if the photo fails to save and upload to cloudant and object storage
@@ -336,7 +321,6 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
         tryToPostPhoto()
     }
 
-
     private func tryToPostPhoto() {
 
         //only post photo if user has chosen to
@@ -357,7 +341,6 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
         }
 
     }
-
 
     /**
      Method called when user presses "post Photo" on confirmation view
@@ -440,7 +423,6 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
         }
     }
 
-
     private func tryToDetermineLocationAgainAndSetLatLongCityAndState() {
 
         showProgressHudAndDisableUI()
@@ -456,20 +438,9 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
             }
             self.tryToPostPhoto()
 
-//            if(success == true){
-//                self.failureGettingUserLocation = false
-//                self.tryToPostPhoto()
-//            }
-//            else{
-//                self.failureGettingUserLocation = true
-//                self.showCantDetermineLocationAlert()
-//            }
-
         }
 
     }
-
-
 
     /**
      Method is called when the user decides to cancel taking a photo or choosing a photo from their photo library.
@@ -482,7 +453,6 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
 
         print("picker canceled.")
     }
-
 
 }
 

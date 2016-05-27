@@ -39,7 +39,6 @@ class ProfileViewModel: NSObject {
     //constant that represents the number of cells in the collection view when there is no photos
     private let kNumberOfCellsWhenUserHasNoPhotos = 1
 
-
     /**
      Method called upon init, it sets up the method used to inform the profile vc of events, suscribes to BlueMixDataManager notifications, and updates the image data araay and tells the profile vc to reload its collection view
 
@@ -67,7 +66,6 @@ class ProfileViewModel: NSObject {
 
     }
 
-
     /**
      Method updates the imageDataArray to the latest currentUserImages from the BluemixDataManager and then tells the profile vc to reload its collection view
      */
@@ -78,7 +76,6 @@ class ProfileViewModel: NSObject {
         self.callRefreshCallBack()
 
     }
-
 
     /**
      Method tells the profile view controller to reload its collectionView
@@ -91,9 +88,7 @@ class ProfileViewModel: NSObject {
         }
     }
 
-
 }
-
 
 //View Controller -> View Model Communication
 extension ProfileViewModel {
@@ -106,7 +101,6 @@ extension ProfileViewModel {
     func numberOfSectionsInCollectionView() -> Int {
         return kNumberOfSectionsInCollectionView
     }
-
 
     /**
      Method returns the number of items in a section
@@ -123,7 +117,6 @@ extension ProfileViewModel {
             return imageDataArray.count
         }
     }
-
 
     /**
      Method returns the size for item at indexPath
@@ -158,7 +151,6 @@ extension ProfileViewModel {
 
         }
     }
-
 
     /**
      Method sets up the collection view cell for indexPath. If the imageDataArray.count is equal to 0 then we return an instance EmptyfeedCollectionviewCell
@@ -196,7 +188,6 @@ extension ProfileViewModel {
         }
     }
 
-
     /**
      Method sets up the section header for the indexPath parameter
 
@@ -216,7 +207,6 @@ extension ProfileViewModel {
 
         return header
     }
-
 
     /**
      Method return an ImageDetailViewModel for the image at the indexPath parameter

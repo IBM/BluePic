@@ -45,7 +45,6 @@ class ProfileViewController: UIViewController {
     //constant that represents the height of the profile picture image view
     let kHeightOfProfilePictureImageView: CGFloat = 75
 
-
     /**
      Method called upon view did load. It sets up the view model, sets up the colleciton view, sets up the head view, and sets up the status bar background view
      */
@@ -72,19 +71,14 @@ class ProfileViewController: UIViewController {
      */
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-
     }
-
 
     /**
      Method called sets up the viewModel and passes it a method to call when there is new data and we need to reload the collection view
      */
     func setupViewModel() {
-
         viewModel = ProfileViewModel(refreshVCCallback: reloadDataInCollectionView)
-
     }
-
 
     /**
      Method sets up the status bar background view
@@ -105,7 +99,6 @@ class ProfileViewController: UIViewController {
         self.view.addSubview(statusBarBackgroundView)
 
     }
-
 
     /**
      Method animates in the status bar background view
@@ -128,7 +121,6 @@ class ProfileViewController: UIViewController {
 
     }
 
-
     /**
     Method sets up the header view with initial properties
      */
@@ -147,7 +139,6 @@ class ProfileViewController: UIViewController {
 
     }
 
-
     /**
      Method sets up the collection view with initial properties
      */
@@ -158,28 +149,22 @@ class ProfileViewController: UIViewController {
 
         Utils.registerSupplementaryElementOfKindNibWithCollectionView("ProfileHeaderCollectionReusableView", kind: UICollectionElementKindSectionHeader, collectionView: collectionView)
 
-
         Utils.registerNibWithCollectionView("EmptyFeedCollectionViewCell", collectionView: collectionView)
 
         Utils.registerNibWithCollectionView("ProfileCollectionViewCell", collectionView: collectionView)
 
     }
 
-
     /**
      Method reloads the data in the collection view
      */
     func reloadDataInCollectionView() {
-
         collectionView.reloadData()
-
     }
 
 }
 
-
 extension ProfileViewController: UICollectionViewDataSource {
-
 
     /**
      Method setups up the viewForSupplementaryElementOfKind by asking the viewModel to set it up. This specifically sets up a header view on the top of the collection view to be clear so you can see the image view at the top of the collection view that is actually below the collection view.
@@ -210,7 +195,6 @@ extension ProfileViewController: UICollectionViewDataSource {
         return viewModel.setUpCollectionViewCell(indexPath, collectionView : collectionView)
     }
 
-
     /**
      Method sets the number of items in a section by asking the view model for the number of items in the section
 
@@ -222,7 +206,6 @@ extension ProfileViewController: UICollectionViewDataSource {
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel.numberOfItemsInSection(section)
     }
-
 
     /**
      Method sets the number of sections in the collection view by asking the view model for the number of sections in the collection view
@@ -236,7 +219,6 @@ extension ProfileViewController: UICollectionViewDataSource {
     }
 
 }
-
 
 extension ProfileViewController: UICollectionViewDelegateFlowLayout {
 
@@ -258,9 +240,7 @@ extension ProfileViewController: UICollectionViewDelegateFlowLayout {
         } else {
             return CGSize(width: collectionWidth, height: 0)
         }
-
     }
-
 
     /**
      Method
@@ -278,7 +258,6 @@ extension ProfileViewController: UICollectionViewDelegateFlowLayout {
         return viewModel.sizeForItemAtIndexPath(indexPath, collectionView: collectionView, heightForEmptyProfileCollectionViewCell: heightForEmptyProfileCollectionViewCell)
     }
 
-
 }
 
 extension ProfileViewController : UIScrollViewDelegate {
@@ -293,7 +272,6 @@ extension ProfileViewController : UIScrollViewDelegate {
         }
 
     }
-
 
     /**
      Method that is called when the scrollView scrolls. When the scrollView scrolls we call the updateImageViewFrameWithScrollViewDidScroll method
@@ -336,7 +314,5 @@ extension ProfileViewController : UIScrollViewDelegate {
         } else {
             animateInStatusBarBackgroundView(false)
         }
-
     }
-
 }

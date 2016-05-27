@@ -17,7 +17,6 @@
 import UIKit
 import CoreLocation
 
-
 enum LocationDataManagerError {
 
     case GetCurrentLatLongCityAndStateFailure
@@ -65,7 +64,6 @@ class LocationDataManager: NSObject {
         }
     }
 
-
     private func setupLocationManager() {
          dispatch_async(dispatch_get_main_queue()) {
             self.locationManager = CLLocationManager()
@@ -74,11 +72,9 @@ class LocationDataManager: NSObject {
         }
     }
 
-
     func getLanguageLocale() -> String {
         return NSLocale.preferredLanguages()[0]
     }
-
 
     func requestWhenInUseAuthorization() {
         locationManager.requestWhenInUseAuthorization()
@@ -88,12 +84,9 @@ class LocationDataManager: NSObject {
         self.locationManager.startUpdatingLocation()
     }
 
-
     func requestLocation() {
         locationManager.requestLocation()
     }
-
-
 
     func isLocationServicesEnabledAndIfNotHandleIt(callback : ((isEnabled: Bool) -> ())) {
 
@@ -112,14 +105,11 @@ class LocationDataManager: NSObject {
             self.requestWhenInUseAuthorization()
             }
         }
-
     }
-
 
     func isLocationServicesEnabled() -> Bool {
         return CLLocationManager.locationServicesEnabled()
     }
-
 
     private func getUsersCurrentLocation(callback : (location: CLLocation?)-> ()) {
 
@@ -160,8 +150,6 @@ class LocationDataManager: NSObject {
 
     }
 
-
-
     func getCurrentLatLongCityAndState(callback : ((latitude: CLLocationDegrees?, longitude: CLLocationDegrees?, city: String?, state: String?, error: LocationDataManagerError?)->())) {
 
         getUsersCurrentLocation() { location in
@@ -178,7 +166,6 @@ class LocationDataManager: NSObject {
                         else {
                             callback(latitude: nil, longitude: nil, city: nil, state: nil, error: LocationDataManagerError.GetCurrentLatLongCityAndStateFailure)
                         }
-
                 })
             }
             //failure
@@ -186,11 +173,8 @@ class LocationDataManager: NSObject {
                 callback(latitude: nil, longitude: nil, city: nil, state: nil, error: LocationDataManagerError.GetCurrentLatLongCityAndStateFailure)
             }
         }
-
     }
-
 }
-
 
 extension LocationDataManager : CLLocationManagerDelegate {
 
@@ -207,7 +191,6 @@ extension LocationDataManager : CLLocationManagerDelegate {
         }
     }
 
-
     func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
 
         print(error)
@@ -218,7 +201,6 @@ extension LocationDataManager : CLLocationManagerDelegate {
         }
 
     }
-
 
     func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
 
@@ -233,7 +215,5 @@ extension LocationDataManager : CLLocationManagerDelegate {
                 isLocationServicesEnabledAndIfNotHandleItCallback = nil
             }
         }
-
     }
-
 }

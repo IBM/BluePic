@@ -49,14 +49,12 @@ class TabBarViewController: UITabBarController {
         self.tryToShowLogin()
     }
 
-
     /**
      Method called as a callback from the OS when the app recieves a memory warning from the OS
      */
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-
 
     /**
      Method adds image view so no flickering occurs before showing login.
@@ -76,7 +74,6 @@ class TabBarViewController: UITabBarController {
         viewModel.tryToShowLogin()
     }
 
-
     /**
      Method hides the background image
      */
@@ -87,7 +84,6 @@ class TabBarViewController: UITabBarController {
         self.backgroundImageView.removeFromSuperview()
 
     }
-
 
     /**
      Method to show the login VC without animation
@@ -103,7 +99,6 @@ class TabBarViewController: UITabBarController {
             })
         }
     }
-
 
     /**
      Method to show the login VC with animation
@@ -127,7 +122,6 @@ class TabBarViewController: UITabBarController {
         if let feedNavigationVC = self.viewControllers?[0] as? FeedNavigationController {
             feedNavigationVC.popToRootViewControllerAnimated(false)
         }
-
     }
 
     override func shouldAutomaticallyForwardAppearanceMethods() -> Bool {
@@ -135,7 +129,6 @@ class TabBarViewController: UITabBarController {
     }
 
 }
-
 
 extension TabBarViewController: UITabBarControllerDelegate {
 
@@ -189,7 +182,6 @@ extension TabBarViewController: UITabBarControllerDelegate {
             })
         }
     }
-
 
     /**
      Method shows the location services required alert

@@ -47,7 +47,6 @@ class ProfileCollectionViewCell: UICollectionViewCell {
         super.awakeFromNib()
     }
 
-
     /**
      Method sets up the data for the profile collection view cell
 
@@ -92,7 +91,6 @@ class ProfileCollectionViewCell: UICollectionViewCell {
 
     }
 
-
     /**
      Method sets up the image view with the url provided or a locally cached verion of the image
 
@@ -110,8 +108,6 @@ class ProfileCollectionViewCell: UICollectionViewCell {
         self.tryToSetImageViewWithURL(url, placeHolderImage: locallyCachedImage)
 
     }
-
-
 
     /**
      Method trys to set the image view with a locally cached image if there is one and then returns the locally cached image
@@ -140,11 +136,8 @@ class ProfileCollectionViewCell: UICollectionViewCell {
                 return img
             }
         }
-
         return nil
     }
-
-
 
     /**
      Method trys to set the image view with a url to an image and sets the placeholder to a locally cached image if its not nil
@@ -174,7 +167,6 @@ class ProfileCollectionViewCell: UICollectionViewCell {
         }
     }
 
-
     /**
      Method sets the imageView with a url to an image and uses a locally cached image
 
@@ -192,7 +184,6 @@ class ProfileCollectionViewCell: UICollectionViewCell {
         })
     }
 
-
     /**
      Method sets the imageView with a url to an image using no placeholder
 
@@ -207,7 +198,5 @@ class ProfileCollectionViewCell: UICollectionViewCell {
 
         })
     }
-
-
 
 }
