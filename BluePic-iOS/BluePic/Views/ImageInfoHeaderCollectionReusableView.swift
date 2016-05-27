@@ -76,17 +76,9 @@ class ImageInfoHeaderCollectionReusableView: UICollectionReusableView {
     /**
      Method sets up the UI with data
      
-     - parameter caption:       String?
-     - parameter userFullName:  String?
-     - parameter locationName:  String?
-     - parameter latitude:      String?
-     - parameter longitude:     String?
-     - parameter timeStamp:     NSDate?
-     - parameter weatherIconId: Int?
-     - parameter temperature:   Int?
-     - parameter tags:          [Tag]?
+     - parameter image: Image?
      */
-    func setupWithData(caption : String?, userFullName : String?, locationName : String?, latitude : String?, longitude : String?, timeStamp : NSDate?, weatherIconId : Int?, temperature : Int?, tags : [Tag]?){
+    func setupWithData(image: Image) {
   
         //setup captionLabel
         setupCaptionLabelWithData(image.caption)
@@ -98,8 +90,8 @@ class ImageInfoHeaderCollectionReusableView: UICollectionReusableView {
         setupCityAndStateLabel(image.location.name)
 
         //setup coordinatesLabel
-        setupCoordinatesLabel(latitude, longitude: longitude)
-        
+        setupCoordinatesLabel(image.location.latitude, longitude: image.location.longitude)
+
         //setup dateLabel
         setupDateLabelWithData(image.timeStamp)
 
@@ -243,6 +235,7 @@ class ImageInfoHeaderCollectionReusableView: UICollectionReusableView {
                 temperatureLabel.text = "\(temperature)" + kDegreeSymbolString + "C"
             }
         }
+
     }
     
     /**

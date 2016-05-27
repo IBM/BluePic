@@ -98,7 +98,7 @@ extension ImageDetailViewModel {
         guard let header = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "ImageInfoHeaderCollectionReusableView", forIndexPath: indexPath) as? ImageInfoHeaderCollectionReusableView else {
             return ImageInfoHeaderCollectionReusableView()
         }
-        header.setupWith(image)
+        header.setupWithData(image)
 
         return header
     }
