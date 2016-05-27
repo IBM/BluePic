@@ -17,13 +17,13 @@
 import UIKit
 
 enum LoginDataManagerError {
-    
+
     //Error when there is a Facebook Authentication Error
     case FacebookAuthenticationError
-    
+
     //Error when user canceled Facebook Login
     case UserCanceledLogin
-    
+
     //Error when there is a connection failure
     case ConnectionFailure
 
@@ -42,11 +42,11 @@ class LoginDataManager: NSObject {
 
     /**
      Method will login the user into BluePic. It will first check if the user is already authenticated by checking if there is a user saved in NSUserDefaulted by called the isUserAlreadyAuthenticated method. If the user isn't already authenticated then it will call the FacebookDataManager's loginWithFacebook method
-     
+
      - parameter callback: ((error : LoginDataManagerError?)->())
      */
-    func login(callback : ((error : LoginDataManagerError?)->())){
-        
+    func login(callback : ((error: LoginDataManagerError?)->())) {
+
         ///Check if user is already authenticated from previous sesssions, aka check nsuserdefaults for user info
         if isUserAlreadyAuthenticated() {
             callback(error: nil)
@@ -95,18 +95,18 @@ class LoginDataManager: NSObject {
             })
         }
     }
-    
+
     /**
      Method is called when the user presses the sign in later button. It will sets the CurrentUser object's willLoginLater property to true
      */
-    func loginLater(){
-        
+    func loginLater() {
+
         CurrentUser.willLoginLater = true
     }
-    
+
     /**
      Method will return true if the user is already authenticated or has pressed sign in later
-     
+
      - returns: Bool
      */
     func isUserAuthenticatedOrPressedSignInLater() -> Bool {
@@ -116,10 +116,10 @@ class LoginDataManager: NSObject {
            return false
         }
     }
-    
+
     /**
      Method returns true if the user has already authenticated with facebook
-     
+
      - returns: Bool
      */
     private func isUserAlreadyAuthenticated() -> Bool {

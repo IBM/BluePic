@@ -17,26 +17,26 @@
 import UIKit
 
 class SearchViewController: UIViewController {
-    
+
     //string property that holds the popular tags of BluePic
     var popularTags = [String]()
-    
+
     //search text field that the user can type searches in
     @IBOutlet weak var searchField: UITextField!
-    
+
     //tags button that just says tags, has no fuction at this time
     @IBOutlet weak var tagsButton: UIButton!
-    
+
     //collection view that displays the popular tags
     @IBOutlet weak var tagCollectionView: UICollectionView!
-    
+
     //constraint outlet for the bottom of the collection view
     @IBOutlet weak var bottomCollectionViewConstraint: NSLayoutConstraint!
-    
+
     //padding used for the width of the collection view cell in sizeForItemAtIndexPath method
     let kCellPadding: CGFloat = 60
-    
-    
+
+
     /**
      Method called upon view did load. It sets up the popular tags collection view, observes when the keyboard is shown, and begins the fetch of popular tags
      */
@@ -47,7 +47,7 @@ class SearchViewController: UIViewController {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
         initializeDataRetrieval()
     }
-    
+
     /**
      Method sets up the popular tags collection view
      */
@@ -65,10 +65,10 @@ class SearchViewController: UIViewController {
         }
         Utils.registerNibWithCollectionView("TagCollectionViewCell", collectionView: tagCollectionView)
     }
-    
+
     /**
      Method called upon view will appear. It sets the search text field to become a first responder so it becomes selected and the keyboard shows
-     
+
      - parameter animated: Bool
      */
     override func viewWillAppear(animated: Bool) {
@@ -82,10 +82,10 @@ class SearchViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-    
+
     /**
      Method to make sure keyboard doesn't hide parts of the collectionView
-     
+
      - parameter n: NSNotification
      */
     func keyboardWillShow(n: NSNotification) {
@@ -99,22 +99,22 @@ class SearchViewController: UIViewController {
 
     /**
      Method called when the back button is pressed
-     
+
      - parameter sender: AnyObject
      */
     @IBAction func popVC(sender: AnyObject) {
         searchField.resignFirstResponder()
         self.navigationController?.popViewControllerAnimated(true)
     }
-    
+
 }
 
 // MARK: - extension to separate out data handling code
 extension SearchViewController {
-    
+
     /**
      Method initializes data retrieval by observing the PopularTagsReceieved notification of the BluemixDataManager, and starting the fetch to get popular tags
-     
+
      - returns:
      */
     func initializeDataRetrieval() {
@@ -123,7 +123,7 @@ extension SearchViewController {
 
         BluemixDataManager.SharedInstance.getPopularTags()
     }
-    
+
     /**
      Method is called when the BluemixDataManager has successfully received tags. It updates the tag collection view with this new data
      */
@@ -139,25 +139,25 @@ extension SearchViewController {
 }
 
 extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    
+
     /**
      Method returns the number of items in each section
-     
+
      - parameter collectionView: UICollectionView
      - parameter section:        Int
-     
+
      - returns: Int
      */
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return popularTags.count
     }
-    
+
     /**
      Method sets up the cell for item at indexPath
-     
+
      - parameter collectionView: UICollectionView
      - parameter indexPath:      NSIndexPath
-     
+
      - returns: UICollectionViewCell
      */
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -168,24 +168,24 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
         cell.tagLabel.text = popularTags[indexPath.item]
         return cell
     }
-    
+
     /**
      Method returns the size for item at indexPath
-     
+
      - parameter collectionView:       UICollectionVIew
      - parameter collectionViewLayout: UICollectionViewLayout
      - parameter indexPath:            NSIndexPath
-     
+
      - returns: CGSize
      */
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         let size = NSString(string: popularTags[indexPath.item]).sizeWithAttributes(nil)
         return CGSize(width: size.width + kCellPadding, height: 30.0)
     }
-    
+
     /**
      Method is called when a cell in the collection view is selected. In this case we segue to the feed vc with search results for that tag
-     
+
      - parameter collectionView: UICollectionView
      - parameter indexPath:      NSIndexPath
      */
@@ -201,12 +201,12 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
 }
 
 extension SearchViewController: UITextFieldDelegate {
-    
+
     /**
      Method defines the action taken when the return key of the keyboard is pressed
-     
+
      - parameter textField: UITextField
-     
+
      - returns: Bool
      */
     func textFieldShouldReturn(textField: UITextField) -> Bool {
@@ -225,14 +225,14 @@ extension SearchViewController: UITextFieldDelegate {
 
         return true
     }
-    
+
     /**
      Method limits the amount of characters that can be entered in the search text field
-     
+
      - parameter textField: UITextField
      - parameter range:     NSRange
      - parameter string:    String
-     
+
      - returns: Bool
      */
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
