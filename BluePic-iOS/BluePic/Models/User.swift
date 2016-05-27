@@ -19,8 +19,8 @@ import BMSCore
 
 class User: NSObject {
 
-    var facebookID: String
-    var name: String
+    let facebookID: String
+    let name: String
 
     init(facebookID: String, name: String) {
         self.facebookID = facebookID

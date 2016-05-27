@@ -408,10 +408,7 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
                 city = city,
                 state = state {
 
-                var location = Location(name: "\(city), \(state)", latitude: "\(latitude)", longitude: "\(longitude)", weather: nil)
-                location.latitude = "\(latitude)"
-                location.longitude = "\(longitude)"
-                location.name = "\(city), \(state)"
+                let location = Location(name: "\(city), \(state)", latitude: "\(latitude)", longitude: "\(longitude)", weather: nil)
 
                 callback(location: location)
             }
