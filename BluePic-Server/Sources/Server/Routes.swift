@@ -154,8 +154,7 @@ func defineRoutes() {
           tagsDocument["records"] = JSON(tags)
           tagsDocument["number_of_records"].int = tags.count
           response.status(HTTPStatusCode.OK).send(json: tagsDocument)
-        }
-        catch {
+        } catch {
           Log.error("Failed to obtain tags from database.")
           response.error = generateInternalError()
         }
@@ -187,8 +186,7 @@ func defineRoutes() {
           do {
             let images = try parseImages(document: document)
             response.status(HTTPStatusCode.OK).send(json: images)
-          }
-          catch {
+          } catch {
             Log.error("Failed to find images by tag.")
             response.error = generateInternalError()
           }
@@ -205,8 +203,7 @@ func defineRoutes() {
           do {
             let images = try parseImages(document: document)
             response.status(HTTPStatusCode.OK).send(json: images)
-          }
-          catch {
+          } catch {
             Log.error("Failed to retrieve all images.")
             response.error = generateInternalError()
           }
@@ -282,8 +279,7 @@ func defineRoutes() {
         do {
           let users = try parseUsers(document: document)
           response.status(HTTPStatusCode.OK).send(json: users)
-        }
-        catch {
+        } catch {
           Log.error("Failed to read users from database.")
           response.error = generateInternalError()
         }
@@ -408,8 +404,7 @@ func defineRoutes() {
         do {
           let images = try parseImages(forUserId: userId, usingDocument: document)
           response.status(HTTPStatusCode.OK).send(json: images)
-        }
-        catch {
+        } catch {
           Log.error("Failed to get images for \(userId).")
           response.error = generateInternalError()
         }

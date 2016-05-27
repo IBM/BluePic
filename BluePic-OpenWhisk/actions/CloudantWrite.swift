@@ -6,10 +6,10 @@ import KituraNet
 import Dispatch
 import Foundation
 
-func main(args:[String:Any]) -> [String:Any] {
+func main(args: [String:Any]) -> [String:Any] {
 
-    let result:[String:Any] = [String:Any]()
-    
+    let result: [String:Any] = [String:Any]()
+
     //write data to cloudant
     print("inside Cloudant write action")
 
