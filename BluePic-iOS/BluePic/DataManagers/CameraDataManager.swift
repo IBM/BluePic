@@ -115,7 +115,7 @@ class CameraDataManager: NSObject {
      */
     func openCamera() {
         if UIImagePickerController .isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera) {
-            
+
             picker.sourceType = UIImagePickerControllerSourceType.Camera
             self.tabVC.presentViewController(picker, animated: true, completion: { _ in
                 self.showCameraConfirmation()

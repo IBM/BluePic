@@ -202,7 +202,7 @@ extension TabBarViewController: UITabBarControllerDelegate {
         alertController.addAction(cancelAction)
 
         let OKAction = UIAlertAction(title: NSLocalizedString("Settings", comment: ""), style: .Default) { (action) in
-            
+
             if let settingsUrl = NSURL(string: UIApplicationOpenSettingsURLString) {
                 UIApplication.sharedApplication().openURL(settingsUrl)
             }
@@ -212,32 +212,6 @@ extension TabBarViewController: UITabBarControllerDelegate {
 
         self.presentViewController(alertController, animated: true, completion: nil)
 
-    }
-    
-    /**
-     Check if user has pressed sign in later button previously, and if he/she has, will show login if user taps camera or profile
-     
-     - parameter showCameraPicker: whether or not to show the camera picker (camera tab or profile tab tapped)
-     
-     - returns: Returns a boolean -- true if tab bar with show the selected tab, and false if it will not
-     */
-    func checkIfUserPressedSignInLater(showCameraPicker: Bool) -> Bool {
-        if viewModel.didUserPressLoginLater() {
-            print("user not logged in, prompt login now!")
-            presentLoginVCAnimated()
-            return false
-        }
-        else { //only show camera picker if user has not pressed "sign in later"
-            if (showCameraPicker == true) { //only show camera picker if tapped the camera tab
-                print("Opening camera picker...")
-                CameraDataManager.SharedInstance.showImagePickerActionSheet(self)
-                return false
-            }
-            else { //if tapping profile page and logged in, show that tab
-                return true
-            }
-        }
-        
     }
 
     /**

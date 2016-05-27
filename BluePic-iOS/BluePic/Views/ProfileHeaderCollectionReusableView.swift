@@ -48,11 +48,11 @@ class ProfileHeaderCollectionReusableView: UICollectionReusableView {
 
         if let shots = numberOfShots {
 
-            if(shots > 0) {
+            if shots > 0 {
 
                 var shotsString = ""
 
-                if(shots == 1) {
+                if shots == 1 {
                     shotsString = NSLocalizedString("Shot", comment: "")
                 } else {
                     shotsString = NSLocalizedString("Shots", comment: "")

@@ -55,9 +55,9 @@ class LoginViewModel: NSObject {
 
         LoginDataManager.SharedInstance.login({ error in
 
-            if(error == nil) {
+            if error == nil {
                 self.notifyLoginVC(loginViewModelNotification: LoginViewModelNotification.LoginSuccess)
-            } else if(error == LoginDataManagerError.UserCanceledLogin) {
+            } else if error == LoginDataManagerError.UserCanceledLogin {
                 self.notifyLoginVC(loginViewModelNotification: LoginViewModelNotification.UserCanceledLogin)
             } else {
                 self.notifyLoginVC(loginViewModelNotification: LoginViewModelNotification.LoginFailure)
