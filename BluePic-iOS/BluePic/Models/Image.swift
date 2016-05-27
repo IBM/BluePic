@@ -17,35 +17,35 @@
 import UIKit
 
 struct Tag {
-    var label: String
-    var confidence: CGFloat
+    let label: String
+    let confidence: CGFloat
 }
 
 struct Location {
-    var name: String
-    var latitude: String
-    var longitude: String
-    var weather: Weather?
+    let name: String
+    let latitude: String
+    let longitude: String
+    let weather: Weather?
 }
 
 struct Weather {
-    var temperature: Int
-    var iconId: Int
-    var description: String
+    let temperature: Int
+    let iconId: Int
+    let description: String
 }
 
 class Image: NSObject {
     var id: String?
     var caption: String
-    var fileName: String
+    let fileName: String
     var timeStamp: NSDate?
     var url: String?
-    var width: CGFloat
-    var height: CGFloat
+    let width: CGFloat
+    let height: CGFloat
     var image: UIImage?
-    var location: Location
+    let location: Location
     var tags: [Tag]?
-    var user: User
+    let user: User
 
     init(caption: String, fileName: String, width: CGFloat, height: CGFloat, image: UIImage, location: Location, user: User) {
         self.caption = caption
