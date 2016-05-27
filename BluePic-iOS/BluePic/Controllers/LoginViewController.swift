@@ -43,7 +43,10 @@ class LoginViewController: UIViewController {
     private let kLoginErrorMessage = NSLocalizedString("Oops, an error occurred! Try again.", comment: "")
 
     //string shown in the aboutBluePicLabel
-    private let kAboutBluePicLabelText = NSLocalizedString("BluePic is an amazing app for taking\n pictures and sharing them to the\n BluePic community. BluePic is\n also built on IBM Bluemix services.", comment: "")
+    //private let kAboutBluePicLabelText = NSLocalizedString("BluePic is an amazing app for taking\n pictures and sharing them to the\n BluePic community. BluePic is\n also built on IBM Bluemix services.", comment: "")
+    private let kAboutBluePicLabelText = NSLocalizedString("BluePic's back-end component is written entirely in the Swift programming language and runs on a Kitura-based server that leverages several IBM Bluemix services and OpenWhisk actions.", comment: "")
+
+    //BluePic is an amazing app for taking pictures and sharing them with the BluePic community of users. Its back-end component is written entirely in the Swift programming language and runs on a Kitura-based server that leverages several IBM Bluemix services and OpenWhisk actions.
 
 
     /**
