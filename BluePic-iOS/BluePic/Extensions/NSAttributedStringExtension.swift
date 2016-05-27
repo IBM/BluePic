@@ -28,7 +28,7 @@ extension NSAttributedString {
             paragraphStyle.alignment = NSTextAlignment.Center
         }
 
-        attributedString.addAttribute(NSParagraphStyleAttributeName, value:paragraphStyle, range:NSMakeRange(0, attributedString.length))
+        attributedString.addAttribute(NSParagraphStyleAttributeName, value:paragraphStyle, range: NSRange(location: 0, length: attributedString.length))
 
         return attributedString
 

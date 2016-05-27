@@ -141,11 +141,11 @@ extension LoginViewController {
      */
     func handleLoginViewModelNotifications(loginViewModelNotification: LoginViewModelNotification) {
 
-        if(loginViewModelNotification == LoginViewModelNotification.LoginSuccess) {
+        if loginViewModelNotification == LoginViewModelNotification.LoginSuccess {
             handleLoginSuccess()
-        } else if(loginViewModelNotification == LoginViewModelNotification.LoginFailure) {
+        } else if loginViewModelNotification == LoginViewModelNotification.LoginFailure {
             handleLoginFailure()
-        } else if(loginViewModelNotification == LoginViewModelNotification.UserCanceledLogin) {
+        } else if loginViewModelNotification == LoginViewModelNotification.UserCanceledLogin {
             handleUserCanceledLogin()
         }
 

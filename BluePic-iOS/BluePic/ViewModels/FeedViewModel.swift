@@ -112,7 +112,7 @@ class FeedViewModel: NSObject {
      */
     func handleImageUploadFailure() {
 
-        if(isShowingSearchResults() == false) {
+        if isShowingSearchResults() == false {
             self.notifyViewControllerToTriggerReloadCollectionView()
         }
 
@@ -123,7 +123,7 @@ class FeedViewModel: NSObject {
      */
     func updateImageDataArrayAndNotifyViewControllerToReloadCollectionView() {
 
-        if(isShowingSearchResults() == false) {
+        if isShowingSearchResults() == false {
             self.imageDataArray = BluemixDataManager.SharedInstance.images
             self.notifyViewControllerToTriggerReloadCollectionView()
         }
@@ -142,7 +142,7 @@ extension FeedViewModel {
      */
     private func isShowingSearchResults() -> Bool {
 
-        if(searchQuery != nil) {
+        if searchQuery != nil {
             return true
         } else {
             return false
@@ -159,7 +159,7 @@ extension FeedViewModel {
         if let images = images {
             imageDataArray = images
 
-            if(imageDataArray.count < 1) {
+            if imageDataArray.count < 1 {
                 self.notifiyViewControllerToTriggerAlert()
             } else {
                 self.notifyViewControllerToTriggerReloadCollectionView()
@@ -181,7 +181,7 @@ extension FeedViewModel {
 
     func shouldStartLoadingAnimation() -> Bool {
 
-        if(BluemixDataManager.SharedInstance.imagesCurrentlyUploading.count > 0) {
+        if BluemixDataManager.SharedInstance.imagesCurrentlyUploading.count > 0 {
             return true
         } else {
             return false
@@ -191,7 +191,7 @@ extension FeedViewModel {
 
     func shouldStopLoadingAnimation() -> Bool {
 
-        if(BluemixDataManager.SharedInstance.imagesCurrentlyUploading.count == 0) {
+        if BluemixDataManager.SharedInstance.imagesCurrentlyUploading.count == 0 {
             return true
         } else {
             return false
@@ -237,8 +237,8 @@ extension FeedViewModel {
      */
     func numberOfItemsInSection(section: Int) -> Int {
         //if the section is 0, then it depends on how many items are in imagesCurrentlyUploading array of the BluemixDataManager
-        if(section == 0) {
-            if(isShowingSearchResults()) {
+        if section == 0 {
+            if isShowingSearchResults() {
                 return 0
             } else {
                 return BluemixDataManager.SharedInstance.imagesCurrentlyUploading.count
@@ -268,14 +268,14 @@ extension FeedViewModel {
     func sizeForItemAtIndexPath(indexPath: NSIndexPath, collectionView: UICollectionView) -> CGSize {
 
         //Section 0 corresponds to showing ImagesCurrentlyUploadingImageFeedCollectionViewCell collection view cells. These cells show when there are images in the imagesCurrentlyUploading array of the BluemixDataManager
-        if(indexPath.section == 0) {
+        if indexPath.section == 0 {
             return CGSize(width: collectionView.frame.width, height: kPictureUploadCollectionViewCellHeight)
         }
             //section 1 corresponds to either the empty feed collection view cell or the standard image feed collection view cell depending on how many images are in the image data array
         else {
 
             //return size for empty feed collection view cell
-            if(imageDataArray.count == 0) {
+            if imageDataArray.count == 0 {
                 return CGSize(width: collectionView.frame.width, height: collectionView.frame.height + kEmptyFeedCollectionViewCellBufferToAllowForScrolling)
             }
                 //return size for image feed collection view cell
@@ -287,7 +287,7 @@ extension FeedViewModel {
 
                 var height = collectionView.frame.width * ratio
 
-                if(height > kCollectionViewCellHeightLimit) {
+                if height > kCollectionViewCellHeightLimit {
                     height = kCollectionViewCellHeightLimit
                 }
 
@@ -309,7 +309,7 @@ extension FeedViewModel {
     func setUpCollectionViewCell(indexPath: NSIndexPath, collectionView: UICollectionView) -> UICollectionViewCell {
 
         //Section 0 corresponds to showing ImagesCurrentlyUploadingImageFeedCollectionViewCell collection view cells. These cells show when there are images in the imagesCurrentlyUploading array of the BluemixDataManager
-        if(indexPath.section == 0) {
+        if indexPath.section == 0 {
 
             guard let cell = collectionView.dequeueReusableCellWithReuseIdentifier("ImagesCurrentlyUploadingImageFeedCollectionViewCell", forIndexPath: indexPath) as? ImagesCurrentlyUploadingImageFeedCollectionViewCell else {
                 return UICollectionViewCell()
@@ -325,7 +325,7 @@ extension FeedViewModel {
             //section 1 corresponds to either the empty feed collection view cell or the standard image feed collection view cell depending on how many images are in the image data array
         else {
 
-            if(imageDataArray.count == 0 && searchQuery == nil) {
+            if imageDataArray.count == 0 && searchQuery == nil {
 
                 guard let cell = collectionView.dequeueReusableCellWithReuseIdentifier("EmptyFeedCollectionViewCell", forIndexPath: indexPath) as? EmptyFeedCollectionViewCell else {
                     return UICollectionViewCell()
@@ -333,25 +333,14 @@ extension FeedViewModel {
 
                 return cell
 
-            }
-                //return ImageFeedCollectionViewCell
-            else {
+            } else {
 
                 guard let cell = collectionView.dequeueReusableCellWithReuseIdentifier("ImageFeedCollectionViewCell", forIndexPath: indexPath) as? ImageFeedCollectionViewCell else {
                     return UICollectionViewCell()
                 }
 
                 let image = imageDataArray[indexPath.row]
-
-                cell.setupData(
-                    image.url,
-                    image: nil, //MIGHT NEED TO FIX
-                    caption: image.caption,
-                    usersName: image.user.name,
-                    numberOfTags: image.tags?.count,
-                    timeStamp: image.timeStamp,
-                    fileName: image.fileName
-                )
+                cell.setupDataWith(image)
 
                 cell.layer.shouldRasterize = true
                 cell.layer.rasterizationScale = UIScreen.mainScreen().scale
@@ -371,7 +360,7 @@ extension FeedViewModel {
      */
     func prepareImageDetailViewModelForSelectedCellAtIndexPath(indexPath: NSIndexPath) -> ImageDetailViewModel? {
 
-        if((imageDataArray.count - 1 ) >= indexPath.row ) {
+        if (imageDataArray.count - 1 ) >= indexPath.row {
 
             let viewModel = ImageDetailViewModel()
             viewModel.image = imageDataArray[indexPath.row]
@@ -396,7 +385,7 @@ extension FeedViewModel {
      */
     func notifyViewControllerToTriggerLoadingAnimation() {
 
-        if(isShowingSearchResults() == false) {
+        if isShowingSearchResults() == false {
             dispatch_async(dispatch_get_main_queue()) {
                 self.notifyFeedVC(feedViewModelNotification: FeedViewModelNotification.UploadingPhotoStarted)
             }

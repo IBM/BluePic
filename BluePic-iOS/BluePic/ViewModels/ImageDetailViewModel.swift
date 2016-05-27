@@ -101,8 +101,7 @@ extension ImageDetailViewModel {
         guard let header = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "ImageInfoHeaderCollectionReusableView", forIndexPath: indexPath) as? ImageInfoHeaderCollectionReusableView else {
             return ImageInfoHeaderCollectionReusableView()
         }
-
-        header.setupWithData(image.caption, userFullName: image.user.name, locationName: image.location.name, latitude: image.location.latitude, longitude: image.location.longitude, timeStamp: image.timeStamp, weatherIconId: image.location.weather?.iconId, temperature: image.location.weather?.temperature, tags: image.tags)
+        header.setupWith(image)
 
         return header
     }
@@ -173,7 +172,6 @@ extension ImageDetailViewModel {
         }
 
     }
-
 
     /**
      Method gets the tagString for indexPath, and then sets up a new instance of the feed view controller with this tag as its search query

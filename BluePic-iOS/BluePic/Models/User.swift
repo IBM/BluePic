@@ -38,7 +38,6 @@ class User: NSObject {
 
             super.init()
         } else {
-
             print("invalid JSON")
             return nil
         }

@@ -157,7 +157,6 @@ extension ProfileViewModel {
             return CGSize(width: collectionView.frame.width, height: height + kCollectionViewCellInfoViewHeight)
 
         }
-
     }
 
 
@@ -187,13 +186,7 @@ extension ProfileViewModel {
 
             let image = imageDataArray[indexPath.row]
 
-            cell.setupData(image.url,
-                           image: nil,
-                           caption: image.caption,
-                           numberOfTags: image.tags?.count,
-                           timeStamp: image.timeStamp,
-                           fileName: image.fileName
-            )
+            cell.setupDataWith(image)
 
             cell.layer.shouldRasterize = true
             cell.layer.rasterizationScale = UIScreen.mainScreen().scale
@@ -244,5 +237,4 @@ extension ProfileViewModel {
             return nil
         }
     }
-
 }

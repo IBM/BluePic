@@ -116,7 +116,7 @@ class ProfileViewController: UIViewController {
 
         var alpha: CGFloat = 0.0
 
-        if(isInOrOut == true) {
+        if isInOrOut == true {
             alpha = 1.0
         } else {
             alpha = 0.0
@@ -134,7 +134,7 @@ class ProfileViewController: UIViewController {
      */
     func setupHeaderView() {
 
-        headerImageView = UIImageView(frame: CGRectMake(0, 0, view.frame.width, kHeaderImageViewHeight))
+        headerImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: kHeaderImageViewHeight))
 
         headerImageView.contentMode = UIViewContentMode.ScaleAspectFill
 
@@ -198,7 +198,6 @@ extension ProfileViewController: UICollectionViewDataSource {
         )
     }
 
-
     /**
      Method sets up the cell for item at indexPath by asking the view model to set up the cell for item at indexPath
 
@@ -254,10 +253,10 @@ extension ProfileViewController: UICollectionViewDelegateFlowLayout {
 
         let collectionWidth = collectionView.frame.size.width
 
-        if(section == 0) {
-            return CGSizeMake(collectionWidth, self.view.frame.size.height/2 + kHeaderViewInfoViewHeight) //kHeaderViewHeight
+        if section == 0 {
+            return CGSize(width: collectionWidth, height: self.view.frame.size.height/2 + kHeaderViewInfoViewHeight) //kHeaderViewHeight
         } else {
-            return CGSizeMake(collectionWidth, 0)
+            return CGSize(width: collectionWidth, height: 0)
         }
 
     }
@@ -282,9 +281,7 @@ extension ProfileViewController: UICollectionViewDelegateFlowLayout {
 
 }
 
-
 extension ProfileViewController : UIScrollViewDelegate {
-
 
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
 
@@ -319,7 +316,7 @@ extension ProfileViewController : UIScrollViewDelegate {
         if scrollViewContentOffset >= 0 {
             headerImageView.frame.origin.y = -(scrollViewContentOffset * kParalaxImageViewScrollRate)
         } else {
-            headerImageView.frame = CGRectMake(0, 0, view.frame.width, kHeaderImageViewHeight - scrollViewContentOffset)
+            headerImageView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: kHeaderImageViewHeight - scrollViewContentOffset)
         }
     }
 
@@ -334,7 +331,7 @@ extension ProfileViewController : UIScrollViewDelegate {
 
         let magicLine = headerImageViewHeight - kHeightOfProfilePictureImageView/2 - UIApplication.sharedApplication().statusBarFrame.size.height
 
-        if(scrollViewContentOffset >= magicLine) {
+        if scrollViewContentOffset >= magicLine {
             animateInStatusBarBackgroundView(true)
         } else {
             animateInStatusBarBackgroundView(false)
