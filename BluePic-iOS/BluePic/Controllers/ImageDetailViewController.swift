@@ -39,7 +39,7 @@ class ImageDetailViewController: UIViewController {
      */
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         setupSubViews()
         setupTagCollectionView()
     }
@@ -91,11 +91,11 @@ extension ImageDetailViewController {
         tagCollectionView.setCollectionViewLayout(layout, animated: false)
         tagCollectionView.delegate = self
         tagCollectionView.dataSource = self
-        
+
         Utils.registerSupplementaryElementOfKindNibWithCollectionView("ImageInfoHeaderCollectionReusableView", kind: UICollectionElementKindSectionHeader, collectionView: tagCollectionView)
         
         Utils.registerNibWithCollectionView("TagCollectionViewCell", collectionView: tagCollectionView)
-        
+
     }
     
     /**
@@ -126,25 +126,24 @@ extension ImageDetailViewController {
     func setupBlurView(){
         
         dimView.hidden = true
-        
+
         let blurViewFrame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height)
-        
+
         let blurViewHolderView = UIView(frame: blurViewFrame)
-        
+
         let darkBlur = UIBlurEffect(style: UIBlurEffectStyle.Dark)
-        
+
         let blurView = UIVisualEffectView(effect: darkBlur)
         blurView.frame = blurViewFrame
         blurViewHolderView.alpha = 0.90
-        
-        blurViewHolderView.addSubview(blurView)
-        
-        imageView.addSubview(blurViewHolderView)
-        
-    }
-  
-}
 
+        blurViewHolderView.addSubview(blurView)
+
+        imageView.addSubview(blurViewHolderView)
+
+    }
+
+}
 
 extension ImageDetailViewController : UICollectionViewDataSource {
     
@@ -203,7 +202,6 @@ extension ImageDetailViewController : UICollectionViewDataSource {
 
 }
 
-
 extension ImageDetailViewController: UICollectionViewDelegateFlowLayout {
     
     /**
@@ -216,7 +214,7 @@ extension ImageDetailViewController: UICollectionViewDelegateFlowLayout {
      - returns: CGSize
      */
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        
+
         return viewModel.sizeForItemAtIndexPath(indexPath, collectionView: collectionView)
     }
     
@@ -233,9 +231,8 @@ extension ImageDetailViewController: UICollectionViewDelegateFlowLayout {
         
        return viewModel.referenceSizeForHeaderInSection(collectionView, layout: collectionViewLayout, section: section, superViewHeight: self.view.frame.size.height)
     }
-    
-}
 
+}
 
 extension ImageDetailViewController : UICollectionViewDelegate {
     
@@ -246,7 +243,7 @@ extension ImageDetailViewController : UICollectionViewDelegate {
      - parameter indexPath:      NSIndexPath
      */
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        if let vc = viewModel.getFeedViewControllerForTagSearchAtIndexPath(indexPath){
+        if let vc = viewModel.getFeedViewControllerForTagSearchAtIndexPath(indexPath) {
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }

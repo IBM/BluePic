@@ -49,7 +49,7 @@ public struct Configuration {
   }
 
   func getCouchDBConnProps() throws -> ConnectionProperties {
-    if let couchDBCredentials = appEnv.getService(spec: "Cloudant NoSQL DB-fz")?.credentials {
+    if let couchDBCredentials = appEnv.getService(spec: "BluePic-Cloudant")?.credentials {
       if let host = couchDBCredentials["host"].string,
       user = couchDBCredentials["username"].string,
       password = couchDBCredentials["password"].string,
@@ -62,7 +62,7 @@ public struct Configuration {
   }
 
   func getObjectStorageConnProps() throws -> ObjectStorageConnProps {
-    guard let objStoreCredentials = appEnv.getService(spec: "Object Storage-bv")?.credentials else {
+    guard let objStoreCredentials = appEnv.getService(spec: "BluePic-Object-Storage")?.credentials else {
       throw Error.IO("Failed to obtain object storage service and/or its credentials.")
     }
 
@@ -77,7 +77,7 @@ public struct Configuration {
   }
 
     func getMobileClientAccessProps() throws -> MobileClientAccessProps {
-        guard let mcaCredentials = appEnv.getService(spec: "Mobile Client Access-ag")?.credentials else {
+        guard let mcaCredentials = appEnv.getService(spec: "BluePic-Mobile-Client-Access")?.credentials else {
             throw Error.IO("Failed to obtain MCA service and/or its credentials.")
         }
 
@@ -92,7 +92,7 @@ public struct Configuration {
     }
 
     func getIbmPushProps() throws -> IbmPushProps {
-        guard let pushCredentials = appEnv.getService(spec: "IBM Push Notifications-12")?.credentials else {
+        guard let pushCredentials = appEnv.getService(spec: "BluePic-IBM-Push")?.credentials else {
             throw Error.IO("Failed to obtain IBM Push service and/or its credentials.")
         }
 

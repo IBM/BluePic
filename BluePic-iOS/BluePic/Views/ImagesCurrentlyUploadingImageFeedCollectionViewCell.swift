@@ -23,8 +23,7 @@ class ImagesCurrentlyUploadingImageFeedCollectionViewCell: UICollectionViewCell 
     
     //label that shows the caption the user has chosen for the image currently uploading
     @IBOutlet weak var captionLabel: UILabel!
-    
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
     }
@@ -38,18 +37,18 @@ class ImagesCurrentlyUploadingImageFeedCollectionViewCell: UICollectionViewCell 
     func setupData(image : UIImage?, caption : String?){
         
         if let img = image {
-            
+
            imageView.image = img
-            
+
         }
-        
+
         //set the captionLabel's text
         var cap = caption ?? ""
-        if(cap == CameraDataManager.SharedInstance.kEmptyCaptionPlaceHolder){
+        if cap == CameraDataManager.SharedInstance.kEmptyCaptionPlaceHolder {
             cap = ""
         }
         captionLabel.text = cap
-        
+
     }
 
 }

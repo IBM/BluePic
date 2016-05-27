@@ -29,7 +29,7 @@ class EmptyFeedCollectionViewCell: UICollectionViewCell {
      */
     override func awakeFromNib() {
         super.awakeFromNib()
-        
+
         userHasNoImagesLabel.text = kUserHasNoImagesLabelText
     }
 
