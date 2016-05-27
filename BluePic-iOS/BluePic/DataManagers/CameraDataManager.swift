@@ -18,6 +18,12 @@ import UIKit
 import ImageIO
 import CoreLocation
 
+enum CameraDataManagerNotification: String {
+    case UserPressedPostPhoto = "UserPressedPostPhoto"
+
+}
+
+/// Singleton to hold any state with showing the camera picker. Allows user to upload a photo to BluePic
 class CameraDataManager: NSObject {
 
     /// Shared instance of data manager to make the CameraDataManager a singleton
@@ -43,6 +49,7 @@ class CameraDataManager: NSObject {
     
     //state variables
     var failureGettingUserLocation = false
+
     var userPressedPostPhoto = false
     
     //Constant for how wide all images should be constrained to when compressing for upload (600 results in ~1.2 MB photos)
@@ -119,6 +126,7 @@ class CameraDataManager: NSObject {
         self.tabVC.presentViewController(picker, animated: true, completion: { _ in
             self.showCameraConfirmation()
         })
+
     }
 
     /**
@@ -312,6 +320,7 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
             self.tryToPostPhoto()
 
         }
+
     }
     
     

@@ -102,6 +102,7 @@ class BluemixDataManager: NSObject {
             .initializeWithBluemixAppRoute(bluemixConfig.remoteBaseRequestURL,
                                            bluemixAppGUID: bluemixConfig.appGUID,
                                            bluemixRegion: bluemixConfig.appRegion)
+
     }
     
     /**
@@ -415,6 +416,9 @@ extension BluemixDataManager {
     }
 
 }
+
+//UPLOADING IMAGES
+extension BluemixDataManager {
 
     func retryUploadingImagesThatFailedToUpload(){
         
