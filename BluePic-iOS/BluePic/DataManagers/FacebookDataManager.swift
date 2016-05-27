@@ -26,7 +26,6 @@ enum FacebookAuthenticationError {
 
 }
 
-
 /// Manages all facebook authentication state and calls
 class FacebookDataManager: NSObject {
 
@@ -39,7 +38,6 @@ class FacebookDataManager: NSObject {
 
     }()
 
-
     private override init() {} //This prevents others from using the default '()' initializer for this class.
 
 
@@ -50,7 +48,6 @@ class FacebookDataManager: NSObject {
 
         }
     }
-
 
     /**
      Method to check if Facebook SDK is setup on native iOS side and all required keys have been added to plist
@@ -89,7 +86,6 @@ class FacebookDataManager: NSObject {
         return true
     }
 
-
     private func authenticateFacebookUser(callback : ((facebookUserId: String?, facebookUserFullName: String?, error: FacebookAuthenticationError?) -> ())) {
 
         let authManager = BMSClient.sharedInstance.authorizationManager
@@ -123,11 +119,7 @@ class FacebookDataManager: NSObject {
                     print("Valid Authentication Header, but userIdentity not found. You have to configure one of the methods available in Advanced Mobile Service on Bluemix, such as Facebook")
                     callback(facebookUserId: nil, facebookUserFullName: nil, error: FacebookAuthenticationError.FacebookuserIdentifyNotFound)
                 }
-
             }
-
         })
-
     }
-
 }

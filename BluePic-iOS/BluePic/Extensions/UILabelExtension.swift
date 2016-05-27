@@ -16,7 +16,6 @@
 
 import Foundation
 
-
 extension UILabel {
     func setLineHeight(lineHeight: CGFloat) {
         let paragraphStyle = NSMutableParagraphStyle()

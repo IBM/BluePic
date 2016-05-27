@@ -22,7 +22,6 @@ class ImagesCurrentlyUploadingImageFeedCollectionViewCell: UICollectionViewCell 
 
     @IBOutlet weak var captionLabel: UILabel!
 
-
     override func awakeFromNib() {
         super.awakeFromNib()
     }

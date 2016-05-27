@@ -91,7 +91,6 @@ class FeedViewModel: NSObject {
 
     }
 
-
     /**
     Method suscribes to all event notifications that come from the Bluemix DataManager
      */
@@ -130,7 +129,6 @@ class FeedViewModel: NSObject {
     }
 
 }
-
 
 //methods related to if we have to display search results
 extension FeedViewModel {
@@ -173,7 +171,6 @@ extension FeedViewModel {
 
 
 }
-
 
 //ViewController -> ViewModel Communication
 extension FeedViewModel {
@@ -255,8 +252,6 @@ extension FeedViewModel {
         }
     }
 
-
-
     /**
      Method returns the size for item at index path
 
@@ -296,7 +291,6 @@ extension FeedViewModel {
             }
         }
     }
-
 
     /**
      Method sets up the collection view for indexPath. If the the imgageDataArray is 0, then it shows the EmptyFeedCollectionViewCell
@@ -374,9 +368,6 @@ extension FeedViewModel {
 
 }
 
-
-
-
 //View Model -> ViewController Communication
 extension FeedViewModel {
 
@@ -409,6 +400,4 @@ extension FeedViewModel {
             self.notifyFeedVC(feedViewModelNotification : FeedViewModelNotification.NoSearchResults)
         }
     }
-
-
 }

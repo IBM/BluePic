@@ -47,7 +47,6 @@ class LoginViewModel: NSObject {
         LoginDataManager.SharedInstance.loginLater()
     }
 
-
     /**
      Method tells the LoginDataManager to begin the login process. We will eventually receieve the result of the login and we we handle errors or success by notifying the login vc appropriately.
      */

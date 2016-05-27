@@ -19,7 +19,6 @@ import BMSCore
 
 class Utils: NSObject {
 
-
     /**
      Method gets a key from a plist, both specified in parameters
 
@@ -71,7 +70,6 @@ class Utils: NSObject {
         return nil
     }
 
-
     /**
     Method returns an instance of the Main.storyboard
 
@@ -81,7 +79,6 @@ class Utils: NSObject {
         let storyboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
         return storyboard
     }
-
 
     /**
     Method returns an instance of the storyboard defined by the storyboardName String parameter
@@ -94,7 +91,6 @@ class Utils: NSObject {
         let storyboard = UIStoryboard(name: storyboardName, bundle: NSBundle.mainBundle())
         return storyboard
     }
-
 
     /**
     Method returns an instance of the view controller defined by the vcName paramter from the storyboard defined by the storyboardName parameter
@@ -110,7 +106,6 @@ class Utils: NSObject {
         return viewController as? UIViewController
     }
 
-
     /**
     Method returns an instance of a nib defined by the name String parameter
 
@@ -123,7 +118,6 @@ class Utils: NSObject {
         return nib
     }
 
-
     /**
     Method registers a nib name defined by the nibName String parameter with the collectionView given by the collectionView parameter
 
@@ -134,7 +128,6 @@ class Utils: NSObject {
         let nib = Utils.nib(nibName)
         collectionView.registerNib(nib, forCellWithReuseIdentifier: nibName)
     }
-
 
     /**
     Method registers a supplementary element of kind nib defined by the nibName String parameter and the kind String parameter with the collectionView parameter
@@ -150,7 +143,6 @@ class Utils: NSObject {
         collectionView.registerNib(nib, forSupplementaryViewOfKind: kind, withReuseIdentifier: nibName)
     }
 
-
     class func convertStringToDictionary(text: String) -> [String:AnyObject]? {
         if let data = text.dataUsingEncoding(NSUTF8StringEncoding) {
             do {
@@ -162,9 +154,6 @@ class Utils: NSObject {
         }
         return nil
     }
-
-
-
 
     class func convertResponseToDictionary(response: Response?) -> [String : AnyObject]? {
 
@@ -189,7 +178,6 @@ class Utils: NSObject {
         }
     }
 
-
     class func coordinateString(latitude: Double, longitude: Double) -> String {
         var latSeconds = Int(latitude * 3600)
         let latDegrees = latSeconds / 3600
@@ -209,7 +197,4 @@ class Utils: NSObject {
                       longMinutes,
                       longSeconds, {return longDegrees >= 0 ? NSLocalizedString("E", comment: "first letter of the word East") : NSLocalizedString("W", comment: "first letter of the word West")}() )
     }
-
-
-
 }

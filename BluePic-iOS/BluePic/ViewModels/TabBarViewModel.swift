@@ -23,7 +23,6 @@ enum TabBarViewModelNotification {
 
 }
 
-
 class TabBarViewModel: NSObject {
 
     //callback that allows the tab bar view model to send event notifications to the tabbar vc

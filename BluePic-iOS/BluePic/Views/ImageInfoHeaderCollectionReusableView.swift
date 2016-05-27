@@ -37,7 +37,6 @@ class ImageInfoHeaderCollectionReusableView: UICollectionReusableView {
     private let kDateLabelPrefixString = NSLocalizedString("on", comment: "")
     private let kTimeLabelPrefixString = NSLocalizedString("at", comment: "")
 
-
     /**
      Method is called when the view wakes from nib
      */
@@ -72,7 +71,6 @@ class ImageInfoHeaderCollectionReusableView: UICollectionReusableView {
 
     }
 
-
     private func setupCaptionLabelWithData(caption: String?) {
 
         if let imageCaption = caption {
@@ -88,7 +86,6 @@ class ImageInfoHeaderCollectionReusableView: UICollectionReusableView {
         }
     }
 
-
     private func setupByUserLabel(userFullName: String?) {
         let fullName = userFullName ?? ""
         byUserLabel.text = kByUserLabelPrefixString + " " + fullName
@@ -97,7 +94,6 @@ class ImageInfoHeaderCollectionReusableView: UICollectionReusableView {
     private func setupCityAndStateLabel(locationName: String?) {
         cityStateLabel.text = locationName ?? ""
     }
-
 
     private func setupDateLabelWithData(timeStamp: NSDate?) {
 
@@ -115,7 +111,6 @@ class ImageInfoHeaderCollectionReusableView: UICollectionReusableView {
 
     }
 
-
     private func setupTimeLabelWithData(timeStamp: NSDate?) {
 
         if let date = timeStamp {
@@ -131,7 +126,6 @@ class ImageInfoHeaderCollectionReusableView: UICollectionReusableView {
         }
 
     }
-
 
     private func setupCoordintesLabel(latitude: String?, longitude: String?) {
 
@@ -185,8 +179,5 @@ class ImageInfoHeaderCollectionReusableView: UICollectionReusableView {
         } else {
             tagsLabel.hidden = true
         }
-
     }
-
-
 }

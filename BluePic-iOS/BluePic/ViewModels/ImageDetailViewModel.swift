@@ -28,8 +28,7 @@ class ImageDetailViewModel: UIView {
     private let kCellPadding: CGFloat = 60
 
     //constant used to define the minimum height the image info header view must be
-    private let kImageInfoHeaderViewMinimumHeight: CGFloat = 357//340
-
+    private let kImageInfoHeaderViewMinimumHeight: CGFloat = 357
 
     /**
      Method returns the tag for indexPath
@@ -50,8 +49,6 @@ class ImageDetailViewModel: UIView {
     }
 
 }
-
-
 
 // MARK: - View Controller -> ViewModel Communication
 extension ImageDetailViewModel {
@@ -105,7 +102,6 @@ extension ImageDetailViewModel {
 
         return header
     }
-
 
     /**
      Method sets up the collection view cell with tag data for indexPath, specifically the TagCollectionViewCell

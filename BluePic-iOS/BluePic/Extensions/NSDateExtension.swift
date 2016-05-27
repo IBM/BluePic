@@ -16,7 +16,6 @@
 
 import Foundation
 
-
 extension NSDate {
 
     /**
@@ -24,8 +23,9 @@ extension NSDate {
 
      - returns: NSCalendarUnit
      */
-    private class func componentFlags() -> NSCalendarUnit { return NSCalendarUnit.Year.union(.Month).union(.Day).union(.WeekOfYear).union(.Hour).union(.Minute).union(.Second).union(.Weekday).union(.WeekdayOrdinal) }
-
+    private class func componentFlags() -> NSCalendarUnit {
+        return NSCalendarUnit.Year.union(.Month).union(.Day).union(.WeekOfYear).union(.Hour).union(.Minute).union(.Second).union(.Weekday).union(.WeekdayOrdinal)
+    }
 
     /**
      Method returns the components of the NSCalendar
@@ -38,7 +38,6 @@ extension NSDate {
         return NSCalendar.currentCalendar().components(NSDate.componentFlags(), fromDate: fromDate)
     }
 
-
     /**
      Method returns the NSDate components
 
@@ -47,7 +46,6 @@ extension NSDate {
     private func components() -> NSDateComponents {
         return NSDate.components(fromDate: self)
     }
-
 
     /**
      Method takes in a time interval since reference date and converts it to the number of seconds, minutes, hours, or weeks since the photo was taken
@@ -64,7 +62,6 @@ extension NSDate {
 
     }
 
-
     /**
      Method returns the number of years since the date parameter
 
@@ -75,7 +72,6 @@ extension NSDate {
     private class func yearsFrom(date: NSDate) -> Int {
         return NSCalendar.currentCalendar().components(.Year, fromDate: date, toDate: NSDate(), options: []).year
     }
-
 
     /**
      Method returns the number of months since the date parameter
@@ -88,7 +84,6 @@ extension NSDate {
         return NSCalendar.currentCalendar().components(.Month, fromDate: date, toDate: NSDate(), options: []).month
     }
 
-
     /**
      Method returns the number of weeks since the date parameter
 
@@ -99,7 +94,6 @@ extension NSDate {
     private class func weeksFrom(date: NSDate) -> Int {
         return NSCalendar.currentCalendar().components(.WeekOfYear, fromDate: date, toDate: NSDate(), options: []).weekOfYear
     }
-
 
     /**
      Method returns the number of days since the date parameter
@@ -112,7 +106,6 @@ extension NSDate {
         return NSCalendar.currentCalendar().components(.Day, fromDate: date, toDate: NSDate(), options: []).day
     }
 
-
     /**
      Method returns the number of hours since the date parameter
 
@@ -123,7 +116,6 @@ extension NSDate {
     private class func hoursFrom(date: NSDate) -> Int {
         return NSCalendar.currentCalendar().components(.Hour, fromDate: date, toDate: NSDate(), options: []).hour
     }
-
 
     /**
      Method returns the number of minutes since the date parameter
@@ -136,7 +128,6 @@ extension NSDate {
         return NSCalendar.currentCalendar().components(.Minute, fromDate: date, toDate: NSDate(), options: []).minute
     }
 
-
     /**
      Method returns the number of seconds since the date parameter
 
@@ -147,7 +138,6 @@ extension NSDate {
     private class func secondsFrom(date: NSDate) -> Int {
         return NSCalendar.currentCalendar().components(.Second, fromDate: date, toDate: NSDate(), options: []).second
     }
-
 
     /**
      Method returns the time since the data parameter as a string
@@ -164,5 +154,4 @@ extension NSDate {
         if secondsFrom(date) > 0 { return "\(secondsFrom(date))" +  NSLocalizedString("s", comment: "first letter of the word seconds")}
         return NSLocalizedString("now", comment: "word representing this moment in time")
     }
-
 }

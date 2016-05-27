@@ -57,7 +57,6 @@ class FeedViewController: UIViewController {
     //Defines the minimum spacing between cells in the collection view
     let kMinimumInterItemSpacingForSectionAtIndex: CGFloat = 0
 
-
     /**
      Method called upon view did load. It sets up the collection view, sets up the view model, starts the loading animation at app launch, determines the feed model, and observes when the application becomes active
      */
@@ -100,7 +99,6 @@ class FeedViewController: UIViewController {
                                        selector:#selector(FeedViewController.didBecomeActive),
                                        name:UIApplicationDidBecomeActiveNotification,
                                        object:nil)
-
     }
 
     /**
@@ -132,14 +130,12 @@ class FeedViewController: UIViewController {
         super.didReceiveMemoryWarning()
     }
 
-
     /**
      Method sets up the view model, passes the callback we want to be called when there are notifications from the feed view model
      */
     func setupViewModel() {
         viewModel = FeedViewModel(notifyFeedVC: handleFeedViewModelNotifications, searchQuery: searchQuery)
     }
-
 
     /**
      Method sets up the collection view with various initial properties
@@ -163,7 +159,6 @@ class FeedViewController: UIViewController {
         self.collectionView.addSubview(refreshControl)
     }
 
-
     /**
      Method reloads the data in the collection view. It is typically called by its view model when it receives data.
      */
@@ -174,7 +169,6 @@ class FeedViewController: UIViewController {
 
         self.collectionView.setContentOffset(CGPoint.zero, animated: true)
     }
-
 
     /**
      Method is called when the user triggers a pull to refresh
@@ -198,7 +192,6 @@ class FeedViewController: UIViewController {
             }
         }
     }
-
 
     /**
      Method will try to start the loading animation if there are any images in the imagesCurrentlyUploading property of the BluemixDataManager. This allows for the loading animation to start up again if the user switches between the image feed and profile vc
@@ -255,7 +248,6 @@ class FeedViewController: UIViewController {
 
 }
 
-
 extension FeedViewController: UICollectionViewDataSource {
 
 
@@ -299,7 +291,6 @@ extension FeedViewController: UICollectionViewDataSource {
 
 extension FeedViewController: UICollectionViewDelegate {
 
-
     /**
      Method is called when a cell in the collection view is selected
 
@@ -321,7 +312,6 @@ extension FeedViewController: UICollectionViewDelegate {
 
 
 extension FeedViewController: UICollectionViewDelegateFlowLayout {
-
 
     /**
      Method returns the size for item at indexPath by asking the view Model for the size for item at indexPath
@@ -361,6 +351,4 @@ extension FeedViewController {
         }
 
     }
-
-
 }
