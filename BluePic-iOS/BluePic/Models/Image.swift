@@ -17,35 +17,35 @@
 import UIKit
 
 struct Tag {
-    var label: String
-    var confidence: CGFloat
+    let label: String
+    let confidence: CGFloat
 }
 
 struct Location {
-    var name: String
-    var latitude : String
-    var longitude: String
-    var weather : Weather?
+    let name: String
+    let latitude: String
+    let longitude: String
+    let weather: Weather?
 }
 
 struct Weather {
-    var temperature: Int
-    var iconId: Int
-    var description: String
+    let temperature: Int
+    let iconId: Int
+    let description: String
 }
 
 class Image: NSObject {
-    var id : String?
-    var caption : String
-    var fileName : String
-    var timeStamp : NSDate?
-    var url : String?
-    var width : CGFloat
-    var height : CGFloat
-    var image : UIImage?
-    var location : Location
-    var tags : [Tag]?
-    var user : User
+    var id: String?
+    var caption: String
+    let fileName: String
+    var timeStamp: NSDate?
+    var url: String?
+    let width: CGFloat
+    let height: CGFloat
+    var image: UIImage?
+    let location: Location
+    var tags: [Tag]?
+    let user: User
 
     init(caption: String, fileName: String, width: CGFloat, height: CGFloat, image: UIImage, location: Location, user: User) {
         self.caption = caption
@@ -57,7 +57,7 @@ class Image: NSObject {
         self.user = user
     }
 
-    init?(_ dict : [String : AnyObject]) {
+    init?(_ dict: [String : AnyObject]) {
 
         // MARK: Set optional properties
 
@@ -108,7 +108,7 @@ class Image: NSObject {
             if let location = dict["location"] as? [String : AnyObject],
                 name = location["name"] as? String,
                 latitude = location["latitude"] as? CGFloat,
-                longitude = location["longitude"] as? CGFloat{
+                longitude = location["longitude"] as? CGFloat {
 
                 //Parse weather object
                 var weatherObject: Weather?
