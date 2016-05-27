@@ -114,7 +114,8 @@ class CameraDataManager: NSObject {
      Method called when user wants to take a photo with the camera
      */
     func openCamera() {
-        if(UIImagePickerController .isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)) {
+        if UIImagePickerController .isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera) {
+            
             picker.sourceType = UIImagePickerControllerSourceType.Camera
             self.tabVC.presentViewController(picker, animated: true, completion: { _ in
                 self.showCameraConfirmation()
@@ -287,7 +288,6 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
         }
     }
 
-
     func prepareimageUserDecidedToPost(takenImage: UIImage) {
 
         guard let userId = CurrentUser.facebookUserId, fullName = CurrentUser.fullName else {
@@ -297,7 +297,7 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
         let userObject = User(facebookID: userId, name: fullName)
 
         var image: UIImage
-        if (takenImage.size.width > kResizeAllImagesToThisWidth) { //if image too big, shrink it down
+        if takenImage.size.width > kResizeAllImagesToThisWidth { //if image too big, shrink it down
             image = UIImage.resizeImage(takenImage, newWidth: kResizeAllImagesToThisWidth)
         } else {
             image = takenImage
@@ -340,21 +340,20 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
     private func tryToPostPhoto() {
 
         //only post photo if user has chosen to
-        if(userPressedPostPhoto) {
+        if userPressedPostPhoto {
 
             //failure getting user location
-            if(failureGettingUserLocation == true) {
+            if failureGettingUserLocation == true {
                 self.showCantDetermineLocationAlert()
             }
             //location determined
-            else if(imageUserDecidedToPost != nil) {
+            else if imageUserDecidedToPost != nil {
                 postPhoto()
             }
             //location still being determined
-            else if(imageUserDecidedToPost == nil) {
+            else if imageUserDecidedToPost == nil {
                 showProgressHudAndDisableUI()
             }
-
         }
 
     }
@@ -390,7 +389,6 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
 
     }
 
-
     func showCantDetermineLocationAlert() {
 
         dismissProgressHUDAndReEnableUI()
@@ -413,13 +411,12 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
 
     }
 
-
     private func setLatLongCityAndStateForImage(callback : ((location: Location?)->())) {
 
         LocationDataManager.SharedInstance.getCurrentLatLongCityAndState() { (latitude: CLLocationDegrees?, longitude: CLLocationDegrees?, city: String?, state: String?, error: LocationDataManagerError?) in
 
             //failure
-            if(error != nil) {
+            if error != nil {
                 callback(location: nil)
             }
             //success

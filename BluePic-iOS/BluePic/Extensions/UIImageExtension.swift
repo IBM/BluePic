@@ -32,8 +32,8 @@ extension UIImage {
     class func resizeImage(image: UIImage, newWidth: CGFloat) -> UIImage {
         let scale = newWidth / image.size.width
         let newHeight = image.size.height * scale
-        UIGraphicsBeginImageContext(CGSizeMake(newWidth, newHeight))
-        image.drawInRect(CGRectMake(0, 0, newWidth, newHeight))
+        UIGraphicsBeginImageContext(CGSize(width: newWidth, height: newHeight))
+        image.drawInRect(CGRect(x: 0, y: 0, width: newWidth, height: newHeight))
         let newImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
 
@@ -74,14 +74,14 @@ extension UIImage {
         // Now, draw the rotated/scaled image into the context
         var yFlip: CGFloat
 
-        if(flip) {
+        if flip {
             yFlip = CGFloat(-1.0)
         } else {
             yFlip = CGFloat(1.0)
         }
 
         CGContextScaleCTM(bitmap, yFlip, -1.0)
-        CGContextDrawImage(bitmap, CGRectMake(-size.width / 2, -size.height / 2, size.width, size.height), CGImage)
+        CGContextDrawImage(bitmap, CGRect(x: -size.width / 2, y: -size.height / 2, width: size.width, height: size.height), CGImage)
 
         let newImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()

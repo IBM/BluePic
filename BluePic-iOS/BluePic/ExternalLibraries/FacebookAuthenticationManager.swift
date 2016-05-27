@@ -44,8 +44,11 @@ public class FacebookAuthenticationManager: NSObject, AuthenticationDelegate {
     public func register() {
         MCAAuthorizationManager.sharedInstance.registerAuthenticationDelegate(self, realm: FacebookAuthenticationManager.FACEBOOK_REALM) //register the delegate for facebook realm
     }
+
     /**
      logs out of Facebook
+
+     - parameter completionHandler: the network request completion handler
      */
     public func logout(completionHandler: BmsCompletionHandler?) {
         login.logOut()

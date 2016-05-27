@@ -192,7 +192,7 @@ class FeedViewController: UIViewController {
      Method starts the loading animation at app launch
      */
     func startLoadingAnimationAtAppLaunch() {
-        if(viewModel.shouldBeginLoadingAtAppLaunch()) {
+        if viewModel.shouldBeginLoadingAtAppLaunch() {
             dispatch_async(dispatch_get_main_queue()) {
                 self.logoImageView.startRotating(1)
             }
@@ -205,7 +205,7 @@ class FeedViewController: UIViewController {
      */
     func tryToStartLoadingAnimation() {
 
-        if(viewModel.shouldStartLoadingAnimation()) {
+        if viewModel.shouldStartLoadingAnimation() {
             logoImageView.startRotating(1)
         }
 
@@ -217,7 +217,7 @@ class FeedViewController: UIViewController {
      */
     func tryToStopLoadingAnimation() {
 
-        if(viewModel.shouldStopLoadingAnimation()) {
+        if viewModel.shouldStopLoadingAnimation() {
 
             logoImageView.stopRotating()
 
@@ -317,7 +317,6 @@ extension FeedViewController: UICollectionViewDelegate {
 
     }
 
-
 }
 
 
@@ -350,13 +349,13 @@ extension FeedViewController {
      */
     func handleFeedViewModelNotifications(feedViewModelNotification: FeedViewModelNotification) {
 
-        if(feedViewModelNotification == FeedViewModelNotification.ReloadCollectionView) {
+        if feedViewModelNotification == FeedViewModelNotification.ReloadCollectionView {
             reloadDataInCollectionView()
-        } else if(feedViewModelNotification == FeedViewModelNotification.UploadingPhotoStarted) {
+        } else if feedViewModelNotification == FeedViewModelNotification.UploadingPhotoStarted {
             collectionView.reloadData()
             scrollCollectionViewToTop()
             tryToStartLoadingAnimation()
-        } else if(feedViewModelNotification == FeedViewModelNotification.NoSearchResults) {
+        } else if feedViewModelNotification == FeedViewModelNotification.NoSearchResults {
             // do alert
             noResultsLabel.hidden = false
         }

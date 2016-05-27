@@ -36,11 +36,10 @@ class LoginDataManager: NSObject {
 
     }()
 
-
     func login(callback : ((error: LoginDataManagerError?)->())) {
 
         ///Check if user is already authenticated from previous sesssions, aka check nsuserdefaults for user info
-        if(isUserAlreadyAuthenticated()) {
+        if isUserAlreadyAuthenticated() {
             callback(error: nil)
         }
             //user not already authenticated from previous sessions
@@ -52,7 +51,7 @@ class LoginDataManager: NSObject {
                 //facebook authentication failure
                 if let error = error {
 
-                    if(error == FacebookAuthenticationError.UserCanceledLogin) {
+                    if error == FacebookAuthenticationError.UserCanceledLogin {
                         callback(error: LoginDataManagerError.UserCanceledLogin)
                     } else {
                         callback(error: LoginDataManagerError.FacebookAuthenticationError)
@@ -68,7 +67,7 @@ class LoginDataManager: NSObject {
                         //try to register user with backend if the user doesn't already exist
                         BluemixDataManager.SharedInstance.checkIfUserAlreadyExistsIfNotCreateNewUser(facebookUserId, name: facebookUserFullName, callback: { success in
 
-                            if(success) {
+                            if success {
                                 CurrentUser.willLoginLater = false
                                 CurrentUser.facebookUserId = facebookUserId
                                 CurrentUser.fullName = facebookUserFullName
@@ -99,7 +98,7 @@ class LoginDataManager: NSObject {
 
 
     func isUserAuthenticatedOrPressedSignInLater() -> Bool {
-        if(isUserAlreadyAuthenticated() || CurrentUser.willLoginLater) {
+        if isUserAlreadyAuthenticated() || CurrentUser.willLoginLater {
             return true
         } else {
            return false
@@ -108,11 +107,10 @@ class LoginDataManager: NSObject {
 
 
     private func isUserAlreadyAuthenticated() -> Bool {
-        if(CurrentUser.facebookUserId != nil && CurrentUser.fullName != nil) {
+        if CurrentUser.facebookUserId != nil && CurrentUser.fullName != nil {
             return true
         } else {
             return false
         }
     }
-
 }
