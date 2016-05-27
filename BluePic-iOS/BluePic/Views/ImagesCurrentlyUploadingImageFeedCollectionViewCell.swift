@@ -19,29 +19,28 @@ import UIKit
 class ImagesCurrentlyUploadingImageFeedCollectionViewCell: UICollectionViewCell {
 
     @IBOutlet weak var imageView: UIImageView!
-    
+
     @IBOutlet weak var captionLabel: UILabel!
-    
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
     }
-    
-    func setupData(image : UIImage?, caption : String?){
-        
+
+    func setupData(image: UIImage?, caption: String?) {
+
         if let img = image {
-            
+
            imageView.image = img
-            
+
         }
-        
+
         //set the captionLabel's text
         var cap = caption ?? ""
-        if(cap == CameraDataManager.SharedInstance.kEmptyCaptionPlaceHolder){
+        if cap == CameraDataManager.SharedInstance.kEmptyCaptionPlaceHolder {
             cap = ""
         }
         captionLabel.text = cap
-        
+
     }
 
 }

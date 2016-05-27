@@ -23,9 +23,9 @@ struct Tag {
 
 struct Location {
     var name: String
-    var latitude : String
+    var latitude: String
     var longitude: String
-    var weather : Weather?
+    var weather: Weather?
 }
 
 struct Weather {
@@ -35,17 +35,17 @@ struct Weather {
 }
 
 class Image: NSObject {
-    var id : String?
-    var caption : String
-    var fileName : String
-    var timeStamp : NSDate?
-    var url : String?
-    var width : CGFloat
-    var height : CGFloat
-    var image : UIImage?
-    var location : Location
-    var tags : [Tag]?
-    var user : User
+    var id: String?
+    var caption: String
+    var fileName: String
+    var timeStamp: NSDate?
+    var url: String?
+    var width: CGFloat
+    var height: CGFloat
+    var image: UIImage?
+    var location: Location
+    var tags: [Tag]?
+    var user: User
 
     init(caption: String, fileName: String, width: CGFloat, height: CGFloat, image: UIImage, location: Location, user: User) {
         self.caption = caption
@@ -57,7 +57,7 @@ class Image: NSObject {
         self.user = user
     }
 
-    init?(_ dict : [String : AnyObject]) {
+    init?(_ dict: [String : AnyObject]) {
 
         // MARK: Set optional properties
 
@@ -108,7 +108,7 @@ class Image: NSObject {
             if let location = dict["location"] as? [String : AnyObject],
                 name = location["name"] as? String,
                 latitude = location["latitude"] as? CGFloat,
-                longitude = location["longitude"] as? CGFloat{
+                longitude = location["longitude"] as? CGFloat {
 
                 //Parse weather object
                 var weatherObject: Weather?

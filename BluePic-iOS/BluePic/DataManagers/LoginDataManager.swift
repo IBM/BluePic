@@ -17,7 +17,7 @@
 import UIKit
 
 enum LoginDataManagerError {
-    
+
     case FacebookAuthenticationError
     case UserCanceledLogin
     case ConnectionFailure
@@ -26,97 +26,83 @@ enum LoginDataManagerError {
 
 class LoginDataManager: NSObject {
 
-    
     /// Shared instance of data manager
     static let SharedInstance: LoginDataManager = {
-        
-        var manager = LoginDataManager()
-        
-        return manager
-        
-    }()
-    
 
-    func login(callback : ((error : LoginDataManagerError?)->())){
-        
+        var manager = LoginDataManager()
+
+        return manager
+
+    }()
+
+    func login(callback : ((error: LoginDataManagerError?)->())) {
+
         ///Check if user is already authenticated from previous sesssions, aka check nsuserdefaults for user info
-        if(isUserAlreadyAuthenticated()){
+        if isUserAlreadyAuthenticated() {
             callback(error: nil)
         }
             //user not already authenticated from previous sessions
-        else{
-            
+        else {
+
             //login with facebook
-            FacebookDataManager.SharedInstance.loginWithFacebook({ (facebookUserId: String?, facebookUserFullName : String?, error: FacebookAuthenticationError?) in
-                
+            FacebookDataManager.SharedInstance.loginWithFacebook({ (facebookUserId: String?, facebookUserFullName: String?, error: FacebookAuthenticationError?) in
+
                 //facebook authentication failure
                 if let error = error {
-                    
-                    if(error == FacebookAuthenticationError.UserCanceledLogin){
+
+                    if error == FacebookAuthenticationError.UserCanceledLogin {
                         callback(error: LoginDataManagerError.UserCanceledLogin)
-                    }
-                    else{
+                    } else {
                         callback(error: LoginDataManagerError.FacebookAuthenticationError)
                     }
-                    
+
                 }
                 //facebook authentication success
-                else{
-                    
+                else {
+
                     //Check to make sure facebook id and name aren't nil
                     if let facebookUserId = facebookUserId, let facebookUserFullName = facebookUserFullName {
-                    
+
                         //try to register user with backend if the user doesn't already exist
                         BluemixDataManager.SharedInstance.checkIfUserAlreadyExistsIfNotCreateNewUser(facebookUserId, name: facebookUserFullName, callback: { success in
-                        
-                            if(success){
+
+                            if success {
                                 CurrentUser.willLoginLater = false
                                 CurrentUser.facebookUserId = facebookUserId
                                 CurrentUser.fullName = facebookUserFullName
                                 callback(error: nil)
-                            }
-                            else{
+                            } else {
                                 callback(error: LoginDataManagerError.ConnectionFailure )
                             }
-                       
+
                         })
                     }
                     //Facebook id and name were nil
-                    else{
+                    else {
                         callback(error: LoginDataManagerError.FacebookAuthenticationError)
                     }
                 }
-
             })
-            
         }
     }
-    
-    
-    func loginLater(){
-        
+
+    func loginLater() {
         CurrentUser.willLoginLater = true
- 
     }
-    
-    
+
     func isUserAuthenticatedOrPressedSignInLater() -> Bool {
-        if(isUserAlreadyAuthenticated() || CurrentUser.willLoginLater){
+        if isUserAlreadyAuthenticated() || CurrentUser.willLoginLater {
             return true
-        }
-        else{
+        } else {
            return false
         }
     }
-    
 
     private func isUserAlreadyAuthenticated() -> Bool {
-        if(CurrentUser.facebookUserId != nil && CurrentUser.fullName != nil){
+        if CurrentUser.facebookUserId != nil && CurrentUser.fullName != nil {
             return true
-        }
-        else{
+        } else {
             return false
         }
     }
- 
 }
