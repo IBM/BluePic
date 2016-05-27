@@ -23,55 +23,51 @@ class CurrentUser: NSObject {
         get {
             if let userId = NSUserDefaults.standardUserDefaults().objectForKey("facebook_user_id") as? String {
                 return userId
-            }
-            else{
+            } else {
                 return nil
             }
         }
         set(userId) {
-            
+
             NSUserDefaults.standardUserDefaults().setObject(userId, forKey: "facebook_user_id")
             NSUserDefaults.standardUserDefaults().synchronize()
         }
     }
-    
+
     /// grab full name of user from NSUserDefaults
-    class var fullName : String? {
+    class var fullName: String? {
         get {
             if let full_name = NSUserDefaults.standardUserDefaults().objectForKey("user_full_name") as? String {
                 return full_name
-            }
-            else{
+            } else {
                 return nil
             }
         }
         set(user_full_name) {
-            
+
             NSUserDefaults.standardUserDefaults().setObject(user_full_name, forKey: "user_full_name")
             NSUserDefaults.standardUserDefaults().synchronize()
         }
     }
-    
-    
+
+
     /// generate string for the users facebook profile picture url
-    class var facebookProfilePictureURL : String {
+    class var facebookProfilePictureURL: String {
         get {
             if let facebookUserId = CurrentUser.facebookUserId {
                 return kFacebookProfilePictureURLPrefix + facebookUserId + kFacebookProfilePictureURLPostfix
-            }
-            else{
+            } else {
                 return ""
             }
         }
     }
-    
+
     /// Grab bool value representing if the user has chosen to login later or not from NSUSerDefaults
-    class var willLoginLater : Bool {
+    class var willLoginLater: Bool {
         get {
-            if let log_in_later = NSUserDefaults.standardUserDefaults().objectForKey("log_in_later") as? Bool{
+            if let log_in_later = NSUserDefaults.standardUserDefaults().objectForKey("log_in_later") as? Bool {
                 return log_in_later
-            }
-            else{
+            } else {
                 return false
             }
         }
@@ -79,14 +75,14 @@ class CurrentUser: NSObject {
             NSUserDefaults.standardUserDefaults().setObject(log_in_later, forKey: "log_in_later")
             NSUserDefaults.standardUserDefaults().synchronize()
         }
-   
+
     }
 
-    
+
     /// Prefix for url needed to get user profile picture given their unique id (id goes after this)
     private static let kFacebookProfilePictureURLPrefix = "http://graph.facebook.com/"
-    
+
     /// Postfix for url needed to get user profile picture given their unique id (id goes before this)
     private static let kFacebookProfilePictureURLPostfix = "/picture?type=large"
-    
+
 }
