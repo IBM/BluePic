@@ -165,7 +165,6 @@ class LocationDataManager: NSObject {
 
         CLGeocoder().reverseGeocodeLocation(location, completionHandler: {(placemarks, error) -> Void in
             print(location)
-
             //failure
             if let error = error {
                 print("Reverse geocoder failed with error" + error.localizedDescription)

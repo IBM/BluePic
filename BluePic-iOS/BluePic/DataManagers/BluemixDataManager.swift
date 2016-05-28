@@ -162,7 +162,6 @@ extension BluemixDataManager {
                 //success
                 if let user = User(response) {
                     result(user: user, error: nil)
-                    print ("Success :: \(response?.responseText)")
                 }
                     //can't parse response - error
                 else {
@@ -194,14 +193,13 @@ extension BluemixDataManager {
             request.sendData(jsonData, completionHandler: { (response, error) -> Void in
                 if let error = error {
                     result(user: nil)
-                    print ("Error  Creating New User :: \(error)")
+                    print ("Create New User Error: \(error)")
                 } else {
                     if let user = User(response) {
                         result(user: user)
-                        print ("Success :: \(response?.responseText)")
                     } else {
                         result(user: nil)
-                        print("Response didn't contain all the necessary values")
+                        print("Create New User Error: Response didn't contain all the necessary values")
                     }
                 }
             })
@@ -379,7 +377,7 @@ extension BluemixDataManager {
             return
         }
 
-        let tempURL = getBluemixBaseRequestURL() + "/" + kUsersEndPoint + "/" + facebookId + "/" + kImagesEndPoint + "/" + image.fileName + "/" + image.caption + "/" + "\(image.width)" + "/" + "\(image.height)" + "/" + image.location.latitude + "/" + image.location.longitude + "/" + image.location.name
+        let tempURL = getBluemixBaseRequestURL() + "/" + kUsersEndPoint + "/" + facebookId + "/" + kImagesEndPoint + "/" + image.fileName + "/" + image.caption + "/" + "\(image.width)" + "/" + "\(image.height)" + "/" + "\(image.location.latitude)" + "/" + "\(image.location.longitude)" + "/" + image.location.name
 
         guard let requestURL = tempURL.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet()) else {
             print("Failed to encode request URL")

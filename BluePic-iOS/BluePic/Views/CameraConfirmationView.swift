@@ -67,6 +67,7 @@ class CameraConfirmationView: UIView, UITextFieldDelegate {
      Method to setup the view and its outlets
      */
     func setupView() {
+
         let localizedString = kTextFieldPlaceholderText
         self.titleTextField.attributedPlaceholder = NSAttributedString(string:localizedString,
             attributes:[NSForegroundColorAttributeName: UIColor.grayColor()])
@@ -129,7 +130,7 @@ class CameraConfirmationView: UIView, UITextFieldDelegate {
     func adjustingHeight(show: Bool, notification: NSNotification) {
         // 1
         if let userInfo = notification.userInfo,
-            keyboardFrameValue = userInfo[UIKeyboardFrameBeginUserInfoKey] as? NSValue,
+            keyboardFrameValue = userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue,
             animationDuration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSTimeInterval {
         // 2
         let keyboardFrame  = keyboardFrameValue.CGRectValue()
