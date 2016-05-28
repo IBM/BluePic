@@ -91,19 +91,21 @@ Lastly, remember that push notifications will only show up on a physical iOS dev
 
 #### 8. Create an application instance on Facebook
 
-In order to have the iOS application authenticate with Facebook, you must create an application instance on Facebook's website as described below:
+In order to have the app authenticate with Facebook, you must create an application instance on Facebook's website and connect it to your Bluemix app's Mobile Client Access.
 
-1. Go to [Facebook's Quick Start for iOS](https://developers.facebook.com/quickstarts/?platform=ios) page. Type `BluePic` as the name of your new Facebook app and click the `Create New Facebook App ID` button.
+1. To create an application instance on Facebook's website, first go to [Facebook's Quick Start for iOS](https://developers.facebook.com/quickstarts/?platform=ios) page. Type 	`BluePic` as the name of your new Facebook app and click the `Create New Facebook App ID` button. Choose any Category for the application, and click the `Create App ID` button.
 
-1. Note that you **do not** need to download the Facebook SDK. The Mobile Client Access framework (already included in the iOS project) has all the code needed to support Facebook authentication. In the `Configure your info.plist` section under `step 2`, copy the information into a temporary file. You will update the corresponding `.plist` file in a later step.
+1. On the screen that follows, in the `Configure your info.plist` section under `step 2`, copy that information into your `info.plist` file. You can find the `info.plist` file in `Configuration` folder of the Xcode project. If you have trouble finding the `CFBundleURLType` key, note that Xcode changes the `CFBundleURLType` key to `URL types` when the key is entered. Your `info.plist` file should now look like this:
+<p align="center"><img src="Imgs/infoplist.png"  alt="Drawing" height=150 border=0 /></p>
+<p align="center">Figure 21. Info.plist file.</p>
 
-1. Scroll to the bottom of the quick start page where it says `Supply us with your Bundle Identifier` and enter the bundle identifier you chose in step 7.
-
-1. Once you've entered the bundle ID on the Facebook quick start page, click `next` to create the Facebook app.
+1. Next, scroll to the bottom of the quick start page where it says `Supply us with your Bundle Identifier` and enter the app's bundle identifier you chose in section 7 of this README. Remember, to find the bundle identifier in the Xcode project you can do the following: 
+	* Make sure the project navigator folder icon is selected in the top left of Xcode. Select the BluePic project at the top of the file structure and then select the BluePic target. Under the identity section, you should see a text field for the bundle identifier.
+1. Once you entered the bundle ID on the Facebook quick start page, click `next`. That's it for the Facebook quick start setup!
 
 #### 9. Configure Bluemix Mobile Client Access
 
-TODO: ADD CONTENTS
+Go to your Bluemix dashboard, under services click BluePic-AdvancedMobileAccess. On the page that shows click the Set Up Authentication button and then click Facebook. Enter your Facebook app ID you gathered from the previous section and press the next arrow. No further setup is required at this point.
 
 #### 10. Configure OpenWhisk
 
@@ -119,14 +121,7 @@ To start the Kitura-based server for the BluePic app, go to the `BluePic-Server`
 
 #### 13. Update configuration for iOS app
 
-1. Go to the BluePic-iOS directory and open the BluePic workspace with Xcode using `open BluePic.xcworkspace`.
-
-1. Let's now copy the Facebook app information from step 8 into the `info.plist` file of the iOS app. You can find the `info.plist` file in `Configuration` folder of the Xcode project. After updating this file, it should contain the following [among other values]:
-<p align="center"><img src="Imgs/infoplist.png"  alt="Drawing" height=150 border=0 /></p>
-
-1. You can now update the bundle identifier in the Xcode project (remember, this is the bundle identifier you chose in step 7 above). Make sure the project navigator folder icon is selected in the top left of Xcode; then select the BluePic project at the top of the file structure and then select the BluePic target. Under the identity section, you should see a text field for the bundle identifier. Update this field with the corresponding value.
-
-1. Let's finally update the `bluemix.plist` in the Xcode project.
+ Let's finally update the `bluemix.plist` in the Xcode project.
     1. You can set the `isLocal` value to `YES` if you want to use a locally running server or set the value to `NO` if you want to use your server instance running on Bluemix.
     2. You shouldn't have to change the `appRouteLocal` value, it is using the default port for Kitura.
     3. To get the `appRouteRemote` and `bluemixAppGUID` value, you need to go to your Bluemix dashboard and open the application you created in [step 3](#3-create-bluepic-application-on-bluemix). Once on your application's page, there should be a "Mobile Options" button near the top right, that you can tap on. It should then open up a view that displays your Route which maps to the `appRouteRemote` key in the plist. You will also see a App GUID value which maps to the `bluemixAppGUID` key in the plist.
