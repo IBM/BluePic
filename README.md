@@ -107,6 +107,8 @@ In order to have the app authenticate with Facebook, you must create an applicat
 
 Go to your Bluemix dashboard, under services click BluePic-AdvancedMobileAccess. On the page that shows click the Set Up Authentication button and then click Facebook. Enter your Facebook app ID you gathered from the previous section and press the next arrow. No further setup is required at this point.
 
+<p align="center"><img src="Imgs/facebook-mca-setup.png"  alt="Drawing" height=250 border=0 /></p>
+
 #### 10. Configure OpenWhisk
 
 TODO: ADD CONTENTS
