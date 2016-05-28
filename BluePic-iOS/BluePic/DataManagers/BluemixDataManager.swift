@@ -267,6 +267,8 @@ extension BluemixDataManager {
                 self.images = images
                 self.hasReceievedInitialImages = true
                 NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImagesRefreshed.rawValue, object: nil)
+            } else {
+                NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImagesRefreshed.rawValue, object: nil)
             }
         }
     }
