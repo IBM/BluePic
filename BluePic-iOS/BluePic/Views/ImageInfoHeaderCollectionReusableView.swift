@@ -193,14 +193,12 @@ class ImageInfoHeaderCollectionReusableView: UICollectionReusableView {
      - parameter latitude:  String?
      - parameter longitude: String?
      */
-    private func setupCoordinatesLabel(latitude: String?, longitude: String?) {
+    private func setupCoordinatesLabel(latitude: Double?, longitude: Double?) {
 
         if let latit = latitude,
-            let longit = longitude,
-            let lat = Double(latit),
-            let long = Double(longit) {
+            let longit = longitude {
 
-            let formattedCordinatesString = Utils.coordinateString(lat, longitude: long)
+            let formattedCordinatesString = Utils.coordinateString(latit, longitude: longit)
 
             coordinatesLabel.attributedText = NSAttributedString.createAttributedStringWithLetterAndLineSpacingWithCentering(formattedCordinatesString, letterSpacing: 1.4, lineSpacing: 5, centered: true)
 

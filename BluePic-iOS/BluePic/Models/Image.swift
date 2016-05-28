@@ -15,6 +15,7 @@
  **/
 
 import UIKit
+import CoreLocation
 
 struct Tag {
     let label: String
@@ -23,8 +24,8 @@ struct Tag {
 
 struct Location {
     let name: String
-    let latitude: String
-    let longitude: String
+    let latitude: CLLocationDegrees
+    let longitude: CLLocationDegrees
     let weather: Weather?
 }
 
@@ -107,8 +108,8 @@ class Image: NSObject {
             //Parse location data
             if let location = dict["location"] as? [String : AnyObject],
                 name = location["name"] as? String,
-                latitude = location["latitude"] as? CGFloat,
-                longitude = location["longitude"] as? CGFloat {
+                latitude = location["latitude"] as? CLLocationDegrees,
+                longitude = location["longitude"] as? CLLocationDegrees {
 
                 //Parse weather object
                 var weatherObject: Weather?
@@ -119,7 +120,7 @@ class Image: NSObject {
                     weatherObject = Weather(temperature: temperature, iconId: iconId, description: description)
                 }
 
-                self.location = Location(name: name, latitude: "\(latitude)", longitude: "\(longitude)", weather: weatherObject)
+                self.location = Location(name: name, latitude: latitude, longitude: longitude, weather: weatherObject)
 
             } else {
                 print("invalid image json")
