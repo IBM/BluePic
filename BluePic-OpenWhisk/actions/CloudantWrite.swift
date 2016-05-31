@@ -12,7 +12,6 @@ func main(args:[String:Any]) -> [String:Any] {
     let cloudantUsername: String? = args["cloudantUsername"] as? String
     let cloudantPassword: String? = args["cloudantPassword"] as? String
     let cloudantHost: String? = args["cloudantHost"] as? String
-    let cloudantId: String? = args["cloudantId"] as? String
     let cloudantBody: String? = args["cloudantBody"] as? String
     
     var requestOptions = [ClientRequestOptions]()

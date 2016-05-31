@@ -17,10 +17,10 @@ func main(args:[String:Any]) -> [String:Any] {
     let imageUrl = image["url"].string
     
     let result:[String:Any] = [
-        "imageId":  args["imageId"],
+        "imageId":  args["cloudantId"],
         "imageDoc": cloudantResult!,
-        "alchemyResult": args["alchemyResult"],
-        "weatherResult": args["weatherResult"],
+        "alchemyResult": "",
+        "weatherResult": "",
         "latitude":"\(location["latitude"].double!)",
         "longitude":"\(location["longitude"].double!)",
         "imageURL":imageUrl!,

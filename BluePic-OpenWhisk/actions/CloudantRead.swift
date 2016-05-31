@@ -6,22 +6,13 @@ import KituraNet
 import Dispatch
 import Foundation
 
-func main(args:[String:Any]) -> [String:Any] {
+func main(args: [String:Any]) -> [String:Any] {
     
     let cloudantDbName: String? = args["cloudantDbName"] as? String
     let cloudantUsername: String? = args["cloudantUsername"] as? String
     let cloudantPassword: String? = args["cloudantPassword"] as? String
     let cloudantHost: String? = args["cloudantHost"] as? String
     let cloudantId: String? = String(args["cloudantId"]!)
-    
-    /*
-    print(args["cloudantId"])
-    print(cloudantId!)
-    
-    return [
-        "imageId":  args["cloudantId"]
-    ]
-    */
     
     var requestOptions = [ClientRequestOptions]()
     requestOptions.append(.username(cloudantUsername!))
@@ -48,14 +39,8 @@ func main(args:[String:Any]) -> [String:Any] {
     req.end();
     
     let result:[String:Any] = [
-        "imageId":  args["imageId"],
-        "imageDoc": args["imageDoc"],
-        "alchemyResult": args["alchemyResult"],
-        "weatherResult": args["weatherResult"],
         "cloudantId": args["cloudantId"],
         "cloudantResult": str
     ]
     return result
-    
-    /*  */
 }
