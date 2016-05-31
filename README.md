@@ -106,8 +106,7 @@ In order to have the app authenticate with Facebook, you must create an applicat
 1. On the page that follows click the `configure` button under the Facebook section. 
 <p align="center"><img src="Imgs/configure-facebook-button.png"  alt="Drawing" height=125 border=0 /></p>
 
-
-1. On the next page, enter your Facebook appication ID you gathered from the previous section and press the save button.
+1. On the next page, enter your Facebook appication ID you gathered from step 4 of section 7 of this README. Press the save button.
 
 <p align="center"><img src="Imgs/facebook-mca-setup.png"  alt="Drawing" height=250 border=0 /></p>
 
@@ -115,7 +114,7 @@ Facebook Authentication with Bluemix Mobile Client Acess is now completely set u
 
 #### 9. Configure Bluemix Push service
 
-To utilize push notification capabilities on Bluemix, you need to configure a notification provider. For BluePic, you should configure credentials for the Apple Push Notification Service (APNS). As part of this configuration step, you will choose a **bundle identifier** (aka App ID) for your app. Please take note of the **bundle identifier** you choose for your BluePic app instance.
+To utilize push notification capabilities on Bluemix, you need to configure a notification provider. For BluePic, you should configure credentials for the Apple Push Notification Service (APNS). As part of this configuration step, you will need to use the **bundle identifier** you chose in step 2 of section 7. Take note of this **bundle identifier**, you will need it for the steps below.
 
 Luckily, Bluemix has [instructions](https://console.ng.bluemix.net/docs/services/mobilepush/t_push_provider_ios.html) to walk you through that process. Please note that you'd need to upload a `.p12` certificate to Bluemix and enter the password for it, as described in the Bluemix instructions.
 
