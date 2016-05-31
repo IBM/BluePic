@@ -29,14 +29,6 @@ func main(args:[String:Any]) -> [String:Any] {
         units = "e"
     }
     
-    /*return [
-        "latitude":latitude,
-        "longitude":longitude,
-        "language":language,
-        "units":units,
-        "url":"https://\(weatherUsername!):\(weatherPassword!)@twcservice.mybluemix.net/api/weather/v2/observations/current?geocode=\(latitude!),\(longitude!)&language=\(language!)&units=\(units!)"
-    ]*/
-    
     var str = ""
 
     HTTP.get("https://\(weatherUsername!):\(weatherPassword!)@twcservice.mybluemix.net/api/weather/v2/observations/current?geocode=\(latitude!),\(longitude!)&language=\(language!)&units=\(units!)") { response in
@@ -47,15 +39,7 @@ func main(args:[String:Any]) -> [String:Any] {
             print("Error \(error)")
             str = "Error \(error)"
         }
-
     }
-    
-   // print("WEATHER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-   // print(str)
-    
-   /* return [
-        "str":"\(str)"
-    ]*/
     
     let result:[String:Any] = [
         "imageId":  args["imageId"],
@@ -67,6 +51,5 @@ func main(args:[String:Any]) -> [String:Any] {
         "imageURL": args["imageURL"]
     ]
     
-    // return, which should be a dictionary
     return result
 }
