@@ -114,7 +114,7 @@ Facebook Authentication with Bluemix Mobile Client Acess is now completely set u
 
 #### 9. Configure Bluemix Push service
 
-To utilize push notification capabilities on Bluemix, you need to configure a notification provider. For BluePic, you should configure credentials for the Apple Push Notification Service (APNS). As part of this configuration step, you will need to use the **bundle identifier** you chose in step 2 of section 7 (Create an application instance on Facebook). Take note of this **bundle identifier**, you will need it for the steps below.
+To utilize push notification capabilities on Bluemix, you need to configure a notification provider. For BluePic, you should configure credentials for the Apple Push Notification Service (APNS). As part of this configuration step, you will need to use the **bundle identifier** you chose in [step 2 of section 7 (Create an application instance on Facebook)](#7-create-an-application-instance-on-facebook). Take note of this **bundle identifier**, you will need it for the steps below.
 
 Luckily, Bluemix has [instructions](https://console.ng.bluemix.net/docs/services/mobilepush/t_push_provider_ios.html) to walk you through that process. Please note that you'd need to upload a `.p12` certificate to Bluemix and enter the password for it, as described in the Bluemix instructions.
 
