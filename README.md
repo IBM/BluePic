@@ -135,8 +135,11 @@ To start the Kitura-based server for the BluePic app, go to the `BluePic-Server`
 
 #### 13. Update configuration for iOS app
 
- Let's finally update the `bluemix.plist` in the Xcode project.
-    1. You can set the `isLocal` value to `YES` if you want to use a locally running server or set the value to `NO` if you want to use your server instance running on Bluemix.
+Go to the BluePic-iOS directory and open the BluePic workspace with Xcode using `open BluePic.xcworkspace`.
+
+ Let's finally update the `bluemix.plist` in the Xcode project.  You can find this file in `Configuration` folder of the Xcode project.
+ 
+1. You can set the `isLocal` value to `YES` if you want to use a locally running server or set the value to `NO` if you want to use your server instance running on Bluemix.
     2. You shouldn't have to change the `appRouteLocal` value, it is using the default port for Kitura.
     3. To get the `appRouteRemote` and `bluemixAppGUID` value, you need to go to your Bluemix dashboard and open the application you created in [step 3](#3-create-bluepic-application-on-bluemix). Once on your application's page, there should be a "Mobile Options" button near the top right, that you can tap on. It should then open up a view that displays your Route which maps to the `appRouteRemote` key in the plist. You will also see a App GUID value which maps to the `bluemixAppGUID` key in the plist.
     4. Lastly, we need to get the value for `bluemixAppRegion`, which can be one of three options currently: 
