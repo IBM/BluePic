@@ -81,7 +81,39 @@ Remember that you can obtain the credentials for each service listed in the `con
 
 You can take a look at the contents of the `config.json` file by clicking [here](BluePic-Server/config.json).
 
-#### 7. Configure Bluemix Push service
+#### 7. Create an application instance on Facebook
+
+In order to have the app authenticate with Facebook, you must create an application instance on Facebook's website and connect it to your Bluemix app's Mobile Client Access.
+
+1. Go to the BluePic-iOS directory and open the BluePic workspace with Xcode using `open BluePic.xcworkspace`.
+
+1. We will need to update the bundle identifier in the Xcode project. To do this, make sure the project navigator folder icon is selected in the top left of Xcode; then select the BluePic project at the top of the file structure and then select the BluePic target. Under the identity section, you should see a text field for the bundle identifier. Update this field with a bundle identifier of your choosing. (ie. com.bluepic)
+
+1. To create an application instance on Facebook's website, first go to [Facebook's Quick Start for iOS](https://developers.facebook.com/quickstarts/?platform=ios) page. Type 	`BluePic` as the name of your new Facebook app and click the `Create New Facebook App ID` button. Choose any Category for the application, and click the `Create App ID` button.
+
+1. On the screen that follows, note that you **do not** need to download the Facebook SDK. The Mobile Client Access framework (already included in the iOS project) has all the code needed to support Facebook authentication. In the `Configure your info.plist` section, under `step 2`, copy the fields shown int he xml snippet into your `info.plist` file. You can find the `info.plist` file in `Configuration` folder of the Xcode project. If you have trouble finding the `CFBundleURLType` key, note that Xcode changes the `CFBundleURLType` key to `URL types` when the key is entered. Your `info.plist` file should now look like this:
+<p align="center"><img src="Imgs/infoplist.png"  alt="Drawing" height=150 border=0 /></p>
+
+1. Next, scroll to the bottom of the quick start page where it says `Supply us with your Bundle Identifier` and enter the app's bundle identifier you chose in step 2 of this section. 
+
+1. Once you have entered the Bundle Identifier on the Facebook quick start page, that's it for setting up the BluePic application on the Facebook developer website. In the next section we will link this Facebook application instance to your Bluemix Mobile Client Access service.
+
+#### 8. Configure Bluemix Mobile Client Access
+
+1. Go to your Bluemix dashboard, under services section click the `Mobile Client Access` service:
+<p align="center"><img src="Imgs/mobile-client-access-service.png"  alt="Drawing" height=125 border=0 /></p>
+
+1. On the page that follows click the `configure` button under the Facebook section. 
+<p align="center"><img src="Imgs/configure-facebook-button.png"  alt="Drawing" height=125 border=0 /></p>
+
+
+1. On the next page, enter your Facebook appication ID you gathered from the previous section and press the save button.
+
+<p align="center"><img src="Imgs/facebook-mca-setup.png"  alt="Drawing" height=250 border=0 /></p>
+
+Facebook Authentication with Bluemix Mobile Client Acess is now completely set up. No further steps are required.
+
+#### 9. Configure Bluemix Push service
 
 To utilize push notification capabilities on Bluemix, you need to configure a notification provider. For BluePic, you should configure credentials for the Apple Push Notification Service (APNS). As part of this configuration step, you will choose a **bundle identifier** (aka App ID) for your app. Please take note of the **bundle identifier** you choose for your BluePic app instance.
 
@@ -89,25 +121,6 @@ Luckily, Bluemix has [instructions](https://console.ng.bluemix.net/docs/services
 
 Lastly, remember that push notifications will only show up on a physical iOS device.
 
-#### 8. Create an application instance on Facebook
-
-In order to have the app authenticate with Facebook, you must create an application instance on Facebook's website and connect it to your Bluemix app's Mobile Client Access.
-
-1. To create an application instance on Facebook's website, first go to [Facebook's Quick Start for iOS](https://developers.facebook.com/quickstarts/?platform=ios) page. Type 	`BluePic` as the name of your new Facebook app and click the `Create New Facebook App ID` button. Choose any Category for the application, and click the `Create App ID` button.
-
-1. On the screen that follows, in the `Configure your info.plist` section under `step 2`, copy that information into your `info.plist` file. You can find the `info.plist` file in `Configuration` folder of the Xcode project. If you have trouble finding the `CFBundleURLType` key, note that Xcode changes the `CFBundleURLType` key to `URL types` when the key is entered. Your `info.plist` file should now look like this:
-<p align="center"><img src="Imgs/infoplist.png"  alt="Drawing" height=150 border=0 /></p>
-<p align="center">Figure 21. Info.plist file.</p>
-
-1. Next, scroll to the bottom of the quick start page where it says `Supply us with your Bundle Identifier` and enter the app's bundle identifier you chose in section 7 of this README. Remember, to find the bundle identifier in the Xcode project you can do the following: 
-	* Make sure the project navigator folder icon is selected in the top left of Xcode. Select the BluePic project at the top of the file structure and then select the BluePic target. Under the identity section, you should see a text field for the bundle identifier.
-1. Once you entered the bundle ID on the Facebook quick start page, click `next`. That's it for the Facebook quick start setup!
-
-#### 9. Configure Bluemix Mobile Client Access
-
-Go to your Bluemix dashboard, under services click BluePic-AdvancedMobileAccess. On the page that shows click the Set Up Authentication button and then click Facebook. Enter your Facebook app ID you gathered from the previous section and press the next arrow. No further setup is required at this point.
-
-<p align="center"><img src="Imgs/facebook-mca-setup.png"  alt="Drawing" height=250 border=0 /></p>
 
 #### 10. Configure OpenWhisk
 
