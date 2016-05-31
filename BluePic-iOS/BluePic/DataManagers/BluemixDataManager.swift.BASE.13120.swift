@@ -41,9 +41,6 @@ enum BluemixDataManagerNotification: String {
     //Notification to notify the app that image upload failed
     case ImageUploadFailure = "ImageUploadFailure"
 
-    //Notificaiton used when there was a server error getting all the images
-    case GetAllImagesFailure = "GetAllImagesFailure"
-
     //Notification to notify the app that the popular tags were receieved
     case PopularTagsReceived = "PopularTagsReceived"
 }
@@ -143,23 +140,20 @@ extension BluemixDataManager {
             //error
             if error != nil {
                 if let response = response,
-                    statusCode = response.statusCode {
+                    let statusCode = response.statusCode {
 
                     //user does not exist
                     if statusCode == 404 {
-
                         result(user: nil, error: BlueMixDataManagerError.UserDoesNotExist)
                     }
                         //any other error code means that it was a connection failure
                     else {
-                        print("Get User By ID Error: \(error)")
                         result(user: nil, error: BlueMixDataManagerError.ConnectionFailure)
                     }
 
                 }
                     //connection failure
                 else {
-                    print("Get User By ID Error: \(error)")
                     result(user: nil, error: BlueMixDataManagerError.ConnectionFailure)
                 }
             }
@@ -171,7 +165,6 @@ extension BluemixDataManager {
                 }
                     //can't parse response - error
                 else {
-                    print("Get User By ID Error: Invalid Response JSON)")
                     result(user: nil, error: BlueMixDataManagerError.ConnectionFailure)
                 }
             }
@@ -206,14 +199,14 @@ extension BluemixDataManager {
                         result(user: user)
                     } else {
                         result(user: nil)
-                        print("Create New User Error: Invalid Response JSON")
+                        print("Create New User Error: Response didn't contain all the necessary values")
                     }
                 }
             })
 
         } catch {
-            print ("Create New User Error")
             result(user: nil)
+
         }
 
     }
@@ -244,7 +237,6 @@ extension BluemixDataManager {
 
                     })
                 } else if error == BlueMixDataManagerError.ConnectionFailure {
-                    print("Check If User Already Exists Error: Connection Failure")
                     callback(success: false)
                 }
             } else {
@@ -276,8 +268,7 @@ extension BluemixDataManager {
                 self.hasReceievedInitialImages = true
                 NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImagesRefreshed.rawValue, object: nil)
             } else {
-                self.hasReceievedInitialImages = true
-                NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.GetAllImagesFailure.rawValue, object: nil)
+                NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImagesRefreshed.rawValue, object: nil)
             }
         }
     }
@@ -294,7 +285,7 @@ extension BluemixDataManager {
         for (index, tag) in tags.enumerate() {
 
             guard let encodedTag = tag.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet()) else {
-                print("Get Images By Tags Erro: Failed to encode search tag")
+                print("Failed to encode search tag")
                 continue
             }
 
@@ -322,9 +313,8 @@ extension BluemixDataManager {
 
         request.sendWithCompletionHandler { (response, error) -> Void in
             if let error = error {
-                print ("Error :: \(error)")
                 result(images: nil)
-                print ("Get Images Error: \(error)")
+                print ("Error :: \(error)")
             } else {
                 let images = self.parseGetImagesResponse(response, userId: nil, usersName: nil)
                 result(images: images)
@@ -347,11 +337,11 @@ extension BluemixDataManager {
         var images = [Image]()
 
         if let dict = Utils.convertResponseToDictionary(response),
-             records = dict["records"] as? [[String:AnyObject]] {
+            let records = dict["records"] as? [[String:AnyObject]] {
 
             for var record in records {
 
-                if let userId = userId, usersName = usersName {
+                if let userId = userId, let usersName = usersName {
 
                     var user = [String : AnyObject]()
                     user["name"] = usersName
@@ -384,7 +374,7 @@ extension BluemixDataManager {
         NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImageUploadBegan.rawValue, object: nil)
 
         guard let facebookId = CurrentUser.facebookUserId, uiImage = image.image, imageData = UIImagePNGRepresentation(uiImage) else {
-            print("Post New Image Error: We don't have all the info necessary to post this image")
+            print("We don't have all the info necessary to post this image")
             NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImageUploadFailure.rawValue, object: nil)
             return
         }
@@ -392,7 +382,7 @@ extension BluemixDataManager {
         let tempURL = getBluemixBaseRequestURL() + "/" + kUsersEndPoint + "/" + facebookId + "/" + kImagesEndPoint + "/" + image.fileName + "/" + image.caption + "/" + "\(image.width)" + "/" + "\(image.height)" + "/" + "\(image.location.latitude)" + "/" + "\(image.location.longitude)" + "/" + image.location.name
 
         guard let requestURL = tempURL.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet()) else {
-            print("Post New Image Error: Failed to encode request URL")
+            print("Failed to encode request URL")
             NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImageUploadFailure.rawValue, object: nil)
             return
         }
@@ -405,7 +395,6 @@ extension BluemixDataManager {
 
             //failure
             if error != nil {
-                print("Post New Image Error: error")
 
                 self.removeImageFromImagesCurrentlyUploading(image)
                 self.addImageToImagesThatFailedToUpload(image)
@@ -525,7 +514,7 @@ extension BluemixDataManager {
 
         request.sendWithCompletionHandler { (response, error) -> Void in
             if let error = error {
-                print ("Get Popular Tags Error: \(error)")
+                print ("Error :: \(error)")
             } else {
                 if let text = response?.responseText, result = Utils.convertStringToDictionary(text), records = result["records"] as? [[String:AnyObject]] {
                     // Extract string tags from server results

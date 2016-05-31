@@ -276,8 +276,13 @@ extension BluemixDataManager {
                 self.hasReceievedInitialImages = true
                 NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImagesRefreshed.rawValue, object: nil)
             } else {
+<<<<<<< HEAD
+                print("Get Images Error: Connection Failure")
+                NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImagesRefreshed.rawValue, object: nil)
+=======
                 self.hasReceievedInitialImages = true
                 NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.GetAllImagesFailure.rawValue, object: nil)
+>>>>>>> 56f0cb04586b3dc16f2cc06792407d32278513d9
             }
         }
     }
@@ -322,9 +327,13 @@ extension BluemixDataManager {
 
         request.sendWithCompletionHandler { (response, error) -> Void in
             if let error = error {
-                print ("Error :: \(error)")
+<<<<<<< HEAD
                 result(images: nil)
                 print ("Get Images Error: \(error)")
+=======
+                print ("Error :: \(error)")
+                result(images: nil)
+>>>>>>> 56f0cb04586b3dc16f2cc06792407d32278513d9
             } else {
                 let images = self.parseGetImagesResponse(response, userId: nil, usersName: nil)
                 result(images: images)

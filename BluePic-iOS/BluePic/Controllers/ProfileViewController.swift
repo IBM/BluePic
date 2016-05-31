@@ -114,10 +114,8 @@ class ProfileViewController: UIViewController {
 
         var alpha: CGFloat = 0.0
 
-        if isInOrOut == true {
+        if isInOrOut {
             alpha = 1.0
-        } else {
-            alpha = 0.0
         }
 
         UIView.animateWithDuration(kStatusBarBackgroundViewFadeDuration, animations: {
