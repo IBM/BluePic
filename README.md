@@ -85,7 +85,7 @@ You can take a look at the contents of the `cf_config.json` file by clicking [he
 
 In order to have the app authenticate with Facebook, you must create an application instance on Facebook's website.
 
-1. Go to the BluePic-iOS directory and open the BluePic workspace with Xcode using `open BluePic.xcworkspace`.
+1. Go to the `BluePic-iOS` directory and open the BluePic workspace with Xcode using `open BluePic.xcworkspace`.
 
 1. Choose a bundle identifier for your app and update the Xcode project accordingly: Select the project navigator folder icon located in the top left of Xcode; then select the BluePic project at the top of the file structure and then select the BluePic target. Under the identity section, you should see a text field for the bundle identifier. Update this field with a bundle identifier of your choosing. (i.e. com.bluepic)
 
@@ -133,11 +133,11 @@ To start the Kitura-based server for the BluePic app, go to the `BluePic-Server`
 
 #### 13. Update configuration for iOS app
 
-Go to the BluePic-iOS directory and open the BluePic workspace with Xcode using `open BluePic.xcworkspace`. Let's now update the `bluemix.plist` in the Xcode project. You can find this file in `Configuration` folder of the Xcode project.
+Go to the `BluePic-iOS` directory and open the BluePic workspace with Xcode using `open BluePic.xcworkspace`. Let's now update the `bluemix.plist` in the Xcode project (you can find this file in `Configuration` folder of the Xcode project).
 
 1. You should set the `isLocal` value to `YES` if you'd like to use a locally running server; if you set the value to `NO`, then you will be accessing the server instance running on Bluemix.
 
-1. To get the `appRouteRemote` and `bluemixAppGUID` value, you should go to your application's page on Bluemix. There, you will find a `Mobile Options` link near the top right. Clicking on it should open up a view that displays your `route` which maps to the `appRouteRemote` key in the plist. You will also see an `App GUID` value which maps to the `bluemixAppGUID` key in the plist.
+1. To get the `appRouteRemote` and `bluemixAppGUID` value, you should go to your application's page on Bluemix. There, you will find a `MOBILE OPTIONS` link near the top right. Clicking on it should open up a view that displays your `route` which maps to the `appRouteRemote` key in the plist. You will also see an `App GUID` value which maps to the `bluemixAppGUID` key in the plist.
 
 1. Lastly, we need to get the value for `bluemixAppRegion`, which can be one of three options currently:
 
@@ -145,11 +145,11 @@ Go to the BluePic-iOS directory and open the BluePic workspace with Xcode using 
 		--- | --- | ---
 		`.ng.bluemix.net` | `.eu-gb.bluemix.net` | `.au-syd.bluemix.net`
 
-You can find the one you need in multiple ways. , the first, by just looking at the URL you use to access your Bluemix dashboard. Another way is to look at the `cf_config.json` file you modifed earlier. If you look at the credentials under your `AdvancedMobileAccess` service, there is a value called `serverUrl` which should contain one of the regions mentioned above. Once you insert your `bluemixAppRegion` value into the `bluemix.plist`, your app should be configured.
+You can find your region in multiple ways. For instance, by just looking at the URL you use to access your application's page (or the Bluemix dashboard). Another way is to look at the `cf_config.json` file you modified earlier. If you look at the credentials under your `AdvancedMobileAccess` service, there is a value called `serverUrl` which should contain one of the regions mentioned above. Once you insert your `bluemixAppRegion` value into the `bluemix.plist`, your app should be configured.
 
 #### 14. Run the iOS app
 
-If you don't have the iOS project already open, go to the BluePic-iOS directory and open the BluePic workspace using `open BluePic.xcworkspace`.
+If you don't have the iOS project already open, go to the `BluePic-iOS` directory and open the BluePic workspace using `open BluePic.xcworkspace`.
 
 You can now build and run the iOS app using the Xcode capabilities you are used to!
 
