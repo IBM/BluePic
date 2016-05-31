@@ -72,7 +72,7 @@ class LocationDataManager: NSObject {
         let locale = NSLocale.currentLocale()
 
         if let isMetricString = locale.objectForKey(NSLocaleUsesMetricSystem),
-            let isMetricBool = isMetricString.boolValue {
+            isMetricBool = isMetricString.boolValue {
 
             if isMetricBool {
                 return kMetricUnitOfMeasurement
@@ -167,7 +167,7 @@ class LocationDataManager: NSObject {
             print(location)
             //failure
             if let error = error {
-                print("Reverse geocoder failed with error" + error.localizedDescription)
+                print(NSLocalizedString("Get Placemark From Location Error: Reverse Geocode failed", comment: "") + " \(error)")
                 callback(placemark: nil)
 
             } else if let placemarks = placemarks {
@@ -178,12 +178,13 @@ class LocationDataManager: NSObject {
                 }
                 //failure
                 else {
+                    print(NSLocalizedString("Get Placemark From Location Error: Problem with the data received from geocoder", comment: "") + " \(error)")
                     callback(placemark: nil)
-                    print("Problem with the data received from geocoder")
                 }
             }
             //failure
             else {
+                 print(NSLocalizedString("Get Placemark From Location Error", comment: ""))
                 callback(placemark: nil)
             }
 
@@ -207,17 +208,20 @@ class LocationDataManager: NSObject {
                 self.getPlaceMarkFromLocation(location, callback: { placemark in
 
                         //success
-                        if let placemark = placemark, let city = placemark.locality, let state = placemark.administrativeArea {
+                        if let placemark = placemark, city = placemark.locality, state = placemark.administrativeArea {
                             callback(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude, city: city, state: state, error: nil)
                         }
                         //failure
                         else {
+                            print(NSLocalizedString("Get Current Lat Long City And State Error: Invalid Placemark", comment: ""))
                             callback(latitude: nil, longitude: nil, city: nil, state: nil, error: LocationDataManagerError.GetCurrentLatLongCityAndStateFailure)
                         }
                 })
             }
             //failure
             else {
+                print(NSLocalizedString("Get Current Lat Long City And State Error: Invalid Location", comment: ""))
+
                 callback(latitude: nil, longitude: nil, city: nil, state: nil, error: LocationDataManagerError.GetCurrentLatLongCityAndStateFailure)
             }
         }
@@ -234,7 +238,6 @@ extension LocationDataManager : CLLocationManagerDelegate {
      */
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
 
-        print("did update location")
         if getUsersCurrentLocationCallback != nil {
             //success
             if locations.count > 0 {
@@ -252,7 +255,7 @@ extension LocationDataManager : CLLocationManagerDelegate {
      - parameter error:   NSError
      */
     func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
-
+        print(NSLocalizedString("Get User's Current Location Error:", comment: "") + " \(error)")
         if getUsersCurrentLocationCallback != nil {
             getUsersCurrentLocationCallback(location : nil)
             getUsersCurrentLocationCallback = nil
