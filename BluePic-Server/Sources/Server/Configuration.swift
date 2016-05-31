@@ -25,7 +25,7 @@ public struct Configuration {
 
   /**
    Enum used for Configuration errors
-   
+
    - IO: case to indicate input/output error
    */
   public enum Error: ErrorProtocol {
@@ -33,7 +33,7 @@ public struct Configuration {
   }
 
   // Instance constants
-  let configurationFile = "config.json"
+  let configurationFile = "cf_config.json"
   let appEnv: AppEnv
 
   init() throws {
@@ -55,9 +55,9 @@ public struct Configuration {
 
   /**
    Method to get CouchDB credentials in a consumable form
-   
+
    - throws: error when method can't get credentials
-   
+
    - returns: Encapsulated ConnectionProperties object with the necessary info
    */
   func getCouchDBConnProps() throws -> ConnectionProperties {
@@ -75,9 +75,9 @@ public struct Configuration {
 
   /**
    Method to get Object Storage credentials in a consumable form
-   
+
    - throws: error when method can't get credentials
-   
+
    - returns: Encapsulated ObjectStorageConnProps object with the necessary info
    */
   func getObjectStorageConnProps() throws -> ObjectStorageConnProps {
@@ -97,9 +97,9 @@ public struct Configuration {
 
   /**
    Method to get MCA credentials in a consumable form
-   
+
    - throws: error when method can't get credentials
-   
+
    - returns: Encapsulated MobileClientAccessProps object with the necessary info
    */
   func getMobileClientAccessProps() throws -> MobileClientAccessProps {
@@ -119,9 +119,9 @@ public struct Configuration {
 
   /**
    Method to get IBM Push credentials in a consumable form
-   
+
    - throws: error when method can't get credentials
-   
+
    - returns: Encapsulated IbmPushProps object with the necessary info
    */
   func getIbmPushProps() throws -> IbmPushProps {
