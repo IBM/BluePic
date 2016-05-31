@@ -89,14 +89,14 @@ In order to have the app authenticate with Facebook, you must create an applicat
 
 1. We will need to update the bundle identifier in the Xcode project. To do this, make sure the project navigator folder icon is selected in the top left of Xcode; then select the BluePic project at the top of the file structure and then select the BluePic target. Under the identity section, you should see a text field for the bundle identifier. Update this field with a bundle identifier of your choosing. (ie. com.bluepic)
 
-1. To create an application instance on Facebook's website, first go to [Facebook's Quick Start for iOS](https://developers.facebook.com/quickstarts/?platform=ios) page. Type 	`BluePic` as the name of your new Facebook app and click the `Create New Facebook App ID` button. Choose any Category for the application, and click the `Create App ID` button.
+1. To create an application instance on Facebook's Developer website, first go to [Facebook's Quick Start for iOS](https://developers.facebook.com/quickstarts/?platform=ios) page. Type 	`BluePic` as the name of your new Facebook app and click the `Create New Facebook App ID` button. Choose any Category for the application, and click the `Create App ID` button.
 
-1. On the screen that follows, note that you **do not** need to download the Facebook SDK. The Mobile Client Access framework (already included in the iOS project) has all the code needed to support Facebook authentication. In the `Configure your info.plist` section, under `step 2`, copy the fields shown int he xml snippet into your `info.plist` file. You can find the `info.plist` file in `Configuration` folder of the Xcode project. If you have trouble finding the `CFBundleURLType` key, note that Xcode changes the `CFBundleURLType` key to `URL types` when the key is entered. Your `info.plist` file should now look like this:
+1. On the screen that follows, note that you **do not** need to download the Facebook SDK. The Mobile Client Access framework (already included in the iOS project) has all the code needed to support Facebook authentication. In the `Configure your info.plist` section, under `step 2`, copy the fields shown in the xml snippet into your `info.plist` file. You can find the `info.plist` file in `Configuration` folder of the Xcode project. If you have trouble finding the `CFBundleURLType` key, note that Xcode changes the `CFBundleURLType` key to `URL types` when the key is entered. Your `info.plist` file should now look like this:
 <p align="center"><img src="Imgs/infoplist.png"  alt="Drawing" height=150 border=0 /></p>
 
-1. Next, scroll to the bottom of the quick start page where it says `Supply us with your Bundle Identifier` and enter the app's bundle identifier you chose in step 2 of this section. 
+1. Next, scroll to the bottom of the quick start page where it says `Supply us with your Bundle Identifier` and enter the app's Bundle Identifier you chose in `step 2` of this section. 
 
-1. Once you have entered the Bundle Identifier on the Facebook quick start page, that's it for setting up the BluePic application on the Facebook developer website. In the next section we will link this Facebook application instance to your Bluemix Mobile Client Access service.
+1. Once you have entered the Bundle Identifier on the Facebook quick start page, that's it for setting up the BluePic application instance on the Facebook Developer website. In the next section we will link this Facebook application instance to your Bluemix Mobile Client Access service.
 
 #### 8. Configure Bluemix Mobile Client Access
 
@@ -140,14 +140,18 @@ Go to the BluePic-iOS directory and open the BluePic workspace with Xcode using 
  Let's finally update the `bluemix.plist` in the Xcode project.  You can find this file in `Configuration` folder of the Xcode project.
  
 1. You can set the `isLocal` value to `YES` if you want to use a locally running server or set the value to `NO` if you want to use your server instance running on Bluemix.
-    2. You shouldn't have to change the `appRouteLocal` value, it is using the default port for Kitura.
-    3. To get the `appRouteRemote` and `bluemixAppGUID` value, you need to go to your Bluemix dashboard and open the application you created in [step 3](#3-create-bluepic-application-on-bluemix). Once on your application's page, there should be a "Mobile Options" button near the top right, that you can tap on. It should then open up a view that displays your Route which maps to the `appRouteRemote` key in the plist. You will also see a App GUID value which maps to the `bluemixAppGUID` key in the plist.
-    4. Lastly, we need to get the value for `bluemixAppRegion`, which can be one of three options currently: 
+
+2. You shouldn't have to change the `appRouteLocal` value, it is using the default port for Kitura.
+
+3. To get the `appRouteRemote` and `bluemixAppGUID` value, you need to go to your Bluemix dashboard and open the application you created in [step 3](#3-create-bluepic-application-on-bluemix). Once on your application's page, there should be a "Mobile Options" button near the top right, that you can tap on. It should then open up a view that displays your Route which maps to the `appRouteRemote` key in the plist. You will also see a App GUID value which maps to the `bluemixAppGUID` key in the plist.
+
+4. Lastly, we need to get the value for `bluemixAppRegion`, which can be one of three options currently: 
 
 		REGION US SOUTH | REGION UK | REGION SYDNEY
 		--- | --- | ---
 		`.ng.bluemix.net` | `.eu-gb.bluemix.net` | `.au-syd.bluemix.net`
-		You can find the one you need in multiple ways, the first, by just looking at the URL you use to access your Bluemix dashboard. Another way is to look at the `config.json` file you modifed earlier. If you look at the credentials under your `AdvancedMobileAccess` service, there is a value called `serverUrl` which should contain one of the regions mentioned above. Once you insert your `bluemixAppRegion` value into the `bluemix.plist`, your app should be configured.
+		
+You can find the one you need in multiple ways, the first, by just looking at the URL you use to access your Bluemix dashboard. Another way is to look at the `config.json` file you modifed earlier. If you look at the credentials under your `AdvancedMobileAccess` service, there is a value called `serverUrl` which should contain one of the regions mentioned above. Once you insert your `bluemixAppRegion` value into the `bluemix.plist`, your app should be configured.
 
 #### 14. Run the iOS app
 
