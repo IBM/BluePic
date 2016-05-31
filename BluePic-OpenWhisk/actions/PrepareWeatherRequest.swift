@@ -5,45 +5,26 @@
 import KituraNet
 import Dispatch
 import Foundation
+import SwiftyJSON
 
 func main(args:[String:Any]) -> [String:Any] {
     
     let cloudantResult: String? = args["cloudantResult"] as? String
-    let userDocString:String? = args["userDoc"] as? String
-    let user:[String:Any]? = convert(input:userDocString!)
-    let language:String? = user!["language"] as? String 
-    let unitsOfMeasurement:String? = user!["unitsOfMeasurement"] as? String 
-    let image:[String:Any]? = convert(input:cloudantResult!)
-    let location:[String:Any]? = image!["location"] as? [String:Any] 
-    let imageUrl:String? = image!["url"] as? String 
+    let cloudantResultData = cloudantResult!.data(using: NSUTF8StringEncoding, allowLossyConversion: true)!
+
+    let image = JSON(data: cloudantResultData)
+    let location = image["location"]
+    let imageUrl = image["url"].string
     
     let result:[String:Any] = [
-        "userId":  args["userId"],
-        "userDoc": args["userDoc"],
-        "imageId":  args["userId"],
+        "imageId":  args["imageId"],
         "imageDoc": cloudantResult!,
         "alchemyResult": args["alchemyResult"],
         "weatherResult": args["weatherResult"],
-        "language":language!,
-        "units":unitsOfMeasurement!,
-        "latitude":"\(location!["latitude"]!)",
-        "longitude":"\(location!["longitude"]!)",
+        "latitude":"\(location["latitude"].double!)",
+        "longitude":"\(location["longitude"].double!)",
         "imageURL":imageUrl!,
     ]
 
-    // return, which should be a dictionary
     return result
-}
-
-func convert(input:String) -> [String: Any]? {
-    
-    var result:[String:Any]?
-    let data = input.bridge().dataUsingEncoding(NSUTF8StringEncoding)
-     do {
-        result = try NSJSONSerialization.jsonObject(with: data!, options: []) as? [String: Any]
-    } catch {
-        print("Error \(error)")
-    }
-    
-    return result;
 }

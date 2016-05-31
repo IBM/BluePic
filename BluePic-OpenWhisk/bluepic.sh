@@ -50,7 +50,6 @@ function install() {
 
   echo "Creating actions"
   #this is just a test action to make sure we can make HTTP requests leveraging kitura networking
-  wsk action create --kind swift:3 bluepic/prepareReadUser actions/PrepareToReadUser.swift
   wsk action create --kind swift:3 bluepic/prepareReadImage actions/PrepareToReadImage.swift
   wsk action create --kind swift:3 bluepic/prepareWeatherRequest actions/PrepareWeatherRequest.swift
   wsk action create --kind swift:3 bluepic/prepareCloudantWrite actions/PrepareToWriteImage.swift
@@ -59,17 +58,18 @@ function install() {
   wsk action create --kind swift:3 bluepic/alchemy actions/Alchemy.swift
   wsk action create --kind swift:3 bluepic/cloudantRead actions/CloudantRead.swift
   wsk action create --kind swift:3 bluepic/cloudantWrite actions/CloudantWrite.swift
+  wsk action create --kind swift:3 bluepic/processImage actions/Stub.swift
   
   
   #create sequences to tie everything together - lots of these are for testing
-  wsk action create bluepic/processRequest --sequence bluepic/prepareReadUser,bluepic/cloudantRead,bluepic/prepareReadImage,bluepic/cloudantRead,bluepic/prepareWeatherRequest,bluepic/weather,bluepic/alchemy,bluepic/prepareCloudantWrite,bluepic/cloudantWrite
-  wsk action create bluepic/processRequestThroughCloudantWrite --sequence bluepic/prepareReadUser,bluepic/cloudantRead,bluepic/prepareReadImage,bluepic/cloudantRead,bluepic/prepareWeatherRequest,bluepic/weather,bluepic/alchemy,bluepic/prepareCloudantWrite,bluepic/cloudantWrite
-  wsk action create bluepic/processRequestToCloudantWrite --sequence bluepic/prepareReadUser,bluepic/cloudantRead,bluepic/prepareReadImage,bluepic/cloudantRead,bluepic/prepareWeatherRequest,bluepic/weather,bluepic/alchemy,bluepic/prepareCloudantWrite
-  wsk action create bluepic/processRequestThroughAlchemy --sequence bluepic/prepareReadUser,bluepic/cloudantRead,bluepic/prepareReadImage,bluepic/cloudantRead,bluepic/prepareWeatherRequest,bluepic/weather,bluepic/alchemy
-  wsk action create bluepic/processRequestThroughWeather --sequence bluepic/prepareReadUser,bluepic/cloudantRead,bluepic/prepareReadImage,bluepic/cloudantRead,bluepic/prepareWeatherRequest,bluepic/weather
-  wsk action create bluepic/processRequestToWeather --sequence bluepic/prepareReadUser,bluepic/cloudantRead,bluepic/prepareReadImage,bluepic/cloudantRead,bluepic/prepareWeatherRequest
-  wsk action create bluepic/processRequestThroughReadImage --sequence bluepic/prepareReadUser,bluepic/cloudantRead,bluepic/prepareReadImage,bluepic/cloudantRead
-  wsk action create bluepic/processRequestToReadImage --sequence bluepic/prepareReadUser,bluepic/cloudantRead,bluepic/prepareReadImage
+  wsk action create bluepic/processRequest --sequence bluepic/prepareReadImage,bluepic/cloudantRead,bluepic/prepareWeatherRequest,bluepic/weather,bluepic/alchemy,bluepic/prepareCloudantWrite,bluepic/cloudantWrite
+  wsk action create bluepic/processRequestThroughCloudantWrite --sequence bluepic/prepareReadImage,bluepic/cloudantRead,bluepic/prepareWeatherRequest,bluepic/weather,bluepic/alchemy,bluepic/prepareCloudantWrite,bluepic/cloudantWrite
+  wsk action create bluepic/processRequestToCloudantWrite --sequence bluepic/prepareReadImage,bluepic/cloudantRead,bluepic/prepareWeatherRequest,bluepic/weather,bluepic/alchemy,bluepic/prepareCloudantWrite
+  wsk action create bluepic/processRequestThroughAlchemy --sequence bluepic/prepareReadImage,bluepic/cloudantRead,bluepic/prepareWeatherRequest,bluepic/weather,bluepic/alchemy
+  wsk action create bluepic/processRequestThroughWeather --sequence bluepic/prepareReadImage,bluepic/cloudantRead,bluepic/prepareWeatherRequest,bluepic/weather
+  wsk action create bluepic/processRequestToWeather --sequence bluepic/prepareReadImage,bluepic/cloudantRead,bluepic/prepareWeatherRequest
+  wsk action create bluepic/processRequestThroughReadImage --sequence bluepic/prepareReadImage,bluepic/cloudantRead
+  wsk action create bluepic/processRequestToReadImage --sequence bluepic/prepareReadImage
   wsk action create bluepic/processRequestThroughReadUser --sequence bluepic/prepareReadUser,bluepic/cloudantRead
   wsk action create bluepic/processFinalWrite --sequence bluepic/prepareCloudantWrite,bluepic/cloudantWrite
   
@@ -81,7 +81,6 @@ function uninstall() {
   echo -e "${RED}Uninstalling..."
   
   echo "Removing actions..."
-  wsk action delete bluepic/prepareReadUser
   wsk action delete bluepic/prepareReadImage
   wsk action delete bluepic/prepareWeatherRequest
   wsk action delete bluepic/prepareCloudantWrite
@@ -90,6 +89,7 @@ function uninstall() {
   wsk action delete bluepic/alchemy
   wsk action delete bluepic/cloudantRead
   wsk action delete bluepic/cloudantWrite
+  wsk action delete bluepic/processImage
   
   wsk action delete bluepic/processRequest
   wsk action delete bluepic/processRequestThroughCloudantWrite

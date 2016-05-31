@@ -12,37 +12,42 @@ func main(args:[String:Any]) -> [String:Any] {
     let cloudantUsername: String? = args["cloudantUsername"] as? String
     let cloudantPassword: String? = args["cloudantPassword"] as? String
     let cloudantHost: String? = args["cloudantHost"] as? String
-    let cloudantId: String? = args["cloudantId"] as? String
+    let cloudantId: String? = String(args["cloudantId"]!)
+    
+    /*
+    print(args["cloudantId"])
+    print(cloudantId!)
+    
+    return [
+        "imageId":  args["cloudantId"]
+    ]
+    */
     
     var requestOptions = [ClientRequestOptions]()
-    requestOptions.append(.Username(cloudantUsername!))
-    requestOptions.append(.Password(cloudantPassword!))
-    requestOptions.append(.Schema("https://"))
-    requestOptions.append(.Hostname(cloudantHost!))
-    requestOptions.append(.Port(443))
-    requestOptions.append(.Method("GET"))
-    requestOptions.append(.Path("/\(cloudantDbName!)/\(cloudantId!)"))
+    requestOptions.append(.username(cloudantUsername!))
+    requestOptions.append(.password(cloudantPassword!))
+    requestOptions.append(.schema("https://"))
+    requestOptions.append(.hostname(cloudantHost!))
+    requestOptions.append(.port(443))
+    requestOptions.append(.method("GET"))
+    requestOptions.append(.path("/\(cloudantDbName!)/\(cloudantId!)"))
     
     var headers = [String:String]()
     headers["Accept"] = "application/json"
     headers["Content-Type"] = "application/json"
-    requestOptions.append(.Headers(headers))
+    requestOptions.append(.headers(headers))
     
     var str = "" 
-    dispatch_sync(dispatch_get_global_queue(0, 0)) {
-        let req = Http.request(requestOptions) { response in
-            do {
-                str = try response!.readString()!
-            } catch {
-                print("Error \(error)")
-            }
+    let req = HTTP.request(requestOptions) { response in
+        do {
+            str = try response!.readString()!
+        } catch {
+            print("Error \(error)")
         }
-        req.end();
     }
+    req.end();
     
     let result:[String:Any] = [
-        "userId":  args["userId"],
-        "userDoc": args["userDoc"],
         "imageId":  args["imageId"],
         "imageDoc": args["imageDoc"],
         "alchemyResult": args["alchemyResult"],
@@ -51,4 +56,6 @@ func main(args:[String:Any]) -> [String:Any] {
         "cloudantResult": str
     ]
     return result
+    
+    /*  */
 }

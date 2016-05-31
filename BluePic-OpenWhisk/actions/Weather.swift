@@ -29,29 +29,39 @@ func main(args:[String:Any]) -> [String:Any] {
         units = "e"
     }
     
+    /*return [
+        "latitude":latitude,
+        "longitude":longitude,
+        "language":language,
+        "units":units,
+        "url":"https://\(weatherUsername!):\(weatherPassword!)@twcservice.mybluemix.net/api/weather/v2/observations/current?geocode=\(latitude!),\(longitude!)&language=\(language!)&units=\(units!)"
+    ]*/
+    
     var str = ""
-    dispatch_sync(dispatch_get_global_queue(0, 0)) {
 
-        Http.get("https://\(weatherUsername!):\(weatherPassword!)@twcservice.mybluemix.net/api/weather/v2/observations/current?geocode=\(latitude!),\(longitude!)&language=\(language!)&units=\(units!)") { response in
+    HTTP.get("https://\(weatherUsername!):\(weatherPassword!)@twcservice.mybluemix.net/api/weather/v2/observations/current?geocode=\(latitude!),\(longitude!)&language=\(language!)&units=\(units!)") { response in
 
-            do {
-                str = try response!.readString()!
-            } catch {
-                print("Error \(error)")
-            }
-
+        do {
+            str = try response!.readString()!
+        } catch {
+            print("Error \(error)")
+            str = "Error \(error)"
         }
+
     }
     
+   // print("WEATHER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+   // print(str)
+    
+   /* return [
+        "str":"\(str)"
+    ]*/
+    
     let result:[String:Any] = [
-        "userId":  args["userId"],
-        "userDoc": args["userDoc"],
-        "imageId":  args["userId"],
+        "imageId":  args["imageId"],
         "imageDoc": args["imageDoc"],
         "alchemyResult": args["alchemyResult"],
         "weatherResult": "\(str)",
-        "language": args["language"],
-        "units":  args["units"],
         "latitude": args["latitude"],
         "longitude": args["longitude"],
         "imageURL": args["imageURL"]
