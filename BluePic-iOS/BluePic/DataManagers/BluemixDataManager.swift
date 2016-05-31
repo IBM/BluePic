@@ -276,6 +276,7 @@ extension BluemixDataManager {
                 self.hasReceievedInitialImages = true
                 NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImagesRefreshed.rawValue, object: nil)
             } else {
+                print("Get Images Error: Connection Failure")
                 self.hasReceievedInitialImages = true
                 NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.GetAllImagesFailure.rawValue, object: nil)
             }
