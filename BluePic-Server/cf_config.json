@@ -10,14 +10,14 @@
       "application_version": "e5e029d1-4a1a-4004-9f79-655d550183fb",
       "application_name": "BluePic",
       "application_uris": [
-        "bluepic.mybluemix.net"
+        "bluepic-grotty-substantiality.mybluemix.net"
       ],
       "version": "e5e029d1-4a1a-4004-9f79-655d550183fb",
       "name": "BluePic",
       "space_name": "dev",
       "space_id": "b15eb0bb-cbf3-43b6-bfbc-f76d495981e5",
       "uris": [
-        "bluepic.mybluemix.net"
+        "bluepic-grotty-substantiality.mybluemix.net"
       ],
       "users": null,
       "instance_id": "7d4f24cfba06462ba23d68aaf1d7354a",
@@ -37,10 +37,10 @@
           "plan": "Gold",
           "credentials": {
             "serverUrl": "https://imf-authserver.ng.bluemix.net/imf-authserver",
-            "clientId": "75eef52c-2ed1-4518-9587-ce55cc66479d",
-            "secret": "kBLTWY1vRO2g5gFdRbpV8Q",
-            "tenantId": "75eef52c-2ed1-4518-9587-ce55cc66479d",
-            "admin_url": "https://mobile.ng.bluemix.net/imfmobileplatformdashboard/?appGuid=75eef52c-2ed1-4518-9587-ce55cc66479d"
+            "clientId": "dd946b48-a075-4d92-97a6-3ca659ff37bd",
+            "secret": "kGxatQdlTiq1C5DB1ozfww",
+            "tenantId": "dd946b48-a075-4d92-97a6-3ca659ff37bd",
+            "admin_url": "https://mobile.ng.bluemix.net/imfmobileplatformdashboard/?appGuid=dd946b48-a075-4d92-97a6-3ca659ff37bd"
           }
         }
       ],
@@ -50,9 +50,9 @@
           "label": "imfpush",
           "plan": "Basic",
           "credentials": {
-            "url": "http://imfpush.ng.bluemix.net/imfpush/v1/apps/75eef52c-2ed1-4518-9587-ce55cc66479d",
-            "admin_url": "//mobile.ng.bluemix.net/imfpushdashboard/?appGuid=75eef52c-2ed1-4518-9587-ce55cc66479d",
-            "appSecret": "ef28c8e7-6f7e-41d5-ace1-bdf56a81aceb"
+            "url": "http://imfpush.ng.bluemix.net/imfpush/v1/apps/dd946b48-a075-4d92-97a6-3ca659ff37bd",
+            "admin_url": "//mobile.ng.bluemix.net/imfpushdashboard/?appGuid=dd946b48-a075-4d92-97a6-3ca659ff37bd",
+            "appSecret": "8711a6db-6f28-436e-ba37-4a47ec00907d"
           }
         }
       ],
@@ -80,9 +80,9 @@
             "project": "object_storage_0fcbfa67_dbcf_443c_a617_31f84a1200f6",
             "projectId": "742fffae2c24438b83a2c43491119a82",
             "region": "dallas",
-            "userId": "69435710c71c4ed2b78856520f9cae25",
-            "username": "Admin_cc7f793a6823788b1ad1acd052f88a8ac9b817f9",
-            "password": "F*nt4gmY-Oss4{v.",
+            "userId": "a8d438c5c7424d1bad0f7220bb3f1cc5",
+            "username": "Admin_3f738eb186aa3c386afae2662776e5675b7a71e0",
+            "password": "PJZWUG07)?V]q0)q",
             "domainId": "6cf5edf7c9434b0c99a17e523900d82f",
             "domainName": "782791"
           }
