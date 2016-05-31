@@ -119,7 +119,7 @@ class FeedViewModel: NSObject {
      */
     func updateImageDataArrayAndNotifyViewControllerToReloadCollectionView() {
 
-        if isShowingSearchResults() == false {
+        if !isShowingSearchResults() {
             self.imageDataArray = BluemixDataManager.SharedInstance.images
             self.notifyViewControllerToTriggerReloadCollectionView()
         }
@@ -130,7 +130,7 @@ class FeedViewModel: NSObject {
      */
     func handleImageUploadFailure() {
 
-        if isShowingSearchResults() == false {
+        if !isShowingSearchResults() {
             self.notifyViewControllerToTriggerReloadCollectionView()
         }
 
@@ -382,7 +382,7 @@ extension FeedViewModel {
      */
     func notifyViewControllerToTriggerLoadingAnimation() {
 
-        if isShowingSearchResults() == false {
+        if !isShowingSearchResults() {
             dispatch_async(dispatch_get_main_queue()) {
                 self.notifyFeedVC(feedViewModelNotification: FeedViewModelNotification.UploadingPhotoStarted)
             }
