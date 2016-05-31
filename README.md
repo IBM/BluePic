@@ -87,7 +87,7 @@ In order to have the app authenticate with Facebook, you must create an applicat
 
 1. Go to the BluePic-iOS directory and open the BluePic workspace with Xcode using `open BluePic.xcworkspace`.
 
-1. We will need to update the bundle identifier in the Xcode project. To do this, make sure the project navigator folder icon is selected in the top left of Xcode; then select the BluePic project at the top of the file structure and then select the BluePic target. Under the identity section, you should see a text field for the bundle identifier. Update this field with a bundle identifier of your choosing. (ie. com.bluepic)
+1. You will need to update the bundle identifier in the Xcode project. To do this, make sure the project navigator folder icon is selected in the top left of Xcode; then select the BluePic project at the top of the file structure and then select the BluePic target. Under the identity section, you should see a text field for the bundle identifier. Update this field with a bundle identifier of your choosing. (ie. com.bluepic)
 
 1. To create an application instance on Facebook's Developer website, first go to [Facebook's Quick Start for iOS](https://developers.facebook.com/quickstarts/?platform=ios) page. Type 	`BluePic` as the name of your new Facebook app and click the `Create New Facebook App ID` button. Choose any Category for the application, and click the `Create App ID` button.
 
@@ -106,7 +106,7 @@ In order to have the app authenticate with Facebook, you must create an applicat
 1. On the page that follows click the `configure` button under the Facebook section. 
 <p align="center"><img src="Imgs/configure-facebook-button.png"  alt="Drawing" height=125 border=0 /></p>
 
-1. On the next page, enter your Facebook appication ID you gathered from [step 4 of section 7 (Create an application instance on Facebook)](#7-create-an-application-instance-on-facebook) of this README. Press the save button.
+1. On the next page, enter your Facebook appication ID you gathered from [step 4 of section 7 (Create an application instance on Facebook)](#7-create-an-application-instance-on-facebook). Press the save button.
 
 <p align="center"><img src="Imgs/facebook-mca-setup.png"  alt="Drawing" height=250 border=0 /></p>
 
