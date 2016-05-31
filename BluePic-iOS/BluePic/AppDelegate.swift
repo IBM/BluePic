@@ -1,5 +1,5 @@
 /**
- * Copyright IBM Corporation 2015
+ * Copyright IBM Corporation 2016
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,10 @@
  * limitations under the License.
  **/
 
-
 import UIKit
 import BMSCore
 import BMSSecurity
 import BMSPush
-
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -101,7 +99,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let payload = userInfo["payload"] as? String, dictionary = Utils.convertStringToDictionary(payload), image = Image(dictionary) {
             
             let imageDetailVC = Utils.vcWithNameFromStoryboardWithName("ImageDetailViewController", storyboardName: "Feed") as! ImageDetailViewController
-            imageDetailVC.image = image
+            let imageDetailViewModel = ImageDetailViewModel()
+            imageDetailViewModel.image = image
+            imageDetailVC.viewModel = imageDetailViewModel
             tabBarController.selectedIndex = 0
             feedNav.popToRootViewControllerAnimated(false)
             feedNav.pushViewController(imageDetailVC, animated: true)
@@ -109,7 +109,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     /**
-     Method preloads keyboard to prevant the keybaord on the camera confirmation screen to be laggy when touching the text field for the first time
+     Method preloads keyboard to prevent the keyboard on the camera confirmation screen to be laggy when touching the text field for the first time
      */
     func preLoadKeyboardToPrevantLaggyKeyboardInCameraConfirmationScreen(){
         
@@ -120,7 +120,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         lagFreeField.removeFromSuperview()
         
     }
-    
     
     /**
      Method to initialize Bluemix Mobile Client Access with Facebook
@@ -136,7 +135,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         return FacebookAuthenticationManager.sharedInstance.onFinishLaunching(application, withOptions:  launchOptions)
     }
-
 
     func applicationWillResignActive(application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -158,7 +156,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UIApplication.sharedApplication().applicationIconBadgeNumber = 0
     }
     
-    
     /**
      Method handles opening a facebook url for facebook login
      
@@ -173,11 +170,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return FacebookAuthenticationManager.sharedInstance.onOpenURL(application, url: url, sourceApplication: sourceApplication, annotation: annotation)
     }
     
-    
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-
 
 }
 

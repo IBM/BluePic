@@ -1,5 +1,5 @@
 /**
- * Copyright IBM Corporation 2015
+ * Copyright IBM Corporation 2016
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  **/
-
 
 import UIKit
 
@@ -295,10 +294,14 @@ extension ProfileViewController : UIScrollViewDelegate {
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         
-        if let imageDetailVC = viewModel.prepareImageDetailViewControllerSelectedCellAtIndexPath(indexPath){
+        if let imageDetailViewModel = viewModel.prepareImageDetailViewModelForSelectedCellAtIndexPath(indexPath){
+            
+            let imageDetailVC = Utils.vcWithNameFromStoryboardWithName("ImageDetailViewController", storyboardName: "Feed") as! ImageDetailViewController
+            imageDetailVC.viewModel = imageDetailViewModel
+            
             self.navigationController?.pushViewController(imageDetailVC, animated: true)
         }
-
+        
     }
     
 

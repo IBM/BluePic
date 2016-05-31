@@ -1,5 +1,5 @@
 /**
- * Copyright IBM Corporation 2015
+ * Copyright IBM Corporation 2016
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  **/
-
 
 import UIKit
 import ImageIO
@@ -69,6 +68,8 @@ class CameraDataManager: NSObject {
     var imageUploadQueue : [Image] = []
     
     var imagesTheUserDecidedToPostQueue : [Image] = []
+    
+    let kEmptyCaptionPlaceHolder = "No-Caption"
     
     
     /**
@@ -375,7 +376,7 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
     func postPhoto() {
         
         dismissProgressHUDAndReEnableUI()
-        
+    
         self.confirmationView.endEditing(true) //dismiss keyboard first if shown
         self.confirmationView.userInteractionEnabled = false
         self.tabVC.view.userInteractionEnabled = false
@@ -384,12 +385,18 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
         self.confirmationView.postButton.hidden = true
         
         //add caption of image
-        imageUserDecidedToPost.caption = self.confirmationView.titleTextField.text
+        if(self.confirmationView.titleTextField.text != ""){
+            imageUserDecidedToPost.caption = self.confirmationView.titleTextField.text
+        }
+        else{
+            imageUserDecidedToPost.caption = kEmptyCaptionPlaceHolder
+        }
         
-        BluemixDataManager.SharedInstance.queueImageForUpload(imageUserDecidedToPost)
-        BluemixDataManager.SharedInstance.beginUploadingImagesFromQueueIfUploadHasntAlreadyBegan()
+        dispatch_async(dispatch_get_main_queue()) {
+            BluemixDataManager.SharedInstance.postNewImage(self.imageUserDecidedToPost)
+        }
         
-        NSNotificationCenter.defaultCenter().postNotificationName(CameraDataManagerNotification.UserPressedPostPhoto.rawValue, object: nil)
+        //NSNotificationCenter.defaultCenter().postNotificationName(CameraDataManagerNotification.UserPressedPostPhoto.rawValue, object: nil)
         
         //Dismiss Camera Confirmation View when user presses post photo to bring user back to image feed
         dismissCameraConfirmation()

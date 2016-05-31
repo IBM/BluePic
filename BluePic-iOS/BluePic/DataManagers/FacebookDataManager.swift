@@ -1,5 +1,5 @@
 /**
- * Copyright IBM Corporation 2015
+ * Copyright IBM Corporation 2016
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,6 @@
  * limitations under the License.
  **/
 
-
 import UIKit
 import BMSCore
 
@@ -23,6 +22,7 @@ enum FacebookAuthenticationError {
     case AuthenticationHeaderNotFound
     case FacebookUserIdNotFound
     case FacebookuserIdentifyNotFound
+    case UserCanceledLogin
     
 }
 
@@ -93,19 +93,17 @@ class FacebookDataManager: NSObject {
         let authManager = BMSClient.sharedInstance.authorizationManager
         authManager
         authManager.obtainAuthorization(completionHandler: {(response: Response?, error: NSError?) in
-            let errorMsg = NSMutableString()
             
             //error
             if let errorObject = error {
-                callback(facebookUserId: nil, facebookUserFullName: nil, error: FacebookAuthenticationError.AuthenticationHeaderNotFound)
-                errorMsg.appendString("Error obtaining Authentication Header.\nCheck Bundle Identifier and Bundle version string\n\n")
-                if let responseObject = response {
-                    if let responseString = responseObject.responseText {
-                        errorMsg.appendString(responseString)
-                    }
+                //user canceled login
+                if(errorObject.code == -1){
+                    callback(facebookUserId: nil, facebookUserFullName: nil, error: FacebookAuthenticationError.UserCanceledLogin)
                 }
-                let userInfo = errorObject.userInfo
-                errorMsg.appendString(userInfo.description)
+                else{
+                    //"Error obtaining Authentication Header.\nCheck Bundle Identifier and Bundle version string\n\n"
+                    callback(facebookUserId: nil, facebookUserFullName: nil, error: FacebookAuthenticationError.AuthenticationHeaderNotFound)
+                }
             }
                 //no error
             else {

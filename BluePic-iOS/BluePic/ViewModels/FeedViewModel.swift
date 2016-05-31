@@ -1,5 +1,5 @@
 /**
- * Copyright IBM Corporation 2015
+ * Copyright IBM Corporation 2016
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -97,7 +97,9 @@ class FeedViewModel: NSObject {
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(FeedViewModel.repullForNewData), name: BluemixDataManagerNotification.ImageUploadSuccess.rawValue, object: nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(FeedViewModel.notifyViewControllerToTriggerLoadingAnimation), name: CameraDataManagerNotification.UserPressedPostPhoto.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(FeedViewModel.notifyViewControllerToTriggerLoadingAnimation), name: BluemixDataManagerNotification.ImageUploadBegan.rawValue, object: nil)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(FeedViewModel.notifyViewControllerToTriggerReloadCollectionView), name: BluemixDataManagerNotification.ImageUploadFailure.rawValue, object: nil)
         
     }
 
@@ -151,7 +153,7 @@ extension FeedViewModel {
     func numberOfItemsInSection(section : Int) -> Int {
         //if the section is 0, then it depends on how many items are in the picture upload queue
         if(section == 0){
-            return BluemixDataManager.SharedInstance.imageUploadQueue.count
+            return BluemixDataManager.SharedInstance.imagesCurrentlyUploading.count
         }
             // if the section is 1, then it depends how many items are in the pictureDataArray
         else{
@@ -230,12 +232,12 @@ extension FeedViewModel {
         //Section 0 corresponds to showing picture upload queue image feed collection view cells. These cells show when there are pictures in the picture upload queue of the camera data manager
         if(indexPath.section == 0){
             
-            let cell : PictureUploadQueueImageFeedCollectionViewCell
+            let cell : ImagesCurrentlyUploadingImageFeedCollectionViewCell
             
-            cell = collectionView.dequeueReusableCellWithReuseIdentifier("PictureUploadQueueImageFeedCollectionViewCell", forIndexPath: indexPath) as! PictureUploadQueueImageFeedCollectionViewCell
+            cell = collectionView.dequeueReusableCellWithReuseIdentifier("ImagesCurrentlyUploadingImageFeedCollectionViewCell", forIndexPath: indexPath) as! ImagesCurrentlyUploadingImageFeedCollectionViewCell
             
             
-            let image = BluemixDataManager.SharedInstance.imageUploadQueue[indexPath.row]
+            let image = BluemixDataManager.SharedInstance.imagesCurrentlyUploading[indexPath.row]
             
             cell.setupData(image.image, caption: image.caption)
             
@@ -282,27 +284,22 @@ extension FeedViewModel {
     }
     
     
-    func prepareImageDetailViewControllerSelectedCellAtIndexPath(indexPath : NSIndexPath) -> ImageDetailViewController? {
+    func prepareImageDetailViewModelForSelectedCellAtIndexPath(indexPath : NSIndexPath) -> ImageDetailViewModel? {
         
-        if(imageDataArray.count > 0 ){
-            let imageDetailVC = Utils.vcWithNameFromStoryboardWithName("ImageDetailViewController", storyboardName: "Feed") as! ImageDetailViewController
-        
-            imageDetailVC.image = imageDataArray[indexPath.row]
-        
-        
-            return imageDetailVC
+        if((imageDataArray.count - 1 ) >= indexPath.row ){
             
+            let viewModel = ImageDetailViewModel()
+            viewModel.image = imageDataArray[indexPath.row]
+            
+            return viewModel
+
         }
         else{
             return nil
         }
         
     }
-    
-    
-    
-  
- 
+
 }
 
 

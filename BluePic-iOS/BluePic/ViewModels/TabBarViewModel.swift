@@ -1,5 +1,5 @@
 /**
- * Copyright IBM Corporation 2015
+ * Copyright IBM Corporation 2016
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,12 @@
  * limitations under the License.
  **/
 
-
 enum TabBarViewModelNotification {
     
     case ShowLoginVC
     case HideLoginVC
     case SwitchToFeedTab
+    case ShowImageUploadFailureAlert
     
 }
 
@@ -48,17 +48,21 @@ class TabBarViewModel: NSObject {
     
     func suscribeToBluemixDataManagerNotifications(){
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(TabBarViewModel.notifyTabBarVCToSwitchToFeedTab), name: CameraDataManagerNotification.UserPressedPostPhoto.rawValue, object: nil)
-
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(TabBarViewModel.notifyTabBarVCToSwitchToFeedTab), name: BluemixDataManagerNotification.ImageUploadBegan.rawValue, object: nil)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(TabBarViewModel.notifyTabbarVCToShowImageUploadFailureAlert), name: BluemixDataManagerNotification.ImageUploadFailure.rawValue, object: nil)
+    
     }
     
     
     func notifyTabBarVCToSwitchToFeedTab(){
-        
         notifyTabBarVC(tabBarViewModelNotification : TabBarViewModelNotification.SwitchToFeedTab)
-        
     }
     
+    
+    func notifyTabbarVCToShowImageUploadFailureAlert(){
+        notifyTabBarVC(tabBarViewModelNotification : TabBarViewModelNotification.ShowImageUploadFailureAlert)
+    }
 
     func tryToShowLogin(){
 
@@ -78,6 +82,16 @@ class TabBarViewModel: NSObject {
         
        return CurrentUser.willLoginLater
 
+    }
+    
+    func tellBluemixDataManagerToRetryUploadingImagesThatFailedToUpload(){
+        BluemixDataManager.SharedInstance.retryUploadingImagesThatFailedToUpload()
+    }
+    
+    func tellBluemixDataManagerToCancelUploadingImagesThatFailedToUpload(){
+        
+        BluemixDataManager.SharedInstance.cancelUploadingImagesThatFailedToUpload()
+        
     }
     
  
