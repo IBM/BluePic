@@ -45,6 +45,7 @@ let objStorageConnProps: ObjectStorageConnProps
 let couchDBConnProps: ConnectionProperties
 let mobileClientAccessProps: MobileClientAccessProps
 let ibmPushProps: IbmPushProps
+let openWhiskProps: OpenWhiskProps
 let objStorage: ObjectStorage
 let database: Database
 
@@ -55,6 +56,7 @@ do {
   objStorageConnProps = try config.getObjectStorageConnProps()
   mobileClientAccessProps = try config.getMobileClientAccessProps()
   ibmPushProps = try config.getIbmPushProps()
+  openWhiskProps = try config.getOpenWhiskProps()
 
   // Create cloudant access database object
   let dbClient = CouchDBClient(connectionProperties: couchDBConnProps)
