@@ -12,12 +12,12 @@ declared-services:
   imfpush:
     label: BluePic-IBM-Push
     plan: Basic
-  watson_vision_combined:
-    label: BluePic-Alchemy
-    plan: free
   weatherinsights:
     label: BluePic-Insights-for-Weather
     plan: Free
+  alchemy_api:
+    label: BluePic-Alchemy
+    plan: free
 applications:
 - name: BluePic
   path: ./BluePic-Server
@@ -31,5 +31,5 @@ applications:
   - BluePic-Object-Storage
   - BluePic-Mobile-Client-Access
   - BluePic-IBM-Push
-  - BluePic-Alchemy
   - BluePic-Insights-for-Weather
+  - BluePic-Alchemy
