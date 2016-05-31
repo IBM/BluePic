@@ -342,7 +342,7 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
         if userPressedPostPhoto {
 
             //failure getting user location
-            if failureGettingUserLocation == true {
+            if failureGettingUserLocation {
                 self.showCantDetermineLocationAlert()
             }
             //location determined
