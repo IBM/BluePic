@@ -106,7 +106,7 @@ In order to have the app authenticate with Facebook, you must create an applicat
 1. On the page that follows click the `configure` button under the Facebook section. 
 <p align="center"><img src="Imgs/configure-facebook-button.png"  alt="Drawing" height=125 border=0 /></p>
 
-1. On the next page, enter your Facebook appication ID you gathered from step 4 of section 7 (Create an application instance on Facebook) of this README. Press the save button.
+1. On the next page, enter your Facebook appication ID you gathered from [step 4 of section 7 (Create an application instance on Facebook)](#7-create-an-application-instance-on-facebook)of this README. Press the save button.
 
 <p align="center"><img src="Imgs/facebook-mca-setup.png"  alt="Drawing" height=250 border=0 /></p>
 
