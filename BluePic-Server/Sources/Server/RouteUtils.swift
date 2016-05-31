@@ -24,15 +24,16 @@ import BluemixObjectStorage
 import MobileClientAccess
 
 /**
- This method should kick off asynchronously an OpenWhisk sequence and then return immediately. This method is not going to wait for the outcome of the OpenWhisk sequence/actions. Once the OpenWhisk sequence completes execution, the sequence should invoke the '/push' endpoint to generate a push notification for the iOS client.
- 
- - parameter imageId: image ID to send off to OpenWhisk
- - parameter userId:  user ID associated with imageId, for reference
+ This method kicks off asynchronously an OpenWhisk sequence and returns immediately.
+ This method should not wait for the outcome of the OpenWhisk sequence/actions.
+ Once the OpenWhisk sequence completes execution, the sequence should invoke the
+ '/push' endpoint to generate a push notification for the iOS client.
+
+ - parameter imageId: The image ID of the JSON image document in Cloudant.
+
  */
-func processImage(withId imageId: String, forUser userId: String) {
-  // TODO OpenWhisk reads user document from cloudant to obtain language and units of measure...
-  Log.verbose("imageId: \(imageId), userId: \(userId)")
-  
+func processImage(withId imageId: String) {
+  Log.verbose("imageId: \(imageId)")
   var requestOptions = [ClientRequestOptions]()
   requestOptions.append(.method("POST"))
   requestOptions.append(.schema("https://"))
@@ -45,7 +46,7 @@ func processImage(withId imageId: String, forUser userId: String) {
   requestOptions.append(.headers(headers))
 
   guard let requestBody = JSON(["imageId":imageId]).rawString() else {
-    Log.error("Failed to create json string with imageId")
+    Log.error("Failed to create JSON string with imageId.")
     return
   }
 
@@ -66,14 +67,16 @@ func processImage(withId imageId: String, forUser userId: String) {
         Log.error("Status code: \(resp.statusCode)")
         if let rawUserData = try? BodyParser.readBodyData(with: resp) {
           let str = NSString(data: rawUserData, encoding: NSUTF8StringEncoding)
-          print("Response from OpenWhisk: \(str)")
+          print("Error response from OpenWhisk: \(str)")
         }
       }
     }
   }
+  // Kitura does not yet execute certain functionaliy asynchronously,
+  // hence the need for this block.
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
     req.end(requestBody)
-  }  
+  }
 }
 
 /**
@@ -108,12 +111,12 @@ func readImage(database: Database, imageId: String, callback: ((jsonData: JSON?)
 }
 
 /**
- Method to parse a document to get image data out of it
- 
+ Method to parse a document to get image data out of it.
+
  - parameter document: json document with raw data
- 
+
  - throws: processing error if can't parse document properly
- 
+
  - returns: valid Json with just image data
  */
 func parseImages(document: JSON) throws -> JSON {
@@ -136,12 +139,12 @@ func parseImages(document: JSON) throws -> JSON {
 
 /**
  Method to parse a document to get image data for a specific user out of it
- 
+
  - parameter userId:   ID of user to get images for
  - parameter document: json document with raw data
- 
+
  - throws: processing error if can't parse document properly
- 
+
  - returns: valid Json with just image data
  */
 func parseImages(forUserId userId: String, usingDocument document: JSON) throws -> JSON {
@@ -160,11 +163,11 @@ func parseImages(forUserId userId: String, usingDocument document: JSON) throws 
 
 /**
  Method to parse a document to get all user data
- 
+
  - parameter document: json document with raw data
- 
+
  - throws: parsing error if necessary
- 
+
  - returns: valid json with all users data
  */
 func parseUsers(document: JSON) throws -> JSON {
@@ -174,11 +177,11 @@ func parseUsers(document: JSON) throws -> JSON {
 
 /**
  Converts a RouterRequest object to a more consumable JSON object
- 
+
  - parameter request: router request with all the data
- 
+
  - throws: parsing error if request has invalid info
- 
+
  - returns: valid Json with image data
  */
 func getImageJSON(fromRequest request: RouterRequest) throws -> JSON {
@@ -219,7 +222,7 @@ func getImageJSON(fromRequest request: RouterRequest) throws -> JSON {
 
 /**
  Convenience method to create consistently formatted error
- 
+
  - returns: NSError object
  */
 func generateInternalError() -> NSError {
@@ -228,10 +231,10 @@ func generateInternalError() -> NSError {
 
 /**
  Convenience method to create a URL for a container
- 
+
  - parameter containerName: name of the container
  - parameter imageName:     name of corresponding image
- 
+
  - returns: URL as a String
  */
 func generateUrl(forContainer containerName: String, forImage imageName: String) -> String {
@@ -243,8 +246,8 @@ func generateUrl(forContainer containerName: String, forImage imageName: String)
 
 /**
  Method that actually creates a container with the Object Storage service
- 
- - parameter name:              name of the container to create
+
+ - parameter name: name of the container to create
  - parameter completionHandler: callback to use on success or failure
  */
 func createContainer(withName name: String, completionHandler: (success: Bool) -> Void) {
@@ -275,7 +278,7 @@ func createContainer(withName name: String, completionHandler: (success: Bool) -
 
 /**
  Method to store image binary in a container if it exsists
- 
+
  - parameter image:             image binary data
  - parameter name:              file name to store image as
  - parameter containerName:     name of container to use
@@ -308,7 +311,7 @@ func store(image: NSData, withName name: String, inContainer containerName: Stri
 
 /**
  Method to convert Json data to a more usable format, adding and removing values as necessary
- 
+
  - parameter containerName: container to use
  - parameter record:        Json data to massage/modify
  */
@@ -323,11 +326,11 @@ private func massageImageRecord(containerName: String, record: inout JSON) {
 
 /**
  Method to simply get cleanly formatted values from a Json document
- 
+
  - parameter document: json document with raw data
- 
+
  - throws: parsing error if user json is invalid
- 
+
  - returns: array of Json value objects
  */
 private func parseRecords(document: JSON) throws -> [JSON] {
@@ -343,9 +346,9 @@ private func parseRecords(document: JSON) throws -> [JSON] {
 
 /**
  Helper method to wrap parsed data up nicely in a Json object
- 
+
  - parameter records: array of Json data to wrap up
- 
+
  - returns: Json object containg data and number of items
  */
 private func constructDocument(records: [JSON]) -> JSON {

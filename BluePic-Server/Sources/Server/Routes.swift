@@ -365,7 +365,7 @@ func defineRoutes() {
               return
             }
             // Contine processing of image (async request for OpenWhisk)
-            processImage(withId: id, forUser: imageJSON["userId"].stringValue)
+            processImage(withId: id)
             // Return image document to caller
             // Update JSON image document with _id, and _rev
             imageJSON["_id"].stringValue = id
