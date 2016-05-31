@@ -33,10 +33,6 @@ func processImage(withId imageId: String, forUser userId: String) {
   // TODO OpenWhisk reads user document from cloudant to obtain language and units of measure...
   Log.verbose("imageId: \(imageId), userId: \(userId)")
   
-//  let hostName = "openwhisk.ng.bluemix.net"
-//  let path = "/api/v1/namespaces/milbuild%40us.ibm.com_swift%40ibm/actions/bluepic/processImage?blocking=true"
-//  let authToken = "NmFhZWE3OGQtOTk3ZC00NjAxLTgwZWMtNjU2MDgzNmRiZmNjOkJaMXE5alpqeVRKalpkNXVlMHBDTUFRekFyMWE1WVlqSVZBbXg5aTB6b2FRVUJrV0RVYUJSOHJ2UXU5Y0l1UEk="
-  
   var requestOptions = [ClientRequestOptions]()
   requestOptions.append(.method("POST"))
   requestOptions.append(.schema("https://"))
@@ -52,7 +48,7 @@ func processImage(withId imageId: String, forUser userId: String) {
     Log.error("Failed to create json string with imageId")
     return
   }
-  
+
   // Make REST call
   let req = HTTP.request(requestOptions) { resp in
     if let resp = resp where resp.statusCode == HTTPStatusCode.OK {
@@ -75,7 +71,9 @@ func processImage(withId imageId: String, forUser userId: String) {
       }
     }
   }
-  req.end(requestBody)
+  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+    req.end(requestBody)
+  }  
 }
 
 /**
