@@ -157,7 +157,7 @@ class Utils: NSObject {
                 let json = try NSJSONSerialization.JSONObjectWithData(data, options: .MutableContainers) as? [String:AnyObject]
                 return json
             } catch {
-                print("Error converting string to Dictionary")
+                print(NSLocalizedString("Convert String To Dictionary Error", comment: ""))
             }
         }
         return nil
