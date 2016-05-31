@@ -253,7 +253,7 @@ extension LocationDataManager : CLLocationManagerDelegate {
      */
     func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
 
-        if(getUsersCurrentLocationCallback != nil) {
+        if getUsersCurrentLocationCallback != nil {
             getUsersCurrentLocationCallback(location : nil)
             getUsersCurrentLocationCallback = nil
         }
