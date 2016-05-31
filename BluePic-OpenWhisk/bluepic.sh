@@ -58,11 +58,11 @@ function install() {
   wsk action create --kind swift:3 bluepic/alchemy actions/Alchemy.swift
   wsk action create --kind swift:3 bluepic/cloudantRead actions/CloudantRead.swift
   wsk action create --kind swift:3 bluepic/cloudantWrite actions/CloudantWrite.swift
-  wsk action create --kind swift:3 bluepic/processImage actions/Stub.swift
+  wsk action create --kind swift:3 bluepic/processImageStub actions/Stub.swift
   
   
   #create sequences to tie everything together - lots of these are for testing
-  wsk action create bluepic/processRequest --sequence bluepic/prepareReadImage,bluepic/cloudantRead,bluepic/prepareWeatherRequest,bluepic/weather,bluepic/alchemy,bluepic/prepareCloudantWrite,bluepic/cloudantWrite
+  wsk action create bluepic/processImage --sequence bluepic/prepareReadImage,bluepic/cloudantRead,bluepic/prepareWeatherRequest,bluepic/weather,bluepic/alchemy,bluepic/prepareCloudantWrite,bluepic/cloudantWrite
   wsk action create bluepic/processRequestThroughCloudantWrite --sequence bluepic/prepareReadImage,bluepic/cloudantRead,bluepic/prepareWeatherRequest,bluepic/weather,bluepic/alchemy,bluepic/prepareCloudantWrite,bluepic/cloudantWrite
   wsk action create bluepic/processRequestToCloudantWrite --sequence bluepic/prepareReadImage,bluepic/cloudantRead,bluepic/prepareWeatherRequest,bluepic/weather,bluepic/alchemy,bluepic/prepareCloudantWrite
   wsk action create bluepic/processRequestThroughAlchemy --sequence bluepic/prepareReadImage,bluepic/cloudantRead,bluepic/prepareWeatherRequest,bluepic/weather,bluepic/alchemy
@@ -90,6 +90,7 @@ function uninstall() {
   wsk action delete bluepic/cloudantRead
   wsk action delete bluepic/cloudantWrite
   wsk action delete bluepic/processImage
+  wsk action delete bluepic/processImageStub
   
   wsk action delete bluepic/processRequest
   wsk action delete bluepic/processRequestThroughCloudantWrite

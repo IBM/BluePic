@@ -22,7 +22,6 @@ func main(args:[String:Any]) -> [String:Any] {
         } catch {
             print("Error \(error)")
         }
-
     }
     
     let result:[String:Any] = [
