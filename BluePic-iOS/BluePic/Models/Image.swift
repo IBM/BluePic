@@ -79,7 +79,7 @@ class Image: NSObject {
         if let tags = dict["tags"] as? [[String: AnyObject]] {
             for tag in tags {
                 if let label = tag["label"] as? String,
-                let confidence = tag["confidence"] as? CGFloat {
+                confidence = tag["confidence"] as? CGFloat {
                     let tag = Tag(label: label, confidence: confidence)
                     tagsArray.append(tag)
                 }
@@ -90,11 +90,11 @@ class Image: NSObject {
         // MARK: Set required properties
 
         if let id = dict["_id"] as? String,
-            let caption = dict["caption"] as? String,
-            let fileName = dict["fileName"] as? String,
-            let width = dict["width"] as? CGFloat,
-            let height = dict["height"] as? CGFloat,
-            let user = dict["user"] as? [String : AnyObject],
+            caption = dict["caption"] as? String,
+            fileName = dict["fileName"] as? String,
+            width = dict["width"] as? CGFloat,
+            height = dict["height"] as? CGFloat,
+            user = dict["user"] as? [String : AnyObject],
             usersName = user["name"] as? String,
             usersId = user["_id"] as? String {
 
