@@ -236,8 +236,8 @@ By tapping the third tab, you can view your profile. This shows your Facebook pr
 ## Architecture
 
 <p align="center">
-<img src="Imgs/Kitura.jpg"  alt="Drawing" height=400 border=0 /></p>
-<p align="center">Figure 5. Kitura BluePic Architecture Diagram.</p>
+<img src="Imgs/architecture.png"  alt="Drawing" height=450 border=0 /></p>
+<p align="center">Figure 5. BluePic Architecture Diagram.</p>
 
 ## License
 

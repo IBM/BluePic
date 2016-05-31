@@ -15,45 +15,33 @@
  **/
 
 import UIKit
-import BMSCore
 
-class User: NSObject {
+class ImagesCurrentlyUploadingImageFeedCollectionViewCell: UICollectionViewCell {
 
-    var facebookID : String?
-    var name : String?
+    @IBOutlet weak var imageView: UIImageView!
     
-    override init() {
-        
+    @IBOutlet weak var captionLabel: UILabel!
+    
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
     }
     
-    init(_ response: Response?) {
+    func setupData(image : UIImage?, caption : String?){
         
-        super.init()
-        
-        if let dict = Utils.convertResponseToDictionary(response){
-        
-            let facebookID = dict["_id"] as? String ?? ""
-            let name = dict["name"] as? String ?? ""
+        if let img = image {
             
-            self.facebookID = facebookID
-            self.name = name
-           
-        }
-        else{
+           imageView.image = img
             
-            print("invalid JSON")
         }
-   
+        
+        //set the captionLabel's text
+        var cap = caption ?? ""
+        if(cap == CameraDataManager.SharedInstance.kEmptyCaptionPlaceHolder){
+            cap = ""
+        }
+        captionLabel.text = cap
+        
     }
-        
+
 }
-
-    
-    
-    
-    
-    
-    
-    
-    
-

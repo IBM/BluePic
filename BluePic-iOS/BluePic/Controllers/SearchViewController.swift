@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  **/
+
 import UIKit
 
 class SearchViewController: UIViewController {
@@ -131,7 +132,7 @@ extension SearchViewController: UITextFieldDelegate {
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         
-        if let query = textField.text where !query.containsString(" ") && query.characters.count > 0 {
+        if let query = textField.text where query.characters.count > 0 {
         
             let vc = Utils.vcWithNameFromStoryboardWithName("FeedViewController", storyboardName: "Feed") as! FeedViewController
             vc.searchQuery = textField.text
@@ -141,6 +142,13 @@ extension SearchViewController: UITextFieldDelegate {
             textField.shakeView()
         }
         
+        return true
+    }
+    
+    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+        if string.containsString(" ") {
+            return false
+        }
         return true
     }
     

@@ -1,10 +1,18 @@
-//
-//  ImageDetailViewController.swift
-//  BluePic
-//
-//  Created by Alex Buck on 5/11/16.
-//  Copyright © 2016 MIL. All rights reserved.
-//
+/**
+ * Copyright IBM Corporation 2016
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ **/
 
 import UIKit
 
@@ -13,41 +21,18 @@ class ImageDetailViewController: UIViewController {
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var dimView: UIView!
     @IBOutlet weak var backButton: UIButton!
-    @IBOutlet weak var captionLabel: UILabel!
-    @IBOutlet weak var byUserLabel: UILabel!
-    @IBOutlet weak var cityStateLabel: UILabel!
-    @IBOutlet weak var coordinatesLabel: UILabel!
-    @IBOutlet weak var dateLabel: UILabel!
-    @IBOutlet weak var timeLabel: UILabel!
-    @IBOutlet weak var weatherImageView: UIImageView!
-    @IBOutlet weak var temperatureLabel: UILabel!
-
     @IBOutlet weak var tagCollectionView: UICollectionView!
+    
+    let kHeaderViewInfoViewHeight : CGFloat = 105
 
-    private let kWeatherIconNamePrefix = "weather_icon_"
-    private let kDegreeSymbolString = "°"
-    
-    private let kByUserLabelPrefixString = NSLocalizedString("by", comment: "")
-    private let kDateLabelPrefixString = NSLocalizedString("on", comment: "")
-    private let kTimeLabelPrefixString = NSLocalizedString("at", comment: "")
-    
-    
-    private let kCellPadding: CGFloat = 60
-    
-    
-    
-    
-    private let kCaptionLabelLetterSpacing : CGFloat = 1.7
-    private let kCaptionLabelLineSpacing : CGFloat = 10.0
-    
     var image : Image!
     
-
+    var viewModel : ImageDetailViewModel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        setupSubviewsWithImageData()
+        setupSubViews()
         setupTagCollectionView()
 
     }
@@ -71,50 +56,27 @@ class ImageDetailViewController: UIViewController {
         tagCollectionView.delegate = self
         tagCollectionView.dataSource = self
         
-        //Utils.kernLabelString(tagsButton.titleLabel!, spacingValue: 1.7)
+        Utils.registerSupplementaryElementOfKindNibWithCollectionView("ImageInfoHeaderCollectionReusableView", kind: UICollectionElementKindSectionHeader, collectionView: tagCollectionView)
+
         Utils.registerNibWithCollectionView("TagCollectionViewCell", collectionView: tagCollectionView)
         
     }
     
-    func setupSubviewsWithImageData(){
+    func setupSubViews(){
         
-        if let urlString = image.url {
-            
-            let nsurl = NSURL(string: urlString)
-            
-            imageView.sd_setImageWithURL(nsurl)
-        }
-        
+        setupImageView()
         setupBlurView()
-        
-        //setup captionLabel
-        setupCaptionLabelWithData()
     
-        //setup byUserLabel
-        let userFullName = image.user?.name ?? ""
-        byUserLabel.text = kByUserLabelPrefixString + " " + userFullName
-    
-        //setup locationLabel
-        let locationName = image.location?.name ?? ""
-        cityStateLabel.text = locationName
-        
-        //setup coordinatesLabel
-        setupCoordintesLabel()
-    
-        //setup dateLabel
-        setupDateLabelWithData()
-        
-        //setup timeLabel
-        setupTimeLabelWithData()
-        
-        //setup weatherImageView and Temperature Label
-        setupWeatherImageViewAndTemperatureLabel()
-        
     }
     
-    
-    
-    
+    func setupImageView(){
+        
+        if let urlString = viewModel.getImageURLString() {
+            let nsurl = NSURL(string: urlString)
+            imageView.sd_setImageWithURL(nsurl)
+        }
+    }
+
     
     @IBAction func backButtonAction(sender: AnyObject) {
         
@@ -122,17 +84,6 @@ class ImageDetailViewController: UIViewController {
   
     }
    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
 
 
@@ -155,149 +106,62 @@ extension ImageDetailViewController {
         
         blurViewHolderView.addSubview(blurView)
         
-        
         imageView.addSubview(blurViewHolderView)
         
     }
-    
-    func setupCaptionLabelWithData(){
-        
-        let caption = image.caption?.uppercaseString ?? ""
-        
-        captionLabel.attributedText = NSAttributedString.createAttributedStringWithLetterAndLineSpacingWithCentering(caption, letterSpacing: kCaptionLabelLetterSpacing, lineSpacing: kCaptionLabelLineSpacing, centered: true)
-        
-    }
-    
-    func setupDateLabelWithData(){
-        
-        if let date = image.timeStamp {
-            let dateFormatter = NSDateFormatter()
-            dateFormatter.dateStyle = NSDateFormatterStyle.LongStyle
-            let locale = LocationDataManager.SharedInstance.getLanguageLocale()
-            dateFormatter.locale = NSLocale(localeIdentifier: locale)
-            let dateString = dateFormatter.stringFromDate(date)
-            
-            dateLabel.text = kDateLabelPrefixString + " " + dateString
-        }
-        else{
-            dateLabel.text = ""
-        }
-        
-    }
-    
-    func setupTimeLabelWithData(){
-        
-        if let date = image.timeStamp {
-            let dateFormatter = NSDateFormatter()
-            dateFormatter.timeStyle = .ShortStyle
-            let locale = LocationDataManager.SharedInstance.getLanguageLocale()
-            dateFormatter.locale = NSLocale(localeIdentifier: locale)
-            //dateFormatter.dateFormat = "h:mm a"
-            let dateString = dateFormatter.stringFromDate(date)
-            timeLabel.text = kTimeLabelPrefixString + " " + dateString
-   
-        }
-        else{
-            timeLabel.text = ""
-        }
-        
-    }
-    
-    
-    func setupCoordintesLabel(){
-        
-        if let latitude = image.location?.latitude,
-        let longitude = image.location?.longitude,
-        let lat = Double(latitude),
-        let long = Double(longitude) {
-            
-            let formattedCordinatesString = Utils.coordinateString(lat, longitude: long)
-            
-            coordinatesLabel.attributedText = NSAttributedString.createAttributedStringWithLetterAndLineSpacingWithCentering(formattedCordinatesString, letterSpacing: 1.4, lineSpacing: 5, centered: true)
-       
-        }
-        else{
-            coordinatesLabel.text = ""
-        }
-    }
-    
-    func setupWeatherImageViewAndTemperatureLabel(){
-        
-        if let iconId = image.location?.weather?.iconId {
-            let imageName = kWeatherIconNamePrefix + "\(iconId)"
-            
-            if let image = UIImage(named: imageName){
-                weatherImageView.image = image
-            }
- 
-        }
-        
-        if let temperature = image.location?.weather?.temperature {
-            
-            temperatureLabel.text = "\(temperature)" + kDegreeSymbolString
-        
-        }
- 
-    }
-    
+  
 }
 
 
 extension ImageDetailViewController : UICollectionViewDataSource {
     
-    
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-       
-        if let tags = image.tags {
-            return tags.count
-        }
-        else{
-            return 0
-        }
-        
+        return viewModel.numberOfItemsInSection(section)
     }
     
     
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        return 1
+        return viewModel.numberOfSectionsInCollectionView()
+    }
+    
+    func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
+        return viewModel.setUpSectionHeaderViewForIndexPath(
+            indexPath,
+            kind: kind,
+            collectionView: collectionView
+        )
     }
 
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCellWithReuseIdentifier("TagCollectionViewCell", forIndexPath: indexPath) as? TagCollectionViewCell else {
-            return UICollectionViewCell()
-        }
-        
-        let tags = image.tags!
-        
-        cell.tagLabel.text = tags[indexPath.item].label?.uppercaseString
-        return cell
-        
+        return viewModel.setUpCollectionViewCell(indexPath, collectionView: collectionView)
     }
+
+}
+
+
+extension ImageDetailViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         
-        let tags = image.tags!
-        
-        let size = NSString(string: tags[indexPath.item].label!).sizeWithAttributes(nil)
-        return CGSizeMake(size.width + kCellPadding, 30.0)
+        return viewModel.sizeForItemAtIndexPath(indexPath, collectionView: collectionView)
     }
     
     
-
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize{
+        
+       return viewModel.referenceSizeForHeaderInSection(collectionView, layout: collectionViewLayout, section: section, superViewHeight: self.view.frame.size.height)
+    }
+    
 }
 
 
 extension ImageDetailViewController : UICollectionViewDelegate {
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        
-        let tag = image.tags![indexPath.row]
-        
-        let vc = Utils.vcWithNameFromStoryboardWithName("FeedViewController", storyboardName: "Feed") as! FeedViewController
-        vc.searchQuery = tag.label!
-        self.navigationController?.pushViewController(vc, animated: true)
-  
+        if let vc = viewModel.getFeedViewControllerForTagSearchAtIndexPath(indexPath){
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
     }
 
 }
