@@ -42,8 +42,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         //pre load the keyboard on the camera confirmayion screen to prevent laggy behavior
         preLoadKeyboardToPreventLaggyKeyboardInCameraConfirmationScreen()
-        //Fetch images on app launch
-        BluemixDataManager.SharedInstance.getImages()
 
         //inialialize Bluemix Mobile Client Access to allow for facebook Authentication
         return self.initializeBackendForFacebookAuth(application, launchOptions: launchOptions)
@@ -94,8 +92,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                               message: NSLocalizedString("Would you like to view your image now?", comment: ""),
                                               preferredStyle: UIAlertControllerStyle.Alert)
 
-                alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil))
-                alert.addAction(UIAlertAction(title: "Yes", style: UIAlertActionStyle.Default, handler: { (action) in
+                alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: UIAlertActionStyle.Cancel, handler: nil))
+                alert.addAction(UIAlertAction(title: NSLocalizedString("Yes", comment: ""), style: UIAlertActionStyle.Default, handler: { (action) in
                     self.loadImageDetail(userInfo, tabBarController: tabBarController, feedNav: feedNav)
                 }))
                 feedNav.presentViewController(alert, animated: true, completion: nil)
