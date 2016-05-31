@@ -5,6 +5,7 @@
 import KituraNet
 import Dispatch
 import Foundation
+import SwiftyJSON
 
 func main(args:[String:Any]) -> [String:Any] {
     
@@ -13,6 +14,95 @@ func main(args:[String:Any]) -> [String:Any] {
     var alchemyResult: String? = args["alchemyResult"] as? String
     var weatherResult: String? = args["weatherResult"] as? String
     
+    
+    // Convert Strings to NSData
+    let documentResultData = imageDocString!.data(using: NSUTF8StringEncoding, allowLossyConversion: true)!
+    let alchemyResultData = alchemyResult!.data(using: NSUTF8StringEncoding, allowLossyConversion: true)!
+    let weatherResultData = weatherResult!.data(using: NSUTF8StringEncoding, allowLossyConversion: true)!
+
+    var tags: [JSON] = [JSON]()
+    
+    // convert to JSON
+    var documentResultJson = JSON(data: documentResultData)
+    let alchemyResultJson = JSON(data: alchemyResultData)
+    let weatherResultJson = JSON(data: weatherResultData)
+    
+    
+    if let keywords:[JSON] = alchemyResultJson["imageKeywords"].arrayValue {
+        
+        
+        for keyword in keywords {
+            
+            //print( keyword["score"].string )
+            //print( keyword["text"].string )
+            
+            //this is weird syntax, but swift doesn't like me trying to cast directly (protocol errors)
+            var strScore = keyword["score"].string!
+            if strScore.characters.count <= 0 {
+                strScore = "0"
+            }
+            var score:Double? = Double(strScore)
+            score = score! * 100
+            var iScore = Int(round(score!))
+            
+            var tag : JSON = [:]
+            tag["label"] = keyword["text"]
+             tag["confidence"].object = iScore
+            
+            tags.append(tag)
+           /* [
+                "label":keyword["text"].string!,
+                "confidence":iScore
+            ])*/
+        }
+        
+        print(tags)
+        
+    } else {
+        print("JSON DID NOT PARSE")
+    }
+    
+    
+        let observation = weatherResultJson["observation"]
+        /*let skyCover = weatherResultJson["observation"]["sky_cover"].string
+        
+        //let temp = weatherResultJson["observation"]["imperial"]["temp"].string
+        
+        print(iconCode)
+        print(skyCover)
+        //print(temp)
+        */
+        print(weatherResultJson.rawString())
+        
+        /*return [
+            "iconCode": observation["icon_code"].rawString()!,
+            "skyCover": observation["sky_cover"].rawString()!,
+            "temp": observation["imperial"]["temp"].rawString()!
+        ]*/
+        
+        
+    var location = documentResultJson["location"]
+    
+    location["iconId"] = observation["icon_code"]
+    location["description"] = observation["sky_cover"]
+    location["temperature"] = observation["imperial"]["temp"]
+    
+        documentResultJson["tags"] = JSON(tags)
+    
+    
+    
+    
+    let result:[String:Any] = [
+        "imageId":  imageId,
+        "cloudantId": imageId,
+        "cloudantBody": documentResultJson.rawString()
+    ]
+    
+    
+    return result
+    
+    
+    /*
     var imageDoc:[String:Any]? = convert(input:imageDocString!) 
     var alchemyDoc:[String: Any]? = convert(input:alchemyResult!)
     var weather:[String: Any]? = convert(input:weatherResult!)
@@ -70,9 +160,9 @@ func main(args:[String:Any]) -> [String:Any] {
     ]
 
     // return, which should be a dictionary
-    return result
+    return result*/
 }
-
+/*
 func convert(input:String) -> [String: Any]? {
     
     var result:[String:Any]?
@@ -85,3 +175,4 @@ func convert(input:String) -> [String: Any]? {
     
     return result;
 }
+*/

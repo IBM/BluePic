@@ -9,17 +9,11 @@ import Foundation
 func main(args:[String:Any]) -> [String:Any] {
     
     
-    var userId: String? = args["userId"] as? String
-    var imageId: String? = args["imageId"] as? String
+    let imageId: String? = args["imageId"] as? String
     
     let result:[String:Any] = [
-        "userId": userId,
-        "userDoc": "",
         "imageId": imageId,
-        "imageDoc": "",
-        "alchemyResult":"",
-        "weatherResult":"",
-        "cloudantId":userId
+        "success": true
     ]
 
     // return, which should be a dictionary
