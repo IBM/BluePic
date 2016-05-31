@@ -1,5 +1,5 @@
 /**
- * Copyright IBM Corporation 2015
+ * Copyright IBM Corporation 2016
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  **/
-
 
 import UIKit
 
@@ -131,7 +130,7 @@ class FeedViewController: UIViewController {
         
         Utils.registerNibWithCollectionView("ImageFeedCollectionViewCell", collectionView: collectionView)
         
-        Utils.registerNibWithCollectionView("PictureUploadQueueImageFeedCollectionViewCell", collectionView: collectionView)
+        Utils.registerNibWithCollectionView("ImagesCurrentlyUploadingImageFeedCollectionViewCell", collectionView: collectionView)
         
         self.refreshControl = UIRefreshControl()
         self.refreshControl.addTarget(self, action: #selector(FeedViewController.userTriggeredRefresh), forControlEvents: UIControlEvents.ValueChanged)
@@ -180,7 +179,7 @@ class FeedViewController: UIViewController {
      */
     func tryToStartLoadingAnimation(){
         
-        if(BluemixDataManager.SharedInstance.imageUploadQueue.count > 0){
+        if(BluemixDataManager.SharedInstance.imagesCurrentlyUploading.count > 0){
             logoImageView.startRotating(1)
         }
         
@@ -192,7 +191,7 @@ class FeedViewController: UIViewController {
      */
     func tryToStopLoadingAnimation(){
         
-        if(BluemixDataManager.SharedInstance.imageUploadQueue.count == 0){
+        if(BluemixDataManager.SharedInstance.imagesCurrentlyUploading.count == 0){
             
             logoImageView.stopRotating()
             
@@ -257,7 +256,11 @@ extension FeedViewController: UICollectionViewDelegate {
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         
-        if let imageDetailVC = viewModel.prepareImageDetailViewControllerSelectedCellAtIndexPath(indexPath){
+        if let imageDetailViewModel = viewModel.prepareImageDetailViewModelForSelectedCellAtIndexPath(indexPath){
+            
+            let imageDetailVC = Utils.vcWithNameFromStoryboardWithName("ImageDetailViewController", storyboardName: "Feed") as! ImageDetailViewController
+            imageDetailVC.viewModel = imageDetailViewModel
+            
             self.navigationController?.pushViewController(imageDetailVC, animated: true)
         }
         
