@@ -138,4 +138,46 @@ public struct Configuration {
     let ibmPushProperties = IbmPushProps(url: url, adminUrl: adminUrl, secret: secret)
     return ibmPushProperties
   }
+  
+  func getRootPath(pathExtension: String) -> String? {
+    
+    let initialPath = #file
+    let components = initialPath.characters.split(separator: "/").map(String.init)
+    let notLastThree = components[0..<components.count - 3]
+    var filePath = "/" + notLastThree.joined(separator: "/") + pathExtension
+    
+    let fileManager = NSFileManager.default()
+    if fileManager.fileExists(atPath: filePath) {
+      return filePath
+    } else {
+      //get path in alternate way, if first way fails
+      let currentPath = fileManager.currentDirectoryPath
+      filePath = currentPath + pathExtension
+      
+      if fileManager.fileExists(atPath: filePath) {
+        return filePath
+      } else {
+        return nil
+      }
+    }
+  }
+  
+  func getOpenWhiskProps() throws -> OpenWhiskProps {
+    let relativePath = "/properties.json"
+    guard let workingPath = getRootPath(pathExtension: relativePath) else {
+      throw Error.IO("Could not find file at relative path \(relativePath)")
+    }
+
+    if let propertiesData = NSData(contentsOfFile: workingPath) {
+      let propertiesJson = JSON(data: propertiesData)
+
+      if let openWhiskJson = propertiesJson.dictionary?["openWhisk"],
+                hostName = openWhiskJson["hostName"].string,
+                urlPath = openWhiskJson["urlPath"].string,
+                authToken = openWhiskJson["authToken"].string {
+        return OpenWhiskProps(hostName: hostName, urlPath: urlPath, authToken: authToken)
+      }
+    }
+    throw Error.IO("Could not read json properties properly")
+  }
 }

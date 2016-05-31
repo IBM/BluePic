@@ -33,19 +33,19 @@ func processImage(withId imageId: String, forUser userId: String) {
   // TODO OpenWhisk reads user document from cloudant to obtain language and units of measure...
   Log.verbose("imageId: \(imageId), userId: \(userId)")
   
-  let hostName = "openwhisk.ng.bluemix.net"
-  let path = "/api/v1/namespaces/cmjaun%40us.ibm.com_cmjaun%40us.ibm.com/actions/bluepic/processImage?blocking=true"
-  let authToken = "NmFhZWE3OGQtOTk3ZC00NjAxLTgwZWMtNjU2MDgzNmRiZmNjOkJaMXE5alpqeVRKalpkNXVlMHBDTUFRekFyMWE1WVlqSVZBbXg5aTB6b2FRVUJrV0RVYUJSOHJ2UXU5Y0l1UEk="
+//  let hostName = "openwhisk.ng.bluemix.net"
+//  let path = "/api/v1/namespaces/milbuild%40us.ibm.com_swift%40ibm/actions/bluepic/processImage?blocking=true"
+//  let authToken = "NmFhZWE3OGQtOTk3ZC00NjAxLTgwZWMtNjU2MDgzNmRiZmNjOkJaMXE5alpqeVRKalpkNXVlMHBDTUFRekFyMWE1WVlqSVZBbXg5aTB6b2FRVUJrV0RVYUJSOHJ2UXU5Y0l1UEk="
   
   var requestOptions = [ClientRequestOptions]()
   requestOptions.append(.method("POST"))
   requestOptions.append(.schema("https://"))
-  requestOptions.append(.hostname(hostName))
+  requestOptions.append(.hostname(openWhiskProps.hostName))
   requestOptions.append(.port(443))
-  requestOptions.append(.path(path))
+  requestOptions.append(.path(openWhiskProps.urlPath))
   var headers = [String:String]()
   headers["Content-Type"] = "application/json"
-  headers["Authorization"] = "Basic \(authToken)"
+  headers["Authorization"] = "Basic \(openWhiskProps.authToken)"
   requestOptions.append(.headers(headers))
 
   guard let requestBody = JSON(["imageId":imageId]).rawString() else {

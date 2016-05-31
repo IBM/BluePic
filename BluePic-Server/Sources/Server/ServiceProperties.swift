@@ -60,3 +60,17 @@ public struct IbmPushProps {
     self.secret = secret
   }
 }
+
+public struct OpenWhiskProps {
+  // Public instance variables
+  public let hostName: String
+  public let urlPath: String
+  public let authToken: String
+
+  // Constructor
+  public init(hostName: String, urlPath: String, authToken: String) {
+    self.hostName = hostName
+    self.urlPath = urlPath
+    self.authToken = authToken
+  }
+}
