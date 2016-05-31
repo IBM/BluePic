@@ -218,6 +218,19 @@ class FeedViewController: UIViewController {
     }
 
     /**
+     Display an error alert when we couldn't fetch images from the server
+     */
+    func displayImageFeedErrorAlert() {
+
+        let alert = UIAlertController(title: NSLocalizedString("Error Fetching Images", comment: ""),
+                                      message: NSLocalizedString("Pull down to retry", comment: ""),
+                                      preferredStyle: UIAlertControllerStyle.Alert)
+
+        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: UIAlertActionStyle.Cancel, handler: nil))
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
+
+    /**
      Method is caleld when the search icon in the top right corner is pressed
 
      - parameter sender: AnyObject
@@ -346,8 +359,10 @@ extension FeedViewController {
             scrollCollectionViewToTop()
             tryToStartLoadingAnimation()
         } else if feedViewModelNotification == FeedViewModelNotification.NoSearchResults {
-            // do alert
             noResultsLabel.hidden = false
+        } else if feedViewModelNotification == FeedViewModelNotification.GetImagesServerFailure {
+            tryToStopLoadingAnimation()
+            displayImageFeedErrorAlert()
         }
 
     }

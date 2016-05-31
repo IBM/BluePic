@@ -25,6 +25,9 @@ enum FeedViewModelNotification {
     //called when a photo is uploading to object storage
     case UploadingPhotoStarted
 
+    //called when no images were pulled from server because there was no connection with server
+    case GetImagesServerFailure
+
     //called when there are no search results for a particular searchQuery
     case NoSearchResults
 }
@@ -77,6 +80,9 @@ class FeedViewModel: NSObject {
         //suscribe to events that happen in the BluemixDataManager
         suscribeToBluemixDataManagerNotifications()
 
+        //Fetch images on app launch
+        BluemixDataManager.SharedInstance.getImages()
+
         //if this view controller needs to show search results
         if let query = searchQuery {
             numberOfCellsWhenUserHasNoPhotos = 0
@@ -104,16 +110,7 @@ class FeedViewModel: NSObject {
 
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(FeedViewModel.handleImageUploadFailure), name: BluemixDataManagerNotification.ImageUploadFailure.rawValue, object: nil)
 
-    }
-
-    /**
-     Method handles if there is an image upload failure if this vc is set up like a normal feed vc and doesn't show search results
-     */
-    func handleImageUploadFailure() {
-
-        if isShowingSearchResults() == false {
-            self.notifyViewControllerToTriggerReloadCollectionView()
-        }
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(FeedViewModel.notifyViewControllerGetImagesServerError), name: BluemixDataManagerNotification.GetAllImagesFailure.rawValue, object: nil)
 
     }
 
@@ -122,10 +119,21 @@ class FeedViewModel: NSObject {
      */
     func updateImageDataArrayAndNotifyViewControllerToReloadCollectionView() {
 
-        if isShowingSearchResults() == false {
+        if !isShowingSearchResults() {
             self.imageDataArray = BluemixDataManager.SharedInstance.images
             self.notifyViewControllerToTriggerReloadCollectionView()
         }
+    }
+
+    /**
+     Method handles if there is an image upload failure if this vc is set up like a normal feed vc and doesn't show search results
+     */
+    func handleImageUploadFailure() {
+
+        if !isShowingSearchResults() {
+            self.notifyViewControllerToTriggerReloadCollectionView()
+        }
+
     }
 
 }
@@ -167,8 +175,6 @@ extension FeedViewModel {
         }
 
     }
-
-
 
 }
 
@@ -376,7 +382,7 @@ extension FeedViewModel {
      */
     func notifyViewControllerToTriggerLoadingAnimation() {
 
-        if isShowingSearchResults() == false {
+        if !isShowingSearchResults() {
             dispatch_async(dispatch_get_main_queue()) {
                 self.notifyFeedVC(feedViewModelNotification: FeedViewModelNotification.UploadingPhotoStarted)
             }
@@ -389,6 +395,15 @@ extension FeedViewModel {
     func notifyViewControllerToTriggerReloadCollectionView() {
         dispatch_async(dispatch_get_main_queue()) {
             self.notifyFeedVC(feedViewModelNotification : FeedViewModelNotification.ReloadCollectionView)
+        }
+    }
+
+    /**
+     Method notifies the feed vc that app failed to get images from server, handle appropriately
+     */
+    func notifyViewControllerGetImagesServerError() {
+        dispatch_async(dispatch_get_main_queue()) {
+            self.notifyFeedVC(feedViewModelNotification : FeedViewModelNotification.GetImagesServerFailure)
         }
     }
 
