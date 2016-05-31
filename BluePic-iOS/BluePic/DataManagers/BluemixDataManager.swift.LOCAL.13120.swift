@@ -41,9 +41,6 @@ enum BluemixDataManagerNotification: String {
     //Notification to notify the app that image upload failed
     case ImageUploadFailure = "ImageUploadFailure"
 
-    //Notificaiton used when there was a server error getting all the images
-    case GetAllImagesFailure = "GetAllImagesFailure"
-
     //Notification to notify the app that the popular tags were receieved
     case PopularTagsReceived = "PopularTagsReceived"
 }
@@ -277,8 +274,7 @@ extension BluemixDataManager {
                 NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImagesRefreshed.rawValue, object: nil)
             } else {
                 print("Get Images Error: Connection Failure")
-                self.hasReceievedInitialImages = true
-                NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.GetAllImagesFailure.rawValue, object: nil)
+                NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImagesRefreshed.rawValue, object: nil)
             }
         }
     }
@@ -323,7 +319,6 @@ extension BluemixDataManager {
 
         request.sendWithCompletionHandler { (response, error) -> Void in
             if let error = error {
-                print ("Error :: \(error)")
                 result(images: nil)
                 print ("Get Images Error: \(error)")
             } else {

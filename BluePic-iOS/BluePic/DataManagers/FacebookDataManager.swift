@@ -80,21 +80,21 @@ class FacebookDataManager: NSObject {
             urlSchemes = firstUrlType["CFBundleURLSchemes"] as? NSArray,
             facebookURLScheme = urlSchemes.firstObject as? NSString else {
 
-            print("Authentication is not configured in Info.plist. You have to configure Info.plist with the same Authentication method configured on Bluemix such as Facebook")
+            print("Is Facebook Congigured Error: Authentication is not configured in Info.plist. You have to configure Info.plist with the same Authentication method configured on Bluemix such as Facebook")
             return false
         }
 
         if facebookAppID.isEqualToString("") || facebookAppID == "123456789" {
-            print("Authentication is not configured in Info.plist. You have to configure Info.plist with the same Authentication method configured on Bluemix such as Facebook")
+            print("Is Facebook Congigured Error: Authentication is not configured in Info.plist. You have to configure Info.plist with the same Authentication method configured on Bluemix such as Facebook")
             return false
         }
         if facebookDisplayName.isEqualToString("") {
-            print("Authentication is not configured in Info.plist. You have to configure Info.plist with the same Authentication method configured on Bluemix such as Facebook")
+            print("Is Facebook Congigured Error: Authentication is not configured in Info.plist. You have to configure Info.plist with the same Authentication method configured on Bluemix such as Facebook")
             return false
         }
 
         if facebookURLScheme.isEqualToString("") || facebookURLScheme.isEqualToString("fb123456789") || !(facebookURLScheme.hasPrefix("fb")) {
-            print("Authentication is not configured in Info.plist. You have to configure Info.plist with the same Authentication method configured on Bluemix such as Facebook")
+            print("Is Facebook Congigured Error: Authentication is not configured in Info.plist. You have to configure Info.plist with the same Authentication method configured on Bluemix such as Facebook")
             return false
         }
 
@@ -118,8 +118,10 @@ class FacebookDataManager: NSObject {
             if let errorObject = error {
                 //user canceled login
                 if errorObject.code == -1 {
+                    print("Authenticate Facebook User Error: User Canceled login")
                     callback(facebookUserId: nil, facebookUserFullName: nil, error: FacebookAuthenticationError.UserCanceledLogin)
                 } else {
+                    print("Authenticate Facebook User Error: Error obtaining Authentication Header.")
                     //"Error obtaining Authentication Header.\nCheck Bundle Identifier and Bundle version string\n\n"
                     callback(facebookUserId: nil, facebookUserFullName: nil, error: FacebookAuthenticationError.AuthenticationHeaderNotFound)
                 }
@@ -135,14 +137,14 @@ class FacebookDataManager: NSObject {
                     }
                     //error
                     else {
-                        print("Valid Authentication Header and userIdentity, but id not found")
+                        print("Authenticate Facebook User Error: Valid Authentication Header and userIdentity, but id not found")
                         callback(facebookUserId: nil, facebookUserFullName: nil, error: FacebookAuthenticationError.FacebookUserIdNotFound)
                     }
 
                 }
                 //error
                 else {
-                    print("Valid Authentication Header, but userIdentity not found. You have to configure one of the services available in Advanced Mobile Service on Bluemix, such as Facebook")
+                    print("Authenticate Facebook User Error: Valid Authentication Header, but userIdentity not found. You have to configure the Facebook Mobile Client Access service available on Bluemix")
                     callback(facebookUserId: nil, facebookUserFullName: nil, error: FacebookAuthenticationError.FacebookuserIdentifyNotFound)
                 }
             }
