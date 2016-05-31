@@ -13,7 +13,7 @@ declared-services:
     label: BluePic-IBM-Push
     plan: Basic
   watson_vision_combined:
-    label: BluePic-Visual-Recognition
+    label: BluePic-Alchemy
     plan: free
   weatherinsights:
     label: BluePic-Insights-for-Weather
@@ -31,5 +31,5 @@ applications:
   - BluePic-Object-Storage
   - BluePic-Mobile-Client-Access
   - BluePic-IBM-Push
-  - BluePic-Visual-Recognition
+  - BluePic-Alchemy
   - BluePic-Insights-for-Weather
