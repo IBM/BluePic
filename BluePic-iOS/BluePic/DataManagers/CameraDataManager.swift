@@ -190,7 +190,6 @@ class CameraDataManager: NSObject {
             }, completion: { _ in
                 self.destroyConfirmationView()
                 self.tabVC.view.userInteractionEnabled = true
-                print("picker dismissed from confirmation view.")
         })
 
     }
@@ -275,7 +274,7 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
 
             })
             self.showPhotoCouldntBeChosenAlert()
-            print("picker canceled - photo not available!")
+            print(NSLocalizedString("Did Finish Picking Media With Info Error: photo not available!", comment: ""))
 
         }
     }
@@ -288,7 +287,7 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
     func prepareimageUserDecidedToPost(takenImage: UIImage) {
 
         guard let userId = CurrentUser.facebookUserId, fullName = CurrentUser.fullName else {
-            print("Failed to create user object")
+            print(NSLocalizedString("Prepare Image User Decided To Post Error: Failed to create user object", comment: ""))
             return
         }
         let userObject = User(facebookID: userId, name: fullName)
@@ -474,8 +473,6 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
         self.destroyConfirmationView()
         picker.dismissViewControllerAnimated(true, completion: nil)
-
-        print("picker canceled.")
     }
 
 }

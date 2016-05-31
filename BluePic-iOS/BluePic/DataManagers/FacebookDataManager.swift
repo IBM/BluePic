@@ -80,26 +80,25 @@ class FacebookDataManager: NSObject {
             urlSchemes = firstUrlType["CFBundleURLSchemes"] as? NSArray,
             facebookURLScheme = urlSchemes.firstObject as? NSString else {
 
-            print("Is Facebook Congigured Error: Authentication is not configured in Info.plist. You have to configure Info.plist with the same Authentication method configured on Bluemix such as Facebook")
+            print(NSLocalizedString("Is Facebook Congigured Error: Authentication is not configured in Info.plist. You have to configure Info.plist with the same Authentication method configured on Bluemix such as Facebook", comment: ""))
             return false
         }
 
         if facebookAppID.isEqualToString("") || facebookAppID == "123456789" {
-            print("Is Facebook Congigured Error: Authentication is not configured in Info.plist. You have to configure Info.plist with the same Authentication method configured on Bluemix such as Facebook")
+            print(NSLocalizedString("Is Facebook Congigured Error: Authentication is not configured in Info.plist. You have to configure Info.plist with the same Authentication method configured on Bluemix such as Facebook", comment: ""))
             return false
         }
         if facebookDisplayName.isEqualToString("") {
-            print("Is Facebook Congigured Error: Authentication is not configured in Info.plist. You have to configure Info.plist with the same Authentication method configured on Bluemix such as Facebook")
+            print(NSLocalizedString("Is Facebook Congigured Error: Authentication is not configured in Info.plist. You have to configure Info.plist with the same Authentication method configured on Bluemix such as Facebook", comment: ""))
             return false
         }
 
         if facebookURLScheme.isEqualToString("") || facebookURLScheme.isEqualToString("fb123456789") || !(facebookURLScheme.hasPrefix("fb")) {
-            print("Is Facebook Congigured Error: Authentication is not configured in Info.plist. You have to configure Info.plist with the same Authentication method configured on Bluemix such as Facebook")
+            print(NSLocalizedString("Is Facebook Congigured Error: Authentication is not configured in Info.plist. You have to configure Info.plist with the same Authentication method configured on Bluemix such as Facebook", comment: ""))
             return false
         }
 
         //success if made it past this point
-        print("Facebook Auth configured, getting ready to show native FB Login:\nFacebookAppID \(facebookAppID)\nFacebookDisplayName \(facebookDisplayName)\nFacebookURLScheme \(facebookURLScheme)")
         return true
     }
 
@@ -118,10 +117,10 @@ class FacebookDataManager: NSObject {
             if let errorObject = error {
                 //user canceled login
                 if errorObject.code == -1 {
-                    print("Authenticate Facebook User Error: User Canceled login")
+                    print(NSLocalizedString("Authenticate Facebook User Error: User Canceled login:", comment: "") + " \(errorObject)")
                     callback(facebookUserId: nil, facebookUserFullName: nil, error: FacebookAuthenticationError.UserCanceledLogin)
                 } else {
-                    print("Authenticate Facebook User Error: Error obtaining Authentication Header.")
+                    print(NSLocalizedString("Authenticate Facebook User Error: Error obtaining Authentication Header.", comment: "") + " \(errorObject)")
                     //"Error obtaining Authentication Header.\nCheck Bundle Identifier and Bundle version string\n\n"
                     callback(facebookUserId: nil, facebookUserFullName: nil, error: FacebookAuthenticationError.AuthenticationHeaderNotFound)
                 }
@@ -137,14 +136,14 @@ class FacebookDataManager: NSObject {
                     }
                     //error
                     else {
-                        print("Authenticate Facebook User Error: Valid Authentication Header and userIdentity, but id not found")
+                        print(NSLocalizedString("Authenticate Facebook User Error: Valid Authentication Header and userIdentity, but id not found", comment: ""))
                         callback(facebookUserId: nil, facebookUserFullName: nil, error: FacebookAuthenticationError.FacebookUserIdNotFound)
                     }
 
                 }
                 //error
                 else {
-                    print("Authenticate Facebook User Error: Valid Authentication Header, but userIdentity not found. You have to configure the Facebook Mobile Client Access service available on Bluemix")
+                    print(NSLocalizedString("Authenticate Facebook User Error: Valid Authentication Header, but userIdentity not found. You have to configure the Facebook Mobile Client Access service available on Bluemix", comment: ""))
                     callback(facebookUserId: nil, facebookUserFullName: nil, error: FacebookAuthenticationError.FacebookuserIdentifyNotFound)
                 }
             }

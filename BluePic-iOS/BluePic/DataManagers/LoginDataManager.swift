@@ -61,8 +61,10 @@ class LoginDataManager: NSObject {
                 if let error = error {
 
                     if error == FacebookAuthenticationError.UserCanceledLogin {
+                        print(NSLocalizedString("Login Error: User Canceled Login", comment: ""))
                         callback(error: LoginDataManagerError.UserCanceledLogin)
                     } else {
+                        print(NSLocalizedString("Login Error: Facebook Authentication Error", comment: ""))
                         callback(error: LoginDataManagerError.FacebookAuthenticationError)
                     }
 
@@ -71,7 +73,7 @@ class LoginDataManager: NSObject {
                 else {
 
                     //Check to make sure facebook id and name aren't nil
-                    if let facebookUserId = facebookUserId, let facebookUserFullName = facebookUserFullName {
+                    if let facebookUserId = facebookUserId, facebookUserFullName = facebookUserFullName {
 
                         //try to register user with backend if the user doesn't already exist
                         BluemixDataManager.SharedInstance.checkIfUserAlreadyExistsIfNotCreateNewUser(facebookUserId, name: facebookUserFullName, callback: { success in
@@ -82,6 +84,7 @@ class LoginDataManager: NSObject {
                                 CurrentUser.fullName = facebookUserFullName
                                 callback(error: nil)
                             } else {
+                                print(NSLocalizedString("Login Error: Connection Failure", comment: ""))
                                 callback(error: LoginDataManagerError.ConnectionFailure )
                             }
 
@@ -89,6 +92,7 @@ class LoginDataManager: NSObject {
                     }
                     //Facebook id and name were nil
                     else {
+                        print(NSLocalizedString("Login Error: Facebook Authentication Error", comment: ""))
                         callback(error: LoginDataManagerError.FacebookAuthenticationError)
                     }
                 }
