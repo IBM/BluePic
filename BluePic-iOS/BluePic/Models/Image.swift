@@ -123,12 +123,12 @@ class Image: NSObject {
                 self.location = Location(name: name, latitude: latitude, longitude: longitude, weather: weatherObject)
 
             } else {
-                print("invalid image json")
+                print(NSLocalizedString("invalid image json", comment: ""))
                 return nil
             }
 
         } else {
-            print("invalid image json")
+            print(NSLocalizedString("invalid image json", comment: ""))
             return nil
         }
     }
