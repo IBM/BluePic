@@ -8,7 +8,7 @@ import Foundation
 
 func main(args: [String:Any]) -> [String:Any] {
     
-    let imageId: String? = args["imageId"] as? String
+    let imageId: String? = String(args["imageId"]!)
     
     let result:[String:Any] = [
         "cloudantId": imageId
