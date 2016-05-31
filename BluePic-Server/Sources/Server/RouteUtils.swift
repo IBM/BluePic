@@ -22,6 +22,7 @@ import LoggerAPI
 import SwiftyJSON
 import BluemixObjectStorage
 import MobileClientAccess
+import Dispatch
 
 /**
  This method kicks off asynchronously an OpenWhisk sequence and returns immediately.
