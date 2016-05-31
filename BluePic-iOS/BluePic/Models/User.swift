@@ -38,7 +38,7 @@ class User: NSObject {
 
             super.init()
         } else {
-            print("invalid JSON")
+            print(NSLocalizedString("Invalid User JSON", comment: ""))
             return nil
         }
 

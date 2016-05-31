@@ -140,7 +140,7 @@ extension BluemixDataManager {
             //error
             if error != nil {
                 if let response = response,
-                    let statusCode = response.statusCode {
+                    statusCode = response.statusCode {
 
                     //user does not exist
                     if statusCode == 404 {
@@ -337,11 +337,11 @@ extension BluemixDataManager {
         var images = [Image]()
 
         if let dict = Utils.convertResponseToDictionary(response),
-            let records = dict["records"] as? [[String:AnyObject]] {
+            records = dict["records"] as? [[String:AnyObject]] {
 
             for var record in records {
 
-                if let userId = userId, let usersName = usersName {
+                if let userId = userId, usersName = usersName {
 
                     var user = [String : AnyObject]()
                     user["name"] = usersName

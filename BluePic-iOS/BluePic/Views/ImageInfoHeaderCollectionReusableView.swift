@@ -196,7 +196,7 @@ class ImageInfoHeaderCollectionReusableView: UICollectionReusableView {
     private func setupCoordinatesLabel(latitude: Double?, longitude: Double?) {
 
         if let latit = latitude,
-            let longit = longitude {
+            longit = longitude {
 
             let formattedCordinatesString = Utils.coordinateString(latit, longitude: longit)
 
