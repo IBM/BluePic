@@ -219,8 +219,7 @@ extension ProfileViewModel {
 
         if (imageDataArray.count - 1 ) >= indexPath.row {
 
-            let viewModel = ImageDetailViewModel()
-            viewModel.image = imageDataArray[indexPath.row]
+            let viewModel = ImageDetailViewModel(image: imageDataArray[indexPath.row])
 
             return viewModel
         } else {
