@@ -37,13 +37,9 @@ public struct Configuration {
   let appEnv: AppEnv
 
   init() throws {
-    // Generate file path for config.json
-    let filePath = #file
-    let components = filePath.characters.split(separator: "/").map(String.init)
-    let notLastThree = components[0..<components.count - 3]
-    let finalPath = "/" + notLastThree.joined(separator: "/") + "/\(configurationFile)"
+    let path = Configuration.getAbsolutePath(relativePath: "/\(configurationFile)", useFallback: false)
 
-    if let configData = NSData(contentsOfFile: finalPath) {
+    if let finalPath = path, configData = NSData(contentsOfFile: finalPath) {
       let configJson = JSON(data: configData)
       appEnv = try CFEnvironment.getAppEnv(options: configJson)
       Log.info("Using configuration values from '\(configurationFile)'.")
@@ -141,7 +137,7 @@ public struct Configuration {
 
   func getOpenWhiskProps() throws -> OpenWhiskProps {
     let relativePath = "/properties.json"
-    guard let workingPath = Configuration.getAbsolutePath(relativePath: relativePath) else {
+    guard let workingPath = Configuration.getAbsolutePath(relativePath: relativePath, useFallback: true) else {
       throw Error.IO("Could not find file at relative path \(relativePath).")
     }
 
@@ -157,7 +153,7 @@ public struct Configuration {
     throw Error.IO("Failed to obtain OpenWhisk credentials.")
   }
 
-  private static func getAbsolutePath(relativePath: String) -> String? {
+  private static func getAbsolutePath(relativePath: String, useFallback: Bool) -> String? {
     let initialPath = #file
     let components = initialPath.characters.split(separator: "/").map(String.init)
     let notLastThree = components[0..<components.count - 3]
@@ -171,7 +167,7 @@ public struct Configuration {
 
     if fileManager.fileExists(atPath: filePath) {
       return filePath
-    } else {
+    } else if useFallback {
       // Get path in alternate way, if first way fails
       let currentPath = fileManager.currentDirectoryPath
       filePath = currentPath + relativePath
@@ -180,6 +176,8 @@ public struct Configuration {
       } else {
         return nil
       }
+    } else {
+      return nil
     }
   }
 
