@@ -70,7 +70,7 @@ func main(args:[String:Any]) -> [String:Any] {
             pushRequestOptions.append(.port(kituraPort))
             pushRequestOptions.append(.method("POST"))
             pushRequestOptions.append(.path("/push/images/\(cloudantId!)"))
-            
+           
             var pushRequestHeaders = [String:String]()
             pushRequestHeaders["Authorization"] = authJson["access_token"].string!
             pushRequestOptions.append(.headers(headers))
@@ -79,12 +79,13 @@ func main(args:[String:Any]) -> [String:Any] {
             
             let pushReq = HTTP.request(pushRequestOptions) { pushResponse in
                 do {
-                    pushStr = "OK" // try pushResponse!.readString()!
+                    
+                    pushStr = try pushResponse!.readString()!
                 } catch {
                     pushStr = "Error \(error)"
                 }
             }
-            pushReq.end();
+            pushReq.end("--request body (ignore this value)--");
             
         } catch {
             authStr = "Error \(error)"
