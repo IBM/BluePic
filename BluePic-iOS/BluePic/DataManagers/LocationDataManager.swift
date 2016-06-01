@@ -46,10 +46,10 @@ class LocationDataManager: NSObject {
     private var locationManager: CLLocationManager!
 
     //callback to inform that location services has been enabled or denied
-    private var isLocationServicesEnabledAndIfNotHandleItCallback : ((isEnabled: Bool)->())!
+    private var isLocationServicesEnabledAndIfNotHandleItCallback : ((isEnabled: Bool)->())?
 
     //callback to return the user's current location
-    private var getUsersCurrentLocationCallback : ((location: CLLocation?)->())!
+    private var getUsersCurrentLocationCallback : ((location: CLLocation?)->())?
 
 
     /**
@@ -128,12 +128,18 @@ class LocationDataManager: NSObject {
 
         isLocationServicesEnabledAndIfNotHandleItCallback = callback
 
+        guard let cb = isLocationServicesEnabledAndIfNotHandleItCallback else {
+            print(NSLocalizedString("Something went wrong, isLocationServicesEnabledAndIfNotHandleItCallback shouldn't be nil in the isLocationServicesEnabledAndIfNotHandleIt method", comment: ""))
+
+            return
+        }
+
         if CLLocationManager.authorizationStatus() == CLAuthorizationStatus.AuthorizedWhenInUse || CLLocationManager.authorizationStatus() == CLAuthorizationStatus.AuthorizedAlways {
 
-            isLocationServicesEnabledAndIfNotHandleItCallback(isEnabled: true)
+            cb(isEnabled: true)
             isLocationServicesEnabledAndIfNotHandleItCallback = nil
         } else if CLLocationManager.authorizationStatus() == CLAuthorizationStatus.Denied {
-            isLocationServicesEnabledAndIfNotHandleItCallback(isEnabled: false)
+            cb(isEnabled: false)
             isLocationServicesEnabledAndIfNotHandleItCallback = nil
         } else if CLLocationManager.authorizationStatus() == CLAuthorizationStatus.NotDetermined {
             dispatch_async(dispatch_get_main_queue()) {
@@ -245,11 +251,11 @@ extension LocationDataManager : CLLocationManagerDelegate {
      */
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
 
-        if getUsersCurrentLocationCallback != nil {
+        if let callback = getUsersCurrentLocationCallback {
             //success
             if locations.count > 0 {
                 let location = locations[0]
-                getUsersCurrentLocationCallback(location : location)
+                callback(location : location)
                 getUsersCurrentLocationCallback = nil
             }
         }
@@ -263,8 +269,8 @@ extension LocationDataManager : CLLocationManagerDelegate {
      */
     func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
         print(NSLocalizedString("Get User's Current Location Error:", comment: "") + " \(error.localizedDescription)")
-        if getUsersCurrentLocationCallback != nil {
-            getUsersCurrentLocationCallback(location : nil)
+        if let callback = getUsersCurrentLocationCallback {
+            callback(location : nil)
             getUsersCurrentLocationCallback = nil
         }
 
@@ -279,13 +285,13 @@ extension LocationDataManager : CLLocationManagerDelegate {
     func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
 
         if status == CLAuthorizationStatus.AuthorizedWhenInUse || status == CLAuthorizationStatus.AuthorizedAlways {
-            if isLocationServicesEnabledAndIfNotHandleItCallback != nil {
-                isLocationServicesEnabledAndIfNotHandleItCallback(isEnabled: true)
+            if let callback = isLocationServicesEnabledAndIfNotHandleItCallback {
+                callback(isEnabled: true)
                 isLocationServicesEnabledAndIfNotHandleItCallback = nil
             }
         } else if status == CLAuthorizationStatus.Denied {
-            if isLocationServicesEnabledAndIfNotHandleItCallback != nil {
-                isLocationServicesEnabledAndIfNotHandleItCallback(isEnabled: false)
+            if let callback = isLocationServicesEnabledAndIfNotHandleItCallback {
+                callback(isEnabled: false)
                 isLocationServicesEnabledAndIfNotHandleItCallback = nil
             }
         }
