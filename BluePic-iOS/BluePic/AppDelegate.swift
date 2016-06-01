@@ -114,8 +114,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let payload = userInfo["payload"] as? String, dictionary = Utils.convertStringToDictionary(payload), image = Image(dictionary),
             imageDetailVC = Utils.vcWithNameFromStoryboardWithName("ImageDetailViewController", storyboardName: "Feed") as? ImageDetailViewController {
 
-            let imageDetailViewModel = ImageDetailViewModel()
-            imageDetailViewModel.image = image
+            let imageDetailViewModel = ImageDetailViewModel(image: image)
             imageDetailVC.viewModel = imageDetailViewModel
             tabBarController.selectedIndex = 0
             feedNav.popToRootViewControllerAnimated(false)

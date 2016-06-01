@@ -26,10 +26,10 @@ class BluemixConfiguration: NSObject {
     private let kBluemixAppGUIDKey = "bluemixAppGUID"
     private let kBluemixAppRegionKey = "bluemixAppRegion"
 
-    let localBaseRequestURL: String!
-    let remoteBaseRequestURL: String!
-    let appGUID: String!
-    let appRegion: String!
+    let localBaseRequestURL: String
+    let remoteBaseRequestURL: String
+    let appGUID: String
+    let appRegion: String
     var isLocal: Bool = true
 
     override init() {
