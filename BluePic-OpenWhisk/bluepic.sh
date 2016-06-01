@@ -49,7 +49,9 @@ function install() {
     -p cloudantDbName $CLOUDANT_db\
     -p mcaClientId $MCA_client\
     -p mcaSecret $MCA_secret\
-    -p kituraHost $KITURA_host
+    -p kituraHost $KITURA_host\
+    -p kituraPort $KITURA_port\
+    -p kituraSchema $KITURA_schema
 
   echo "Creating actions"
   #this is just a test action to make sure we can make HTTP requests leveraging kitura networking
