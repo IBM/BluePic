@@ -16,7 +16,7 @@
 
 import UIKit
 
-class ImageDetailViewModel: UIView {
+class ImageDetailViewModel: NSObject {
 
     //the image object the image vc is display data for
     var image: Image!
@@ -29,6 +29,14 @@ class ImageDetailViewModel: UIView {
 
     //constant used to define the minimum height the image info header view must be
     private let kImageInfoHeaderViewMinimumHeight: CGFloat = 357
+
+
+
+    init(image: Image) {
+
+        self.image = image
+
+    }
 
     /**
      Method returns the tag for indexPath

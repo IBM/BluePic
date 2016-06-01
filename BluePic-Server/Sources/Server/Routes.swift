@@ -240,9 +240,14 @@ func defineRoutes() {
   * Route for sending push notification (this uses the Push server SDK).
   */
   router.post("/push/images/:imageId") { request, response, next in
+    // Define response body
+    var responseBody = JSON([:])
+    responseBody["status"].boolValue = false
+
     guard let imageId = request.params["imageId"] else {
-      response.error = generateInternalError()
+      //response.error = generateInternalError()
       response.status(HTTPStatusCode.badRequest)
+      response.send(json: responseBody)
       next()
       return
     }
@@ -257,16 +262,19 @@ func defineRoutes() {
         pushNotificationsClient.send(notification: notification) { (error) in
           if let error = error {
             Log.error("Failed to send push notification: \(error)")
-            response.error = generateInternalError()
+            //response.error = generateInternalError()
             response.status(HTTPStatusCode.internalServerError)
           } else {
             response.status(HTTPStatusCode.OK)
+            responseBody["status"].boolValue = true
           }
+          response.send(json: responseBody)
           next()
         }
       } else {
-        response.error = generateInternalError()
+        //response.error = generateInternalError()
         response.status(HTTPStatusCode.internalServerError)
+        response.send(json: responseBody)
         next()
       }
     }
