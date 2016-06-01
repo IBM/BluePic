@@ -161,10 +161,14 @@ class CameraDataManager: NSObject {
      Method shows the progress hud and disables UI
      */
     private func showProgressHudAndDisableUI() {
-        self.confirmationView.titleTextField.resignFirstResponder()
-        self.confirmationView.disableUI()
+        dispatch_async(dispatch_get_main_queue()) {
 
-        SVProgressHUD.show()
+            self.confirmationView.titleTextField.resignFirstResponder()
+            self.confirmationView.disableUI()
+
+            SVProgressHUD.show()
+
+        }
 
     }
 
@@ -172,10 +176,10 @@ class CameraDataManager: NSObject {
      Method dismisses the progress hud and re-enables the UI
      */
     private func dismissProgressHUDAndReEnableUI() {
-
-        self.confirmationView.enableUI()
-        SVProgressHUD.dismiss()
-
+        dispatch_async(dispatch_get_main_queue()) {
+            self.confirmationView.enableUI()
+            SVProgressHUD.dismiss()
+        }
     }
 
     /**

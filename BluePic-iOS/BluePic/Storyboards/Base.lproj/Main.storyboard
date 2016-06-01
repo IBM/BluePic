@@ -55,27 +55,32 @@
                                 <color key="color" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </activityIndicatorView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JA3-DV-7dk">
-                                <rect key="frame" x="182" y="218" width="236" height="112"/>
+                                <rect key="frame" x="168" y="185" width="266" height="170"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="112" id="GaN-o4-7vS"/>
-                                    <constraint firstAttribute="width" constant="236" id="eyR-Rk-Nvp"/>
+                                    <constraint firstAttribute="height" constant="170" id="GaN-o4-7vS"/>
+                                    <constraint firstAttribute="width" constant="266" id="eyR-Rk-Nvp"/>
                                 </constraints>
                                 <attributedString key="attributedText">
                                     <fragment>
-                                        <string key="content">BluePic is an amazing app for taking
-pictures and sharing them to the BluePic community. BluePic is 
-also built on IBM Bluemix services.</string>
+                                        <string key="content">BluePic's back-end component is written entirely in the Swift programming language and runs on a Kitura-based server that leverages several IBM Bluemix services and OpenWhisk actions.</string>
                                         <attributes>
-                                            <color key="NSColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <font key="NSFont" metaFont="system" size="14"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineHeightMultiple="1.5" tighteningFactorForTruncation="0.0"/>
+                                            <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <font key="NSFont" size="15" name="HelveticaNeue"/>
+                                            <integer key="NSLigature" value="0"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="4" defaultTabInterval="26.449999999999999" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO">
+                                                <tabStops>
+                                                    <textTab alignment="left" location="26.450000762939453">
+                                                        <options/>
+                                                    </textTab>
+                                                </tabStops>
+                                            </paragraphStyle>
                                         </attributes>
                                     </fragment>
                                 </attributedString>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome to BluePic" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cIW-Ou-STz">
-                                <rect key="frame" x="167" y="175" width="267" height="35"/>
+                                <rect key="frame" x="167" y="150" width="267" height="35"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="267" id="YMB-Xq-LqD"/>
                                     <constraint firstAttribute="height" constant="35" id="g3J-Gq-moa"/>
@@ -117,7 +122,7 @@ also built on IBM Bluemix services.</string>
                                 </constraints>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hia-oq-hEM">
-                                <rect key="frame" x="290" y="348" width="20" height="2"/>
+                                <rect key="frame" x="290" y="365" width="20" height="2"/>
                                 <color key="backgroundColor" red="0.0" green="0.56862745098039214" blue="0.91764705882352937" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="2" id="Cc5-SZ-uZB"/>
@@ -163,6 +168,7 @@ also built on IBM Bluemix services.</string>
                             <constraint firstItem="Wjw-Zr-PRg" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="0R1-rU-8sk"/>
                             <constraint firstAttribute="bottomMargin" secondItem="LMk-mW-Kmu" secondAttribute="bottom" constant="78" id="1D8-BC-AUx"/>
                             <constraint firstItem="y1W-Vw-pKb" firstAttribute="height" secondItem="ANO-Gs-Tk5" secondAttribute="height" id="1ce-H4-iaV"/>
+                            <constraint firstItem="Hia-oq-hEM" firstAttribute="top" secondItem="JA3-DV-7dk" secondAttribute="bottom" constant="10" id="3zx-Ve-W8N"/>
                             <constraint firstItem="JA3-DV-7dk" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" constant="218" id="4Gc-mR-BBA"/>
                             <constraint firstAttribute="bottomMargin" secondItem="neQ-m5-2vk" secondAttribute="bottom" constant="78" id="5XF-wZ-oHn"/>
                             <constraint firstItem="g2J-LJ-jge" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" constant="1" id="8Vb-3w-1iR"/>
@@ -172,7 +178,7 @@ also built on IBM Bluemix services.</string>
                             <constraint firstItem="Wjw-Zr-PRg" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="15" id="F9G-Z6-Oyr"/>
                             <constraint firstAttribute="bottomMargin" secondItem="gtv-K7-hIk" secondAttribute="bottom" constant="123" id="JOd-X9-MNN"/>
                             <constraint firstItem="ANO-Gs-Tk5" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" id="Jlx-8C-0GH"/>
-                            <constraint firstItem="cIW-Ou-STz" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" constant="175" id="PQt-gW-VB2"/>
+                            <constraint firstItem="cIW-Ou-STz" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" constant="150" id="PQt-gW-VB2"/>
                             <constraint firstAttribute="trailing" secondItem="Wjw-Zr-PRg" secondAttribute="trailing" constant="15" id="QIj-7S-Qit"/>
                             <constraint firstItem="gtv-K7-hIk" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" constant="0.5" id="TUv-VN-qfh"/>
                             <constraint firstItem="y1W-Vw-pKb" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="W4o-a5-l7L"/>
@@ -182,7 +188,8 @@ also built on IBM Bluemix services.</string>
                             <constraint firstItem="neQ-m5-2vk" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="coA-y2-fHJ"/>
                             <constraint firstItem="ANO-Gs-Tk5" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="kF3-0n-p2V"/>
                             <constraint firstItem="Hia-oq-hEM" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" constant="348" id="lG5-9M-mkA"/>
-                            <constraint firstItem="JA3-DV-7dk" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="loP-gA-4Md"/>
+                            <constraint firstItem="JA3-DV-7dk" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" constant="1" id="loP-gA-4Md"/>
+                            <constraint firstItem="JA3-DV-7dk" firstAttribute="top" secondItem="cIW-Ou-STz" secondAttribute="bottom" id="mFZ-uG-Rwo"/>
                             <constraint firstAttribute="bottomMargin" secondItem="Wjw-Zr-PRg" secondAttribute="bottom" constant="20" id="oV2-H7-clG"/>
                             <constraint firstItem="LMk-mW-Kmu" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" constant="1.5" id="okh-xK-xRG"/>
                             <constraint firstItem="OyD-TT-jb1" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" constant="1" id="s7Y-kb-Ucf"/>
@@ -191,6 +198,8 @@ also built on IBM Bluemix services.</string>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
+                                <exclude reference="4Gc-mR-BBA"/>
+                                <exclude reference="lG5-9M-mkA"/>
                                 <exclude reference="0R1-rU-8sk"/>
                             </mask>
                         </variation>
