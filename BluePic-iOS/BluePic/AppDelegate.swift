@@ -89,7 +89,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
           if let aps = userInfo["aps"], category = aps["category"] as? String,
             alert = aps["alert"] as? [String:AnyObject], body = alert["body"] as? String where category == "imageProcessed" {
 
-            let alert = UIAlertController(title: NSLocalizedString(body, comment: ""),
+            let alert = UIAlertController(title: NSLocalizedString(body, tableName: "Server", bundle: NSBundle.mainBundle(), value: "", comment: ""),
                                               message: NSLocalizedString("Would you like to view your image now?", comment: ""),
                                               preferredStyle: UIAlertControllerStyle.Alert)
 
