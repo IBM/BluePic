@@ -48,7 +48,7 @@
 		1BF00D841CF4D58A009472B5 /* CameraConfirmationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1BF00D821CF4D58A009472B5 /* CameraConfirmationView.xib */; };
 		2E26F6081CC82C8B00650494 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E26F6071CC82C8B00650494 /* Pods.framework */; };
 		2E71D6171CE1197800EEBD2B /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E71D6161CE1197800EEBD2B /* SearchViewController.swift */; };
-		2E72BC431CFF4C150085239B /* Server.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2E72BC421CFF4C150085239B /* Server.strings */; };
+		2E72BC441CFF5D940085239B /* Server.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2E72BC461CFF5D940085239B /* Server.strings */; };
 		2E7C95621CE13DCE0044F6ED /* TagCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7C95601CE13DCE0044F6ED /* TagCollectionViewCell.swift */; };
 		2E7C95631CE13DCE0044F6ED /* TagCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2E7C95611CE13DCE0044F6ED /* TagCollectionViewCell.xib */; };
 		2EAAC0E81CE39C13006A0B41 /* KTCenterFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EAAC0E71CE39C13006A0B41 /* KTCenterFlowLayout.m */; };
@@ -143,7 +143,8 @@
 		1BF00D861CF4D592009472B5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/CameraConfirmationView.strings; sourceTree = "<group>"; };
 		2E26F6071CC82C8B00650494 /* Pods.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Pods.framework; path = "Pods/../build/Debug-iphoneos/Pods.framework"; sourceTree = "<group>"; };
 		2E71D6161CE1197800EEBD2B /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
-		2E72BC421CFF4C150085239B /* Server.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Server.strings; sourceTree = "<group>"; };
+		2E72BC451CFF5D940085239B /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Server.strings; sourceTree = "<group>"; };
+		2E72BC471CFF5DA10085239B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Server.strings; sourceTree = "<group>"; };
 		2E7C95601CE13DCE0044F6ED /* TagCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagCollectionViewCell.swift; sourceTree = "<group>"; };
 		2E7C95611CE13DCE0044F6ED /* TagCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TagCollectionViewCell.xib; sourceTree = "<group>"; };
 		2EAAC0E61CE39C13006A0B41 /* KTCenterFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTCenterFlowLayout.h; sourceTree = "<group>"; };
@@ -383,7 +384,7 @@
 			children = (
 				1B0535341CFE332C0006C6F2 /* Localizable.strings */,
 				BDC4B5F21BFBC77200CC1648 /* BluePic-Bridging-Header.h */,
-				2E72BC421CFF4C150085239B /* Server.strings */,
+				2E72BC461CFF5D940085239B /* Server.strings */,
 			);
 			path = SupportingFiles;
 			sourceTree = "<group>";
@@ -512,7 +513,7 @@
 				34C8094D1BFCEA0400C48004 /* bluemix.plist in Resources */,
 				1B05354D1CFE86460006C6F2 /* Main.strings in Resources */,
 				1B05354C1CFE86460006C6F2 /* Feed.strings in Resources */,
-				2E72BC431CFF4C150085239B /* Server.strings in Resources */,
+				2E72BC441CFF5D940085239B /* Server.strings in Resources */,
 				1B05354B1CFE86460006C6F2 /* Camera.strings in Resources */,
 				1B05354E1CFE86460006C6F2 /* Profile.strings in Resources */,
 				1B3BA0761C0F5FBD0064C850 /* .gitkeep in Resources */,
@@ -762,6 +763,15 @@
 				1BF00D861CF4D592009472B5 /* en */,
 			);
 			name = CameraConfirmationView.xib;
+			sourceTree = "<group>";
+		};
+		2E72BC461CFF5D940085239B /* Server.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2E72BC451CFF5D940085239B /* Base */,
+				2E72BC471CFF5DA10085239B /* en */,
+			);
+			name = Server.strings;
 			sourceTree = "<group>";
 		};
 		347472961BFA8C6A0018B7F6 /* LaunchScreen.storyboard */ = {
