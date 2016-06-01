@@ -13,6 +13,10 @@ func main(args:[String:Any]) -> [String:Any] {
     let mcaClientId: String? = args["mcaClientId"] as? String
     let mcaSecret: String? = args["mcaSecret"] as? String
     let kituraHost: String? = args["kituraHost"] as? String
+    let kituraPortInt:Int? = args["kituraPort"] as? Int
+    let kituraPort:Int16 = Int16(kituraPortInt!)
+    let kituraSchema: String? = args["kituraSchema"] as? String
+    
     
     var pushStr = "" 
     var authStr = ""
@@ -61,9 +65,9 @@ func main(args:[String:Any]) -> [String:Any] {
             let authJson = JSON(data: authData)
             
             var pushRequestOptions = [ClientRequestOptions]()
-            pushRequestOptions.append(.schema("http://"))
+            pushRequestOptions.append(.schema(kituraSchema!))
             pushRequestOptions.append(.hostname(kituraHost!))
-            pushRequestOptions.append(.port(80))
+            pushRequestOptions.append(.port(kituraPort))
             pushRequestOptions.append(.method("POST"))
             pushRequestOptions.append(.path("/push/images/\(cloudantId!)"))
             
