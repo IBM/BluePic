@@ -139,32 +139,10 @@ public struct Configuration {
     return ibmPushProperties
   }
 
-  func getRootPath(pathExtension: String) -> String? {
-    let initialPath = #file
-    let components = initialPath.characters.split(separator: "/").map(String.init)
-    let notLastThree = components[0..<components.count - 3]
-    var filePath = "/" + notLastThree.joined(separator: "/") + pathExtension
-
-    let fileManager = NSFileManager()
-    if fileManager.fileExists(atPath: filePath) {
-      return filePath
-    } else {
-      //get path in alternate way, if first way fails
-      let currentPath = fileManager.currentDirectoryPath
-      filePath = currentPath + pathExtension
-
-      if fileManager.fileExists(atPath: filePath) {
-        return filePath
-      } else {
-        return nil
-      }
-    }
-  }
-
   func getOpenWhiskProps() throws -> OpenWhiskProps {
     let relativePath = "/properties.json"
-    guard let workingPath = getRootPath(pathExtension: relativePath) else {
-      throw Error.IO("Could not find file at relative path \(relativePath)")
+    guard let workingPath = Configuration.getAbsolutePath(relativePath: relativePath) else {
+      throw Error.IO("Could not find file at relative path \(relativePath).")
     }
 
     if let propertiesData = NSData(contentsOfFile: workingPath) {
@@ -178,4 +156,31 @@ public struct Configuration {
     }
     throw Error.IO("Failed to obtain OpenWhisk credentials.")
   }
+
+  private static func getAbsolutePath(relativePath: String) -> String? {
+    let initialPath = #file
+    let components = initialPath.characters.split(separator: "/").map(String.init)
+    let notLastThree = components[0..<components.count - 3]
+    var filePath = "/" + notLastThree.joined(separator: "/") + relativePath
+
+    #if os(Linux)
+      let fileManager = NSFileManager.defaultManager()
+    #else
+      let fileManager = NSFileManager.default()
+    #endif
+
+    if fileManager.fileExists(atPath: filePath) {
+      return filePath
+    } else {
+      // Get path in alternate way, if first way fails
+      let currentPath = fileManager.currentDirectoryPath
+      filePath = currentPath + relativePath
+      if fileManager.fileExists(atPath: filePath) {
+        return filePath
+      } else {
+        return nil
+      }
+    }
+  }
+
 }
