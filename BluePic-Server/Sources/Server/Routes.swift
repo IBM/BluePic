@@ -242,6 +242,7 @@ func defineRoutes() {
   router.post("/push/images/:imageId") { request, response, next in
     guard let imageId = request.params["imageId"] else {
       response.error = generateInternalError()
+      response.status(HTTPStatusCode.badRequest)
       next()
       return
     }
@@ -257,14 +258,15 @@ func defineRoutes() {
           if let error = error {
             Log.error("Failed to send push notification: \(error)")
             response.error = generateInternalError()
-            next()
+            response.status(HTTPStatusCode.internalServerError)
           } else {
             response.status(HTTPStatusCode.OK)
-            next()
           }
+          next()
         }
       } else {
         response.error = generateInternalError()
+        response.status(HTTPStatusCode.internalServerError)
         next()
       }
     }
