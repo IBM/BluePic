@@ -53,7 +53,7 @@ func processImage(withId imageId: String) {
 
   // Make REST call
   let req = HTTP.request(requestOptions) { resp in
-    if let resp = resp where resp.statusCode == HTTPStatusCode.OK {
+    if let resp = resp where resp.statusCode == HTTPStatusCode.OK || resp.statusCode == HTTPStatusCode.accepted {
       do {
         let body = NSMutableData()
         try resp.readAllData(into: body)
