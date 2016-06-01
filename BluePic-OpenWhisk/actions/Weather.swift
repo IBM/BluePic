@@ -6,7 +6,7 @@ import KituraNet
 import Dispatch
 import Foundation
 
-func main(args:[String:Any]) -> [String:Any] {
+func main(args: [String:Any]) -> [String:Any] {
 
     let weatherUsername: Any? = args["weatherUsername"]
     let weatherPassword: Any? = args["weatherPassword"]

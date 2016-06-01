@@ -15,23 +15,33 @@
  **/
 
 extension NSAttributedString {
-    
-    class func createAttributedStringWithLetterAndLineSpacingWithCentering(string : String, letterSpacing : CGFloat, lineSpacing : CGFloat, centered : Bool) -> NSAttributedString{
-        
+
+    /**
+     Method returns an attributed string with the letter spacing, linespacing, and centered defined by the parameters
+
+     - parameter string:        String
+     - parameter letterSpacing: CGFloat
+     - parameter lineSpacing:   CGFloat
+     - parameter centered:      Bool
+
+     - returns: NSAttributedString
+     */
+    class func createAttributedStringWithLetterAndLineSpacingWithCentering(string: String, letterSpacing: CGFloat, lineSpacing: CGFloat, centered: Bool) -> NSAttributedString {
+
         let attributedString = NSMutableAttributedString(string: string)
         attributedString.addAttribute(NSKernAttributeName, value:   letterSpacing, range: NSRange(location: 0, length: attributedString.length))
-        
+
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = lineSpacing
-        
-        if centered{
+
+        if centered {
             paragraphStyle.alignment = NSTextAlignment.Center
         }
-        
-        attributedString.addAttribute(NSParagraphStyleAttributeName, value:paragraphStyle, range:NSMakeRange(0, attributedString.length))
-        
+
+        attributedString.addAttribute(NSParagraphStyleAttributeName, value:paragraphStyle, range: NSRange(location: 0, length: attributedString.length))
+
         return attributedString
-        
+
     }
-    
+
 }

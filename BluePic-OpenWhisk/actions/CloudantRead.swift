@@ -7,7 +7,7 @@ import Dispatch
 import Foundation
 
 func main(args: [String:Any]) -> [String:Any] {
-    
+
     let cloudantDbName: String? = args["cloudantDbName"] as? String
     let cloudantUsername: String? = args["cloudantUsername"] as? String
     let cloudantPassword: String? = args["cloudantPassword"] as? String

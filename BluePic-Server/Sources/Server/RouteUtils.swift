@@ -21,20 +21,63 @@ import KituraNet
 import LoggerAPI
 import SwiftyJSON
 import BluemixObjectStorage
-//import MobileClientAccess
+import MobileClientAccess
+import Dispatch
 
 /**
-* This method should kick off asynchronously an OpenWhisk sequence
-* and then return immediately. This method is not going to wait
-* for the outcome of the OpenWhisk sequence/actions. Once the OpenWhisk sequence
-* completes execution, the sequence should invoke the '/push' endpoint to generate
-* a push notification for the iOS client.
-*/
-func processImage(withId imageId: String, forUser userId: String) {
-  // TODO Invoke OpenWhisk action
-  // TODO OpenWhisk reads user document from cloudant to obtain language and units of measure...
-  Log.verbose("process() not implemented yet...")
-  Log.verbose("imageId: \(imageId), userId: \(userId)")
+ This method kicks off asynchronously an OpenWhisk sequence and returns immediately.
+ This method should not wait for the outcome of the OpenWhisk sequence/actions.
+ Once the OpenWhisk sequence completes execution, the sequence should invoke the
+ '/push' endpoint to generate a push notification for the iOS client.
+
+ - parameter imageId: The image ID of the JSON image document in Cloudant.
+
+ */
+func processImage(withId imageId: String) {
+  Log.verbose("imageId: \(imageId)")
+  var requestOptions = [ClientRequestOptions]()
+  requestOptions.append(.method("POST"))
+  requestOptions.append(.schema("https://"))
+  requestOptions.append(.hostname(openWhiskProps.hostName))
+  requestOptions.append(.port(443))
+  requestOptions.append(.path(openWhiskProps.urlPath))
+  var headers = [String:String]()
+  headers["Content-Type"] = "application/json"
+  headers["Authorization"] = "Basic \(openWhiskProps.authToken)"
+  requestOptions.append(.headers(headers))
+
+  guard let requestBody = JSON(["imageId":imageId]).rawString() else {
+    Log.error("Failed to create JSON string with imageId.")
+    return
+  }
+
+  // Make REST call
+  let req = HTTP.request(requestOptions) { resp in
+    if let resp = resp where resp.statusCode == HTTPStatusCode.OK {
+      do {
+        let body = NSMutableData()
+        try resp.readAllData(into: body)
+        let jsonResponse = JSON(data: body)
+        print("OpenWhisk response: \(jsonResponse)")
+      } catch {
+        Log.error("Bad JSON document received from OpenWhisk.")
+      }
+    } else {
+      Log.error("Status error code or nil reponse received from OpenWhisk.")
+      if let resp = resp {
+        Log.error("Status code: \(resp.statusCode)")
+        if let rawUserData = try? BodyParser.readBodyData(with: resp) {
+          let str = NSString(data: rawUserData, encoding: NSUTF8StringEncoding)
+          print("Error response from OpenWhisk: \(str)")
+        }
+      }
+    }
+  }
+  // Kitura does not yet execute certain functionaliy asynchronously,
+  // hence the need for this block.
+  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+    req.end(requestBody)
+  }
 }
 
 /**
@@ -44,7 +87,7 @@ func processImage(withId imageId: String, forUser userId: String) {
 * - parameter imageId:  String id of the image document to retrieve.
 * - parameter callback: Callback to use within async method.
 */
-func readImage(database: Database, imageId: String, callback: ((jsonData : JSON?) -> ())) {
+func readImage(database: Database, imageId: String, callback: ((jsonData: JSON?) -> ())) {
   let queryParams: [Database.QueryParameters] =
   [.descending(true), .includeDocs(true), .endKey([imageId, 0]), .startKey([imageId, NSObject()])]
   database.queryByView("images_by_id", ofDesign: "main_design", usingParameters: queryParams) { (document, error) in
@@ -57,8 +100,7 @@ func readImage(database: Database, imageId: String, callback: ((jsonData : JSON?
         } else {
           throw ProcessingError.Image("Image not found!")
         }
-      }
-      catch {
+      } catch {
         Log.error("Failed to get specific image document.")
         callback(jsonData: nil)
       }
@@ -69,6 +111,15 @@ func readImage(database: Database, imageId: String, callback: ((jsonData : JSON?
   }
 }
 
+/**
+ Method to parse a document to get image data out of it.
+
+ - parameter document: json document with raw data
+
+ - throws: processing error if can't parse document properly
+
+ - returns: valid Json with just image data
+ */
 func parseImages(document: JSON) throws -> JSON {
   guard let rows = document["rows"].array else {
     throw ProcessingError.Image("Invalid images document returned from Cloudant!")
@@ -84,10 +135,19 @@ func parseImages(document: JSON) throws -> JSON {
     index = index + 2
   }
 
-  //Log.verbose("About to create JSON object from: \(images)")
   return constructDocument(records: images)
 }
 
+/**
+ Method to parse a document to get image data for a specific user out of it
+
+ - parameter userId:   ID of user to get images for
+ - parameter document: json document with raw data
+
+ - throws: processing error if can't parse document properly
+
+ - returns: valid Json with just image data
+ */
 func parseImages(forUserId userId: String, usingDocument document: JSON) throws -> JSON {
   guard let rows = document["rows"].array else {
     throw ProcessingError.Image("Invalid images document returned from Cloudant!")
@@ -102,11 +162,29 @@ func parseImages(forUserId userId: String, usingDocument document: JSON) throws 
   return constructDocument(records: images)
 }
 
+/**
+ Method to parse a document to get all user data
+
+ - parameter document: json document with raw data
+
+ - throws: parsing error if necessary
+
+ - returns: valid json with all users data
+ */
 func parseUsers(document: JSON) throws -> JSON {
   let users = try parseRecords(document: document)
   return constructDocument(records: users)
 }
 
+/**
+ Converts a RouterRequest object to a more consumable JSON object
+
+ - parameter request: router request with all the data
+
+ - throws: parsing error if request has invalid info
+
+ - returns: valid Json with image data
+ */
 func getImageJSON(fromRequest request: RouterRequest) throws -> JSON {
   guard let caption = request.params["caption"],
   let fileName = request.params["fileName"],
@@ -119,8 +197,8 @@ func getImageJSON(fromRequest request: RouterRequest) throws -> JSON {
   let width = Float(w),
   let height = Float(h),
   let latitude = Float(lat),
-  let longitude = Float(long) else {
-  // let authContext = request.userInfo["mcaAuthContext"] as? AuthorizationContext else {
+  let longitude = Float(long), // else {
+  let authContext = request.userInfo["mcaAuthContext"] as? AuthorizationContext else {
     throw ProcessingError.Image("Invalid image document!")
   }
 
@@ -132,8 +210,8 @@ func getImageJSON(fromRequest request: RouterRequest) throws -> JSON {
   let imageName = StringUtils.decodeWhiteSpace(inString: caption)
   let locationName = StringUtils.decodeWhiteSpace(inString: location)
   let imageURL = generateUrl(forContainer: userId, forImage: fileName)
-  // let deviceId = authContext.deviceIdentity.id
-  let deviceId = "3003"
+  let deviceId = authContext.deviceIdentity.id
+  // let deviceId = "3003"
 
   let whereabouts: JSONDictionary = ["latitude": latitude, "longitude": longitude, "name": locationName]
   let imageDocument: JSONDictionary = ["location": whereabouts, "contentType": contentType, "url": imageURL,
@@ -143,11 +221,23 @@ func getImageJSON(fromRequest request: RouterRequest) throws -> JSON {
   return JSON(imageDocument)
 }
 
+/**
+ Convenience method to create consistently formatted error
+
+ - returns: NSError object
+ */
 func generateInternalError() -> NSError {
   return NSError(domain: BluePic.Domain, code: BluePic.Error.Internal.rawValue, userInfo: [NSLocalizedDescriptionKey: String(BluePic.Error.Internal)])
 }
 
-// func generateUrl(forImageId imageId: String, forAttachmentName attachmentName: String) -> String {
+/**
+ Convenience method to create a URL for a container
+
+ - parameter containerName: name of the container
+ - parameter imageName:     name of corresponding image
+
+ - returns: URL as a String
+ */
 func generateUrl(forContainer containerName: String, forImage imageName: String) -> String {
   //let url = "http://\(database.connProperties.host):\(database.connProperties.port)/\(database.name)/\(imageId)/\(attachmentName)"
   //let url = "\(config.appEnv.url)/images/\(imageId)/\(attachmentName)"
@@ -155,10 +245,16 @@ func generateUrl(forContainer containerName: String, forImage imageName: String)
   return url
 }
 
+/**
+ Method that actually creates a container with the Object Storage service
+
+ - parameter name: name of the container to create
+ - parameter completionHandler: callback to use on success or failure
+ */
 func createContainer(withName name: String, completionHandler: (success: Bool) -> Void) {
   // Cofigure container for public access and web hosting
   let configureContainer = { (container: ObjectStorageContainer) -> Void in
-    let metadata:Dictionary<String, String> = ["X-Container-Meta-Web-Listings" : "true", "X-Container-Read" : ".r:*,.rlistings"]
+    let metadata: Dictionary<String, String> = ["X-Container-Meta-Web-Listings" : "true", "X-Container-Read" : ".r:*,.rlistings"]
     container.updateMetadata(metadata: metadata) { (error) in
       if let _ = error {
         Log.error("Could not configure container named '\(name)' for public access and web hosting.")
@@ -171,26 +267,24 @@ func createContainer(withName name: String, completionHandler: (success: Bool) -
   }
 
   // Create container
-  let createContainer = { (objStore: ObjectStorage?) -> Void in
-    if let objStore = objStore {
-      objStore.createContainer(name: name) { (error, container) in
-        if let container = container where error == nil {
-          configureContainer(container)
-        } else {
-          Log.error("Could not create container named '\(name)'.")
-          completionHandler(success: false)
-        }
-      }
+  objStorage.createContainer(name: name) { (error, container) in
+    if let container = container where error == nil {
+      configureContainer(container)
     } else {
-      Log.verbose("Created successfully container named '\(name)'.")
+      Log.error("Could not create container named '\(name)'.")
       completionHandler(success: false)
     }
   }
-
-  // Connect, create, and configure container
-  connectToObjectStorage(completionHandler: createContainer)
 }
 
+/**
+ Method to store image binary in a container if it exsists
+
+ - parameter image:             image binary data
+ - parameter name:              file name to store image as
+ - parameter containerName:     name of container to use
+ - parameter completionHandler: callback to use on success or failure
+ */
 func store(image: NSData, withName name: String, inContainer containerName: String, completionHandler: (success: Bool) -> Void) {
   // Store image in container
   let storeImage = { (container: ObjectStorageContainer) -> Void in
@@ -206,25 +300,22 @@ func store(image: NSData, withName name: String, inContainer containerName: Stri
   }
 
   // Get reference to container
-  let retrieveContainer = { (objStore: ObjectStorage?) -> Void in
-    if let objStore = objStore {
-      objStore.retrieveContainer(name: containerName) { (error, container) in
-        if let container = container where error == nil {
-          storeImage(container)
-        } else {
-          Log.error("Could not find container named '\(containerName)'.")
-          completionHandler(success: false)
-        }
-      }
+  objStorage.retrieveContainer(name: containerName) { (error, container) in
+    if let container = container where error == nil {
+      storeImage(container)
     } else {
+      Log.error("Could not find container named '\(containerName)'.")
       completionHandler(success: false)
     }
   }
-
-  // Connect, create, and configure container
-  connectToObjectStorage(completionHandler: retrieveContainer)
 }
 
+/**
+ Method to convert Json data to a more usable format, adding and removing values as necessary
+
+ - parameter containerName: container to use
+ - parameter record:        Json data to massage/modify
+ */
 private func massageImageRecord(containerName: String, record: inout JSON) {
   //let id = record["_id"].stringValue
   //record["length"].int = record["_attachments"][fileName]["length"].int
@@ -234,6 +325,15 @@ private func massageImageRecord(containerName: String, record: inout JSON) {
   record.dictionaryObject?.removeValue(forKey: "_attachments")
 }
 
+/**
+ Method to simply get cleanly formatted values from a Json document
+
+ - parameter document: json document with raw data
+
+ - throws: parsing error if user json is invalid
+
+ - returns: array of Json value objects
+ */
 private func parseRecords(document: JSON) throws -> [JSON] {
   guard let rows = document["rows"].array else {
     throw ProcessingError.User("Invalid document returned from Cloudant!")
@@ -245,26 +345,16 @@ private func parseRecords(document: JSON) throws -> [JSON] {
   return records
 }
 
+/**
+ Helper method to wrap parsed data up nicely in a Json object
+
+ - parameter records: array of Json data to wrap up
+
+ - returns: Json object containg data and number of items
+ */
 private func constructDocument(records: [JSON]) -> JSON {
   var jsonDocument = JSON([:])
   jsonDocument["number_of_records"].int = records.count
   jsonDocument["records"] = JSON(records)
   return jsonDocument
-}
-
-/**
-* Connects to object storage service and upon completion, invokes the completionHandler closure.
-*/
-private func connectToObjectStorage(completionHandler: (objStore: ObjectStorage?) -> Void) {
-  // Create object store instance and connect
-  let objStore = ObjectStorage(projectId: objStorageConnProps.projectId)
-  objStore.connect(userId: objStorageConnProps.userId, password: objStorageConnProps.password, region: ObjectStorage.REGION_DALLAS) { (error) in
-    if let error = error {
-      let errorMsg = "Could not connect to Object Storage."
-      Log.error("\(errorMsg) Error was: '\(error)'.")
-      completionHandler(objStore: nil)
-    } else {
-      completionHandler(objStore: objStore)
-    }
-  }
 }

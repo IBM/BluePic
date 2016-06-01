@@ -1,28 +1,20 @@
-#BluePic
+# BluePic
 
 **This repo is not ready for consumption yet and please note that this README is still under construction This is a new development effort that has not completed yet. If you are looking for the Kitura-BluePic repo, please visit this URL: https://github.com/IBM-Swift/Kitura-BluePic.**
 
-BluePic is a photo and image sharing sample application that allows you to take photos and share them with other BluePic users. This sample application demonstrates how to leverage a Kitura-based server application [written in Swift] in a mobile iOS (v9) application.
+BluePic is a photo and image sharing sample application that allows you to take photos and share them with other BluePic users. This sample application demonstrates how to leverage, in a mobile iOS 9 application, a Kitura-based server application written in Swift.
 
-## Table of Contents
+## Getting started
 
-* [Dependencies](#dependencies)
-* [Project Structure](#project-structure)
-* [Getting Started](#getting-started)
-* [Using BluePic](#using-kitura-bluepic)
-* [Architecture](#architecture)
-* [License](#license)
+There are two ways you can compile and provision BluePic on Bluemix. The first approach uses the IBM Cloud Bridge tool. Using the IBM Cloud Bridge tool is the easiest and quickest path to get BluePic up and running. The second approach is manual, does not leverage this  tool, and, therefore, takes longer but you get to understand exactly the steps that are happening behind the scenes.
 
-## Dependencies
+### IBM Cloud Bridge
+TODO: ADD Contents
 
-The following Swift packages are used in BluePic:
+### Step by step instructions for configuration and deployment
+Instead of using the IBM Cloud Bridge, which gives you a seamless compilation and provisioning experience, you can follow the steps outlined in this section if you'd like to take a peek under the hood!
 
-- [Kitura-CouchDB](https://github.com/IBM-Swift/Kitura-CouchDB)
-- [Kitura](https://github.com/IBM-Swift/Kitura.git)
-- [Swift-cfenv](https://github.com/IBM-Swift/Swift-cfenv.git)
-- [Swift SDK for Bluemix Object Storage Service](https://github.com/ibm-bluemix-mobile-services/bluemix-objectstorage-swift-sdk.git)
-- [Kitura Credentials plugin for the Mobile Client Access service](https://github.com/ibm-bluemix-mobile-services/bms-mca-kitura-credentials-plugin.git)
-- [Swift SDK for Bluemix Push Notifications Service](https://github.com/ibm-bluemix-mobile-services/bms-pushnotifications-serversdk-swift.git)
+#### 1. Install system dependencies
 
 The following system level dependencies should be installed on OS X using [Homebrew](http://brew.sh/):
 
@@ -32,212 +24,138 @@ brew install curl
 
 If you are using Linux as your development platform, you can find full details on how to set up your environment for building Kitura-based applications at [Getting started with Kitura](https://github.com/IBM-Swift/Kitura).
 
-## Project folder Structure
+#### 2. Clone the BluePic Git repository
 
-* `./BluePic-iOS` - Contains the iOS client application.
-* `./BluePic-Server` - Contains the Kitura-based server application and its dependencies. This folder contains the artifacts that are deployed to Bluemix.
-* `./BluePic-OpenWhisk` - Contains the OpenWhisk actions and sequence code written in Swift.
-* `./Docs` - Contains additional project documentation.
-* `./Imgs` - Contains images referenced in this `README` file.
-
-## Getting Started
-
-#### 1. Clone the BluePic Git repository
+Execute the following command to clone the Git repository:
 
 ```bash
 git clone https://github.com/IBM-Swift/BluePic.git
 ```
 
-#### 2. Create an application instance on Facebook
-
-In order to have the iOS application authenticate with Facebook, you must create an application instance on Facebook's website.
-
-1. Go to [Facebook's Quick Start for iOS](https://developers.facebook.com/quickstarts/?platform=ios) page. Type `BluePic` as the name of your new Facebook app and click the `Create New Facebook App ID` button.
-
-1. On the screen that follows, in the `Configure your info.plist` section under `step 2`, copy the information into your `info.plist` file. You can find the `info.plist` file in `Configuration` folder of the Xcode project. Your `info.plist` file should now look like this:
-<p align="center"><img src="Imgs/infoplist.png"  alt="Drawing" height=150 border=0 /></p>
-
-TODO: Validate this section
-
-1. Next scroll to the bottom of the quick start page where it says `Supply us with your Bundle Identifier` and enter the app's bundle identifier. To find the bundle identifier in the Xcode project you can do the following:
-    * Make sure the project navigator folder icon is selected in the top left of Xcode. Select the BluePic project at the top of the file structure and then select the BluePic target. Under the identity section, you should see a text field for the bundle identifier that is empty. You can make the bundle identifier anything you want, `com.KituraBluePic` for example.
-
-1. Once you entered the bundle ID on the Facebook quick start page, click `next`.
-
-TODO: ADD DETAILS about the need for an iOS provisioning profile that has capabilities for Push APNS
+If you'd like to, you can spend a few minutes to get familiar with the folder structure of the repo as described in the [About](Docs/About.md) page.
 
 #### 3. Create BluePic application on Bluemix
 
-You can click the magical button below to automatically deploy the BluePic application to Bluemix:
+Clicking on the button below deploys the BluePic application to Bluemix. The `manifest.yml` file [included in the repo] is parsed to obtain the name of the application and to determine the Cloud Foundry services that should be instantiated. For further details on the structure of the `manifest.yml` file, see the [Cloud Foundry documentation](https://docs.cloudfoundry.org/devguide/deploy-apps/manifest.html#minimal-manifest).
 
 [![Deploy to Bluemix](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy)
 
-When automatically deploying to Bluemix, the `manifest.yml` file [included in the repo] is parsed to obtain the name of the application and to determine the Cloud Foundry services that should be instantiated. For further details on the structure of the `manifest.yml` file, see the [Cloud Foundry documentation](https://docs.cloudfoundry.org/devguide/deploy-apps/manifest.html#minimal-manifest).
+Once deployment to Bluemix is completed, you should access the route assigned to your application using the web browser of your choice. You should see the Kitura welcome page!
 
 Note that the [Bluemix buildpack for Swift](https://github.com/IBM-Swift/swift-buildpack) is used for the deployment of BluePic to Bluemix.
 
-#### 4. Configure Bluemix MCA
+#### 4. Populate Cloudant database
+
+To populate your Cloudant database instance with sample data, execute the `populator.sh` script in the `./Bridge-Scripts/cloudantNoSQLDB/` directory. Please note that this script requires three parameters:
+
+- `username` - The username for your Cloudant instance.
+- `password` - The password for your Cloudant instance.
+- `projectid` - The project ID for your Object Storage instance.
+
+You can obtain the above credentials by accessing your application's page on Bluemix and clicking on the `Show Credentials` twisty found on your Cloudant service and Object Storage service instances. Once you have these credentials, execute the `populator.sh` script:
+
+```bash
+./Bridge-Scripts/cloudantNoSQLDB/populator.sh --username=<cloudant username> --password=<cloudant password> --projectid=<object storage projectid>
+
+```
+
+#### 5. Populate Object Storage
+
+To populate your Object Storage instance with sample data, execute the `populator.sh` script in the `./Bridge-Scripts/Object-Storage/` directory. Please note that this script requires three parameters:
+
+- `userid` - The username for your Object Storage instance.
+- `password` - The password for your Object Storage instance.
+- `projectid` - The project ID for your Object Storage instance.
+
+You can obtain the above credentials by accessing your application's page on Bluemix and clicking on the `Show Credentials` twisty found on your Object Storage instance. Once you have these credentials, execute the `populator.sh` script:
+
+```bash
+./Bridge-Scripts/Object-Storage/populator.sh --userid=<object storage username> --password=<object storage password> --projectid=<object storage projectid>
+```
+
+#### 6. Update `BluePic-Server/cf_config.json` file
+
+You should now update the credentials for each one of the services listed in the `BluePic-Server/cf_config.json` file. This will allow you to run the Kitura-based server locally for development and testing purposes. You will find placeholders in the `cf_config.json` file (e.g. `<username>`, `<projectId>`) for each of the credential values that should be provided.
+
+Remember that you can obtain the credentials for each service listed in the `cf_config.json` file by accessing your application's page on Bluemix and clicking on the `Show Credentials` twisty found on each of the service instances bound to the BluePic app.
+
+You can take a look at the contents of the `cf_config.json` file by clicking [here](BluePic-Server/cf_config.json).
+
+#### 7. Create an application instance on Facebook
+
+In order to have the app authenticate with Facebook, you must create an application instance on Facebook's website.
+
+1. Go to the `BluePic-iOS` directory and open the BluePic workspace with Xcode using `open BluePic.xcworkspace`.
+
+1. Choose a bundle identifier for your app and update the Xcode project accordingly: Select the project navigator folder icon located in the top left of Xcode; then select the BluePic project at the top of the file structure and then select the BluePic target. Under the identity section, you should see a text field for the bundle identifier. Update this field with a bundle identifier of your choosing. (i.e. com.bluepic)
+
+1. Go to [Facebook's Quick Start for iOS](https://developers.facebook.com/quickstarts/?platform=ios) page to create an application instance. Type `BluePic` as the name of your new Facebook app and click the `Create New Facebook App ID` button. Choose any Category for the application, and click the `Create App ID` button.
+
+1. On the screen that follows, note that you **do not** need to download the Facebook SDK. The Mobile Client Access framework (already included in the iOS project) has all the code needed to support Facebook authentication. In the `Configure your info.plist` section, under `step 2`, copy the fields shown in the XML snippet into the `info.plist` file. The `info.plist` file is found in the `Configuration` folder of the Xcode project. If you have trouble finding the `CFBundleURLType` key, note that Xcode changes the `CFBundleURLType` key to `URL types` when the key is entered. Your `info.plist` file should now look like this:
+<p align="center"><img src="Imgs/infoplist.png"  alt="Drawing" height=150 border=0 /></p>
+
+1. Next, scroll to the bottom of the quick start page where it says `Supply us with your Bundle Identifier` and enter the app's bundle identifier you chose earlier.
+
+1. That's it for setting up the BluePic application instance on the Facebook Developer website. In the following section, we will link this Facebook application instance to your Bluemix Mobile Client Access service.
+
+#### 8. Configure Bluemix Mobile Client Access
+
+1. Go to your application's page on Bluemix and open your `Mobile Client Access` service instance:
+<p align="center"><img src="Imgs/mobile-client-access-service.png"  alt="Drawing" height=125 border=0 /></p>
+
+1. On the page that follows, click the `configure` button under the Facebook section.
+<p align="center"><img src="Imgs/configure-facebook-button.png"  alt="Drawing" height=125 border=0 /></p>
+
+1. On the next page, enter your Facebook application ID (see [Create an application instance on Facebook](#7-create-an-application-instance-on-facebook) section for further details). Click on the Save button.
+<p align="center"><img src="Imgs/facebook-mca-setup.png"  alt="Drawing" height=250 border=0 /></p>
+
+1. Facebook authentication with Bluemix Mobile Client Access is now completely set up!
+
+#### 9. Configure Bluemix Push service
+
+To utilize push notification capabilities on Bluemix, you need to configure a notification provider. For BluePic, you should configure credentials for the Apple Push Notification Service (APNS). As part of this configuration step, you will need to use the **bundle identifier** you chose in the [Create an application instance on Facebook](#7-create-an-application-instance-on-facebook) section.
+
+Luckily, Bluemix has [instructions](https://console.ng.bluemix.net/docs/services/mobilepush/t_push_provider_ios.html) to walk you through that process. Please note that you'd need to upload a `.p12` certificate to Bluemix and enter the password for it, as described in the Bluemix instructions.
+
+Lastly, remember that push notifications will only show up on a physical iOS device.
+
+#### 10. Configure OpenWhisk
 
 TODO: ADD CONTENTS
 
-#### 5. Configure Bluemix Push service
+#### 11. Build the BluePic-Server
 
-TODO: ADD CONTENTS
+You can now build the BluePic-Server by going to the `BluePic-Server` directory of the cloned repository and running `make`.
 
-#### 6. Configure OpenWhisk
+#### 12. Run the BluePic-Server
 
-TODO: ADD CONTENTS
+To start the Kitura-based server for the BluePic app, go to the `BluePic-Server` directory of the cloned repository and run `.build/debug/Server`.
 
-#### 7. Populate Cloudant database
+#### 13. Update configuration for iOS app
 
-Execute the following shell script:
+Go to the `BluePic-iOS` directory and open the BluePic workspace with Xcode using `open BluePic.xcworkspace`. Let's now update the `bluemix.plist` in the Xcode project (you can find this file in `Configuration` folder of the Xcode project).
 
-```bash
-./BluePic-Server/resources/cloudant/populate_db.sh --username=<cloudant username> --password=<cloudant password> --projectid=<object storage projectid>
+1. You should set the `isLocal` value to `YES` if you'd like to use a locally running server; if you set the value to `NO`, then you will be accessing the server instance running on Bluemix.
 
-```
+1. To get the `appRouteRemote` and `bluemixAppGUID` value, you should go to your application's page on Bluemix. There, you will find a `MOBILE OPTIONS` link near the top right. Clicking on it should open up a view that displays your `route` which maps to the `appRouteRemote` key in the plist. You will also see an `App GUID` value which maps to the `bluemixAppGUID` key in the plist.
 
-#### 8. Populate Object Storage
+1. Lastly, we need to get the value for `bluemixAppRegion`, which can be one of three options currently:
 
-Execute the following shell script:
+		REGION US SOUTH | REGION UK | REGION SYDNEY
+		--- | --- | ---
+		`.ng.bluemix.net` | `.eu-gb.bluemix.net` | `.au-syd.bluemix.net`
 
-```bash
-./BluePic-Server/resources/cloudant/populate_containers.sh --userid=<object storage username> --password=<object storage password> --projectid=<object storage projectid>
-```
+You can find your region in multiple ways. For instance, by just looking at the URL you use to access your application's page (or the Bluemix dashboard). Another way is to look at the `cf_config.json` file you modified earlier. If you look at the credentials under your `AdvancedMobileAccess` service, there is a value called `serverUrl` which should contain one of the regions mentioned above. Once you insert your `bluemixAppRegion` value into the `bluemix.plist`, your app should be configured.
 
-#### 9. Update `BluePic-Server/config.json` file
+#### 14. Run the iOS app
 
-After deploying BluePic to Bluemix and configuring its services, you also have the option to run the Kitura-based server locally for development and testing purposes. To run the Kitura-based server locally, you'd need to update the credentials for each one of the services listed in the ```BluePic-Server/config.json``` file:
+If you don't have the iOS project already open, go to the `BluePic-iOS` directory and open the BluePic workspace using `open BluePic.xcworkspace`.
 
-```json
-...
-"services": {
-  "AdvancedMobileAccess": [
-    {
-      "name": "Mobile Client Access-ag",
-      "label": "AdvancedMobileAccess",
-      "plan": "Gold",
-      "credentials": {
-        "serverUrl": "<serverUrl>",
-        "clientId": "<clientId>",
-        "secret": "<secret>",
-        "tenantId": "<tenantId>",
-        "admin_url": "<admin_url>"
-      }
-    }
-  ],
-  "imfpush": [
-    {
-      "name": "IBM Push Notifications-12",
-      "label": "imfpush",
-      "plan": "Basic",
-      "credentials": {
-        "url": "<url>",
-        "admin_url": "<admin_url>",
-        "appSecret": "<appSecret>"
-      }
-    }
-  ],
-  "cloudantNoSQLDB": [
-    {
-      "name": "Cloudant NoSQL DB-fz",
-      "label": "cloudantNoSQLDB",
-      "plan": "Shared",
-      "credentials": {
-        "username": "<username>",
-        "password": "<password>",
-        "host": "<host>",
-        "port": 443,
-        "url": "<url>"
-      }
-    }
-  ],
-  "Object-Storage": [
-    {
-      "name": "Object Storage-bv",
-      "label": "Object-Storage",
-      "plan": "standard",
-      "credentials": {
-        "auth_url": "https://identity.open.softlayer.com",
-        "project": "<project>",
-        "projectId": "<projectId>",
-        "region": "<region>",
-        "userId": "<userId>",
-        "username": "<username>",
-        "password": "<password>",
-        "domainId": "<domainId>",
-        "domainName": "<domainName>"
-      }
-    }
-  ]
-}
-...
-```
+You can now build and run the iOS app using the Xcode capabilities you are used to!
 
-#### 10. Build the BluePic-Server
+## About BluePic
 
-To build the BluePic-Server, go to the `BluePic-Server` directory of the cloned repository and run:
-
-```bash
-make
-```
-
-#### 11. Run the BluePic-Server
-
-From the `BluePic-Server` directory of the cloned repository, run:
-
-```bash
-.build/debug/Server
-```
-
-#### 12. Run the iOS app
-
-Go to the BluePic-iOS directory and open the BluePic workspace using Xcode:
-
-```bash
-open BluePic.xcworkspace
-```
-
-## Using BluePic
-
-BluePic was designed so that anyone can quickly launch the app and view photos posted without needing to log in. However, to view the profile or post photos, the user can easily login with his/her Facebook. This is only used to uniquely identify the user by obtaining the Facebook ID and the user's full name.
-
-<p align="center">
-<img src="Imgs/KituraBluePic.PNG"  alt="Drawing" height=550 border=0 />
-</p>
-<p align="center">Figure 1. Welcome page.</p>
-
-<br>
-
-### View Feed
-
-The feed (first tab) shows all the latest photos posted to the BluePic community (regardless if logged in or not).
-
-<p align="center">
-<img src="Imgs/feed.PNG"  alt="Drawing" height=550 border=0 /></p>
-<p align="center">Figure 2. Main feed view.</p>
-
-### Post a Photo
-
-Posting to the BluePic community is easy. Tap the middle tab in the tab bar and choose to either pick a photo from the camera roll or take a photo using the device's camera. You can optionally enter a caption before posting the picture.
-
-<p align="center">
-<img src="Imgs/post.PNG"  alt="Drawing" height=550 border=0 /></p>
-<p align="center">Figure 3. Posting a photo.</p>
-
-### View Profile
-
-By tapping the third tab, you can view your profile. This shows your Facebook profile photo, lists how many photos you've posted, and shows all the photos you've posted to Kitura BluePic.
-
-<p align="center">
-<img src="Imgs/profile.PNG"  alt="Drawing" height=550 border=0 /></p>
-<p align="center">Figure 4. Profile feed.</p>
-
-## Architecture
-
-<p align="center">
-<img src="Imgs/architecture.png"  alt="Drawing" height=450 border=0 /></p>
-<p align="center">Figure 5. BluePic Architecture Diagram.</p>
+To learn more about BluePic's folder structure, its architecture, the Swift packages it depends on, and details on how to use the iOS app, see the [About](Docs/About.md) page.
 
 ## License
 

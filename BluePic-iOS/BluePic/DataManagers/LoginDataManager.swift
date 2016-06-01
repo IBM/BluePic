@@ -17,114 +17,120 @@
 import UIKit
 
 enum LoginDataManagerError {
-    
+
+    //Error when there is a Facebook Authentication Error
     case FacebookAuthenticationError
+
+    //Error when user canceled Facebook Login
     case UserCanceledLogin
+
+    //Error when there is a connection failure
     case ConnectionFailure
 
 }
 
 class LoginDataManager: NSObject {
 
-    
     /// Shared instance of data manager
     static let SharedInstance: LoginDataManager = {
-        
-        var manager = LoginDataManager()
-        
-        return manager
-        
-    }()
-    
-    
 
-    func login(callback : ((error : LoginDataManagerError?)->())){
-        
+        var manager = LoginDataManager()
+
+        return manager
+
+    }()
+
+    /**
+     Method will login the user into BluePic. It will first check if the user is already authenticated by checking if there is a user saved in NSUserDefaulted by called the isUserAlreadyAuthenticated method. If the user isn't already authenticated then it will call the FacebookDataManager's loginWithFacebook method
+
+     - parameter callback: ((error : LoginDataManagerError?)->())
+     */
+    func login(callback : ((error: LoginDataManagerError?)->())) {
+
         ///Check if user is already authenticated from previous sesssions, aka check nsuserdefaults for user info
-        if(isUserAlreadyAuthenticated()){
+        if isUserAlreadyAuthenticated() {
             callback(error: nil)
         }
             //user not already authenticated from previous sessions
-        else{
-            
+        else {
+
             //login with facebook
-            FacebookDataManager.SharedInstance.loginWithFacebook({ (facebookUserId: String?, facebookUserFullName : String?, error: FacebookAuthenticationError?) in
-                
+            FacebookDataManager.SharedInstance.loginWithFacebook({ (facebookUserId: String?, facebookUserFullName: String?, error: FacebookAuthenticationError?) in
+
                 //facebook authentication failure
                 if let error = error {
-                    
-                    if(error == FacebookAuthenticationError.UserCanceledLogin){
+
+                    if error == FacebookAuthenticationError.UserCanceledLogin {
+                        print(NSLocalizedString("Login Error: User Canceled Login", comment: ""))
                         callback(error: LoginDataManagerError.UserCanceledLogin)
-                    }
-                    else{
+                    } else {
+                        print(NSLocalizedString("Login Error: Facebook Authentication Error", comment: ""))
                         callback(error: LoginDataManagerError.FacebookAuthenticationError)
                     }
-                    
+
                 }
                 //facebook authentication success
-                else{
-                    
-                    let language = LocationDataManager.SharedInstance.getLanguageLocale()
-                    let unitsOfMeasurement = LocationDataManager.SharedInstance.getUnitsOfMeasurement()
-                    
+                else {
+
                     //Check to make sure facebook id and name aren't nil
-                    if let facebookUserId = facebookUserId, let facebookUserFullName = facebookUserFullName {
-                    
+                    if let facebookUserId = facebookUserId, facebookUserFullName = facebookUserFullName {
+
                         //try to register user with backend if the user doesn't already exist
-                        BluemixDataManager.SharedInstance.checkIfUserAlreadyExistsIfNotCreateNewUser(facebookUserId, name: facebookUserFullName, language: language, unitsOfMeasurement: unitsOfMeasurement, callback: { success in
-                        
-                            if(success){
+                        BluemixDataManager.SharedInstance.checkIfUserAlreadyExistsIfNotCreateNewUser(facebookUserId, name: facebookUserFullName, callback: { success in
+
+                            if success {
                                 CurrentUser.willLoginLater = false
                                 CurrentUser.facebookUserId = facebookUserId
                                 CurrentUser.fullName = facebookUserFullName
                                 callback(error: nil)
-                            }
-                            else{
+                            } else {
+                                print(NSLocalizedString("Login Error: Connection Failure", comment: ""))
                                 callback(error: LoginDataManagerError.ConnectionFailure )
                             }
-                       
+
                         })
                     }
                     //Facebook id and name were nil
-                    else{
+                    else {
+                        print(NSLocalizedString("Login Error: Facebook Authentication Error", comment: ""))
                         callback(error: LoginDataManagerError.FacebookAuthenticationError)
                     }
                 }
-
             })
-            
         }
     }
-    
-    
-    func loginLater(){
-        
+
+    /**
+     Method is called when the user presses the sign in later button. It will sets the CurrentUser object's willLoginLater property to true
+     */
+    func loginLater() {
+
         CurrentUser.willLoginLater = true
- 
     }
-    
-    
+
+    /**
+     Method will return true if the user is already authenticated or has pressed sign in later
+
+     - returns: Bool
+     */
     func isUserAuthenticatedOrPressedSignInLater() -> Bool {
-        if(isUserAlreadyAuthenticated() || CurrentUser.willLoginLater){
+        if isUserAlreadyAuthenticated() || CurrentUser.willLoginLater {
             return true
-        }
-        else{
+        } else {
            return false
         }
     }
-    
 
+    /**
+     Method returns true if the user has already authenticated with facebook
+
+     - returns: Bool
+     */
     private func isUserAlreadyAuthenticated() -> Bool {
-        if(CurrentUser.facebookUserId != nil && CurrentUser.fullName != nil){
+        if CurrentUser.facebookUserId != nil && CurrentUser.fullName != nil {
             return true
-        }
-        else{
+        } else {
             return false
         }
     }
-    
-    
-    
-    
- 
 }

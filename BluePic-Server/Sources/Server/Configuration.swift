@@ -23,12 +23,17 @@ import BluemixObjectStorage
 
 public struct Configuration {
 
+  /**
+   Enum used for Configuration errors
+
+   - IO: case to indicate input/output error
+   */
   public enum Error: ErrorProtocol {
     case IO(String)
   }
 
   // Instance constants
-  let configurationFile = "config.json"
+  let configurationFile = "cf_config.json"
   let appEnv: AppEnv
 
   init() throws {
@@ -48,8 +53,15 @@ public struct Configuration {
     }
   }
 
+  /**
+   Method to get CouchDB credentials in a consumable form
+
+   - throws: error when method can't get credentials
+
+   - returns: Encapsulated ConnectionProperties object with the necessary info
+   */
   func getCouchDBConnProps() throws -> ConnectionProperties {
-    if let couchDBCredentials = appEnv.getService(spec: "Cloudant NoSQL DB-fz")?.credentials {
+    if let couchDBCredentials = appEnv.getService(spec: "BluePic-Cloudant")?.credentials {
       if let host = couchDBCredentials["host"].string,
       user = couchDBCredentials["username"].string,
       password = couchDBCredentials["password"].string,
@@ -61,8 +73,15 @@ public struct Configuration {
     throw Error.IO("Failed to obtain database service and/or its credentials.")
   }
 
+  /**
+   Method to get Object Storage credentials in a consumable form
+
+   - throws: error when method can't get credentials
+
+   - returns: Encapsulated ObjectStorageConnProps object with the necessary info
+   */
   func getObjectStorageConnProps() throws -> ObjectStorageConnProps {
-    guard let objStoreCredentials = appEnv.getService(spec: "Object Storage-bv")?.credentials else {
+    guard let objStoreCredentials = appEnv.getService(spec: "BluePic-Object-Storage")?.credentials else {
       throw Error.IO("Failed to obtain object storage service and/or its credentials.")
     }
 
@@ -76,33 +95,92 @@ public struct Configuration {
     return connProperties
   }
 
-    func getMobileClientAccessProps() throws -> MobileClientAccessProps {
-        guard let mcaCredentials = appEnv.getService(spec: "Mobile Client Access-ag")?.credentials else {
-            throw Error.IO("Failed to obtain MCA service and/or its credentials.")
-        }
+  /**
+   Method to get MCA credentials in a consumable form
 
-        guard let secret = mcaCredentials["secret"].string,
-        serverUrl = mcaCredentials["serverUrl"].string,
-        clientId = mcaCredentials["clientId"].string else {
-                throw Error.IO("Failed to obtain MCA credentials.")
-        }
+   - throws: error when method can't get credentials
 
-        let mcaProperties = MobileClientAccessProps(secret: secret, serverUrl: serverUrl, clientId: clientId)
-        return mcaProperties
+   - returns: Encapsulated MobileClientAccessProps object with the necessary info
+   */
+  func getMobileClientAccessProps() throws -> MobileClientAccessProps {
+    guard let mcaCredentials = appEnv.getService(spec: "BluePic-Mobile-Client-Access")?.credentials else {
+      throw Error.IO("Failed to obtain MCA service and/or its credentials.")
     }
 
-    func getIbmPushProps() throws -> IbmPushProps {
-        guard let pushCredentials = appEnv.getService(spec: "IBM Push Notifications-12")?.credentials else {
-            throw Error.IO("Failed to obtain IBM Push service and/or its credentials.")
-        }
-
-        guard let url = pushCredentials["url"].string,
-            adminUrl = pushCredentials["admin_url"].string,
-            secret = pushCredentials["appSecret"].string else {
-                throw Error.IO("Failed to obtain IBM Push credentials.")
-        }
-
-        let ibmPushProperties = IbmPushProps(url: url, adminUrl: adminUrl, secret: secret)
-        return ibmPushProperties
+    guard let secret = mcaCredentials["secret"].string,
+    serverUrl = mcaCredentials["serverUrl"].string,
+    clientId = mcaCredentials["clientId"].string else {
+      throw Error.IO("Failed to obtain MCA credentials.")
     }
+
+    let mcaProperties = MobileClientAccessProps(secret: secret, serverUrl: serverUrl, clientId: clientId)
+    return mcaProperties
+  }
+
+  /**
+   Method to get IBM Push credentials in a consumable form
+
+   - throws: error when method can't get credentials
+
+   - returns: Encapsulated IbmPushProps object with the necessary info
+   */
+  func getIbmPushProps() throws -> IbmPushProps {
+    guard let pushCredentials = appEnv.getService(spec: "BluePic-IBM-Push")?.credentials else {
+      throw Error.IO("Failed to obtain IBM Push service and/or its credentials.")
+    }
+
+    guard let url = pushCredentials["url"].string,
+      adminUrl = pushCredentials["admin_url"].string,
+      secret = pushCredentials["appSecret"].string else {
+        throw Error.IO("Failed to obtain IBM Push credentials.")
+    }
+
+    let ibmPushProperties = IbmPushProps(url: url, adminUrl: adminUrl, secret: secret)
+    return ibmPushProperties
+  }
+
+  func getOpenWhiskProps() throws -> OpenWhiskProps {
+    let relativePath = "/properties.json"
+    guard let workingPath = Configuration.getAbsolutePath(relativePath: relativePath) else {
+      throw Error.IO("Could not find file at relative path \(relativePath).")
+    }
+
+    if let propertiesData = NSData(contentsOfFile: workingPath) {
+      let propertiesJson = JSON(data: propertiesData)
+      if let openWhiskJson = propertiesJson.dictionary?["openWhisk"],
+                hostName = openWhiskJson["hostName"].string,
+                urlPath = openWhiskJson["urlPath"].string,
+                authToken = openWhiskJson["authToken"].string {
+        return OpenWhiskProps(hostName: hostName, urlPath: urlPath, authToken: authToken)
+      }
+    }
+    throw Error.IO("Failed to obtain OpenWhisk credentials.")
+  }
+
+  private static func getAbsolutePath(relativePath: String) -> String? {
+    let initialPath = #file
+    let components = initialPath.characters.split(separator: "/").map(String.init)
+    let notLastThree = components[0..<components.count - 3]
+    var filePath = "/" + notLastThree.joined(separator: "/") + relativePath
+
+    #if os(Linux)
+      let fileManager = NSFileManager.defaultManager()
+    #else
+      let fileManager = NSFileManager.default()
+    #endif
+
+    if fileManager.fileExists(atPath: filePath) {
+      return filePath
+    } else {
+      // Get path in alternate way, if first way fails
+      let currentPath = fileManager.currentDirectoryPath
+      filePath = currentPath + relativePath
+      if fileManager.fileExists(atPath: filePath) {
+        return filePath
+      } else {
+        return nil
+      }
+    }
+  }
+
 }

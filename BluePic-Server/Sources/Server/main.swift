@@ -23,6 +23,7 @@ import LoggerAPI
 import HeliumLogger
 import SwiftyJSON
 import CFEnvironment
+import BluemixObjectStorage
 
 ///
 /// Because bridging is not complete in Linux, we must use Any objects for dictionaries
@@ -30,9 +31,9 @@ import CFEnvironment
 /// our patched version for Linux accepts Any.
 ///
 #if os(OSX)
-    typealias JSONDictionary = [String: AnyObject]
+typealias JSONDictionary = [String: AnyObject]
 #else
-    typealias JSONDictionary = [String: Any]
+typealias JSONDictionary = [String: Any]
 #endif
 
 // Logger
@@ -44,21 +45,41 @@ let objStorageConnProps: ObjectStorageConnProps
 let couchDBConnProps: ConnectionProperties
 let mobileClientAccessProps: MobileClientAccessProps
 let ibmPushProps: IbmPushProps
+let openWhiskProps: OpenWhiskProps
+let objStorage: ObjectStorage
+let database: Database
 
 do {
-  // Create Configuration object
+  // Create configuration objects
   let config = try Configuration()
   couchDBConnProps = try config.getCouchDBConnProps()
   objStorageConnProps = try config.getObjectStorageConnProps()
   mobileClientAccessProps = try config.getMobileClientAccessProps()
   ibmPushProps = try config.getIbmPushProps()
+  openWhiskProps = try config.getOpenWhiskProps()
 
-  // Define routes
-  defineRoutes()
+  // Create cloudant access database object
+  let dbClient = CouchDBClient(connectionProperties: couchDBConnProps)
+  database = dbClient.database("bluepic_db")
 
-  // Start server...
-  HTTPServer.listen(port: config.appEnv.port, delegate: router)
-  Server.run()
+  // Create object storage access object (get authentication token)
+  objStorage = ObjectStorage(projectId: objStorageConnProps.projectId)
+  objStorage.connect(userId: objStorageConnProps.userId, password: objStorageConnProps.password, region: ObjectStorage.REGION_DALLAS) { (error) in
+    if let error = error {
+      let errorMsg = "Could not connect to Object Storage."
+      Log.error("\(errorMsg) Error was: '\(error)'.")
+      Log.error("Server is shutting down...")
+      exit(1)
+    } else {
+      Log.verbose("Obtained authentication token for Object Storage.")
+      // Define routes
+      Log.verbose("Defining routes for server...")
+      defineRoutes()
+      // Start server...
+      HTTPServer.listen(port: config.appEnv.port, delegate: router)
+      Server.run()
+    }
+  }
 } catch Configuration.Error.IO {
   Log.error("Oops, something went wrong... Server did not start!")
   exit(1)
