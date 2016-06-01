@@ -247,6 +247,8 @@ func defineRoutes() {
       return
     }
 
+    var responseBody = JSON([:])
+    responseBody["status"].boolValue = false
     readImage(database: database, imageId: imageId) { (jsonImage) in
       if let jsonImage = jsonImage {
         let apnsSettings = Notification.Settings.Apns(badge: nil, category: "imageProcessed", iosActionKey: nil, sound: nil, type: ApnsType.DEFAULT, payload: jsonImage.dictionaryObject)
@@ -261,12 +263,15 @@ func defineRoutes() {
             response.status(HTTPStatusCode.internalServerError)
           } else {
             response.status(HTTPStatusCode.OK)
+            responseBody["status"].boolValue = true
           }
+          response.send(json: responseBody)
           next()
         }
       } else {
         response.error = generateInternalError()
         response.status(HTTPStatusCode.internalServerError)
+        response.send(json: responseBody)
         next()
       }
     }
