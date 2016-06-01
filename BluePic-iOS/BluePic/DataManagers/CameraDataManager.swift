@@ -133,9 +133,7 @@ class CameraDataManager: NSObject {
      Method to show the camera confirmation view for adding a caption and posting
      */
     func showCameraConfirmation() {
-        self.confirmationView = CameraConfirmationView.instanceFromNib()
-        self.confirmationView.frame = CGRect(x: 0, y: 0, width: self.tabVC.view.frame.width, height: self.tabVC.view.frame.height)
-        self.confirmationView.originalFrame = self.confirmationView.frame
+        self.confirmationView = CameraConfirmationView.instanceFromNibWithFrame(CGRect(x: 0, y: 0, width: self.tabVC.view.frame.width, height: self.tabVC.view.frame.height))
 
         //set up button actions
         self.confirmationView.cancelButton.addTarget(self, action: #selector(CameraDataManager.userPressedCancelButtonAction), forControlEvents: .TouchUpInside)

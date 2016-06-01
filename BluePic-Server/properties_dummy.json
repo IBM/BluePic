@@ -1,0 +1,7 @@
+{
+	"openWhisk": {
+		"hostName": "<hostName>",
+		"urlPath": "<urlPath>",
+		"authToken": "<authToken>"
+	}
+}

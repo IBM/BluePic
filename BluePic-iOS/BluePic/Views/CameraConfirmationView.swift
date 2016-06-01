@@ -46,11 +46,15 @@ class CameraConfirmationView: UIView, UITextFieldDelegate {
 
      - returns: an instance of this view
      */
-    static func instanceFromNib() -> CameraConfirmationView? {
+    static func instanceFromNibWithFrame(frame: CGRect) -> CameraConfirmationView? {
         guard let cameraConfirmationView = UINib(nibName: "CameraConfirmationView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as? CameraConfirmationView else {
             print(NSLocalizedString("Unable to load camera confirmation view from nib", comment: ""))
             return nil
         }
+
+        cameraConfirmationView.frame = frame
+        cameraConfirmationView.originalFrame = frame
+
         return cameraConfirmationView
     }
 
