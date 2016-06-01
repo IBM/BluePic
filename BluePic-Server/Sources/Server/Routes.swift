@@ -39,7 +39,7 @@ func defineRoutes() {
   // Assign middleware instance (for securing endpoints)
   router.get("/users", middleware: credentials)
   router.post("/users", middleware: credentials)
-  // router.post("/push", middleware: credentials)
+  router.post("/push", middleware: credentials)
 
   // Hello closure
   let closure = { (request: RouterRequest, response: RouterResponse, next: () -> Void) -> Void in
