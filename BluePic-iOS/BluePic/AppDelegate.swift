@@ -86,9 +86,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if application.applicationState == UIApplicationState.Background || application.applicationState == UIApplicationState.Inactive {
             loadImageDetail(userInfo, tabBarController: tabBarController, feedNav: feedNav)
         } else {
-            if let aps = userInfo["aps"], category = aps["category"] as? String where category == "imageProcessed" {
+          if let aps = userInfo["aps"], category = aps["category"] as? String,
+            alert = aps["alert"] as? [String:AnyObject], body = alert["body"] as? String where category == "imageProcessed" {
 
-                let alert = UIAlertController(title: NSLocalizedString("Your image was processed!", comment: ""),
+            let alert = UIAlertController(title: NSLocalizedString(body, comment: ""),
                                               message: NSLocalizedString("Would you like to view your image now?", comment: ""),
                                               preferredStyle: UIAlertControllerStyle.Alert)
 
