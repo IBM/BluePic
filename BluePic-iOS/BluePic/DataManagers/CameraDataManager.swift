@@ -45,7 +45,7 @@ class CameraDataManager: NSObject {
     var confirmationView: CameraConfirmationView!
 
     //instance of the image the user decided to post
-    var imageUserDecidedToPost: Image!
+    var imageUserDecidedToPost: Image?
 
     //state variables
     var failureGettingUserLocation = false
@@ -379,6 +379,14 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
      */
     func postPhoto() {
 
+        guard let imageToPost = self.imageUserDecidedToPost else {
+            print(NSLocalizedString("Something went wrong, imageUserDecidedToPost shouldn't be nil here", comment: ""))
+            dismissProgressHUDAndReEnableUI()
+            dismissCameraConfirmation()
+            return
+
+        }
+
         dismissProgressHUDAndReEnableUI()
 
         self.confirmationView.endEditing(true) //dismiss keyboard first if shown
@@ -390,13 +398,13 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
 
         //add caption of image
         if let text = self.confirmationView.titleTextField.text where text != "" {
-            imageUserDecidedToPost.caption = text
+            imageToPost.caption = text
         } else {
-            imageUserDecidedToPost.caption = kEmptyCaptionPlaceHolder
+            imageToPost.caption = kEmptyCaptionPlaceHolder
         }
 
         dispatch_async(dispatch_get_main_queue()) {
-            BluemixDataManager.SharedInstance.postNewImage(self.imageUserDecidedToPost)
+            BluemixDataManager.SharedInstance.postNewImage(imageToPost)
         }
 
         //Dismiss Camera Confirmation View when user presses post photo to bring user back to image feed
