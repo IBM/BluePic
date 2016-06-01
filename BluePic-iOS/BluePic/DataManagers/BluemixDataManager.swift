@@ -141,7 +141,7 @@ extension BluemixDataManager {
 
         request.sendWithCompletionHandler { (response, error) -> Void in
             //error
-            if error != nil {
+            if let error = error {
                 if let response = response,
                     statusCode = response.statusCode {
 
@@ -152,14 +152,14 @@ extension BluemixDataManager {
                     }
                         //any other error code means that it was a connection failure
                     else {
-                        print(NSLocalizedString("Get User By ID Error:", comment : "") + " \(error)")
+                        print(NSLocalizedString("Get User By ID Error:", comment : "") + " \(error.localizedDescription)")
                         result(user: nil, error: BlueMixDataManagerError.ConnectionFailure)
                     }
 
                 }
                     //connection failure
                 else {
-                    print(NSLocalizedString("Get User By ID Error:", comment : "") + " \(error)")
+                    print(NSLocalizedString("Get User By ID Error:", comment : "") + " \(error.localizedDescription)")
                     result(user: nil, error: BlueMixDataManagerError.ConnectionFailure)
                 }
             }
@@ -200,7 +200,7 @@ extension BluemixDataManager {
             request.sendData(jsonData, completionHandler: { (response, error) -> Void in
                 if let error = error {
                     result(user: nil)
-                    print(NSLocalizedString("Create New User Error:)", comment: "") + " \(error)")
+                    print(NSLocalizedString("Create New User Error:)", comment: "") + " \(error.localizedDescription)")
                 } else {
                     if let user = User(response) {
                         result(user: user)
@@ -323,7 +323,7 @@ extension BluemixDataManager {
 
         request.sendWithCompletionHandler { (response, error) -> Void in
             if let error = error {
-                print(NSLocalizedString("Get Images Error:", comment: "") + " \(error)")
+                print(NSLocalizedString("Get Images Error:", comment: "") + " \(error.localizedDescription)")
                 result(images: nil)
             } else {
                 let images = self.parseGetImagesResponse(response, userId: nil, usersName: nil)
@@ -404,8 +404,8 @@ extension BluemixDataManager {
         request.sendData(imageData, completionHandler: { (response, error) -> Void in
 
             //failure
-            if error != nil {
-                print(NSLocalizedString("Post New Image Error: error", comment: ""))
+            if let error = error {
+                print(NSLocalizedString("Post New Image Error:", comment: "") + " \(error.localizedDescription)")
 
                 self.removeImageFromImagesCurrentlyUploading(image)
                 self.addImageToImagesThatFailedToUpload(image)
@@ -525,7 +525,7 @@ extension BluemixDataManager {
 
         request.sendWithCompletionHandler { (response, error) -> Void in
             if let error = error {
-                print(NSLocalizedString("Get Popular Tags Error:", comment: "") + "\(error)")
+                print(NSLocalizedString("Get Popular Tags Error:", comment: "") + " \(error.localizedDescription)")
             } else {
                 if let text = response?.responseText, result = Utils.convertStringToDictionary(text), records = result["records"] as? [[String:AnyObject]] {
                     // Extract string tags from server results

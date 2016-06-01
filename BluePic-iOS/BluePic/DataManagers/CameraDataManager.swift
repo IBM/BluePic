@@ -49,8 +49,8 @@ class CameraDataManager: NSObject {
 
     //state variables
     var failureGettingUserLocation = false
-
     var userPressedPostPhoto = false
+    var userPressedCancelButton = false
 
     //Constant for how wide all images should be constrained to when compressing for upload (600 results in ~1.2 MB photos)
     let kResizeAllImagesToThisWidth = CGFloat(600)
@@ -138,7 +138,7 @@ class CameraDataManager: NSObject {
         self.confirmationView.originalFrame = self.confirmationView.frame
 
         //set up button actions
-        self.confirmationView.cancelButton.addTarget(self, action: #selector(CameraDataManager.dismissCameraConfirmation), forControlEvents: .TouchUpInside)
+        self.confirmationView.cancelButton.addTarget(self, action: #selector(CameraDataManager.userPressedCancelButtonAction), forControlEvents: .TouchUpInside)
         self.confirmationView.postButton.addTarget(self, action: #selector(CameraDataManager.postPhotoButtonAction), forControlEvents: .TouchUpInside)
 
         //show view
@@ -154,6 +154,7 @@ class CameraDataManager: NSObject {
         imageUserDecidedToPost = nil
         failureGettingUserLocation = false
         userPressedPostPhoto = false
+        userPressedCancelButton = false
 
     }
 
@@ -183,9 +184,24 @@ class CameraDataManager: NSObject {
     }
 
     /**
+     Method is called when the user pressed the cancel
+     */
+    func userPressedCancelButtonAction() {
+
+        SVProgressHUD.dismiss()
+
+        LocationDataManager.SharedInstance.invalidateGetUsersCurrentLocationCallback()
+        userPressedCancelButton = true
+
+        dismissCameraConfirmation()
+
+    }
+
+    /**
      Method to hide the confirmation view when cancelling or done uploading
      */
     func dismissCameraConfirmation() {
+        self.confirmationView.enableUI()
         UIApplication.sharedApplication().statusBarHidden = false
         self.confirmationView.loadingIndicator.stopAnimating()
         self.confirmationView.endEditing(true) //dismiss keyboard first if shown
@@ -342,7 +358,7 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
     private func tryToPostPhoto() {
 
         //only post photo if user has chosen to
-        if userPressedPostPhoto {
+        if userPressedPostPhoto && userPressedCancelButton == false {
 
             //failure getting user location
             if failureGettingUserLocation {

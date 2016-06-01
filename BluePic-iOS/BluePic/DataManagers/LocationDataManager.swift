@@ -167,7 +167,7 @@ class LocationDataManager: NSObject {
             print(location)
             //failure
             if let error = error {
-                print(NSLocalizedString("Get Placemark From Location Error: Reverse Geocode failed", comment: "") + " \(error)")
+                print(NSLocalizedString("Get Placemark From Location Error: Reverse Geocode failed", comment: "") + " \(error.localizedDescription)")
                 callback(placemark: nil)
 
             } else if let placemarks = placemarks {
@@ -178,7 +178,7 @@ class LocationDataManager: NSObject {
                 }
                 //failure
                 else {
-                    print(NSLocalizedString("Get Placemark From Location Error: Problem with the data received from geocoder", comment: "") + " \(error)")
+                    print(NSLocalizedString("Get Placemark From Location Error: Problem with the data received from geocoder", comment: ""))
                     callback(placemark: nil)
                 }
             }
@@ -226,6 +226,13 @@ class LocationDataManager: NSObject {
             }
         }
     }
+
+
+    func invalidateGetUsersCurrentLocationCallback() {
+
+        getUsersCurrentLocationCallback = nil
+
+    }
 }
 
 extension LocationDataManager : CLLocationManagerDelegate {
@@ -255,7 +262,7 @@ extension LocationDataManager : CLLocationManagerDelegate {
      - parameter error:   NSError
      */
     func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
-        print(NSLocalizedString("Get User's Current Location Error:", comment: "") + " \(error)")
+        print(NSLocalizedString("Get User's Current Location Error:", comment: "") + " \(error.localizedDescription)")
         if getUsersCurrentLocationCallback != nil {
             getUsersCurrentLocationCallback(location : nil)
             getUsersCurrentLocationCallback = nil
