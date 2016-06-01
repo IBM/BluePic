@@ -72,7 +72,7 @@ func main(args:[String:Any]) -> [String:Any] {
             pushRequestOptions.append(.path("/push/images/\(cloudantId!)"))
            
             var pushRequestHeaders = [String:String]()
-            pushRequestHeaders["Authorization"] = authJson["access_token"].string!
+            pushRequestHeaders["Authorization"] = "Bearer \(authJson["access_token"].string!)"
             pushRequestOptions.append(.headers(headers))
             
             pushStr = authJson["access_token"].string!
