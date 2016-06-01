@@ -16,12 +16,24 @@
 
 struct BluePic {
   static let Domain = "BluePic-Server"
+  /**
+   Enum error specifically for BluePic app
+   
+   - Internal: used to indicate internal error of some sort
+   - Other:    any other type of error
+   */
   enum Error: Int {
     case Internal = 1
     case Other
   }
 }
 
+/**
+ Enum error used to inform of an invalid reading/processing error
+ 
+ - Image: Used when image data isn't what was expected
+ - User:  Used when User data isn't what was expected
+ */
 enum ProcessingError: ErrorProtocol {
   case Image(String)
   case User(String)

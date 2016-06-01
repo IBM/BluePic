@@ -19,19 +19,31 @@ import LoggerAPI
 
 public struct StringUtils {
 
+  /**
+   Strips out any Url encoded whitespace and replaces it with a human readable space
+   
+   - parameter str: String to parse
+   
+   - returns: decoded string without whitespace encodings
+   */
   static func decodeWhiteSpace(inString str: String) -> String {
     let decodedStr = str.replacingOccurrences(of: "%20", with: " ")
     Log.verbose("Decoded (whitespace) in string: '\(str)' to '\(decodedStr)'.")
     return decodedStr
   }
 
+  /**
+   Generates timestamp in specific format
+   
+   - returns: timestamp in String form
+   */
   static func currentTimestamp() -> String {
     #if os(Linux)
     let dateStr = NSDate().descriptionWithLocale(nil).bridge()
     #else
     let dateStr = NSDate().description.bridge()
     #endif
-    let ts = dateStr.substring(to: 10) + "T" + dateStr.substring(with: NSMakeRange(11, 8))
+    let ts = dateStr.substring(to: 10) + "T" + dateStr.substring(with: NSRange(location: 11, length: 8))
     Log.verbose("Current time string: \(dateStr)")
     Log.verbose("Current timestamp generated: \(ts)")
     return ts

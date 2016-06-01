@@ -73,6 +73,9 @@ public class BaseRequest: NSObject, NSURLSessionTaskDelegate {
     
     /// Determines whether request should follow http redirects
     public var allowRedirects : Bool = true
+	
+	/// Deterimes the cache policy to use for sending request
+	public var cachePolicy: NSURLRequestCachePolicy = .UseProtocolCachePolicy
     
     
     
@@ -109,6 +112,7 @@ public class BaseRequest: NSObject, NSURLSessionTaskDelegate {
         - parameter headers:         Optional headers to add to the request.
         - parameter queryParameters: Optional query parameters to add to the request.
         - parameter timeout:         Timeout in seconds for this request
+		- parameter cachePolicy:	 Cache policy to use when sending request
     
         - Note: A relative URL may be supplied if the `BMSClient` class is initialized with an app route beforehand.
     */
@@ -116,7 +120,8 @@ public class BaseRequest: NSObject, NSURLSessionTaskDelegate {
                headers: [String: String]?,
                queryParameters: [String: String]?,
                method: HttpMethod = HttpMethod.GET,
-               timeout: Double = BMSClient.sharedInstance.defaultRequestTimeout) {
+               timeout: Double = BMSClient.sharedInstance.defaultRequestTimeout,
+               cachePolicy: NSURLRequestCachePolicy = NSURLRequestCachePolicy.UseProtocolCachePolicy) {
         
         // Relative URL
         if (!url.containsString("http://") && !url.containsString("https://")),
@@ -140,7 +145,9 @@ public class BaseRequest: NSObject, NSURLSessionTaskDelegate {
         let configuration = NSURLSessionConfiguration.defaultSessionConfiguration()
         configuration.timeoutIntervalForRequest = timeout
         networkRequest = NSMutableURLRequest()
-                
+
+		self.cachePolicy = cachePolicy
+		
         super.init()
                 
         self.networkSession = NSURLSession(configuration: configuration, delegate: self, delegateQueue: nil)
@@ -199,8 +206,6 @@ public class BaseRequest: NSObject, NSURLSessionTaskDelegate {
         - parameter completionHandler: The closure that will be called when this request finishes
     */
     public func sendWithCompletionHandler(completionHandler: BmsCompletionHandler?) {
-        
-        BaseRequest.logger.debug("Network request outbound")
         
         // Add metadata to the request header so that analytics data can be obtained for ALL bms network requests
         
@@ -267,6 +272,7 @@ public class BaseRequest: NSObject, NSURLSessionTaskDelegate {
         networkRequest.HTTPMethod = httpMethod.rawValue
         networkRequest.allHTTPHeaderFields = headers
         networkRequest.HTTPBody = requestBody
+		networkRequest.cachePolicy = cachePolicy
         
         BaseRequest.logger.debug("Sending Request to " + resourceUrl)
         

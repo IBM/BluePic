@@ -1,0 +1,24 @@
+{
+  "docs": [
+    {
+      "_id": "1000",
+      "name": "John Smith",
+      "type": "user"
+    },
+    {
+      "_id": "1001",
+      "name": "Peter Adams",
+      "type": "user"
+    },
+    {
+      "_id": "1002",
+      "name": "Sharon den Adel",
+      "type": "user"
+    },
+    {
+      "_id": "1003",
+      "name": "Kevin White",
+      "type": "user"
+    }
+  ]
+}
