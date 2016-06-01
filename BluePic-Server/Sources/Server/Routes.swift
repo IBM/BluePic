@@ -257,11 +257,10 @@ func defineRoutes() {
           if let error = error {
             Log.error("Failed to send push notification: \(error)")
             response.error = generateInternalError()
-            next()
           } else {
             response.status(HTTPStatusCode.OK)
-            next()
           }
+          next()
         }
       } else {
         response.error = generateInternalError()
