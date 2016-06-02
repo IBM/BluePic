@@ -121,7 +121,7 @@ Lastly, remember that push notifications will only show up on a physical iOS dev
 
 #### 10. Configure OpenWhisk
 
-See the [README](https://github.com/IBM-Swift/BluePic/blob/develop/BluePic-OpenWhisk/README.md) instructions in the [BluePic-OpenWhisk](BluePic-OpenWhisk) folder for details on configuration and invocation of OpenWhisk commands.
+BluePic leverages OpenWhisk actions written in Swift for accessing the Alchemy Vision and Weather APIs. For instructions on how to configure OpenWhisk, see the following [page](Docs/OpenWhisk.md). You will find there details on configuration and invocation of OpenWhisk commands.
 
 #### 11. Build the BluePic-Server
 
