@@ -139,7 +139,7 @@ func parseImages(document: JSON) throws -> JSON {
 }
 
 /**
- Method to parse a document to get image data for a specific user out of it
+ Method to parse a document to get image data for a specific user out of it.
 
  - parameter userId:   ID of user to get images for
  - parameter document: json document with raw data
@@ -163,7 +163,7 @@ func parseImages(forUserId userId: String, usingDocument document: JSON) throws 
 }
 
 /**
- Method to parse a document to get all user data
+ Method to parse a document to get all user data.
 
  - parameter document: json document with raw data
 
@@ -177,7 +177,7 @@ func parseUsers(document: JSON) throws -> JSON {
 }
 
 /**
- Converts a RouterRequest object to a more consumable JSON object
+ Converts a RouterRequest object to a more consumable JSON object.
 
  - parameter request: router request with all the data
 
@@ -197,7 +197,7 @@ func getImageJSON(fromRequest request: RouterRequest) throws -> JSON {
   let width = Float(w),
   let height = Float(h),
   let latitude = Float(lat),
-  let longitude = Float(long), // else {
+  let longitude = Float(long),
   let authContext = request.userInfo["mcaAuthContext"] as? AuthorizationContext else {
     throw ProcessingError.Image("Invalid image document!")
   }
@@ -211,7 +211,6 @@ func getImageJSON(fromRequest request: RouterRequest) throws -> JSON {
   let locationName = StringUtils.decodeWhiteSpace(inString: location)
   let imageURL = generateUrl(forContainer: userId, forImage: fileName)
   let deviceId = authContext.deviceIdentity.id
-  // let deviceId = "3003"
 
   let whereabouts: JSONDictionary = ["latitude": latitude, "longitude": longitude, "name": locationName]
   let imageDocument: JSONDictionary = ["location": whereabouts, "contentType": contentType, "url": imageURL,
@@ -222,7 +221,7 @@ func getImageJSON(fromRequest request: RouterRequest) throws -> JSON {
 }
 
 /**
- Convenience method to create consistently formatted error
+ Convenience method to create consistently formatted error.
 
  - returns: NSError object
  */
@@ -231,7 +230,7 @@ func generateInternalError() -> NSError {
 }
 
 /**
- Convenience method to create a URL for a container
+ Convenience method to create a URL for a container.
 
  - parameter containerName: name of the container
  - parameter imageName:     name of corresponding image
@@ -246,7 +245,7 @@ func generateUrl(forContainer containerName: String, forImage imageName: String)
 }
 
 /**
- Method that actually creates a container with the Object Storage service
+ Method that actually creates a container with the Object Storage service.
 
  - parameter name: name of the container to create
  - parameter completionHandler: callback to use on success or failure
@@ -278,7 +277,7 @@ func createContainer(withName name: String, completionHandler: (success: Bool) -
 }
 
 /**
- Method to store image binary in a container if it exsists
+ Method to store image binary in a container if it exsists.
 
  - parameter image:             image binary data
  - parameter name:              file name to store image as
@@ -311,7 +310,7 @@ func store(image: NSData, withName name: String, inContainer containerName: Stri
 }
 
 /**
- Method to convert Json data to a more usable format, adding and removing values as necessary
+ Method to convert JSON data to a more usable format, adding and removing values as necessary.
 
  - parameter containerName: container to use
  - parameter record:        Json data to massage/modify
@@ -326,11 +325,11 @@ private func massageImageRecord(containerName: String, record: inout JSON) {
 }
 
 /**
- Method to simply get cleanly formatted values from a Json document
+ Method to simply get cleanly formatted values from a JSON document.
 
- - parameter document: json document with raw data
+ - parameter document: JSON document with raw data
 
- - throws: parsing error if user json is invalid
+ - throws: parsing error if user JSON is invalid
 
  - returns: array of Json value objects
  */
@@ -346,11 +345,11 @@ private func parseRecords(document: JSON) throws -> [JSON] {
 }
 
 /**
- Helper method to wrap parsed data up nicely in a Json object
+ Helper method to wrap parsed data up nicely in a JSON object.
 
- - parameter records: array of Json data to wrap up
+ - parameter records: array of JSON data to wrap up
 
- - returns: Json object containg data and number of items
+ - returns: JSON object containg data and number of items
  */
 private func constructDocument(records: [JSON]) -> JSON {
   var jsonDocument = JSON([:])
