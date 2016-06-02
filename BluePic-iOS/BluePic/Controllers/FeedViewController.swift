@@ -123,6 +123,13 @@ class FeedViewController: UIViewController {
 
     }
 
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        if searchQuery != nil && self.isMovingToParentViewController() && collectionView.numberOfItemsInSection(1) < 1 {
+            SVProgressHUD.show()
+        }
+    }
+
     /**
      Method called as a callback from the OS when the app receives a memeory warning from the OS
      */
@@ -247,6 +254,7 @@ class FeedViewController: UIViewController {
      - parameter sender: AnyObject
      */
     @IBAction func popVC(sender: AnyObject) {
+        SVProgressHUD.dismiss()
         self.navigationController?.popViewControllerAnimated(true)
     }
 
@@ -353,12 +361,14 @@ extension FeedViewController {
     func handleFeedViewModelNotifications(feedViewModelNotification: FeedViewModelNotification) {
 
         if feedViewModelNotification == FeedViewModelNotification.ReloadCollectionView {
+            SVProgressHUD.dismiss()
             reloadDataInCollectionView()
         } else if feedViewModelNotification == FeedViewModelNotification.UploadingPhotoStarted {
             collectionView.reloadData()
             scrollCollectionViewToTop()
             tryToStartLoadingAnimation()
         } else if feedViewModelNotification == FeedViewModelNotification.NoSearchResults {
+            SVProgressHUD.dismiss()
             noResultsLabel.hidden = false
         } else if feedViewModelNotification == FeedViewModelNotification.GetImagesServerFailure {
             reloadDataInCollectionView()
