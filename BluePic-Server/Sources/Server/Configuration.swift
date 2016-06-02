@@ -33,7 +33,7 @@ public struct Configuration {
   }
 
   // Instance constants
-  let configurationFile = "cf_config.json"
+  let configurationFile = "cloud_config.json"
   let appEnv: AppEnv
 
   init() throws {
