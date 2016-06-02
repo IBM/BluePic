@@ -73,13 +73,13 @@ You can obtain the above credentials by accessing your application's page on Blu
 ./Bridge-Scripts/Object-Storage/populator.sh --userid=<object storage username> --password=<object storage password> --projectid=<object storage projectid>
 ```
 
-#### 6. Update `BluePic-Server/cf_config.json` file
+#### 6. Update `BluePic-Server/cloud_config.json` file
 
-You should now update the credentials for each one of the services listed in the `BluePic-Server/cf_config.json` file. This will allow you to run the Kitura-based server locally for development and testing purposes. You will find placeholders in the `cf_config.json` file (e.g. `<username>`, `<projectId>`) for each of the credential values that should be provided.
+You should now update the credentials for each one of the services listed in the `BluePic-Server/cloud_config.json` file. This will allow you to run the Kitura-based server locally for development and testing purposes. You will find placeholders in the `cloud_config.json` file (e.g. `<username>`, `<projectId>`) for each of the credential values that should be provided.
 
-Remember that you can obtain the credentials for each service listed in the `cf_config.json` file by accessing your application's page on Bluemix and clicking on the `Show Credentials` twisty found on each of the service instances bound to the BluePic app.
+Remember that you can obtain the credentials for each service listed in the `cloud_config.json` file by accessing your application's page on Bluemix and clicking on the `Show Credentials` twisty found on each of the service instances bound to the BluePic app.
 
-You can take a look at the contents of the `cf_config.json` file by clicking [here](BluePic-Server/cf_config.json).
+You can take a look at the contents of the `cloud_config.json` file by clicking [here](BluePic-Server/cloud_config.json).
 
 #### 7. Create an application instance on Facebook
 
@@ -121,7 +121,7 @@ Lastly, remember that push notifications will only show up on a physical iOS dev
 
 #### 10. Configure OpenWhisk
 
-See the [README](https://github.com/IBM-Swift/BluePic/blob/develop/BluePic-OpenWhisk/README.md) instructions in the [BluePic-OpenWhisk](BluePic-OpenWhisk) folder for details on configuration and invocation of OpenWhisk commands.
+BluePic leverages OpenWhisk actions written in Swift for accessing the Alchemy Vision and Weather APIs. For instructions on how to configure OpenWhisk, see the following [page](Docs/OpenWhisk.md). You will find there details on configuration and invocation of OpenWhisk commands.
 
 #### 11. Build the BluePic-Server
 
@@ -145,7 +145,7 @@ Go to the `BluePic-iOS` directory and open the BluePic workspace with Xcode usin
 		--- | --- | ---
 		`.ng.bluemix.net` | `.eu-gb.bluemix.net` | `.au-syd.bluemix.net`
 
-You can find your region in multiple ways. For instance, by just looking at the URL you use to access your application's page (or the Bluemix dashboard). Another way is to look at the `cf_config.json` file you modified earlier. If you look at the credentials under your `AdvancedMobileAccess` service, there is a value called `serverUrl` which should contain one of the regions mentioned above. Once you insert your `bluemixAppRegion` value into the `bluemix.plist`, your app should be configured.
+You can find your region in multiple ways. For instance, by just looking at the URL you use to access your application's page (or the Bluemix dashboard). Another way is to look at the `cloud_config.json` file you modified earlier. If you look at the credentials under your `AdvancedMobileAccess` service, there is a value called `serverUrl` which should contain one of the regions mentioned above. Once you insert your `bluemixAppRegion` value into the `bluemix.plist`, your app should be configured.
 
 #### 14. Run the iOS app
 
