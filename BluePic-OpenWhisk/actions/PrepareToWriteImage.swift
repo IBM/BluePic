@@ -52,11 +52,13 @@ func main(args:[String:Any]) -> [String:Any] {
     }
     
     let observation = weatherResultJson["observation"]
-    var location = documentResultJson["location"]
     
-    location["iconId"] = observation["icon_code"]
-    location["description"] = observation["sky_cover"]
-    location["temperature"] = observation["imperial"]["temp"]
+    var weather:JSON = [:]
+    weather["iconId"] = observation["icon_code"]
+    weather["description"] = observation["sky_cover"]
+    weather["temperature"] = observation["imperial"]["temp"]
+    
+    documentResultJson["location"]["weather"] = weather
     
     documentResultJson["tags"] = JSON(tags)
     
