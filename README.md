@@ -121,7 +121,7 @@ Lastly, remember that push notifications will only show up on a physical iOS dev
 
 #### 10. Configure OpenWhisk
 
-See the [README](../IBM-Swift/BluePic/blob/develop/BluePic-OpenWhisk/README.md) instructions in the [../IBM-Swift/BluePic/tree/develop/BluePic-OpenWhisk](BluePic-OpenWhisk) folder for details on configuration and invocation of OpenWhisk commands.
+See the [README](../IBM-Swift/BluePic/blob/develop/BluePic-OpenWhisk/README.md) instructions in the [BluePic-OpenWhisk](BluePic-OpenWhisk) folder for details on configuration and invocation of OpenWhisk commands.
 
 #### 11. Build the BluePic-Server
 
