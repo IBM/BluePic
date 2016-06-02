@@ -86,4 +86,49 @@ extension UIImage {
         return newImage
     }
 
+
+    class func resize(image: UIImage) -> UIImage? {
+
+        var actualHeight = image.size.height
+        var actualWidth =  image.size.width
+        let maxHeight: CGFloat = 600.0
+        let maxWidth: CGFloat = 600.0
+        var imgRatio = actualWidth/actualHeight
+        let maxRatio = maxWidth/maxHeight
+        let compressionQuality: CGFloat = 0.5
+
+        if(actualHeight > maxHeight || actualWidth > maxWidth) {
+
+            if(imgRatio < maxRatio) {
+                //adjust width according to maxHeight
+                imgRatio = maxHeight / actualHeight
+                actualWidth = imgRatio * actualWidth
+                actualHeight = maxHeight
+            } else if(imgRatio > maxRatio) {
+                //adjust height according to maxWidth
+                imgRatio = maxWidth / actualWidth
+                actualHeight = imgRatio * actualHeight
+                actualWidth = maxWidth
+            } else {
+                actualHeight = maxHeight
+                actualWidth = maxWidth
+            }
+
+        }
+
+        let rect = CGRect(x: 0, y: 0, width: actualWidth, height: actualHeight)
+        UIGraphicsBeginImageContext(rect.size)
+        image.drawInRect(rect)
+        let img = UIGraphicsGetImageFromCurrentImageContext()
+        let imageData = UIImageJPEGRepresentation(img, compressionQuality)
+        UIGraphicsEndImageContext()
+
+        if let data = imageData {
+            return UIImage(data: data)
+        } else {
+            return nil
+        }
+
+    }
+
 }

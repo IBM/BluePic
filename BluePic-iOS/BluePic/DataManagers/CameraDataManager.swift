@@ -310,12 +310,15 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
         }
         let userObject = User(facebookID: userId, name: fullName)
 
-        var image: UIImage
-        if takenImage.size.width > kResizeAllImagesToThisWidth { //if image too big, shrink it down
-            image = UIImage.resizeImage(takenImage, newWidth: kResizeAllImagesToThisWidth)
-        } else {
-            image = takenImage
-        }
+        /// old way we resized images
+//        var image: UIImage
+//        if takenImage.size.width > kResizeAllImagesToThisWidth { //if image too big, shrink it down
+//            image = UIImage.resizeImage(takenImage, newWidth: kResizeAllImagesToThisWidth)
+//        } else {
+//            image = takenImage
+//        }
+
+       var image = UIImage.resize(takenImage)!
 
         image = self.rotateImageIfNecessary(image)
 
