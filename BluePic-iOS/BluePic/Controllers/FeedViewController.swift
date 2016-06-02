@@ -361,7 +361,7 @@ extension FeedViewController {
         } else if feedViewModelNotification == FeedViewModelNotification.NoSearchResults {
             noResultsLabel.hidden = false
         } else if feedViewModelNotification == FeedViewModelNotification.GetImagesServerFailure {
-            tryToStopLoadingAnimation()
+            reloadDataInCollectionView()
             displayImageFeedErrorAlert()
         }
 
