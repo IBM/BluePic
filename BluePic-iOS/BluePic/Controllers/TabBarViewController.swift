@@ -157,7 +157,7 @@ extension TabBarViewController: UITabBarControllerDelegate {
      - returns: Bool
      */
     func shouldShowProfileViewControllerAndHandleIfShouldnt() -> Bool {
-        if viewModel.didUserPressLoginLater() {
+        if !viewModel.isUserAuthenticated() {
             presentLoginVCAnimated()
             return false
         } else {
@@ -169,9 +169,6 @@ extension TabBarViewController: UITabBarControllerDelegate {
      Method handles the camera tab being selected. If the user pressed login later, then we present to the user the login vc. If the user didn't press login later, then we check if location services had been enabled or not. If it has been enabled, we show them the image picker action sheet. Else we show the user the location services required alert
      */
     func handleCameraTabBeingSelected() {
-        if viewModel.didUserPressLoginLater() {
-            presentLoginVCAnimated()
-        } else {
             LocationDataManager.SharedInstance.isLocationServicesEnabledAndIfNotHandleIt({ isEnabled in
 
                 if isEnabled {
@@ -180,7 +177,6 @@ extension TabBarViewController: UITabBarControllerDelegate {
                     self.showLocationServiceRequiredAlert()
                 }
             })
-        }
     }
 
     /**

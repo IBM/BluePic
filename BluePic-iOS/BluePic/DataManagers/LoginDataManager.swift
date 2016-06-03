@@ -126,8 +126,8 @@ class LoginDataManager: NSObject {
 
      - returns: Bool
      */
-    private func isUserAlreadyAuthenticated() -> Bool {
-        if CurrentUser.facebookUserId != nil && CurrentUser.fullName != nil {
+    func isUserAlreadyAuthenticated() -> Bool {
+        if CurrentUser.facebookUserId != "anonymous" && CurrentUser.fullName != "anonymous" {
             return true
         } else {
             return false
