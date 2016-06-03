@@ -110,7 +110,6 @@ class FacebookDataManager: NSObject {
     private func authenticateFacebookUser(callback : ((facebookUserId: String?, facebookUserFullName: String?, error: FacebookAuthenticationError?) -> ())) {
 
         let authManager = BMSClient.sharedInstance.authorizationManager
-        authManager
         authManager.obtainAuthorization(completionHandler: {(response: Response?, error: NSError?) in
 
             //error
