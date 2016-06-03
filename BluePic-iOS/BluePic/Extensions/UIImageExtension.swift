@@ -72,6 +72,13 @@ extension UIImage {
 
     }
 
+    /**
+     Method rotates the image to its correct orrientation if necessary
+
+     - parameter imageToRotate: UIImage
+
+     - returns: UIImage
+     */
     class func rotateImageIfNecessary(imageToRotate: UIImage) -> UIImage {
         let imageOrientation = imageToRotate.imageOrientation.rawValue
         switch imageOrientation {
@@ -87,10 +94,6 @@ extension UIImage {
             return imageToRotate.imageRotatedByDegrees(0, flip: false)
         }
     }
-
-
-
-
 
     /**
      Method rotates image by degrees provided in the parameter. As will it will flip it with true or not with false.
@@ -140,6 +143,13 @@ extension UIImage {
     }
 
 
+    /**
+     Method resizes and rotates the image to prepare it for image upload
+
+     - parameter image: UIImage
+
+     - returns: UIImage?
+     */
     class func resizeAndRotateImage(image: UIImage) -> UIImage? {
 
         if let resizedImage = resizeImage(image) {
