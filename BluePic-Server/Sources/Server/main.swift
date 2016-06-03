@@ -22,7 +22,7 @@ import CouchDB
 import LoggerAPI
 import HeliumLogger
 import SwiftyJSON
-import CFEnvironment
+import CloudEnvironment
 import BluemixObjectStorage
 
 ///
