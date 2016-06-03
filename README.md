@@ -6,19 +6,19 @@ BluePic is a photo and image sharing sample application that allows you to take 
 
 ## Getting started
 
-There are *two ways* you can compile and provision BluePic on Bluemix. Method 1 uses the IBM Cloud Bridge tool. Using the IBM Cloud Bridge tool is the easiest and quickest path to get BluePic up and running. Method 2 is manual, does not leverage this tool, and, therefore, takes longer but you get to understand exactly the steps that are happening behind the scenes. Regardless of what what path you choose, there are a few optional steps you can complete for additional functionality.
+There are *two ways* you can compile and provision BluePic on Bluemix. Method 1 uses the IBM Cloud Tool. Using the IBM Cloud Tool is the easiest and quickest path to get BluePic up and running. Method 2 is manual, does not leverage this tool, and, therefore, takes longer but you get to understand exactly the steps that are happening behind the scenes. Regardless of what what path you choose, there are a few optional steps you can complete for additional functionality.
 
-## Method 1: IBM Cloud Tools
-Once you have the [IBM Cloud Bridge tool](#) installed for Mac, open it and let's get started. When creating a new project, you will have the option to create a Bluepic Project. Select that option and name your project/runtime. This will kick off a process that automatically does the following:
+## Method 1: IBM Cloud Tool
+Once you have the [IBM Cloud Tool](#) installed for Mac, you can open it to get started. On the screen for creating a new project, you will find the option to create a BluePic Project. Select that option and name your project/runtime. This will kick off a process that automatically does the following:
 
-- Installs curl on your Bluemix runtime.
+- Installs curl on your local system.
 - Clones the Bluepic repo on your Mac.
-- Creates your Bluemix runtime and all the services you could use.
-- Runs scripts to populare the Cloudant database and Object Storage services with demo data.
-- Updates your `cloud_config.json` with all the service credentials needed by the Kitura server.
-- Lastly, it gets your Kitura server running so your iOS client can communicate with it.
+- Creates your Bluemix runtime and provisions the Bluemix services that BluePic can leverage.
+- Populates the Cloudant and Object Storage services with demo data.
+- Updates your `cloud_config.json` with all the service credentials needed by the Kitura-based server.
+- Lastly, it gets your Kitura-based server running so your iOS client can communicate with it.
 
-If desired, you can now skip to the [optional features section](#optional-features-to-configure) or simply [run the application](#run-the-application)
+Once the IBM Cloud Tool has completed the steps above, you can [run the application](#run-the-application). If desired, you can also configured the Bluemix services that were provisioned in order to enable [optional features](#optional-features-to-configure) in BluePic (such as Facebook authentication and Push notifications).
 
 ## Method 2: Manual Configuration and Deployment
 Instead of using the IBM Cloud Bridge, which gives you a seamless compilation and provisioning experience, you can follow the steps outlined in this section if you'd like to take a peek under the hood!
