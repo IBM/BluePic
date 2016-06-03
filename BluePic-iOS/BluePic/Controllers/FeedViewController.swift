@@ -123,6 +123,13 @@ class FeedViewController: UIViewController {
 
     }
 
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        if searchQuery != nil && self.isMovingToParentViewController() && collectionView.numberOfItemsInSection(1) < 1 {
+            SVProgressHUD.show()
+        }
+    }
+
     /**
      Method called as a callback from the OS when the app receives a memeory warning from the OS
      */
@@ -247,6 +254,7 @@ class FeedViewController: UIViewController {
      - parameter sender: AnyObject
      */
     @IBAction func popVC(sender: AnyObject) {
+        SVProgressHUD.dismiss()
         self.navigationController?.popViewControllerAnimated(true)
     }
 
@@ -262,7 +270,6 @@ class FeedViewController: UIViewController {
 }
 
 extension FeedViewController: UICollectionViewDataSource {
-
 
     /**
      Method sets up the cell for item at indexPath by asking the view model to set up the collection view cell
@@ -351,14 +358,19 @@ extension FeedViewController {
      - parameter feedViewModelNotification: FeedviewModelNotifications
      */
     func handleFeedViewModelNotifications(feedViewModelNotification: FeedViewModelNotification) {
+        guard let _ = self.view.window else {
+            return // don't allow updates on view controllers not in view
+        }
 
         if feedViewModelNotification == FeedViewModelNotification.ReloadCollectionView {
+            SVProgressHUD.dismiss()
             reloadDataInCollectionView()
         } else if feedViewModelNotification == FeedViewModelNotification.UploadingPhotoStarted {
             collectionView.reloadData()
             scrollCollectionViewToTop()
             tryToStartLoadingAnimation()
         } else if feedViewModelNotification == FeedViewModelNotification.NoSearchResults {
+            SVProgressHUD.dismiss()
             noResultsLabel.hidden = false
         } else if feedViewModelNotification == FeedViewModelNotification.GetImagesServerFailure {
             reloadDataInCollectionView()
