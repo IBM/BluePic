@@ -64,11 +64,12 @@ function install() {
   wsk action create --kind swift:3 bluepic/cloudantRead actions/CloudantRead.swift -t 300000
   wsk action create --kind swift:3 bluepic/cloudantWrite actions/CloudantWrite.swift -t 300000
   wsk action create --kind swift:3 bluepic/processImageStub actions/Stub.swift -t 300000
+  wsk action create --kind swift:3 bluepic/kituraRequestAuth actions/KituraRequestAuth.swift -t 300000
   wsk action create --kind swift:3 bluepic/kituraCallback actions/KituraCallback.swift -t 300000
   
   
   #create sequences to tie everything together - lots of these are for testing
-  wsk action create bluepic/processImage --sequence bluepic/prepareReadImage,bluepic/cloudantRead,bluepic/prepareWeatherRequest,bluepic/weather,bluepic/alchemy,bluepic/prepareCloudantWrite,bluepic/cloudantWrite,bluepic/kituraCallback -t 300000
+  wsk action create bluepic/processImage --sequence bluepic/prepareReadImage,bluepic/cloudantRead,bluepic/prepareWeatherRequest,bluepic/weather,bluepic/alchemy,bluepic/prepareCloudantWrite,bluepic/cloudantWrite,bluepic/kituraRequestAuth,bluepic/kituraCallback -t 300000
   wsk action create bluepic/processRequestThroughCloudantWrite --sequence bluepic/prepareReadImage,bluepic/cloudantRead,bluepic/prepareWeatherRequest,bluepic/weather,bluepic/alchemy,bluepic/prepareCloudantWrite,bluepic/cloudantWrite -t 300000
   wsk action create bluepic/processRequestToCloudantWrite --sequence bluepic/prepareReadImage,bluepic/cloudantRead,bluepic/prepareWeatherRequest,bluepic/weather,bluepic/alchemy,bluepic/prepareCloudantWrite -t 300000
   wsk action create bluepic/processRequestThroughAlchemy --sequence bluepic/prepareReadImage,bluepic/cloudantRead,bluepic/prepareWeatherRequest,bluepic/weather,bluepic/alchemy -t 300000
@@ -78,6 +79,7 @@ function install() {
   wsk action create bluepic/processRequestToReadImage --sequence bluepic/prepareReadImage -t 300000
   wsk action create bluepic/processRequestThroughReadUser --sequence bluepic/prepareReadUser,bluepic/cloudantRead -t 300000
   wsk action create bluepic/processFinalWrite --sequence bluepic/prepareCloudantWrite,bluepic/cloudantWrite -t 300000
+  wsk action create bluepic/processCallback --sequence bluepic/kituraRequestAuth,bluepic/kituraCallback -t 300000
   
   echo -e "${GREEN}Install Complete${NC}"
   wsk list
@@ -97,6 +99,7 @@ function uninstall() {
   wsk action delete bluepic/cloudantWrite
   wsk action delete bluepic/processImage
   wsk action delete bluepic/processImageStub
+  wsk action delete bluepic/kituraRequestAuth
   wsk action delete bluepic/kituraCallback
   
   wsk action delete bluepic/processRequestThroughCloudantWrite
@@ -108,6 +111,7 @@ function uninstall() {
   wsk action delete bluepic/processRequestToReadImage
   wsk action delete bluepic/processRequestThroughReadUser
   wsk action delete bluepic/processFinalWrite
+  wsk action delete bluepic/processCallback
   
   wsk package delete bluepic
   

@@ -66,6 +66,7 @@ This sequence is made up of the following actions.
 * `bluepic/alchemy` - request alchemy tagging for image
 * `bluepic/prepareCloudantWrite` - merge alchemy and and weather data into the Cloudant document JSON/prepare for writing back to cloudant
 * `bluepic/cloudantWrite` - save data back to Cloudant
+* `bluepic/kituraRequestAuth` - request auth crednetials for Kitura from MCA
 * `bluepic/kituraCallback` - make request back to Kitura server to invoke push notification service
 
 
@@ -114,3 +115,6 @@ wsk action invoke {sequence name} -p imageId {cloudant document id}
     * alchemy
     * prepareCloudantWrite
     * cloudantWrite
+ * `bluepic/processCallback`
+    * `bluepic/kituraRequestAuth` 
+    * `bluepic/kituraCallback`
