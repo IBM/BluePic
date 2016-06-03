@@ -6,12 +6,21 @@ BluePic is a photo and image sharing sample application that allows you to take 
 
 ## Getting started
 
-There are two ways you can compile and provision BluePic on Bluemix. The first approach uses the IBM Cloud Bridge tool. Using the IBM Cloud Bridge tool is the easiest and quickest path to get BluePic up and running. The second approach is manual, does not leverage this  tool, and, therefore, takes longer but you get to understand exactly the steps that are happening behind the scenes.
+There are *two ways* you can compile and provision BluePic on Bluemix. Method 1 uses the IBM Cloud Bridge tool. Using the IBM Cloud Bridge tool is the easiest and quickest path to get BluePic up and running. Method 2 is manual, does not leverage this tool, and, therefore, takes longer but you get to understand exactly the steps that are happening behind the scenes. Regardless of what what path you choose, there are a few optional steps you can complete for additional functionality.
 
-### IBM Cloud Bridge
-TODO: ADD Contents
+## Method 1: IBM Cloud Tools
+Once you have the [IBM Cloud Bridge tool](#) installed for Mac, open it and let's get started. When creating a new project, you will have the option to create a Bluepic Project. Select that option and name your project/runtime. This will kick off a process that automatically does the following:
 
-### Step by step instructions for configuration and deployment
+- Installs curl on your Bluemix runtime.
+- Clones the Bluepic repo on your Mac.
+- Creates your Bluemix runtime and all the services you could use.
+- Runs scripts to populare the Cloudant database and Object Storage services with demo data.
+- Updates your `cloud_config.json` with all the service credentials needed by the Kitura server.
+- Lastly, it gets your Kitura server running so your iOS client can communicate with it.
+
+If desired, you can now skip to the [optional features section](#optional-features-to-configure) or simply [run the application](#run-the-application)
+
+## Method 2: Manual Configuration and Deployment
 Instead of using the IBM Cloud Bridge, which gives you a seamless compilation and provisioning experience, you can follow the steps outlined in this section if you'd like to take a peek under the hood!
 
 #### 1. Install system dependencies
@@ -81,7 +90,26 @@ Remember that you can obtain the credentials for each service listed in the `clo
 
 You can take a look at the contents of the `cloud_config.json` file by clicking [here](BluePic-Server/cloud_config.json).
 
-#### 7. Create an application instance on Facebook
+#### 7. Update configuration for iOS app
+
+Go to the `BluePic-iOS` directory and open the BluePic workspace with Xcode using `open BluePic.xcworkspace`. Let's now update the `bluemix.plist` in the Xcode project (you can find this file in `Configuration` folder of the Xcode project).
+
+1. You should set the `isLocal` value to `YES` if you'd like to use a locally running server; if you set the value to `NO`, then you will be accessing the server instance running on Bluemix.
+
+1. To get the `appRouteRemote` and `bluemixAppGUID` value, you should go to your application's page on Bluemix. There, you will find a `MOBILE OPTIONS` link near the top right. Clicking on it should open up a view that displays your `route` which maps to the `appRouteRemote` key in the plist. You will also see an `App GUID` value which maps to the `bluemixAppGUID` key in the plist.
+
+1. Lastly, we need to get the value for `bluemixAppRegion`, which can be one of three options currently:
+
+		REGION US SOUTH | REGION UK | REGION SYDNEY
+		--- | --- | ---
+		`.ng.bluemix.net` | `.eu-gb.bluemix.net` | `.au-syd.bluemix.net`
+
+You can find your region in multiple ways. For instance, by just looking at the URL you use to access your application's page (or the Bluemix dashboard). Another way is to look at the `cloud_config.json` file you modified earlier. If you look at the credentials under your `AdvancedMobileAccess` service, there is a value called `serverUrl` which should contain one of the regions mentioned above. Once you insert your `bluemixAppRegion` value into the `bluemix.plist`, your app should be configured.
+
+## Optional Features to Configure
+In order to leverage Facebook Authentication with Mobile Client Access, Push Notifications, and OpenWhisk, you can use the following instructions.
+
+#### 1. Create an application instance on Facebook
 
 In order to have the app authenticate with Facebook, you must create an application instance on Facebook's website.
 
@@ -98,7 +126,7 @@ In order to have the app authenticate with Facebook, you must create an applicat
 
 1. That's it for setting up the BluePic application instance on the Facebook Developer website. In the following section, we will link this Facebook application instance to your Bluemix Mobile Client Access service.
 
-#### 8. Configure Bluemix Mobile Client Access
+#### 2. Configure Bluemix Mobile Client Access
 
 1. Go to your application's page on Bluemix and open your `Mobile Client Access` service instance:
 <p align="center"><img src="Imgs/mobile-client-access-service.png"  alt="Drawing" height=125 border=0 /></p>
@@ -111,43 +139,30 @@ In order to have the app authenticate with Facebook, you must create an applicat
 
 1. Facebook authentication with Bluemix Mobile Client Access is now completely set up!
 
-#### 9. Configure Bluemix Push service
+#### 3. Configure Bluemix Push service
 
-To utilize push notification capabilities on Bluemix, you need to configure a notification provider. For BluePic, you should configure credentials for the Apple Push Notification Service (APNS). As part of this configuration step, you will need to use the **bundle identifier** you chose in the [Create an application instance on Facebook](#7-create-an-application-instance-on-facebook) section.
+To utilize push notification capabilities on Bluemix, you need to configure a notification provider. For BluePic, you should configure credentials for the Apple Push Notification Service (APNS). As part of this configuration step, you will need to use the **bundle identifier** you chose in the [Create an application instance on Facebook](#1-create-an-application-instance-on-facebook) section.
 
 Luckily, Bluemix has [instructions](https://console.ng.bluemix.net/docs/services/mobilepush/t_push_provider_ios.html) to walk you through that process. Please note that you'd need to upload a `.p12` certificate to Bluemix and enter the password for it, as described in the Bluemix instructions.
 
 Lastly, remember that push notifications will only show up on a physical iOS device.
 
-#### 10. Configure OpenWhisk
+#### 4. Configure OpenWhisk
 
 BluePic leverages OpenWhisk actions written in Swift for accessing the Alchemy Vision and Weather APIs. For instructions on how to configure OpenWhisk, see the following [page](Docs/OpenWhisk.md). You will find there details on configuration and invocation of OpenWhisk commands.
 
-#### 11. Build the BluePic-Server
+## Run The Application
+**Steps 1 and 2 only apply if want to use the local server instead of the server on Bluemix**
+
+#### 1. Build the BluePic-Server
 
 You can now build the BluePic-Server by going to the `BluePic-Server` directory of the cloned repository and running `make`.
 
-#### 12. Run the BluePic-Server
+#### 2. Run the BluePic-Server
 
 To start the Kitura-based server for the BluePic app, go to the `BluePic-Server` directory of the cloned repository and run `.build/debug/Server`.
 
-#### 13. Update configuration for iOS app
-
-Go to the `BluePic-iOS` directory and open the BluePic workspace with Xcode using `open BluePic.xcworkspace`. Let's now update the `bluemix.plist` in the Xcode project (you can find this file in `Configuration` folder of the Xcode project).
-
-1. You should set the `isLocal` value to `YES` if you'd like to use a locally running server; if you set the value to `NO`, then you will be accessing the server instance running on Bluemix.
-
-1. To get the `appRouteRemote` and `bluemixAppGUID` value, you should go to your application's page on Bluemix. There, you will find a `MOBILE OPTIONS` link near the top right. Clicking on it should open up a view that displays your `route` which maps to the `appRouteRemote` key in the plist. You will also see an `App GUID` value which maps to the `bluemixAppGUID` key in the plist.
-
-1. Lastly, we need to get the value for `bluemixAppRegion`, which can be one of three options currently:
-
-		REGION US SOUTH | REGION UK | REGION SYDNEY
-		--- | --- | ---
-		`.ng.bluemix.net` | `.eu-gb.bluemix.net` | `.au-syd.bluemix.net`
-
-You can find your region in multiple ways. For instance, by just looking at the URL you use to access your application's page (or the Bluemix dashboard). Another way is to look at the `cloud_config.json` file you modified earlier. If you look at the credentials under your `AdvancedMobileAccess` service, there is a value called `serverUrl` which should contain one of the regions mentioned above. Once you insert your `bluemixAppRegion` value into the `bluemix.plist`, your app should be configured.
-
-#### 14. Run the iOS app
+#### 3. Run the iOS app
 
 If you don't have the iOS project already open, go to the `BluePic-iOS` directory and open the BluePic workspace using `open BluePic.xcworkspace`.
 
