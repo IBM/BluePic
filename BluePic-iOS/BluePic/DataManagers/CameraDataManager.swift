@@ -322,7 +322,7 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
 
         } else {
 
-            print(NSLocalizedString("Something went wrong preparing the image", comment: ""))
+            print(NSLocalizedString("Prepare Image User Decided To Post Error: Something went wrong preparing the image", comment: ""))
             return false
         }
 
