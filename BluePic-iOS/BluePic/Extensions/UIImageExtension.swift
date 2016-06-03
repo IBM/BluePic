@@ -20,24 +20,77 @@ import UIKit
 
 extension UIImage {
 
+
     /**
-     Resizes a UIImage given a height
+     Method resizes the image to an appropriate size to be uploaded to the server
 
-     - parameter image:     image to resize
-     - parameter newHeight: height of new size of image
+     - parameter image: UIImage
 
-     - returns: newly resized image
+     - returns: UIImage?
      */
-    class func resizeImage(image: UIImage, newWidth: CGFloat) -> UIImage {
-        let scale = newWidth / image.size.width
-        let newHeight = image.size.height * scale
-        UIGraphicsBeginImageContext(CGSize(width: newWidth, height: newHeight))
-        image.drawInRect(CGRect(x: 0, y: 0, width: newWidth, height: newHeight))
-        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+    class func resizeImage(image: UIImage) -> UIImage? {
+
+        var actualHeight = image.size.height
+        var actualWidth =  image.size.width
+        let maxHeight: CGFloat = 600.0
+        let maxWidth: CGFloat = 600.0
+        var imgRatio = actualWidth/actualHeight
+        let maxRatio = maxWidth/maxHeight
+        let compressionQuality: CGFloat = 1.0
+
+        if actualHeight > maxHeight || actualWidth > maxWidth {
+
+            if imgRatio < maxRatio {
+                //adjust width according to maxHeight
+                imgRatio = maxHeight / actualHeight
+                actualWidth = imgRatio * actualWidth
+                actualHeight = maxHeight
+            } else if imgRatio > maxRatio {
+                //adjust height according to maxWidth
+                imgRatio = maxWidth / actualWidth
+                actualHeight = imgRatio * actualHeight
+                actualWidth = maxWidth
+            } else {
+                actualHeight = maxHeight
+                actualWidth = maxWidth
+            }
+
+        }
+
+        let rect = CGRect(x: 0, y: 0, width: actualWidth, height: actualHeight)
+        UIGraphicsBeginImageContext(rect.size)
+        image.drawInRect(rect)
+        let img = UIGraphicsGetImageFromCurrentImageContext()
+        let imageData = UIImageJPEGRepresentation(img, compressionQuality)
         UIGraphicsEndImageContext()
 
-        return newImage
+        if let data = imageData {
+            return UIImage(data: data)
+        } else {
+            return nil
+        }
+
     }
+
+    class func rotateImageIfNecessary(imageToRotate: UIImage) -> UIImage {
+        let imageOrientation = imageToRotate.imageOrientation.rawValue
+        switch imageOrientation {
+        case 0: //Up
+            return imageToRotate.imageRotatedByDegrees(0, flip: false)
+        case 1: //Down
+            return imageToRotate.imageRotatedByDegrees(180, flip: false)
+        case 2: //Left
+            return imageToRotate.imageRotatedByDegrees(270, flip: false)
+        case 3: //Right
+            return imageToRotate.imageRotatedByDegrees(90, flip: false)
+        default:
+            return imageToRotate.imageRotatedByDegrees(0, flip: false)
+        }
+    }
+
+
+
+
 
     /**
      Method rotates image by degrees provided in the parameter. As will it will flip it with true or not with false.
@@ -87,48 +140,15 @@ extension UIImage {
     }
 
 
-    class func resize(image: UIImage) -> UIImage? {
+    class func resizeAndRotateImage(image: UIImage) -> UIImage? {
 
-        var actualHeight = image.size.height
-        var actualWidth =  image.size.width
-        let maxHeight: CGFloat = 600.0
-        let maxWidth: CGFloat = 600.0
-        var imgRatio = actualWidth/actualHeight
-        let maxRatio = maxWidth/maxHeight
-        let compressionQuality: CGFloat = 1.0
-
-        if actualHeight > maxHeight || actualWidth > maxWidth {
-
-            if imgRatio < maxRatio {
-                //adjust width according to maxHeight
-                imgRatio = maxHeight / actualHeight
-                actualWidth = imgRatio * actualWidth
-                actualHeight = maxHeight
-            } else if imgRatio > maxRatio {
-                //adjust height according to maxWidth
-                imgRatio = maxWidth / actualWidth
-                actualHeight = imgRatio * actualHeight
-                actualWidth = maxWidth
-            } else {
-                actualHeight = maxHeight
-                actualWidth = maxWidth
-            }
-
-        }
-
-        let rect = CGRect(x: 0, y: 0, width: actualWidth, height: actualHeight)
-        UIGraphicsBeginImageContext(rect.size)
-        image.drawInRect(rect)
-        let img = UIGraphicsGetImageFromCurrentImageContext()
-        let imageData = UIImageJPEGRepresentation(img, compressionQuality)
-        UIGraphicsEndImageContext()
-
-        if let data = imageData {
-            return UIImage(data: data)
+        if let resizedImage = resizeImage(image) {
+            return rotateImageIfNecessary(resizedImage)
         } else {
             return nil
         }
 
     }
+
 
 }

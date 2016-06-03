@@ -276,25 +276,36 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
 
         resetStateVariables()
 
-        //show image on confirmationView, save a copy
-        if let takenImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
 
-            prepareimageUserDecidedToPost(takenImage)
-
-            //set the confirmation view's photoImageView with the photo just chosen/taken
-            self.confirmationView.photoImageView.image = takenImage
-
-        }
-        //if image isn't available (iCloud photo in Photo stream not loaded yet)
-        else {
+        if(!prepareimageUserDecidedToPost(info)) {
             self.destroyConfirmationView()
             picker.dismissViewControllerAnimated(true, completion: { _ in
 
             })
             self.showPhotoCouldntBeChosenAlert()
-            print(NSLocalizedString("Did Finish Picking Media With Info Error: photo not available!", comment: ""))
 
         }
+
+
+//        //show image on confirmationView, save a copy
+//        if let takenImage = info[UIImagePickerControllerOriginalImage] as? UIImage, resizedAndRotatedImage = UIImage.resizeAndRotateImage(takenImage) {
+//
+//            prepareimageUserDecidedToPost(resizedAndRotatedImage)
+//
+//            //set the confirmation view's photoImageView with the photo just chosen/taken
+//            self.confirmationView.photoImageView.image = takenImage
+//
+//        }
+//        //if image isn't available (iCloud photo in Photo stream not loaded yet)
+//        else {
+//            self.destroyConfirmationView()
+//            picker.dismissViewControllerAnimated(true, completion: { _ in
+//
+//            })
+//            self.showPhotoCouldntBeChosenAlert()
+//            print(NSLocalizedString("Did Finish Picking Media With Info Error: photo not available!", comment: ""))
+//
+//        }
     }
 
     /**
@@ -302,44 +313,83 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
 
      - parameter takenImage: UIImage
      */
-    func prepareimageUserDecidedToPost(takenImage: UIImage) {
+    func prepareimageUserDecidedToPost(info: [String : AnyObject]) -> Bool {
 
-        guard let userId = CurrentUser.facebookUserId, fullName = CurrentUser.fullName else {
-            print(NSLocalizedString("Prepare Image User Decided To Post Error: Failed to create user object", comment: ""))
-            return
-        }
-        let userObject = User(facebookID: userId, name: fullName)
+        if let takenImage = info[UIImagePickerControllerOriginalImage] as? UIImage, resizedAndRotatedImage = UIImage.resizeAndRotateImage(takenImage), userId = CurrentUser.facebookUserId, fullName = CurrentUser.fullName {
 
-        /// old way we resized images
-//        var image: UIImage
-//        if takenImage.size.width > kResizeAllImagesToThisWidth { //if image too big, shrink it down
-//            image = UIImage.resizeImage(takenImage, newWidth: kResizeAllImagesToThisWidth)
-//        } else {
-//            image = takenImage
-//        }
+            self.confirmationView.photoImageView.image = takenImage
 
-       var image = UIImage.resize(takenImage)!
+            let userObject = User(facebookID: userId, name: fullName)
 
-        image = self.rotateImageIfNecessary(image)
+            //save name of image as current date and time
+            let dateFormatter = NSDateFormatter()
+            dateFormatter.dateFormat = "MM-dd-yyyy_HHmmss"
+            let todaysDate = NSDate()
+            let fileName = dateFormatter.stringFromDate(todaysDate) + ".png"
 
-        //save name of image as current date and time
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "MM-dd-yyyy_HHmmss"
-        let todaysDate = NSDate()
-        let fileName = dateFormatter.stringFromDate(todaysDate) + ".png"
 
-        setLatLongAndLocationNameForImage { location in
+            setLatLongAndLocationNameForImage { location in
 
-            if let location = location {
-                self.imageUserDecidedToPost = Image(caption: "", fileName: fileName, width: image.size.width, height: image.size.height, image: image, location: location, user: userObject)
+                if let location = location {
+                    self.imageUserDecidedToPost = Image(caption: "", fileName: fileName, width: resizedAndRotatedImage.size.width, height: resizedAndRotatedImage.size.height, image: resizedAndRotatedImage, location: location, user: userObject)
 
-            } else {
-                self.failureGettingUserLocation = true
+                } else {
+                    self.failureGettingUserLocation = true
+                }
+
+                self.tryToPostPhoto()
+
             }
 
-            self.tryToPostPhoto()
+            return true
 
+        } else {
+
+            print(NSLocalizedString("Something went wrong preparing the image", comment: ""))
+            return false
         }
+
+
+
+
+
+
+//        guard let userId = CurrentUser.facebookUserId, fullName = CurrentUser.fullName else {
+//            print(NSLocalizedString("Prepare Image User Decided To Post Error: Failed to create user object", comment: ""))
+//            return
+//        }
+//        let userObject = User(facebookID: userId, name: fullName)
+//
+//        /// old way we resized images
+////        var image: UIImage
+////        if takenImage.size.width > kResizeAllImagesToThisWidth { //if image too big, shrink it down
+////            image = UIImage.resizeImage(takenImage, newWidth: kResizeAllImagesToThisWidth)
+////        } else {
+////            image = takenImage
+////        }
+//
+//       var image = UIImage.resizeImage(takenImage)!
+//
+//        image = self.rotateImageIfNecessary(image)
+//
+//        //save name of image as current date and time
+//        let dateFormatter = NSDateFormatter()
+//        dateFormatter.dateFormat = "MM-dd-yyyy_HHmmss"
+//        let todaysDate = NSDate()
+//        let fileName = dateFormatter.stringFromDate(todaysDate) + ".png"
+//
+//        setLatLongAndLocationNameForImage { location in
+//
+//            if let location = location {
+//                self.imageUserDecidedToPost = Image(caption: "", fileName: fileName, width: image.size.width, height: image.size.height, image: image, location: location, user: userObject)
+//
+//            } else {
+//                self.failureGettingUserLocation = true
+//            }
+//
+//            self.tryToPostPhoto()
+//
+//        }
 
     }
 
