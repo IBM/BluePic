@@ -125,7 +125,8 @@ class FeedViewController: UIViewController {
 
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        if searchQuery != nil && self.isMovingToParentViewController() && collectionView.numberOfItemsInSection(1) < 1 {
+        if searchQuery != nil && self.isMovingToParentViewController() &&
+            collectionView.numberOfItemsInSection(1) < 1 && noResultsLabel.hidden {
             SVProgressHUD.show()
         }
     }
@@ -358,13 +359,12 @@ extension FeedViewController {
      - parameter feedViewModelNotification: FeedviewModelNotifications
      */
     func handleFeedViewModelNotifications(feedViewModelNotification: FeedViewModelNotification) {
-        guard let _ = self.view.window else {
-            return // don't allow updates on view controllers not in view
-        }
 
         if feedViewModelNotification == FeedViewModelNotification.ReloadCollectionView {
-            SVProgressHUD.dismiss()
             reloadDataInCollectionView()
+            if searchQuery != nil {
+                SVProgressHUD.dismiss()
+            }
         } else if feedViewModelNotification == FeedViewModelNotification.UploadingPhotoStarted {
             collectionView.reloadData()
             scrollCollectionViewToTop()
