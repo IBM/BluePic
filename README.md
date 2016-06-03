@@ -139,19 +139,13 @@ Lastly, remember that push notifications will only show up on a physical iOS dev
 ### 4. Configure OpenWhisk
 BluePic leverages OpenWhisk actions written in Swift for accessing the Alchemy Vision and Weather APIs. For instructions on how to configure OpenWhisk, see the following [page](Docs/OpenWhisk.md). You will find there details on configuration and invocation of OpenWhisk commands.
 
-### 5. Running the Kitura-based server locally
-To build and run the Kitura-based server locally, follow these steps.
-
-#### 1. Build the BluePic-Server
-You can build the BluePic-Server by going to the `BluePic-Server` directory of the cloned repository and running `make`.
-
-#### 2. Run the BluePic-Server
-To start the Kitura-based server for the BluePic app, go to the `BluePic-Server` directory of the cloned repository and run `.build/debug/Server`.
-
 ## Running the iOS app
 If you don't have the iOS project already open, go to the `BluePic-iOS` directory and open the BluePic workspace using `open BluePic.xcworkspace`.
 
 You can now build and run the iOS app using the Xcode capabilities you are used to!
+
+## Running the Kitura-based server locally
+You can build the BluePic-Server by going to the `BluePic-Server` directory of the cloned repository and running `make`. To start the Kitura-based server for the BluePic app on your local system, go to the `BluePic-Server` directory of the cloned repository and run `.build/debug/Server`. Finally, you should update the `bluemix.plist` in the Xcode project in order to have the iOS app connect to this local server. See the [Update configuration for iOS app](#update-configuration-for-ios-app) section for details.
 
 ## About BluePic
 To learn more about BluePic's folder structure, its architecture, the Swift packages it depends on, and details on how to use the iOS app, see the [About](Docs/About.md) page.
