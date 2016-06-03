@@ -156,7 +156,7 @@ To build and run the Kitura-based server locally, follow these steps.
 
 You can build the BluePic-Server by going to the `BluePic-Server` directory of the cloned repository and running `make`.
 
-#### 1. Run the BluePic-Server
+#### 2. Run the BluePic-Server
 
 To start the Kitura-based server for the BluePic app, go to the `BluePic-Server` directory of the cloned repository and run `.build/debug/Server`.
 
