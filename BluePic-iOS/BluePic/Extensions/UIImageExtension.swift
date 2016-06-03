@@ -95,16 +95,16 @@ extension UIImage {
         let maxWidth: CGFloat = 600.0
         var imgRatio = actualWidth/actualHeight
         let maxRatio = maxWidth/maxHeight
-        let compressionQuality: CGFloat = 0.5
+        let compressionQuality: CGFloat = 1.0
 
-        if(actualHeight > maxHeight || actualWidth > maxWidth) {
+        if actualHeight > maxHeight || actualWidth > maxWidth {
 
-            if(imgRatio < maxRatio) {
+            if imgRatio < maxRatio {
                 //adjust width according to maxHeight
                 imgRatio = maxHeight / actualHeight
                 actualWidth = imgRatio * actualWidth
                 actualHeight = maxHeight
-            } else if(imgRatio > maxRatio) {
+            } else if imgRatio > maxRatio {
                 //adjust height according to maxWidth
                 imgRatio = maxWidth / actualWidth
                 actualHeight = imgRatio * actualHeight
