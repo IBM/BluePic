@@ -65,11 +65,7 @@ class BluemixDataManager: NSObject {
     //filters images variable to only images taken by the user
     var currentUserImages: [Image] {
         get {
-            if let currentUserFbId = CurrentUser.facebookUserId {
-                return images.filter({ $0.user.facebookID == currentUserFbId})
-            } else {
-                return []
-            }
+            return images.filter({ $0.user.facebookID == CurrentUser.facebookUserId})
         }
     }
 
@@ -383,13 +379,13 @@ extension BluemixDataManager {
 
         NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImageUploadBegan.rawValue, object: nil)
 
-        guard let facebookId = CurrentUser.facebookUserId, uiImage = image.image, imageData = UIImagePNGRepresentation(uiImage) else {
+        guard let uiImage = image.image, imageData = UIImagePNGRepresentation(uiImage) else {
             print(NSLocalizedString("Post New Image Error: We don't have all the info necessary to post this image", comment: ""))
             NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImageUploadFailure.rawValue, object: nil)
             return
         }
 
-        let tempURL = getBluemixBaseRequestURL() + "/" + kUsersEndPoint + "/" + facebookId + "/" + kImagesEndPoint + "/" + image.fileName + "/" + image.caption + "/" + "\(image.width)" + "/" + "\(image.height)" + "/" + "\(image.location.latitude)" + "/" + "\(image.location.longitude)" + "/" + image.location.name
+        let tempURL = getBluemixBaseRequestURL() + "/" + kUsersEndPoint + "/" + CurrentUser.facebookUserId + "/" + kImagesEndPoint + "/" + image.fileName + "/" + image.caption + "/" + "\(image.width)" + "/" + "\(image.height)" + "/" + "\(image.location.latitude)" + "/" + "\(image.location.longitude)" + "/" + image.location.name
 
         guard let requestURL = tempURL.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet()) else {
             print(NSLocalizedString("Post New Image Error: Failed to encode request URL", comment: ""))
@@ -504,11 +500,9 @@ extension BluemixDataManager {
      */
     private func addImageToImageTakenDuringAppSessionByIdDictionary(image: Image) {
 
-        if let userID = CurrentUser.facebookUserId {
-
-            let id = image.fileName + userID
+            let id = image.fileName + CurrentUser.facebookUserId
             imagesTakenDuringAppSessionById[id] = image.image
-        }
+    
     }
 }
 
