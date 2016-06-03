@@ -250,31 +250,41 @@ func generateUrl(forContainer containerName: String, forImage imageName: String)
  - parameter name: name of the container to create
  - parameter completionHandler: callback to use on success or failure
  */
-func createContainer(withName name: String, completionHandler: (success: Bool) -> Void) {
-  // Cofigure container for public access and web hosting
-  let configureContainer = { (container: ObjectStorageContainer) -> Void in
-    let metadata: Dictionary<String, String> = ["X-Container-Meta-Web-Listings" : "true", "X-Container-Read" : ".r:*,.rlistings"]
-    container.updateMetadata(metadata: metadata) { (error) in
-      if let _ = error {
-        Log.error("Could not configure container named '\(name)' for public access and web hosting.")
-        completionHandler(success: false)
-      } else {
-        Log.verbose("Configured successfully container named '\(name)' for public access and web hosting.")
-        completionHandler(success: true)
-      }
-    }
-  }
+ func createContainer(withName name: String, completionHandler: (success: Bool) -> Void) {
+   // Cofigure container for public access and web hosting
+   let configureContainer = { (container: ObjectStorageContainer) -> Void in
+     let metadata:Dictionary<String, String> = ["X-Container-Meta-Web-Listings" : "true", "X-Container-Read" : ".r:*,.rlistings"]
+     container.updateMetadata(metadata: metadata) { (error) in
+       if let _ = error {
+         Log.error("Could not configure container named '\(name)' for public access and web hosting.")
+         completionHandler(success: false)
+       } else {
+         Log.verbose("Configured successfully container named '\(name)' for public access and web hosting.")
+         completionHandler(success: true)
+       }
+     }
+   }
 
-  // Create container
-  objStorage.createContainer(name: name) { (error, container) in
-    if let container = container where error == nil {
-      configureContainer(container)
-    } else {
-      Log.error("Could not create container named '\(name)'.")
-      completionHandler(success: false)
-    }
-  }
-}
+   // Create container
+   let createContainer = { (objStorage: ObjectStorage?) -> Void in
+     if let objStorage = objStorage {
+       objStorage.createContainer(name: name) { (error, container) in
+         if let container = container where error == nil {
+           configureContainer(container)
+         } else {
+           Log.error("Could not create container named '\(name)'.")
+           completionHandler(success: false)
+         }
+       }
+     } else {
+       Log.verbose("Created successfully container named '\(name)'.")
+       completionHandler(success: false)
+     }
+   }
+
+   // Connect, create, and configure container
+   connectToObjectStorage(completionHandler: createContainer)
+ }
 
 /**
  Method to store image binary in a container if it exsists.
@@ -284,27 +294,53 @@ func createContainer(withName name: String, completionHandler: (success: Bool) -
  - parameter containerName:     name of container to use
  - parameter completionHandler: callback to use on success or failure
  */
-func store(image: NSData, withName name: String, inContainer containerName: String, completionHandler: (success: Bool) -> Void) {
-  // Store image in container
-  let storeImage = { (container: ObjectStorageContainer) -> Void in
-    container.storeObject(name: name, data: image) { (error, object) in
-      if let _ = error {
-        Log.error("Could not save image named '\(name)' in container.")
-        completionHandler(success: false)
-      } else {
-        Log.verbose("Stored successfully image '\(name)' in container.")
-        completionHandler(success: true)
-      }
-    }
-  }
+ func store(image: NSData, withName name: String, inContainer containerName: String, completionHandler: (success: Bool) -> Void) {
+   // Store image in container
+   let storeImage = { (container: ObjectStorageContainer) -> Void in
+     container.storeObject(name: name, data: image) { (error, object) in
+       if let _ = error {
+         Log.error("Could not save image named '\(name)' in container.")
+         completionHandler(success: false)
+       } else {
+         Log.verbose("Stored successfully image '\(name)' in container.")
+         completionHandler(success: true)
+       }
+     }
+   }
 
-  // Get reference to container
-  objStorage.retrieveContainer(name: containerName) { (error, container) in
-    if let container = container where error == nil {
-      storeImage(container)
+   // Get reference to container
+   let retrieveContainer = { (objStorage: ObjectStorage?) -> Void in
+     if let objStorage = objStorage {
+       objStorage.retrieveContainer(name: containerName) { (error, container) in
+         if let container = container where error == nil {
+           storeImage(container)
+         } else {
+           Log.error("Could not find container named '\(containerName)'.")
+           completionHandler(success: false)
+         }
+       }
+     } else {
+       completionHandler(success: false)
+     }
+   }
+
+   // Connect, create, and configure container
+   connectToObjectStorage(completionHandler: retrieveContainer)
+ }
+
+/**
+* Connects to object storage service and upon completion, invokes the completionHandler closure.
+*/
+private func connectToObjectStorage(completionHandler: (objStorage: ObjectStorage?) -> Void) {
+  // Create object storage instance and connect
+  let objStorage = ObjectStorage(projectId: objStorageConnProps.projectId)
+  objStorage.connect(userId: objStorageConnProps.userId, password: objStorageConnProps.password, region: ObjectStorage.REGION_DALLAS) { (error) in
+    if let error = error {
+      let errorMsg = "Could not connect to Object Storage."
+      Log.error("\(errorMsg) Error was: '\(error)'.")
+      completionHandler(objStorage: nil)
     } else {
-      Log.error("Could not find container named '\(containerName)'.")
-      completionHandler(success: false)
+      completionHandler(objStorage: objStorage)
     }
   }
 }
