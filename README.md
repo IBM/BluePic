@@ -50,30 +50,30 @@ Once deployment to Bluemix is completed, you should access the route assigned to
 Note that the [Bluemix buildpack for Swift](https://github.com/IBM-Swift/swift-buildpack) is used for the deployment of BluePic to Bluemix.
 
 ### 4. Populate Cloudant database
-To populate your Cloudant database instance with sample data, execute the `populator.sh` script in the `./Cloud-Scripts/cloudantNoSQLDB/` directory. Please note that this script requires three parameters:
+To populate your Cloudant database instance with sample data, you need to obtain the following credential values:
 
 - `username` - The username for your Cloudant instance.
 - `password` - The password for your Cloudant instance.
 - `projectid` - The project ID for your Object Storage instance.
 
-You can obtain the above credentials by accessing your application's page on Bluemix and clicking on the `Show Credentials` twisty found on your Cloudant service and Object Storage service instances. Once you have these credentials, execute the `populator.sh` script:
+You can obtain the above credentials by accessing your application's page on Bluemix and clicking on the `Show Credentials` twisty found on your Cloudant service and Object Storage service instances. Once you have these credentials, navigate to the `Cloud-Scripts/cloudantNoSQLDB/` directory in the BluePic repo and execute the `populator.sh` script as shown below:
 
 ```bash
-./Bridge-Scripts/cloudantNoSQLDB/populator.sh --username=<cloudant username> --password=<cloudant password> --projectid=<object storage projectid>
+./populator.sh --username=<cloudant username> --password=<cloudant password> --projectid=<object storage projectid>
 
 ```
 
 ### 5. Populate Object Storage
-To populate your Object Storage instance with sample data, execute the `populator.sh` script in the `./Cloud-Scripts/Object-Storage/` directory. Please note that this script requires three parameters:
+To populate your Object Storage instance with sample data, you need to obtain the following credential values:
 
 - `userid` - The username for your Object Storage instance.
 - `password` - The password for your Object Storage instance.
 - `projectid` - The project ID for your Object Storage instance.
 
-You can obtain the above credentials by accessing your application's page on Bluemix and clicking on the `Show Credentials` twisty found on your Object Storage instance. Once you have these credentials, execute the `populator.sh` script:
+You can obtain the above credentials by accessing your application's page on Bluemix and clicking on the `Show Credentials` twisty found on your Object Storage instance. Once you have these credentials,  navigate to the `./Cloud-Scripts/Object-Storage/` directory in the BluePic repo and execute the `populator.sh` script as shown below:
 
 ```bash
-./Bridge-Scripts/Object-Storage/populator.sh --userid=<object storage username> --password=<object storage password> --projectid=<object storage projectid>
+./populator.sh --userid=<object storage username> --password=<object storage password> --projectid=<object storage projectid>
 ```
 
 ### 6. Update `BluePic-Server/cloud_config.json` file
