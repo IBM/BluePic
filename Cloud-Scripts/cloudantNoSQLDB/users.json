@@ -19,6 +19,11 @@
       "_id": "1003",
       "name": "Kevin White",
       "type": "user"
+    },
+    {
+      "_id": "anonymous",
+      "name": "Anonymous",
+      "type": "user"
     }
   ]
 }

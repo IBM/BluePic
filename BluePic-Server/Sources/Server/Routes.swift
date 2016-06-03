@@ -36,7 +36,7 @@ func defineRoutes() {
   let pushNotificationsClient =
   PushNotifications(bluemixRegion: PushNotifications.Region.US_SOUTH, bluemixAppGuid: mobileClientAccessProps.clientId, bluemixAppSecret: ibmPushProps.secret)
 
-  // Assign middleware instance (for securing endpoints)
+  // Assign middleware instance (to securing endpoints)
   router.get("/users", middleware: credentials)
   router.post("/users", middleware: credentials)
   router.post("/push", middleware: credentials)
@@ -51,8 +51,7 @@ func defineRoutes() {
   // Hello endpoint
   router.get("/hello", handler: closure)
 
-  // This code will be moved to the OpenWhisk actions/sequence Andy is working on
-  // Just keeping it here for testing purposes
+  // This route is only for testing purposes
   router.get("/token") { request, response, next in
     // Define error response just in case...
     var errorResponse = JSON([:])
@@ -67,8 +66,7 @@ func defineRoutes() {
       next()
       return
     }
-    //let authHeader="NzVlZWY1MmMtMmVkMS00NTE4LTk1ODctY2U1NWNjNjY0NzlkOmtCTFRXWTF2Uk8yZzVnRmRSYnBWOFE="
-    //let appGuid="75eef52c-2ed1-4518-9587-ce55cc66479d"
+
     let appGuid = mobileClientAccessProps.clientId
     print("authHeader: \(authHeader)")
     print("appGuid: \(appGuid)")
@@ -89,7 +87,7 @@ func defineRoutes() {
     // Body required for getting MCA token
     let requestBody = "grant_type=client_credentials"
 
-    // Make REST call
+    // Make REST call against MCA server
     let req = HTTP.request(requestOptions) { resp in
       if let resp = resp where resp.statusCode == HTTPStatusCode.OK {
         do {
@@ -351,9 +349,10 @@ func defineRoutes() {
 
       // Determine facebook ID from MCA; verify that provided userId in URL matches facebook ID.
       let userId = imageJSON["userId"].stringValue
-      guard let authContext = request.userInfo["mcaAuthContext"] as? AuthorizationContext,
-      userIdentity = authContext.userIdentity?.id where userId == userIdentity else {
-        Log.error("User is not authorized to post image.")
+      let mcaAuthContext = request.userInfo["mcaAuthContext"] as? AuthorizationContext
+      // userIdentity is not null if MCA is configured
+      if let userIdentity = mcaAuthContext?.userIdentity?.id where userId != userIdentity {
+        Log.error("'\(userIdentity)' is not authorized to post image under for '\(userId)'.")
         response.error = generateInternalError()
         next()
         return
