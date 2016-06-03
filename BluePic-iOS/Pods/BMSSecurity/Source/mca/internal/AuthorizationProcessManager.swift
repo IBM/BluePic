@@ -145,7 +145,7 @@ internal class AuthorizationProcessManager {
             let callBack:BmsCompletionHandler = {(response: Response?, error: NSError?) in
                 guard response?.statusCode != 400 else {
 					self.authorizationFailureCount+=1
-                    if self.authorizationFailureCount < 1 {
+                    if self.authorizationFailureCount < 2 {
                         SecurityUtils.clearDictValuesFromKeyChain(BMSSecurityConstants.AuthorizationKeyChainTagsDictionary)
                         self.preferences.clientId.clear()
                         self.startAuthorizationProcess(self.authorizationQueue.remove())
