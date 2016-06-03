@@ -271,7 +271,6 @@ class FeedViewController: UIViewController {
 
 extension FeedViewController: UICollectionViewDataSource {
 
-
     /**
      Method sets up the cell for item at indexPath by asking the view model to set up the collection view cell
 
@@ -359,6 +358,9 @@ extension FeedViewController {
      - parameter feedViewModelNotification: FeedviewModelNotifications
      */
     func handleFeedViewModelNotifications(feedViewModelNotification: FeedViewModelNotification) {
+        guard let _ = self.view.window else {
+            return // don't allow updates on view controllers not in view
+        }
 
         if feedViewModelNotification == FeedViewModelNotification.ReloadCollectionView {
             SVProgressHUD.dismiss()
