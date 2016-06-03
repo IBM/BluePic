@@ -502,7 +502,7 @@ extension BluemixDataManager {
 
             let id = image.fileName + CurrentUser.facebookUserId
             imagesTakenDuringAppSessionById[id] = image.image
-    
+
     }
 }
 
