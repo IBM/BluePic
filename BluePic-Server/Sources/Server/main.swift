@@ -47,6 +47,7 @@ let mobileClientAccessProps: MobileClientAccessProps
 let ibmPushProps: IbmPushProps
 let openWhiskProps: OpenWhiskProps
 let database: Database
+var objectStorageConn: ObjectStorageConn
 
 do {
   // Create configuration objects
@@ -60,6 +61,9 @@ do {
   // Create cloudant access database object
   let dbClient = CouchDBClient(connectionProperties: couchDBConnProps)
   database = dbClient.database("bluepic_db")
+
+  // Create object storage connection object
+  objectStorageConn = ObjectStorageConn(objStorageConnProps: objStorageConnProps)
 
   // Define routes
   Log.verbose("Defining routes for server...")
