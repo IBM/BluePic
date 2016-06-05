@@ -12,12 +12,12 @@ Once you have the [IBM Cloud Tool](#) installed for Mac, you can open it to get 
 
 - Installs curl on your local system (requires Homebrew).
 - Clones the Bluepic repo on your Mac.
-- Creates your Bluemix runtime and provisions the Bluemix services that BluePic can leverage.
+- Creates your Bluemix runtime (i.e Kitura-based server) and provisions the Bluemix services that BluePic can leverage.
 - Populates the Cloudant and Object Storage services with demo data.
-- Updates your `cloud_config.json` with all the service credentials needed by the Kitura-based server.
-- Lastly, it gets your Kitura-based server running so your iOS client can communicate with it.
+- Updates the `cloud_config.json` file with all the service credentials needed by the Kitura-based server.
+- Updates the `bluemix.plist` file [in the Xcode project] so that the iOS application connects to the remote Kitura-based server running on Bluemix.
 
-Once the IBM Cloud Tool has completed the steps above, you can [run the application](#running-the-ios-app). If desired, you can also configured the Bluemix services that were provisioned in order to enable [optional features](#optional-features-to-configure) in BluePic (such as Facebook authentication and Push notifications).
+After the IBM Cloud Tool completes the steps above, you can [run the application](#running-the-ios-app). If desired, you can also configured the Bluemix services that were provisioned in order to enable [optional features](#optional-features-to-configure) in BluePic (such as Facebook authentication and Push notifications).
 
 ## Method 2: Manual configuration and deployment
 Instead of using the IBM Cloud Bridge, which gives you a seamless compilation and provisioning experience, you can follow the steps outlined in this section if you'd like to take a peek under the hood!
@@ -145,7 +145,7 @@ If you don't have the iOS project already open, go to the `BluePic-iOS` director
 You can now build and run the iOS app using the Xcode capabilities you are used to!
 
 ## Running the Kitura-based server locally
-You can build the BluePic-Server by going to the `BluePic-Server` directory of the cloned repository and running `make`. To start the Kitura-based server for the BluePic app on your local system, go to the `BluePic-Server` directory of the cloned repository and run `.build/debug/Server`. Finally, you should update the `bluemix.plist` in the Xcode project in order to have the iOS app connect to this local server. See the [Update configuration for iOS app](#update-configuration-for-ios-app) section for details.
+You can build the BluePic-Server by going to the `BluePic-Server` directory of the cloned repository and running `make`. To start the Kitura-based server for the BluePic app on your local system, go to the `BluePic-Server` directory of the cloned repository and run `.build/debug/Server`. You should also update the `bluemix.plist` file in the Xcode project in order to have the iOS app connect to this local server. See the [Update configuration for iOS app](#update-configuration-for-ios-app) section for details.
 
 ## About BluePic
 To learn more about BluePic's folder structure, its architecture, the Swift packages it depends on, and details on how to use the iOS app, see the [About](Docs/About.md) page.
