@@ -44,6 +44,7 @@ container1=1000
 container2=1001
 container3=1002
 container4=1003
+container5=anonymous
 
 # Echo publicUrl
 echo "publicUrl: $publicUrl"
@@ -68,7 +69,7 @@ do
 done
 
 # Create and configure containers
-declare -a containers=($container1 $container2 $container3 $container4)
+declare -a containers=($container1 $container2 $container3 $container4 $container5)
 
 for container in "${containers[@]}"; do
   # Create container
