@@ -23,8 +23,8 @@ public struct ObjectStorageConn {
   let connectQueue = dispatch_queue_create("connectQueue", nil)
   let objStorage: ObjectStorage
   let connProps: ObjectStorageConnProps
-  private var connected: Bool = false
-  private var lastConnectedTs: NSDate?
+  private var authenticated: Bool = false
+  private var lastAuthenticatedTs: NSDate?
 
   init(objStorageConnProps: ObjectStorageConnProps) {
     connProps = objStorageConnProps
@@ -40,19 +40,19 @@ public struct ObjectStorageConn {
     // Though the Kitura's API is async, the execution when invoking the
     // connect() method is serialized.
     // Hence, taking advantage of that for the time being...
-    let param: ObjectStorage? = (connected) ? objStorage : nil
+    let param: ObjectStorage? = (authenticated) ? objStorage : nil
     completionHandler(objStorage: param)
   }
 
   private mutating func connect(completionHandler: (objStorage: ObjectStorage?) -> Void) {
     Log.verbose("Determining if we have an ObjectStorage instance ready for use...")
-    if connected, let lastConnectedTs = lastConnectedTs {
+    if authenticated, let lastAuthenticatedTs = lastAuthenticatedTs {
       // Check when was the last time we got an auth token
       // If it's been less than 50 mins, then reuse auth token.
       // This logic is just a stopgap solution to avoid requesting a new
       // authToken for every ObjectStorage request.
       // The ObjectStorage SDK will contain logic for handling expired authToken
-      let timeDiff: NSTimeInterval = lastConnectedTs.timeIntervalSinceNow
+      let timeDiff: NSTimeInterval = lastAuthenticatedTs.timeIntervalSinceNow
       let minsDiff = Int(fabs(timeDiff / 60))
       if minsDiff < 50 {
         Log.verbose("Reusing existing Object Storage auth token...")
@@ -64,12 +64,12 @@ public struct ObjectStorageConn {
       if let error = error {
         let errorMsg = "Could not connect to Object Storage."
         Log.error("\(errorMsg) Error was: '\(error)'.")
-        self.connected = false
+        self.authenticated = false
       } else {
         Log.verbose("Successfully obtained authentication token for Object Storage.")
-        self.connected = true
-        self.lastConnectedTs = NSDate()
-        Log.verbose("lastConnectedTs is \(self.lastConnectedTs).")
+        self.authenticated = true
+        self.lastAuthenticatedTs = NSDate()
+        Log.verbose("lastAuthenticatedTs is \(self.lastAuthenticatedTs).")
       }
     }
   }
