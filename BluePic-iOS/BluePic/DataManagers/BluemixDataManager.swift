@@ -385,7 +385,7 @@ extension BluemixDataManager {
             return
         }
 
-        let tempURL = getBluemixBaseRequestURL() + "/" + kUsersEndPoint + "/" + CurrentUser.facebookUserId + "/" + kImagesEndPoint + "/" + image.fileName + "/" + image.caption + "/" + "\(image.width)" + "/" + "\(image.height)" + "/" + "\(image.location.latitude)" + "/" + "\(image.location.longitude)" + "/" + image.location.name
+        let tempURL = getBluemixBaseRequestURL() + "/" + kImagesEndPoint + "/" + image.fileName + "/" + image.caption + "/" + "\(image.width)" + "/" + "\(image.height)" + "/" + "\(image.location.latitude)" + "/" + "\(image.location.longitude)" + "/" + image.location.name
 
         guard let requestURL = tempURL.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet()) else {
             print(NSLocalizedString("Post New Image Error: Failed to encode request URL", comment: ""))
