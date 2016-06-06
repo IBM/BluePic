@@ -40,7 +40,7 @@ func defineRoutes() {
   router.get("/users", middleware: credentials)
   router.post("/users", middleware: credentials)
   router.post("/push", middleware: credentials)
-  router.post("/ping", middleware: credentials)
+  router.get("/ping", middleware: credentials)
   router.post("/images/:fileName/:caption/:width/:height/:latitude/:longitude/:location",  middleware: credentials)
 
   // Ping closure
