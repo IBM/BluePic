@@ -129,10 +129,10 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
     private func tryToSetImageViewWithLocallyCachedImage(fileName: String?) -> UIImage? {
 
         //check if file name and facebook user id aren't nil
-        if let fName = fileName, userID = CurrentUser.facebookUserId {
+        if let fName = fileName {
 
             //generate id which is a concatenation of the file name and facebook user id
-            let id = fName + userID
+            let id = fName +  CurrentUser.facebookUserId
 
             //check to see if there is an image cached in the camera data manager's picturesTakenDuringAppSessionById cache
             if let img = BluemixDataManager.SharedInstance.imagesTakenDuringAppSessionById[id] {

@@ -269,11 +269,11 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
      */
     func prepareimageUserDecidedToPost(info: [String : AnyObject]) -> Bool {
 
-        if let takenImage = info[UIImagePickerControllerOriginalImage] as? UIImage, resizedAndRotatedImage = UIImage.resizeAndRotateImage(takenImage), userId = CurrentUser.facebookUserId, fullName = CurrentUser.fullName {
+        if let takenImage = info[UIImagePickerControllerOriginalImage] as? UIImage, resizedAndRotatedImage = UIImage.resizeAndRotateImage(takenImage) {
 
             self.confirmationView.photoImageView.image = takenImage
 
-            let userObject = User(facebookID: userId, name: fullName)
+            let userObject = User(facebookID: CurrentUser.facebookUserId, name: CurrentUser.fullName)
 
             //save name of image as current date and time
             let dateFormatter = NSDateFormatter()

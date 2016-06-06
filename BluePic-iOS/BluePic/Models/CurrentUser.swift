@@ -19,12 +19,12 @@ import UIKit
 class CurrentUser: NSObject {
 
     /// Grab facebook user id of user from NsUserDefaults
-    class var facebookUserId: String? {
+    class var facebookUserId: String {
         get {
             if let userId = NSUserDefaults.standardUserDefaults().objectForKey("facebook_user_id") as? String {
                 return userId
             } else {
-                return nil
+                return "anonymous"
             }
         }
         set(userId) {
@@ -35,12 +35,12 @@ class CurrentUser: NSObject {
     }
 
     /// grab full name of user from NSUserDefaults
-    class var fullName: String? {
+    class var fullName: String {
         get {
             if let full_name = NSUserDefaults.standardUserDefaults().objectForKey("user_full_name") as? String {
                 return full_name
             } else {
-                return nil
+                return "Anonymous"
             }
         }
         set(user_full_name) {
@@ -54,11 +54,13 @@ class CurrentUser: NSObject {
     /// generate string for the users facebook profile picture url
     class var facebookProfilePictureURL: String {
         get {
-            if let facebookUserId = CurrentUser.facebookUserId {
+
+            if CurrentUser.facebookUserId != "anonymous" {
                 return kFacebookProfilePictureURLPrefix + facebookUserId + kFacebookProfilePictureURLPostfix
             } else {
                 return ""
             }
+
         }
     }
 

@@ -88,9 +88,9 @@ class TabBarViewModel: NSObject {
 
      - returns: Bool
      */
-    func didUserPressLoginLater() -> Bool {
+    func isUserAuthenticated() -> Bool {
 
-       return CurrentUser.willLoginLater
+        return LoginDataManager.SharedInstance.isUserAlreadyAuthenticated()
 
     }
 
