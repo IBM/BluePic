@@ -1,14 +1,14 @@
 # BluePic
 
-**This repo is not ready for consumption yet and please note that this README is still under construction This is a new development effort that has not completed yet. If you are looking for the Kitura-BluePic repo, please visit this URL: https://github.com/IBM-Swift/Kitura-BluePic.**
-
 BluePic is a photo and image sharing sample application that allows you to take photos and share them with other BluePic users. This sample application demonstrates how to leverage, in a mobile iOS 9 application, a Kitura-based server application written in Swift.
 
-## Getting started
-There are *two ways* you can compile and provision BluePic on Bluemix. Method 1 uses the IBM Cloud Tool. Using the IBM Cloud Tool is the easiest and quickest path to get BluePic up and running. Method 2 is manual, does not leverage this tool, and, therefore, takes longer but you get to understand exactly the steps that are happening behind the scenes. Regardless of what what path you choose, there are a few optional steps you can complete for additional functionality.
+To further explain, Bluepic takes advantage of Swift in a typical iOS client setting, but also on the server-side using the new Swift web framework and HTTP Server, Kitura. An interesting feature of Bluepic, is the way it handles photos on the server. For example, when an image is posted, it's data is recorded in Cloudant and the image binary is stored in Object Storage. From there, an OpenWhisk action is invoked causing weather data like tempature and situation (e.g. sunny, cloudy, etc.) to be calculated based on the location an image was uploaded from. AlchemyAPI is then used to analyze the image and extract text tags based on the content of the image. Lastly, a push notification is sent to the user, informing them their image has been processed and now includes weather and tag data.
 
-## Method 1: IBM Cloud Tool
-Once you have the [IBM Cloud Tool](https://ibm-cloud-tools.mybluemix.net/) installed for Mac, you can open it to get started. On the screen for creating a new project, you will find the option to create a BluePic Project. Select that option and name your project/runtime. This will kick off a process that automatically does the following:
+## Getting started
+There are *two ways* you can compile and provision BluePic on Bluemix. Method 1 uses the IBM Cloud Tools for Swift application. Using IBM Cloud Tools for Swift is the easiest and quickest path to get BluePic up and running. Method 2 is manual, does not leverage this tool, and, therefore, takes longer but you get to understand exactly the steps that are happening behind the scenes. Regardless of what what path you choose, there are a few optional steps you can complete for additional functionality.
+
+## Method 1: IBM Cloud Tools for Swift
+Once you have the [IBM Cloud Tools for Swift](https://ibm-cloud-tools.mybluemix.net/) application installed for Mac, you can open it to get started. On the screen for creating a new project, you will find the option to create a BluePic Project. Select that option and name your project/runtime. This will kick off a process that automatically does the following:
 
 - Installs curl on your local system (requires Homebrew).
 - Clones the Bluepic repo on your Mac.
@@ -17,10 +17,10 @@ Once you have the [IBM Cloud Tool](https://ibm-cloud-tools.mybluemix.net/) insta
 - Updates the `cloud_config.json` file with all the service credentials needed by the Kitura-based server.
 - Updates the `bluemix.plist` file [in the Xcode project] so that the iOS application connects to the remote Kitura-based server running on Bluemix.
 
-After the IBM Cloud Tool completes the steps above, you can [run the application](#running-the-ios-app). If desired, you can also configured the Bluemix services that were provisioned in order to enable [optional features](#optional-features-to-configure) in BluePic (such as Facebook authentication and Push notifications).
+After the IBM Cloud Tools for Swift completes the steps above, you can [run the application](#running-the-ios-app). If desired, you can also configured the Bluemix services that were provisioned in order to enable [optional features](#optional-features-to-configure) in BluePic (such as Facebook authentication and Push notifications).
 
 ## Method 2: Manual configuration and deployment
-Instead of using the IBM Cloud Bridge, which gives you a seamless compilation and provisioning experience, you can follow the steps outlined in this section if you'd like to take a peek under the hood!
+Instead of using IBM Cloud Tools for Swift, which gives you a seamless compilation and provisioning experience, you can follow the steps outlined in this section if you'd like to take a peek under the hood!
 
 ### 1. Install system dependencies
 The following system level dependencies should be installed on OS X using [Homebrew](http://brew.sh/):
