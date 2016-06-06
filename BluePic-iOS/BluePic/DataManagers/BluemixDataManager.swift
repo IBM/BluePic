@@ -390,7 +390,7 @@ extension BluemixDataManager {
     }
 
 
-    func tryToPostImage(image: Image) {
+    func tryToPostNewImage(image: Image) {
 
         //ping backend to trigger Facebook login if MCA is configured
         ping({ (response, error) -> Void in
@@ -444,7 +444,7 @@ extension BluemixDataManager {
 
      - parameter image: Image
      */
-    func postNewImage(image: Image) {
+    private func postNewImage(image: Image) {
 
         addImageToImagesCurrentlyUploading(image)
 
