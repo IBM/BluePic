@@ -21,7 +21,7 @@ Remove and reinstall actions using the bluepic.sh shell script:
 
     ./bluepic.sh --reinstall
 
-You will also need to set configuration variables (auth creds, etc...) inside of the `local.env` file.  All of these values can be obtained from the `Connections` tab when viewing the Bluemix app with your provisioned services.
+You will also need to set configuration variables (e.g. cloudant credentials, object storage credentials, etc.) inside of the `local.env` file.  All of these values can be obtained from the `Connections` tab when viewing the Bluemix app with your provisioned services.
 
 For `Cloudant` you will need:
 * username (with read/write access)
