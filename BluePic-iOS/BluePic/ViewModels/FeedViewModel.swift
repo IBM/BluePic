@@ -21,7 +21,7 @@ enum FeedViewModelNotification {
 
     //called when there is new data in the pictureDataArray, used to tell the Feed VC to refresh it's data in the collection view
     case ReloadCollectionView
-    
+
     //called when a photo is uploading
     case UploadingPhotoStarted
 
