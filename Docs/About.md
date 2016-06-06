@@ -8,7 +8,7 @@ These are the main folders in this repo:
 * `./BluePic-iOS` - Contains the iOS client application.
 * `./BluePic-Server` - Contains the Kitura-based server application and its dependencies. This folder contains the artifacts that are deployed to Bluemix.
 * `./BluePic-OpenWhisk` - Contains the OpenWhisk actions and sequence code written in Swift.
-* `./Bridge-Scripts` - Contains the scripts to be leveraged by the IBM Cloud Bridge tool.
+* `./Bridge-Scripts` - Contains the scripts to be leveraged by the IBM Cloud Tools for Swift.
 * `./Docs` - Contains additional project documentation.
 * `./Imgs` - Contains images referenced in this `README` file.
 
