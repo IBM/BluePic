@@ -134,33 +134,5 @@ class LoginDataManager: NSObject {
         }
     }
 
-    
-//
-//
-//
-//    func tryToCreateAndSetCurrentUserAfterBeingChallengedInvokingASecureEndPoint() -> Bool {
-//
-//        if let userIdentity = FacebookDataManager.SharedInstance.getFacebookUserIdentity(), facebookUserId = userIdentity.id, facebookUserFullName = userIdentity.displayName {
-//
-//            BluemixDataManager.SharedInstance.createNewUser(facebookUserId, name: facebookUserFullName, result: { _ in
-//
-//                
-//                
-//
-//
-//            })
-//
-//            CurrentUser.facebookUserId = facebookUserId
-//            CurrentUser.fullName = facebookUserFullName
-//
-//            return true
-//
-//        } else {
-//            return false
-//        }
-//
-//    }
-
-
 
 }
