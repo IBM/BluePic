@@ -154,6 +154,9 @@ class FacebookDataManager: NSObject {
     func getFacebookUserIdentity() -> UserIdentity? {
 
         let authManager = BMSClient.sharedInstance.authorizationManager
+        
+        print(authManager.userIdentity?.id)
+        
         return authManager.userIdentity
 
     }
