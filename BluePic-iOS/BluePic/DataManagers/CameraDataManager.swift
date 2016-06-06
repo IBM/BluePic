@@ -369,7 +369,7 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
         }
 
         dispatch_async(dispatch_get_main_queue()) {
-            BluemixDataManager.SharedInstance.postNewImage(imageToPost)
+            BluemixDataManager.SharedInstance.tryToPostNewImage(imageToPost)
         }
 
         //Dismiss Camera Confirmation View when user presses post photo to bring user back to image feed
