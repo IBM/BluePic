@@ -188,7 +188,6 @@ func parseUsers(document: JSON) throws -> JSON {
 func getImageJSON(fromRequest request: RouterRequest) throws -> JSON {
   guard let caption = request.params["caption"],
   let fileName = request.params["fileName"],
-  let userId = request.params["userId"],
   let lat = request.params["latitude"],
   let long = request.params["longitude"],
   let location = request.params["location"],
@@ -206,6 +205,8 @@ func getImageJSON(fromRequest request: RouterRequest) throws -> JSON {
     throw ProcessingError.Image("Invalid image document!")
   }
 
+  let userId = authContext.userIdentity?.id ?? "anonymous"
+  Log.verbose("Image will be uploaded under the following userId: '\(userId)'.")
   let uploadedTs = StringUtils.currentTimestamp()
   let imageName = StringUtils.decodeWhiteSpace(inString: caption)
   let locationName = StringUtils.decodeWhiteSpace(inString: location)

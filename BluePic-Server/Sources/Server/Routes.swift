@@ -40,6 +40,7 @@ func defineRoutes() {
   router.get("/users", middleware: credentials)
   router.post("/users", middleware: credentials)
   router.post("/push", middleware: credentials)
+  router.post("/images/:fileName/:caption/:width/:height/:latitude/:longitude/:location",  middleware: credentials)
 
   // Hello closure
   let closure = { (request: RouterRequest, response: RouterResponse, next: () -> Void) -> Void in
@@ -343,21 +344,9 @@ func defineRoutes() {
   * to send the image metadata, while the body of the request only
   * contains the binary data for the image. I know, yuck...
   */
-  router.post("/users/:userId/images/:fileName/:caption/:width/:height/:latitude/:longitude/:location") { request, response, next in
+  router.post("/images/:fileName/:caption/:width/:height/:latitude/:longitude/:location") { request, response, next in
     do {
       var imageJSON = try getImageJSON(fromRequest: request)
-
-      // Determine facebook ID from MCA; verify that provided userId in URL matches facebook ID.
-      let userId = imageJSON["userId"].stringValue
-      let mcaAuthContext = request.userInfo["mcaAuthContext"] as? AuthorizationContext
-      // userIdentity is not null if MCA is configured
-      if let userIdentity = mcaAuthContext?.userIdentity?.id where userId != userIdentity {
-        Log.error("'\(userIdentity)' is not authorized to post image under for '\(userId)'.")
-        response.error = generateInternalError()
-        next()
-        return
-      }
-
       // Get image binary from request body
       let image = try BodyParser.readBodyData(with: request)
       // Create closure
