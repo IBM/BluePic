@@ -461,7 +461,7 @@ func defineRoutes() {
           }
         }
       }
-
+      // Closure for verifying if user exists and creating new record
       let addUser = {
         // Verify if user already exists
         database.queryByView("users", ofDesign: "main_design", usingParameters: [ .descending(true), .includeDocs(false), .keys([userId]) ]) { (document, error) in
