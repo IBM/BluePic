@@ -8,7 +8,7 @@ BluePic is a photo and image sharing sample application that allows you to take 
 There are *two ways* you can compile and provision BluePic on Bluemix. Method 1 uses the IBM Cloud Tool. Using the IBM Cloud Tool is the easiest and quickest path to get BluePic up and running. Method 2 is manual, does not leverage this tool, and, therefore, takes longer but you get to understand exactly the steps that are happening behind the scenes. Regardless of what what path you choose, there are a few optional steps you can complete for additional functionality.
 
 ## Method 1: IBM Cloud Tool
-Once you have the [IBM Cloud Tool](#) installed for Mac, you can open it to get started. On the screen for creating a new project, you will find the option to create a BluePic Project. Select that option and name your project/runtime. This will kick off a process that automatically does the following:
+Once you have the [IBM Cloud Tool](https://ibm-cloud-tools.mybluemix.net/) installed for Mac, you can open it to get started. On the screen for creating a new project, you will find the option to create a BluePic Project. Select that option and name your project/runtime. This will kick off a process that automatically does the following:
 
 - Installs curl on your local system (requires Homebrew).
 - Clones the Bluepic repo on your Mac.
