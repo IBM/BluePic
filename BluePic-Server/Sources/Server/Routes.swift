@@ -37,20 +37,21 @@ func defineRoutes() {
   PushNotifications(bluemixRegion: PushNotifications.Region.US_SOUTH, bluemixAppGuid: mobileClientAccessProps.clientId, bluemixAppSecret: ibmPushProps.secret)
 
   // Assign middleware instance (to securing endpoints)
-  router.get("/users", middleware: credentials)
-  router.post("/users", middleware: credentials)
+  //router.get("/users", middleware: credentials)
+  //router.post("/users", middleware: credentials)
   router.post("/push", middleware: credentials)
+  router.post("/ping", middleware: credentials)
   router.post("/images/:fileName/:caption/:width/:height/:latitude/:longitude/:location",  middleware: credentials)
 
-  // Hello closure
+  // Ping closure
   let closure = { (request: RouterRequest, response: RouterResponse, next: () -> Void) -> Void in
     response.headers.append("Content-Type", value: "text/plain; charset=utf-8")
     response.status(HTTPStatusCode.OK).send("Hello World, from BluePic-Server! Original URL: \(request.originalUrl)")
     next()
   }
 
-  // Hello endpoint
-  router.get("/hello", handler: closure)
+  // Ping endpoint
+  router.get("/ping", handler: closure)
 
   // This route is only for testing purposes
   router.get("/token") { request, response, next in
@@ -422,7 +423,6 @@ func defineRoutes() {
     do {
       let rawUserData = try BodyParser.readBodyData(with: request)
       var userJson = JSON(data: rawUserData)
-
       // Verify JSON has required fields
       guard let _ = userJson["name"].string,
       let userId = userJson["_id"].string else {
@@ -430,7 +430,6 @@ func defineRoutes() {
       }
       // Add type field
       userJson["type"] = "user"
-
       // Keep only those keys that are valid for the user document
       let validKeys = ["_id", "name", "type"]
       for (key, _) in userJson {
@@ -438,30 +437,59 @@ func defineRoutes() {
           userJson.dictionaryObject?.removeValue(forKey: key)
         }
       }
+      // Closure for adding new user document to the database
+      let createRecord = {
+        // Persist user document to database
+        Log.verbose("About to add new user record '\(userId)' to the database.")
+        database.create(userJson) { (id, revision, document, error) in
+          do {
+            if let document = document where error == nil {
+              // Add revision number response document
+              userJson["_rev"] = document["rev"]
+              // Return user document back to caller
+              try response.status(HTTPStatusCode.OK).send(json: userJson).end()
+              next()
+            } else {
+              Log.error("Failed to add user to the system of records.")
+              response.error = error ?? generateInternalError()
+              next()
+            }
+          } catch {
+            Log.error("Failed to add user to the system of records.")
+            response.error = generateInternalError()
+            next()
+          }
+        }
+      }
 
+      let addUser = {
+        // Verify if user already exists
+        database.queryByView("users", ofDesign: "main_design", usingParameters: [ .descending(true), .includeDocs(false), .keys([userId]) ]) { (document, error) in
+          if let document = document where error == nil {
+            do {
+              let json = try parseUsers(document: document)
+              let users = json["records"].arrayValue
+              if users.count == 1 {
+                response.status(HTTPStatusCode.OK).send(json: users[0])
+                next()
+              } else {
+                createRecord()
+              }
+            } catch {
+              createRecord()
+            }
+          } else {
+            response.status(HTTPStatusCode.internalServerError)
+            Log.error("Failed to process user request.")
+            response.error = generateInternalError()
+            next()
+          }
+        }
+      }
       // Create completion handler closure
       let completionHandler = { (success: Bool) -> Void in
         if success {
-          // Persist user document to database
-          database.create(userJson) { (id, revision, document, error) in
-            do {
-              if let document = document where error == nil {
-                // Add revision number response document
-                userJson["_rev"] = document["rev"]
-                // Return user document back to caller
-                try response.status(HTTPStatusCode.OK).send(json: userJson).end()
-                next()
-              } else {
-                Log.error("Failed to add user to the system of records.")
-                response.error = error ?? generateInternalError()
-                next()
-              }
-            } catch {
-              Log.error("Failed to add user to the system of records.")
-              response.error = generateInternalError()
-              next()
-            }
-          }
+          addUser()
         } else {
           Log.error("Failed to add user to the system of records.")
           response.error = generateInternalError()
