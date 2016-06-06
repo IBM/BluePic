@@ -5,7 +5,7 @@ declared-services:
     plan: Shared
   Object-Storage:
     label: BluePic-Object-Storage
-    plan: standard
+    plan: Free
   AdvancedMobileAccess:
     label: BluePic-Mobile-Client-Access
     plan: Gold

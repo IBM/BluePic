@@ -188,7 +188,6 @@ func parseUsers(document: JSON) throws -> JSON {
 func getImageJSON(fromRequest request: RouterRequest) throws -> JSON {
   guard let caption = request.params["caption"],
   let fileName = request.params["fileName"],
-  let userId = request.params["userId"],
   let lat = request.params["latitude"],
   let long = request.params["longitude"],
   let location = request.params["location"],
@@ -206,6 +205,8 @@ func getImageJSON(fromRequest request: RouterRequest) throws -> JSON {
     throw ProcessingError.Image("Invalid image document!")
   }
 
+  let userId = authContext.userIdentity?.id ?? "anonymous"
+  Log.verbose("Image will be uploaded under the following userId: '\(userId)'.")
   let uploadedTs = StringUtils.currentTimestamp()
   let imageName = StringUtils.decodeWhiteSpace(inString: caption)
   let locationName = StringUtils.decodeWhiteSpace(inString: location)
@@ -282,8 +283,8 @@ func generateUrl(forContainer containerName: String, forImage imageName: String)
      }
    }
 
-   // Connect, create, and configure container
-   connectToObjectStorage(completionHandler: createContainer)
+   // Create, and configure container
+   objectStorageConn.getObjectStorage(completionHandler: createContainer)
  }
 
 /**
@@ -324,26 +325,9 @@ func generateUrl(forContainer containerName: String, forImage imageName: String)
      }
    }
 
-   // Connect, create, and configure container
-   connectToObjectStorage(completionHandler: retrieveContainer)
+   // Create, and configure container
+   objectStorageConn.getObjectStorage(completionHandler: retrieveContainer)
  }
-
-/**
-* Connects to object storage service and upon completion, invokes the completionHandler closure.
-*/
-private func connectToObjectStorage(completionHandler: (objStorage: ObjectStorage?) -> Void) {
-  // Create object storage instance and connect
-  let objStorage = ObjectStorage(projectId: objStorageConnProps.projectId)
-  objStorage.connect(userId: objStorageConnProps.userId, password: objStorageConnProps.password, region: ObjectStorage.REGION_DALLAS) { (error) in
-    if let error = error {
-      let errorMsg = "Could not connect to Object Storage."
-      Log.error("\(errorMsg) Error was: '\(error)'.")
-      completionHandler(objStorage: nil)
-    } else {
-      completionHandler(objStorage: objStorage)
-    }
-  }
-}
 
 /**
  Method to convert JSON data to a more usable format, adding and removing values as necessary.
