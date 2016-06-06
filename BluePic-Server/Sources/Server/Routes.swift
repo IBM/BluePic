@@ -37,8 +37,8 @@ func defineRoutes() {
   PushNotifications(bluemixRegion: PushNotifications.Region.US_SOUTH, bluemixAppGuid: mobileClientAccessProps.clientId, bluemixAppSecret: ibmPushProps.secret)
 
   // Assign middleware instance (to securing endpoints)
-  //router.get("/users", middleware: credentials)
-  //router.post("/users", middleware: credentials)
+  router.get("/users", middleware: credentials)
+  router.post("/users", middleware: credentials)
   router.post("/push", middleware: credentials)
   router.post("/ping", middleware: credentials)
   router.post("/images/:fileName/:caption/:width/:height/:latitude/:longitude/:location",  middleware: credentials)
