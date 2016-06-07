@@ -17,7 +17,7 @@
 		1B05354C1CFE86460006C6F2 /* Feed.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1B0535411CFE86460006C6F2 /* Feed.strings */; };
 		1B05354D1CFE86460006C6F2 /* Main.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1B0535431CFE86460006C6F2 /* Main.strings */; };
 		1B05354E1CFE86460006C6F2 /* Profile.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1B0535451CFE86460006C6F2 /* Profile.strings */; };
-		1B05358D1D01F0EF0006C6F2 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1B05358F1D01F0EF0006C6F2 /* Localizable.strings */; };
+		1B0535931D0757B50006C6F2 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1B0535951D0757B50006C6F2 /* Localizable.strings */; };
 		1B057E061C17B10100AC21EE /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B057E051C17B10100AC21EE /* ProfileViewModel.swift */; };
 		1B057E091C17C03400AC21EE /* ProfileHeaderCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B057E071C17C03400AC21EE /* ProfileHeaderCollectionReusableView.swift */; };
 		1B057E0A1C17C03400AC21EE /* ProfileHeaderCollectionReusableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1B057E081C17C03400AC21EE /* ProfileHeaderCollectionReusableView.xib */; };
@@ -108,8 +108,8 @@
 		1B0535421CFE86460006C6F2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Feed.strings; sourceTree = "<group>"; };
 		1B0535441CFE86460006C6F2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
 		1B0535461CFE86460006C6F2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Profile.strings; sourceTree = "<group>"; };
-		1B05358E1D01F0EF0006C6F2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
-		1B0535901D01F0F00006C6F2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		1B0535941D0757B50006C6F2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
+		1B0535961D0757B60006C6F2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		1B057E051C17B10100AC21EE /* ProfileViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		1B057E071C17C03400AC21EE /* ProfileHeaderCollectionReusableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileHeaderCollectionReusableView.swift; sourceTree = "<group>"; };
 		1B057E081C17C03400AC21EE /* ProfileHeaderCollectionReusableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileHeaderCollectionReusableView.xib; sourceTree = "<group>"; };
@@ -382,7 +382,7 @@
 		34F6972B1BFB8E6C00A2D2EC /* SupportingFiles */ = {
 			isa = PBXGroup;
 			children = (
-				1B05358F1D01F0EF0006C6F2 /* Localizable.strings */,
+				1B0535951D0757B50006C6F2 /* Localizable.strings */,
 				BDC4B5F21BFBC77200CC1648 /* BluePic-Bridging-Header.h */,
 				2E72BC461CFF5D940085239B /* Server.strings */,
 			);
@@ -515,7 +515,7 @@
 				2E72BC441CFF5D940085239B /* Server.strings in Resources */,
 				1B05354B1CFE86460006C6F2 /* Camera.strings in Resources */,
 				1B05354E1CFE86460006C6F2 /* Profile.strings in Resources */,
-				1B05358D1D01F0EF0006C6F2 /* Localizable.strings in Resources */,
+				1B0535931D0757B50006C6F2 /* Localizable.strings in Resources */,
 				1B3BA0761C0F5FBD0064C850 /* .gitkeep in Resources */,
 				347472981BFA8C6A0018B7F6 /* LaunchScreen.storyboard in Resources */,
 				1B0535491CFE86460006C6F2 /* Main.storyboard in Resources */,
@@ -729,11 +729,11 @@
 			name = Profile.strings;
 			sourceTree = "<group>";
 		};
-		1B05358F1D01F0EF0006C6F2 /* Localizable.strings */ = {
+		1B0535951D0757B50006C6F2 /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				1B05358E1D01F0EF0006C6F2 /* Base */,
-				1B0535901D01F0F00006C6F2 /* en */,
+				1B0535941D0757B50006C6F2 /* Base */,
+				1B0535961D0757B60006C6F2 /* en */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
