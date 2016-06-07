@@ -1,22 +1,22 @@
 ---
 declared-services:
-  cloudantNoSQLDB:
-    label: BluePic-Cloudant
+  BluePic-Cloudant:
+    label: cloudantNoSQLDB
     plan: Shared
-  Object-Storage:
-    label: BluePic-Object-Storage
+  BluePic-Object-Storage:
+    label: Object-Storage
     plan: Free
-  AdvancedMobileAccess:
-    label: BluePic-Mobile-Client-Access
+  BluePic-Mobile-Client-Access:
+    label: AdvancedMobileAccess
     plan: Gold
-  imfpush:
-    label: BluePic-IBM-Push
+  BluePic-IBM-Push:
+    label: imfpush
     plan: Basic
-  weatherinsights:
-    label: BluePic-Insights-for-Weather
+  BluePic-Insights-for-Weather:
+    label: weatherinsights
     plan: Free
-  alchemy_api:
-    label: BluePic-Alchemy
+  BluePic-Alchemy:
+    label: alchemy_api
     plan: free
 applications:
 - name: BluePic
