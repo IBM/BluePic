@@ -7,21 +7,9 @@
 
 # Installing OpenWhisk Actions for BluePic
 
-Install using the bluepic.sh shell script:
+## Service Credentials
 
-    ./bluepic.sh --install
-
-
-Remove actions using the bluepic.sh shell script:
-
-    ./bluepic.sh --uninstall
-
-
-Remove and reinstall actions using the bluepic.sh shell script:
-
-    ./bluepic.sh --reinstall
-
-You will also need to set configuration variables (e.g. cloudant credentials, object storage credentials, etc.) inside of the `local.env` file.  All of these values can be obtained from the `Connections` tab when viewing the Bluemix app with your provisioned services.
+Before you run the installation script, you will first need to set configuration variables (e.g. cloudant credentials, object storage credentials, etc.) inside of the `local.env` file.  All of these values can be obtained from the `Connections` tab when viewing the Bluemix app with your provisioned services.
 
 For `Cloudant` you will need:
 * username (with read/write access)
@@ -46,6 +34,22 @@ For the `Kitura` callback you will need:
 * host (e.g. `bluepic-grotty-substantiality.mybluemix.net`)
 * port (80 if http, 443 is https, other if dev)
 * schema (http:// or https://)
+
+## Installation
+
+Install using the bluepic.sh shell script:
+
+    ./bluepic.sh --install
+
+
+Remove actions using the bluepic.sh shell script:
+
+    ./bluepic.sh --uninstall
+
+
+Remove and reinstall actions using the bluepic.sh shell script:
+
+    ./bluepic.sh --reinstall
 
 # Actions
 
