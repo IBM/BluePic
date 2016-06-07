@@ -402,7 +402,7 @@ extension BluemixDataManager {
         ping({ (response, error) -> Void in
 
             //either there was a network failure, user authentication with facebook failed, or user authentication with facebook was canceled by the user
-            if(error != nil) {
+            if let _ = error {
                 print(NSLocalizedString("Try To Post New Image Error: Ping failed", comment: ""))
                 self.handleImageUploadFailure(image)
 
@@ -415,7 +415,7 @@ extension BluemixDataManager {
                     //User is authenticated with Facebook, create new user record
                     self.createNewUser(facebookUserId, name: facebookUserFullName, result: { user in
 
-                        if(user != nil) {
+                        if let _ = user {
 
                             CurrentUser.facebookUserId = facebookUserId
                             CurrentUser.fullName = facebookUserFullName
