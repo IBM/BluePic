@@ -153,13 +153,13 @@ class FacebookDataManager: NSObject {
 
     /**
      Method returns the Facebook user identity
-     
+
      - returns: UserIdentity?
      */
     func getFacebookUserIdentity() -> UserIdentity? {
 
         let authManager = BMSClient.sharedInstance.authorizationManager
-    
+
         return authManager.userIdentity
 
     }
