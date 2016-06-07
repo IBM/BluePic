@@ -82,15 +82,14 @@ public class AuthorizationRequestManager {
     }
     
     internal static func isAuthorizationRequired(response: Response?) -> Bool {
-        if let header = response?.headers![caseInsensitive : BMSSecurityConstants.WWW_AUTHENTICATE_HEADER] {
-            if let authHeader : String = header as? String where authHeader == BMSSecurityConstants.AUTHENTICATE_HEADER_VALUE{
-                return true
-            }
+        if let unwrappedResponse = response, unWrappedheaders = unwrappedResponse.headers,
+            authHeader = unWrappedheaders[caseInsensitive : BMSSecurityConstants.WWW_AUTHENTICATE_HEADER] as? String
+            where authHeader == BMSSecurityConstants.AUTHENTICATE_HEADER_VALUE {
+            return true
         }
-        
         return false
-        
     }
+
     
     internal func sendInternal(rootUrl:String, path:String, options:RequestOptions?) throws {
         self.requestOptions = options != nil ? options : RequestOptions()
