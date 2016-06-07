@@ -515,7 +515,7 @@ extension BluemixDataManager {
 
         for image in imagesThatFailedToUpload {
             removeImageFromImagesThatFailedToUpload(image)
-            postNewImage(image)
+            tryToPostNewImage(image)
 
         }
 
