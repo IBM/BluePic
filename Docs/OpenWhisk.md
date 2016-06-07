@@ -7,21 +7,9 @@
 
 # Installing OpenWhisk Actions for BluePic
 
-Install using the bluepic.sh shell script:
+## Service Credentials
 
-    ./bluepic.sh --install
-
-
-Remove actions using the bluepic.sh shell script:
-
-    ./bluepic.sh --uninstall
-
-
-Remove and reinstall actions using the bluepic.sh shell script:
-
-    ./bluepic.sh --reinstall
-
-You will also need to set configuration variables (e.g. cloudant credentials, object storage credentials, etc.) inside of the `local.env` file.  All of these values can be obtained from the `Connections` tab when viewing the Bluemix app with your provisioned services.
+Before you run the installation script, you will first need to set configuration variables (e.g. cloudant credentials, object storage credentials, etc.) inside of the `local.env` file.  All of these values can be obtained from the `Connections` tab when viewing the Bluemix app with your provisioned services.
 
 For `Cloudant` you will need:
 * username (with read/write access)
@@ -32,7 +20,7 @@ For `Cloudant` you will need:
 For `Alchemy` you will need:
 * api key - this is from your Alchemy service instance
 
-    _*Note:* If you receive the following error message when creating your Alchemy service instance: `Only one free key is allowed per account in a 24-hour period.`, then be sure to check if you already have an Alchemy service created for your Bluemix account.  Only one Alchemy service instance is allowed per Bluemix user Id.  You can reuse your Alchemy key from an exsiting app without having to create a new Alchemy instance. This error message is misleading because you will not be able to create a new Alchemy instance in 24 hours. _
+    *Note:* If you receive the following error message when creating your Alchemy service instance: `Only one free key is allowed per account in a 24-hour period.`, then be sure to check if you already have an Alchemy service created for your Bluemix account.  Only one Alchemy service instance is allowed per Bluemix user Id.  You can reuse your Alchemy key from an exsiting app without having to create a new Alchemy instance. This error message is misleading because you will not be able to create a new Alchemy instance in 24 hours. 
 
 For `Weather Insights` you will need:
 * username
@@ -46,6 +34,22 @@ For the `Kitura` callback you will need:
 * host (e.g. `bluepic-grotty-substantiality.mybluemix.net`)
 * port (80 if http, 443 is https, other if dev)
 * schema (http:// or https://)
+
+## Installation
+
+Install using the bluepic.sh shell script:
+
+    ./bluepic.sh --install
+
+
+Remove actions using the bluepic.sh shell script:
+
+    ./bluepic.sh --uninstall
+
+
+Remove and reinstall actions using the bluepic.sh shell script:
+
+    ./bluepic.sh --reinstall
 
 # Actions
 
