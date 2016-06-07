@@ -184,7 +184,7 @@ extension FeedViewModel {
 
     func shouldStartLoadingAnimation() -> Bool {
 
-        if BluemixDataManager.SharedInstance.imagesCurrentlyUploading.count > 0 {
+        if BluemixDataManager.SharedInstance.imagesCurrentlyUploading.count > 0 || BluemixDataManager.SharedInstance.hasReceievedInitialImages == false {
             return true
         } else {
             return false
