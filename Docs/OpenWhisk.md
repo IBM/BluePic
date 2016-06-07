@@ -20,7 +20,7 @@ For `Cloudant` you will need:
 For `Alchemy` you will need:
 * api key - this is from your Alchemy service instance
 
-    *Note:* If you receive the following error message when creating your Alchemy service instance: `Only one free key is allowed per account in a 24-hour period.`, then be sure to check if you already have an Alchemy service created for your Bluemix account.  Only one Alchemy service instance is allowed per Bluemix user Id.  You can reuse your Alchemy key from an exsiting app without having to create a new Alchemy instance. This error message is misleading because you will not be able to create a new Alchemy instance in 24 hours. 
+    *Note:* If you get an error message that says `Only one free key is allowed per account in a 24-hour period` when creating your Alchemy service instance, then be sure to check if you already have an Alchemy service created for your Bluemix account.  Only one Alchemy service instance is allowed per Bluemix account. You can reuse your Alchemy key from an existing app without having to create a new Alchemy instance. This error message is misleading because you won't be able to create a new Alchemy instance in 24 hours. 
 
 For `Weather Insights` you will need:
 * username
@@ -122,5 +122,5 @@ wsk action invoke {sequence name} -p imageId {cloudant document id}
     * prepareCloudantWrite
     * cloudantWrite
  * `bluepic/processCallback`
-    * `bluepic/kituraRequestAuth` 
+    * `bluepic/kituraRequestAuth`
     * `bluepic/kituraCallback`
