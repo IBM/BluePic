@@ -48,7 +48,9 @@ Remove and reinstall actions using the bluepic.sh shell script:
     ./bluepic.sh --reinstall
 
 # Actions
-Several actions are created by the `bluepic.sh` shell script.  The most important of which is the `bluepic/processImage` sequence. This is a sequence of individual actions that process the image entry for BluePic through its entirety.
+The overall processing of an image is handled by a sequence comprised of single-purpose OpenWhisk actions.  Each individual action can be invoked separately from the sequence. Parameters will need to be passed in to each individual action.  
+
+The `bluepic.sh` shell script is used to create all sequences and actions used by the BluePic app.  The most important of which is the `bluepic/processImage` sequence. This is a sequence of individual actions that process the image entry for BluePic through its entirety.
 
 To invoke the sequence, you just need to pass in an `imageId` parameter (i.e. ID of the cloudant document for the image that needs to be processed).
 
@@ -70,13 +72,21 @@ This sequence is made up of the following actions.
 * `bluepic/kituraRequestAuth` - request auth crednetials for Kitura from MCA
 * `bluepic/kituraCallback` - make request back to Kitura server to invoke push notification service
 
+# Debugging/Monitoring
 
-# Debugging/Development
-Each individual action can be invoked separately from the sequence. Parameters will need to be passed in to each individual action.  You will need to view source for each action to see required parameters.
+For general OpenWhisk details, be sure to review the complete [OpenWhisk documentation](https://new-console.ng.bluemix.net/docs/openwhisk/index.html)
 
-You can view the debug console (print statements) using the OpenWhisk CLI command `wsk activation poll`.
+You can monitor OpenWhisk activity using the [IBM Bluemix OpenWhisk Dashboard](https://new-console.ng.bluemix.net/openwhisk/dashboard), or by using the commdand line `wsk activation poll` command.  The dashboard provides a visual experience where you can drill into details for each request.  The CLI command provides you with a sequential output stream.  
 
-Sequences have also been created specifically for debugging, which process the request incrementally through each step. Each of the following sequences can be invoked, with the only required parameter passed in being the imageId, exactly as the main `processImage` sequence is shown above:
+There are two very important things to know when developing OpenWhisk actions:
+* Swift compiler error messages are in both the `wsk activation poll` output, and also in the stderr result of the `wsk action invoke` command.  Pay attention to both.
+* Swift `print()` or Node.js `console.log()` commands invoked from inside of OpenWhisk actions will also be visible in the `wsk activation poll` output. 
+
+These can be extremely helpful for debugging OpenWhisk actions.  Since you cannot connect a debugger with breakpoints to an OpenWhisk action, excessive use of print() statements and using early `return` values at interim steps are your best routes for debugging values during OpenWhisk development - just be sure to remove or comment-out your debug `return` statements before making the actions live for production use. 
+
+## Debugging Sequence Logic & Flow
+
+The following sequences have also been created specifically for debugging, which process the request incrementally through each step. You will need to view source for each action to see specific parameters for each step, but all of sequences except for `bluepic/processCallback` can be invoked with the only required parameter passed in being the imageId, exactly as the main `processImage` sequence shows above:
 
 ```
 wsk action invoke {sequence name} -p imageId {cloudant document id}  
@@ -116,5 +126,5 @@ wsk action invoke {sequence name} -p imageId {cloudant document id}
     * prepareCloudantWrite
     * cloudantWrite
  * `bluepic/processCallback`
-    * `bluepic/kituraRequestAuth`
+    * `bluepic/kituraRequestAuth` 
     * `bluepic/kituraCallback`
