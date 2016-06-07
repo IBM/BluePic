@@ -50,7 +50,7 @@ Clicking on the button below deploys the BluePic application to Bluemix. The `ma
 
 Once deployment to Bluemix is completed, you should access the route assigned to your application using the web browser of your choice. You should see the Kitura welcome page!
 
-Note that the [Bluemix buildpack for Swift](https://github.com/IBM-Swift/swift-buildpack) is used for the deployment of BluePic to Bluemix.
+Note that the [Bluemix buildpack for Swift](https://github.com/IBM-Swift/swift-buildpack) is used for the deployment of BluePic to Bluemix. This buildpack is currently installed in the following Bluemix regions: US South, United Kingdom, and Sydney.
 
 ### 4. Populate Cloudant database
 To populate your Cloudant database instance with sample data, you need to obtain the following credential values:
