@@ -32,6 +32,8 @@ For `Cloudant` you will need:
 For `Alchemy` you will need:
 * api key - this is from your Alchemy service instance
 
+    _*Note:* If you receive the following error message when creating your Alchemy service instance: `Only one free key is allowed per account in a 24-hour period.`, then be sure to check if you already have an Alchemy service created for your Bluemix account.  Only one Alchemy service instance is allowed per Bluemix user Id.  You can reuse your Alchemy key from an exsiting app without having to create a new Alchemy instance. This error message is misleading because you will not be able to create a new Alchemy instance in 24 hours. _
+
 For `Weather Insights` you will need:
 * username
 * password
