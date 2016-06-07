@@ -4,6 +4,9 @@ BluePic is a photo and image sharing sample application that allows you to take 
 
 To further explain, Bluepic takes advantage of Swift in a typical iOS client setting, but also on the server-side using the new Swift web framework and HTTP Server, Kitura. An interesting feature of Bluepic, is the way it handles photos on the server. For example, when an image is posted, it's data is recorded in Cloudant and the image binary is stored in Object Storage. From there, an OpenWhisk action is invoked causing weather data like tempature and situation (e.g. sunny, cloudy, etc.) to be calculated based on the location an image was uploaded from. AlchemyAPI is then used to analyze the image and extract text tags based on the content of the image. Lastly, a push notification is sent to the user, informing them their image has been processed and now includes weather and tag data.
 
+## Swift version
+The latest version of BluePic works with the DEVELOPMENT-SNAPSHOT-2016-05-03-a version of the Swift binaries. You can download this version of the Swift binaries by following this [link](https://swift.org/download/). Compatibility with other Swift versions is not guaranteed.
+
 ## Getting started
 There are *two ways* you can compile and provision BluePic on Bluemix. Method 1 uses the IBM Cloud Tools for Swift application. Using IBM Cloud Tools for Swift is the easiest and quickest path to get BluePic up and running. Method 2 is manual, does not leverage this tool, and, therefore, takes longer but you get to understand exactly the steps that are happening behind the scenes. Regardless of what what path you choose, there are a few optional steps you can complete for additional functionality.
 
