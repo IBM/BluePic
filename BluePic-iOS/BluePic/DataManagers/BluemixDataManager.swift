@@ -369,9 +369,12 @@ extension BluemixDataManager {
 // MARK: - Methods related to image uploading
 extension BluemixDataManager {
 
-
-
-
+    
+    /**
+     Method pings service and will be challanged if the app has MCA configured but the user hasn't signed in yet.
+     
+     - parameter callback: (response: Response?, error: NSError?) -> Void
+     */
     private func ping(callback : (response: Response?, error: NSError?) -> Void) {
 
         let requestURL = getBluemixBaseRequestURL() + "/" + kPingEndPoint
@@ -379,29 +382,34 @@ extension BluemixDataManager {
         let request = Request(url: requestURL, method: HttpMethod.GET)
 
         request.sendWithCompletionHandler { (response, error) -> Void in
-
-
             callback(response: response, error: error)
-
-
-
         }
 
     }
 
 
+    /**
+     Method will first call the ping method, to force the user to login with Facebook (if MCA is configured). When we get a reponse, if we have the Facebook userIdentity, then this means the user succuessfully logged into Facebook (and MCA is configured). We will then try to create a new user and when this is succuessful we finally call the postNewImage method. If we don't have the Facebook user Identity, then this means MCA isn't configured and we will continue by calling the postNewImage method.
+     
+     - parameter image: Image
+     */
     func tryToPostNewImage(image: Image) {
+
+        addImageToImagesCurrentlyUploading(image)
+        NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImageUploadBegan.rawValue, object: nil)
 
         //ping backend to trigger Facebook login if MCA is configured
         ping({ (response, error) -> Void in
 
             //either there was a network failure, user authentication with facebook failed, or user authentication with facebook was canceled by the user
             if(error != nil) {
-                NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImageUploadFailure.rawValue, object: nil)
+                print(NSLocalizedString("Try To Post New Image Error: Ping failed", comment: ""))
+                self.handleImageUploadFailure(image)
+
             }
             //successfully pinged service
             else {
-                //Check if User Authenticated with Facebook
+                //Check if User Authenticated with Facebook (aka is MCA configured)
                 if let userIdentity = FacebookDataManager.SharedInstance.getFacebookUserIdentity(), facebookUserId = userIdentity.id, facebookUserFullName = userIdentity.displayName {
 
                     //User is authenticated with Facebook, create new user record
@@ -411,32 +419,26 @@ extension BluemixDataManager {
 
                             CurrentUser.facebookUserId = facebookUserId
                             CurrentUser.fullName = facebookUserFullName
-                            
                             //User Authentication complete, ready to post image
                             self.postNewImage(image)
 
                         }
                         //Something went wrong creating new user
                         else {
-                            NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImageUploadFailure.rawValue, object: nil)
+                            print(NSLocalizedString("Try To Post New Image Error: Something went wrong calling create a new user", comment: ""))
+                            self.handleImageUploadFailure(image)
                         }
                     })
 
                 }
                 //MCA is not configured
-                else{
+                else {
                     self.postNewImage(image)
                 }
             }
         })
 
-
     }
-
-
-
-
-
 
 
     /**
@@ -445,10 +447,6 @@ extension BluemixDataManager {
      - parameter image: Image
      */
     private func postNewImage(image: Image) {
-
-        addImageToImagesCurrentlyUploading(image)
-
-        NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImageUploadBegan.rawValue, object: nil)
 
         guard let uiImage = image.image, imageData = UIImagePNGRepresentation(uiImage) else {
             print(NSLocalizedString("Post New Image Error: We don't have all the info necessary to post this image", comment: ""))
@@ -474,13 +472,10 @@ extension BluemixDataManager {
             if let error = error {
                 print(NSLocalizedString("Post New Image Error:", comment: "") + " \(error.localizedDescription)")
 
-                self.removeImageFromImagesCurrentlyUploading(image)
-                self.addImageToImagesThatFailedToUpload(image)
-
-                NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImageUploadFailure.rawValue, object: nil)
+               self.handleImageUploadFailure(image)
 
             }
-                //success
+            //success
             else {
 
                 self.addImageToImageTakenDuringAppSessionByIdDictionary(image)
@@ -490,6 +485,21 @@ extension BluemixDataManager {
 
             }
         })
+
+    }
+
+
+    /**
+     Method handles when there is an image upload failure. It will remove the image that was uploading from the imagesCurrentlyUploading array, and then will add the image to the imagesThatFailedToUpload array. Finally it will notify the rest of the app with the BluemixDataManagerNotification.ImageUploadFailure notification
+     
+     - parameter image: Image
+     */
+    private func handleImageUploadFailure(image: Image) {
+
+        self.removeImageFromImagesCurrentlyUploading(image)
+        self.addImageToImagesThatFailedToUpload(image)
+
+        NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImageUploadFailure.rawValue, object: nil)
 
     }
 
