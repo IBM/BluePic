@@ -147,7 +147,11 @@ public struct Configuration {
                 hostName = openWhiskJson["hostName"].string,
                 urlPath = openWhiskJson["urlPath"].string,
                 authToken = openWhiskJson["authToken"].string {
-        return OpenWhiskProps(hostName: hostName, urlPath: urlPath, authToken: authToken)
+        let utf8BaseStr = authToken.data(using: NSUTF8StringEncoding)
+        guard let computedAuthToken = utf8BaseStr?.base64EncodedString(NSDataBase64EncodingOptions(rawValue: 0)) else {
+          throw Error.IO("Could not perform base64 encoding on authToken")
+        }
+        return OpenWhiskProps(hostName: hostName, urlPath: urlPath, authToken: computedAuthToken)
       }
     }
     throw Error.IO("Failed to obtain OpenWhisk credentials.")
