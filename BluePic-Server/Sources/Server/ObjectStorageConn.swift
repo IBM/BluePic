@@ -37,15 +37,12 @@ public struct ObjectStorageConn {
       self.connect(completionHandler: completionHandler)
     }
     Log.verbose("Completed task in serialized block.")
-    // Though the Kitura's API is async, the execution when invoking the
-    // connect() method is serialized.
-    // Hence, taking advantage of that for the time being...
     let param: ObjectStorage? = (authenticated) ? objStorage : nil
     completionHandler(objStorage: param)
   }
 
   private mutating func connect(completionHandler: (objStorage: ObjectStorage?) -> Void) {
-    Log.verbose("Determining if we have an ObjectStorage instance ready for use...")
+    Log.verbose("Determining if we have an ObjectStorage instance ready to use...")
     if authenticated, let lastAuthenticatedTs = lastAuthenticatedTs {
       // Check when was the last time we got an auth token
       // If it's been less than 50 mins, then reuse auth token.
@@ -60,6 +57,10 @@ public struct ObjectStorageConn {
       }
     }
 
+    // Network call should be synchronous since we need to know the result before
+    // proceeding...
+    let semaphore = dispatch_semaphore_create(0)
+    Log.verbose("Making network call synchronous...")
     objStorage.connect(userId: connProps.userId, password: connProps.password, region: ObjectStorage.REGION_DALLAS) { (error) in
       if let error = error {
         let errorMsg = "Could not connect to Object Storage."
@@ -71,7 +72,11 @@ public struct ObjectStorageConn {
         self.lastAuthenticatedTs = NSDate()
         Log.verbose("lastAuthenticatedTs is \(self.lastAuthenticatedTs).")
       }
+      Log.verbose("Signaling semaphore...")
+      dispatch_semaphore_signal(semaphore)
     }
+    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
+    Log.verbose("Continuing execution after synchronous network call...")
   }
 
 }
