@@ -369,10 +369,10 @@ extension BluemixDataManager {
 // MARK: - Methods related to image uploading
 extension BluemixDataManager {
 
-    
+
     /**
      Method pings service and will be challanged if the app has MCA configured but the user hasn't signed in yet.
-     
+
      - parameter callback: (response: Response?, error: NSError?) -> Void
      */
     private func ping(callback : (response: Response?, error: NSError?) -> Void) {
@@ -390,7 +390,7 @@ extension BluemixDataManager {
 
     /**
      Method will first call the ping method, to force the user to login with Facebook (if MCA is configured). When we get a reponse, if we have the Facebook userIdentity, then this means the user succuessfully logged into Facebook (and MCA is configured). We will then try to create a new user and when this is succuessful we finally call the postNewImage method. If we don't have the Facebook user Identity, then this means MCA isn't configured and we will continue by calling the postNewImage method.
-     
+
      - parameter image: Image
      */
     func tryToPostNewImage(image: Image) {
@@ -491,7 +491,7 @@ extension BluemixDataManager {
 
     /**
      Method handles when there is an image upload failure. It will remove the image that was uploading from the imagesCurrentlyUploading array, and then will add the image to the imagesThatFailedToUpload array. Finally it will notify the rest of the app with the BluemixDataManagerNotification.ImageUploadFailure notification
-     
+
      - parameter image: Image
      */
     private func handleImageUploadFailure(image: Image) {
