@@ -9,9 +9,9 @@
 `wsk property set --apihost <hostName> --auth <authKey> --namespace "<namespace>"`
      
 2. Take the value after `--apihost` and put it as the `hostName` value in `properties.json`.
-3. Next, insert the value after `--namespace` within the existing `urlPath` value in `properties.json`. In the `<namespace>` spot to be exact:
+3. Next, insert the value after `--namespace`, within the existing `urlPath` value in `properties.json`. In the `<namespace>` spot to be exact:
 `"/api/v1/namespaces/<namespace>/actions/bluepic/processImage?blocking=false"`
-4. Lastly, calculate the `authToken` value by...
+4. Lastly, take the value after `--auth` and put it as the `authToken` value in `properties.json`. That value will later be converted to a base64 encoded string that OpenWhisk needs for authentication.
 
 
 # Installing OpenWhisk Actions for BluePic
