@@ -155,3 +155,5 @@ To learn more about BluePic's folder structure, its architecture, the Swift pack
 
 ## License
 This application is licensed under Apache 2.0. Full license text is available in [LICENSE](LICENSE).
+
+For a list of demo images used, view the [Image Sources](Docs/ImageSources.md) file.
