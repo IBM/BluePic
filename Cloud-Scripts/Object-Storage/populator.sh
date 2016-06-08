@@ -84,9 +84,9 @@ done
 # Note that container4 does not have any images
 imagesFolder=$scriptsFolder/images
 echo "imagesFolder: $imagesFolder"
-declare -a images=("$container1:person.png:image/png" "$container1:flower_1.png:image/png" "$container1:church.png:image/png" "$container1:rush.png:image/png" \
+declare -a images=("$container1:person.png:image/png" "$container1:flower_1.png:image/png" "$container1:church.png:image/png" \
   "$container2:road.png:image/png" "$container2:flower_2.png:image/png" "$container2:city.png:image/png" "$container2:bridge.png:image/png" \
-  "$container3:nature.png:image/png" "$container3:concert.png:image/png" "$container3:car.png:image/png")
+  "$container3:nature.png:image/png" "$container3:concert.png:image/png")
 
 for record in "${images[@]}"; do
   IFS=':' read -ra image <<< "$record"
