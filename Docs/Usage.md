@@ -1,5 +1,15 @@
 ## Using BluePic
 
+** **Please Read** **
+
+There is a section in the README about [optional features you can configure](../README.md#optional-features-to-configure), so we want to make it clear what will not work in the app if these features are not configured.
+
+- If MCA is not configured, you will not be able to login, meaning you cannot post photos under your own name and profile, but you can post photos under the anonymous user we have in place.
+- If Push is not configured, you will not be able to receive push notifications on your physical iOS device.
+- If OpenWhisk is not configured, your posted images will not receive any weather or tag data.
+
+### Welcome View
+
 BluePic was designed so that anyone can quickly launch the app and view photos posted without needing to log in. However, to view the profile or post photos, the user can easily login with his/her Facebook. This is only used to uniquely identify the user by obtaining the Facebook ID and the user's full name.
 
 <p align="center">
