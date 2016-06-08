@@ -186,6 +186,19 @@ func parseUsers(document: JSON) throws -> JSON {
  - returns: valid Json with image data
  */
 func getImageJSON(fromRequest request: RouterRequest) throws -> JSON {
+  print("body: \(request.body)")
+  guard let requestBody = request.body else {
+    throw ProcessingError.Image("No Request body present.")
+  }
+  switch (requestBody) {
+  case .multipart(let parts):
+    for part in parts {
+      print("\(part.name) \(part.body) ")
+    }
+  default:
+    throw ProcessingError.Image("Failed to parse request body: \(requestBody)")
+  }
+
   guard let caption = request.params["caption"],
   let fileName = request.params["fileName"],
   let lat = request.params["latitude"],
