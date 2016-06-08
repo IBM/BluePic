@@ -41,7 +41,7 @@ func defineRoutes() {
   router.post("/users", middleware: credentials)
   router.post("/push", middleware: credentials)
   router.get("/ping", middleware: credentials)
-  router.post("/images/:fileName/:caption/:width/:height/:latitude/:longitude/:location",  middleware: credentials)
+  router.post("/images",  middleware: credentials)
 
   // Ping closure
   let closure = { (request: RouterRequest, response: RouterResponse, next: () -> Void) -> Void in
@@ -345,7 +345,8 @@ func defineRoutes() {
   * to send the image metadata, while the body of the request only
   * contains the binary data for the image. I know, yuck...
   */
-  router.post("/images/:fileName/:caption/:width/:height/:latitude/:longitude/:location") { request, response, next in
+  router.post("/images") { request, response, next in
+    print("headers: \(request.domain)")
     do {
       var imageJSON = try getImageJSON(fromRequest: request)
       // Get image binary from request body
