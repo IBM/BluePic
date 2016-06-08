@@ -44,6 +44,9 @@ class CameraDataManager: NSObject {
     //confirmationView to be shown after selecting or taking a photo
     var confirmationView: CameraConfirmationView!
 
+    //the image picked with image picker or taken with camera
+    var pickedImage: UIImage?
+
     //instance of the image the user decided to post
     var imageUserDecidedToPost: Image?
 
@@ -165,7 +168,7 @@ class CameraDataManager: NSObject {
             self.confirmationView.titleTextField.resignFirstResponder()
             self.confirmationView.disableUI()
 
-            SVProgressHUD.show()
+            SVProgressHUD.showWithStatus("Determining Location")
 
         }
 
@@ -253,48 +256,26 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
 
         resetStateVariables()
 
-        if !prepareimageUserDecidedToPost(info) {
+        if !canPostImage(info) {
             self.destroyConfirmationView()
 
             self.showPhotoCouldntBeChosenAlert()
-
         }
-
     }
 
     /**
-     Method creates an image open from the the image the user decided to post and preps all of its properties with data
+     Method determines if we have a valid image to post and either prepares to post or cancels operation
 
-     - parameter takenImage: UIImage
+     - parameter info: imagePicker info dictionary
+
+     - returns: true if valid image, false if not
      */
-    func prepareimageUserDecidedToPost(info: [String : AnyObject]) -> Bool {
+    func canPostImage(info: [String : AnyObject]) -> Bool {
 
         if let takenImage = info[UIImagePickerControllerOriginalImage] as? UIImage, resizedAndRotatedImage = UIImage.resizeAndRotateImage(takenImage) {
 
             self.confirmationView.photoImageView.image = takenImage
-
-            let userObject = User(facebookID: CurrentUser.facebookUserId, name: CurrentUser.fullName)
-
-            //save name of image as current date and time
-            let dateFormatter = NSDateFormatter()
-            dateFormatter.dateFormat = "MM-dd-yyyy_HHmmss"
-            let todaysDate = NSDate()
-            let fileName = dateFormatter.stringFromDate(todaysDate) + ".png"
-
-
-            setLatLongAndLocationNameForImage { location in
-
-                if let location = location {
-                    self.imageUserDecidedToPost = Image(caption: "", fileName: fileName, width: resizedAndRotatedImage.size.width, height: resizedAndRotatedImage.size.height, image: resizedAndRotatedImage, location: location, user: userObject)
-
-                } else {
-                    self.failureGettingUserLocation = true
-                }
-
-                self.tryToPostPhoto()
-
-            }
-
+            self.pickedImage = resizedAndRotatedImage
             return true
 
         } else {
@@ -302,9 +283,45 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
             print(NSLocalizedString("Prepare Image User Decided To Post Error: Something went wrong preparing the image", comment: ""))
             return false
         }
-
     }
 
+    /**
+     Prepares image to be posted with all of it's data, including getting a valid location
+     */
+    func prepareImageToPost() {
+
+        // need image to be non-nil and post button to have been pressed already
+        guard let pickedImage = self.pickedImage where userPressedPostPhoto && !userPressedCancelButton else {
+            return
+        }
+
+        showProgressHudAndDisableUI()
+
+        failureGettingUserLocation = false
+
+        setLatLongAndLocationNameForImage { location in
+
+            self.dismissProgressHUDAndReEnableUI()
+
+            if let location = location {
+
+                let userObject = User(facebookID: CurrentUser.facebookUserId, name: CurrentUser.fullName)
+
+                //save name of image as current date and time
+                let dateFormatter = NSDateFormatter()
+                dateFormatter.dateFormat = "MM-dd-yyyy_HHmmss"
+                let todaysDate = NSDate()
+                let fileName = dateFormatter.stringFromDate(todaysDate) + ".png"
+
+                self.imageUserDecidedToPost = Image(caption: "", fileName: fileName, width: pickedImage.size.width, height: pickedImage.size.height, image: pickedImage, location: location, user: userObject)
+
+            } else {
+                self.failureGettingUserLocation = true
+            }
+
+            self.tryToPostPhoto()
+        }
+    }
 
     /**
      Method is called when the post button is pressed
@@ -321,7 +338,7 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
     private func tryToPostPhoto() {
 
         //only post photo if user has chosen to
-        if userPressedPostPhoto && userPressedCancelButton == false {
+        if userPressedPostPhoto && !userPressedCancelButton {
 
             //failure getting user location
             if failureGettingUserLocation {
@@ -333,7 +350,8 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
             }
             //location still being determined
             else if imageUserDecidedToPost == nil {
-                showProgressHudAndDisableUI()
+                //prepares image to post by also looking for location info
+                self.prepareImageToPost()
             }
         }
 
@@ -377,7 +395,6 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
 
     }
 
-
     /**
      Method shows the location can't be determined alert
      */
@@ -393,7 +410,7 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
 
         alert.addAction(UIAlertAction(title: NSLocalizedString("Try Again", comment: ""), style: .Default, handler: { (action: UIAlertAction) in
 
-            self.tryToDetermineLocationAgainAndSetLatLongAndLocationName()
+            self.prepareImageToPost()
 
         }))
 
@@ -432,28 +449,6 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
             }
 
         }
-    }
-
-    /**
-     Method is called from can't determine location alert if the user chooses to retry getting the location for the image
-     */
-    private func tryToDetermineLocationAgainAndSetLatLongAndLocationName() {
-
-        showProgressHudAndDisableUI()
-
-        failureGettingUserLocation = false
-
-        setLatLongAndLocationNameForImage { location in
-
-            self.dismissProgressHUDAndReEnableUI()
-
-            if location == nil {
-                self.failureGettingUserLocation = true
-            }
-            self.tryToPostPhoto()
-
-        }
-
     }
 
     /**
