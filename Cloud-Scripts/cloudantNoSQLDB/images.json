@@ -1,43 +1,6 @@
 {
   "docs": [
     {
-      "_id": "2000",
-      "fileName": "rush.png",
-      "caption": "Rush",
-      "contentType": "image/png",
-      "url": "$publicUrl/1000/rush.png",
-      "width": 236,
-      "height": 236,
-      "tags": [
-        {
-          "label": "rush",
-          "confidence": 99
-        },
-        {
-          "label": "progressive rock",
-          "confidence": 85
-        },
-        {
-          "label": "music",
-          "confidence": 90
-        }
-      ],
-      "location": {
-        "name": "Austin, Texas",
-        "latitude": 34.53,
-        "longitude": 84.5,
-        "weather": {
-          "description": "Mostly Cloudy",
-          "temperature": 70,
-          "iconId": 27
-        }
-      },
-      "uploadedTs": "2016-04-05T01:25:43",
-      "userId": "1000",
-      "deviceId": "3000",
-      "type": "image"
-    },
-    {
       "_id": "2001",
       "fileName": "bridge.png",
       "caption": "Bridge",
@@ -72,35 +35,6 @@
       "uploadedTs": "2016-04-07T16:25:43",
       "userId": "1001",
       "deviceId": "3001",
-      "type": "image"
-    },
-    {
-      "_id": "2002",
-      "fileName": "car.png",
-      "caption": "Car",
-      "contentType": "image/png",
-      "url": "$publicUrl/1002/car.png",
-      "width": 600,
-      "height": 398,
-      "tags": [
-        {
-          "label": "car",
-          "confidence": 76
-        }
-      ],
-      "location": {
-        "name": "Los Angeles, California",
-        "latitude": 34.53,
-        "longitude": 84.5,
-        "weather": {
-          "description": "Sunny",
-          "temperature": 70,
-          "iconId": 27
-        }
-      },
-      "uploadedTs": "2016-04-09T15:25:43",
-      "userId": "1002",
-      "deviceId": "CFB36A36-5C84-4D20-A010-DB6B543FEA10",
       "type": "image"
     },
     {
@@ -277,7 +211,7 @@
           "confidence": 98
         },
         {
-          "label": "sky",
+          "label": "cloudy sky",
           "confidence": 78
         },
         {

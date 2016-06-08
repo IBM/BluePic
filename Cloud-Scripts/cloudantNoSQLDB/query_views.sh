@@ -45,8 +45,8 @@ curl -g -X GET "https://$username.cloudant.com/$database/_design/main_design/_vi
 echo
 echo
 
-echo "Querying images_by_id view for image 2000..."
-curl -g -X GET "https://$username.cloudant.com/$database/_design/main_design/_view/images_by_id?include_docs=true&descending=false&startkey=[\"2000\",0]&endkey=[\"2000\",{}]" -u $username:$password
+echo "Querying images_by_id view for image 2001..."
+curl -g -X GET "https://$username.cloudant.com/$database/_design/main_design/_view/images_by_id?include_docs=true&descending=false&startkey=[\"2001\",0]&endkey=[\"2001\",{}]" -u $username:$password
 echo
 echo
 
@@ -60,8 +60,8 @@ curl -g -X GET "https://$username.cloudant.com/$database/_design/main_design/_vi
 echo
 echo
 
-echo "Querying images_by_tags view (progressive rock)"
-curl -g -X GET "https://$username.cloudant.com/$database/_design/main_design/_view/images_by_tags?include_docs=true&descending=true&reduce=false&endkey=[\"progressive%20rock\",\"0\",\"0\",0]&startkey=[\"progressive%20rock\",{}]" -u $username:$password
+echo "Querying images_by_tags view (cloudy sky)"
+curl -g -X GET "https://$username.cloudant.com/$database/_design/main_design/_view/images_by_tags?include_docs=true&descending=true&reduce=false&endkey=[\"cloudy%20sky\",\"0\",\"0\",0]&startkey=[\"cloudy%20sky\",{}]" -u $username:$password
 echo
 echo
 
