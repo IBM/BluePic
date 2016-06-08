@@ -18,6 +18,7 @@
 		1B05354D1CFE86460006C6F2 /* Main.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1B0535431CFE86460006C6F2 /* Main.strings */; };
 		1B05354E1CFE86460006C6F2 /* Profile.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1B0535451CFE86460006C6F2 /* Profile.strings */; };
 		1B0535931D0757B50006C6F2 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1B0535951D0757B50006C6F2 /* Localizable.strings */; };
+		1B0535981D089AA80006C6F2 /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0535971D089AA80006C6F2 /* UIViewControllerExtension.swift */; };
 		1B057E061C17B10100AC21EE /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B057E051C17B10100AC21EE /* ProfileViewModel.swift */; };
 		1B057E091C17C03400AC21EE /* ProfileHeaderCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B057E071C17C03400AC21EE /* ProfileHeaderCollectionReusableView.swift */; };
 		1B057E0A1C17C03400AC21EE /* ProfileHeaderCollectionReusableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1B057E081C17C03400AC21EE /* ProfileHeaderCollectionReusableView.xib */; };
@@ -110,6 +111,7 @@
 		1B0535461CFE86460006C6F2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Profile.strings; sourceTree = "<group>"; };
 		1B0535941D0757B50006C6F2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		1B0535961D0757B60006C6F2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		1B0535971D089AA80006C6F2 /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
 		1B057E051C17B10100AC21EE /* ProfileViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		1B057E071C17C03400AC21EE /* ProfileHeaderCollectionReusableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileHeaderCollectionReusableView.swift; sourceTree = "<group>"; };
 		1B057E081C17C03400AC21EE /* ProfileHeaderCollectionReusableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileHeaderCollectionReusableView.xib; sourceTree = "<group>"; };
@@ -310,6 +312,7 @@
 				347472CE1BFA8DEF0018B7F6 /* UIViewExtensions.swift */,
 				1B40BF851CE4DDB10097F435 /* NSAttributedStringExtension.swift */,
 				1BF00D481CF4B60D009472B5 /* UILabelExtension.swift */,
+				1B0535971D089AA80006C6F2 /* UIViewControllerExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -607,6 +610,7 @@
 				3435C7CF1C036A60004923BD /* TabBarViewController.swift in Sources */,
 				1B2DC2531C1F360D00B4E77B /* EmptyFeedCollectionViewCell.swift in Sources */,
 				1B40BF861CE4DDB10097F435 /* NSAttributedStringExtension.swift in Sources */,
+				1B0535981D089AA80006C6F2 /* UIViewControllerExtension.swift in Sources */,
 				1B40BF801CE0D0140097F435 /* LocationDataManager.swift in Sources */,
 				2EAAC0E81CE39C13006A0B41 /* KTCenterFlowLayout.m in Sources */,
 				1BF00D0A1CEACF68009472B5 /* ProfileNavigationController.swift in Sources */,
