@@ -54,8 +54,13 @@ class FeedViewController: UIViewController {
     //Allows for pull down to refresh
     var refreshControl: UIRefreshControl!
 
+    //state variable used to know if we we were unable to present this alert because the FeedViewController wasn't visible
+    var failedToPresentImageFeedErrorAlert = false
+
     //Defines the minimum spacing between cells in the collection view
     let kMinimumInterItemSpacingForSectionAtIndex: CGFloat = 0
+
+
 
     /**
      Method called upon view did load. It sets up the collection view, sets up the view model, starts the loading animation at app launch, determines the feed model, and observes when the application becomes active
@@ -72,6 +77,10 @@ class FeedViewController: UIViewController {
         observeWhenApplicationBecomesActive()
     }
 
+
+    override func viewDidDisappear(animated: Bool) {
+
+    }
     /**
      Method to determine if we should put the search top bar up because we just performed a search query
      */
@@ -125,9 +134,12 @@ class FeedViewController: UIViewController {
 
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+
         if searchQuery != nil && self.isMovingToParentViewController() &&
             collectionView.numberOfItemsInSection(1) < 1 && noResultsLabel.hidden {
             SVProgressHUD.show()
+        } else {
+            tryToShowImageFeedAlert()
         }
     }
 
@@ -230,12 +242,31 @@ class FeedViewController: UIViewController {
      */
     func displayImageFeedErrorAlert() {
 
-        let alert = UIAlertController(title: NSLocalizedString("Error Fetching Images", comment: ""),
+        if isVisible() {
+
+            let alert = UIAlertController(title: NSLocalizedString("Error Fetching Images", comment: ""),
                                       message: NSLocalizedString("Pull down to retry", comment: ""),
                                       preferredStyle: UIAlertControllerStyle.Alert)
 
-        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: UIAlertActionStyle.Cancel, handler: nil))
-        self.presentViewController(alert, animated: true, completion: nil)
+            alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: UIAlertActionStyle.Cancel, handler: nil))
+            self.presentViewController(alert, animated: true, completion: nil)
+            failedToPresentImageFeedErrorAlert = false
+
+        } else {
+            failedToPresentImageFeedErrorAlert = true
+        }
+    }
+
+
+    /**
+     Method will be called in viewDidAppear if we were unable to present this alert because the FeedViewController wasn't visible
+     */
+    private func tryToShowImageFeedAlert() {
+
+        if failedToPresentImageFeedErrorAlert {
+            displayImageFeedErrorAlert()
+        }
+
     }
 
     /**
