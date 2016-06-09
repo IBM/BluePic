@@ -345,12 +345,14 @@ func defineRoutes() {
   * to send the image metadata, while the body of the request only
   * contains the binary data for the image. I know, yuck...
   */
+  router.all("/images", middleware: BodyParser())
   router.post("/images") { request, response, next in
-    print("headers: \(request.domain)")
     do {
-      var imageJSON = try getImageJSON(fromRequest: request)
-      // Get image binary from request body
-      let image = try BodyParser.readBodyData(with: request)
+      // get multipart data for image metadata and imgage binary data
+      let multipartData = try parseMultipart(fromRequest: request)
+      var imageJSON = try updateImageJSON(json: multipartData.0, withRequest: request)
+      // Get image binary from multipart form data body
+      let image = multipartData.1
       // Create closure
       let completionHandler = { (success: Bool) -> Void in
         if success {

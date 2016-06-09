@@ -448,18 +448,17 @@ extension BluemixDataManager {
      */
     private func postNewImage(image: Image) {
 
-        guard let uiImage = image.image, imageData = UIImagePNGRepresentation(uiImage),
-                  encodedLocationName = image.location.name.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet()) else {
+        guard let uiImage = image.image, imageData = UIImagePNGRepresentation(uiImage) else {
             print(NSLocalizedString("Post New Image Error: Could not process image data properly", comment: ""))
             NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImageUploadFailure.rawValue, object: nil)
             return
         }
 
         let requestURL = getBluemixBaseRequestURL() + "/" + kImagesEndPoint
-        let imageDictionary = ["fileName": image.fileName, "caption" : image.caption, "width" : "\(image.width)", "height" : "\(image.height)",
-                         "location" : ["name" : encodedLocationName, "latitude" : "\(image.location.latitude)", "longitude" : "\(image.location.longitude)"]]
+        let imageDictionary = ["fileName": image.fileName, "caption" : image.caption, "width" : image.width, "height" : image.height, "location" : ["name" : image.location.name, "latitude" : image.location.latitude, "longitude" : image.location.longitude]]
+
         do {
-            let jsonData = try NSJSONSerialization.dataWithJSONObject(imageDictionary, options: .PrettyPrinted)
+            let jsonData = try NSJSONSerialization.dataWithJSONObject(imageDictionary, options: NSJSONWritingOptions(rawValue: 0))
             let tempJsonString = String(data: jsonData, encoding: NSUTF8StringEncoding)
             let boundary = generateBoundaryString()
             let mimeType = "image/png"
@@ -470,7 +469,7 @@ extension BluemixDataManager {
             guard let jsonString = tempJsonString, boundaryStart = "--\(boundary)\r\n".dataUsingEncoding(NSUTF8StringEncoding),
                 dispositionEncoding = "Content-Disposition:form-data; name=\"imageJson\"\r\n\r\n".dataUsingEncoding(NSUTF8StringEncoding),
                 jsonEncoding = "\(jsonString)\r\n".dataUsingEncoding(NSUTF8StringEncoding),
-                imageDispositionEncoding = "Content-Disposition:form-data; name=\"file\"; filename=\"\(image.fileName)\"\r\n".dataUsingEncoding(NSUTF8StringEncoding),
+                imageDispositionEncoding = "Content-Disposition:form-data; name=\"imageBinary\"; filename=\"\(image.fileName)\"\r\n".dataUsingEncoding(NSUTF8StringEncoding),
                 imageTypeEncoding = "Content-Type: \(mimeType)\r\n\r\n".dataUsingEncoding(NSUTF8StringEncoding),
                 imageEndEncoding = "\r\n".dataUsingEncoding(NSUTF8StringEncoding),
                 boundaryEnd = "--\(boundary)--\r\n".dataUsingEncoding(NSUTF8StringEncoding) else {
