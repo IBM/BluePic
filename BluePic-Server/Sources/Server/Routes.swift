@@ -349,10 +349,9 @@ func defineRoutes() {
   router.post("/images") { request, response, next in
     do {
       // get multipart data for image metadata and imgage binary data
-      let multipartData = try parseMultipart(fromRequest: request)
-      var imageJSON = try updateImageJSON(json: multipartData.0, withRequest: request)
-      // Get image binary from multipart form data body
-      let image = multipartData.1
+      var (imageJSON, image) = try parseMultipart(fromRequest: request)
+      imageJSON = try updateImageJSON(json: imageJSON, withRequest: request)
+
       // Create closure
       let completionHandler = { (success: Bool) -> Void in
         if success {

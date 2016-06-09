@@ -186,8 +186,8 @@ func parseUsers(document: JSON) throws -> JSON {
  - returns: valid json image data and image binary in an NSData object
  */
 func parseMultipart(fromRequest request: RouterRequest) throws -> (JSON, NSData) {
-  guard let requestBody = request.body else {
-    throw ProcessingError.Image("No Request body present.")
+  guard let requestBody: ParsedBody = request.body else {
+    throw ProcessingError.Image("No request body present.")
   }
   var imageJson: JSON?
   var imageData: NSData?
@@ -201,14 +201,14 @@ func parseMultipart(fromRequest request: RouterRequest) throws -> (JSON, NSData)
             imageJson = JSON(data: dataJson)
           }
         default:
-          Log.warning("Couldn't process image Json Part")
+          Log.warning("Couldn't process image Json from multi-part form.")
         }
       } else if part.name == "imageBinary" {
         switch (part.body) {
         case .raw(let data):
           imageData = data
         default:
-          Log.warning("Couldn't process image binary Part")
+          Log.warning("Couldn't process image binary from multi-part form.")
         }
       }
     }
@@ -217,7 +217,7 @@ func parseMultipart(fromRequest request: RouterRequest) throws -> (JSON, NSData)
   }
 
   guard let json = imageJson, data = imageData else {
-    throw ProcessingError.Image("Failed to parse multipart form data in request body")
+    throw ProcessingError.Image("Failed to parse multipart form data in request body.")
   }
   return (json, data)
 }
