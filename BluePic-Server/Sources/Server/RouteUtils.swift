@@ -177,61 +177,82 @@ func parseUsers(document: JSON) throws -> JSON {
 }
 
 /**
+ Method to parse out multipart data. We expect json about an image and image data binary
+
+ - parameter request: router request with all the data
+
+ - throws: parsing error if necessary
+
+ - returns: valid json image data and image binary in an NSData object
+ */
+func parseMultipart(fromRequest request: RouterRequest) throws -> (JSON, NSData) {
+  guard let requestBody = request.body else {
+    throw ProcessingError.Image("No Request body present.")
+  }
+  var imageJson: JSON?
+  var imageData: NSData?
+  switch (requestBody) {
+  case .multipart(let parts):
+    for part in parts {
+      if part.name == "imageJson" {
+        switch (part.body) {
+        case .text(let stringJson):
+          if let dataJson = stringJson.data(using: NSUTF8StringEncoding, allowLossyConversion: false) {
+            imageJson = JSON(data: dataJson)
+          }
+        default:
+          Log.warning("Couldn't process image Json Part")
+        }
+      } else if part.name == "imageBinary" {
+        switch (part.body) {
+        case .raw(let data):
+          imageData = data
+        default:
+          Log.warning("Couldn't process image binary Part")
+        }
+      }
+    }
+  default:
+    throw ProcessingError.Image("Failed to parse request body: \(requestBody)")
+  }
+
+  guard let json = imageJson, data = imageData else {
+    throw ProcessingError.Image("Failed to parse multipart form data in request body")
+  }
+  return (json, data)
+}
+
+/**
  Converts a RouterRequest object to a more consumable JSON object.
 
+ - parameter json: json object containing details about an image
  - parameter request: router request with all the data
 
  - throws: parsing error if request has invalid info
 
  - returns: valid Json with image data
  */
-func getImageJSON(fromRequest request: RouterRequest) throws -> JSON {
-  print("body: \(request.body)")
-  guard let requestBody = request.body else {
-    throw ProcessingError.Image("No Request body present.")
-  }
-  switch (requestBody) {
-  case .multipart(let parts):
-    for part in parts {
-      print("\(part.name) \(part.body) ")
-    }
-  default:
-    throw ProcessingError.Image("Failed to parse request body: \(requestBody)")
-  }
-
-  guard let caption = request.params["caption"],
-  let fileName = request.params["fileName"],
-  let lat = request.params["latitude"],
-  let long = request.params["longitude"],
-  let location = request.params["location"],
-  let w = request.params["width"],
-  let h = request.params["height"],
-  let width = Float(w),
-  let height = Float(h),
-  let latitude = Float(lat),
-  let longitude = Float(long),
-  let authContext = request.userInfo["mcaAuthContext"] as? AuthorizationContext else {
-    throw ProcessingError.Image("Invalid image document!")
-  }
-
-  guard let contentType = ContentType.sharedInstance.contentTypeForFile(fileName) else {
+func updateImageJSON(json: JSON, withRequest request: RouterRequest) throws -> JSON {
+  var updatedJson = json
+  guard let authContext = request.userInfo["mcaAuthContext"] as? AuthorizationContext, 
+            contentType = ContentType.sharedInstance.contentTypeForFile(updatedJson["fileName"].stringValue) else {
     throw ProcessingError.Image("Invalid image document!")
   }
 
   let userId = authContext.userIdentity?.id ?? "anonymous"
   Log.verbose("Image will be uploaded under the following userId: '\(userId)'.")
   let uploadedTs = StringUtils.currentTimestamp()
-  let imageName = StringUtils.decodeWhiteSpace(inString: caption)
-  let locationName = StringUtils.decodeWhiteSpace(inString: location)
-  let imageURL = generateUrl(forContainer: userId, forImage: fileName)
+  let imageURL = generateUrl(forContainer: userId, forImage: updatedJson["fileName"].stringValue)
   let deviceId = authContext.deviceIdentity.id
 
-  let whereabouts: JSONDictionary = ["latitude": latitude, "longitude": longitude, "name": locationName]
-  let imageDocument: JSONDictionary = ["location": whereabouts, "contentType": contentType, "url": imageURL,
-  "fileName": fileName, "userId": userId, "deviceId": deviceId, "caption": imageName, "uploadedTs": uploadedTs,
-  "width": width, "height": height, "type": "image"]
+  updatedJson["contentType"].stringValue = contentType
+  updatedJson["url"].stringValue = imageURL
+  updatedJson["userId"].stringValue = userId
+  updatedJson["deviceId"].stringValue = deviceId
+  updatedJson["uploadedTs"].stringValue = uploadedTs
+  updatedJson["type"].stringValue = "image"
 
-  return JSON(imageDocument)
+  return updatedJson
 }
 
 /**
