@@ -340,10 +340,10 @@ func defineRoutes() {
 
   /**
   * Route for uploading a new picture for a given user.
-  * As of now, we don't have a multi-form request parser in Kitura.
-  * Therefore, we are using the REST endpoint definition as the mechanism
-  * to send the image metadata, while the body of the request only
-  * contains the binary data for the image. I know, yuck...
+  * Uses a multi-part form data request to send data in the body.
+  * The two items sent in the data is a Json string with image metadata
+  * and the second piece is the actual image binary.
+  * This route deals with processing and recording the data.
   */
   router.all("/images", middleware: BodyParser())
   router.post("/images") { request, response, next in
