@@ -165,6 +165,42 @@ class ProfileViewController: UIViewController {
         collectionView.reloadData()
     }
 
+
+    @IBAction func settingsButtonAction(sender: AnyObject) {
+
+        if let tabVC = self.tabBarController {
+
+            let alert: UIAlertController=UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
+            let cameraAction = UIAlertAction(title: NSLocalizedString("Log Out", comment: ""), style: UIAlertActionStyle.Default) {
+                UIAlertAction in
+                
+                
+                
+
+            }
+
+            let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: UIAlertActionStyle.Cancel) {
+                UIAlertAction in
+            }
+
+            // Add the actions
+            alert.addAction(cameraAction)
+
+            alert.addAction(cancelAction)
+
+            // on iPad, this will be a Popover
+            // on iPhone, this will be an action sheet
+            alert.modalPresentationStyle = .Popover
+
+
+            // Present the controller
+            tabVC.presentViewController(alert, animated: true, completion: nil)
+
+        }
+
+    }
+
+
 }
 
 extension ProfileViewController: UICollectionViewDataSource {
