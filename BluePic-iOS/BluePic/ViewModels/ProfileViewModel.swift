@@ -93,23 +93,6 @@ class ProfileViewModel: NSObject {
 //View Controller -> View Model Communication
 extension ProfileViewModel {
 
-
-    func logOutUser() {
-
-        LoginDataManager.SharedInstance.logOut({ success in
-
-
-            if(success) {
-
-
-            }
-
-
-        })
-
-
-    }
-
     /**
      Method returns the number of sections in the collection view
 

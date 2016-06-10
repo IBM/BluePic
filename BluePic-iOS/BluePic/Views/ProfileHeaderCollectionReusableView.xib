@@ -32,6 +32,17 @@
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mhh-Fc-umi">
+                            <rect key="frame" x="316" y="-5" width="55" height="46"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="46" id="0ZP-CC-hrg"/>
+                                <constraint firstAttribute="width" constant="55" id="TsC-6g-n3s"/>
+                            </constraints>
+                            <state key="normal" image="moreIcon"/>
+                            <connections>
+                                <action selector="moreButtonAction:" destination="U6b-Vx-4bR" eventType="touchUpInside" id="UXt-69-BxV"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
@@ -40,6 +51,8 @@
                         <constraint firstItem="sbe-3k-YEp" firstAttribute="centerX" secondItem="aKE-u1-Bhd" secondAttribute="centerX" id="Dqk-qQ-oOU"/>
                         <constraint firstAttribute="trailing" secondItem="sbe-3k-YEp" secondAttribute="trailing" constant="15" id="E8B-eX-rwj"/>
                         <constraint firstItem="sbe-3k-YEp" firstAttribute="leading" secondItem="aKE-u1-Bhd" secondAttribute="leading" constant="15" id="R58-ZW-t4F"/>
+                        <constraint firstAttribute="trailing" secondItem="Mhh-Fc-umi" secondAttribute="trailing" constant="-4" id="hRK-y2-hc1"/>
+                        <constraint firstItem="Mhh-Fc-umi" firstAttribute="top" secondItem="aKE-u1-Bhd" secondAttribute="top" constant="-5" id="hhz-PL-vtQ"/>
                         <constraint firstItem="vB3-TD-s4p" firstAttribute="centerX" secondItem="aKE-u1-Bhd" secondAttribute="centerX" id="n2t-wS-6Jn"/>
                     </constraints>
                 </view>
@@ -73,4 +86,7 @@
             <point key="canvasLocation" x="423.5" y="507"/>
         </collectionReusableView>
     </objects>
+    <resources>
+        <image name="moreIcon" width="21" height="5"/>
+    </resources>
 </document>

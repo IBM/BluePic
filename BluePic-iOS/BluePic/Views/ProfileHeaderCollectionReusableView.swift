@@ -16,6 +16,12 @@
 
 import UIKit
 
+enum ProfileHeaderCollectionReusableViewNotification: String {
+
+    case ShowSettingsActionSheet = "ShowSettingsActionSheet"
+
+}
+
 class ProfileHeaderCollectionReusableView: UICollectionReusableView {
 
     //label displays the name of the user
@@ -69,4 +75,14 @@ class ProfileHeaderCollectionReusableView: UICollectionReusableView {
 
         }
     }
+
+    /**
+     Method defines the action when the moreButton is pressed. It notifies the rest of the app with the ProfileHeaderCollectionReusableViewNotification.ShowSettingsActionSheet notification
+
+     - parameter sender: AnyObject
+     */
+    @IBAction func moreButtonAction(sender: AnyObject) {
+         NSNotificationCenter.defaultCenter().postNotificationName(ProfileHeaderCollectionReusableViewNotification.ShowSettingsActionSheet.rawValue, object: nil)
+    }
+
 }
