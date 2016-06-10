@@ -18,7 +18,7 @@ import Foundation
 import CouchDB
 import SwiftyJSON
 import LoggerAPI
-import CloudEnvironment
+import CloudFoundryEnv
 import BluemixObjectStorage
 
 public struct Configuration {
@@ -41,11 +41,11 @@ public struct Configuration {
 
     if let finalPath = path, configData = NSData(contentsOfFile: finalPath) {
       let configJson = JSON(data: configData)
-      appEnv = try CloudEnvironment.getAppEnv(options: configJson)
+      appEnv = try CloudFoundryEnv.getAppEnv(options: configJson)
       Log.info("Using configuration values from '\(configurationFile)'.")
     } else {
       Log.warning("Could not find '\(configurationFile)'.")
-      appEnv = try CloudEnvironment.getAppEnv()
+      appEnv = try CloudFoundryEnv.getAppEnv()
     }
   }
 
