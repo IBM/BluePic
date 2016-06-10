@@ -449,43 +449,68 @@ extension BluemixDataManager {
     private func postNewImage(image: Image) {
 
         guard let uiImage = image.image, imageData = UIImagePNGRepresentation(uiImage) else {
-            print(NSLocalizedString("Post New Image Error: We don't have all the info necessary to post this image", comment: ""))
+            print(NSLocalizedString("Post New Image Error: Could not process image data properly", comment: ""))
             NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImageUploadFailure.rawValue, object: nil)
             return
         }
 
-        let tempURL = getBluemixBaseRequestURL() + "/" + kImagesEndPoint + "/" + image.fileName + "/" + image.caption + "/" + "\(image.width)" + "/" + "\(image.height)" + "/" + "\(image.location.latitude)" + "/" + "\(image.location.longitude)" + "/" + image.location.name
+        let requestURL = getBluemixBaseRequestURL() + "/" + kImagesEndPoint
+        let imageDictionary = ["fileName": image.fileName, "caption" : image.caption, "width" : image.width, "height" : image.height, "location" : ["name" : image.location.name, "latitude" : image.location.latitude, "longitude" : image.location.longitude]]
 
-        guard let requestURL = tempURL.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet()) else {
-            print(NSLocalizedString("Post New Image Error: Failed to encode request URL", comment: ""))
-            NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImageUploadFailure.rawValue, object: nil)
-            return
+        do {
+            let jsonData = try NSJSONSerialization.dataWithJSONObject(imageDictionary, options: NSJSONWritingOptions(rawValue: 0))
+            let tempJsonString = String(data: jsonData, encoding: NSUTF8StringEncoding)
+            let boundary = generateBoundaryString()
+            let mimeType = "image/png"
+            let request = Request(url: requestURL, method: HttpMethod.POST)
+            request.headers = ["Content-Type" : "multipart/form-data; boundary=\(boundary)"]
+
+            let body = NSMutableData()
+            guard let jsonString = tempJsonString, boundaryStart = "--\(boundary)\r\n".dataUsingEncoding(NSUTF8StringEncoding),
+                dispositionEncoding = "Content-Disposition:form-data; name=\"imageJson\"\r\n\r\n".dataUsingEncoding(NSUTF8StringEncoding),
+                jsonEncoding = "\(jsonString)\r\n".dataUsingEncoding(NSUTF8StringEncoding),
+                imageDispositionEncoding = "Content-Disposition:form-data; name=\"imageBinary\"; filename=\"\(image.fileName)\"\r\n".dataUsingEncoding(NSUTF8StringEncoding),
+                imageTypeEncoding = "Content-Type: \(mimeType)\r\n\r\n".dataUsingEncoding(NSUTF8StringEncoding),
+                imageEndEncoding = "\r\n".dataUsingEncoding(NSUTF8StringEncoding),
+                boundaryEnd = "--\(boundary)--\r\n".dataUsingEncoding(NSUTF8StringEncoding) else {
+                    print("Post New Image Error: Could not encode all values for multipart data")
+                    NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImageUploadFailure.rawValue, object: nil)
+                    return
+            }
+            body.appendData(boundaryStart)
+            body.appendData(dispositionEncoding)
+            body.appendData(jsonEncoding)
+            body.appendData(boundaryStart)
+            body.appendData(imageDispositionEncoding)
+            body.appendData(imageTypeEncoding)
+            body.appendData(imageData)
+            body.appendData(imageEndEncoding)
+            body.appendData(boundaryEnd)
+
+            request.sendData(body, completionHandler: { (response, error) -> Void in
+
+                //failure
+                if let error = error {
+                    print(NSLocalizedString("Post New Image Error:", comment: "") + " \(error.localizedDescription)")
+
+                    self.handleImageUploadFailure(image)
+                }
+                //success
+                else {
+                    self.addImageToImageTakenDuringAppSessionByIdDictionary(image)
+                    self.removeImageFromImagesCurrentlyUploading(image)
+
+                    NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImageUploadSuccess.rawValue, object: nil)
+                }
+            })
+
+        } catch {
+            print("Error converting image dictionary to Json")
         }
+    }
 
-        let request = Request(url: requestURL, method: HttpMethod.POST)
-
-        request.headers = ["Content-Type" : "image/png"]
-
-        request.sendData(imageData, completionHandler: { (response, error) -> Void in
-
-            //failure
-            if let error = error {
-                print(NSLocalizedString("Post New Image Error:", comment: "") + " \(error.localizedDescription)")
-
-               self.handleImageUploadFailure(image)
-
-            }
-            //success
-            else {
-
-                self.addImageToImageTakenDuringAppSessionByIdDictionary(image)
-                self.removeImageFromImagesCurrentlyUploading(image)
-
-                NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImageUploadSuccess.rawValue, object: nil)
-
-            }
-        })
-
+    func generateBoundaryString() -> String {
+        return "Boundary-\(NSUUID().UUIDString)"
     }
 
 
