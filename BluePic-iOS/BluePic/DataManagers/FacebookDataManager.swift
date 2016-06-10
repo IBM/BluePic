@@ -151,6 +151,18 @@ class FacebookDataManager: NSObject {
         })
     }
 
+
+    /**
+     Method logs out the user by calling the FacebookAuthenticationManager's logout method
+
+     - parameter completionHandler: BMSCompletionHandler?
+     */
+    func logOut(completionHandler: BmsCompletionHandler?) {
+
+        FacebookAuthenticationManager.sharedInstance.logout(completionHandler)
+
+    }
+
     /**
      Method returns the Facebook user identity
 
