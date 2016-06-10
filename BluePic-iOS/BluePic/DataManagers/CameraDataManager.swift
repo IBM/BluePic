@@ -305,8 +305,6 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
 
             if let location = location {
 
-                let userObject = User(facebookID: CurrentUser.facebookUserId, name: CurrentUser.fullName)
-
                 //save name of image as current date and time
                 let dateFormatter = NSDateFormatter()
                 dateFormatter.dateFormat = "MM-dd-yyyy_HHmmss"
@@ -318,7 +316,7 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
                     captionText = text
                 }
 
-                self.imageUserDecidedToPost = ImagePayload(caption: captionText, fileName: fileName, width: pickedImage.size.width, height: pickedImage.size.height, location: location, user: userObject, image: pickedImage)
+                self.imageUserDecidedToPost = ImagePayload(caption: captionText, fileName: fileName, width: pickedImage.size.width, height: pickedImage.size.height, location: location, image: pickedImage)
 
             } else {
                 self.failureGettingUserLocation = true
