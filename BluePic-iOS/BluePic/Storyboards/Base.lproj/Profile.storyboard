@@ -38,28 +38,13 @@
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q2O-iL-Kfm">
-                                <rect key="frame" x="446" y="28" width="134" height="66"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="66" id="Dxy-0Y-TLz"/>
-                                    <constraint firstAttribute="width" constant="134" id="fT1-1d-gS3"/>
-                                </constraints>
-                                <state key="normal" title="setting">
-                                    <color key="titleColor" red="0.0" green="0.56862745100000001" blue="0.91764705879999997" alpha="1" colorSpace="calibratedRGB"/>
-                                </state>
-                                <connections>
-                                    <action selector="settingsButtonAction:" destination="wJk-Pu-oAw" eventType="touchUpInside" id="cGt-Nd-NTL"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="A1R-FP-eUQ" firstAttribute="width" secondItem="85X-CK-LJJ" secondAttribute="width" id="54g-pC-ilK"/>
                             <constraint firstItem="A1R-FP-eUQ" firstAttribute="height" secondItem="85X-CK-LJJ" secondAttribute="height" constant="-49" id="71m-ef-owX"/>
                             <constraint firstAttribute="topMargin" secondItem="A1R-FP-eUQ" secondAttribute="top" id="H9R-je-VMr"/>
-                            <constraint firstItem="Q2O-iL-Kfm" firstAttribute="top" secondItem="4zx-78-hDa" secondAttribute="bottom" constant="8" id="LJS-Uw-jOR"/>
                             <constraint firstAttribute="bottomMargin" secondItem="A1R-FP-eUQ" secondAttribute="bottom" id="PMG-fW-dTI"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="Q2O-iL-Kfm" secondAttribute="trailing" id="VaA-65-EHT"/>
                             <constraint firstItem="A1R-FP-eUQ" firstAttribute="centerY" secondItem="85X-CK-LJJ" secondAttribute="centerY" id="YbX-uS-0jJ"/>
                             <constraint firstItem="REx-zO-IJd" firstAttribute="top" secondItem="A1R-FP-eUQ" secondAttribute="bottom" id="mID-ma-SFv"/>
                             <constraint firstItem="A1R-FP-eUQ" firstAttribute="centerX" secondItem="85X-CK-LJJ" secondAttribute="centerX" id="pni-9i-BmW"/>
