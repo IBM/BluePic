@@ -1,7 +1,0 @@
-{
-	"openWhisk": {
-		"hostName": "<hostName>",
-		"urlPath": "/api/v1/namespaces/<namespace>/actions/bluepic/processImage?blocking=false",
-		"authToken": "<authToken>"
-	}
-}
