@@ -144,11 +144,11 @@ class LoginDataManager: NSObject {
 
         FacebookDataManager.SharedInstance.logOut({ (respone: Response?, error: NSError?) in
 
-            if error != nil {
+            if let _ = error {
+                callback(success: false)
+            } else {
                 CurrentUser.logOut()
                 callback(success: true)
-            } else {
-                callback(success: false)
             }
 
         })
