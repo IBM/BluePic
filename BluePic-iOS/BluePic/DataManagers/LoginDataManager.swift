@@ -15,6 +15,7 @@
  **/
 
 import UIKit
+import BMSCore
 
 enum LoginDataManagerError {
 
@@ -132,6 +133,26 @@ class LoginDataManager: NSObject {
         } else {
             return false
         }
+    }
+
+    /**
+     Method logs out the user and will return success of failure in the callback parameter
+
+     - parameter callback: ((success: Bool)->())
+     */
+    func logOut(callback : ((success: Bool)->())) {
+
+        FacebookDataManager.SharedInstance.logOut({ (respone: Response?, error: NSError?) in
+
+            if error != nil {
+                CurrentUser.logOut()
+                callback(success: true)
+            } else {
+                callback(success: false)
+            }
+
+        })
+
     }
 
 

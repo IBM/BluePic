@@ -87,4 +87,15 @@ class CurrentUser: NSObject {
     /// Postfix for url needed to get user profile picture given their unique id (id goes before this)
     private static let kFacebookProfilePictureURLPostfix = "/picture?type=large"
 
+
+    /**
+     Method resets the CurrentUser to log out
+     */
+    class func logOut() {
+
+        CurrentUser.facebookUserId = "anonymous"
+        CurrentUser.fullName = "Anonymous"
+
+    }
+
 }
