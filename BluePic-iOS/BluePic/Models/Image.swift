@@ -25,11 +25,11 @@ protocol ImageUpload {
     var width: CGFloat {get}
     var height: CGFloat {get}
     var location: Location {get}
-    var user: User {get}
     var image: UIImage? {get}
 }
 
 protocol ImageDownload: ImageUpload {
+    var user: User {get}
     var id: String {get}
     var timeStamp: NSDate {get}
     var url: String {get}
@@ -50,10 +50,22 @@ struct Location {
     let weather: Weather?
 }
 
+func ==(lhs: Location, rhs: Location) -> Bool {
+    return lhs.name == rhs.name &&
+        lhs.latitude == rhs.latitude &&
+        lhs.longitude == rhs.longitude
+}
+
 struct Weather {
     let temperature: Int
     let iconId: Int
     let description: String
+}
+
+func ==(lhs: Weather, rhs: Weather) -> Bool {
+    return lhs.temperature == rhs.temperature &&
+        lhs.iconId == rhs.iconId &&
+        lhs.description == rhs.description
 }
 
 struct ImagePayload: ImageUpload, Equatable {
@@ -62,7 +74,6 @@ struct ImagePayload: ImageUpload, Equatable {
     private(set) var width: CGFloat
     private(set) var height: CGFloat
     private(set) var location: Location
-    private(set) var user: User
     private(set) var image: UIImage?
 }
 
@@ -71,8 +82,8 @@ func ==(lhs: ImagePayload, rhs: ImagePayload) -> Bool {
         lhs.fileName == rhs.fileName &&
         lhs.width == rhs.width &&
         lhs.height == rhs.height &&
-        lhs.user == rhs.user &&
-        lhs.image?.isEqual(rhs.image) ?? false
+        lhs.location == rhs.location &&
+        lhs.image === rhs.image
 }
 
 struct Image: ImageDownload {
@@ -161,101 +172,3 @@ struct Image: ImageDownload {
         }
     }
 }
-
-/*class Image: NSObject {
-    var id: String?
-    var caption: String
-    let fileName: String
-    var timeStamp: NSDate?
-    var url: String?
-    let width: CGFloat
-    let height: CGFloat
-    var image: UIImage?
-    let location: Location
-    var tags: [Tag]?
-    let user: User
-
-    init(caption: String, fileName: String, width: CGFloat, height: CGFloat, image: UIImage, location: Location, user: User) {
-        self.caption = caption
-        self.fileName = fileName
-        self.width = width
-        self.height = height
-        self.image = image
-        self.location = location
-        self.user = user
-    }
-
-    init?(_ dict: [String : AnyObject]) {
-        // MARK: Set optional properties
-
-        if let url = dict["url"] as? String {
-            self.url = url
-        }
-        if let timeStamp = dict["uploadedTs"] as? String {
-            let dateFormatter = NSDateFormatter()
-            dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
-            dateFormatter.timeZone = NSTimeZone(abbreviation: "UTC")
-            if let date = dateFormatter.dateFromString(timeStamp) {
-                self.timeStamp = date
-            }
-        }
-
-        //Parse tags data
-        var tagsArray = [Tag]()
-        if let tags = dict["tags"] as? [[String: AnyObject]] {
-            for tag in tags {
-                if let label = tag["label"] as? String,
-                confidence = tag["confidence"] as? CGFloat {
-                    let tag = Tag(label: label, confidence: confidence)
-                    tagsArray.append(tag)
-                }
-            }
-        }
-        self.tags = tagsArray
-
-        // MARK: Set required properties
-
-        if let id = dict["_id"] as? String,
-            caption = dict["caption"] as? String,
-            fileName = dict["fileName"] as? String,
-            width = dict["width"] as? CGFloat,
-            height = dict["height"] as? CGFloat,
-            user = dict["user"] as? [String : AnyObject],
-            usersName = user["name"] as? String,
-            usersId = user["_id"] as? String {
-
-            self.id = id
-            self.caption = caption
-            self.fileName = fileName
-            self.width = width
-            self.height = height
-            self.user = User(facebookID: usersId, name: usersName)
-
-            //Parse location data
-            if let location = dict["location"] as? [String : AnyObject],
-                name = location["name"] as? String,
-                latitude = location["latitude"] as? CLLocationDegrees,
-                longitude = location["longitude"] as? CLLocationDegrees {
-
-                //Parse weather object
-                var weatherObject: Weather?
-                if let weather = location["weather"] as? [String : AnyObject],
-                temperature = weather["temperature"] as? Int,
-                iconId = weather["iconId"] as? Int,
-                description = weather["description"] as? String {
-                    weatherObject = Weather(temperature: temperature, iconId: iconId, description: description)
-                }
-
-                self.location = Location(name: name, latitude: latitude, longitude: longitude, weather: weatherObject)
-
-            } else {
-                print(NSLocalizedString("invalid image json", comment: ""))
-                return nil
-            }
-
-        } else {
-            print(NSLocalizedString("invalid image json", comment: ""))
-            return nil
-        }
-    }
-}*/
