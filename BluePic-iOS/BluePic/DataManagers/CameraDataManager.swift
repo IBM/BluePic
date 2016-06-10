@@ -313,7 +313,12 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
                 let todaysDate = NSDate()
                 let fileName = dateFormatter.stringFromDate(todaysDate) + ".png"
 
-                self.imageUserDecidedToPost = ImagePayload(caption: "", fileName: fileName, width: pickedImage.size.width, height: pickedImage.size.height, location: location, user: userObject)
+                var captionText: String = self.kEmptyCaptionPlaceHolder
+                if let text = self.confirmationView.titleTextField.text where text != "" {
+                    captionText = text
+                }
+
+                self.imageUserDecidedToPost = ImagePayload(caption: captionText, fileName: fileName, width: pickedImage.size.width, height: pickedImage.size.height, location: location, user: userObject, image: pickedImage)
 
             } else {
                 self.failureGettingUserLocation = true
@@ -378,13 +383,6 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
         self.confirmationView.loadingIndicator.startAnimating()
         self.confirmationView.cancelButton.hidden = true
         self.confirmationView.postButton.hidden = true
-
-        //add caption of image
-        if let text = self.confirmationView.titleTextField.text where text != "" {
-            imageToPost.caption = text
-        } else {
-            imageToPost.caption = kEmptyCaptionPlaceHolder
-        }
 
         dispatch_async(dispatch_get_main_queue()) {
             BluemixDataManager.SharedInstance.tryToPostNewImage(imageToPost)
