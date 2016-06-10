@@ -20,6 +20,9 @@ enum TabBarViewModelNotification {
     case HideLoginVC
     case SwitchToFeedTab
     case ShowImageUploadFailureAlert
+    case LogOutSuccess
+    case LogOutFailure
+    case ShowSettingsActionSheet
 
 }
 
@@ -54,6 +57,8 @@ class TabBarViewModel: NSObject {
 
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(TabBarViewModel.notifyTabbarVCToShowImageUploadFailureAlert), name: BluemixDataManagerNotification.ImageUploadFailure.rawValue, object: nil)
 
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(TabBarViewModel.notifyTabBarVcToShowSettingsActionSheet), name: ProfileHeaderCollectionReusableViewNotification.ShowSettingsActionSheet.rawValue, object: nil)
+
     }
 
     /**
@@ -68,6 +73,27 @@ class TabBarViewModel: NSObject {
      */
     func notifyTabbarVCToShowImageUploadFailureAlert() {
         notifyTabBarVC(tabBarViewModelNotification : TabBarViewModelNotification.ShowImageUploadFailureAlert)
+    }
+
+    /**
+     Method notifies the tab bar vc to show the settings action sheet
+     */
+    func notifyTabBarVcToShowSettingsActionSheet() {
+        notifyTabBarVC(tabBarViewModelNotification : TabBarViewModelNotification.ShowSettingsActionSheet)
+    }
+
+    /**
+     Method notifies the tab bar vc that log out was a success
+     */
+    func notifyTabBarVCLogOutSuccess() {
+        notifyTabBarVC(tabBarViewModelNotification : TabBarViewModelNotification.LogOutSuccess)
+    }
+
+    /**
+     Method notifies the tab bar vc that log in was a failure
+     */
+    func notifyTabBarVCLogOutFailure() {
+        notifyTabBarVC(tabBarViewModelNotification : TabBarViewModelNotification.LogOutFailure)
     }
 
     /**
@@ -110,6 +136,22 @@ class TabBarViewModel: NSObject {
         dispatch_async(dispatch_get_main_queue()) {
             BluemixDataManager.SharedInstance.cancelUploadingImagesThatFailedToUpload()
         }
+
+    }
+
+    /**
+     Method logs out the user by calling the LoginDataManager's LogOut method
+     */
+    func logOutUser() {
+
+        LoginDataManager.SharedInstance.logOut({ success in
+
+            if success {
+                self.notifyTabBarVCLogOutSuccess()
+            } else {
+                self.notifyTabBarVCLogOutFailure()
+            }
+        })
 
     }
 

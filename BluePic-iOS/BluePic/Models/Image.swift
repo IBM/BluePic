@@ -59,7 +59,6 @@ class Image: NSObject {
     }
 
     init?(_ dict: [String : AnyObject]) {
-
         // MARK: Set optional properties
 
         if let url = dict["url"] as? String {

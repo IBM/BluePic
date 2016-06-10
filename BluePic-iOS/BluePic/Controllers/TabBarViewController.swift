@@ -103,11 +103,12 @@ class TabBarViewController: UITabBarController {
     /**
      Method to show the login VC with animation
      */
-    func presentLoginVCAnimated() {
+    func presentLoginVCAnimated(callback: (()->())) {
 
         if let loginVC = Utils.vcWithNameFromStoryboardWithName("loginVC", storyboardName: "Main") as? LoginViewController {
             self.presentViewController(loginVC, animated: true, completion: { _ in
                 self.hideBackgroundImage()
+                callback()
                 print(NSLocalizedString("user needs to log into Facebook, showing login", comment: ""))
             })
         }
@@ -158,7 +159,7 @@ extension TabBarViewController: UITabBarControllerDelegate {
      */
     func shouldShowProfileViewControllerAndHandleIfShouldnt() -> Bool {
         if !viewModel.isUserAuthenticated() {
-            presentLoginVCAnimated()
+            presentLoginVCAnimated({ })
             return false
         } else {
             return true
@@ -227,6 +228,7 @@ extension TabBarViewController: UITabBarControllerDelegate {
 
     }
 
+
 }
 
 //ViewModel -> View Controller Communication
@@ -247,7 +249,72 @@ extension TabBarViewController {
             switchToFeedTabAndPopToRootViewController()
         } else if tabBarNotification == TabBarViewModelNotification.ShowImageUploadFailureAlert {
             showImageUploadFailureAlert()
+        } else if tabBarNotification == TabBarViewModelNotification.ShowSettingsActionSheet {
+            showSettingsActionSheet()
+        } else if tabBarNotification == TabBarViewModelNotification.LogOutSuccess {
+            handleLogOutSuccess()
+        } else if tabBarNotification == TabBarViewModelNotification.LogOutFailure {
+            handleLogOutFailure()
         }
+    }
+
+    /**
+     Method shows the settings action sheet.
+     */
+    func showSettingsActionSheet() {
+
+        let alert: UIAlertController=UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
+        let cameraAction = UIAlertAction(title: NSLocalizedString("Log Out", comment: ""), style: UIAlertActionStyle.Default) {
+            UIAlertAction in
+
+            SVProgressHUD.show()
+            self.viewModel.logOutUser()
+        }
+
+        let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: UIAlertActionStyle.Cancel) {
+            UIAlertAction in
+        }
+
+        // Add the actions
+        alert.addAction(cameraAction)
+        alert.addAction(cancelAction)
+
+        // on iPad, this will be a Popover
+        // on iPhone, this will be an action sheet
+        alert.modalPresentationStyle = .Popover
+
+
+        // Present the controller
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
+
+    /**
+     Method handles when logout was a success. It dismisses the SVProgressHUD, presents the login vc and then sets the tab bar selected index 0 (feed vc)
+     */
+    func handleLogOutSuccess() {
+        SVProgressHUD.dismiss()
+        dispatch_async(dispatch_get_main_queue()) {
+            self.presentLoginVCAnimated({
+                self.selectedIndex = 0
+            })
+        }
+    }
+
+    /**
+     Method hanldes when logout was a failure. It presents an alert, alerting the user that there was a log out failure
+     */
+    func handleLogOutFailure() {
+        let alert = UIAlertController(title: NSLocalizedString("Log Out Failure", comment: ""), message: NSLocalizedString("Please Try Again", comment: ""), preferredStyle: UIAlertControllerStyle.Alert)
+
+        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .Default, handler: { (action: UIAlertAction) in
+
+        }))
+
+        SVProgressHUD.dismiss()
+        dispatch_async(dispatch_get_main_queue()) {
+            self.presentViewController(alert, animated: true, completion: nil)
+        }
+
     }
 
 }
