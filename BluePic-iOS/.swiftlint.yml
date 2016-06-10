@@ -5,6 +5,7 @@ disabled_rules: # rule identifiers to exclude from running
   - valid_docs
   - function_parameter_count
   - function_body_length
+  - operator_whitespace
 
 type_name:
   max_length: # warning and error
