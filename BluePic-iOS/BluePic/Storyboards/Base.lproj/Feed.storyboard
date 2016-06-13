@@ -42,13 +42,13 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="64"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Error Fetching Images, pull down to retry." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="dtk-Og-mrO">
-                                        <rect key="frame" x="10" y="34" width="580" height="17"/>
+                                        <rect key="frame" x="10" y="33.5" width="580" height="17"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
-                                <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.38039215686274508" green="0.40784313725490196" blue="0.4392156862745098" alpha="1" colorSpace="calibratedRGB"/>
                                 <accessibility key="accessibilityConfiguration" label="alertBanner"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="dtk-Og-mrO" secondAttribute="trailing" constant="10" id="PJN-Ba-6lm"/>
