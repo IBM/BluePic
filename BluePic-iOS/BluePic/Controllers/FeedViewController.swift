@@ -189,9 +189,8 @@ class FeedViewController: UIViewController {
 
         collectionView.reloadData()
         tryToStopLoadingAnimation()
-
         self.collectionView.setContentOffset(CGPoint.zero, animated: true)
-        print("count: \(viewModel.numberOfItemsInSection(1))")
+
         if viewModel.numberOfItemsInSection(1) > viewModel.numberOfCellsWhenUserHasNoPhotos {
             dismissImageFeedErrorAlert()
         }
@@ -253,7 +252,7 @@ class FeedViewController: UIViewController {
         if isVisible() {
 
             self.topAlertConstraint.constant = self.alertBannerView.frame.size.height - 20
-            UIView.animateWithDuration(0.5, delay: 1, usingSpringWithDamping: 0.4, initialSpringVelocity: 15, options: .CurveEaseInOut, animations: {
+            UIView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 0.4, initialSpringVelocity: 15, options: .CurveEaseInOut, animations: {
                 self.view.layoutIfNeeded()
             }, completion: nil)
             failedToPresentImageFeedErrorAlert = false
