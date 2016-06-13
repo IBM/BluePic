@@ -77,9 +77,6 @@ class FeedViewModel: NSObject {
         self.notifyFeedVC = notifyFeedVC
         self.searchQuery = searchQuery
 
-        //suscribe to events that happen in the BluemixDataManager
-        suscribeToBluemixDataManagerNotifications()
-
         //Fetch images on app launch
         BluemixDataManager.SharedInstance.getImages()
 
@@ -112,6 +109,14 @@ class FeedViewModel: NSObject {
 
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(FeedViewModel.notifyViewControllerGetImagesServerError), name: BluemixDataManagerNotification.GetAllImagesFailure.rawValue, object: nil)
 
+    }
+
+    func unsubscribeFromBluemixDataManagerNotifications() {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: BluemixDataManagerNotification.ImagesRefreshed.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: BluemixDataManagerNotification.ImageUploadSuccess.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: BluemixDataManagerNotification.ImageUploadBegan.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: BluemixDataManagerNotification.ImageUploadFailure.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: BluemixDataManagerNotification.GetAllImagesFailure.rawValue, object: nil)
     }
 
     /**
@@ -277,7 +282,7 @@ extension FeedViewModel {
 
             //return size for empty feed collection view cell
             if imageDataArray.count == 0 {
-                return CGSize(width: collectionView.frame.width, height: collectionView.frame.height + kEmptyFeedCollectionViewCellBufferToAllowForScrolling)
+                return CGSize(width: collectionView.frame.width, height: collectionView.frame.height)
             }
                 //return size for image feed collection view cell
             else {
