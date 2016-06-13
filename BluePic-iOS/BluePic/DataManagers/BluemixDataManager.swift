@@ -73,10 +73,10 @@ class BluemixDataManager: NSObject {
     var imagesTakenDuringAppSessionById = [String : UIImage]()
 
     //array that stores all the images currently being uploaded. This is used to show the images currently posting on the feed
-    var imagesCurrentlyUploading: [Image] = []
+    var imagesCurrentlyUploading: [ImagePayload] = []
 
     //array that stores all the images that failed to upload. This is used so users can rety try uploading images that failed.
-    var imagesThatFailedToUpload: [Image] = []
+    var imagesThatFailedToUpload: [ImagePayload] = []
 
     //stores the most popular tags
     var tags = [String]()
@@ -404,7 +404,7 @@ extension BluemixDataManager {
 
      - parameter image: Image
      */
-    func tryToPostNewImage(image: Image) {
+    func tryToPostNewImage(image: ImagePayload) {
 
         addImageToImagesCurrentlyUploading(image)
         NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImageUploadBegan.rawValue, object: nil)
@@ -457,7 +457,7 @@ extension BluemixDataManager {
 
      - parameter image: Image
      */
-    private func postNewImage(image: Image) {
+    private func postNewImage(image: ImagePayload) {
 
         guard let uiImage = image.image, imageData = UIImagePNGRepresentation(uiImage) else {
             print(NSLocalizedString("Post New Image Error: Could not process image data properly", comment: ""))
@@ -532,7 +532,7 @@ extension BluemixDataManager {
 
      - parameter image: Image
      */
-    private func handleImageUploadFailure(image: Image) {
+    private func handleImageUploadFailure(image: ImagePayload) {
 
         self.removeImageFromImagesCurrentlyUploading(image)
         self.addImageToImagesThatFailedToUpload(image)
@@ -575,7 +575,7 @@ extension BluemixDataManager {
 
      - parameter image: Image
      */
-    private func addImageToImagesThatFailedToUpload(image: Image) {
+    private func addImageToImagesThatFailedToUpload(image: ImagePayload) {
 
         imagesThatFailedToUpload.append(image)
 
@@ -586,9 +586,9 @@ extension BluemixDataManager {
 
      - parameter image: Image
      */
-    private func removeImageFromImagesThatFailedToUpload(image: Image) {
+    private func removeImageFromImagesThatFailedToUpload(image: ImagePayload) {
 
-        imagesThatFailedToUpload = imagesThatFailedToUpload.filter({ $0 !== image})
+        imagesThatFailedToUpload = imagesThatFailedToUpload.filter({ $0 != image})
 
     }
 
@@ -597,7 +597,7 @@ extension BluemixDataManager {
 
      - parameter image: Image
      */
-    private func addImageToImagesCurrentlyUploading(image: Image) {
+    private func addImageToImagesCurrentlyUploading(image: ImagePayload) {
 
         imagesCurrentlyUploading.append(image)
 
@@ -608,16 +608,16 @@ extension BluemixDataManager {
 
      - parameter image: Image
      */
-    private func removeImageFromImagesCurrentlyUploading(image: Image) {
+    private func removeImageFromImagesCurrentlyUploading(image: ImagePayload) {
 
-        imagesCurrentlyUploading = imagesCurrentlyUploading.filter({ $0 !== image})
+        imagesCurrentlyUploading = imagesCurrentlyUploading.filter({ $0 != image})
 
     }
 
     /**
      Method adds the photo to the imagesTakenDuringAppSessionById cache to display the photo in the image feed or profile feed while we wait for the photo to upload to.
      */
-    private func addImageToImageTakenDuringAppSessionByIdDictionary(image: Image) {
+    private func addImageToImageTakenDuringAppSessionByIdDictionary(image: ImagePayload) {
 
             let id = image.fileName + CurrentUser.facebookUserId
             imagesTakenDuringAppSessionById[id] = image.image
