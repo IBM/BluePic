@@ -44,6 +44,9 @@ class FeedViewController: UIViewController {
 
     //label to give user feedback on the results they wanted
     @IBOutlet weak var noResultsLabel: UILabel!
+    @IBOutlet weak var alertBannerView: UIView!
+    @IBOutlet weak var alertBannerLabel: UILabel!
+    @IBOutlet weak var topAlertConstraint: NSLayoutConstraint!
 
     //search query parameters that will be sent to the server for results
     var searchQuery: String?
@@ -186,8 +189,11 @@ class FeedViewController: UIViewController {
 
         collectionView.reloadData()
         tryToStopLoadingAnimation()
-
         self.collectionView.setContentOffset(CGPoint.zero, animated: true)
+
+        if viewModel.numberOfItemsInSection(1) > viewModel.numberOfCellsWhenUserHasNoPhotos {
+            dismissImageFeedErrorAlert()
+        }
     }
 
     /**
@@ -195,6 +201,7 @@ class FeedViewController: UIViewController {
      */
     func userTriggeredRefresh() {
 
+        dismissImageFeedErrorAlert()
         logoImageView.startRotating(1)
         self.refreshControl.endRefreshing()
 
@@ -244,16 +251,23 @@ class FeedViewController: UIViewController {
 
         if isVisible() {
 
-            let alert = UIAlertController(title: NSLocalizedString("Error Fetching Images", comment: ""),
-                                      message: NSLocalizedString("Pull down to retry", comment: ""),
-                                      preferredStyle: UIAlertControllerStyle.Alert)
-
-            alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: UIAlertActionStyle.Cancel, handler: nil))
-            self.presentViewController(alert, animated: true, completion: nil)
+            self.topAlertConstraint.constant = self.alertBannerView.frame.size.height - 20
+            UIView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 0.4, initialSpringVelocity: 15, options: .CurveEaseInOut, animations: {
+                self.view.layoutIfNeeded()
+            }, completion: nil)
             failedToPresentImageFeedErrorAlert = false
 
         } else {
             failedToPresentImageFeedErrorAlert = true
+        }
+    }
+
+    func dismissImageFeedErrorAlert() {
+        if self.topAlertConstraint.constant > 0 {
+            self.topAlertConstraint.constant = 0
+            UIView.animateWithDuration(0.2) {
+                self.view.layoutIfNeeded()
+            }
         }
     }
 

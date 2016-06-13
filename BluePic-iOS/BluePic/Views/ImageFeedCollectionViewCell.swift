@@ -95,10 +95,7 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
         photographerNameLabel.text = ownerNameString
 
         //set the time since posted label's text
-        if let tStamp = image.timeStamp {
-           timeSincePostedLabel.text = NSDate.timeSinceDateString(tStamp)
-        }
-
+        timeSincePostedLabel.text = NSDate.timeSinceDateString(image.timeStamp)
     }
 
     /**
