@@ -69,7 +69,7 @@ class BluemixDataManager: NSObject {
         }
     }
 
-    /// photos that were taken during this app session
+    /// images that were taken during this app session (used to help make images appear faster in the image feed as we wait for the image to download from the url
     var imagesTakenDuringAppSessionById = [String : UIImage]()
 
     //array that stores all the images currently being uploaded. This is used to show the images currently posting on the feed
@@ -83,6 +83,9 @@ class BluemixDataManager: NSObject {
 
     //stores all the bluemix configuration setup
     let bluemixConfig = BluemixConfiguration()
+
+    //default timeout is 60 seconds
+    private let kDefaultTimeOut: Double = 60
 
     //End Points
     private let kImagesEndPoint = "images"
@@ -136,6 +139,8 @@ extension BluemixDataManager {
 
         let request = Request(url: requestURL, method: HttpMethod.GET)
 
+        request.timeout = kDefaultTimeOut
+
         request.sendWithCompletionHandler { (response, error) -> Void in
             //error
             if let error = error {
@@ -188,6 +193,8 @@ extension BluemixDataManager {
         let requestURL = getBluemixBaseRequestURL() + "/" + kUsersEndPoint
 
         let request = Request(url: requestURL, method: HttpMethod.POST)
+
+        request.timeout = kDefaultTimeOut
 
         let json = ["_id": userId, "name": name]
 
@@ -318,6 +325,8 @@ extension BluemixDataManager {
      */
     func getImages(request: Request, result : (images: [Image]?)-> ()) {
 
+        request.timeout = kDefaultTimeOut
+
         request.sendWithCompletionHandler { (response, error) -> Void in
             if let error = error {
                 print(NSLocalizedString("Get Images Error:", comment: "") + " \(error.localizedDescription)")
@@ -380,6 +389,8 @@ extension BluemixDataManager {
         let requestURL = getBluemixBaseRequestURL() + "/" + kPingEndPoint
 
         let request = Request(url: requestURL, method: HttpMethod.GET)
+
+        request.timeout = kDefaultTimeOut
 
         request.sendWithCompletionHandler { (response, error) -> Void in
             callback(response: response, error: error)
@@ -486,6 +497,8 @@ extension BluemixDataManager {
             body.appendData(imageData)
             body.appendData(imageEndEncoding)
             body.appendData(boundaryEnd)
+
+            request.timeout = kDefaultTimeOut
 
             request.sendData(body, completionHandler: { (response, error) -> Void in
 
@@ -622,6 +635,8 @@ extension BluemixDataManager {
 
         let requestURL = getBluemixBaseRequestURL() + "/" + kTagsEndPoint
         let request = Request(url: requestURL, method: HttpMethod.GET)
+
+        request.timeout = kDefaultTimeOut
 
         request.sendWithCompletionHandler { (response, error) -> Void in
             if let error = error {
