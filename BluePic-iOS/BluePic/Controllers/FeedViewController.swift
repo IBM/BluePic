@@ -80,10 +80,6 @@ class FeedViewController: UIViewController {
         observeWhenApplicationBecomesActive()
     }
 
-
-    override func viewDidDisappear(animated: Bool) {
-
-    }
     /**
      Method to determine if we should put the search top bar up because we just performed a search query
      */
@@ -96,6 +92,7 @@ class FeedViewController: UIViewController {
             wordTagLabel.text = query.uppercaseString
             Utils.kernLabelString(wordTagLabel, spacingValue: 1.4)
             self.view.addSubview(searchTopBarView)
+            alertBannerLabel.text = NSLocalizedString("Error Fetching Images, try again later.", comment: "")
         }
 
     }
@@ -128,6 +125,7 @@ class FeedViewController: UIViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
 
+        viewModel.suscribeToBluemixDataManagerNotifications()
         UIApplication.sharedApplication().statusBarStyle = UIStatusBarStyle.Default
 
         self.navigationController?.setNavigationBarHidden(true, animated: false)
@@ -146,8 +144,13 @@ class FeedViewController: UIViewController {
         }
     }
 
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        viewModel.unsubscribeFromBluemixDataManagerNotifications()
+    }
+
     /**
-     Method called as a callback from the OS when the app receives a memeory warning from the OS
+     Method called as a callback from the OS when the app receives a memory warning from the OS
      */
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -204,7 +207,8 @@ class FeedViewController: UIViewController {
         dismissImageFeedErrorAlert()
         logoImageView.startRotating(1)
         self.refreshControl.endRefreshing()
-
+        // fixes offset of emptyCollectionViewCell
+        collectionView.setContentOffset(CGPoint.zero, animated: true)
         viewModel.repullForNewData()
 
     }
@@ -249,8 +253,9 @@ class FeedViewController: UIViewController {
      */
     func displayImageFeedErrorAlert() {
 
-        if isVisible() {
+        if self.isVisible() {
 
+            noResultsLabel.hidden = true
             self.topAlertConstraint.constant = self.alertBannerView.frame.size.height - 20
             UIView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 0.4, initialSpringVelocity: 15, options: .CurveEaseInOut, animations: {
                 self.view.layoutIfNeeded()
@@ -303,16 +308,6 @@ class FeedViewController: UIViewController {
         SVProgressHUD.dismiss()
         self.navigationController?.popViewControllerAnimated(true)
     }
-
-    /**
-     Method scrolls the collection view to the top
-     */
-    func scrollCollectionViewToTop() {
-
-        collectionView.contentOffset.y = 0
-
-    }
-
 }
 
 extension FeedViewController: UICollectionViewDataSource {
@@ -412,11 +407,12 @@ extension FeedViewController {
             }
         } else if feedViewModelNotification == FeedViewModelNotification.UploadingPhotoStarted {
             collectionView.reloadData()
-            scrollCollectionViewToTop()
+            collectionView.contentOffset.y = 0
+            dismissImageFeedErrorAlert()
             tryToStartLoadingAnimation()
         } else if feedViewModelNotification == FeedViewModelNotification.NoSearchResults {
             SVProgressHUD.dismiss()
-            noResultsLabel.hidden = false
+            noResultsLabel.hidden = self.topAlertConstraint.constant > 0
         } else if feedViewModelNotification == FeedViewModelNotification.GetImagesServerFailure {
             reloadDataInCollectionView()
             displayImageFeedErrorAlert()
