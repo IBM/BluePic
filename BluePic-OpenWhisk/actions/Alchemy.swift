@@ -13,7 +13,7 @@ func main(args:[String:Any]) -> [String:Any] {
     
     let url: String = "https://gateway-a.watsonplatform.net/calls/url/URLGetRankedImageKeywords?url=\(imageURL!)&outputMode=json&apikey=\(alchemyKey!)"
     
-    var str:String = ""
+    var str:String = "[]"
 
     HTTP.get(url) { response in
 
@@ -22,6 +22,10 @@ func main(args:[String:Any]) -> [String:Any] {
         } catch {
             print("Error \(error)")
         }
+    }
+
+    if NSString(string: str).contains("NO_TAGS")  {
+        str = "[]"
     }
     
     let result:[String:Any] = [
