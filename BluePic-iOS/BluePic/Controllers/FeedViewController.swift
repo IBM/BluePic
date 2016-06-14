@@ -126,6 +126,10 @@ class FeedViewController: UIViewController {
         super.viewWillAppear(animated)
 
         viewModel.suscribeToBluemixDataManagerNotifications()
+        if viewModel.shouldStartLoadingAnimation() {
+            collectionView.reloadData()  // Reload in case UploadingPhotoStarted was posted
+        }
+
         UIApplication.sharedApplication().statusBarStyle = UIStatusBarStyle.Default
 
         self.navigationController?.setNavigationBarHidden(true, animated: false)
