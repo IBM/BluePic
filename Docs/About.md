@@ -29,7 +29,3 @@ The following diagram captures the architecture for the BluePic app:
 <p align="center">
 <img src="../Imgs/architecture.png"  alt="Drawing" height=450 border=0 /></p>
 <p align="center">Figure 1. BluePic Architecture Diagram.</p>
-
-## Using BluePic
-
-BluePic was designed with a lot of useful features, so to view them all, check out our walkthrough on [Using Bluepic](Usage.md).
