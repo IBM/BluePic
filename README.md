@@ -143,10 +143,10 @@ Lastly, remember that push notifications will only show up on a physical iOS dev
 BluePic leverages OpenWhisk actions written in Swift for accessing the Alchemy Vision and Weather APIs. For instructions on how to configure OpenWhisk, see the following [page](Docs/OpenWhisk.md). You will find there details on configuration and invocation of OpenWhisk commands.
 
 ### 5. Redeploy BluePic app to Bluemix
-1. Using the IBM Cloud Tools for Swift
+#### Using the IBM Cloud Tools for Swift
 After configuring the optional features, you should redeploy the BluePic app to Bluemix. If you used the IBM Cloud Tools for Swift to initially deploy the BluePic app to Bluemix, you can also use this tool to redeploy the app. On your project's page in the IBM Cloud Tools for Swift, you should find an entry for the BluePic app runtime. On that entry, you will find options for deploying the runtime to Bluemix.
 
-2. Using the Cloud Foundry command line
+#### Using the Cloud Foundry command line
 After configuring the optional features, you should redeploy the BluePic app to Bluemix. You can use the Cloud Foundry [command line](https://docs.cloudfoundry.org/devguide/cf-cli/install-go-cli.html) to do so. Once you have logged in to Bluemix using the command line, you can execute `cf push` from the root folder of this repo on your local file system. This will push the application code and configuration to Bluemix.
 
 ## Running the iOS app
