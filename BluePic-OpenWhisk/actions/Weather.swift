@@ -5,6 +5,8 @@
 import KituraNet
 import Dispatch
 import Foundation
+import RestKit
+import InsightsForWeather
 
 func main(args: [String:Any]) -> [String:Any] {
 
@@ -31,16 +33,27 @@ func main(args: [String:Any]) -> [String:Any] {
     
     var str = ""
 
-    HTTP.get("https://\(weatherUsername!):\(weatherPassword!)@twcservice.mybluemix.net/api/weather/v2/observations/current?geocode=\(latitude!),\(longitude!)&language=\(language!)&units=\(units!)") { response in
-
-        do {
-            str = try response!.readString()!
-        } catch {
-            print("Error \(error)")
-            str = "Error \(error)"
-        }
+    let insightsForWeather = InsightsForWeather(username: "\(weatherUsername!)", password: "\(weatherPassword!)")
+    let failure = { (error: RestError) in 
+        print(error) 
     }
-    
+    insightsForWeather.getCurrentForecast(
+            units: "\(units!)",
+            geocode: "\(latitude!),\(longitude!)",
+            language: "\(language!)",
+            failure: failure) { response in
+
+        let icon_code = response.observation.icon_code 
+        let sky_cover = response.observation.sky_cover!
+        let temp = response.observation.measurement!.temp
+
+        str = "{ \"observation\":{" + 
+            "\"icon_code\":\(icon_code)," + 
+            "\"sky_cover\":\"\(sky_cover)\"," + 
+            "\"imperial\":{\"temp\":\(temp)}" + 
+        "}}"
+    }
+
     let result:[String:Any] = [
         "imageId":  args["imageId"],
         "imageDoc": args["imageDoc"],
