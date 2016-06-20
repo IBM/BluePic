@@ -7,6 +7,8 @@ Bluepic takes advantage of Swift in a typical iOS client setting, but also on th
 ## Swift version
 The back-end components (i.e. Kitura-based server and OpenWhisk actions) of the BluePic app work with the `DEVELOPMENT-SNAPSHOT-2016-05-03-a` version of the Swift binaries. You can download this version of the Swift binaries by following this [link](https://swift.org/download/). Compatibility with other Swift versions is not guaranteed.
 
+Optionally, if you'd like to run the BluePic Kitura-based server using Xcode, you should use Xcode 7.3.1 and configure it to use the `DEVELOPMENT-SNAPSHOT-2016-05-03-a` toolchain. For details on how to set up Xcode see [Building your Kitura application on XCode](https://github.com/IBM-Swift/Kitura/wiki/Building-your-Kitura-application-on-XCode). Please note that any other versions of Xcode are not guaranteed to work with the back-end code.
+
 The iOS component of the BluePic app uses the default toolchain (Swift 2.2.1) prepackaged with Xcode 7.3.1. At the moment, any other versions of Xcode are not guaranteed to work. You may get unexpected behavior and/or errors if attempting to use other versions of Xcode or Swift.
 
 ## Getting started
