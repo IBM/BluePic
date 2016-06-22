@@ -169,6 +169,9 @@ BluePic was designed with a lot of useful features. To see further information a
 ## About BluePic
 To learn more about BluePic's folder structure, its architecture, and the Swift packages it depends on, see the [About](Docs/About.md) page.
 
+## Reporting issues against
+You can use the [dW Answers](https://developer.ibm.com/answers/topics/cloud-tools-for-swift.html) web site to ask a question and/or report any issues you encounter while using the IBM Cloud Tools for Swift. Just make sure you use the tag `cloud-tools-for-swift` for the questions you post on dW Answers.
+
 ## License
 This application is licensed under Apache 2.0. Full license text is available in [LICENSE](LICENSE).
 
