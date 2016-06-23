@@ -8,7 +8,7 @@
 1. In step 2 on the "OpenWhisk - Configure CLI" page, you will see a command that looks similar to:
 
     `wsk property set --apihost <hostName> --auth <authKey> --namespace "<namespace>"`
-     
+
 2. Take the value after `--apihost` and put it as the `hostName` value in `properties.json`.
 3. Next, insert the value after `--namespace`, within the existing `urlPath` value in `properties.json`. In the `<namespace>` spot to be exact:
 `"/api/v1/namespaces/<namespace>/actions/bluepic/processImage?blocking=false"`
@@ -38,10 +38,10 @@ For `Mobile Client Access` you will need:
 * client id - this is the unique GUID for your app instance
 * secret - secret key from configuring the MCA service
 
-For the `Kitura` callback you will need:
+For the `Kitura` callback you will need to obtain the route for your Bluemix application. You can find the route by clicking on the `View App` button near the top right of your application's dashboard page on Bluemix. This will open the welcome page for the BluePic app; the route is the URL value shown on the browser, which consists of the schema, host, and port (please note that port values 80 and 443 maybe not be shown in the URL in the browser since these are the default port values for http and https respectively):
+* schema (http:// or https://)
 * host (e.g. `bluepic-grotty-substantiality.mybluemix.net`)
 * port (80 if http, 443 is https, other if dev)
-* schema (http:// or https://)
 
 ## Installation
 Install using the bluepic.sh shell script:
@@ -91,9 +91,9 @@ You can monitor OpenWhisk activity using the [IBM Bluemix OpenWhisk Dashboard](h
 
 There are two very important things to know when developing OpenWhisk actions:
 * Swift compiler error messages are in both the `wsk activation poll` output, and also in the stderr result of the `wsk action invoke` command.  Pay attention to both.
-* Swift `print()` or Node.js `console.log()` commands invoked from inside of OpenWhisk actions will also be visible in the `wsk activation poll` output. 
+* Swift `print()` or Node.js `console.log()` commands invoked from inside of OpenWhisk actions will also be visible in the `wsk activation poll` output.
 
-These can be extremely helpful for debugging OpenWhisk actions.  Since you cannot connect a debugger with breakpoints to an OpenWhisk action, excessive use of print() statements and using early `return` values at interim steps are your best routes for debugging values during OpenWhisk development - just be sure to remove or comment-out your debug `return` statements before making the actions live for production use. 
+These can be extremely helpful for debugging OpenWhisk actions.  Since you cannot connect a debugger with breakpoints to an OpenWhisk action, excessive use of print() statements and using early `return` values at interim steps are your best routes for debugging values during OpenWhisk development - just be sure to remove or comment-out your debug `return` statements before making the actions live for production use.
 
 ## Debugging Sequence Logic & Flow
 
@@ -137,5 +137,5 @@ wsk action invoke {sequence name} -p imageId {cloudant document id}
     * prepareCloudantWrite
     * cloudantWrite
  * `bluepic/processCallback`
-    * `bluepic/kituraRequestAuth` 
+    * `bluepic/kituraRequestAuth`
     * `bluepic/kituraCallback`
