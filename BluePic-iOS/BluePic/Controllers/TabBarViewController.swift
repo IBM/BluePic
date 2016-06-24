@@ -86,30 +86,22 @@ class TabBarViewController: UITabBarController {
     }
 
     /**
-     Method to show the login VC without animation
+     Method to show the login VC with or without animation
+
+     - parameter animated: Bool to determine if VC should be animated on presentation
+     - parameter callback: callback for actions once presentation is done
      */
-    func presentLoginVC() {
+    func presentLoginVC(animated: Bool, callback: (()->())?) {
 
         if let loginVC = Utils.vcWithNameFromStoryboardWithName("loginVC", storyboardName: "Main") as? LoginViewController {
 
-            self.presentViewController(loginVC, animated: false, completion: { _ in
+            self.presentViewController(loginVC, animated: animated, completion: { _ in
 
                 self.hideBackgroundImage()
-                print(NSLocalizedString("user needs to log into Facebook, showing login", comment: ""))
-            })
-        }
-    }
-
-    /**
-     Method to show the login VC with animation
-     */
-    func presentLoginVCAnimated(callback: (()->())) {
-
-        if let loginVC = Utils.vcWithNameFromStoryboardWithName("loginVC", storyboardName: "Main") as? LoginViewController {
-            self.presentViewController(loginVC, animated: true, completion: { _ in
-                self.hideBackgroundImage()
-                callback()
-                print(NSLocalizedString("user needs to log into Facebook, showing login", comment: ""))
+                print(NSLocalizedString("If MCA is configured, user needs to sign in with Facebook.", comment: ""))
+                if let callback = callback {
+                    callback()
+                }
             })
         }
     }
@@ -159,7 +151,7 @@ extension TabBarViewController: UITabBarControllerDelegate {
      */
     func shouldShowProfileViewControllerAndHandleIfShouldnt() -> Bool {
         if !viewModel.isUserAuthenticated() {
-            presentLoginVCAnimated({ })
+            presentLoginVC(true, callback: nil)
             return false
         } else {
             return true
@@ -242,7 +234,7 @@ extension TabBarViewController {
     func handleTabBarViewModelNotifications(tabBarNotification: TabBarViewModelNotification) {
 
         if tabBarNotification == TabBarViewModelNotification.ShowLoginVC {
-            presentLoginVC()
+            presentLoginVC(false, callback: nil)
         } else if tabBarNotification == TabBarViewModelNotification.HideLoginVC {
             hideBackgroundImage()
         } else if tabBarNotification == TabBarViewModelNotification.SwitchToFeedTab {
@@ -294,7 +286,7 @@ extension TabBarViewController {
     func handleLogOutSuccess() {
         SVProgressHUD.dismiss()
         dispatch_async(dispatch_get_main_queue()) {
-            self.presentLoginVCAnimated({
+            self.presentLoginVC(true, callback: {
                 self.selectedIndex = 0
             })
         }

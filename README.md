@@ -5,13 +5,17 @@ BluePic is a photo and image sharing sample application that allows you to take 
 Bluepic takes advantage of Swift in a typical iOS client setting, but also on the server-side using the new Swift web framework and HTTP Server, Kitura. An interesting feature of Bluepic, is the way it handles photos on the server. When an image is posted, it's data is recorded in Cloudant and the image binary is stored in Object Storage. From there, an [OpenWhisk](http://www.ibm.com/cloud-computing/bluemix/openwhisk/) sequence is invoked causing weather data like temperature and current condition (e.g. sunny, cloudy, etc.) to be calculated based on the location an image was uploaded from. AlchemyAPI is also used in the OpenWhisk sequence to analyze the image and extract text tags based on the content of the image. A push notification is finally sent to the user, informing them their image has been processed and now includes weather and tag data.
 
 ## Swift version
-The latest version of BluePic works with the DEVELOPMENT-SNAPSHOT-2016-05-03-a version of the Swift binaries. You can download this version of the Swift binaries by following this [link](https://swift.org/download/). Compatibility with other Swift versions is not guaranteed.
+The back-end components (i.e. Kitura-based server and OpenWhisk actions) of the BluePic app work with the `DEVELOPMENT-SNAPSHOT-2016-05-03-a` version of the Swift binaries. You can download this version of the Swift binaries by following this [link](https://swift.org/download/). Compatibility with other Swift versions is not guaranteed.
+
+Optionally, if you'd like to run the BluePic Kitura-based server using Xcode, you should use Xcode 7.3.1 and configure it to use the `DEVELOPMENT-SNAPSHOT-2016-05-03-a` toolchain. For details on how to set up Xcode see [Building your Kitura application on XCode](https://github.com/IBM-Swift/Kitura/wiki/Building-your-Kitura-application-on-XCode). Please note that any other versions of Xcode are not guaranteed to work with the back-end code.
+
+The iOS component of the BluePic app uses the default toolchain (Swift 2.2.1) prepackaged with Xcode 7.3.1. At the moment, any other versions of Xcode are not guaranteed to work. You may get unexpected behavior and/or errors if attempting to use other versions of Xcode or Swift.
 
 ## Getting started
-There are *two ways* you can compile and provision BluePic on Bluemix. Method 1 uses the IBM Cloud Tools for Swift application. Using IBM Cloud Tools for Swift is the easiest and quickest path to get BluePic up and running. Method 2 is manual, does not leverage this tool, and, therefore, takes longer but you get to understand exactly the steps that are happening behind the scenes. Regardless of what what path you choose, there are a few optional steps you can complete for additional functionality.
+There are *two ways* you can compile and provision BluePic on Bluemix. Method 1 uses the [IBM Cloud Tools for Swift](https://ibm-cloud-tools.mybluemix.net/) application. Using IBM Cloud Tools for Swift is the easiest and quickest path to get BluePic up and running. Method 2 is manual, does not leverage this tool, and, therefore, takes longer but you get to understand exactly the steps that are happening behind the scenes. Regardless of what what path you choose, there are a few optional steps you can complete for additional functionality.
 
 ## Method 1: IBM Cloud Tools for Swift
-Once you have the [IBM Cloud Tools for Swift](https://ibm-cloud-tools.mybluemix.net/) application installed for Mac, you can open it to get started. On the screen for creating a new project, you will find the option to create a BluePic Project. Select that option and name your project/runtime. This will kick off a process that automatically does the following:
+Once you have the IBM Cloud Tools for Swift application installed for Mac, you can open it to get started. On the screen for creating a new project, you will find the option to create a BluePic Project. Select that option and name your project/runtime. This will kick off a process that automatically does the following:
 
 - Installs curl on your local system (requires Homebrew).
 - Clones the Bluepic repo on your Mac.
@@ -142,6 +146,15 @@ Lastly, remember that push notifications will only show up on a physical iOS dev
 ### 4. Configure OpenWhisk
 BluePic leverages OpenWhisk actions written in Swift for accessing the Alchemy Vision and Weather APIs. For instructions on how to configure OpenWhisk, see the following [page](Docs/OpenWhisk.md). You will find there details on configuration and invocation of OpenWhisk commands.
 
+### 5. Redeploy BluePic app to Bluemix
+#### Using the IBM Cloud Tools for Swift
+After configuring the optional features, you should redeploy the BluePic app to Bluemix. If you used the IBM Cloud Tools for Swift to initially deploy the BluePic app to Bluemix, you can also use this tool to redeploy the app. On your project's page in the IBM Cloud Tools for Swift, you should find an entry for the BluePic app runtime. On that entry, you will find options for deploying the runtime to Bluemix, as shown here:
+
+<p align="center"><img src="Imgs/cloud-tools-deploy.png"  alt="Deploy to server" height=250 border=0 /></p>
+
+#### Using the Cloud Foundry command line
+After configuring the optional features, you should redeploy the BluePic app to Bluemix. You can use the Cloud Foundry [command line](https://docs.cloudfoundry.org/devguide/cf-cli/install-go-cli.html) to do so. Once you have logged in to Bluemix using the command line, you can execute `cf push` from the root folder of this repo on your local file system. This will push the application code and configuration to Bluemix.
+
 ## Running the iOS app
 If you don't have the iOS project already open, go to the `BluePic-iOS` directory and open the BluePic workspace using `open BluePic.xcworkspace`.
 
@@ -155,6 +168,9 @@ BluePic was designed with a lot of useful features. To see further information a
 
 ## About BluePic
 To learn more about BluePic's folder structure, its architecture, and the Swift packages it depends on, see the [About](Docs/About.md) page.
+
+## Reporting issues against
+You can use the [dW Answers](https://developer.ibm.com/answers/topics/cloud-tools-for-swift.html) web site to ask a question and/or report any issues you encounter while using the IBM Cloud Tools for Swift. Just make sure you use the tag `cloud-tools-for-swift` for the questions you post on dW Answers.
 
 ## License
 This application is licensed under Apache 2.0. Full license text is available in [LICENSE](LICENSE).
