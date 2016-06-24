@@ -22,7 +22,6 @@ func main(args:[String:Any]) -> [String:Any] {
     guard let authHeader = utf8BaseStr?.base64EncodedString(NSDataBase64EncodingOptions(rawValue: 0)) else {
         print("Could not generate authHeader...")
         return [
-            "imageId":  args["cloudantId"],
             "response": "Could not generate authHeader..."
         ]
     }
@@ -71,7 +70,6 @@ func main(args:[String:Any]) -> [String:Any] {
    
     
     let result:[String:Any] = [
-        "cloudantId":  args["cloudantId"],
         "authResponse": "\(str)",
         "authHeader": "\(headerValue)"
     ]

@@ -55,13 +55,7 @@ func main(args: [String:Any]) -> [String:Any] {
     }
 
     let result:[String:Any] = [
-        "imageId":  args["imageId"],
-        "imageDoc": args["imageDoc"],
-        "alchemyResult": args["alchemyResult"],
-        "weatherResult": "\(str)",
-        "latitude": args["latitude"],
-        "longitude": args["longitude"],
-        "imageURL": args["imageURL"]
+        "weather": "\(str)"
     ]
     
     return result
