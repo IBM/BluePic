@@ -33,6 +33,10 @@ public struct ObjectStorageConn {
 
   mutating func getObjectStorage(completionHandler: (objStorage: ObjectStorage?) -> Void) {
     Log.verbose("Starting task in serialized block (getting ObjectStorage instance)...")
+    guard let connectQueue = self.connectQueue else {
+      Log.warning("Connect queue was not created properly")
+      return
+    }
     dispatch_sync(connectQueue) {
       self.connect(completionHandler: completionHandler)
     }

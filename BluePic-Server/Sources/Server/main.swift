@@ -69,8 +69,8 @@ do {
   Log.verbose("Defining routes for server...")
   defineRoutes()
   // Start server...
-  HTTPServer.listen(port: config.appEnv.port, delegate: router)
-  Server.run()
+  Kitura.addHTTPServer(onPort: config.appEnv.port, with: router)
+  Kitura.run()
 } catch Configuration.Error.IO {
   Log.error("Oops, something went wrong... Server did not start!")
   exit(1)

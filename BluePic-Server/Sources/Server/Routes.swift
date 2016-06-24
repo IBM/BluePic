@@ -46,7 +46,7 @@ func defineRoutes() {
   // Ping closure
   let closure = { (request: RouterRequest, response: RouterResponse, next: () -> Void) -> Void in
     response.headers.append("Content-Type", value: "text/plain; charset=utf-8")
-    response.status(HTTPStatusCode.OK).send("Hello World, from BluePic-Server! Original URL: \(request.originalUrl)")
+    response.status(HTTPStatusCode.OK).send("Hello World, from BluePic-Server! Original URL: \(request.originalURL)")
     next()
   }
 
@@ -221,7 +221,7 @@ func defineRoutes() {
   * Route for getting a specific image document.
   */
   router.get("/images/:imageId") { request, response, next in
-    guard let imageId = request.params["imageId"] else {
+    guard let imageId = request.parameters["imageId"] else {
       response.error = generateInternalError()
       next()
       return
@@ -245,7 +245,7 @@ func defineRoutes() {
     var responseBody = JSON([:])
     responseBody["status"].boolValue = false
 
-    guard let imageId = request.params["imageId"] else {
+    guard let imageId = request.parameters["imageId"] else {
       //response.error = generateInternalError()
       response.status(HTTPStatusCode.badRequest)
       response.send(json: responseBody)
@@ -306,7 +306,7 @@ func defineRoutes() {
   * Route for getting a specific user document.
   */
   router.get("/users/:userId") { request, response, next in
-    guard let userId = request.params["userId"] else {
+    guard let userId = request.parameters["userId"] else {
       response.status(HTTPStatusCode.badRequest)
       response.error = generateInternalError()
       next()
@@ -394,7 +394,7 @@ func defineRoutes() {
   * Route for getting all image documents for a given user.
   */
   router.get("/users/:userId/images") { request, response, next in
-    guard let userId = request.params["userId"] else {
+    guard let userId = request.parameters["userId"] else {
       response.error = generateInternalError()
       next()
       return
@@ -436,7 +436,7 @@ func defineRoutes() {
       let validKeys = ["_id", "name", "type"]
       for (key, _) in userJson {
         if validKeys.index(of: key) == nil {
-          userJson.dictionaryObject?.removeValue(forKey: key)
+          let _ = userJson.dictionaryObject?.removeValue(forKey: key)
         }
       }
       // Closure for adding new user document to the database
