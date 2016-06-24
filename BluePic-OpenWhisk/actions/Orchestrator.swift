@@ -9,8 +9,6 @@ import SwiftyJSON
 
 func main(args: [String:Any]) -> [String:Any] {
 
-    //return args;
-    
     var error:String = "";
     var returnValue:String = "";
     let imageId: String? = String(args["imageId"]!)
