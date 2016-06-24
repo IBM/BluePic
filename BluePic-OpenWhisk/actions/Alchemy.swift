@@ -5,37 +5,40 @@
 import KituraNet
 import Dispatch
 import Foundation
+import RestKit
+import AlchemyVision
 
 func main(args:[String:Any]) -> [String:Any] {
        
     let alchemyKey: String? = args["alchemyKey"] as? String
     let imageURL: String? = args["imageURL"] as? String
-    
-    let url: String = "https://gateway-a.watsonplatform.net/calls/url/URLGetRankedImageKeywords?url=\(imageURL!)&outputMode=json&apikey=\(alchemyKey!)"
-    
-    var str:String = "[]"
 
-    HTTP.get(url) { response in
 
-        do {
-            str = try response!.readString()!
-        } catch {
-            print("Error \(error)")
+    let alchemyVision = AlchemyVision(apiKey: alchemyKey!)
+    let failure = { (error: RestError) in print(error) }
+
+    var str = ""
+    alchemyVision.getRankedImageKeywords(url: imageURL!, 
+                                            forceShowAll: true, 
+                                            knowledgeGraph: true, 
+                                            failure: failure) { response in 
+
+
+        response.imageKeywords
+        for keyword:ImageKeyword in response.imageKeywords {
+            if !NSString(string: keyword.text).contains("NO_TAGS")  {
+                if (str.characters.count > 0) {
+                    str = str + ","
+                }
+                str += "{\"text\":\"\(keyword.text)\",\"score\":\(keyword.score)}"
+            }
         }
     }
 
-    if NSString(string: str).contains("NO_TAGS")  {
-        str = "[]"
-    }
+    str = "[\(str)]"
     
     let result:[String:Any] = [
-        "imageId":  args["imageId"],
-        "imageDoc": args["imageDoc"],
-        "alchemyResult": "\(str)",
-        "weatherResult": args["weatherResult"],
-        "latitude": args["latitude"],
-        "longitude": args["longitude"],
-        "imageURL": args["imageURL"]
+        "alchemy": "\(str)",
     ]
     
     return result

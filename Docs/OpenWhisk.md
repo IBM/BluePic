@@ -59,11 +59,11 @@ Remove and reinstall actions using the bluepic.sh shell script:
     ./bluepic.sh --reinstall
 
 # Actions
-The overall processing of an image is handled by a sequence comprised of single-purpose OpenWhisk actions.  Each individual action can be invoked separately from the sequence. Parameters will need to be passed in to each individual action.  
+The overall processing of an image is handled by an orchestrator action that delegates to single-purpose OpenWhisk actions.  For testing and development, each  action can be invoked separately as an independent action. Parameters will need to be passed in to each individual action based upon its function.  
 
-The `bluepic.sh` shell script is used to create all sequences and actions used by the BluePic app.  The most important of which is the `bluepic/processImage` sequence. This is a sequence of individual actions that process the image entry for BluePic through its entirety.
+The `bluepic.sh` shell script is used to create all actions used by the BluePic app.  The most important of which is the `bluepic/processImage` action. This is the main orchestrator mentioned above.
 
-To invoke the sequence, you just need to pass in an `imageId` parameter (i.e. ID of the cloudant document for the image that needs to be processed).
+To invoke the action, you just need to pass in an `imageId` parameter (i.e. ID of the cloudant document for the image that needs to be processed).
 
 From the CLI, this can be invoked as (you'll need to use your own image id):
 
@@ -71,14 +71,11 @@ From the CLI, this can be invoked as (you'll need to use your own image id):
 wsk action invoke processImage -p imageId <image id>  
 ```
 
-This sequence is made up of the following actions.
+This delegates to the following actions and updates data accordingly:
 
-* `bluepic/prepareReadImage` - prepare params to read image from cloudant
 * `bluepic/cloudantRead` - read image document from cloudant
-* `bluepic/prepareWeatherRequest` - prepare request to weather and alchemy services based on data from retrieved image document
 * `bluepic/weather` - request weather data for location
 * `bluepic/alchemy` - request alchemy tagging for image
-* `bluepic/prepareCloudantWrite` - merge alchemy and and weather data into the Cloudant document JSON/prepare for writing back to cloudant
 * `bluepic/cloudantWrite` - save data back to Cloudant
 * `bluepic/kituraRequestAuth` - request auth crednetials for Kitura from MCA
 * `bluepic/kituraCallback` - make request back to Kitura server to invoke push notification service
@@ -95,47 +92,101 @@ There are two very important things to know when developing OpenWhisk actions:
 
 These can be extremely helpful for debugging OpenWhisk actions.  Since you cannot connect a debugger with breakpoints to an OpenWhisk action, excessive use of print() statements and using early `return` values at interim steps are your best routes for debugging values during OpenWhisk development - just be sure to remove or comment-out your debug `return` statements before making the actions live for production use.
 
-## Debugging Sequence Logic & Flow
+## Debugging Actions & Flow
 
-The following sequences have also been created specifically for debugging, which process the request incrementally through each step. You will need to view source for each action to see specific parameters for each step, but all of sequences except for `bluepic/processCallback` can be invoked with the only required parameter passed in being the imageId, exactly as the main `processImage` sequence shows above:
+The following actions are used in development of the OpenWhisk:
+
+--- 
+
+#### bluepic/processImage
+The main orchestrator
 
 ```
-wsk action invoke {sequence name} -p imageId {cloudant document id}  
+wsk action invoke bluepic/processImage -p imageId <image id>  
 ```
 
- * `bluepic/processRequestThroughReadImage`
-    * prepareReadImage
-    * cloudantRead
- * `bluepic/processRequestToWeather`
-    * prepareReadImage
-    * cloudantRead
-    * prepareWeatherRequest
- * `bluepic/processRequestThroughWeather`
-    * prepareReadImage
-    * cloudantRead
-    * prepareWeatherRequest
-    * weather
- * `bluepic/processRequestThroughAlchemy`
-    * prepareReadImage
-    * cloudantRead
-    * prepareWeatherRequest
-    * weather
-    * alchemy
- * `bluepic/processRequestToCloudantWrite`
-    * prepareReadImage
-    * cloudantRead
-    * prepareWeatherRequest
-    * weather
-    * alchemy
-    * prepareCloudantWrite
- * `bluepic/processRequestThroughCloudantWrite`
-    * prepareReadImage
-    * cloudantRead
-    * prepareWeatherRequest
-    * weather
-    * alchemy
-    * prepareCloudantWrite
-    * cloudantWrite
- * `bluepic/processCallback`
-    * `bluepic/kituraRequestAuth`
-    * `bluepic/kituraCallback`
+parameters:
+
+* *imageId* = the id of the cloudant document to be processed
+
+--- 
+
+
+#### bluepic/cloudantRead
+Read a document from Cloudant
+
+```
+wsk action invoke bluepic/cloudantRead -p cloudantId <cloudant id>  
+```
+
+parameters:
+
+* *cloudantId* = the id of the cloudant document to be read and returned
+
+---
+
+#### bluepic/cloudantWrite
+Write a document from Cloudant
+
+```
+wsk action invoke bluepic/cloudantRead -p cloudantId <cloudant id>  -p cloudantBody <document>
+```
+
+parameters:
+
+* *cloudantId* = the id of the cloudant document to be read and returned
+* *cloudantBody* = the document JSON string to be written
+
+---
+
+#### bluepic/weather
+Retrieve weather data from Insights for Weather service
+
+```
+wsk action invoke bluepic/weather -p latitude <latitude>  -p longitude <longitude>
+```
+
+parameters:
+
+* *latitude* = latitude for location to fetch weather
+* *longitude* = longitude for location to fetch weather
+
+---
+
+#### bluepic/alchmey
+Fetch Alchemy image tagging results
+
+```
+wsk action invoke bluepic/alchmey -p imageURL <imageURL>
+```
+
+parameters:
+
+* *imageURL* = url for publicly accessible image to be processed
+
+---
+
+#### bluepic/kituraRequestAuth
+Fetch MCA authorization headers for calling back to kitura server
+
+```
+wsk action invoke bluepic/kituraRequestAuth
+```
+
+parameters:
+
+* _none - this uses bound parameters from installation script_
+
+---
+
+#### bluepic/kituraCallback
+Callback to Kitura server to notify that asynch processing is complete
+
+```
+wsk action invoke bluepic/kituraCallback -p cloudantId <cloudant id> -p authHeader <authorization header>
+```
+
+parameters:
+
+* *cloudantId* = the id of the image document to notify Kitura about
+* *authHeader* = the authorization header retrieved from bluepic/kituraRequestAuth
