@@ -24,7 +24,7 @@ BluePic was designed so that anyone can quickly launch the app and view photos p
 The feed (first tab) shows all the latest photos posted to the BluePic community (regardless if logged in or not).
 
 <p align="center">
-<img src="../Imgs/feed.PNG"  alt="Drawing" height=550 border=0 /></p>
+<img src="../Imgs/feed.png"  alt="Drawing" height=550 border=0 /></p>
 <p align="center">Figure 2. Main feed view.</p>
 
 ### View Image Details
@@ -32,7 +32,7 @@ The feed (first tab) shows all the latest photos posted to the BluePic community
 You get here by simply tapping on an image. You will be shown a collection of information, including caption, author, location of photo, time taken, weather at location, and associated tags. Both, weather and tag info are determined server-side on Bluemix with Insights for Weather and Alchemy Vision.
 
 <p align="center">
-<img src="../Imgs/imageDetail.png"  alt="detail" height=550 border=0 /></p>
+<img src="../Imgs/image-detail.png"  alt="detail" height=550 border=0 /></p>
 <p align="center">Figure 3. Image detail view.</p>
 
 ### Post a Photo
@@ -40,7 +40,7 @@ You get here by simply tapping on an image. You will be shown a collection of in
 Posting to the BluePic community is easy. Tap the middle tab in the tab bar and choose to either pick a photo from the camera roll or take a photo using the device's camera. You can optionally enter a caption before posting the picture.
 
 <p align="center">
-<img src="../Imgs/post.PNG"  alt="Drawing" height=550 border=0 /></p>
+<img src="../Imgs/post.png"  alt="Drawing" height=550 border=0 /></p>
 <p align="center">Figure 4. Posting a photo.</p>
 
 Please note that while trying to post a photo using the iOS simulator, the app may not be able to obtain your location. To fix this simulator specific issue, simply select any location in the simulator's debug menu:
@@ -56,7 +56,7 @@ If selecting a location doesn't fix the issue, try toggling the location to None
 By tapping the third tab, you can view your profile. This shows your Facebook profile photo, lists how many photos you've posted, and shows all the photos you've posted to BluePic.
 
 <p align="center">
-<img src="../Imgs/profile.PNG"  alt="Drawing" height=550 border=0 /></p>
+<img src="../Imgs/profile.png"  alt="Drawing" height=550 border=0 /></p>
 <p align="center">Figure 6. Profile feed.</p>
 
 ### View Popular Tags

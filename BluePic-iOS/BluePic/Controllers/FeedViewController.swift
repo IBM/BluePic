@@ -126,8 +126,12 @@ class FeedViewController: UIViewController {
         super.viewWillAppear(animated)
 
         viewModel.suscribeToBluemixDataManagerNotifications()
-        if viewModel.shouldStartLoadingAnimation() {
-            collectionView.reloadData()  // Reload in case UploadingPhotoStarted was posted
+        // ensure collection view loads correctly under different circumstances
+        if collectionView.numberOfItemsInSection(1) < BluemixDataManager.SharedInstance.images.count {
+            logoImageView.startRotating(1)
+            viewModel.repullForNewData()
+        } else {
+            reloadDataInCollectionView()
         }
 
         UIApplication.sharedApplication().statusBarStyle = UIStatusBarStyle.Default
