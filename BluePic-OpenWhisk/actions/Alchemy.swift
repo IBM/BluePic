@@ -30,7 +30,7 @@ func main(args:[String:Any]) -> [String:Any] {
                 if (str.characters.count > 0) {
                     str = str + ","
                 }
-                str += "{\"text\":\"\(keyword.text)\",\"score\":\(keyword.score)}"
+                str += "{\"label\":\"\(keyword.text)\",\"confidence\":\(keyword.score)}"
             }
         }
     }
