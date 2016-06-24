@@ -51,35 +51,17 @@ function install() {
     -p mcaSecret $MCA_secret\
     -p kituraHost $KITURA_host\
     -p kituraPort $KITURA_port\
-    -p kituraSchema $KITURA_schema
+    -p kituraSchema $KITURA_schema\
+    -p targetNamespace $CURRENT_NAMESPACE
 
   echo "Creating actions"
-  #this is just a test action to make sure we can make HTTP requests leveraging kitura networking
-  wsk action create --kind swift:3 bluepic/prepareReadImage actions/PrepareToReadImage.swift -t 300000
-  wsk action create --kind swift:3 bluepic/prepareWeatherRequest actions/PrepareWeatherRequest.swift -t 300000
-  wsk action create --kind swift:3 bluepic/prepareCloudantWrite actions/PrepareToWriteImage.swift -t 300000
-  wsk action create --kind swift:3 bluepic/httpGet actions/HttpGet.swift -t 300000
   wsk action create --kind swift:3 bluepic/weather actions/Weather.swift -t 300000
   wsk action create --kind swift:3 bluepic/alchemy actions/Alchemy.swift -t 300000
   wsk action create --kind swift:3 bluepic/cloudantRead actions/CloudantRead.swift -t 300000
   wsk action create --kind swift:3 bluepic/cloudantWrite actions/CloudantWrite.swift -t 300000
-  wsk action create --kind swift:3 bluepic/processImageStub actions/Stub.swift -t 300000
   wsk action create --kind swift:3 bluepic/kituraRequestAuth actions/KituraRequestAuth.swift -t 300000
   wsk action create --kind swift:3 bluepic/kituraCallback actions/KituraCallback.swift -t 300000
-  
-  
-  #create sequences to tie everything together - lots of these are for testing
-  wsk action create bluepic/processImage --sequence bluepic/prepareReadImage,bluepic/cloudantRead,bluepic/prepareWeatherRequest,bluepic/weather,bluepic/alchemy,bluepic/prepareCloudantWrite,bluepic/cloudantWrite,bluepic/kituraRequestAuth,bluepic/kituraCallback -t 300000
-  wsk action create bluepic/processRequestThroughCloudantWrite --sequence bluepic/prepareReadImage,bluepic/cloudantRead,bluepic/prepareWeatherRequest,bluepic/weather,bluepic/alchemy,bluepic/prepareCloudantWrite,bluepic/cloudantWrite -t 300000
-  wsk action create bluepic/processRequestToCloudantWrite --sequence bluepic/prepareReadImage,bluepic/cloudantRead,bluepic/prepareWeatherRequest,bluepic/weather,bluepic/alchemy,bluepic/prepareCloudantWrite -t 300000
-  wsk action create bluepic/processRequestThroughAlchemy --sequence bluepic/prepareReadImage,bluepic/cloudantRead,bluepic/prepareWeatherRequest,bluepic/weather,bluepic/alchemy -t 300000
-  wsk action create bluepic/processRequestThroughWeather --sequence bluepic/prepareReadImage,bluepic/cloudantRead,bluepic/prepareWeatherRequest,bluepic/weather -t 300000
-  wsk action create bluepic/processRequestToWeather --sequence bluepic/prepareReadImage,bluepic/cloudantRead,bluepic/prepareWeatherRequest -t 300000
-  wsk action create bluepic/processRequestThroughReadImage --sequence bluepic/prepareReadImage,bluepic/cloudantRead -t 300000
-  wsk action create bluepic/processRequestToReadImage --sequence bluepic/prepareReadImage -t 300000
-  wsk action create bluepic/processRequestThroughReadUser --sequence bluepic/prepareReadUser,bluepic/cloudantRead -t 300000
-  wsk action create bluepic/processFinalWrite --sequence bluepic/prepareCloudantWrite,bluepic/cloudantWrite -t 300000
-  wsk action create bluepic/processCallback --sequence bluepic/kituraRequestAuth,bluepic/kituraCallback -t 300000
+  wsk action create --kind swift:3 bluepic/processImage actions/Orchestrator.swift -t 300000
   
   echo -e "${GREEN}Install Complete${NC}"
   wsk list
@@ -88,19 +70,13 @@ function install() {
 function uninstall() {
   echo -e "${RED}Uninstalling..."
   
-  echo "Removing actions..."
+  echo "Removing legacy actions..."
+
   wsk action delete bluepic/prepareReadImage
   wsk action delete bluepic/prepareWeatherRequest
   wsk action delete bluepic/prepareCloudantWrite
-  wsk action delete bluepic/httpGet
-  wsk action delete bluepic/weather
-  wsk action delete bluepic/alchemy
-  wsk action delete bluepic/cloudantRead
-  wsk action delete bluepic/cloudantWrite
-  wsk action delete bluepic/processImage
   wsk action delete bluepic/processImageStub
-  wsk action delete bluepic/kituraRequestAuth
-  wsk action delete bluepic/kituraCallback
+  wsk action delete bluepic/httpGet
   
   wsk action delete bluepic/processRequestThroughCloudantWrite
   wsk action delete bluepic/processRequestToCloudantWrite
@@ -112,6 +88,16 @@ function uninstall() {
   wsk action delete bluepic/processRequestThroughReadUser
   wsk action delete bluepic/processFinalWrite
   wsk action delete bluepic/processCallback
+
+
+  echo "Removing current actions..."
+  wsk action delete bluepic/weather
+  wsk action delete bluepic/alchemy
+  wsk action delete bluepic/cloudantRead
+  wsk action delete bluepic/cloudantWrite
+  wsk action delete bluepic/processImage
+  wsk action delete bluepic/kituraRequestAuth
+  wsk action delete bluepic/kituraCallback
   
   wsk package delete bluepic
   

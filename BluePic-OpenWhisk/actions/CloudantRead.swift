@@ -39,8 +39,7 @@ func main(args: [String:Any]) -> [String:Any] {
     req.end();
     
     let result:[String:Any] = [
-        "cloudantId": args["cloudantId"],
-        "cloudantResult": str
+        "document": str
     ]
     return result
 }

@@ -38,13 +38,7 @@ func main(args:[String:Any]) -> [String:Any] {
     str = "[\(str)]"
     
     let result:[String:Any] = [
-        "imageId":  args["imageId"],
-        "imageDoc": args["imageDoc"],
-        "alchemyResult": "\(str)",
-        "weatherResult": args["weatherResult"],
-        "latitude": args["latitude"],
-        "longitude": args["longitude"],
-        "imageURL": args["imageURL"]
+        "alchemy": "\(str)",
     ]
     
     return result

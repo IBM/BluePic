@@ -17,7 +17,6 @@ func main(args:[String:Any]) -> [String:Any] {
     let kituraSchema: String? = args["kituraSchema"] as? String
     let authHeader: String? = String(args["authHeader"]!)
     
-    
     var str = "" 
     
     var requestOptions = [ClientRequestOptions]()
@@ -44,7 +43,6 @@ func main(args:[String:Any]) -> [String:Any] {
     req.end("--request body (ignore this value)--");
     
     let result:[String:Any] = [
-        "imageId":  args["cloudantId"],
         "response": "\(str)"
     ]
     
