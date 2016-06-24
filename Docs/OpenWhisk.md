@@ -61,9 +61,9 @@ Remove and reinstall actions using the bluepic.sh shell script:
 # Actions
 The overall processing of an image is handled by an orchestrator action that delegates to single-purpose OpenWhisk actions.  For testing and development, each  action can be invoked separately as an independent action. Parameters will need to be passed in to each individual action based upon its function.  
 
-The `bluepic.sh` shell script is used to create all sequences and actions used by the BluePic app.  The most important of which is the `bluepic/processImage` action. This is the main orchestrator mentioned above.
+The `bluepic.sh` shell script is used to create all actions used by the BluePic app.  The most important of which is the `bluepic/processImage` action. This is the main orchestrator mentioned above.
 
-To invoke the sequence, you just need to pass in an `imageId` parameter (i.e. ID of the cloudant document for the image that needs to be processed).
+To invoke the action, you just need to pass in an `imageId` parameter (i.e. ID of the cloudant document for the image that needs to be processed).
 
 From the CLI, this can be invoked as (you'll need to use your own image id):
 
