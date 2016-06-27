@@ -37,11 +37,11 @@ func defineRoutes() {
   PushNotifications(bluemixRegion: PushNotifications.Region.US_SOUTH, bluemixAppGuid: mobileClientAccessProps.clientId, bluemixAppSecret: ibmPushProps.secret)
 
   // Assign middleware instance (to securing endpoints)
-  router.get("/users", middleware: credentials)
-  router.post("/users", middleware: credentials)
-  router.post("/push", middleware: credentials)
-  router.get("/ping", middleware: credentials)
-  router.post("/images",  middleware: credentials)
+  let _ = router.get("/users", middleware: credentials)
+  let _ = router.post("/users", middleware: credentials)
+  let _ = router.post("/push", middleware: credentials)
+  let _ = router.get("/ping", middleware: credentials)
+  let _ = router.post("/images",  middleware: credentials)
 
   // Ping closure
   let closure = { (request: RouterRequest, response: RouterResponse, next: () -> Void) -> Void in
@@ -74,7 +74,7 @@ func defineRoutes() {
     print("appGuid: \(appGuid)")
 
     // Request options
-    var requestOptions = [ClientRequestOptions]()
+    var requestOptions: [ClientRequest.Options] = []
     requestOptions.append(.method("POST"))
     requestOptions.append(.schema("http://"))
     requestOptions.append(.hostname("imf-authserver.ng.bluemix.net"))
@@ -176,7 +176,7 @@ func defineRoutes() {
   * http://stackoverflow.com/questions/1468684/multiple-key-ranges-as-parameters-to-a-couchdb-view
   */
   router.get("/images") { request, response, next in
-    if var tag = request.queryParams["tag"] {
+    if var tag = request.queryParameters["tag"] {
       // Get images by tag
       // let _ = tag.characters.split(separator: ",").map(String.init)
       tag = StringUtils.decodeWhiteSpace(inString: tag)
@@ -256,10 +256,9 @@ func defineRoutes() {
     readImage(database: database, imageId: imageId) { (jsonImage) in
       if let jsonImage = jsonImage {
         let apnsSettings = Notification.Settings.Apns(badge: nil, category: "imageProcessed", iosActionKey: nil, sound: nil, type: ApnsType.DEFAULT, payload: jsonImage.dictionaryObject)
-        let settings = Notification.Settings(apns: apnsSettings, gcm: nil)
-        let target = Notification.Target(deviceIds: [jsonImage["deviceId"].stringValue], platforms: [TargetPlatform.Apple], tagNames: nil, userIds: nil)
+        let target = Notification.Target(deviceIds: [jsonImage["deviceId"].stringValue], platforms: [TargetPlatform.Apple], tagNames: nil)
         let message = Notification.Message(alert: "Your image was processed; check it out!", url: nil)
-        let notification = Notification(message: message, target: target, settings: settings)
+        let notification = Notification(message: message, target: target, apnsSettings: apnsSettings, gcmSettings: nil)
         pushNotificationsClient.send(notification: notification) { (error) in
           if let error = error {
             Log.error("Failed to send push notification: \(error)")

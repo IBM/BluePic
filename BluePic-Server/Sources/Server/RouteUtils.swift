@@ -35,7 +35,7 @@ import Dispatch
  */
 func processImage(withId imageId: String) {
   Log.verbose("imageId: \(imageId)")
-  var requestOptions = [ClientRequestOptions]()
+  var requestOptions: [ClientRequest.Options] = []
   requestOptions.append(.method("POST"))
   requestOptions.append(.schema("https://"))
   requestOptions.append(.hostname(openWhiskProps.hostName))
