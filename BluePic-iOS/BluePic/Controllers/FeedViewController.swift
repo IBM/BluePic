@@ -15,6 +15,7 @@
  **/
 
 import UIKit
+import SVProgressHUD
 
 class FeedViewController: UIViewController {
 

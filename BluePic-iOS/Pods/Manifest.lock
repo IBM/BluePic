@@ -16,9 +16,9 @@ PODS:
   - Bolts/AppLinks (1.7.0):
     - Bolts/Tasks
   - Bolts/Tasks (1.7.0)
-  - FBSDKCoreKit (4.12.0):
+  - FBSDKCoreKit (4.13.1):
     - Bolts (~> 1.7)
-  - FBSDKLoginKit (4.12.0):
+  - FBSDKLoginKit (4.13.1):
     - FBSDKCoreKit
   - RNCryptor (4.0.0)
   - SDWebImage (3.8.1):
@@ -39,10 +39,12 @@ SPEC CHECKSUMS:
   BMSPush: 8af7e3b6c73d4913c5f998638652b4866a84252d
   BMSSecurity: ae38b12b18ffc4ea11310cbcb5039a3daf7aaa95
   Bolts: a0058fa3b331c5a1e4402d534f2dae36dbff31e4
-  FBSDKCoreKit: 6e56d5a2a64a755ad4efb5dbeee8f82fb1b99775
-  FBSDKLoginKit: 03f68a8d48c2c8bb81d7eb8097973d483543e1f6
+  FBSDKCoreKit: 2807fe0da2ddb49a1469da6d6ff597f99912980f
+  FBSDKLoginKit: 6d350cb6a22d6956e9d078885de6ee8a0ebc51b4
   RNCryptor: 59d6483908115af5c12b884db23392024e52a5fe
   SDWebImage: 35f9627a3e44b4f292a8a8ce6a531fa488239b91
   SVProgressHUD: b0830714205bea1317ea1a2ebc71e5633af334d4
 
-COCOAPODS: 0.39.0
+PODFILE CHECKSUM: a92daf1827d4fade680977520b6c0331c2c3b3ab
+
+COCOAPODS: 1.0.1

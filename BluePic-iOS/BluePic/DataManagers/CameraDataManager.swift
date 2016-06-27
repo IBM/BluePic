@@ -17,6 +17,7 @@
 import UIKit
 import ImageIO
 import CoreLocation
+import SVProgressHUD
 
 enum CameraDataManagerNotification: String {
     case UserPressedPostPhoto = "UserPressedPostPhoto"

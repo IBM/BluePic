@@ -1,14 +1,15 @@
-source 'https://github.com/CocoaPods/Specs.git'
-platform :ios, '8.0'
+# source 'https://github.com/CocoaPods/Specs.git'
+# platform :ios, '9.0'
 use_frameworks!
 
-# ignore all warnings from all pods
-inhibit_all_warnings!
+target 'BluePic' do
 
-pod 'BMSFacebookAuthentication'
+	pod 'BMSFacebookAuthentication'
 
-pod 'BMSPush'
+	pod 'BMSPush'
 
-pod 'SDWebImage', '~>3.7'
+	pod 'SDWebImage', '~>3.7'
 
-pod 'SVProgressHUD'
+	pod 'SVProgressHUD'
+
+end

@@ -1,0 +1,6 @@
+framework module Pods_BluePic {
+  umbrella header "Pods-BluePic-umbrella.h"
+
+  export *
+  module * { export * }
+}

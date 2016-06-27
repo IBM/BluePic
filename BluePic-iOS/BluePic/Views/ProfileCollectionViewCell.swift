@@ -15,6 +15,7 @@
  **/
 
 import UIKit
+import SDWebImage
 
 class ProfileCollectionViewCell: UICollectionViewCell {
 
