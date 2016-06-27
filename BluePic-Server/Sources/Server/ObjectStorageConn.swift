@@ -19,9 +19,11 @@ import BluemixObjectStorage
 import LoggerAPI
 import Dispatch
 
-public struct ObjectStorageConn {
+// FIXME: Change to a struct when using a swift binary that supports the DispatchQueue type
+public class ObjectStorageConn {
   let connectQueue = dispatch_queue_create("connectQueue", nil)
   let objStorage: ObjectStorage
+  var test = 10
   let connProps: ObjectStorageConnProps
   private var authenticated: Bool = false
   private var lastAuthenticatedTs: NSDate?
@@ -31,8 +33,13 @@ public struct ObjectStorageConn {
     objStorage = ObjectStorage(projectId: connProps.projectId)
   }
 
-  mutating func getObjectStorage(completionHandler: (objStorage: ObjectStorage?) -> Void) {
+  func getObjectStorage(completionHandler: (objStorage: ObjectStorage?) -> Void) {
     Log.verbose("Starting task in serialized block (getting ObjectStorage instance)...")
+    guard let connectQueue = self.connectQueue else {
+      Log.warning("Connect queue was not created properly")
+      completionHandler(objStorage: nil)
+      return
+    }
     dispatch_sync(connectQueue) {
       self.connect(completionHandler: completionHandler)
     }
@@ -41,7 +48,7 @@ public struct ObjectStorageConn {
     completionHandler(objStorage: param)
   }
 
-  private mutating func connect(completionHandler: (objStorage: ObjectStorage?) -> Void) {
+  private func connect(completionHandler: (objStorage: ObjectStorage?) -> Void) {
     Log.verbose("Determining if we have an ObjectStorage instance ready to use...")
     if authenticated, let lastAuthenticatedTs = lastAuthenticatedTs {
       // Check when was the last time we got an auth token
@@ -57,9 +64,13 @@ public struct ObjectStorageConn {
       }
     }
 
-    // Network call should be synchronous since we need to know the result before
-    // proceeding...
-    let semaphore = dispatch_semaphore_create(0)
+    // Network call should be synchronous since we need to know the result before proceeding.
+    guard let semaphore = dispatch_semaphore_create(0) else {
+      Log.warning("Couldn't create semaphore...")
+      completionHandler(objStorage: nil)
+      return
+    }
+    
     Log.verbose("Making network call synchronous...")
     objStorage.connect(userId: connProps.userId, password: connProps.password, region: ObjectStorage.REGION_DALLAS) { (error) in
       if let error = error {

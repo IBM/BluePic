@@ -46,7 +46,7 @@ func defineRoutes() {
   // Ping closure
   let closure = { (request: RouterRequest, response: RouterResponse, next: () -> Void) -> Void in
     response.headers.append("Content-Type", value: "text/plain; charset=utf-8")
-    response.status(HTTPStatusCode.OK).send("Hello World, from BluePic-Server! Original URL: \(request.originalUrl)")
+    response.status(HTTPStatusCode.OK).send("Hello World, from BluePic-Server! Original URL: \(request.originalURL)")
     next()
   }
 
@@ -74,7 +74,7 @@ func defineRoutes() {
     print("appGuid: \(appGuid)")
 
     // Request options
-    var requestOptions = [ClientRequestOptions]()
+    var requestOptions: [ClientRequest.Options] = []
     requestOptions.append(.method("POST"))
     requestOptions.append(.schema("http://"))
     requestOptions.append(.hostname("imf-authserver.ng.bluemix.net"))
@@ -176,7 +176,7 @@ func defineRoutes() {
   * http://stackoverflow.com/questions/1468684/multiple-key-ranges-as-parameters-to-a-couchdb-view
   */
   router.get("/images") { request, response, next in
-    if var tag = request.queryParams["tag"] {
+    if var tag = request.queryParameters["tag"] {
       // Get images by tag
       // let _ = tag.characters.split(separator: ",").map(String.init)
       tag = StringUtils.decodeWhiteSpace(inString: tag)
@@ -221,7 +221,7 @@ func defineRoutes() {
   * Route for getting a specific image document.
   */
   router.get("/images/:imageId") { request, response, next in
-    guard let imageId = request.params["imageId"] else {
+    guard let imageId = request.parameters["imageId"] else {
       response.error = generateInternalError()
       next()
       return
@@ -245,7 +245,7 @@ func defineRoutes() {
     var responseBody = JSON([:])
     responseBody["status"].boolValue = false
 
-    guard let imageId = request.params["imageId"] else {
+    guard let imageId = request.parameters["imageId"] else {
       //response.error = generateInternalError()
       response.status(HTTPStatusCode.badRequest)
       response.send(json: responseBody)
@@ -256,10 +256,9 @@ func defineRoutes() {
     readImage(database: database, imageId: imageId) { (jsonImage) in
       if let jsonImage = jsonImage {
         let apnsSettings = Notification.Settings.Apns(badge: nil, category: "imageProcessed", iosActionKey: nil, sound: nil, type: ApnsType.DEFAULT, payload: jsonImage.dictionaryObject)
-        let settings = Notification.Settings(apns: apnsSettings, gcm: nil)
-        let target = Notification.Target(deviceIds: [jsonImage["deviceId"].stringValue], platforms: [TargetPlatform.Apple], tagNames: nil, userIds: nil)
+        let target = Notification.Target(deviceIds: [jsonImage["deviceId"].stringValue], platforms: [TargetPlatform.Apple], tagNames: nil)
         let message = Notification.Message(alert: "Your image was processed; check it out!", url: nil)
-        let notification = Notification(message: message, target: target, settings: settings)
+        let notification = Notification(message: message, target: target, apnsSettings: apnsSettings, gcmSettings: nil)
         pushNotificationsClient.send(notification: notification) { (error) in
           if let error = error {
             Log.error("Failed to send push notification: \(error)")
@@ -306,7 +305,7 @@ func defineRoutes() {
   * Route for getting a specific user document.
   */
   router.get("/users/:userId") { request, response, next in
-    guard let userId = request.params["userId"] else {
+    guard let userId = request.parameters["userId"] else {
       response.status(HTTPStatusCode.badRequest)
       response.error = generateInternalError()
       next()
@@ -347,54 +346,48 @@ func defineRoutes() {
   */
   router.all("/images", middleware: BodyParser())
   router.post("/images") { request, response, next in
-    do {
-      // get multipart data for image metadata and imgage binary data
-      var (imageJSON, image) = try parseMultipart(fromRequest: request)
-      imageJSON = try updateImageJSON(json: imageJSON, withRequest: request)
+    // get multipart data for image metadata and imgage binary data
+    var (imageJSON, image) = try parseMultipart(fromRequest: request)
+    imageJSON = try updateImageJSON(json: imageJSON, withRequest: request)
 
-      // Create closure
-      let completionHandler = { (success: Bool) -> Void in
-        if success {
-          // Add image record to database
-          database.create(imageJSON) { (id, revision, doc, error) in
-            guard let id = id, revision = revision where error == nil else {
-              Log.error("Failed to create image record in Cloudant database.")
-              if let error = error {
-                Log.error("Error domain: \(error._domain); error code: \(error._code).")
-              }
-              response.error = generateInternalError()
-              next()
-              return
+    // Create closure
+    let completionHandler = { (success: Bool) -> Void in
+      if success {
+        // Add image record to database
+        database.create(imageJSON) { (id, revision, doc, error) in
+          guard let id = id, revision = revision where error == nil else {
+            Log.error("Failed to create image record in Cloudant database.")
+            if let error = error {
+              Log.error("Error domain: \(error._domain); error code: \(error._code).")
             }
-            // Contine processing of image (async request for OpenWhisk)
-            processImage(withId: id)
-            // Return image document to caller
-            // Update JSON image document with _id, and _rev
-            imageJSON["_id"].stringValue = id
-            imageJSON["_rev"].stringValue = revision
-            response.status(HTTPStatusCode.OK).send(json: imageJSON)
+            response.error = generateInternalError()
             next()
+            return
           }
-        } else {
-          Log.error("Failed to create image record in Cloudant database.")
-          response.error = generateInternalError()
+          // Contine processing of image (async request for OpenWhisk)
+          processImage(withId: id)
+          // Return image document to caller
+          // Update JSON image document with _id, and _rev
+          imageJSON["_id"].stringValue = id
+          imageJSON["_rev"].stringValue = revision
+          response.status(HTTPStatusCode.OK).send(json: imageJSON)
+          next()
         }
-        next()
+      } else {
+        Log.error("Failed to create image record in Cloudant database.")
+        response.error = generateInternalError()
       }
-      // Create container for user before creating image record in database
-      store(image: image, withName: imageJSON["fileName"].stringValue, inContainer: imageJSON["userId"].stringValue, completionHandler: completionHandler)
-    } catch {
-      Log.error("Failed to add image record.")
-      response.error = generateInternalError()
       next()
     }
+    // Create container for user before creating image record in database
+    store(image: image, withName: imageJSON["fileName"].stringValue, inContainer: imageJSON["userId"].stringValue, completionHandler: completionHandler)
   }
 
   /**
   * Route for getting all image documents for a given user.
   */
   router.get("/users/:userId/images") { request, response, next in
-    guard let userId = request.params["userId"] else {
+    guard let userId = request.parameters["userId"] else {
       response.error = generateInternalError()
       next()
       return
@@ -422,89 +415,82 @@ func defineRoutes() {
   * Route for creating a new user document in the database.
   */
   router.post("/users") { request, response, next in
-    do {
-      let rawUserData = try BodyParser.readBodyData(with: request)
-      var userJson = JSON(data: rawUserData)
-      // Verify JSON has required fields
-      guard let _ = userJson["name"].string,
-      let userId = userJson["_id"].string else {
-        throw ProcessingError.User("Invalid user document!")
+    let rawUserData = try BodyParser.readBodyData(with: request)
+    var userJson = JSON(data: rawUserData)
+    // Verify JSON has required fields
+    guard let _ = userJson["name"].string,
+    let userId = userJson["_id"].string else {
+      throw ProcessingError.User("Invalid user document!")
+    }
+    // Add type field
+    userJson["type"] = "user"
+    // Keep only those keys that are valid for the user document
+    let validKeys = ["_id", "name", "type"]
+    for (key, _) in userJson {
+      if validKeys.index(of: key) == nil {
+        let _ = userJson.dictionaryObject?.removeValue(forKey: key)
       }
-      // Add type field
-      userJson["type"] = "user"
-      // Keep only those keys that are valid for the user document
-      let validKeys = ["_id", "name", "type"]
-      for (key, _) in userJson {
-        if validKeys.index(of: key) == nil {
-          userJson.dictionaryObject?.removeValue(forKey: key)
-        }
-      }
-      // Closure for adding new user document to the database
-      let createRecord = {
-        // Persist user document to database
-        Log.verbose("About to add new user record '\(userId)' to the database.")
-        database.create(userJson) { (id, revision, document, error) in
-          do {
-            if let document = document where error == nil {
-              // Add revision number response document
-              userJson["_rev"] = document["rev"]
-              // Return user document back to caller
-              try response.status(HTTPStatusCode.OK).send(json: userJson).end()
-              next()
-            } else {
-              Log.error("Failed to add user to the system of records.")
-              response.error = error ?? generateInternalError()
-              next()
-            }
-          } catch {
-            Log.error("Failed to add user to the system of records.")
-            response.error = generateInternalError()
-            next()
-          }
-        }
-      }
-      // Closure for verifying if user exists and creating new record
-      let addUser = {
-        // Verify if user already exists
-        database.queryByView("users", ofDesign: "main_design", usingParameters: [ .descending(true), .includeDocs(false), .keys([userId]) ]) { (document, error) in
+    }
+    // Closure for adding new user document to the database
+    let createRecord = {
+      // Persist user document to database
+      Log.verbose("About to add new user record '\(userId)' to the database.")
+      database.create(userJson) { (id, revision, document, error) in
+        do {
           if let document = document where error == nil {
-            do {
-              let json = try parseUsers(document: document)
-              let users = json["records"].arrayValue
-              if users.count == 1 {
-                response.status(HTTPStatusCode.OK).send(json: users[0])
-                next()
-              } else {
-                createRecord()
-              }
-            } catch {
-              createRecord()
-            }
+            // Add revision number response document
+            userJson["_rev"] = document["rev"]
+            // Return user document back to caller
+            try response.status(HTTPStatusCode.OK).send(json: userJson).end()
+            next()
           } else {
-            response.status(HTTPStatusCode.internalServerError)
-            Log.error("Failed to process user request.")
-            response.error = generateInternalError()
+            Log.error("Failed to add user to the system of records.")
+            response.error = error ?? generateInternalError()
             next()
           }
-        }
-      }
-      // Create completion handler closure
-      let completionHandler = { (success: Bool) -> Void in
-        if success {
-          addUser()
-        } else {
+        } catch {
           Log.error("Failed to add user to the system of records.")
           response.error = generateInternalError()
           next()
         }
       }
-      // Create container for user before adding record to database
-      createContainer(withName: userId, completionHandler: completionHandler)
-    } catch let error {
-      Log.error("Failed to create new user document.")
-      Log.error("Error domain: \(error._domain); error code: \(error._code).")
-      response.error = generateInternalError()
-      next()
     }
+    // Closure for verifying if user exists and creating new record
+    let addUser = {
+      // Verify if user already exists
+      database.queryByView("users", ofDesign: "main_design", usingParameters: [ .descending(true), .includeDocs(false), .keys([userId]) ]) { (document, error) in
+        if let document = document where error == nil {
+          do {
+            let json = try parseUsers(document: document)
+            let users = json["records"].arrayValue
+            if users.count == 1 {
+              response.status(HTTPStatusCode.OK).send(json: users[0])
+              next()
+            } else {
+              createRecord()
+            }
+          } catch {
+            createRecord()
+          }
+        } else {
+          response.status(HTTPStatusCode.internalServerError)
+          Log.error("Failed to process user request.")
+          response.error = generateInternalError()
+          next()
+        }
+      }
+    }
+    // Create completion handler closure
+    let completionHandler = { (success: Bool) -> Void in
+      if success {
+        addUser()
+      } else {
+        Log.error("Failed to add user to the system of records.")
+        response.error = generateInternalError()
+        next()
+      }
+    }
+    // Create container for user before adding record to database
+    createContainer(withName: userId, completionHandler: completionHandler)
   }
 }

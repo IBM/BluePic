@@ -35,7 +35,7 @@ import Dispatch
  */
 func processImage(withId imageId: String) {
   Log.verbose("imageId: \(imageId)")
-  var requestOptions = [ClientRequestOptions]()
+  var requestOptions: [ClientRequest.Options] = []
   requestOptions.append(.method("POST"))
   requestOptions.append(.schema("https://"))
   requestOptions.append(.hostname(openWhiskProps.hostName))
@@ -235,7 +235,7 @@ func parseMultipart(fromRequest request: RouterRequest) throws -> (JSON, NSData)
 func updateImageJSON(json: JSON, withRequest request: RouterRequest) throws -> JSON {
   var updatedJson = json
   guard let authContext = request.userInfo["mcaAuthContext"] as? AuthorizationContext, 
-            contentType = ContentType.sharedInstance.contentTypeForFile(updatedJson["fileName"].stringValue) else {
+            contentType = ContentType.sharedInstance.getContentType(forFileName: updatedJson["fileName"].stringValue) else {
     throw ProcessingError.Image("Invalid image document!")
   }
 
@@ -374,8 +374,8 @@ private func massageImageRecord(containerName: String, record: inout JSON) {
   //record["length"].int = record["_attachments"][fileName]["length"].int
   let fileName = record["fileName"].stringValue
   record["url"].stringValue = generateUrl(forContainer: containerName, forImage: fileName)
-  record.dictionaryObject?.removeValue(forKey: "userId")
-  record.dictionaryObject?.removeValue(forKey: "_attachments")
+  let _ = record.dictionaryObject?.removeValue(forKey: "userId")
+  let _ = record.dictionaryObject?.removeValue(forKey: "_attachments")
 }
 
 /**
