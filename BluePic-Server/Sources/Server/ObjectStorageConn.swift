@@ -22,6 +22,7 @@ import Dispatch
 public struct ObjectStorageConn {
   let connectQueue = dispatch_queue_create("connectQueue", nil)
   let objStorage: ObjectStorage
+  var test = 10
   let connProps: ObjectStorageConnProps
   private var authenticated: Bool = false
   private var lastAuthenticatedTs: NSDate?
@@ -29,6 +30,14 @@ public struct ObjectStorageConn {
   init(objStorageConnProps: ObjectStorageConnProps) {
     connProps = objStorageConnProps
     objStorage = ObjectStorage(projectId: connProps.projectId)
+  }
+  
+  mutating func example() {
+    if let connectQueue = self.connectQueue {
+      dispatch_sync(connectQueue) {
+        self.test = 20
+      }
+    }
   }
 
   mutating func getObjectStorage(completionHandler: (objStorage: ObjectStorage?) -> Void) {
@@ -63,7 +72,11 @@ public struct ObjectStorageConn {
 
     // Network call should be synchronous since we need to know the result before
     // proceeding...
-    let semaphore = dispatch_semaphore_create(0)
+    guard let semaphore = dispatch_semaphore_create(0) else {
+      Log.warning("Couldn't create semaphore")
+      return
+    }
+    
     Log.verbose("Making network call synchronous...")
     objStorage.connect(userId: connProps.userId, password: connProps.password, region: ObjectStorage.REGION_DALLAS) { (error) in
       if let error = error {
