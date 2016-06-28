@@ -35,11 +35,13 @@ public class ObjectStorageConn {
 
   func getObjectStorage(completionHandler: (objStorage: ObjectStorage?) -> Void) {
     Log.verbose("Starting task in serialized block (getting ObjectStorage instance)...")
-    guard let connectQueue = self.connectQueue else {
-      Log.warning("Connect queue was not created properly")
-      completionHandler(objStorage: nil)
-      return
-    }
+    #if os(OSX)
+      guard let connectQueue = self.connectQueue else {
+        Log.warning("Connect queue was not created properly")
+        completionHandler(objStorage: nil)
+        return
+      }
+    #endif
     dispatch_sync(connectQueue) {
       self.connect(completionHandler: completionHandler)
     }
@@ -65,11 +67,15 @@ public class ObjectStorageConn {
     }
 
     // Network call should be synchronous since we need to know the result before proceeding.
-    guard let semaphore = dispatch_semaphore_create(0) else {
-      Log.warning("Couldn't create semaphore...")
-      completionHandler(objStorage: nil)
-      return
-    }
+    #if os(OSX)
+      guard let semaphore = dispatch_semaphore_create(0) else {
+        Log.warning("Couldn't create semaphore...")
+        completionHandler(objStorage: nil)
+        return
+      }
+    #else
+      let semaphore = dispatch_semaphore_create(0)
+    #endif
     
     Log.verbose("Making network call synchronous...")
     objStorage.connect(userId: connProps.userId, password: connProps.password, region: ObjectStorage.REGION_DALLAS) { (error) in
