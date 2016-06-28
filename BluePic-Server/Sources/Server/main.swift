@@ -25,6 +25,9 @@ import SwiftyJSON
 import CloudFoundryEnv
 import BluemixObjectStorage
 
+// Disable all buffering on stdout
+setbuf(stdout, nil)
+
 ///
 /// Because bridging is not complete in Linux, we must use Any objects for dictionaries
 /// instead of AnyObject. The main branch SwiftyJSON takes as input AnyObject, however
