@@ -81,14 +81,14 @@ You can obtain the above credentials by accessing your application's page on Blu
 ### 5. Populate Object Storage
 To populate your Object Storage instance with sample data, you need to obtain the following credential values:
 
-- `userid` - The username for your Object Storage instance.
+- `userid` - The userid for your Object Storage instance.
 - `password` - The password for your Object Storage instance.
 - `projectid` - The project ID for your Object Storage instance.
 
 You can obtain the above credentials by accessing your application's page on Bluemix and clicking on the `Show Credentials` twisty found on your Object Storage instance. Once you have these credentials,  navigate to the `./Cloud-Scripts/Object-Storage/` directory in the BluePic repo and execute the `populator.sh` script as shown below:
 
 ```bash
-./populator.sh --userid=<object storage username> --password=<object storage password> --projectid=<object storage projectid>
+./populator.sh --userid=<object storage userid> --password=<object storage password> --projectid=<object storage projectid>
 ```
 
 ### 6. Update `BluePic-Server/cloud_config.json` file
