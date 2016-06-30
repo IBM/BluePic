@@ -6,13 +6,13 @@ Bluepic takes advantage of Swift in a typical iOS client setting, but also on th
 
 ## Swift version
 The back-end components (i.e. Kitura-based server and OpenWhisk actions) and the iOS component of the BluePic app work with specific versions of the Swift binaries, see following table:
-		
+
 		Component | Swift Version
 		--- | ---
 		Kitura-based server | `DEVELOPMENT-SNAPSHOT-2016-06-06-a`
 		OpenWhisk actions | `DEVELOPMENT-SNAPSHOT-2016-05-03-a`
 		iOS App | Xcode 7.3.1 default (`Swift 2.2.1`)
-		
+
 You can download the development snapshots of the Swift binaries by following this [link](https://swift.org/download/). Compatibility with other Swift versions is not guaranteed.
 
 Optionally, if you'd like to run the BluePic Kitura-based server using Xcode, you should use Xcode 7.3.1 and configure it to use the `DEVELOPMENT-SNAPSHOT-2016-06-06-a` toolchain. For details on how to set up Xcode, see [Building your Kitura application on XCode](https://github.com/IBM-Swift/Kitura/wiki/Building-your-Kitura-application-on-XCode). Please note that any other versions of Xcode are not guaranteed to work with the back-end code.
@@ -58,7 +58,7 @@ If you'd like to, you can spend a few minutes to get familiar with the folder st
 ### 3. Create BluePic application on Bluemix
 Clicking on the button below deploys the BluePic application to Bluemix. The `manifest.yml` file [included in the repo] is parsed to obtain the name of the application and to determine the Cloud Foundry services that should be instantiated. For further details on the structure of the `manifest.yml` file, see the [Cloud Foundry documentation](https://docs.cloudfoundry.org/devguide/deploy-apps/manifest.html#minimal-manifest).
 
-[![Deploy to Bluemix](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy)
+[![Deploy to Bluemix](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy?repository=https://github.com/IBM-Swift/BluePic.git&branch=develop)
 
 Once deployment to Bluemix is completed, you should access the route assigned to your application using the web browser of your choice. You should see the Kitura welcome page!
 
