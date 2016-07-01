@@ -14,7 +14,7 @@ declared-services:
     plan: Basic
   BluePic-Insights-for-Weather:
     label: weatherinsights
-    plan: Free
+    plan: Free-v2
   BluePic-Alchemy:
     label: alchemy_api
     plan: free
