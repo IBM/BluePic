@@ -34,16 +34,22 @@ class BluemixConfiguration: NSObject {
 
     override init() {
 
-        if let localBaseRequestURL = Utils.getStringValueWithKeyFromPlist(kBluemixKeysPlistName, key: kAppRouteLocal),
+        if var localBaseRequestURL = Utils.getStringValueWithKeyFromPlist(kBluemixKeysPlistName, key: kAppRouteLocal),
                 remoteBaseRequestURL = Utils.getStringValueWithKeyFromPlist(kBluemixKeysPlistName, key: kAppRouteRemote),
-                appGUID = Utils.getStringValueWithKeyFromPlist(kBluemixKeysPlistName, key: kBluemixAppGUIDKey),
+                let appGUID = Utils.getStringValueWithKeyFromPlist(kBluemixKeysPlistName, key: kBluemixAppGUIDKey),
                 appRegion = Utils.getStringValueWithKeyFromPlist(kBluemixKeysPlistName, key: kBluemixAppRegionKey),
                 isLocal = Utils.getBoolValueWithKeyFromPlist(kBluemixKeysPlistName, key: kIsLocalKey) {
-            self.localBaseRequestURL = localBaseRequestURL
-            self.remoteBaseRequestURL = remoteBaseRequestURL
             self.appGUID = appGUID
             self.appRegion = appRegion
             self.isLocal = isLocal
+            if let lastChar = localBaseRequestURL.characters.last where lastChar == "/" as Character {
+                localBaseRequestURL.removeAtIndex(localBaseRequestURL.endIndex.predecessor())
+            }
+            if let lastChar = remoteBaseRequestURL.characters.last where lastChar == "/" as Character {
+                remoteBaseRequestURL.removeAtIndex(remoteBaseRequestURL.endIndex.predecessor())
+            }
+            self.localBaseRequestURL = localBaseRequestURL
+            self.remoteBaseRequestURL = remoteBaseRequestURL
 
             super.init()
         } else {
