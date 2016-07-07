@@ -1,15 +1,15 @@
 /*
-*     Copyright 2015 IBM Corp.
-*     Licensed under the Apache License, Version 2.0 (the "License");
-*     you may not use this file except in compliance with the License.
-*     You may obtain a copy of the License at
-*     http://www.apache.org/licenses/LICENSE-2.0
-*     Unless required by applicable law or agreed to in writing, software
-*     distributed under the License is distributed on an "AS IS" BASIS,
-*     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-*     See the License for the specific language governing permissions and
-*     limitations under the License.
-*/
+ *     Copyright 2015 IBM Corp.
+ *     Licensed under the Apache License, Version 2.0 (the "License");
+ *     you may not use this file except in compliance with the License.
+ *     You may obtain a copy of the License at
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *     Unless required by applicable law or agreed to in writing, software
+ *     distributed under the License is distributed on an "AS IS" BASIS,
+ *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *     See the License for the specific language governing permissions and
+ *     limitations under the License.
+ */
 
 import BMSCore
 import BMSAnalyticsAPI
@@ -27,7 +27,7 @@ internal class AuthorizationProcessManager {
     {
         self.authorizationQueue = Queue<BmsCompletionHandler>()
         self.preferences = preferences
-        self.preferences.persistencePolicy.set(PersistencePolicy.NEVER)
+        self.preferences.persistencePolicy.set(PersistencePolicy.NEVER, shouldUpdateTokens: false);
         //generate new random session id
         sessionId = NSUUID().UUIDString
     }
@@ -144,7 +144,7 @@ internal class AuthorizationProcessManager {
             options.requestMethod = HttpMethod.GET
             let callBack:BmsCompletionHandler = {(response: Response?, error: NSError?) in
                 guard response?.statusCode != 400 else {
-					self.authorizationFailureCount+=1
+                    self.authorizationFailureCount+=1
                     if self.authorizationFailureCount < 2 {
                         SecurityUtils.clearDictValuesFromKeyChain(BMSSecurityConstants.AuthorizationKeyChainTagsDictionary)
                         self.preferences.clientId.clear()
@@ -223,14 +223,14 @@ internal class AuthorizationProcessManager {
             if let data = response.responseData, responseJson =  try NSJSONSerialization.JSONObjectWithData(data, options: []) as? [String:AnyObject]{
                 if let accessTokenFromResponse = responseJson[caseInsensitive : BMSSecurityConstants.JSON_ACCESS_TOKEN_KEY] as? String, idTokenFromResponse =
                     responseJson[caseInsensitive : BMSSecurityConstants.JSON_ID_TOKEN_KEY] as? String {
-                        //save the tokens
-                        preferences.idToken.set(idTokenFromResponse)
-                        preferences.accessToken.set(accessTokenFromResponse)
-                        AuthorizationProcessManager.logger.debug("token successfully saved")
-                        if let userIdentity = getUserIdentityFromToken(idTokenFromResponse)
-                        {
-                            preferences.userIdentity.set(userIdentity)
-                        }
+                    //save the tokens
+                    preferences.idToken.set(idTokenFromResponse)
+                    preferences.accessToken.set(accessTokenFromResponse)
+                    AuthorizationProcessManager.logger.debug("token successfully saved")
+                    if let userIdentity = getUserIdentityFromToken(idTokenFromResponse)
+                    {
+                        preferences.userIdentity.set(userIdentity)
+                    }
                 }
             }
         } catch  {

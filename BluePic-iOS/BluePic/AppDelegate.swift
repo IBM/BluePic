@@ -143,8 +143,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         BluemixDataManager.SharedInstance.initilizeBluemixAppRoute()
 
         //Initialize Facebook
+        MCAAuthorizationManager.sharedInstance.setAuthorizationPersistencePolicy(PersistencePolicy.ALWAYS)
         BMSClient.sharedInstance.authorizationManager = MCAAuthorizationManager.sharedInstance
-        //IMFFacebookAuthenticationHandler.sharedInstance().registerWithDefaultDelegate()
         FacebookAuthenticationManager.sharedInstance.register()
 
         return FacebookAuthenticationManager.sharedInstance.onFinishLaunching(application, withOptions:  launchOptions)
