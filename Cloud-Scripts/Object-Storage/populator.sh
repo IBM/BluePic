@@ -32,7 +32,7 @@ scriptsFolder="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 echo "scriptsFolder: $scriptsFolder"
 
 # Parse input parameters
-source $scriptsFolder/parse_inputs.sh
+source "$scriptsFolder/parse_inputs.sh"
 
 # Variables
 authUrl=https://identity.open.softlayer.com/v3/auth/tokens

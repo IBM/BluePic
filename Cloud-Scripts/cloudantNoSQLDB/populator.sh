@@ -24,7 +24,7 @@ scriptsFolder="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 echo "scriptsFolder: $scriptsFolder"
 
 # Parse input parameters
-source $scriptsFolder/parse_inputs.sh
+source "$scriptsFolder/parse_inputs.sh"
 
 # Variables (object storage - these are needed for storing URL in Cloudant database)
 accessPoint=dal.objectstorage.open.softlayer.com
