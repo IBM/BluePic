@@ -32,7 +32,7 @@ scriptsFolder="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 echo "scriptsFolder: $scriptsFolder"
 
 # Parse input parameters
-source $scriptsFolder/parse_inputs.sh
+source "$scriptsFolder/parse_inputs.sh"
 
 # Variables
 authUrl=https://identity.open.softlayer.com/v3/auth/tokens
@@ -94,7 +94,7 @@ for record in "${images[@]}"; do
   fileName=${image[1]}
   contentType=${image[2]}
   echo "Uploading $fileName to $container..."
-  curl -i $publicUrl/$container/$fileName --data-binary @$imagesFolder/$fileName -X PUT -H "Content-Type: $contentType" -H "X-Auth-Token: $authToken"
+  curl -i $publicUrl/$container/$fileName --data-binary @"$imagesFolder/$fileName" -X PUT -H "Content-Type: $contentType" -H "X-Auth-Token: $authToken"
 done
 
 echo
