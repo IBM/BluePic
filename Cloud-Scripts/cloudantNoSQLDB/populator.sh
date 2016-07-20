@@ -43,10 +43,10 @@ curl -X DELETE https://$username.cloudant.com/$database -u $username:$password
 curl -X PUT https://$username.cloudant.com/$database -u $username:$password
 
 # Upload design document
-curl -X PUT "https://$username.cloudant.com/bluepic_db/_design/main_design" -u $username:$password -d @$scriptsFolder/main_design.json
+curl -X PUT "https://$username.cloudant.com/bluepic_db/_design/main_design" -u $username:$password -d @"$scriptsFolder/main_design.json"
 
 # Create user documents
-curl -H "Content-Type: application/json" -d @$scriptsFolder/users.json -X POST https://$username.cloudant.com/$database/_bulk_docs -u $username:$password
+curl -H "Content-Type: application/json" -d @"$scriptsFolder/users.json" -X POST https://$username.cloudant.com/$database/_bulk_docs -u $username:$password
 
 # Create image documents
 curl -H "Content-Type: application/json" --data "$imagesJSON" -X POST https://$username.cloudant.com/$database/_bulk_docs -u $username:$password
