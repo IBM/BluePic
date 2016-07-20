@@ -95,7 +95,7 @@ for record in "${images[@]}"; do
   contentType=${image[2]}
   echo "Uploading $fileName to $container..."
   echo "curl -i $publicUrl/$container/$fileName --data-binary @$imagesFolder/$fileName -X -PUT -H Content-Type: $contentType -H X-Auth-Token: $authToken"
-  curl -i $publicUrl/$container/$fileName --data-binary @$imagesFolder/$fileName -X PUT -H "Content-Type: $contentType" -H "X-Auth-Token: $authToken"
+  curl -i $publicUrl/$container/$fileName --data-binary @"$imagesFolder/$fileName" -X PUT -H "Content-Type: $contentType" -H "X-Auth-Token: $authToken"
 done
 
 echo
