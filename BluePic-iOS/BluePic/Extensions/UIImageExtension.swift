@@ -60,8 +60,10 @@ extension UIImage {
         let rect = CGRect(x: 0, y: 0, width: actualWidth, height: actualHeight)
         UIGraphicsBeginImageContext(rect.size)
         image.drawInRect(rect)
-        let img = UIGraphicsGetImageFromCurrentImageContext()
-        let imageData = UIImageJPEGRepresentation(img, compressionQuality)
+        var imageData: NSData?
+        if let img = UIGraphicsGetImageFromCurrentImageContext() {
+            imageData = UIImageJPEGRepresentation(img, compressionQuality)
+        }
         UIGraphicsEndImageContext()
 
         if let data = imageData {
@@ -79,7 +81,7 @@ extension UIImage {
 
      - returns: UIImage
      */
-    class func rotateImageIfNecessary(imageToRotate: UIImage) -> UIImage {
+    class func rotateImageIfNecessary(imageToRotate: UIImage) -> UIImage? {
         let imageOrientation = imageToRotate.imageOrientation.rawValue
         switch imageOrientation {
         case 0: //Up
@@ -103,7 +105,7 @@ extension UIImage {
 
      - returns: UIImage
      */
-    public func imageRotatedByDegrees(degrees: CGFloat, flip: Bool) -> UIImage {
+    public func imageRotatedByDegrees(degrees: CGFloat, flip: Bool) -> UIImage? {
         let degreesToRadians: (CGFloat) -> CGFloat = {
             return $0 / 180.0 * CGFloat(M_PI)
         }
@@ -116,7 +118,10 @@ extension UIImage {
 
         // Create the bitmap context
         UIGraphicsBeginImageContext(rotatedSize)
-        let bitmap = UIGraphicsGetCurrentContext()
+        guard let bitmap = UIGraphicsGetCurrentContext() else {
+            print("Failed to get bitmap from context")
+            return nil
+        }
 
         // Move the origin to the middle of the image so we will rotate and scale around the center.
         CGContextTranslateCTM(bitmap, rotatedSize.width / 2.0, rotatedSize.height / 2.0)
@@ -134,7 +139,8 @@ extension UIImage {
         }
 
         CGContextScaleCTM(bitmap, yFlip, -1.0)
-        CGContextDrawImage(bitmap, CGRect(x: -size.width / 2, y: -size.height / 2, width: size.width, height: size.height), CGImage)
+        print("cgimage: \(CGImage)")
+        CGContextDrawImage(bitmap, CGRect(x: -size.width / 2, y: -size.height / 2, width: size.width, height: size.height), CGImage!)
 
         let newImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
