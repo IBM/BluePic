@@ -29,18 +29,8 @@ PODS:
 DEPENDENCIES:
   - BMSFacebookAuthentication
   - BMSPush
-  - BMSSecurity (from `https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-swift-security.git`)
   - SDWebImage (~> 3.7)
   - SVProgressHUD
-
-EXTERNAL SOURCES:
-  BMSSecurity:
-    :git: https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-swift-security.git
-
-CHECKOUT OPTIONS:
-  BMSSecurity:
-    :commit: 29018d8bd82fe92a96f129db61a0d84cd6170f9e
-    :git: https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-swift-security.git
 
 SPEC CHECKSUMS:
   BMSAnalyticsAPI: 50f5cec71a5ad0a9af232a833d6d37c2abda54ac
@@ -55,6 +45,6 @@ SPEC CHECKSUMS:
   SDWebImage: 35f9627a3e44b4f292a8a8ce6a531fa488239b91
   SVProgressHUD: b0830714205bea1317ea1a2ebc71e5633af334d4
 
-PODFILE CHECKSUM: 028f401fdb9298371b2b59ea48582c5616f99f08
+PODFILE CHECKSUM: a92daf1827d4fade680977520b6c0331c2c3b3ab
 
 COCOAPODS: 1.0.1
