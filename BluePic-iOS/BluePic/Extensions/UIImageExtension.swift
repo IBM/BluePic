@@ -139,8 +139,7 @@ extension UIImage {
         }
 
         CGContextScaleCTM(bitmap, yFlip, -1.0)
-        print("cgimage: \(CGImage)")
-        CGContextDrawImage(bitmap, CGRect(x: -size.width / 2, y: -size.height / 2, width: size.width, height: size.height), CGImage!)
+        CGContextDrawImage(bitmap, CGRect(x: -size.width / 2, y: -size.height / 2, width: size.width, height: size.height), self.CGImage!)
 
         let newImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
