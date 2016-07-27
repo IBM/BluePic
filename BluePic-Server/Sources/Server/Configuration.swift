@@ -147,10 +147,17 @@ public struct Configuration {
                 hostName = openWhiskJson["hostName"].string,
                 urlPath = openWhiskJson["urlPath"].string,
                 authToken = openWhiskJson["authToken"].string {
-        let utf8BaseStr = authToken.data(using: NSUTF8StringEncoding)
-        guard let computedAuthToken = utf8BaseStr?.base64EncodedString(NSDataBase64EncodingOptions(rawValue: 0)) else {
-          throw Error.IO("Could not perform base64 encoding on authToken")
-        }
+        #if os(OSX)
+          let utf8BaseStr = authToken.data(using: String.Encoding.utf8)
+          guard let computedAuthToken = utf8BaseStr?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) else {
+            throw Error.IO("Could not perform base64 encoding on authToken")
+          }
+        #else
+          let utf8BaseStr = authToken.data(using: NSUTF8StringEncoding)
+          guard let computedAuthToken = utf8BaseStr?.base64EncodedString(NSDataBase64EncodingOptions(rawValue: 0)) else {
+            throw Error.IO("Could not perform base64 encoding on authToken")
+          }
+        #endif
         return OpenWhiskProps(hostName: hostName, urlPath: urlPath, authToken: computedAuthToken)
       }
     }
@@ -166,7 +173,7 @@ public struct Configuration {
     #if os(Linux)
       let fileManager = NSFileManager.defaultManager()
     #else
-      let fileManager = NSFileManager.default()
+      let fileManager = FileManager.default()
     #endif
 
     if fileManager.fileExists(atPath: filePath) {
