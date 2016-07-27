@@ -1,5 +1,5 @@
 /*
-*     Copyright 2015 IBM Corp.
+*     Copyright 2016 IBM Corp.
 *     Licensed under the Apache License, Version 2.0 (the "License");
 *     you may not use this file except in compliance with the License.
 *     You may obtain a copy of the License at
@@ -65,52 +65,6 @@ public class BMSPushUtils: NSObject {
         }
         
         return pushEnabled;
-    }
-    
-    
-    class func generateTimeStamp () -> String {
-        
-        let dateFormatter = NSDateFormatter();
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-        
-        dateFormatter.locale = NSLocale.init(localeIdentifier: "en_US_POSIX")
-        
-        let timeInMilliSec  = NSDate().timeIntervalSince1970
-        
-        let isoDate:String = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: timeInMilliSec))
-        
-        
-        loggerMessage = ("Current timestamp is: \(isoDate)")
-        
-        self.sendLoggerData()
-        
-        return isoDate;
-    }
-    
-    class func generateMetricsEvents (action:String, messageId:String, timeStamp:String){
-        
-        
-        var notificationMetaData = NSDictionary()
-        var eventContext = [String:AnyObject]()
-        
-        if messageId.isEmpty {
-            
-            notificationMetaData = ["$notificationAction" : action, "$timeStamp" : timeStamp]
-        } else {
-            
-            notificationMetaData = ["$notificationId" : messageId,"$notificationAction" : action, "$timeStamp" : timeStamp]
-        }
-        eventContext = [KEY_METADATA_CATEGORY:TAG_CATEGORY_EVENT, KEY_METADATA_TYPE : "$imf_push",
-            KEY_METADATA_USER_METADATA: notificationMetaData]
-        
-        print("IMFAnalytics event:\(eventContext)");
-        
-        //eventContext = [ "metadata":eventContext,"timestamp":timeStamp,"pkg":"imf.analytics","level":"ANALYTICS","msg":""]
-        
-        print("IMFAnalytics event:\(eventContext )");
-        
-        Analytics.log(eventContext)
-        
     }
     
     class func sendLoggerData () {

@@ -83,9 +83,14 @@ public class Analytics {
          
          - parameter metadata:  The analytics data
      */
-    public static func log(metadata: [String: AnyObject], file: String = __FILE__, function: String = __FUNCTION__, line: Int = __LINE__) {
+    public static func log(metadata: [String: AnyObject], file: String = #file, function: String = #function, line: Int = #line) {
     
+    #if swift(>=3.0)
+        Analytics.logger.analytics(metadata: metadata, file: file, function: function, line: line)
+    #else
         Analytics.logger.analytics(metadata, file: file, function: function, line: line)
+    #endif
+        
     }
     
 }

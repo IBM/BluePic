@@ -32,8 +32,15 @@ public class BaseAppIdentity : AppIdentity{
 	}
 	
 	public init() {
-		jsonData[BaseAppIdentity.ID] = NSBundle(forClass:object_getClass(self)).bundleIdentifier;
-		jsonData[BaseAppIdentity.VERSION] = NSBundle.mainBundle().infoDictionary?["CFBundleShortVersionString"] as? String;
+        
+        #if swift(>=3.0)
+            jsonData[BaseAppIdentity.ID] = Bundle(for:object_getClass(self)).bundleIdentifier;
+            jsonData[BaseAppIdentity.VERSION] = Bundle.main().infoDictionary?["CFBundleShortVersionString"] as? String;
+        #else
+            jsonData[BaseAppIdentity.ID] = NSBundle(forClass:object_getClass(self)).bundleIdentifier;
+            jsonData[BaseAppIdentity.VERSION] = NSBundle.mainBundle().infoDictionary?["CFBundleShortVersionString"] as? String;
+        #endif
+        
 	}
 	
     public init(map: [String:AnyObject]?) {

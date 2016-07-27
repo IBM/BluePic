@@ -49,10 +49,8 @@ internal class BaseAuthorizationManager : AuthorizationManager {
         return false;
     }
     
-    func obtainAuthorization(completionHandler completionHandler: BmsCompletionHandler?) {
-		if let completionHandler = completionHandler{
-			completionHandler(nil, nil)
-		}
+    func obtainAuthorization(completionHandler callback: BmsCompletionHandler?) {
+		callback?(nil, nil)
     }
     
     func clearAuthorizationData() {

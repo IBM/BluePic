@@ -66,9 +66,14 @@ public class BMSClient {
         - parameter bluemixRegion:          The region where your Bluemix application is hosted. Use one of the `BMSClient.REGION` constants.
      */
     public func initializeWithBluemixAppRoute(bluemixAppRoute: String?, bluemixAppGUID: String?, bluemixRegion: String) {
+        
         self.bluemixAppRoute = bluemixAppRoute
         self.bluemixAppGUID = bluemixAppGUID
-        self.bluemixRegion = bluemixRegion	
+        self.bluemixRegion = bluemixRegion
+        
+        #if swift(>=3.0)
+            Logger.logger(forName: Logger.bmsLoggerPrefix + "BMSClient").info(message: "While Swift 3 is in beta, APIs in the Bluemix Mobile Services SDKs may change across non-major releases.")
+        #endif
     }
     
 	private init() {

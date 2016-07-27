@@ -1,24 +1,24 @@
 PODS:
-  - BMSAnalyticsAPI (1.0.1)
-  - BMSCore (1.0.2):
-    - BMSAnalyticsAPI (~> 1.0)
+  - BMSAnalyticsAPI (1.1.0)
+  - BMSCore (1.1.0):
+    - BMSAnalyticsAPI (~> 1.1.0)
   - BMSFacebookAuthentication (1.0.0):
     - BMSSecurity (~> 1.0)
     - FBSDKLoginKit (~> 4.9)
-  - BMSPush (1.0.3):
+  - BMSPush (1.0.7):
     - BMSCore (~> 1.0)
-  - BMSSecurity (1.1.4):
+  - BMSSecurity (1.1.5):
     - BMSCore (~> 1.0)
     - RNCryptor (~> 4.0.0-beta)
-  - Bolts (1.7.0):
-    - Bolts/AppLinks (= 1.7.0)
-    - Bolts/Tasks (= 1.7.0)
-  - Bolts/AppLinks (1.7.0):
+  - Bolts (1.8.4):
+    - Bolts/AppLinks (= 1.8.4)
+    - Bolts/Tasks (= 1.8.4)
+  - Bolts/AppLinks (1.8.4):
     - Bolts/Tasks
-  - Bolts/Tasks (1.7.0)
-  - FBSDKCoreKit (4.13.1):
+  - Bolts/Tasks (1.8.4)
+  - FBSDKCoreKit (4.14.0):
     - Bolts (~> 1.7)
-  - FBSDKLoginKit (4.13.1):
+  - FBSDKLoginKit (4.14.0):
     - FBSDKCoreKit
   - RNCryptor (4.0.0)
   - SDWebImage (3.8.1):
@@ -29,32 +29,22 @@ PODS:
 DEPENDENCIES:
   - BMSFacebookAuthentication
   - BMSPush
-  - BMSSecurity (from `https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-swift-security.git`)
   - SDWebImage (~> 3.7)
   - SVProgressHUD
 
-EXTERNAL SOURCES:
-  BMSSecurity:
-    :git: https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-swift-security.git
-
-CHECKOUT OPTIONS:
-  BMSSecurity:
-    :commit: 29018d8bd82fe92a96f129db61a0d84cd6170f9e
-    :git: https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-swift-security.git
-
 SPEC CHECKSUMS:
-  BMSAnalyticsAPI: 50f5cec71a5ad0a9af232a833d6d37c2abda54ac
-  BMSCore: 77ef1d5cfc2cef0bb5662fb4bc14869b226e3ece
+  BMSAnalyticsAPI: ed1d105a9197a6c875adf5a08aad120351004c40
+  BMSCore: f8213c1adcf15166785cdfee3e7776e879c6ad12
   BMSFacebookAuthentication: 458439bc09a498ad5738757f202bea66c8f3077a
-  BMSPush: 8af7e3b6c73d4913c5f998638652b4866a84252d
-  BMSSecurity: b92fabdb7a937426622969c136548e6e827063d6
-  Bolts: a0058fa3b331c5a1e4402d534f2dae36dbff31e4
-  FBSDKCoreKit: 2807fe0da2ddb49a1469da6d6ff597f99912980f
-  FBSDKLoginKit: 6d350cb6a22d6956e9d078885de6ee8a0ebc51b4
+  BMSPush: 7d99ad8a885be753fe43fae32309533912c89c38
+  BMSSecurity: 683c0416d772fd5092ebaeccb9dbd6602972b7e3
+  Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
+  FBSDKCoreKit: 6e020b5db0b5bd1e01f5fb0902131befd129a502
+  FBSDKLoginKit: da563567a108050ef83739c8c8c001ee9e25fa13
   RNCryptor: 59d6483908115af5c12b884db23392024e52a5fe
   SDWebImage: 35f9627a3e44b4f292a8a8ce6a531fa488239b91
   SVProgressHUD: b0830714205bea1317ea1a2ebc71e5633af334d4
 
-PODFILE CHECKSUM: 028f401fdb9298371b2b59ea48582c5616f99f08
+PODFILE CHECKSUM: a92daf1827d4fade680977520b6c0331c2c3b3ab
 
 COCOAPODS: 1.0.1

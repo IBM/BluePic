@@ -53,16 +53,35 @@ public class BaseDeviceIdentity : DeviceIdentity {
 
 	
     public init() {
-		#if os(watchOS)
-			jsonData[BaseDeviceIdentity.ID] = "Not Available"
-			jsonData[BaseDeviceIdentity.OS] =  WKInterfaceDevice.currentDevice().systemName
-			jsonData[BaseDeviceIdentity.OS_VERSION] = WKInterfaceDevice.currentDevice().systemVersion
-			jsonData[BaseDeviceIdentity.MODEL] =  WKInterfaceDevice.currentDevice().model
+        
+        #if swift(>=3.0)
+            
+            #if os(watchOS)
+                jsonData[BaseDeviceIdentity.ID] = "Not Available"
+                jsonData[BaseDeviceIdentity.OS] =  WKInterfaceDevice.current().systemName
+                jsonData[BaseDeviceIdentity.OS_VERSION] = WKInterfaceDevice.current().systemVersion
+                jsonData[BaseDeviceIdentity.MODEL] =  WKInterfaceDevice.current().model
+            #else
+                jsonData[BaseDeviceIdentity.ID] = UIDevice.current().identifierForVendor?.uuidString
+                jsonData[BaseDeviceIdentity.OS] =  UIDevice.current().systemName
+                jsonData[BaseDeviceIdentity.OS_VERSION] = UIDevice.current().systemVersion
+                jsonData[BaseDeviceIdentity.MODEL] =  UIDevice.current().model
+            #endif
+            
 		#else
-			jsonData[BaseDeviceIdentity.ID] = UIDevice.currentDevice().identifierForVendor?.UUIDString
-			jsonData[BaseDeviceIdentity.OS] =  UIDevice.currentDevice().systemName
-			jsonData[BaseDeviceIdentity.OS_VERSION] = UIDevice.currentDevice().systemVersion
-			jsonData[BaseDeviceIdentity.MODEL] =  UIDevice.currentDevice().model
+            
+            #if os(watchOS)
+                jsonData[BaseDeviceIdentity.ID] = "Not Available"
+                jsonData[BaseDeviceIdentity.OS] =  WKInterfaceDevice.currentDevice().systemName
+                jsonData[BaseDeviceIdentity.OS_VERSION] = WKInterfaceDevice.currentDevice().systemVersion
+                jsonData[BaseDeviceIdentity.MODEL] =  WKInterfaceDevice.currentDevice().model
+            #else
+                jsonData[BaseDeviceIdentity.ID] = UIDevice.currentDevice().identifierForVendor?.UUIDString
+                jsonData[BaseDeviceIdentity.OS] =  UIDevice.currentDevice().systemName
+                jsonData[BaseDeviceIdentity.OS_VERSION] = UIDevice.currentDevice().systemVersion
+                jsonData[BaseDeviceIdentity.MODEL] =  UIDevice.currentDevice().model
+            #endif
+
 		#endif
 		
 	}
