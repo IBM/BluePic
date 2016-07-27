@@ -55,7 +55,7 @@ public protocol LoggerDelegate {
     
     var isUncaughtExceptionDetected: Bool { get set }
     
-    func logMessageToFile(message: String, level: LogLevel, loggerName: String, calledFile: String, calledFunction: String, calledLineNumber: Int, additionalMetadata: [String: AnyObject]?)
+    func logToFile(message logMessage: String, level: LogLevel, loggerName: String, calledFile: String, calledFunction: String, calledLineNumber: Int, additionalMetadata: [String: AnyObject]?)
 }
 
 
@@ -177,9 +177,9 @@ public class Logger {
         
         - Note: Do not supply values for the `file`, `function`, or `line` parameters. These parameters take default values to automatically record the file, function, and line in which this method was called.
     */
-    public func debug(message: String, file: String = __FILE__, function: String = __FUNCTION__, line: Int = __LINE__) {
+    public func debug(message: String, file: String = #file, function: String = #function, line: Int = #line) {
         
-        logMessage(message, level: LogLevel.Debug, calledFile: file, calledFunction: function, calledLineNumber: line)
+        log(message: message, level: LogLevel.Debug, calledFile: file, calledFunction: function, calledLineNumber: line)
     }
     
     /**
@@ -189,9 +189,9 @@ public class Logger {
          
          - Note: Do not supply values for the `file`, `function`, or `line` parameters. These parameters take default values to automatically record the file, function, and line in which this method was called.
      */
-    public func info(message: String, file: String = __FILE__, function: String = __FUNCTION__, line: Int = __LINE__) {
+    public func info(message: String, file: String = #file, function: String = #function, line: Int = #line) {
         
-        logMessage(message, level: LogLevel.Info, calledFile: file, calledFunction: function, calledLineNumber: line)
+        log(message: message, level: LogLevel.Info, calledFile: file, calledFunction: function, calledLineNumber: line)
     }
     
     /**
@@ -201,9 +201,9 @@ public class Logger {
          
          - Note: Do not supply values for the `file`, `function`, or `line` parameters. These parameters take default values to automatically record the file, function, and line in which this method was called.
      */
-    public func warn(message: String, file: String = __FILE__, function: String = __FUNCTION__, line: Int = __LINE__) {
+    public func warn(message: String, file: String = #file, function: String = #function, line: Int = #line) {
         
-        logMessage(message, level: LogLevel.Warn, calledFile: file, calledFunction: function, calledLineNumber: line)
+        log(message: message, level: LogLevel.Warn, calledFile: file, calledFunction: function, calledLineNumber: line)
     }
     
     /**
@@ -213,9 +213,9 @@ public class Logger {
          
          - Note: Do not supply values for the `file`, `function`, or `line` parameters. These parameters take default values to automatically record the file, function, and line in which this method was called.
      */
-    public func error(message: String, file: String = __FILE__, function: String = __FUNCTION__, line: Int = __LINE__) {
+    public func error(message: String, file: String = #file, function: String = #function, line: Int = #line) {
         
-        logMessage(message, level: LogLevel.Error, calledFile: file, calledFunction: function, calledLineNumber: line)
+        log(message: message, level: LogLevel.Error, calledFile: file, calledFunction: function, calledLineNumber: line)
     }
     
     /**
@@ -225,15 +225,15 @@ public class Logger {
          
          - Note: Do not supply values for the `file`, `function`, or `line` parameters. These parameters take default values to automatically record the file, function, and line in which this method was called.
      */
-    public func fatal(message: String, file: String = __FILE__, function: String = __FUNCTION__, line: Int = __LINE__) {
+    public func fatal(message: String, file: String = #file, function: String = #function, line: Int = #line) {
         
-        logMessage(message, level: LogLevel.Fatal, calledFile: file, calledFunction: function, calledLineNumber: line)
+        log(message: message, level: LogLevel.Fatal, calledFile: file, calledFunction: function, calledLineNumber: line)
     }
     
     // Equivalent to the other log methods, but this method accepts data as JSON rather than a string
-    internal func analytics(metadata: [String: AnyObject], file: String = __FILE__, function: String = __FUNCTION__, line: Int = __LINE__) {
+    internal func analytics(metadata: [String: AnyObject], file: String = #file, function: String = #function, line: Int = #line) {
         
-        logMessage("", level: LogLevel.Analytics, calledFile: file, calledFunction: function, calledLineNumber: line, additionalMetadata: metadata)
+        log(message: "", level: LogLevel.Analytics, calledFile: file, calledFunction: function, calledLineNumber: line, additionalMetadata: metadata)
     }
     
     
@@ -242,7 +242,7 @@ public class Logger {
     
     // This is the master function that handles all of the logging, including level checking, printing to console, and writing to file
     // All other log functions below this one are helpers for this function
-    internal func logMessage(message: String, level: LogLevel, calledFile: String, calledFunction: String, calledLineNumber: Int, additionalMetadata: [String: AnyObject]? = nil) {
+    internal func log(message logMessage: String, level: LogLevel, calledFile: String, calledFunction: String, calledLineNumber: Int, additionalMetadata: [String: AnyObject]? = nil) {
         
         // The level must exceed the Logger.logLevelFilter, or we do nothing
         guard level.rawValue <= Logger.logLevelFilter.rawValue else {
@@ -254,15 +254,15 @@ public class Logger {
         }
         else {
             // Print to console
-            Logger.printLogToConsole(message, loggerName: self.name, level: level, calledFunction: calledFunction, calledFile: calledFile, calledLineNumber: calledLineNumber)
+            Logger.printToConsole(message: logMessage, loggerName: self.name, level: level, calledFunction: calledFunction, calledFile: calledFile, calledLineNumber: calledLineNumber)
         }
         
-        Logger.delegate?.logMessageToFile(message, level: level, loggerName: self.name, calledFile: calledFile, calledFunction: calledFunction, calledLineNumber: calledLineNumber, additionalMetadata: additionalMetadata)
+        Logger.delegate?.logToFile(message: logMessage, level: level, loggerName: self.name, calledFile: calledFile, calledFunction: calledFunction, calledLineNumber: calledLineNumber, additionalMetadata: additionalMetadata)
     }
     
     // Format: [DEBUG] [bmssdk.logger] logMessage in Logger.swift:234 :: "Some random message"
     // Public access required by BMSAnalytics framework
-    public static func printLogToConsole(logMessage: String, loggerName: String, level: LogLevel, calledFunction: String, calledFile: String, calledLineNumber: Int) {
+    public static func printToConsole(message logMessage: String, loggerName: String, level: LogLevel, calledFunction: String, calledFile: String, calledLineNumber: Int) {
         
         // Suppress console log output for apps that are being released to the App Store
         #if !RELEASE_BUILD

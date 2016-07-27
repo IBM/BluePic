@@ -35,20 +35,26 @@ public extension Response {
         
         let subscription = NSMutableArray()
         
-        let  subscriptionDictionary = convertStringToDictionary(self.responseText!)! as NSDictionary
-        
-        let subscriptionArray:NSArray = subscriptionDictionary.objectForKey(IMFPUSH_SUBSCRIPTIONS) as! NSArray
-        
-        var subscriptionResponsDic:NSDictionary?
-        
-        for  i in 0..<subscriptionArray.count {
+        if  let  subscriptionDictionary:NSDictionary = convertStringToDictionary(self.responseText!)! as NSDictionary {
             
-            subscriptionResponsDic = subscriptionArray.objectAtIndex(i) as? NSDictionary
+            if let subscriptionArray:NSArray = subscriptionDictionary.objectForKey(IMFPUSH_SUBSCRIPTIONS) as? NSArray{
+                
+                
+                var subscriptionResponsDic:NSDictionary?
+                
+                for  i in 0..<subscriptionArray.count {
+                    
+                    subscriptionResponsDic = subscriptionArray.objectAtIndex(i) as? NSDictionary
+                    
+                    subscription.addObject((subscriptionResponsDic?.objectForKey(IMFPUSH_TAGNAME))!)
+                }
+            }
+           
             
-            subscription.addObject((subscriptionResponsDic?.objectForKey(IMFPUSH_TAGNAME))!)
+            //finalSubscription.setObject(subscription, forKey: IMFPUSH_SUBSCRIPTIONS)
         }
         
-        //finalSubscription.setObject(subscription, forKey: IMFPUSH_SUBSCRIPTIONS)
+       
         
         return subscription;
         

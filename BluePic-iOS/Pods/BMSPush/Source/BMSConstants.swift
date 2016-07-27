@@ -30,9 +30,14 @@ internal let IMFPUSH_DEVICE_ID  = "deviceId"
 
 internal let IMFPUSH_DEVICES  = "devices"
 
+internal let IMFPUSH_USER_ID  = "pushUser"
+
+internal let IMFPUSH_USERID  = "userId"
+
+internal let IMFPUSH_CLIENT_SECRET  = "clientSecret"
+
 internal let IMFPUSH_TOKEN  = "token"
 
-internal let IMFPUSH_USER_ID  = "userId"
 
 internal let IMFPUSH_PLATFORM  = "platform"
 

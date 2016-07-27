@@ -1,6 +1,10 @@
 IBM Bluemix Mobile Services - Client SDK Swift Push
 ===================================================
 
+[![Build Status](https://travis-ci.org/ibm-bluemix-mobile-services/bms-clientsdk-swift-push.svg?branch=master)](https://travis-ci.org/ibm-bluemix-mobile-services/bms-clientsdk-swift-push)
+[![Build Status](https://travis-ci.org/ibm-bluemix-mobile-services/bms-clientsdk-swift-push.svg?branch=development)](https://travis-ci.org/ibm-bluemix-mobile-services/bms-clientsdk-swift-push)
+
+
 This is the Push component of the Swift SDK for IBM Bluemix Mobile Services. 
 
 https://console.ng.bluemix.net/solutions/mobilefirst
@@ -95,7 +99,26 @@ Specifies the location where the app hosted. You can use one of three values - `
 
 ```
 let push =  BMSPushClient.sharedInstance
+push.initializeWithPushAppGUID("pushAppGUID")
 ```
+***pushAppGUID***
+
+The Push app GUID value. 
+
+For *userId* based notifiction initialize the `BMSPush` with `clientSecret` . 
+
+```
+let push =  BMSPushClient.sharedInstance
+push.initializeWithPushAppGUID("pushAppGUID", clientSecret:"clientSecret")
+```
+
+***pushAppGUID***
+
+The Push app GUID value. 
+
+***clientSecret***
+
+The Push client secret value. 
 
 #### Registering iOS applications and devices
 
@@ -112,8 +135,9 @@ After the token is received from APNS, pass the token to Push Notifications as p
 ```
  func application (application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData){
 
-    let push =  BMSPushClient.sharedInstance
-   push.registerDeviceToken(deviceToken) { (response, statusCode, error) -> Void in
+   let push =  BMSPushClient.sharedInstance
+   push.initializeWithPushAppGUID("pushAppGUID")
+   push.registerWithDeviceToken(deviceToken) { (response, statusCode, error) -> Void in
             
         if error.isEmpty {
 
@@ -130,6 +154,38 @@ After the token is received from APNS, pass the token to Push Notifications as p
 
 }
 ```
+
+For *user Id* based notification, the register method will accept one more parameter - *userId*
+
+
+```
+func application (application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData){
+
+    let push =  BMSPushClient.sharedInstance
+    push.initializeWithPushAppGUID("pushAppGUID", clientSecret:"clientSecret")
+    push.registerWithDeviceToken(deviceToken, WithUserId: "your user id") { (response, statusCode, error) -> Void in
+
+        if error.isEmpty {
+
+            print( "Response during device registration : \(response)")
+
+            print( "status code during device registration : \(statusCode)")
+        }
+        else{
+            print( "Error during device registration \(error) ")
+
+            Print( "Error during device registration \n  - status code: \(statusCode) \n Error :\(error) \n")
+        }
+    }
+
+}
+```
+
+**WithUserId**
+ 
+the User Id value you want to register in the push service
+
+>**Note**: If userId is provided the client secret value must be provided.
 #### Retrieve Available Tags and register for Tags
 
 ##### Retrieve Available tags
