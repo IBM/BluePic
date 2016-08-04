@@ -30,15 +30,88 @@ public class Request: BaseRequest {
     
     // MARK: Method overrides
     
+    
+#if swift(>=3.0)
+    
+    
     // This is required since the other custom Request initializer overrides this superclass initializer
     public override init(url: String,
-                         headers: [String: String]?,
-                         queryParameters: [String: String]?,
-                         method: HttpMethod = HttpMethod.GET,
-                         timeout: Double = BMSClient.sharedInstance.defaultRequestTimeout,
-                         cachePolicy: NSURLRequestCachePolicy = NSURLRequestCachePolicy.UseProtocolCachePolicy) {
+                       headers: [String: String]?,
+                       queryParameters: [String: String]?,
+                       method: HttpMethod = HttpMethod.GET,
+                       timeout: Double = BMSClient.sharedInstance.defaultRequestTimeout,
+                       cachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy) {
      
 		super.init(url: url, headers: headers, queryParameters: queryParameters, method: method, timeout: timeout, cachePolicy: cachePolicy)
+    }
+    
+    public override func send(completionHandler: BmsCompletionHandler?) {
+        
+        let authManager: AuthorizationManager = BMSClient.sharedInstance.authorizationManager
+        
+        if let authHeader: String = authManager.cachedAuthorizationHeader {
+            self.headers["Authorization"] = authHeader
+        }
+        
+        savedRequestBody = requestBody
+        
+        let sendCompletionHandler : BmsCompletionHandler = {(response: Response?, error: NSError?) in
+            
+            guard error == nil else {
+				if let completionHandler = completionHandler{
+					completionHandler(response, error)
+				}
+                return
+            }
+			
+			let authManager = BMSClient.sharedInstance.authorizationManager;
+            guard let unWrappedResponse = response where
+					authManager.isAuthorizationRequired(forHttpResponse: unWrappedResponse) &&
+                    self.oauthFailCounter < 2
+			else {
+                self.oauthFailCounter += 1
+                if (response?.statusCode)! >= 400 {
+                    completionHandler?(response, NSError(domain: BMSCoreError.domain, code: BMSCoreError.ServerRespondedWithError.rawValue, userInfo: nil))
+                }
+                else {
+                    completionHandler?(response, nil)
+                }
+                return
+            }
+            
+            self.oauthFailCounter += 1
+            
+            let authCallback: BmsCompletionHandler = {(response: Response?, error:NSError?) in
+                if error == nil {
+                    if let myRequestBody = self.requestBody {
+                        self.sendData(requestBody: myRequestBody, completionHandler: completionHandler)
+                    }
+                    else {
+                        self.send(completionHandler: completionHandler)
+                    }
+                } else {
+                    completionHandler?(response, error)
+                }
+            }
+			authManager.obtainAuthorization(completionHandler: authCallback)
+        }
+        
+        super.send(completionHandler: sendCompletionHandler)
+    }
+    
+    
+#else
+    
+    
+    // This is required since the other custom Request initializer overrides this superclass initializer
+    public override init(url: String,
+                       headers: [String: String]?,
+                       queryParameters: [String: String]?,
+                       method: HttpMethod = HttpMethod.GET,
+                       timeout: Double = BMSClient.sharedInstance.defaultRequestTimeout,
+                       cachePolicy: NSURLRequestCachePolicy = NSURLRequestCachePolicy.UseProtocolCachePolicy) {
+        
+        super.init(url: url, headers: headers, queryParameters: queryParameters, method: method, timeout: timeout, cachePolicy: cachePolicy)
     }
     
     public override func sendWithCompletionHandler(callback: BmsCompletionHandler?) {
@@ -54,25 +127,25 @@ public class Request: BaseRequest {
         let myCallback : BmsCompletionHandler = {(response: Response?, error: NSError?) in
             
             guard error == nil else {
-				if let callback = callback{
-					callback(response, error)
-				}
+                if let callback = callback{
+                    callback(response, error)
+                }
                 return
             }
-			
-			let authManager = BMSClient.sharedInstance.authorizationManager;
+            
+            let authManager = BMSClient.sharedInstance.authorizationManager;
             guard let unWrappedResponse = response where
-					authManager.isAuthorizationRequired(forHttpResponse: unWrappedResponse) &&
+                authManager.isAuthorizationRequired(forHttpResponse: unWrappedResponse) &&
                     self.oauthFailCounter < 2
-			else {
-                self.oauthFailCounter += 1
-                if (response?.statusCode)! >= 400 {
-                    callback?(response, NSError(domain: BMSCoreError.domain, code: BMSCoreError.ServerRespondedWithError.rawValue, userInfo: nil))
-                }
                 else {
-                    callback?(response, nil)
-                }
-                return
+                    self.oauthFailCounter += 1
+                    if (response?.statusCode)! >= 400 {
+                        callback?(response, NSError(domain: BMSCoreError.domain, code: BMSCoreError.ServerRespondedWithError.rawValue, userInfo: nil))
+                    }
+                    else {
+                        callback?(response, nil)
+                    }
+                    return
             }
             
             self.oauthFailCounter += 1
@@ -89,9 +162,14 @@ public class Request: BaseRequest {
                     callback?(response, error)
                 }
             }
-			authManager.obtainAuthorization(completionHandler: authCallback)
+            authManager.obtainAuthorization(completionHandler: authCallback)
         }
         
         super.sendWithCompletionHandler(myCallback)
     }
+    
+    
+#endif
+    
+    
 }

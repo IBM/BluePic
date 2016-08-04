@@ -62,7 +62,12 @@ public class BMSPushClient: NSObject {
     
     /// This singleton should be used for all `BMSPushClient` activity.
     public static let sharedInstance = BMSPushClient()
-    
+   
+    // Specifies the bluemix push clientSecret value
+    public private(set) var clientSecret: String?
+    public private(set) var applicationId: String?
+
+    // used to test in test zone and dev zone
     public static var overrideServerHost = "";
     
     // MARK: Properties (private)
@@ -74,24 +79,440 @@ public class BMSPushClient: NSObject {
     
     private var notificationcount:Int = 0
     
-    // MARK: Methods (Public)
+    private var isInitialized = false;
+    
+    // MARK: Initializers
     
     /**
+     The required intializer for the `BMSPushClient` class.
+     
+     This method will intialize the BMSPushClient with clientSecret based registration.
+     
+     - parameter clientSecret:    The clientSecret of the Push Service
+     - parameter appGUID:    The pushAppGUID of the Push Service
+     */
+    public func initializeWithAppGUID (appGUID: String?, clientSecret: String?) {
+        
+        if validateString(clientSecret!) {
+            self.clientSecret = clientSecret
+            self.applicationId = appGUID
+            isInitialized = true;
+        }
+        else{
+            self.sendAnalyticsData(LogLevel.Error, logStringData: "Error while registration - Client secret is not valid")
+            print("Error while registration - Client secret is not valid")
+        }
+    }
     
-    This Methode used to register the client device to the Bluemix Push service.
+    /**
+     The required intializer for the `BMSPushClient` class.
+     
+     This method will intialize the BMSPushClient.
+     
+     - parameter appGUID:    The pushAppGUID of the Push Service
+     */
+    public func initializeWithAppGUID (appGUID: String?) {
+        self.applicationId = appGUID;
+        isInitialized = true;
+    }
+
     
-    Call this methode after successfully registering for remote push notification in the Apple Push
-    Notification Service .
+    // MARK: Methods (Public)
     
-    - Parameter deviceToken: This is the response we get from the push registartion in APNS.
-    - Parameter completionHandler: The closure that will be called when this request finishes. The response will contain response (String), StatusCode (Int) and error (string).
-    */
+    //TODO: New method of device registraion with UsrId
     
+    /**
+     
+     This Methode used to register the client device to the Bluemix Push service. This is the normal registration, without userId.
+     
+     Call this methode after successfully registering for remote push notification in the Apple Push
+     Notification Service .
+     
+     - Parameter deviceToken: This is the response we get from the push registartion in APNS.
+     - Parameter WithUserId: This is the userId value.
+     - Parameter completionHandler: The closure that will be called when this request finishes. The response will contain response (String), StatusCode (Int) and error (string).
+     */
+    
+    public func registerWithDeviceToken(deviceToken:NSData , WithUserId:String?, completionHandler: (response:String?, statusCode:Int?, error:String) -> Void) {
+        
+        
+        if (isInitialized){
+            if (validateString(WithUserId!)){
+                
+                    // Generate new ID
+                    // TODO: This need to be verified. The Device Id is not storing anywhere in BMSCore
+                    
+                    var devId = String()
+                    let authManager  = BMSClient.sharedInstance.authorizationManager
+                    devId = authManager.deviceIdentity.id!
+                    BMSPushUtils.saveValueToNSUserDefaults(devId, key: "deviceId")
+                    
+                    var token:String = deviceToken.description
+                    token = token.stringByReplacingOccurrencesOfString("<", withString: "")
+                    token = token.stringByReplacingOccurrencesOfString(">", withString: "")
+                    token = token.stringByReplacingOccurrencesOfString(" ", withString: "").stringByTrimmingCharactersInSet(NSCharacterSet.symbolCharacterSet())
+                    
+                    
+                    let urlBuilder = BMSPushUrlBuilder(applicationID: self.applicationId!)
+                
+
+                    let resourceURL:String = urlBuilder.getSubscribedDevicesUrl(devId)
+                    var headers = urlBuilder.addHeader()
+                
+                    headers[IMFPUSH_USER_ID] = WithUserId;
+                    headers[IMFPUSH_CLIENT_SECRET] = clientSecret
+                
+                    let method =  HttpMethod.GET
+                    
+                    self.sendAnalyticsData(LogLevel.Debug, logStringData: "Verifying previous device registration.")
+                    let getRequest = Request(url: resourceURL, headers: headers, queryParameters: nil, method: method, timeout: 60)
+                    
+                    // MARK: FIrst Action, checking for previuos registration
+                    
+                    getRequest.sendWithCompletionHandler ({ (response: Response?, error: NSError?) -> Void in
+                        
+                        if response?.statusCode != nil {
+                            
+                            let status = response?.statusCode ?? 0
+                            let responseText = response?.responseText ?? ""
+                            
+                            
+                            if (status == 404) {
+                                
+                                self.sendAnalyticsData(LogLevel.Debug, logStringData: "Device is not registered before.  Registering for the first time.")
+                                let resourceURL:String = urlBuilder.getDevicesUrl()
+                                
+                                var headers = urlBuilder.addHeader()
+                                headers[IMFPUSH_USER_ID] = WithUserId;
+                                headers[IMFPUSH_CLIENT_SECRET] = self.clientSecret
+                                
+                                let method =  HttpMethod.POST
+                                
+                                let getRequest = Request(url: resourceURL, headers: headers, queryParameters: nil, method: method, timeout: 60)
+                                
+                                
+                                let dict:NSMutableDictionary = NSMutableDictionary()
+                                
+                                dict.setValue(devId, forKey: IMFPUSH_DEVICE_ID)
+                                dict.setValue(token, forKey: IMFPUSH_TOKEN)
+                                dict.setValue("A", forKey: IMFPUSH_PLATFORM)
+                                
+                                // here "jsonData" is the dictionary encoded in JSON data
+                                let jsonData = try! NSJSONSerialization.dataWithJSONObject(dict, options: NSJSONWritingOptions.PrettyPrinted)
+                                
+                                // here "jsonData" is convereted to string
+                                let jsonString = NSString(data: jsonData, encoding: NSUTF8StringEncoding)! as String
+                                
+                                
+                                // MARK: Registering for the First Time
+                                
+                                getRequest.sendString(jsonString , completionHandler: { (response: Response?, error: NSError?) -> Void in
+                                    
+                                    if response?.statusCode != nil {
+                                        
+                                        let status = response?.statusCode ?? 0
+                                        let responseText = response?.responseText ?? ""
+                                        
+                                        self.sendAnalyticsData(LogLevel.Info, logStringData: "Response of device registration - Response is: \(responseText)")
+                                        completionHandler(response: responseText, statusCode: status, error: "")
+                                        
+                                    }
+                                    else if let responseError = error {
+                                        
+                                        self.sendAnalyticsData(LogLevel.Error, logStringData: "Error during device registration - Error is: \(responseError.localizedDescription)")
+                                        completionHandler(response: "", statusCode: IMFPushErrorvalues.IMFPushRegistrationError.rawValue, error: "Error during device registration - Error is: \(responseError.localizedDescription)")
+                                    }
+                                })
+                                
+                            }
+                            else if (status == 406) || (status == 500) {
+                                
+                                self.sendAnalyticsData(LogLevel.Error, logStringData: "Error while verifying previous registration - Error is: \(error!.localizedDescription)")
+                                completionHandler(response: responseText, statusCode: status, error: "")
+                            }
+                            else {
+                                
+                                // MARK: device is already Registered
+                                
+                                self.sendAnalyticsData(LogLevel.Debug, logStringData: "Device is already registered. Return the device Id - Response is: \(response?.responseText)")
+                                let respJson = response?.responseText
+                                let data = respJson!.dataUsingEncoding(NSUTF8StringEncoding)
+                                let jsonResponse:NSDictionary = try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments) as! NSDictionary
+                                
+                                let rToken = jsonResponse.objectForKey(IMFPUSH_TOKEN) as! String
+                                let rDevId = jsonResponse.objectForKey(IMFPUSH_DEVICE_ID) as! String
+                                let userId = jsonResponse.objectForKey(IMFPUSH_USERID) as! String
+                                
+                                if ((rToken.compare(token)) != NSComparisonResult.OrderedSame) ||
+                                    (!(WithUserId!.isEmpty) && (WithUserId!.compare(userId) != NSComparisonResult.OrderedSame)) || (devId.compare(rDevId) != NSComparisonResult.OrderedSame){
+                                    
+                                    // MARK: Updating the registered device ,userID, token or deviceId changed
+                                    
+                                    self.sendAnalyticsData(LogLevel.Debug, logStringData: "Device token or DeviceId has changed. Sending update registration request.")
+                                    let resourceURL:String = urlBuilder.getSubscribedDevicesUrl(devId)
+                                    
+                                    var headers = urlBuilder.addHeader()
+                                    headers[IMFPUSH_USER_ID] = WithUserId;
+                                    headers[IMFPUSH_CLIENT_SECRET] = self.clientSecret
+                                    
+                                    let method =  HttpMethod.PUT
+                                    
+                                    let getRequest = Request(url: resourceURL, headers: headers, queryParameters: nil, method: method, timeout: 60)
+                                    
+                                    
+                                    let dict:NSMutableDictionary = NSMutableDictionary()
+                                    
+                                    dict.setValue(token, forKey: IMFPUSH_TOKEN)
+                                    dict.setValue(devId, forKey: IMFPUSH_DEVICE_ID)
+                                    
+                                    
+                                    let jsonData = try! NSJSONSerialization.dataWithJSONObject(dict, options: NSJSONWritingOptions.PrettyPrinted)
+                                    
+                                    let jsonString = NSString(data: jsonData, encoding: NSUTF8StringEncoding)! as String
+                                    
+                                    getRequest.sendString(jsonString , completionHandler: { (response: Response?, error: NSError?) -> Void in
+                                        
+                                        if response?.statusCode != nil  {
+                                            
+                                            let status = response?.statusCode ?? 0
+                                            let responseText = response?.responseText ?? ""
+                                            
+                                            self.sendAnalyticsData(LogLevel.Info, logStringData: "Response of device updation - Response is: \(responseText)")
+                                            completionHandler(response: responseText, statusCode: status, error: "")
+                                        }
+                                        else if let responseError = error {
+                                            
+                                            self.sendAnalyticsData(LogLevel.Error, logStringData: "Error during device updatation - Error is : \(responseError.description)")
+                                            completionHandler(response: "", statusCode: IMFPushErrorvalues.IMFPushRegistrationUpdateError.rawValue, error: "Error during device updatation - Error is : \(responseError.description)")
+                                        }
+                                    })
+                                }
+                                else {
+                                    // MARK: device already registered and parameteres not changed.
+                                    
+                                    self.sendAnalyticsData(LogLevel.Info, logStringData: "Device is already registered and device registration parameters not changed.")
+                                    completionHandler(response: "Device is already registered and device registration parameters not changed", statusCode: status, error: "")
+                                }
+                            }
+                            
+                        }
+                        else if let responseError = error {
+                            
+                            self.sendAnalyticsData(LogLevel.Error, logStringData: "Error while verifying previous registration - Error is: \(responseError.localizedDescription)")
+                            completionHandler(response: "", statusCode: IMFPushErrorvalues.IMFPushRegistrationVerificationError.rawValue , error: "Error while verifying previous registration - Error is: \(responseError.localizedDescription)")
+                            
+                        }
+                        
+                    })
+                }else{
+                
+                self.sendAnalyticsData(LogLevel.Error, logStringData: "Error while registration - Provide a valid userId value")
+                completionHandler(response: "", statusCode: IMFPushErrorvalues.IMFPushRegistrationError.rawValue , error: "Error while registration - Provide a valid userId value")
+            }
+        }else{
+            
+            self.sendAnalyticsData(LogLevel.Error, logStringData: "Error while registration - BMSPush is not initialized")
+            completionHandler(response: "", statusCode: IMFPushErrorvalues.IMFPushRegistrationError.rawValue , error: "Error while registration - BMSPush is not initialized")
+        }
+        
+    }
+    
+    
+    /**
+     
+     This Methode used to register the client device to the Bluemix Push service. This is the normal registration, without userId.
+     
+     Call this methode after successfully registering for remote push notification in the Apple Push
+     Notification Service .
+     
+     - Parameter deviceToken: This is the response we get from the push registartion in APNS.
+     - Parameter completionHandler: The closure that will be called when this request finishes. The response will contain response (String), StatusCode (Int) and error (string).
+     */
+    
+    public func registerWithDeviceToken (deviceToken:NSData, completionHandler: (response:String?, statusCode:Int?, error:String) -> Void) {
+        
+        // Generate new ID
+        // TODO: This need to be verified. The Device Id is not storing anywhere in BMSCore
+        
+        if (isInitialized){
+            var devId = String()
+            let authManager  = BMSClient.sharedInstance.authorizationManager
+            devId = authManager.deviceIdentity.id!
+            BMSPushUtils.saveValueToNSUserDefaults(devId, key: "deviceId")
+            
+            var token:String = deviceToken.description
+            token = token.stringByReplacingOccurrencesOfString("<", withString: "")
+            token = token.stringByReplacingOccurrencesOfString(">", withString: "")
+            token = token.stringByReplacingOccurrencesOfString(" ", withString: "").stringByTrimmingCharactersInSet(NSCharacterSet.symbolCharacterSet())
+            
+            
+            let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!)
+            
+            let resourceURL:String = urlBuilder.getSubscribedDevicesUrl(devId)
+            let headers = urlBuilder.addHeader()
+            
+            let method =  HttpMethod.GET
+            
+            self.sendAnalyticsData(LogLevel.Debug, logStringData: "Verifying previous device registration.")
+            let getRequest = Request(url: resourceURL, headers: headers, queryParameters: nil, method: method, timeout: 60)
+            
+            // MARK: FIrst Action, checking for previuos registration
+            
+            getRequest.sendWithCompletionHandler ({ (response: Response?, error: NSError?) -> Void in
+                
+                if response?.statusCode != nil {
+                    
+                    let status = response?.statusCode ?? 0
+                    let responseText = response?.responseText ?? ""
+                    
+                    
+                    if (status == 404) {
+                        
+                        self.sendAnalyticsData(LogLevel.Debug, logStringData: "Device is not registered before.  Registering for the first time.")
+                        let resourceURL:String = urlBuilder.getDevicesUrl()
+                        
+                        let headers = urlBuilder.addHeader()
+                        
+                        let method =  HttpMethod.POST
+                        
+                        let getRequest = Request(url: resourceURL, headers: headers, queryParameters: nil, method: method, timeout: 60)
+                        
+                        
+                        let dict:NSMutableDictionary = NSMutableDictionary()
+                        
+                        dict.setValue(devId, forKey: IMFPUSH_DEVICE_ID)
+                        dict.setValue(token, forKey: IMFPUSH_TOKEN)
+                        dict.setValue("A", forKey: IMFPUSH_PLATFORM)
+                        
+                        // here "jsonData" is the dictionary encoded in JSON data
+                        let jsonData = try! NSJSONSerialization.dataWithJSONObject(dict, options: NSJSONWritingOptions.PrettyPrinted)
+                        
+                        // here "jsonData" is convereted to string
+                        let jsonString = NSString(data: jsonData, encoding: NSUTF8StringEncoding)! as String
+                        
+                        
+                        // MARK: Registering for the First Time
+                        
+                        getRequest.sendString(jsonString , completionHandler: { (response: Response?, error: NSError?) -> Void in
+                            
+                            if response?.statusCode != nil {
+                                
+                                let status = response?.statusCode ?? 0
+                                let responseText = response?.responseText ?? ""
+                                
+                                self.sendAnalyticsData(LogLevel.Info, logStringData: "Response of device registration - Response is: \(responseText)")
+                                completionHandler(response: responseText, statusCode: status, error: "")
+                                
+                            }
+                            else if let responseError = error {
+                                
+                                self.sendAnalyticsData(LogLevel.Error, logStringData: "Error during device registration - Error is: \(responseError.localizedDescription)")
+                                completionHandler(response: "", statusCode: IMFPushErrorvalues.IMFPushRegistrationError.rawValue, error: "Error during device registration - Error is: \(responseError.localizedDescription)")
+                            }
+                        })
+                        
+                    }
+                    else if (status == 406) || (status == 500) {
+                        
+                        self.sendAnalyticsData(LogLevel.Error, logStringData: "Error while verifying previous registration - Error is: \(error!.localizedDescription)")
+                        completionHandler(response: responseText, statusCode: status, error: "")
+                    }
+                    else {
+                        
+                        // MARK: device is already Registered
+                        
+                        self.sendAnalyticsData(LogLevel.Debug, logStringData: "Device is already registered. Return the device Id - Response is: \(response?.responseText)")
+                        let respJson = response?.responseText
+                        let data = respJson!.dataUsingEncoding(NSUTF8StringEncoding)
+                        let jsonResponse:NSDictionary = try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments) as! NSDictionary
+                        
+                        let rToken = jsonResponse.objectForKey(IMFPUSH_TOKEN) as! String
+                        let rDevId = jsonResponse.objectForKey(IMFPUSH_DEVICE_ID) as! String
+                        let userId = jsonResponse.objectForKey(IMFPUSH_USERID) as! String
+
+                        if ((rToken.compare(token)) != NSComparisonResult.OrderedSame) || (devId.compare(rDevId) != NSComparisonResult.OrderedSame) || (userId != "anonymous") {
+                            
+                            // MARK: Updating the registered userID , token or deviceId changed
+                            
+                            self.sendAnalyticsData(LogLevel.Debug, logStringData: "Device token or DeviceId has changed. Sending update registration request.")
+                            let resourceURL:String = urlBuilder.getSubscribedDevicesUrl(devId)
+                            
+                            let headers = urlBuilder.addHeader()
+                            
+                            let method =  HttpMethod.PUT
+                            
+                            let getRequest = Request(url: resourceURL, headers: headers, queryParameters: nil, method: method, timeout: 60)
+                            
+                            
+                            let dict:NSMutableDictionary = NSMutableDictionary()
+                            
+                            dict.setValue(token, forKey: IMFPUSH_TOKEN)
+                            dict.setValue(devId, forKey: IMFPUSH_DEVICE_ID)
+                            
+                            
+                            let jsonData = try! NSJSONSerialization.dataWithJSONObject(dict, options: NSJSONWritingOptions.PrettyPrinted)
+                            
+                            let jsonString = NSString(data: jsonData, encoding: NSUTF8StringEncoding)! as String
+                            
+                            getRequest.sendString(jsonString , completionHandler: { (response: Response?, error: NSError?) -> Void in
+                                
+                                
+                                
+                                if response?.statusCode != nil  {
+                                    
+                                    let status = response?.statusCode ?? 0
+                                    let responseText = response?.responseText ?? ""
+                                    
+                                    self.sendAnalyticsData(LogLevel.Info, logStringData: "Response of device updation - Response is: \(responseText)")
+                                    completionHandler(response: responseText, statusCode: status, error: "")
+                                }
+                                else if let responseError = error {
+                                    
+                                    self.sendAnalyticsData(LogLevel.Error, logStringData: "Error during device updatation - Error is : \(responseError.description)")
+                                    completionHandler(response: "", statusCode: IMFPushErrorvalues.IMFPushRegistrationUpdateError.rawValue, error: "Error during device updatation - Error is : \(responseError.description)")
+                                }
+                                
+                            })
+                            
+                        }
+                        else {
+                            // MARK: device already registered and parameteres not changed.
+                            
+                            self.sendAnalyticsData(LogLevel.Info, logStringData: "Device is already registered and device registration parameters not changed.")
+                            completionHandler(response: "Device is already registered and device registration parameters not changed", statusCode: status, error: "")
+                        }
+                    }
+                    
+                }
+                else if let responseError = error {
+                    
+                    self.sendAnalyticsData(LogLevel.Error, logStringData: "Error while verifying previous registration - Error is: \(responseError.localizedDescription)")
+                    completionHandler(response: "", statusCode: IMFPushErrorvalues.IMFPushRegistrationVerificationError.rawValue , error: "Error while verifying previous registration - Error is: \(responseError.localizedDescription)")
+                }
+            })
+        }else{
+            
+            self.sendAnalyticsData(LogLevel.Error, logStringData: "Error while registration - BMSPush is not initialized")
+            completionHandler(response: "", statusCode: IMFPushErrorvalues.IMFPushRegistrationError.rawValue , error: "Error while registration - BMSPush is not initialized")
+        }
+    }
+    
+    /**
+     
+     This Methode used to register the client device to the Bluemix Push service.
+     
+     Call this methode after successfully registering for remote push notification in the Apple Push
+     Notification Service .
+     
+     - Parameter deviceToken: This is the response we get from the push registartion in APNS.
+     - Parameter completionHandler: The closure that will be called when this request finishes. The response will contain response (String), StatusCode (Int) and error (string).
+     */
+    
+    @available(*, deprecated, message="use registerWithDeviceToken")
     public func registerDeviceToken (deviceToken:NSData, completionHandler: (response:String?, statusCode:Int?, error:String) -> Void) {
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("appEnterActive"), name: UIApplicationDidBecomeActiveNotification, object: nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("appEnterBackground"), name: UIApplicationDidEnterBackgroundNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("appEnterActive"), name: UIApplicationDidBecomeActiveNotification, object: nil)
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("appOpenedFromNotificationClick"), name: UIApplicationDidFinishLaunchingNotification, object: nil)
         
@@ -109,7 +530,7 @@ public class BMSPushClient: NSObject {
         token = token.stringByReplacingOccurrencesOfString(" ", withString: "").stringByTrimmingCharactersInSet(NSCharacterSet.symbolCharacterSet())
         
         
-        let urlBuilder = BMSPushUrlBuilder(applicationID: bmsClient.bluemixAppGUID!)
+        let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!)
         
         let resourceURL:String = urlBuilder.getSubscribedDevicesUrl(devId)
         let headers = urlBuilder.addHeader()
@@ -255,7 +676,7 @@ public class BMSPushClient: NSObject {
             
         })
     }
-    
+
     /**
      
      This Method used to Retrieve all the available Tags in the Bluemix Push Service.
@@ -268,7 +689,7 @@ public class BMSPushClient: NSObject {
         
         
         self.sendAnalyticsData(LogLevel.Debug, logStringData: "Entering retrieveAvailableTagsWithCompletitionHandler.")
-        let urlBuilder = BMSPushUrlBuilder(applicationID: bmsClient.bluemixAppGUID!)
+        let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!)
         
         let resourceURL:String = urlBuilder.getTagsUrl()
         
@@ -321,7 +742,7 @@ public class BMSPushClient: NSObject {
             let devId = authManager.deviceIdentity.id!
             
             
-            let urlBuilder = BMSPushUrlBuilder(applicationID: bmsClient.bluemixAppGUID!)
+            let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!)
             let resourceURL:String = urlBuilder.getSubscriptionsUrl()
             
             let headers = urlBuilder.addHeader()
@@ -390,7 +811,7 @@ public class BMSPushClient: NSObject {
         let devId = authManager.deviceIdentity.id!
         
         
-        let urlBuilder = BMSPushUrlBuilder(applicationID: bmsClient.bluemixAppGUID!)
+        let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!)
         let resourceURL:String = urlBuilder.getAvailableSubscriptionsUrl(devId)
         
         let headers = urlBuilder.addHeader()
@@ -445,7 +866,7 @@ public class BMSPushClient: NSObject {
             let devId = authManager.deviceIdentity.id!
             
             
-            let urlBuilder = BMSPushUrlBuilder(applicationID: bmsClient.bluemixAppGUID!)
+            let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!)
             let resourceURL:String = urlBuilder.getUnSubscribetagsUrl()
             
             let headers = urlBuilder.addHeader()
@@ -507,7 +928,7 @@ public class BMSPushClient: NSObject {
         let devId = authManager.deviceIdentity.id!
         
         
-        let urlBuilder = BMSPushUrlBuilder(applicationID: bmsClient.bluemixAppGUID!)
+        let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!)
         let resourceURL:String = urlBuilder.getUnregisterUrl(devId)
         
         let headers = urlBuilder.addHeader()
@@ -536,67 +957,11 @@ public class BMSPushClient: NSObject {
         })
     }
     
-    
     // MARK: Methods (Internal)
     
     //Begin Logger implementation
     
-    /**
-    Send the Logger info when the client app come from Background state to Active state.
-    */
-    internal func appEnterActive () {
-        
-        self.sendAnalyticsData(LogLevel.Info, logStringData: "Application Enter Active.")
-        BMSPushUtils.generateMetricsEvents(IMFPUSH_OPEN, messageId: "Application Enter Active.", timeStamp: BMSPushUtils.generateTimeStamp())
-    }
-    
-    /**
-     Send the Logger info when the client app goes Background state from Active state.
-     */
-    internal func appEnterBackground () {
-        
-        func completionHandler(sendType: String) -> BmsCompletionHandler {
-            return {
-                (response: Response?, error: NSError?) -> Void in
-                if let response = response {
-                    print("\n\(sendType) sent successfully: " + String(response.isSuccessful))
-                    print("Status code: " + String(response.statusCode))
-                    if let responseText = response.responseText {
-                        print("Response text: " + responseText)
-                    }
-                    print("\n")
-                }
-            }
-        }
-        
-        print("Application Enter Background. Sending analytics information to server.")
-        //Analytics.send(completionHandler: completionHandler("Analytics"))
-    }
-    
-    /**
-     Send the Logger info while the app is opened by clicking the notification.
-     */
-    internal func appOpenedFromNotificationClick (notification:NSNotification){
-        
-        // No use now..
-        notificationcount--
-        UIApplication.sharedApplication().applicationIconBadgeNumber = 0
-        
-        let launchOptions: NSDictionary = notification.userInfo!
-        if launchOptions.allKeys.count > 0  {
-            
-            let pushNotificationPayload:NSDictionary = launchOptions.valueForKey(UIApplicationLaunchOptionsRemoteNotificationKey) as! NSDictionary
-            
-            if pushNotificationPayload.allKeys.count > 0 {
-                
-                self.sendAnalyticsData(LogLevel.Info, logStringData: "App opened by clicking on push notification.")
-                
-                let messageId:NSString = pushNotificationPayload.objectForKey("nid") as! String
-                BMSPushUtils.generateMetricsEvents(IMFPUSH_SEEN, messageId: messageId as String, timeStamp: BMSPushUtils.generateTimeStamp())
-            }
-        }
-    }
-    
+       
     /**
      Assigning Re-Write Domain.
      */
@@ -649,40 +1014,11 @@ public class BMSPushClient: NSObject {
         
     }
     
-    public func application (application:UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject] ){
-        
-        notificationcount++
-        
-        let text = (userInfo as NSDictionary).valueForKey("payload") as! String
-        
-        if let data = text.dataUsingEncoding(NSUTF8StringEncoding) {
-            do {
-                let json = try NSJSONSerialization.JSONObjectWithData(data, options: .MutableContainers) as? [String:AnyObject]
-                
-                let messageId = (json! as NSDictionary).valueForKey("nid") as! String
-                BMSPushUtils.generateMetricsEvents(IMFPUSH_RECEIVED, messageId: messageId, timeStamp: BMSPushUtils.generateTimeStamp())
-                
-                if (application.applicationState == UIApplicationState.Active){
-                    
-                    
-                    self.sendAnalyticsData(LogLevel.Info, logStringData: "Push notification received when application is in active state.")
-                    
-                    BMSPushUtils.generateMetricsEvents(IMFPUSH_SEEN, messageId: messageId, timeStamp: BMSPushUtils.generateTimeStamp())
-                }
-                
-                let pushStatus:Bool = BMSPushUtils.getPushSettingValue()
-                
-                if pushStatus {
-                    
-                    self.sendAnalyticsData(LogLevel.Info, logStringData: "Push notification is enabled on device")
-                    BMSPushUtils.generateMetricsEvents(IMFPUSH_ACKNOWLEDGED, messageId: messageId, timeStamp: BMSPushUtils.generateTimeStamp())
-                }
-                
-            } catch {
-                print("Something went wrong")
-            }
+    internal func validateString(object:String) -> Bool{
+        if (object.isEmpty || object == "") {
+            return false;
         }
-        
-        
+        return true
     }
+
 }

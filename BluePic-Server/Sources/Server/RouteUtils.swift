@@ -67,7 +67,11 @@ func processImage(withId imageId: String) {
       if let resp = resp {
         Log.error("Status code: \(resp.statusCode)")
         if let rawUserData = try? BodyParser.readBodyData(with: resp) {
-          let str = NSString(data: rawUserData, encoding: NSUTF8StringEncoding)
+          #if os(OSX)
+            let str = NSString(data: rawUserData as Data, encoding: String.Encoding.utf8.rawValue)
+          #else
+            let str = NSString(data: rawUserData, encoding: NSUTF8StringEncoding)
+          #endif
           print("Error response from OpenWhisk: \(str)")
         }
       }
@@ -75,9 +79,16 @@ func processImage(withId imageId: String) {
   }
   // Kitura does not yet execute certain functionaliy asynchronously,
   // hence the need for this block.
-  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
-    req.end(requestBody)
-  }
+  #if os(OSX)
+    DispatchQueue.global(attributes: DispatchQueue.GlobalAttributes.qosDefault).async {
+      req.end(requestBody)
+    }
+  #else
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+      req.end(requestBody)
+    }
+  #endif
+
 }
 
 /**
@@ -197,7 +208,12 @@ func parseMultipart(fromRequest request: RouterRequest) throws -> (JSON, NSData)
       if part.name == "imageJson" {
         switch (part.body) {
         case .text(let stringJson):
-          if let dataJson = stringJson.data(using: NSUTF8StringEncoding, allowLossyConversion: false) {
+          #if os(OSX)
+            let encoding = String.Encoding.utf8
+          #else
+            let encoding = NSUTF8StringEncoding
+          #endif
+          if let dataJson = stringJson.data(using: encoding, allowLossyConversion: false) {
             imageJson = JSON(data: dataJson)
           }
         default:

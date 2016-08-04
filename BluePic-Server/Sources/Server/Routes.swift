@@ -60,9 +60,17 @@ func defineRoutes() {
     errorResponse["error"].stringValue = "Failed to retrieve MCA token."
 
     let baseStr = "\(mobileClientAccessProps.clientId):\(mobileClientAccessProps.secret)"
-    print("baseStr: \(baseStr)")
-    let utf8BaseStr = baseStr.data(using: NSUTF8StringEncoding)
-    guard let authHeader = utf8BaseStr?.base64EncodedString(NSDataBase64EncodingOptions(rawValue: 0)) else {
+    
+    var tempAuthHeader: String?
+    #if os(OSX)
+      let utf8BaseStr = baseStr.data(using: String.Encoding.utf8)
+      tempAuthHeader = utf8BaseStr?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
+    #else
+      let utf8BaseStr = baseStr.data(using: NSUTF8StringEncoding)
+      tempAuthHeader = utf8BaseStr?.base64EncodedString(NSDataBase64EncodingOptions(rawValue: 0))
+    #endif
+    
+    guard let authHeader = tempAuthHeader else {
       print("Could not generate authHeader...")
       response.status(HTTPStatusCode.internalServerError).send(json: errorResponse)
       next()
@@ -108,7 +116,11 @@ func defineRoutes() {
         if let resp = resp {
           Log.error("Status code: \(resp.statusCode)")
           if let rawUserData = try? BodyParser.readBodyData(with: resp) {
-            let str = NSString(data: rawUserData, encoding: NSUTF8StringEncoding)
+            #if os(OSX)
+              let str = NSString(data: rawUserData as Data, encoding: String.Encoding.utf8.rawValue)
+            #else
+              let str = NSString(data: rawUserData, encoding: NSUTF8StringEncoding)
+            #endif
             print("Response from MCA server: \(str)")
           }
         }
@@ -256,7 +268,7 @@ func defineRoutes() {
     readImage(database: database, imageId: imageId) { (jsonImage) in
       if let jsonImage = jsonImage {
         let apnsSettings = Notification.Settings.Apns(badge: nil, category: "imageProcessed", iosActionKey: nil, sound: nil, type: ApnsType.DEFAULT, payload: jsonImage.dictionaryObject)
-        let target = Notification.Target(deviceIds: [jsonImage["deviceId"].stringValue], platforms: [TargetPlatform.Apple], tagNames: nil)
+        let target = Notification.Target(deviceIds: [jsonImage["deviceId"].stringValue], userIds: nil, platforms: [TargetPlatform.Apple], tagNames: nil)
         let message = Notification.Message(alert: "Your image was processed; check it out!", url: nil)
         let notification = Notification(message: message, target: target, apnsSettings: apnsSettings, gcmSettings: nil)
         pushNotificationsClient.send(notification: notification) { (error) in

@@ -21,7 +21,11 @@ import Dispatch
 
 // FIXME: Change to a struct when using a swift binary that supports the DispatchQueue type
 public class ObjectStorageConn {
-  let connectQueue = dispatch_queue_create("connectQueue", nil)
+  #if os(OSX)
+    let connectQueue = DispatchQueue(label: "connectQueue")
+  #else
+    let connectQueue = dispatch_queue_create("connectQueue", nil)
+  #endif
   let objStorage: ObjectStorage
   var test = 10
   let connProps: ObjectStorageConnProps
@@ -36,15 +40,14 @@ public class ObjectStorageConn {
   func getObjectStorage(completionHandler: (objStorage: ObjectStorage?) -> Void) {
     Log.verbose("Starting task in serialized block (getting ObjectStorage instance)...")
     #if os(OSX)
-      guard let connectQueue = self.connectQueue else {
-        Log.warning("Connect queue was not created properly")
-        completionHandler(objStorage: nil)
-        return
+      connectQueue.sync {
+        self.connect(completionHandler: completionHandler)
+      }
+    #else
+      dispatch_sync(connectQueue) {
+        self.connect(completionHandler: completionHandler)
       }
     #endif
-    dispatch_sync(connectQueue) {
-      self.connect(completionHandler: completionHandler)
-    }
     Log.verbose("Completed task in serialized block.")
     let param: ObjectStorage? = (authenticated) ? objStorage : nil
     completionHandler(objStorage: param)
@@ -58,7 +61,7 @@ public class ObjectStorageConn {
       // This logic is just a stopgap solution to avoid requesting a new
       // authToken for every ObjectStorage request.
       // The ObjectStorage SDK will contain logic for handling expired authToken
-      let timeDiff: NSTimeInterval = lastAuthenticatedTs.timeIntervalSinceNow
+      let timeDiff = lastAuthenticatedTs.timeIntervalSinceNow
       let minsDiff = Int(fabs(timeDiff / 60))
       if minsDiff < 50 {
         Log.verbose("Reusing existing Object Storage auth token...")
@@ -68,11 +71,7 @@ public class ObjectStorageConn {
 
     // Network call should be synchronous since we need to know the result before proceeding.
     #if os(OSX)
-      guard let semaphore = dispatch_semaphore_create(0) else {
-        Log.warning("Couldn't create semaphore...")
-        completionHandler(objStorage: nil)
-        return
-      }
+      let semaphore = DispatchSemaphore(value: 0)
     #else
       let semaphore = dispatch_semaphore_create(0)
     #endif
@@ -90,9 +89,17 @@ public class ObjectStorageConn {
         Log.verbose("lastAuthenticatedTs is \(self.lastAuthenticatedTs).")
       }
       Log.verbose("Signaling semaphore...")
-      dispatch_semaphore_signal(semaphore)
+      #if os(OSX)
+        semaphore.signal()
+      #else
+        dispatch_semaphore_signal(semaphore)
+      #endif
     }
-    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
+    #if os(OSX)
+      let _ = semaphore.wait(timeout: DispatchTime.distantFuture)
+    #else
+      dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
+    #endif
     Log.verbose("Continuing execution after synchronous network call...")
   }
 

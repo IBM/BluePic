@@ -38,13 +38,51 @@ public class Response {
     
     // MARK: Properties (internal)
     
+#if swift(>=3.0)
+    internal let httpResponse: HTTPURLResponse?
+#else
     internal let httpResponse: NSHTTPURLResponse?
+#endif
     
     internal let isRedirect: Bool
     
     
     
     // MARK: Initializer
+    
+#if swift(>=3.0)
+    
+    /**
+        Store data from the NSHTTPURLResponse
+         
+        - parameter responseData: Data returned from the server
+        - parameter httpResponse: Response object returned from the NSURLSession request
+        - parameter isRedirect:   True if the response requires a redirect
+     */
+    public init(responseData: Data?, httpResponse: HTTPURLResponse?, isRedirect: Bool) {
+        
+        self.isRedirect = isRedirect
+        self.httpResponse = httpResponse
+        self.headers = httpResponse?.allHeaderFields
+        self.statusCode = httpResponse?.statusCode
+        
+        self.responseData = responseData
+        if let responseData = responseData {
+            self.responseText = String(data: responseData, encoding: .utf8)
+        }
+        else {
+             self.responseText = nil
+        }
+        
+        if let status = statusCode {
+            isSuccessful = (200..<300 ~= status)
+        }
+        else {
+            isSuccessful = false
+        }
+    }
+    
+#else
     
     /**
         Store data from the NSHTTPURLResponse
@@ -61,7 +99,12 @@ public class Response {
         self.statusCode = httpResponse?.statusCode
         
         self.responseData = responseData
-        self.responseText = Response.buildResponseStringWithData(responseData)
+        if responseData != nil, let responseAsNSString = NSString(data: responseData!, encoding: NSUTF8StringEncoding) {
+            self.responseText = String(responseAsNSString)
+        }
+        else {
+            self.responseText = nil
+        }
         
         if let status = statusCode {
             isSuccessful = (200..<300 ~= status)
@@ -70,16 +113,8 @@ public class Response {
             isSuccessful = false
         }
     }
+
     
-    // Try to convert response NSData to String
-    static private func buildResponseStringWithData(responseData: NSData?) -> String? {
-        
-        var responseAsText: String?
-        
-        if responseData != nil, let responseAsNSString = NSString(data: responseData!, encoding: NSUTF8StringEncoding) {
-            responseAsText = String(responseAsNSString)
-        }
-        return responseAsText
-    }
+#endif
     
 }

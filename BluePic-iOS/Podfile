@@ -6,8 +6,6 @@ target 'BluePic' do
 
 	pod 'BMSFacebookAuthentication'
 
-	pod 'BMSSecurity', :git => 'https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-swift-security.git'
-
 	pod 'BMSPush'
 
 	pod 'SDWebImage', '~>3.7'

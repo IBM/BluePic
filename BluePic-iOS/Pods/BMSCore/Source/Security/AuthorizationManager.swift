@@ -38,7 +38,7 @@ public protocol AuthorizationManager {
         @brief Starts authorization process
         @param completionHandler The completion handler
      */
-    func obtainAuthorization(completionHandler completionHandler: BmsCompletionHandler?)
+    func obtainAuthorization(completionHandler callback: BmsCompletionHandler?)
     
 	/*!
 	@brief Clears authorization data
