@@ -1,0 +1,11 @@
+
+<div class="card-columns">
+    <div class="card card-outline-blank text-xs-center " ng-repeat="photo in photos">
+        <img class="card-img-top" src={{photo.url}} alt="">
+        <div class=" ">
+            <h4 class="card-title">{{photo.location.name}}</h4>
+            <p class="card-subtitle">by {{photo.user.name}}</p>
+            <img class="" src="assets/img/line.png" alt="">
+        </div>
+    </div>
+</div>

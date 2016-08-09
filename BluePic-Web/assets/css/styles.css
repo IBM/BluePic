@@ -1,0 +1,35 @@
+.card-outline-blank {
+    border-color: transparent;
+}
+
+.navbar-nav .nav-center {
+    display: inline-block;
+    left: 0;
+    right: 0;
+    margin:0;
+    float:none;
+}
+
+.navbar-inner {
+    text-align: center;
+}
+
+.flexMom{
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.flexLeft,.flexCenter{flex-grow: 1;}
+
+.search {
+    font-family: AvenirNext;
+    font-size: 14px;
+    font-weight: 400;
+    color: #999999;
+    text-align: center;
+}
+
+.fontAwesome {
+    font-family: 'FontAwesome';
+}
