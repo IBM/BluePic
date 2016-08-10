@@ -24,6 +24,7 @@ import HeliumLogger
 import SwiftyJSON
 import CloudFoundryEnv
 import BluemixObjectStorage
+import CloudFoundryDeploymentTracker
 
 // Disable all buffering on stdout
 setbuf(stdout, nil)
@@ -71,6 +72,8 @@ do {
   // Define routes
   Log.verbose("Defining routes for server...")
   defineRoutes()
+  CloudFoundryDeploymentTracker(repositoryURL: "https://github.com/IBM-Swift/BluePic.git", codeVersion: nil).track()
+  
   // Start server...
   Kitura.addHTTPServer(onPort: config.appEnv.port, with: router)
   Kitura.run()
