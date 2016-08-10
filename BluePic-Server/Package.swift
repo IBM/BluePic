@@ -27,5 +27,5 @@ let package = Package(
     .Package(url: "https://github.com/ibm-bluemix-mobile-services/bms-mca-kitura-credentials-plugin.git", majorVersion: 0, minor: 3),
     .Package(url: "https://github.com/ibm-bluemix-mobile-services/bms-pushnotifications-serversdk-swift.git", majorVersion: 0, minor: 3)
   ],
-  exclude: ["Makefile", "Kitura-Build"]
+  exclude: ["Makefile", "Package-Builder"]
 )
