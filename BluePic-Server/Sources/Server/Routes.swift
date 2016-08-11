@@ -50,6 +50,18 @@ func defineRoutes() {
     next()
   }
 
+  router.all("/static", middleware: StaticFileServer(path: "./BluePic-Web"))
+
+  router.get("/") { request, response, next in
+
+    do {
+        try response.redirect("/static/index.html")
+
+    } catch {
+        Log.error("Problem redirecting static content.")
+    }
+  }
+
   // Ping endpoint
   router.get("/ping", handler: closure)
 

@@ -5,8 +5,7 @@ angular.module('bluepicWebApp')
 
     this.getAllPhotos = function() {
 
-        var url = 'http://bluepic-unprofessorial-inexpressibility.mybluemix.net/images';
-
+        var url = 'http://bluepic-accretive-preexcitation.eu-gb.mybluemix.net/images';
         return $http.get(url);
 
     }

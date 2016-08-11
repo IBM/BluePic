@@ -33,3 +33,21 @@
 .fontAwesome {
     font-family: 'FontAwesome';
 }
+
+.authorFont {
+    /*font-family: SanFranciscoText;*/
+    font-size: 18px;
+    font-weight: 400;
+    font-style: italic;
+    color: #999999;
+}
+
+.locationFont {
+    /*font-family: SanFranciscoText;*/
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 2.22;
+    letter-spacing: 1.9px;
+    color: #333333;
+    text-transform: uppercase;
+}
