@@ -60,7 +60,7 @@ If you'd like to, you can spend a few minutes to get familiar with the folder st
 ### 3. Create BluePic application on Bluemix
 Clicking on the button below deploys the BluePic application to Bluemix. The [`manifest.yml`](manifest.yml) file [included in the repo] is parsed to obtain the name of the application and to determine the Cloud Foundry services that should be instantiated. For further details on the structure of the `manifest.yml` file, see the [Cloud Foundry documentation](https://docs.cloudfoundry.org/devguide/deploy-apps/manifest.html#minimal-manifest). Make sure to name your application **BluePic** when using the Deploy to Bluemix button because sometimes Bluemix will add an extension to make the name more unique. We just need to ensure it matches the name in our `manifest.yml` file for future updates.
 
-[![Deploy to Bluemix](https://deployment-tracker.mybluemix.net/stats/c45eeb765e77bf2bffd747e8d910e37d/button.svg)](https://bluemix.net/deploy?repository=https://github.com/IBM-Swift/BluePic.git&branch=develop)
+[![Deploy to Bluemix](https://deployment-tracker.mybluemix.net/stats/c45eeb765e77bf2bffd747e8d910e37d/button.svg)](https://bluemix.net/deploy?repository=https://github.com/IBM-Swift/BluePic.git)
 
 Once deployment to Bluemix is completed, you should access the route assigned to your application using the web browser of your choice. You should see the Kitura welcome page!
 
