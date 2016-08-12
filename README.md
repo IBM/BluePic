@@ -58,7 +58,7 @@ git clone https://github.com/IBM-Swift/BluePic.git
 If you'd like to, you can spend a few minutes to get familiar with the folder structure of the repo as described in the [About](Docs/About.md) page.
 
 ### 3. Create BluePic application on Bluemix
-Clicking on the button below deploys the BluePic application to Bluemix. The `manifest.yml` file [included in the repo] is parsed to obtain the name of the application and to determine the Cloud Foundry services that should be instantiated. For further details on the structure of the `manifest.yml` file, see the [Cloud Foundry documentation](https://docs.cloudfoundry.org/devguide/deploy-apps/manifest.html#minimal-manifest).
+Clicking on the button below deploys the BluePic application to Bluemix. The [`manifest.yml`](manifest.yml) file [included in the repo] is parsed to obtain the name of the application and to determine the Cloud Foundry services that should be instantiated. For further details on the structure of the `manifest.yml` file, see the [Cloud Foundry documentation](https://docs.cloudfoundry.org/devguide/deploy-apps/manifest.html#minimal-manifest). Make sure to name your application **BluePic** when using the Deploy to Bluemix button because sometimes Bluemix will add an extension to make the name more unique. We just need to ensure it matches the name in our `manifest.yml` file for future updates.
 
 [![Deploy to Bluemix](https://deployment-tracker.mybluemix.net/stats/c45eeb765e77bf2bffd747e8d910e37d/button.svg)](https://bluemix.net/deploy?repository=https://github.com/IBM-Swift/BluePic.git&branch=develop)
 
@@ -127,10 +127,10 @@ In order to have the app authenticate with Facebook, you must create an applicat
 
 1. Go to [Facebook's Quick Start for iOS](https://developers.facebook.com/quickstarts/?platform=ios) page to create an application instance. Type `BluePic` as the name of your new Facebook app and click the `Create New Facebook App ID` button. Choose any Category for the application, and click the `Create App ID` button.
 
-1. On the screen that follows, note that you **do not** need to download the Facebook SDK. The Mobile Client Access framework (already included in the iOS project) has all the code needed to support Facebook authentication. In the `Configure your info.plist` section, under `step 2`, copy the fields shown in the XML snippet into the `info.plist` file. The `info.plist` file is found in the `Configuration` folder of the Xcode project. If you have trouble finding the `CFBundleURLType` key, note that Xcode changes the `CFBundleURLType` key to `URL types` when the key is entered. Your `info.plist` file should now look like this:
+1. On the screen that follows, note that you **do not** need to download the Facebook SDK. The Mobile Client Access framework (already included in the iOS project) has all the code needed to support Facebook authentication. In the `Configure your info.plist` section, copy the `FacebookAppID` value and insert into the `URL Schemes` and `FacebookAppID` fields in your `info.plist` so that your plist looks similar to the image below. The `info.plist` file is found in the `Configuration` folder of the Xcode project. 
 <p align="center"><img src="Imgs/infoplist.png"  alt="Drawing" height=150 border=0 /></p>
 
-1. Next, scroll to the bottom of the quick start page where it says `Supply us with your Bundle Identifier` and enter the app's bundle identifier you chose earlier.
+1. Next, scroll to the bottom of the Facebook quick start page where it says `Supply us with your Bundle Identifier` and enter the app's bundle identifier you chose earlier in step 2.
 
 1. That's it for setting up the BluePic application instance on the Facebook Developer website. In the following section, we will link this Facebook application instance to your Bluemix Mobile Client Access service.
 
