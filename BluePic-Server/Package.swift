@@ -19,12 +19,13 @@ import PackageDescription
 let package = Package(
   name: "BluePic-Server",
   dependencies: [
-    .Package(url: "https://github.com/IBM-Swift/Kitura.git", majorVersion: 0, minor: 24),
-    .Package(url: "https://github.com/IBM-Swift/Kitura-CouchDB.git", majorVersion: 0, minor: 24),
+   .Package(url: "https://github.com/IBM-Swift/Kitura.git", majorVersion: 0, minor: 22),
+    .Package(url: "https://github.com/IBM-Swift/Kitura-CouchDB.git", majorVersion: 0, minor: 22),
     .Package(url: "https://github.com/IBM-Swift/Swift-cfenv.git", majorVersion: 1, minor: 4),
-    .Package(url: "https://github.com/IBM-Bluemix/cf-deployment-tracker-client-swift.git", majorVersion: 0, minor: 1),
+    // .Package(url: "https://github.com/IBM-Bluemix/cf-deployment-tracker-client-swift.git", majorVersion: 0, minor: 1),
+    .Package(url: "https://github.com/ibm-bluemix-mobile-services/bluemix-simple-http-client-swift.git", "0.4.1"),
     .Package(url: "https://github.com/ibm-bluemix-mobile-services/bluemix-objectstorage-swift-sdk.git", majorVersion: 0, minor: 5),
-    .Package(url: "https://github.com/ibm-bluemix-mobile-services/bms-mca-kitura-credentials-plugin.git", majorVersion: 0, minor: 3),
+    .Package(url: "https://github.com/ibm-bluemix-mobile-services/bms-mca-kitura-credentials-plugin.git", "0.3.2"),
     .Package(url: "https://github.com/ibm-bluemix-mobile-services/bms-pushnotifications-serversdk-swift.git", majorVersion: 0, minor: 3)
   ],
   exclude: ["Makefile", "Package-Builder"]
