@@ -1,71 +1,102 @@
 
 <div class="card-columns" style="margin: 4%">
-    <!--<div class="card card-outline-blank text-xs-center " ng-repeat="photo in photos" style="margin-bottom: 8%">-->
-        <!--<img class="card-img-top" src={{photo.url}} alt="" style="max-height: 100%; max-width: 100%; margin: 0% 5% 0%">-->
+    <div class="card card-outline-blank text-xs-center" ng-repeat="photo in photos">
+        <div id="overlay" class="imgOverlay">
+            <img class="card-img-top" src={{photo.url}} alt="">
+            <div class="card-img-overlay card-inverse hideMetadata">
+                <p class="card-text metadataFont"> 30º 16' N, 97º 44' W </p>
+                <h4 class="card-title locationFont">El Paso, Texas</h4>
+                <p class="card-text metadataFont">April 27th, 2015 @ 1:57 PM</p>
+            </div>
+        </div>
+        <div>
+            <h4 class="card-title locationFont" style="margin-top: 30px" margin-top>{{photo.location.name}}</h4>
+            <p class="card-subtitle authorFont">by {{photo.user.name}}</p>
+            <img src="assets/img/line.png">
+        </div>
+    </div>
+</div>
+
+    <!--Temporary -- for testing locally-->
+    <!--<div class="card card-outline-blank text-xs-center">-->
+        <!--<div id="overlay" class="imgOverlay" >-->
+            <!--<img class="card-img-top " src="assets/img/puppy.jpg" alt="">-->
+            <!--<div class="card-img-overlay card-inverse hideMetadata">-->
+                <!--<p class="card-text metadataFont"> 30º 16' N, 97º 44' W </p>-->
+                <!--<h4 class="card-title locationFont">El Paso, Texas</h4>-->
+                <!--<p class="card-text metadataFont">April 27th, 2015 @ 1:57 PM</p>-->
+            <!--</div>-->
+        <!--</div>-->
         <!--<div class=" " style="">-->
-            <!--<h4 class="card-title locationFont" style="" margin-top>{{photo.location.name}}</h4>-->
-            <!--<p class="card-subtitle authorFont">by {{photo.user.name}}</p>-->
+            <!--<h4 class="card-title locationFont" style="margin-top: 30px">Hueco Tanks</h4>-->
+            <!--<p class="card-subtitle authorFont">by Jane</p>-->
             <!--<img class="" src="assets/img/line.png" alt="">-->
         <!--</div>-->
     <!--</div>-->
 
+    <!--<div class="card card-outline-blank text-xs-center">-->
+        <!--<div id="overlay" class="imgOverlay" >-->
+            <!--<img class="card-img-top " src="assets/img/hueco1.jpg" alt="">-->
+            <!--<div class="card-img-overlay card-inverse hideMetadata">-->
+                <!--<p class="card-text metadataFont"> 30º 16' N, 97º 44' W </p>-->
+                <!--<h4 class="card-title locationFont">El Paso, Texas</h4>-->
+                <!--<p class="card-text metadataFont">April 27th, 2015 @ 1:57 PM</p>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class=" " style="">-->
+            <!--<h4 class="card-title locationFont" style="margin-top: 30px">Hueco Tanks</h4>-->
+            <!--<p class="card-subtitle authorFont">by Jane</p>-->
+            <!--<img class="" src="assets/img/line.png" alt="">-->
+        <!--</div>-->
+    <!--</div>-->
 
-    <!--Temporary -- for testing locally-->
-    <div class="card card-outline-blank text-xs-center " style="margin-bottom: 8%">
-        <img class="card-img-top" src="assets/img/puppy.jpg" alt="" style="max-height: 100%; max-width: 100%; margin: 0% 5% 0%">
-        <div class=" " style="">
-            <h4 class="card-title locationFont" style="margin-top: 30px">Hueco Tanks</h4>
-            <p class="card-subtitle authorFont">by Jane</p>
-            <img class="" src="assets/img/line.png" alt="">
-        </div>
-    </div>
-    <div class="card card-outline-blank text-xs-center " style="margin-bottom: 8%">
-        <img class="card-img-top" src="assets/img/hueco1.jpg" alt="" style="max-height: 100%; max-width: 100%; margin: 0% 5% 0%">
-        <div class=" " style="">
-            <h4 class="card-title locationFont" style="margin-top: 30px">Hueco Tanks</h4>
-            <p class="card-subtitle authorFont">by Jane</p>
-            <img class="" src="assets/img/line.png" alt="">
-        </div>
-    </div>
-    <div class="card card-outline-blank text-xs-center " style="margin-bottom: 8%">
-        <img class="card-img-top" src="assets/img/hueco2.jpg" alt="" style="max-height: 100%; max-width: 100%; margin: 0% 5% 0%">
-        <div class=" " style="">
-            <h4 class="card-title locationFont" style="margin-top: 30px">Hueco Tanks</h4>
-            <p class="card-subtitle authorFont">by Jane</p>
-            <img class="" src="assets/img/line.png" alt="">
-        </div>
-    </div>
+    <!--<div class="card card-outline-blank text-xs-center " style="margin-bottom: 8%">-->
+        <!--<img class="card-img-top" src="assets/img/hueco2.jpg" alt="" style="max-height: 100%; max-width: 100%; margin: 0% 5% 0%">-->
+        <!--<div class=" " style="">-->
+            <!--<h4 class="card-title locationFont" style="margin-top: 30px">Hueco Tanks</h4>-->
+            <!--<p class="card-subtitle authorFont">by Jane</p>-->
+            <!--<img class="" src="assets/img/line.png" alt="">-->
+        <!--</div>-->
+    <!--</div>-->
 
-    <div class="card card-outline-blank text-xs-center " style="margin-bottom: 8%">
-        <img class="card-img-top" src="assets/img/hueco3.jpg" alt="" style="max-height: 100%; max-width: 100%; margin: 0% 5% 0%">
-        <div class=" " style="">
-            <h4 class="card-title locationFont" style="margin-top: 30px">Hueco Tanks</h4>
-            <p class="card-subtitle authorFont">by Jane</p>
-            <img class="" src="assets/img/line.png" alt="">
-        </div>
-    </div>
-    <div class="card card-outline-blank text-xs-center " style="margin-bottom: 8%">
-        <img class="card-img-top" src="assets/img/hueco4.jpg" alt="" style="max-height: 100%; max-width: 100%; margin: 0% 5% 0%">
-        <div class=" " style="">
-            <h4 class="card-title locationFont" style="margin-top: 30px">Hueco Tanks</h4>
-            <p class="card-subtitle authorFont">by Jane</p>
-            <img class="" src="assets/img/line.png" alt="">
-        </div>
-    </div>
-    <div class="card card-outline-blank text-xs-center " style="margin-bottom: 8%">
-        <img class="card-img-top" src="assets/img/hueco5.jpg" alt="" style="max-height: 100%; max-width: 100%; margin: 0% 5% 0%">
-        <div class=" " style="">
-            <h4 class="card-title locationFont" style="margin-top: 30px">Hueco Tanks</h4>
-            <p class="card-subtitle authorFont">by Jane</p>
-            <img class="" src="assets/img/line.png" alt="">
-        </div>
-    </div>
-    <div class="card card-outline-blank text-xs-center " style="margin-bottom: 8%">
-        <img class="card-img-top" src="assets/img/hueco6.jpg" alt="" style="max-height: 100%; max-width: 100%; margin: 0% 5% 0%">
-        <div class=" " style="">
-            <h4 class="card-title locationFont" style="margin-top: 30px">Hueco Tanks</h4>
-            <p class="card-subtitle authorFont">by Jane</p>
-            <img class="" src="assets/img/line.png" alt="">
-        </div>
-    </div>
-</div>
+    <!--<div class="card card-outline-blank text-xs-center">-->
+        <!--<div id="overlay" class="imgOverlay" >-->
+            <!--<img class="card-img-top " src="assets/img/hueco3.jpg" alt="">-->
+            <!--<div class="card-img-overlay card-inverse hideMetadata">-->
+                <!--<p class="card-text metadataFont"> 30º 16' N, 97º 44' W </p>-->
+                <!--<h4 class="card-title locationFont">El Paso, Texas</h4>-->
+                <!--<p class="card-text metadataFont">April 27th, 2015 @ 1:57 PM</p>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class=" " style="">-->
+            <!--<h4 class="card-title locationFont" style="margin-top: 30px">Hueco Tanks</h4>-->
+            <!--<p class="card-subtitle authorFont">by Jane</p>-->
+            <!--<img class="" src="assets/img/line.png" alt="">-->
+        <!--</div>-->
+    <!--</div>-->
+
+    <!--<div class="card card-outline-blank text-xs-center " style="margin-bottom: 8%">-->
+        <!--<img class="card-img-top" src="assets/img/hueco4.jpg" alt="" style="max-height: 100%; max-width: 100%; margin: 0% 5% 0%">-->
+        <!--<div class=" " style="">-->
+            <!--<h4 class="card-title locationFont" style="margin-top: 30px">Hueco Tanks</h4>-->
+            <!--<p class="card-subtitle authorFont">by Jane</p>-->
+            <!--<img class="" src="assets/img/line.png" alt="">-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<div class="card card-outline-blank text-xs-center " style="margin-bottom: 8%">-->
+        <!--<img class="card-img-top" src="assets/img/hueco5.jpg" alt="" style="max-height: 100%; max-width: 100%; margin: 0% 5% 0%">-->
+        <!--<div class=" " style="">-->
+            <!--<h4 class="card-title locationFont" style="margin-top: 30px">Hueco Tanks</h4>-->
+            <!--<p class="card-subtitle authorFont">by Jane</p>-->
+            <!--<img class="" src="assets/img/line.png" alt="">-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<div class="card card-outline-blank text-xs-center " style="margin-bottom: 8%">-->
+        <!--<img class="card-img-top" src="assets/img/hueco6.jpg" alt="" style="max-height: 100%; max-width: 100%; margin: 0% 5% 0%">-->
+        <!--<div class=" " style="">-->
+            <!--<h4 class="card-title locationFont" style="margin-top: 30px">Hueco Tanks</h4>-->
+            <!--<p class="card-subtitle authorFont">by Jane</p>-->
+            <!--<img class="" src="assets/img/line.png" alt="">-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->

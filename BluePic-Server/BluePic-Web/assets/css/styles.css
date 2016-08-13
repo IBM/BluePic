@@ -51,3 +51,34 @@
     color: #333333;
     text-transform: uppercase;
 }
+
+.imgOverlay {
+    background-color: rgba(51, 51, 51, 0.6);
+}
+
+.imgOverlay img {
+    max-height: 100%;
+    max-width: 100%;
+}
+.imgOverlay:hover img {
+    opacity: 0.5;
+    transition: 0.6s;
+}
+
+#overlay .hideMetadata {
+    visibility: hidden;
+}
+
+#overlay:hover .hideMetadata {
+    visibility: visible;
+    transition: 0.6s;
+}
+
+.metadataFont {
+    opacity: 0.7;
+    font-family: SanFranciscoText;
+    font-size: 14px;
+    font-weight: 400;
+    font-style: italic;
+    text-align: center;
+}
