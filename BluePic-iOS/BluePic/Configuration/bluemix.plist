@@ -12,5 +12,7 @@
 	<string>&lt;appGUID&gt;</string>
 	<key>bluemixAppRegion</key>
 	<string>&lt;appRegion&gt;</string>
+	<key>pushAppGUID</key>
+	<string></string>
 </dict>
 </plist>
