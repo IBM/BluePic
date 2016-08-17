@@ -55,7 +55,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
      */
     func application (application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
         let push =  BMSPushClient.sharedInstance
-        push.initializeWithAppGUID(BluemixDataManager.SharedInstance.bluemixConfig.appGUID)
+        push.initializeWithAppGUID(BluemixDataManager.SharedInstance.bluemixConfig.pushAppGUID)
         push.registerWithDeviceToken(deviceToken) { (response, statusCode, error) in
             if error.isEmpty {
                 print( "Response during device registration : \(response)")
