@@ -19,16 +19,16 @@ angular.module('bluepicWebApp')
             .state('explore', {
                 url: '/explore',
                 templateUrl: 'app/components/explore/explore.html',
-                resolve: {
-                    explorePhotos: function() {
-                    console.log("explore resolve") }
-                },
+                resolve: {},
                 controller: 'exploreController'
             })
             .state('profile', {
                 url: '/profile',
                 templateUrl: 'app/components/profile/profile.html',
                 resolve: {
+                    usersPhotos: ['ProfilePhotoService', function (ProfilePhotoService) {
+                        return ProfilePhotoService.getUsersPhotos();
+                    }]
                 },
                 controller: 'profileController'
             })

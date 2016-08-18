@@ -14,7 +14,12 @@
     text-align: center;
 }
 
-.flexMom{
+.navStyles {
+    padding: 19px 0px;
+    background-color: #000000
+}
+
+.flexParent{
     display:flex;
     flex-direction: row;
     justify-content: space-between;
@@ -28,6 +33,7 @@
     font-weight: 400;
     color: #999999;
     text-align: center;
+    width: 300px !important;
 }
 
 .fontAwesome {
@@ -40,6 +46,7 @@
     font-weight: 400;
     font-style: italic;
     color: #999999;
+    text-align: center;
 }
 
 .locationFont {
@@ -50,9 +57,10 @@
     letter-spacing: 1.9px;
     color: #333333;
     text-transform: uppercase;
+    text-align: center;
 }
 
-.imgOverlay {
+.greyBackground {
     background-color: rgba(51, 51, 51, 0.6);
 }
 
@@ -70,6 +78,7 @@
 }
 
 #overlay:hover .hideMetadata {
+    margin-top: 30px;
     visibility: visible;
     transition: 0.6s;
 }
@@ -81,4 +90,65 @@
     font-weight: 400;
     font-style: italic;
     text-align: center;
+}
+
+.cropHeight {
+    max-height: 200px;
+    overflow: hidden;
+}
+
+img.bannerImg {
+    display: block;
+    width: 100%; /* corrects obscure Firefox bug */
+    max-width: 100%;
+    height: auto !important;
+
+}
+
+.profileImg {
+    width: 150px;
+    height: 150px;
+    margin-top: -75px;
+    /*opacity: 0.9;*/
+    /*background-color: #999999;*/
+}
+
+.lineCenter {
+    text-align: center;
+}
+
+.topMargin {
+    margin-top: 15px;
+}
+
+.marginTop30 {
+    margin-top: 30px
+}
+
+.floatRight {
+    float: right;
+}
+
+.floatLeft {
+    float: left;
+}
+
+.cardMargin {
+    margin: 4%;
+}
+
+.profileCardMargin {
+    margin: 0 4% 0;
+}
+
+.marginLeft {
+    margin-left: 5%;
+}
+
+.marginLeft2 {
+    margin-left: 40px;
+}
+
+.marginsRight {
+    margin: 5px 5% 0 0;
 }

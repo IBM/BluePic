@@ -1,5 +1,40 @@
-<div class="card-columns" style="margin: 4%">
+<div class="cropHeight">
+    <img class="bannerImg" src="assets/img/hueco1.jpg">
+</div>
 
-    Profile
+<div class="row profileCardMargin">
+    <div class="col-sm-3 topMargin">
+        <p class="authorFont floatLeft">{{photoCount}} Shots</p>
+    </div>
+    <div class="col-sm-6">
+        <div class="text-xs-center">
+            <img src="assets/img/puppy.jpg" class="img-circle profileImg">
+        </div>
+        <div>
+            <h4 class="card-title locationFont marginTop30">location</h4>
+            <p class="card-subtitle authorFont">jennie oliver</p>
+            <div class="lineCenter"><img src="assets/img/line.png"></div>
+        </div>
+    </div>
+    <div class="col-sm-3 topMargin">
+        <img src="assets/img/Setings.png" class="floatRight">
+    </div>
+</div>
 
+<div class="card-columns cardMargin">
+    <div class="card card-outline-blank text-xs-center" ng-repeat="photo in usersPhotos">
+        <div id="overlay" class="imgOverlay" >
+            <img class="card-img-top greyBackground" src={{photo.url}} alt={{photo.location.name}}>
+            <div class="card-img-overlay card-inverse hideMetadata">
+                <p class="card-text metadataFont">{{photo.location.longitude}}, {{photo.location.latitude}}</p>
+                <h4 class="card-title locationFont">{{photo.location.name}}</h4>
+                <p class="card-text metadataFont">{{photo.uploadedTs}}</p>
+            </div>
+        </div>
+        <div>
+            <h4 class="card-title locationFont marginTop30">{{photo.location.name}}</h4>
+            <p class="card-subtitle authorFont">by {{photo.user.name}}</p>
+            <img src="assets/img/line.png">
+        </div>
+    </div>
 </div>
