@@ -25,11 +25,13 @@ class BluemixConfiguration: NSObject {
     private let kAppRouteRemote = "appRouteRemote"
     private let kBluemixAppGUIDKey = "bluemixAppGUID"
     private let kBluemixAppRegionKey = "bluemixAppRegion"
+    private let kBluemixPushAppGUIDKey = "pushAppGUID"
 
     let localBaseRequestURL: String
     let remoteBaseRequestURL: String
     let appGUID: String
     let appRegion: String
+    var pushAppGUID: String = ""
     var isLocal: Bool = true
 
     override init() {
@@ -50,6 +52,11 @@ class BluemixConfiguration: NSObject {
             }
             self.localBaseRequestURL = localBaseRequestURL
             self.remoteBaseRequestURL = remoteBaseRequestURL
+
+            // if present, add push app GUID
+            if let pushAppGUID = Utils.getStringValueWithKeyFromPlist(kBluemixKeysPlistName, key: kBluemixPushAppGUIDKey) {
+                self.pushAppGUID = pushAppGUID
+            }
 
             super.init()
         } else {

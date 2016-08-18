@@ -6,6 +6,11 @@ BluePic is a photo and image sharing sample application that allows you to take 
 
 Bluepic takes advantage of Swift in a typical iOS client setting, but also on the server-side using the new Swift web framework and HTTP Server, Kitura. An interesting feature of Bluepic, is the way it handles photos on the server. When an image is posted, it's data is recorded in Cloudant and the image binary is stored in Object Storage. From there, an [OpenWhisk](http://www.ibm.com/cloud-computing/bluemix/openwhisk/) sequence is invoked causing weather data like temperature and current condition (e.g. sunny, cloudy, etc.) to be calculated based on the location an image was uploaded from. AlchemyAPI is also used in the OpenWhisk sequence to analyze the image and extract text tags based on the content of the image. A push notification is finally sent to the user, informing them their image has been processed and now includes weather and tag data.
 
+## Known Issues
+
+- iOS devices with the BluePic app built from Xcode 8 [will not receive push notifications](https://github.com/IBM-Swift/BluePic/issues/299).
+- Weather functionality in OpenWhisk does not work due to [changes in the Bluemix Weather service](https://github.com/IBM-Swift/BluePic/issues/307). 
+
 ## Swift version
 The back-end components (i.e. Kitura-based server and OpenWhisk actions) and the iOS component of the BluePic app work with specific versions of the Swift binaries, see following table:
 
@@ -149,7 +154,9 @@ In order to have the app authenticate with Facebook, you must create an applicat
 ### 3. Configure Bluemix Push service
 To utilize push notification capabilities on Bluemix, you need to configure a notification provider. For BluePic, you should configure credentials for the Apple Push Notification Service (APNS). As part of this configuration step, you will need to use the **bundle identifier** you chose in the [Create an application instance on Facebook](#1-create-an-application-instance-on-facebook) section.
 
-Luckily, Bluemix has [instructions](https://console.ng.bluemix.net/docs/services/mobilepush/t_push_provider_ios.html) to walk you through that process. Please note that you'd need to upload a `.p12` certificate to Bluemix and enter the password for it, as described in the Bluemix instructions.
+Luckily, Bluemix has [instructions](https://console.ng.bluemix.net/docs/services/mobilepush/t_push_provider_ios.html) to walk you through the process of configuring APNS with your Bluemix Push service. Please note that you'd need to upload a `.p12` certificate to Bluemix and enter the password for it, as described in the Bluemix instructions.
+
+Additionally, the `appGuid ` for your Push service acts independently of the BluePic app so we will need to add that value to our `bluemix.plist`. We get the `appGuid ` by viewing our credentials for the Push service in Bluemix, all your services should be under the "Connections" of your app. Once there, click on the "View Credentials" button for your Push Notifications service and you should see the `appGuid ` pop up, among other values. Now, simply put that value into your `bluemix.plist` corresponding with the `pushAppGUID` key. This should ensure your device gets registered properly with the Push service.
 
 Lastly, remember that push notifications will only show up on a physical iOS device.
 
