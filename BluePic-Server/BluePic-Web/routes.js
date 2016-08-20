@@ -5,12 +5,15 @@ angular.module('bluepicWebApp')
     .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
 
         $stateProvider
-            .state('homepage', {
+            .state('login', {
                 url: '/',
+                templateUrl: 'app/components/login/login.html'
+            })
+            .state('homepage', {
+                url: '/homepage',
                 templateUrl: 'app/components/homepage/homepage.html',
                 resolve: {
                     photos: ['PhotosService', function (PhotosService) {
-                        console.log("in routes resolve")
                         return PhotosService.getAllPhotos();
                     }]
                 },
