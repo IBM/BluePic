@@ -154,14 +154,40 @@ img.bannerImg {
 }
 
 .backgroundImg {
-    /*background: url(../img/login-photo.png) no-repeat center center fixed;*/
-    /*background-size: cover;*/
-    /*position: absolute;*/
-    /*top: 0;*/
-    /*left: 0;*/
-    /*right: 0;*/
-    /*bottom: 0;*/
-    /*margin: auto;*/
-    /*min-width: 50%;*/
-    /*min-height: 50%;*/
+    background: url(http://www.minimit.com/images/picjumbo.com_IMG_6648.jpg) no-repeat center center fixed;
+    background-size: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    min-width: 50%;
+    min-height: 50%;
+}
+
+.background {
+    background: url(http://www.minimit.com/images/picjumbo.com_IMG_6648.jpg);
+    /*background: url("../img/login-photo.png");*/
+    background-repeat:no-repeat;
+    background-position:50% 50%;
+    background-size: cover;
+}
+
+.container2 {
+    display: table;
+    height: 100%;
+    position:absolute;
+    overflow: hidden;
+    width:100%;}
+
+.helper {
+    display: table-cell;
+    vertical-align: middle;}
+
+.content {
+    /*margin:0 auto;*/
+    /*width:200px;*/
+    text-align: center;
+    /*border:1px solid orange;*/
 }

@@ -25,6 +25,7 @@ import BluemixPushNotifications
 import MobileClientAccessKituraCredentialsPlugin
 import MobileClientAccess
 import Credentials
+import CredentialsFacebook
 
 /**
 * Function for setting up the different routes for this app.
@@ -32,9 +33,14 @@ import Credentials
 func defineRoutes() {
   // Credentials, database, and PushNotifications client...
   let credentials = Credentials()
-  credentials.register(plugin: MobileClientAccessKituraCredentialsPlugin())
-  let pushNotificationsClient =
+  //credentials.register(plugin: MobileClientAccessKituraCredentialsPlugin())
+  
+    let pushNotificationsClient =
   PushNotifications(bluemixRegion: PushNotifications.Region.US_SOUTH, bluemixAppGuid: mobileClientAccessProps.clientId, bluemixAppSecret: ibmPushProps.secret)
+    
+  // Facebook credentials
+  let fbCredentialsPlugin = CredentialsFacebookToken()
+  credentials.register(plugin: fbCredentialsPlugin)
 
   // Assign middleware instance (to securing endpoints)
   router.get("/users", middleware: credentials)
