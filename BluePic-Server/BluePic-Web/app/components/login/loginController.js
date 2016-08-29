@@ -1,7 +1,7 @@
 
 angular.module('bluepicWebApp')
-.controller('loginController', ['$scope', '$state',
-    function($scope, $state) {
+.controller('loginController', ['$scope', '$state', 'PropertiesService',
+    function($scope, $state, PropertiesService) {
         'use strict';
 
         $scope.checkLoginState = function() {
@@ -18,18 +18,19 @@ angular.module('bluepicWebApp')
             var fbLogin = document.getElementById('facebookLogin'),
                 fbLogout = document.getElementById('facebookLogout')
 
-            if (response.status === 'connected') {
-                // Logged into your app and Facebook.
+            if (response.status === 'connected') {  // Logged into your app and Facebook.
+
                 fbLogin.style.display = 'none';
                 fbLogout.style.display = 'inline';
                 $scope.testAPI();
+
+                console.log("token: " + response.authResponse.accessToken)
+                var accessToken = response.authResponse.accessToken;
+
+                PropertiesService.setAccessToken(accessToken);
+
                 $state.go("homepage")
-                //App.greetUser();
-                // Send user data if not logged in already.
-                if (localStorage.getItem('app_social_uid') === '') {
-                    // Send the user data to the server.
-                    //App.sendUserData();
-                }
+
             } else if (response.status === 'not_authorized') {
                 // The person is logged into Facebook, but not your app.
             } else {
@@ -52,7 +53,8 @@ angular.module('bluepicWebApp')
                 FB.getLoginStatus(function(response) {
                     $scope.statusChangeCallback(response);
                 });
-            }, {scope: 'public_profile, email'});
+            }, {scope: 'public_profile, email',
+            auth_type: 'reauthenticate'});
         }
 
         $scope.logoutFacebook = function() {
