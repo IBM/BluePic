@@ -64,4 +64,8 @@ angular.module('bluepicWebApp')
                 });
             });
         }
+
+        $scope.signInLater = function () {
+            $state.go('homepage')
+        }
 }]);

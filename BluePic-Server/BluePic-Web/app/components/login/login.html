@@ -2,15 +2,25 @@
     <div class="container2">
         <div class="helper">
             <div class="content">
-                <ul class="">
+                <ul class="listStyle">
                     <li>
-                        <img class="" src="assets/img/Logo@3x.png">
+                        <img class="" src="assets/img/Logo@2x.png">
                     </li>
                     <li>
-                        <div class="">Welcome to BluePic</div>
+                        <div class="welcomeTitle">Welcome to BluePic</div>
+                    </li>
+                    <li>
+                        <div class="welcomeBlurb">BluePic is an app for taking pictures and sharing them to the BluePic community. BluePic is built on IBM Bluemix services.</div>
+                    </li>
+                    <li>
+                        <img src="assets/img/line.png">
+                    </li>
+                    <li>
+                        <div class="space"></div>
                     </li>
                     <li>
                         <div>
+                            <p><a id="signInLater" class="signInLater" ng-click="signInLater();" role="button">I'll sign in later</a></p>
                             <p><a id="facebookLogin" class="btn btn-primary btn-lg btn-facebook" ng-click="loginUsingFacebook();" href="#" role="button">Sign in with facebook</a></p>
                             <p><a id="facebookLogout" style="display:none;" class="btn btn-warning btn-lg btn-facebook" ng-click="logoutFacebook();" href="#" role="button">Logout</a></p>
                         </div>

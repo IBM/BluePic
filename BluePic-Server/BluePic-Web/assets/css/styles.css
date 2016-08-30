@@ -154,7 +154,7 @@ img.bannerImg {
 }
 
 .backgroundImg {
-    background: url(http://www.minimit.com/images/picjumbo.com_IMG_6648.jpg) no-repeat center center fixed;
+    background: url('../img/nature.png') no-repeat center center fixed;
     background-size: cover;
     position: absolute;
     top: 0;
@@ -164,14 +164,6 @@ img.bannerImg {
     margin: auto;
     min-width: 50%;
     min-height: 50%;
-}
-
-.background {
-    background: url(http://www.minimit.com/images/picjumbo.com_IMG_6648.jpg);
-    /*background: url("../img/login-photo.png");*/
-    background-repeat:no-repeat;
-    background-position:50% 50%;
-    background-size: cover;
 }
 
 .container2 {
@@ -186,8 +178,42 @@ img.bannerImg {
     vertical-align: middle;}
 
 .content {
-    /*margin:0 auto;*/
-    /*width:200px;*/
+    margin:0 auto;
+    width: 30%;
     text-align: center;
-    /*border:1px solid orange;*/
+}
+
+.welcomeTitle {
+    /*font-family: Roboto;*/
+    font-size: 30px;
+    line-height: 2.33;
+    text-align: center;
+    color: #ffffff;
+}
+
+.welcomeBlurb {
+    /*font-family: Roboto;*/
+    font-size: 21px;
+    font-weight: 300;
+    line-height: 1.67;
+    text-align: center;
+    color: #ffffff;
+}
+
+.signInLater {
+    /*font-family: Roboto;*/
+    font-size: 18px;
+    line-height: 2;
+    letter-spacing: 0.6px;
+    text-align: center;
+    color: #ffffff !important;
+}
+
+.space {
+    height: 160px;
+}
+
+.listStyle {
+    list-style-type: none;
+    padding-left: 0px;
 }
