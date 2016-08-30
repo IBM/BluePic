@@ -15,7 +15,7 @@ angular.module('bluepicWebApp')
             });
         };
 
-        // Load the SDK asynchronously
+        // Load the Facebook SDK asynchronously
         (function(d, s, id) {
             console.log("loading async")
             var js, fjs = d.getElementsByTagName(s)[0];
@@ -53,6 +53,15 @@ angular.module('bluepicWebApp')
                 resolve: {
                     usersPhotos: ['ProfilePhotoService', function (ProfilePhotoService) {
                         return ProfilePhotoService.getUsersPhotos();
+                    }],
+                    userName: ['ProfilePhotoService', function (ProfilePhotoService) {
+                        return ProfilePhotoService.getUserName();
+                    }],
+                    fbProfileImg: ['ProfilePhotoService', function (ProfilePhotoService) {
+                        return ProfilePhotoService.getProfileImg();
+                    }],
+                    fbCoverImg: ['ProfilePhotoService', function (ProfilePhotoService) {
+                        return ProfilePhotoService.getProfileCoverImg();
                     }]
                 },
                 controller: 'profileController'

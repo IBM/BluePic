@@ -1,15 +1,65 @@
 angular.module('bluepicWebApp')
 
-    .service('ProfilePhotoService', ['$http', function ($http) {
+    .service('ProfilePhotoService', ['$http', '$q', '$rootScope', 'PropertiesService',
+        function ($http, $q, $rootScope, PropertiesService) {
 
-        /*
-         * For testing purposes, we'll grab all the photos.
-         * After we've worked out login, we'll grab photos for an individual for the profile.
-         */
 
-        this.getUsersPhotos = function() {
+        this.getUsersPhotos = function () {
 
-            var url = 'https://bluepic-unshort-apery.mybluemix.net/images';
-            return $http.get(url);
+            var token = PropertiesService.getAccessToken();
+            var userId = PropertiesService.getUserId();
+
+            var req = {
+                method: 'GET',
+                url: '/users/' +userId+ '/images',
+                headers: {
+                    'X-token-type': 'FacebookToken',
+                    'content-type': 'application/json',
+                    'access_token': token
+                }
+            }
+
+            return $http(req);
         }
+
+        this.getUserName = function () {
+
+            var token = PropertiesService.getAccessToken();
+            var userId = PropertiesService.getUserId();
+
+            var req = {
+                method: 'GET',
+                url: '/users/' +userId,
+                headers: {
+                    'X-token-type': 'FacebookToken',
+                    'content-type': 'application/json',
+                    'access_token': token
+                }
+            }
+
+            return $http(req);
+        }
+
+        this.getProfileImg = function () {
+
+            var deferred = $q.defer();
+
+            FB.api('/me/picture?type=normal', function (response) {
+                $rootScope.$apply(deferred.resolve(response.data.url));
+            });
+
+            return deferred.promise;
+        }
+
+        this.getProfileCoverImg = function () {
+
+            var deferred = $q.defer();
+
+            FB.api('/me?fields=cover', function(response) {
+                $rootScope.$apply(deferred.resolve(response.cover.source));
+            });
+
+            return deferred.promise;
+        }
+
     }]);

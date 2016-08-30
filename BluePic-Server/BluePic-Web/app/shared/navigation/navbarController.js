@@ -3,10 +3,7 @@ angular.module('bluepicWebApp')
         function($scope, PropertiesService, $state) {
             'use strict';
 
-            console.log("in navbarController, here's my token: " + PropertiesService.getAccessToken())
-
             $scope.goToProfile = function() {
-                console.log("in navbarController, here's my token: " + PropertiesService.getAccessToken())
                 $state.go("profile");
             }
 

@@ -1,7 +1,7 @@
 <div ng-include="'app/shared/navigation/navbar.html'"></div>
 
 <div class="cropHeight">
-    <img class="bannerImg" src="assets/img/hueco1.jpg">
+    <img class="bannerImg" ng-src="{{fbCoverImg}}">
 </div>
 
 <div class="row profileCardMargin">
@@ -10,11 +10,11 @@
     </div>
     <div class="col-sm-6">
         <div class="text-xs-center">
-            <img ng-src="{{profileImg}}" class="img-circle profileImg">
+            <img id="profileImage" ng-src="{{fbProfileImg}}" class="img-circle profileImg">
         </div>
         <div>
             <h4 class="card-title locationFont marginTop30">location</h4>
-            <p class="card-subtitle authorFont">jennie oliver</p>
+            <p class="card-subtitle authorFont">{{userName}}</p>
             <div class="lineCenter"><img src="assets/img/line.png"></div>
         </div>
     </div>
@@ -35,7 +35,7 @@
         </div>
         <div>
             <h4 class="card-title locationFont marginTop30">{{photo.location.name}}</h4>
-            <p class="card-subtitle authorFont">by {{photo.user.name}}</p>
+            <p class="card-subtitle authorFont">by {{userName}}</p>
             <img src="assets/img/line.png">
         </div>
     </div>

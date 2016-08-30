@@ -4,7 +4,6 @@ angular.module('bluepicWebApp')
     function($scope, photos, PropertiesService) {
         'use strict';
 
-        console.log("here's my token: " + PropertiesService.getAccessToken())
         $scope.photos = photos.data.records;
 
 }]);

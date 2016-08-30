@@ -4,7 +4,7 @@ angular.module('bluepicWebApp')
     .service('PhotosService', ['$http', function ($http) {
 
         this.getAllPhotos = function() {
-            var url = 'https://bluepic-unshort-apery.mybluemix.net/images';
+            var url = '/images';
             return $http.get(url);
         }
 }]);
