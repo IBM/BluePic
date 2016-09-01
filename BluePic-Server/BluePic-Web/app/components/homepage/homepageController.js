@@ -6,8 +6,12 @@ angular.module('bluepicWebApp')
 
         $scope.photos = photos.data.records;
 
-        $scope.openPhoto = function(id) {
-            $state.go("singlePhoto", {photoId:id})
+        $scope.openPhoto = function(id, index) {
+            console.log("index: "+index);
+            PropertiesService.setPhotos($scope.photos);
+            PropertiesService.setPhotoIndex(index);
+            PropertiesService.setPhotoId(id);
+            $state.go("singlePhoto", {photoId:id });
         }
 
 }]);

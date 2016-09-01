@@ -70,7 +70,7 @@
     text-align: center;
 }
 
-.locationFont2 {
+.locationFontLeft {
     /*font-family: SanFranciscoText;*/
     height: 40px;
     font-size: 18px;
@@ -255,4 +255,20 @@ img.bannerImg {
 .imgSizing {
     width: 100%;
     height: 100%;
+}
+
+.line {
+    border-top: solid #cccccc;
+}
+
+.autoMargin {
+    margin: auto;
+}
+
+.pagerCustom {
+    border: none !important;
+    font-size: 18px;
+    font-style: italic;
+    color: #999999;
+    line-height: 2.22;
 }

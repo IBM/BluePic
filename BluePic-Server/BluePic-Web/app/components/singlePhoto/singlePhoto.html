@@ -6,18 +6,46 @@
             <img class="img-responsive imgSizing" ng-src="{{photoUrl}}" alt="">
         </div>
         <div class="col-md-4">
-            <div class="locationFont2">{{locationName}}</div>
+            <div class="locationFontLeft">{{locationName}}</div>
             <div class="authorFont2">by {{userName}}</div>
             <img class="paddingBottom40 topMargin" src="assets/img/line.png">
             <div class="metadataFont2">{{coords}}</div>
-            <div class="locationFont2">{{caption}}</div>
+            <div class="locationFontLeft">{{caption}}</div>
             <div class="metadataFont2 paddingBottom40">{{timestamp}}</div>
             <div class="paddingBottom40">{{temp}}</div>
-            <div class="locationFont2">MAP</div>
+            <div class="locationFontLeft">MAP</div>
             <img class="imgSizing" ng-src={{mapUrl}}>
         </div>
     </div>
     <div class="row">
-        <!--paging-->
+        <div class="">
+            <ul class="pager">
+                <li class="previous"><a class="pagerCustom authorFont2" href="#">&lang; Previous</a></li>
+                <li class="next"><a class="pagerCustom" href="#">Next &rang;</a></li>
+            </ul>
+        </div>
+    </div>
+    <!--<img class="" src="assets/img/line.png">-->
+    <hr class="line">
+    <div class="row locationFontLeft autoMargin">similar photos</div>
+    <div class="row">
+        <div class="card-columns cardMargin">
+            <div class="card card-outline-blank text-xs-center" ng-repeat="photo in photos" >
+                <div id="overlay" class="imgOverlay">
+                    <img class="card-img-top greyBackground" src={{photo.url}} alt={{photo.location.name}}>
+                    <div class="card-img-overlay card-inverse hideMetadata">
+                        <p class="card-text metadataFont">{{photo.location.longitude}}, {{photo.location.latitude}}</p>
+                        <h4 class="card-title locationFont">{{photo.location.name}}</h4>
+                        <p class="card-text metadataFont">{{photo.uploadedTs}}</p>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="card-title locationFont marginTop30">{{photo.location.name}}</h4>
+                    <p class="card-subtitle authorFont">by {{photo.user.name}}</p>
+                    <img src="assets/img/line.png">
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>

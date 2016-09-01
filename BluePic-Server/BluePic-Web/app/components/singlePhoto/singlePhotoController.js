@@ -1,6 +1,6 @@
 angular.module('bluepicWebApp')
-    .controller('singlePhotoController', ['$scope', 'photo',
-        function($scope, photo) {
+    .controller('singlePhotoController', ['$scope', 'photo', 'PropertiesService',
+        function($scope, photo, PropertiesService) {
             'use strict';
 
             $scope.photoUrl = photo.data.url;
@@ -16,5 +16,11 @@ angular.module('bluepicWebApp')
                 "&zoom=7&" +
                 "size=370x150&" +
                 "maptype=terrain";
+
+            $scope.photos = PropertiesService.getPhotos();
+            var photoId = PropertiesService.getPhotoId();
+            var index = PropertiesService.getPhotoIndex();
+
+            //var num = $scope.photos.data.number_of_records;
 
         }]);
