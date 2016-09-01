@@ -35,7 +35,7 @@ func defineRoutes() {
   let credentials = Credentials()
   //credentials.register(plugin: MobileClientAccessKituraCredentialsPlugin())
   
-    let pushNotificationsClient =
+  let pushNotificationsClient =
   PushNotifications(bluemixRegion: PushNotifications.Region.US_SOUTH, bluemixAppGuid: mobileClientAccessProps.clientId, bluemixAppSecret: ibmPushProps.secret)
     
   // Facebook credentials
@@ -56,17 +56,7 @@ func defineRoutes() {
     next()
   }
 
-  router.all("/static", middleware: StaticFileServer(path: "./BluePic-Web"))
-
-  router.get("/") { request, response, next in
-
-    do {
-        try response.redirect("/static/index.html")
-
-    } catch {
-        Log.error("Problem redirecting static content.")
-    }
-  }
+  router.all("/", middleware: StaticFileServer(path: "./BluePic-Web"))
 
   // Ping endpoint
   router.get("/ping", handler: closure)

@@ -1,7 +1,7 @@
 <div ng-include="'app/shared/navigation/navbar.html'"></div>
 
 <div class="card-columns cardMargin">
-    <div class="card card-outline-blank text-xs-center" ng-repeat="photo in photos">
+    <div class="card card-outline-blank text-xs-center" ng-repeat="photo in photos" ng-click="openPhoto(photo._id);">
         <div id="overlay" class="imgOverlay">
             <img class="card-img-top greyBackground" src={{photo.url}} alt={{photo.location.name}}>
             <div class="card-img-overlay card-inverse hideMetadata">

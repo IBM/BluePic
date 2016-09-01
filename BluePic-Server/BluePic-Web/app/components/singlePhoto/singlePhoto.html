@@ -1,0 +1,23 @@
+<div ng-include="'app/shared/navigation/navbar.html'"></div>
+
+<div class="column cardMargin">
+    <div class="row">
+        <div class="col-md-8">
+            <img class="img-responsive imgSizing" ng-src="{{photoUrl}}" alt="">
+        </div>
+        <div class="col-md-4">
+            <div class="locationFont2">{{locationName}}</div>
+            <div class="authorFont2">by {{userName}}</div>
+            <img class="paddingBottom40 topMargin" src="assets/img/line.png">
+            <div class="metadataFont2">{{coords}}</div>
+            <div class="locationFont2">{{caption}}</div>
+            <div class="metadataFont2 paddingBottom40">{{timestamp}}</div>
+            <div class="paddingBottom40">{{temp}}</div>
+            <div class="locationFont2">MAP</div>
+            <img class="imgSizing" ng-src={{mapUrl}}>
+        </div>
+    </div>
+    <div class="row">
+        <!--paging-->
+    </div>
+</div>

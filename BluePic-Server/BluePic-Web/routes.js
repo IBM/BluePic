@@ -66,6 +66,16 @@ angular.module('bluepicWebApp')
                 },
                 controller: 'profileController'
             })
+            .state('singlePhoto', {
+                url: '/photo/:photoId',
+                templateUrl: 'app/components/singlePhoto/singlePhoto.html',
+                resolve: {
+                    photo: ['SinglePhotoService', '$stateParams', function (SinglePhotoService, $stateParams) {
+                        return SinglePhotoService.getPhoto($stateParams.photoId);
+                    }]
+                },
+                controller: 'singlePhotoController'
+            })
 
         $urlRouterProvider.otherwise('/');
 
