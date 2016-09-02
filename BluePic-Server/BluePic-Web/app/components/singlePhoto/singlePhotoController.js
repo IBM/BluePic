@@ -1,6 +1,6 @@
 angular.module('bluepicWebApp')
-    .controller('singlePhotoController', ['$scope', 'photo', 'PropertiesService',
-        function($scope, photo, PropertiesService) {
+    .controller('singlePhotoController', ['$scope', 'photo', 'PropertiesService', '$state',
+        function($scope, photo, PropertiesService, $state) {
             'use strict';
 
             $scope.photoUrl = photo.data.url;
@@ -21,6 +21,23 @@ angular.module('bluepicWebApp')
             var photoId = PropertiesService.getPhotoId();
             var index = PropertiesService.getPhotoIndex();
 
-            //var num = $scope.photos.data.number_of_records;
+            var numPhotos = $scope.photos.length;
+
+            $scope.pagePhoto = function (direction) {
+
+                if(direction === "left" && index > 0) {
+                    index--;
+                }
+                else if (direction === "right" && index < numPhotos) {
+                    index++;
+                }
+
+                var newPhoto = $scope.photos[index];
+
+                PropertiesService.setPhotoIndex(index);
+                PropertiesService.setPhotoId(newPhoto._id);
+                $state.go("singlePhoto", {photoId:newPhoto._id});
+
+            }
 
         }]);

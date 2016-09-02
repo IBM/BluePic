@@ -23,20 +23,4 @@
     </div>
 </div>
 
-<div class="card-columns cardMargin">
-    <div class="card card-outline-blank text-xs-center" ng-repeat="photo in usersPhotos">
-        <div id="overlay" class="imgOverlay" >
-            <img class="card-img-top greyBackground" src={{photo.url}} alt={{photo.location.name}}>
-            <div class="card-img-overlay card-inverse hideMetadata">
-                <p class="card-text metadataFont">{{photo.location.longitude}}, {{photo.location.latitude}}</p>
-                <h4 class="card-title locationFont">{{photo.location.name}}</h4>
-                <p class="card-text metadataFont">{{photo.uploadedTs}}</p>
-            </div>
-        </div>
-        <div>
-            <h4 class="card-title locationFont marginTop30">{{photo.location.name}}</h4>
-            <p class="card-subtitle authorFont">by {{userName}}</p>
-            <img src="assets/img/line.png">
-        </div>
-    </div>
-</div>
+<div ng-include="'app/shared/photoCards/photoCards.html'"></div>
