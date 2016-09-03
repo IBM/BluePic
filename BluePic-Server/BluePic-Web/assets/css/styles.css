@@ -151,7 +151,7 @@ img.bannerImg {
 }
 
 .marginTop30 {
-    margin-top: 30px
+    margin-top: 30px !important;
 }
 
 .floatRight {
@@ -258,11 +258,15 @@ img.bannerImg {
 }
 
 .line {
-    border-top: solid #cccccc;
+    width:100%;
 }
 
 .autoMargin {
     margin: auto;
+}
+
+.adjustMargin {
+    margin: 15px -10px 25px -10px;
 }
 
 .pagerCustom {
@@ -271,4 +275,24 @@ img.bannerImg {
     font-style: italic;
     color: #999999;
     line-height: 2.22;
+    padding: 5px 0px !important;
+}
+
+.tagCustom {
+    color: #0091ea;
+    height: 30px;
+    border-radius: 2px;
+    margin: 10px;
+
+}
+
+.tagLabel {
+    height: 19.3px;
+    /*font-family: SanFranciscoText;*/
+    font-size: 12.5px;
+    font-weight: bold;
+    letter-spacing: 2.8px;
+    color: #ffffff;
+    text-transform: uppercase;
+    vertical-align: middle;
 }

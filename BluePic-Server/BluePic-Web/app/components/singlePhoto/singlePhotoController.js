@@ -40,4 +40,6 @@ angular.module('bluepicWebApp')
 
             }
 
-        }]);
+            $scope.tags = photo.data.tags;
+
+    }]);

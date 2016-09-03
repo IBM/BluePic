@@ -1,7 +1,7 @@
 <div ng-include="'app/shared/navigation/navbar.html'"></div>
 
 <div class="column cardMargin">
-    <div class="row">
+    <div class="row autoMargin">
         <div class="col-md-8">
             <img class="img-responsive imgSizing" ng-src="{{photoUrl}}" alt="">
         </div>
@@ -17,7 +17,7 @@
             <img class="imgSizing" ng-src={{mapUrl}}>
         </div>
     </div>
-    <div class="row">
+    <div class="row autoMargin">
         <div class="">
             <ul class="pager">
                 <li class="previous" ng-click="pagePhoto('left')"><a class="pagerCustom authorFont2">&lang; Previous</a></li>
@@ -25,10 +25,16 @@
             </ul>
         </div>
     </div>
-    <!--<img class="" src="assets/img/line.png">-->
-    <hr class="line">
-    <div class="row locationFontLeft autoMargin">similar photos</div>
-    <div class="row">
+    <div class="row autoMargin">
+        <div class="row locationFontLeft autoMargin">related tags</div>
+        <div class="row authorFont2 autoMargin">Discover content through related tags:</div>
+        <div class="row autoMargin adjustMargin">
+            <div ng-include="'app/shared/tagCloud/tagCloud.html'"></div>
+        </div>
+    </div>
+    <div class="row autoMargin"><img class="line" src="assets/img/line-long.png"></div>
+    <div class="row locationFontLeft autoMargin marginTop30">similar photos</div>
+    <div class="row autoMargin">
         <div ng-include="'app/shared/photoCards/photoCards.html'"></div>
     </div>
 </div>
