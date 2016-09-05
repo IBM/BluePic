@@ -6,4 +6,7 @@ angular.module('bluepicWebApp')
 
         $scope.photos = photos.data.records;
 
+        $scope.sortType = 'tags';
+        $scope.searchTerm = { value: ""};
+
 }]);
