@@ -16,7 +16,8 @@
 
 .navStyles {
     padding: 19px 0px;
-    background-color: #000000
+    background-color: #000000;
+    margin-bottom: 0px;
 }
 
 .flexParent{
@@ -295,4 +296,23 @@ img.bannerImg {
     color: #ffffff;
     text-transform: uppercase;
     vertical-align: middle;
+}
+
+.tagCloud {
+    padding: 3% 5%;
+    background-color: #f4f4f4;
+}
+
+.searchResults {
+    height: 40px;
+    /*font-family: SanFranciscoText;*/
+    font-size: 18px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 2.22;
+    letter-spacing: 1.9px;
+    color: #aaaaaa;
+    margin: 3% 5% 0px;
+    text-transform: uppercase;
 }

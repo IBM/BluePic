@@ -1,5 +1,5 @@
 <div class="card-columns cardMargin" ng-controller="photoCardsController">
-    <div class="card card-outline-blank text-xs-center" ng-repeat="photo in photos | orderBy:sortType | filter:searchTerm.value:strict" ng-click="openPhoto(photo._id, $index);">
+    <div class="card card-outline-blank text-xs-center" ng-repeat="photo in photos | filter:searchTerm.value:strict" ng-click="openPhoto(photo._id, $index);">
         <div id="overlay" class="imgOverlay">
             <img class="card-img-top greyBackground" src={{photo.url}} alt={{photo.location.name}}>
             <div class="card-img-overlay card-inverse hideMetadata">
