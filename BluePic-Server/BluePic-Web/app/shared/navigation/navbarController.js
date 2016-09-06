@@ -4,6 +4,7 @@ angular.module('bluepicWebApp')
             'use strict';
 
             $scope.goToProfile = function() {
+
                 // Redirect to profile page only if user is logged in
                 if (PropertiesService.getAccessToken()) {
                     $state.go('profile');
@@ -11,6 +12,11 @@ angular.module('bluepicWebApp')
                 else {
                     $state.go('login');
                 }
+
+            }
+
+            $scope.goToHomepage = function() {
+                $state.go('homepage')
 
             }
 

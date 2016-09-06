@@ -42,4 +42,6 @@ angular.module('bluepicWebApp')
 
             $scope.tags = photo.data.tags;
 
+            $scope.searchTerm = { value: ""};
+
     }]);
