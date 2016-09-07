@@ -3,12 +3,12 @@ angular.module('bluepicWebApp')
         function($scope, $state, PropertiesService) {
             'use strict';
 
-    $scope.openPhoto = function(id, index) {
+        $scope.openPhoto = function(id, index) {
 
-        PropertiesService.setPhotos($scope.photos);
-        PropertiesService.setPhotoIndex(index);
-        PropertiesService.setPhotoId(id);
-        $state.go("singlePhoto", {photoId:id });
-    }
+            PropertiesService.setPhotos($scope.photos);
+            PropertiesService.setPhotoIndex(index);
+            PropertiesService.setPhotoId(id);
+            $state.go("singlePhoto", {photoId:id });
+        }
 
 }]);

@@ -183,9 +183,13 @@ img.bannerImg {
     margin: 5px 5% 0 0;
 }
 
+.marginBottom {
+    margin-bottom: 25px;
+}
+
 .backgroundImg {
     background: url('../img/nature.png') no-repeat center center fixed;
-    /*background-color: cornflowerblue;*/
+    background-color: cornflowerblue;
     background-size: cover;
     position: absolute;
     top: 0;

@@ -4,6 +4,7 @@ angular.module('bluepicWebApp')
             'use strict';
 
             $scope.searchTag = function (label) {
+
                 $scope.searchTerm.value.$ = label;
             }
 
