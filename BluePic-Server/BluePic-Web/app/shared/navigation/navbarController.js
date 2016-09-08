@@ -16,7 +16,13 @@ angular.module('bluepicWebApp')
             }
 
             $scope.goToHomepage = function() {
-                $state.go('homepage')
+
+                // clear search results before photos are re-loaded
+                if($scope.searchTerm.value && $scope.searchTerm.value.$) {
+                    $scope.searchTerm.value.$ = "";
+                }
+
+                $state.go('homepage');
 
             }
 
