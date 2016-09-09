@@ -65,7 +65,7 @@ public class Request: BaseRequest {
             }
 			
 			let authManager = BMSClient.sharedInstance.authorizationManager;
-            guard let unWrappedResponse = response where
+            guard let unWrappedResponse = response,
 					authManager.isAuthorizationRequired(forHttpResponse: unWrappedResponse) &&
                     self.oauthFailCounter < 2
 			else {

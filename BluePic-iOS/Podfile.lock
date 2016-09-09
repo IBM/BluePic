@@ -1,29 +1,27 @@
 PODS:
-  - BMSAnalyticsAPI (1.1.0)
-  - BMSCore (1.1.0):
+  - BMSAnalyticsAPI (1.1.1)
+  - BMSCore (1.2.0):
     - BMSAnalyticsAPI (~> 1.1.0)
-  - BMSFacebookAuthentication (1.0.0):
+  - BMSFacebookAuthentication (1.0.1):
     - BMSSecurity (~> 1.0)
     - FBSDKLoginKit (~> 4.9)
-  - BMSPush (1.0.7):
+  - BMSPush (1.1.01):
     - BMSCore (~> 1.0)
-  - BMSSecurity (1.1.5):
+  - BMSSecurity (1.2.1):
     - BMSCore (~> 1.0)
-    - RNCryptor (~> 4.0.0-beta)
   - Bolts (1.8.4):
     - Bolts/AppLinks (= 1.8.4)
     - Bolts/Tasks (= 1.8.4)
   - Bolts/AppLinks (1.8.4):
     - Bolts/Tasks
   - Bolts/Tasks (1.8.4)
-  - FBSDKCoreKit (4.14.0):
+  - FBSDKCoreKit (4.15.1):
     - Bolts (~> 1.7)
-  - FBSDKLoginKit (4.14.0):
+  - FBSDKLoginKit (4.15.1):
     - FBSDKCoreKit
-  - RNCryptor (4.0.0)
-  - SDWebImage (3.8.1):
-    - SDWebImage/Core (= 3.8.1)
-  - SDWebImage/Core (3.8.1)
+  - SDWebImage (3.8.2):
+    - SDWebImage/Core (= 3.8.2)
+  - SDWebImage/Core (3.8.2)
   - SVProgressHUD (2.0.3)
 
 DEPENDENCIES:
@@ -33,18 +31,17 @@ DEPENDENCIES:
   - SVProgressHUD
 
 SPEC CHECKSUMS:
-  BMSAnalyticsAPI: ed1d105a9197a6c875adf5a08aad120351004c40
-  BMSCore: f8213c1adcf15166785cdfee3e7776e879c6ad12
-  BMSFacebookAuthentication: 458439bc09a498ad5738757f202bea66c8f3077a
-  BMSPush: 7d99ad8a885be753fe43fae32309533912c89c38
-  BMSSecurity: 683c0416d772fd5092ebaeccb9dbd6602972b7e3
+  BMSAnalyticsAPI: 297b443a3d31f96aef8ab5ae9a3ce5da7e79c897
+  BMSCore: a087d8df7beed83caf9e8b8501bac5993e32cd58
+  BMSFacebookAuthentication: ab422cf70167b4486616311809b3013034e0194e
+  BMSPush: 85854a571f38727a80b4c04874e3dc1490d65559
+  BMSSecurity: f74a6febb4c0a2b801e5bc87b93ee319f27fe144
   Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
-  FBSDKCoreKit: 6e020b5db0b5bd1e01f5fb0902131befd129a502
-  FBSDKLoginKit: da563567a108050ef83739c8c8c001ee9e25fa13
-  RNCryptor: 59d6483908115af5c12b884db23392024e52a5fe
-  SDWebImage: 35f9627a3e44b4f292a8a8ce6a531fa488239b91
+  FBSDKCoreKit: fc7fa53d16b095ee3fd53f0cd59f1df8bcbb634d
+  FBSDKLoginKit: 073f79b3b2e762fc6f54a283fe15f45372d59f5f
+  SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
   SVProgressHUD: b0830714205bea1317ea1a2ebc71e5633af334d4
 
 PODFILE CHECKSUM: a92daf1827d4fade680977520b6c0331c2c3b3ab
 
-COCOAPODS: 1.0.1
+COCOAPODS: 1.1.0.beta.2

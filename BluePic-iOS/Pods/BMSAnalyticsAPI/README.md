@@ -1,45 +1,13 @@
-IBM Bluemix Mobile Services - Client SDK Swift Analytics
+IBM Bluemix Mobile Services - Client SDK Swift Analytics API
 ===================================================
 
 [![Build Status](https://travis-ci.org/ibm-bluemix-mobile-services/bms-clientsdk-swift-analytics-api.svg?branch=master)](https://travis-ci.org/ibm-bluemix-mobile-services/bms-clientsdk-swift-analytics-api)
 [![Build Status](https://travis-ci.org/ibm-bluemix-mobile-services/bms-clientsdk-swift-analytics-api.svg?branch=development)](https://travis-ci.org/ibm-bluemix-mobile-services/bms-clientsdk-swift-analytics-api)
 
-This is the analytics and logger component of the Swift SDK for [IBM Bluemix Mobile Services](https://console.ng.bluemix.net/docs/services/mobile.html).
 
+BMSAnalyticsAPI provides interfaces and basic implementation of Logger and Analytics for [BMSCore](https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-swift-core). 
 
-## Requirements
-* iOS 8.0+ / watchOS 2.0+
-* Xcode 7
-
-
-## Installation
-The Bluemix Mobile Services Swift SDKs are available via [Cocoapods](http://cocoapods.org/) and [Carthage](https://github.com/Carthage/Carthage).
-
-#### Cocoapods
-To install BMSAnalytics using Cocoapods, add it to your Podfile:
-
-```ruby
-use_frameworks!
-
-target 'MyApp' do
-    platform :ios, '8.0'
-    pod 'BMSAnalytics'
-end
-```
-
-Then run the `pod install` command.
-
-#### Carthage
-To install BMSAnalytics using Carthage, add it to your Cartfile: 
-
-```ogdl
-github "ibm-bluemix-mobile-services/bms-clientsdk-swift-analytics"
-```
-
-Then run the `carthage update` command. Once the build is finished, drag the `BMSAnalytics.framework`, `BMSCore.framework`, and `BMSAnalyticsAPI.framework` files into your Xcode project. 
-
-To complete the integration, follow the instructions [here](https://github.com/Carthage/Carthage#getting-started).
-
+This framework is an internal dependency for BMSCore and is not intended for use in any other project. 
 
 =======================
 Copyright 2015 IBM Corp.

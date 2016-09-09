@@ -12,6 +12,105 @@
 */
 
 import BMSCore
+
+ #if swift (>=3.0)
+
+public class ChallengeHandler : AuthenticationContext{
+    
+    internal var realm:String
+    internal var authenticationDelegate:AuthenticationDelegate?
+    internal var waitingRequests:[AuthorizationRequestManager]
+    internal var activeRequest:AuthorizationRequestManager?
+    
+   
+    internal var lockQueue = DispatchQueue(label: "ChallengeHandlerQueue", attributes: DispatchQueue.Attributes.concurrent)
+
+    public init(realm:String , authenticationDelegate:AuthenticationDelegate) {
+        self.realm = realm
+        self.authenticationDelegate = authenticationDelegate
+        self.activeRequest = nil
+        self.waitingRequests = [AuthorizationRequestManager]()
+    }
+    
+    public func submitAuthenticationChallengeAnswer(_ answer:[String:AnyObject]?) {
+        lockQueue.async(flags: .barrier, execute: {
+            guard let aRequest = self.activeRequest else {
+                return
+            }
+            
+            if answer != nil {
+                aRequest.submitAnswer(answer, realm: self.realm)
+            } else {
+                aRequest.removeExpectedAnswer(self.realm)
+            }
+            self.activeRequest = nil
+        })
+    }
+    
+    public func submitAuthenticationSuccess () {
+        lockQueue.async(flags: .barrier, execute: {
+            if self.activeRequest != nil {
+                self.activeRequest!.removeExpectedAnswer(self.realm)
+                self.activeRequest = nil
+            }
+            
+            self.releaseWaitingList()
+        })
+    }
+    
+    public func submitAuthenticationFailure (_ info:[String:AnyObject]?) {
+        lockQueue.async(flags: .barrier, execute: {
+            if self.activeRequest != nil {
+                self.activeRequest!.requestFailed(info)
+                self.activeRequest = nil
+            }
+            self.releaseWaitingList()
+        })
+    }
+    
+    internal func handleChallenge(_ request:AuthorizationRequestManager, challenge:[String:AnyObject]) {
+        lockQueue.async(flags: .barrier, execute: {
+            if self.activeRequest == nil {
+                self.activeRequest = request
+                if let unWrappedListener = self.authenticationDelegate{
+                    unWrappedListener.onAuthenticationChallengeReceived(self, challenge: challenge)
+                }
+            } else {
+                self.waitingRequests.append(request)
+            }
+        })
+    }
+    
+    internal func handleSuccess(_ success:[String:AnyObject]) {
+        lockQueue.async(flags: .barrier, execute: {
+            if let unWrappedListener = self.authenticationDelegate{
+                unWrappedListener.onAuthenticationSuccess(success)
+            }
+            self.releaseWaitingList()
+            self.activeRequest = nil
+        })
+    }
+    internal func handleFailure(_ failure:[String:AnyObject]) {
+        lockQueue.async(flags: .barrier, execute: {
+            if let unWrappedListener = self.authenticationDelegate{
+                unWrappedListener.onAuthenticationFailure(failure)
+            }
+            self.clearWaitingList()
+            self.activeRequest = nil
+        })
+    }
+    private func releaseWaitingList() {
+        for request in self.waitingRequests {
+            request.removeExpectedAnswer(self.realm)
+        }
+        self.clearWaitingList()
+    }
+    private func clearWaitingList() {
+        self.waitingRequests.removeAll()
+    }
+}
+
+#else
 public class ChallengeHandler : AuthenticationContext{
     
     internal var realm:String
@@ -19,7 +118,7 @@ public class ChallengeHandler : AuthenticationContext{
     internal var waitingRequests:[AuthorizationRequestManager]
     internal var activeRequest:AuthorizationRequestManager?
     internal var lockQueue = dispatch_queue_create("ChallengeHandlerQueue", DISPATCH_QUEUE_CONCURRENT)
-
+    
     public init(realm:String , authenticationDelegate:AuthenticationDelegate) {
         self.realm = realm
         self.authenticationDelegate = authenticationDelegate
@@ -104,3 +203,5 @@ public class ChallengeHandler : AuthenticationContext{
         self.waitingRequests.removeAll()
     }
 }
+
+#endif

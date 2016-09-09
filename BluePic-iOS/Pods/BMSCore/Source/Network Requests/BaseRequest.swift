@@ -147,7 +147,7 @@ public class BaseRequest: NSObject, URLSessionTaskDelegate {
         self.queryParameters = queryParameters
                 
         // Set timeout and initialize network session and request
-        let configuration = URLSessionConfiguration.default()
+        let configuration = URLSessionConfiguration.default
         configuration.timeoutIntervalForRequest = timeout
 
 		self.cachePolicy = cachePolicy
@@ -248,7 +248,7 @@ public class BaseRequest: NSObject, URLSessionTaskDelegate {
         
         // A callback that builds the Response object and passes it to the user
         let buildAndSendResponse = {
-            (data: Data?, response: URLResponse?, error: NSError?) -> Void in
+            (data: Data?, response: URLResponse?, error: Error?) -> Void in
             
             let networkResponse = Response(responseData: data, httpResponse: response as? HTTPURLResponse, isRedirect: self.allowRedirects)
 
