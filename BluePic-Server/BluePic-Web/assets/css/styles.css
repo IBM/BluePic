@@ -90,6 +90,7 @@
     max-height: 100%;
     max-width: 100%;
 }
+
 .imgOverlay:hover img {
     opacity: 0.5;
     transition: 0.6s;
@@ -165,6 +166,10 @@ img.bannerImg {
 
 .cardMargin {
     margin: 4%;
+}
+
+.deckMargin {
+    margin: 0% 4% 4%;
 }
 
 .profileCardMargin {
@@ -319,4 +324,25 @@ img.bannerImg {
     color: #aaaaaa;
     margin: 3% 5% 0px;
     text-transform: uppercase;
+}
+
+/* override card-deck in order to show only 3 columns of cards */
+.card-deck {
+    display: flex;
+    justify-content: flex-start;
+    flex-flow: row wrap;
+    align-items: stretch;
+}
+.card-deck .card {
+    display: block;
+    flex-basis: 24.6%;
+    height: 500px;
+    margin: 3%;
+    border: none;
+}
+
+.cardDeckCustom {
+    height:370px;
+    width:100%;
+    object-fit:cover;
 }

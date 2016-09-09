@@ -1,5 +1,18 @@
-<div class="card-columns" style="margin: 4%">
-
-    Explore
-
+<div ng-include="'app/shared/navigation/navbar.html'"></div>
+<!--<div ng-show="searchTerm.value.$" class="tagCloud" ng-include="'app/shared/tagCloud/tagCloud.html'"></div>-->
+<!--<div ng-show="searchTerm.value.$" class="searchResults">Results for {{searchTerm.value.$}}</div>-->
+<div class="searchResults ">Collections</div>
+<div class="card-deck-wrapper">
+    <div class="card-deck text-xs-center deckMargin">
+        <div class="card" ng-repeat="photo in photos | filter:searchTerm.value:strict" ng-click="openCollection($index);">
+            <div id="" class="">
+                <img class="card-img-top cardDeckCustom" ng-src={{photo.url}} style="">
+            </div>
+            <div class="marginBottom">
+                <h4 class="card-title locationFont marginTop30">Collection name</h4>
+                <p class="card-subtitle authorFont">19 photos</p>
+                <img src="assets/img/line.png">
+            </div>
+        </div>
     </div>
+</div>

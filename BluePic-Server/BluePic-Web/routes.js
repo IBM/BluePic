@@ -44,7 +44,11 @@ angular.module('bluepicWebApp')
             .state('explore', {
                 url: '/explore',
                 templateUrl: 'app/components/explore/explore.html',
-                resolve: {},
+                resolve: {
+                    photos: ['PhotosService', function (PhotosService) {
+                        return PhotosService.getAllPhotos();
+                    }]
+                },
                 controller: 'exploreController'
             })
             .state('profile', {
