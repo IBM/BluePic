@@ -4,13 +4,13 @@
 <div class="searchResults ">Collections</div>
 <div class="card-deck-wrapper">
     <div class="card-deck text-xs-center deckMargin">
-        <div class="card" ng-repeat="photo in photos | filter:searchTerm.value:strict" ng-click="openCollection($index);">
+        <div class="card" ng-repeat="collection in collections.tags" ng-click="openCollection(collection.tagLabel);">
             <div id="" class="">
-                <img class="card-img-top cardDeckCustom" ng-src={{photo.url}} style="">
+                <img class="card-img-top cardDeckCustom" ng-src={{collections.images[collection.photos[0]].url}}>
             </div>
             <div class="marginBottom">
-                <h4 class="card-title locationFont marginTop30">Collection name</h4>
-                <p class="card-subtitle authorFont">19 photos</p>
+                <h4 class="card-title locationFont marginTop30">{{collection.tagLabel}}</h4>
+                <p class="card-subtitle authorFont">{{collection.photos.length}} photos</p>
                 <img src="assets/img/line.png">
             </div>
         </div>

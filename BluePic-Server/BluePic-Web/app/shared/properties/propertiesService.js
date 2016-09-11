@@ -3,7 +3,7 @@ angular.module('bluepicWebApp')
     .service('PropertiesService', function () {
 
         var accessToken = "";
-        var userId = "10207793454308819";  //temporary test userID - Taylor Franklin
+        var userId = "1001";  //temporary test userID
         var photos = [];
         var photoId = null;
         var photoIndex = -1;
