@@ -5,7 +5,6 @@ angular.module('bluepicWebApp')
     .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
 
         window.fbAsyncInit = function() {
-            console.log("initializing")
             FB.init({
                 appId      : '225552221180006', //'1545401759089721', <-- MIL appId
                 cookie     : true,  // enable cookies to allow the server to access
@@ -17,7 +16,6 @@ angular.module('bluepicWebApp')
 
         // Load the Facebook SDK asynchronously
         (function(d, s, id) {
-            console.log("loading async")
             var js, fjs = d.getElementsByTagName(s)[0];
             if (d.getElementById(id)) return;
             js = d.createElement(s); js.id = id;

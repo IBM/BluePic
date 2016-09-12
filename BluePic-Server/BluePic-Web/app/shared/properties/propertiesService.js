@@ -3,7 +3,8 @@ angular.module('bluepicWebApp')
     .service('PropertiesService', function () {
 
         var accessToken = "";
-        var userId = "1001";  //temporary test userID
+        var userName = "";
+        var userId = "1002";  // Isaac Newton test userID: 102496306870321
         var photos = [];
         var photoId = null;
         var photoIndex = -1;
@@ -38,6 +39,12 @@ angular.module('bluepicWebApp')
             },
             setPhotoIndex: function (value) {
                 photoIndex = value;
+            },
+            getFbUserName: function () {
+                return userName;
+            },
+            setFbUserName: function (value) {
+                userName = value;
             }
         };
     });

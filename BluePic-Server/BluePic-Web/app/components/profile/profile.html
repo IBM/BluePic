@@ -13,7 +13,7 @@
             <img id="profileImage" ng-src="{{fbProfileImg}}" class="img-circle profileImg">
         </div>
         <div>
-            <h4 class="card-title locationFont marginTop30">{{userName}}</h4>
+            <h4 class="card-title locationFont marginTop30">{{userName || backupUserName}}</h4>
             <p class="card-subtitle authorFont">{{userName}}</p>
             <div class="lineCenter"><img src="assets/img/line.png"></div>
         </div>

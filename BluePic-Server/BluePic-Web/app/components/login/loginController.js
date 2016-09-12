@@ -12,8 +12,6 @@ angular.module('bluepicWebApp')
 
         // This is called with the results from from FB.getLoginStatus().
         $scope.statusChangeCallback = function(response) {
-            console.log('statusChangeCallback');
-            console.log(response);
 
             var fbLogin = document.getElementById('facebookLogin'),
                 fbLogout = document.getElementById('facebookLogout')
@@ -42,8 +40,8 @@ angular.module('bluepicWebApp')
         }
 
         $scope.testAPI = function() {
-            console.log('Welcome!  Fetching your information.... ');
             FB.api('/me', function(response) {
+                PropertiesService.setFbUserName(response.name);
                 console.log('Successful login for: ' + response.name);
             });
         }
