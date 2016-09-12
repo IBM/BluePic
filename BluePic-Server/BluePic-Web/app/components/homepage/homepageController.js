@@ -1,16 +1,18 @@
 
 angular.module('bluepicWebApp')
-.controller('homepageController', ['$scope', 'photos',
-    function($scope, photos) {
+.controller('homepageController', ['$scope', 'photos', "PropertiesService",
+    function($scope, photos, PropertiesService) {
         'use strict';
 
         $scope.photos = photos.data.records;
 
-        $scope.searchTerm = { value: ""};
+        // searchTerm initializes to "" or to a string set by Explore page
+        $scope.searchTerm = { value: PropertiesService.getSearchTerm()};
 
         $scope.tags = extractTags();
 
         function extractTags () {
+
             var tagsArray = [], index, tagIndex, photoTags;
             var photosArray = $scope.photos;
 
@@ -28,6 +30,7 @@ angular.module('bluepicWebApp')
         }
 
         function tagIsOriginal(tag, tagsArray) {
+
             var index;
 
             for (index in tagsArray) {

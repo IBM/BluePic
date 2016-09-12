@@ -12,18 +12,12 @@ angular.module('bluepicWebApp')
                 else {
                     $state.go('login');
                 }
-
             }
 
             $scope.goToHomepage = function() {
 
-                // clear search results before photos are re-loaded
-                if($scope.searchTerm.value && $scope.searchTerm.value.$) {
-                    $scope.searchTerm.value.$ = "";
-                }
-
+                PropertiesService.setSearchTerm("");
                 $state.go('homepage');
-
             }
 
         }]);

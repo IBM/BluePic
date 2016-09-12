@@ -8,6 +8,7 @@ angular.module('bluepicWebApp')
         var photos = [];
         var photoId = null;
         var photoIndex = -1;
+        var searchTerm = "";
 
         return {
             getAccessToken: function () {
@@ -45,6 +46,12 @@ angular.module('bluepicWebApp')
             },
             setFbUserName: function (value) {
                 userName = value;
+            },
+            getSearchTerm: function () {
+                return searchTerm;
+            },
+            setSearchTerm: function (value) {
+                searchTerm = value;
             }
         };
     });

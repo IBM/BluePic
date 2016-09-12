@@ -5,7 +5,7 @@ angular.module('bluepicWebApp')
 
             $scope.searchTag = function (label) {
 
-                $scope.searchTerm.value.$ = label;
+                $scope.searchTerm.value = label;
             }
 
         }]);

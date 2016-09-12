@@ -1,7 +1,7 @@
 
 angular.module('bluepicWebApp')
-.controller('exploreController', ['$scope', 'photos', '$state',
-    function($scope, photos, $state) {
+.controller('exploreController', ['$scope', 'photos', '$state', 'PropertiesService',
+    function($scope, photos, $state, PropertiesService) {
         'use strict';
 
         $scope.photos = photos.data.records;
@@ -11,7 +11,8 @@ angular.module('bluepicWebApp')
         $scope.collections = getCollections();
 
         $scope.openCollection = function(tagLabel) {
-            // $scope.searchTerm.value = tagLabel;
+
+            PropertiesService.setSearchTerm(tagLabel);
             $state.go('homepage');
         }
 
@@ -54,7 +55,6 @@ angular.module('bluepicWebApp')
                     }
                 }
             }
-
             return collections;
         }
 
@@ -67,7 +67,6 @@ angular.module('bluepicWebApp')
             newCollection.photos.push(photoIndex);
 
             return newCollection;
-
         }
 
         function getIndexIfExists(tag, collections) {
@@ -80,7 +79,6 @@ angular.module('bluepicWebApp')
                 }
             }
             return -1;
-
         }
 
     }]);
