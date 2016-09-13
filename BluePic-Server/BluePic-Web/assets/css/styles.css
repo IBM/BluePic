@@ -250,6 +250,12 @@ img.bannerImg {
 }
 
 .imgSizing {
+    height: 700px;
+    width: auto;
+    margin: auto;
+}
+
+.mapSizing {
     width: 100%;
     height: 100%;
 }
