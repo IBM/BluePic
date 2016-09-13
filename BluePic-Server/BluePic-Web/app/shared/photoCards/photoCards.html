@@ -3,9 +3,9 @@
         <div id="overlay" class="imgOverlay">
             <img class="card-img-top greyBackground" ng-src={{photo.url}} >
             <div class="card-img-overlay card-inverse hideMetadata">
-                <p class="card-text metadataFont">{{photo.location.longitude}}, {{photo.location.latitude}}</p>
+                <p class="card-text metadataFont">{{convertDMS(photo.location.latitude, photo.location.longitude);}}</p>
                 <h4 class="card-title locationFont">{{photo.location.name}}</h4>
-                <p class="card-text metadataFont">{{photo.uploadedTs}}</p>
+                <p class="card-text metadataFont">{{formatTimestamp(photo.uploadedTs);}}</p>
             </div>
         </div>
         <div class="marginBottom">
