@@ -6,10 +6,11 @@
     </ul>
     <div class="nav navbar-nav flexCenter">
         <form class="form-inline nav-item" >
-            <input class="form-control search fontAwesome" ng-model="searchTerm.value" ng-model-options="{debounce: 500}" type="text" placeholder="&#xf002;  Search">
+            <input id="placeholder" class="form-control search placeholderIcon" ng-model="searchTerm.value"
+                   type="text" ng-change=checkPlaceholder() placeholder="Search">
         </form>
     </div>
-    <ul class="nav  navbar-nav flexRight marginsRight">
+    <ul class="nav navbar-nav flexRight marginsRight">
         <li class="nav-item">
             <img ui-sref="explore" src="assets/img/Explore.png" alt="">
         </li>
@@ -18,4 +19,3 @@
         </li>
     </ul>
 </nav>
-

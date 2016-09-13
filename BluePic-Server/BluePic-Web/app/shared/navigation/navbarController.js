@@ -20,4 +20,18 @@ angular.module('bluepicWebApp')
                 $state.go('homepage');
             }
 
+            $scope.checkPlaceholder = function () {
+
+                var input = document.getElementById("placeholder");
+                var classList = input.classList;
+
+                if (classList.contains("placeholderIcon") && input.value != "" ) {
+                    classList.remove("placeholderIcon");
+
+                } else if(!classList.contains("placeholderIcon") && input.value == "" ){
+                    classList.add("placeholderIcon");
+
+                }
+            }
+
         }]);

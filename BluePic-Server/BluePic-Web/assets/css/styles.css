@@ -28,21 +28,8 @@
 
 .flexLeft,.flexCenter{flex-grow: 1;}
 
-.search {
-    font-family: AvenirNext;
-    font-size: 14px;
-    font-weight: 400;
-    color: #999999;
-    text-align: center;
-    width: 300px !important;
-}
-
-.fontAwesome {
-    font-family: 'FontAwesome';
-}
-
 .authorFont {
-    /*font-family: SanFranciscoText;*/
+    font-family: SanFranciscoText;
     font-size: 18px;
     font-weight: 400;
     font-style: italic;
@@ -51,7 +38,7 @@
 }
 
 .authorFont2 {
-    /*font-family: SanFranciscoText;*/
+    font-family: SanFranciscoText;
     height: 40px;
     font-size: 18px;
     font-weight: 400;
@@ -61,7 +48,7 @@
 }
 
 .locationFont {
-    /*font-family: SanFranciscoText;*/
+    font-family: SanFranciscoText;
     font-size: 18px;
     font-weight: 700;
     line-height: 2.22;
@@ -72,7 +59,7 @@
 }
 
 .locationFontLeft {
-    /*font-family: SanFranciscoText;*/
+    font-family: SanFranciscoText;
     height: 40px;
     font-size: 18px;
     font-weight: 700;
@@ -224,7 +211,7 @@ img.bannerImg {
 }
 
 .welcomeTitle {
-    /*font-family: Roboto;*/
+    font-family: SanFranciscoText;
     font-size: 30px;
     line-height: 2.33;
     text-align: center;
@@ -232,7 +219,7 @@ img.bannerImg {
 }
 
 .welcomeBlurb {
-    /*font-family: Roboto;*/
+    font-family: SanFranciscoText;
     font-size: 21px;
     font-weight: 300;
     line-height: 1.67;
@@ -241,7 +228,7 @@ img.bannerImg {
 }
 
 .signInLater {
-    /*font-family: Roboto;*/
+    font-family: SanFranciscoText;
     font-size: 18px;
     line-height: 2;
     letter-spacing: 0.6px;
@@ -298,7 +285,7 @@ img.bannerImg {
 
 .tagLabel {
     height: 19.3px;
-    /*font-family: SanFranciscoText;*/
+    font-family: SanFranciscoText;
     font-size: 12.5px;
     font-weight: bold;
     letter-spacing: 2.8px;
@@ -314,7 +301,7 @@ img.bannerImg {
 
 .searchResults {
     height: 40px;
-    /*font-family: SanFranciscoText;*/
+    font-family: SanFranciscoText;
     font-size: 18px;
     font-weight: bold;
     font-style: normal;
@@ -345,4 +332,34 @@ img.bannerImg {
     height:370px;
     width:100%;
     object-fit:cover;
+}
+
+@font-face {
+    font-family: 'SanFranciscoText';
+    src: url('../fonts/SanFranFonts/SanFranciscoText-Regular.otf');
+}
+
+.loginFont {
+    text-transform: uppercase;
+    width: 320px;
+    font-family: SanFranciscoText;
+    line-height: 2;
+    letter-spacing: 1.5px;
+}
+
+.search {
+    font-family: SanFranciscoText;
+    font-size: 14px;
+    font-weight: 400;
+    color: #999999;
+    text-align: center;
+    width: 300px !important;
+}
+
+.placeholderIcon {
+    /* update icon to search */
+    background-image: url('../img/Setings.png');
+    background-repeat: no-repeat;
+    text-indent: 20px;
+    background-position: 95px;
 }
