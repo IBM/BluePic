@@ -50,7 +50,8 @@
 .locationFont {
     font-family: SanFranciscoText;
     font-size: 18px;
-    font-weight: 700;
+    font-weight: bold;
+    height: 40px;
     line-height: 2.22;
     letter-spacing: 1.9px;
     color: #333333;
@@ -62,7 +63,7 @@
     font-family: SanFranciscoText;
     height: 40px;
     font-size: 18px;
-    font-weight: 700;
+    font-weight: bold;
     line-height: 2.22;
     letter-spacing: 1.9px;
     color: #333333;
@@ -74,8 +75,9 @@
 }
 
 .imgOverlay img {
-    max-height: 100%;
-    max-width: 100%;
+    width: 370px;
+    height: auto;
+    margin: 23px;
 }
 
 .imgOverlay:hover img {
@@ -152,7 +154,11 @@ img.bannerImg {
 }
 
 .cardMargin {
-    margin: 6%;
+    margin: 75px 6%;
+}
+
+.cardColumnMargin {
+    margin: 0px -23px;
 }
 
 .deckMargin {
@@ -249,9 +255,17 @@ img.bannerImg {
     padding-bottom: 40px;
 }
 
+.padding0 {
+    padding: 0px;
+}
+
+.paddingMetadata {
+    padding: 0px 0px 0px 45px;
+}
+
 .imgSizing {
-    height: 700px;
-    width: auto;
+    height: auto;
+    width: 100%;
     margin: auto;
 }
 
@@ -368,4 +382,36 @@ img.bannerImg {
     background-repeat: no-repeat;
     text-indent: 20px;
     background-position: 95px;
+}
+
+@media (min-width: 700px) {
+    .card-columns {
+        -webkit-column-count: 2;
+        -moz-column-count: 2;
+        column-count: 2;
+    }
+}
+
+@media (min-width: 1440px) {
+    .card-columns {
+        -webkit-column-count: 3;
+        -moz-column-count: 3;
+        column-count: 3;
+    }
+}
+
+@media (min-width: 2000px) {
+    .card-columns {
+        -webkit-column-count: 4;
+        -moz-column-count: 4;
+        column-count: 4;
+    }
+}
+
+@media (min-width: 2300px) {
+    .card-columns {
+        -webkit-column-count: 5;
+        -moz-column-count: 5;
+        column-count: 5;
+    }
 }
