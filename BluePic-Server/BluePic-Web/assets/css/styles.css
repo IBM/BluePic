@@ -152,7 +152,7 @@ img.bannerImg {
 }
 
 .cardMargin {
-    margin: 4%;
+    margin: 6%;
 }
 
 .deckMargin {
@@ -164,15 +164,15 @@ img.bannerImg {
 }
 
 .marginLeft {
-    margin-left: 5%;
+    margin-left: 6%;
 }
 
 .marginLeft2 {
-    margin-left: 40px;
+    margin-left: 40px !important;
 }
 
 .marginsRight {
-    margin: 5px 5% 0 0;
+    margin: 5px 6% 0 0;
 }
 
 .marginBottom {
