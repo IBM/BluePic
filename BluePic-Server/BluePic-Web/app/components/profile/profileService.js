@@ -66,7 +66,7 @@ angular.module('bluepicWebApp')
                     $rootScope.$apply(deferred.resolve(response.cover.source));
                 }
                 else {  // if user has no cover photo, return default image
-                    $rootScope.$apply(deferred.resolve("../../assets/img/nature.png"));
+                    $rootScope.$apply(deferred.resolve("../../assets/img/nature-small.png"));
                 }
             });
 

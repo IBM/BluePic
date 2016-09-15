@@ -113,8 +113,9 @@
 }
 
 .cropHeight {
-    max-height: 200px;
+    height: 200px;
     overflow: hidden;
+    background-color: #f4f4f4;
 }
 
 img.bannerImg {
@@ -186,7 +187,7 @@ img.bannerImg {
 }
 
 .backgroundImg {
-    background: url('../img/nature.png') no-repeat center center fixed;
+    background: url('../img/nature-small.png') no-repeat center center fixed;
     background-color: cornflowerblue;
     background-size: cover;
     position: absolute;
