@@ -65,9 +65,11 @@ Carthage currently is not supported for BMSCore in Xcode 8 beta. Please use Coco
 
 
 
-## Usage Examples
+## Usage Examples (Swift 2.2)
 
 ```Swift
+// Initialize BMSClient
+
 let appRoute = "https://greatapp.mybluemix.net"
 let appGuid = "2fe35477-5410-4c87-1234-aca59511433b"
 let bluemixRegion = BMSClient.REGION_US_SOUTH
@@ -77,17 +79,26 @@ BMSClient.sharedInstance
 	                               bluemixAppGUID: appGuid,
 	                               bluemixRegion: bluemixRegion)
 
-let request = Request(url: "/", method: HttpMethod.GET)
-request.headers = ["foo":"bar"]
-request.queryParameters = ["foo":"bar"]
+// Make a network request
 
-request.sendWithCompletionHandler { (response, error) -> Void in
-	if let error = error {
-		print ("Error :: \(error)")
-	} else {
-		print ("Success :: \(response?.responseText)")
-	}
+let urlSession = BMSURLSession(configuration: .defaultSessionConfiguration(), delegate: nil, delegateQueue: nil)
+
+let request = NSMutableURLRequest(URL: NSURL(string: "http://httpbin.org/get")!)
+request.allHTTPHeaderFields = ["foo":"bar"]
+
+let dataTask = urlSession.dataTaskWithRequest(request) { (data: NSData?, response: NSURLResponse?, error: NSError?) in
+    if let httpResponse = response as? NSHTTPURLResponse {
+        print("Status code: \(httpResponse.statusCode)")
+    }
+    if data != nil, let responseString = NSString(data: data!, encoding: NSUTF8StringEncoding) {
+        print("Response data: \(responseString)")
+    }
+    if let error = error {
+        print("Error: \(error.debugDescription)")
+    }
 }
+
+// Log some information
 
 let logger = Logger.loggerForName("FirstLogger")
 

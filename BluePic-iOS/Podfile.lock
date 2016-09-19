@@ -1,6 +1,6 @@
 PODS:
   - BMSAnalyticsAPI (1.1.1)
-  - BMSCore (1.2.0):
+  - BMSCore (1.3.0):
     - BMSAnalyticsAPI (~> 1.1.0)
   - BMSFacebookAuthentication (1.0.1):
     - BMSSecurity (~> 1.0)
@@ -32,7 +32,7 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   BMSAnalyticsAPI: 297b443a3d31f96aef8ab5ae9a3ce5da7e79c897
-  BMSCore: a087d8df7beed83caf9e8b8501bac5993e32cd58
+  BMSCore: aed9aba77666dd330ee192ed27c1ec12968cc411
   BMSFacebookAuthentication: ab422cf70167b4486616311809b3013034e0194e
   BMSPush: 85854a571f38727a80b4c04874e3dc1490d65559
   BMSSecurity: f74a6febb4c0a2b801e5bc87b93ee319f27fe144
