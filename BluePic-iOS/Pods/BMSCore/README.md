@@ -4,7 +4,7 @@ IBM Bluemix Mobile Services - Client SDK Swift Core
 [![Build Status](https://travis-ci.org/ibm-bluemix-mobile-services/bms-clientsdk-swift-core.svg?branch=master)](https://travis-ci.org/ibm-bluemix-mobile-services/bms-clientsdk-swift-core)
 [![Build Status](https://travis-ci.org/ibm-bluemix-mobile-services/bms-clientsdk-swift-core.svg?branch=development)](https://travis-ci.org/ibm-bluemix-mobile-services/bms-clientsdk-swift-core)
 
-This is the core component of the Swift SDK for [IBM Bluemix Mobile Services](https://console.ng.bluemix.net/docs/services/mobile.html).
+This is the core component of the Swift SDK for [IBM Bluemix Mobile Services](https://console.ng.bluemix.net/docs/mobile/index.html).
 
 ## Contents
 This package contains the core components of the Swift SDK.
@@ -15,26 +15,40 @@ This package contains the core components of the Swift SDK.
 
 ## Requirements
 * iOS 8.0+ / watchOS 2.0+
-* Xcode 7
+* Xcode 7.3, 8.0 beta 4, 8.0 beta 5
+* Swift 2.2 - 3.0
 
 ## Installation
 The Bluemix Mobile Services Swift SDKs are available via [Cocoapods](http://cocoapods.org/) and [Carthage](https://github.com/Carthage/Carthage).
 
-#### Cocoapods
+### Cocoapods
 To install BMSCore using Cocoapods, add it to your Podfile:
 
 ```ruby
 use_frameworks!
 
 target 'MyApp' do
-    platform :ios, '8.0'
     pod 'BMSCore'
 end
 ```
 
 Then run the `pod install` command.
 
-#### Carthage
+#### Swift 2.3
+
+Before running the `pod install` command, make sure to use Cocoapods version [1.1.0.beta.1](https://github.com/CocoaPods/CocoaPods/releases/tag/1.1.0.beta.1).
+
+For apps built with Swift 2.3, you may receive a prompt saying "Convert to Current Swift Syntax?" when opening your project in Xcode 8 (following the installation of BMSCore). Choose the *Convert* option, and select `BMSCore.framework` and `BMSAnalyticsAPI.framework`.
+**Note:** This should only be done once. If the prompt appears again in the future after you have already converted, always choose the *Later* option.
+
+#### Swift 3.0
+
+Before running the `pod install` command, make sure to use Cocoapods version [1.1.0.beta.1](https://github.com/CocoaPods/CocoaPods/releases/tag/1.1.0.beta.1).
+
+For apps built with Swift 3.0, you may receive a prompt saying "Convert to Current Swift Syntax?" when opening your project in Xcode 8 (following the installation of BMSCore). Always choose the *Later* option. 
+
+
+### Carthage
 To install BMSCore using Carthage, add it to your Cartfile: 
 
 ```ogdl
@@ -45,9 +59,17 @@ Then run the `carthage update` command. Once the build is finished, drag `BMSCor
 
 To complete the integration, follow the instructions [here](https://github.com/Carthage/Carthage#getting-started).
 
-## Usage Examples
+#### Xcode 8
+
+Carthage currently is not supported for BMSCore in Xcode 8 beta. Please use Cocoapods instead.
+
+
+
+## Usage Examples (Swift 2.2)
 
 ```Swift
+// Initialize BMSClient
+
 let appRoute = "https://greatapp.mybluemix.net"
 let appGuid = "2fe35477-5410-4c87-1234-aca59511433b"
 let bluemixRegion = BMSClient.REGION_US_SOUTH
@@ -57,17 +79,26 @@ BMSClient.sharedInstance
 	                               bluemixAppGUID: appGuid,
 	                               bluemixRegion: bluemixRegion)
 
-let request = Request(url: "/", method: HttpMethod.GET)
-request.headers = ["foo":"bar"]
-request.queryParameters = ["foo":"bar"]
+// Make a network request
 
-request.sendWithCompletionHandler { (response, error) -> Void in
-	if let error = error {
-		print ("Error :: \(error)")
-	} else {
-		print ("Success :: \(response?.responseText)")
-	}
+let urlSession = BMSURLSession(configuration: .defaultSessionConfiguration(), delegate: nil, delegateQueue: nil)
+
+let request = NSMutableURLRequest(URL: NSURL(string: "http://httpbin.org/get")!)
+request.allHTTPHeaderFields = ["foo":"bar"]
+
+let dataTask = urlSession.dataTaskWithRequest(request) { (data: NSData?, response: NSURLResponse?, error: NSError?) in
+    if let httpResponse = response as? NSHTTPURLResponse {
+        print("Status code: \(httpResponse.statusCode)")
+    }
+    if data != nil, let responseString = NSString(data: data!, encoding: NSUTF8StringEncoding) {
+        print("Response data: \(responseString)")
+    }
+    if let error = error {
+        print("Error: \(error.debugDescription)")
+    }
 }
+
+// Log some information
 
 let logger = Logger.loggerForName("FirstLogger")
 

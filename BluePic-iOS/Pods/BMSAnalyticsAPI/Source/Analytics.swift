@@ -85,11 +85,11 @@ public class Analytics {
      */
     public static func log(metadata: [String: AnyObject], file: String = #file, function: String = #function, line: Int = #line) {
     
-    #if swift(>=3.0)
-        Analytics.logger.analytics(metadata: metadata, file: file, function: function, line: line)
-    #else
-        Analytics.logger.analytics(metadata, file: file, function: function, line: line)
-    #endif
+        #if swift(>=3.0)
+            Analytics.logger.analytics(metadata: metadata, file: file, function: function, line: line)
+        #else
+            Analytics.logger.analytics(metadata, file: file, function: function, line: line)
+        #endif
         
     }
     

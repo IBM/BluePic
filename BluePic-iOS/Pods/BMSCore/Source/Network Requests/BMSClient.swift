@@ -11,11 +11,13 @@
 *     limitations under the License.
 */
 
+
 /**
     A singleton that serves as an entry point to Bluemix client-server communication.
 */
 public class BMSClient {
 	
+    
     // MARK: Constants
     
     /// The southern United States Bluemix region
@@ -49,35 +51,104 @@ public class BMSClient {
     /// Specifies the default timeout (in seconds) for all BMS network requests.
     public var defaultRequestTimeout: Double = 20.0
     
-    
 	public var authorizationManager: AuthorizationManager
 	
+    
+    
     // MARK: Initializers
+    
+#if swift(>=3.0)
+    
+    /**
+        The required intializer for the `BMSClient` class.
+     
+        Call this method on `BMSClient.sharedInstance`.
+
+        - Note: The `backendAppRoute` and `backendAppGUID` parameters are not required; they are only used for making network requests to the Bluemix server using the `Request` class.
+
+        - parameter backendAppRoute:           (Optional) The base URL for the authorization server.
+        - parameter backendAppGUID:            (Optional) The GUID of the Bluemix application.
+        - parameter bluemixRegion:             The region where your Bluemix application is hosted. Use one of the `BMSClient.REGION` constants.
+     */
+    public func initialize(bluemixAppRoute: String? = nil, bluemixAppGUID: String? = nil, bluemixRegion: String...) {
+        
+        let logger = Logger.logger(forName: Logger.bmsLoggerPrefix + "BMSClient")
+    
+        self.bluemixAppRoute = bluemixAppRoute
+        self.bluemixAppGUID = bluemixAppGUID
+        self.bluemixRegion = bluemixRegion[0]
+        
+        logger.info(message: "While Swift 3 is in beta, APIs in the Bluemix Mobile Services SDKs may change across non-major releases.")
+    }
+    
     
     /**
         The required intializer for the `BMSClient` class.
     
-        Sets the base URL for the authorization server.
+        Call this method on `BMSClient.sharedInstance`.
     
-        - Note: The `backendAppRoute` and `backendAppGUID` parameters are not required to use the `BMSAnalytics` framework.
+        - Note: The `backendAppRoute` and `backendAppGUID` parameters are not required; they are only used for making network requests to the Bluemix server using the `Request` class.
 
-        - parameter backendAppRoute:           The base URL for the authorization server
-        - parameter backendAppGUID:            The GUID of the Bluemix application
-        - parameter bluemixRegion:          The region where your Bluemix application is hosted. Use one of the `BMSClient.REGION` constants.
+        - parameter backendAppRoute:           (Optional) The base URL for the authorization server.
+        - parameter backendAppGUID:            (Optional) The GUID of the Bluemix application.
+        - parameter bluemixRegion:             The region where your Bluemix application is hosted. Use one of the `BMSClient.REGION` constants.
      */
+    @available(*, deprecated, message: "Please use initialize(bluemixAppRoute:bluemixAppGuid:bluemixRegion:)")
     public func initializeWithBluemixAppRoute(bluemixAppRoute: String?, bluemixAppGUID: String?, bluemixRegion: String) {
         
         self.bluemixAppRoute = bluemixAppRoute
         self.bluemixAppGUID = bluemixAppGUID
         self.bluemixRegion = bluemixRegion
-        
-        #if swift(>=3.0)
-            Logger.logger(forName: Logger.bmsLoggerPrefix + "BMSClient").info(message: "While Swift 3 is in beta, APIs in the Bluemix Mobile Services SDKs may change across non-major releases.")
-        #endif
+    
+        Logger.logger(forName: Logger.bmsLoggerPrefix + "BMSClient").info(message: "While Swift 3 is in beta, APIs in the Bluemix Mobile Services SDKs may change across non-major releases.")
     }
     
+#else
+    
+    /**
+        The required intializer for the `BMSClient` class.
+
+        Call this method on `BMSClient.sharedInstance`.
+
+        - Note: The `backendAppRoute` and `backendAppGUID` parameters are not required; they are only used for making network requests to the Bluemix server using the `Request` class.
+
+        - parameter backendAppRoute:           (Optional) The base URL for the authorization server.
+        - parameter backendAppGUID:            (Optional) The GUID of the Bluemix application.
+        - parameter bluemixRegion:             The region where your Bluemix application is hosted. Use one of the `BMSClient.REGION` constants.
+     */
+    public func initialize(bluemixAppRoute bluemixAppRoute: String? = nil, bluemixAppGUID: String? = nil, bluemixRegion: String...) {
+        
+        self.bluemixAppRoute = bluemixAppRoute
+        self.bluemixAppGUID = bluemixAppGUID
+        self.bluemixRegion = bluemixRegion[0]
+    }
+    
+    
+    /**
+        The required intializer for the `BMSClient` class.
+
+        Call this method on `BMSClient.sharedInstance`.
+
+        - Note: The `backendAppRoute` and `backendAppGUID` parameters are not required; they are only used for making network requests to the Bluemix server using the `Request` class.
+
+        - parameter backendAppRoute:           (Optional) The base URL for the authorization server.
+        - parameter backendAppGUID:            (Optional) The GUID of the Bluemix application.
+        - parameter bluemixRegion:             The region where your Bluemix application is hosted. Use one of the `BMSClient.REGION` constants.
+     */
+    @available(*, deprecated, message="Please use initialize(bluemixAppRoute:bluemixAppGuid:bluemixRegion:)")
+    public func initializeWithBluemixAppRoute(bluemixAppRoute: String?, bluemixAppGUID: String?, bluemixRegion: String) {
+    
+        self.bluemixAppRoute = bluemixAppRoute
+        self.bluemixAppGUID = bluemixAppGUID
+        self.bluemixRegion = bluemixRegion
+    }
+    
+#endif
+    
+    
+    // Prevent users from using BMSClient() initializer - They must use BMSClient.sharedInstance
 	private init() {
 		self.authorizationManager = BaseAuthorizationManager()
-	} // Prevent users from using BMSClient() initializer - They must use BMSClient.sharedInstance
-    
+	}
+
 }

@@ -62,10 +62,10 @@ public class BaseDeviceIdentity : DeviceIdentity {
                 jsonData[BaseDeviceIdentity.OS_VERSION] = WKInterfaceDevice.current().systemVersion
                 jsonData[BaseDeviceIdentity.MODEL] =  WKInterfaceDevice.current().model
             #else
-                jsonData[BaseDeviceIdentity.ID] = UIDevice.current().identifierForVendor?.uuidString
-                jsonData[BaseDeviceIdentity.OS] =  UIDevice.current().systemName
-                jsonData[BaseDeviceIdentity.OS_VERSION] = UIDevice.current().systemVersion
-                jsonData[BaseDeviceIdentity.MODEL] =  UIDevice.current().model
+                jsonData[BaseDeviceIdentity.ID] = UIDevice.current.identifierForVendor?.uuidString
+                jsonData[BaseDeviceIdentity.OS] =  UIDevice.current.systemName
+                jsonData[BaseDeviceIdentity.OS_VERSION] = UIDevice.current.systemVersion
+                jsonData[BaseDeviceIdentity.MODEL] =  UIDevice.current.model
             #endif
             
 		#else
