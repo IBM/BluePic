@@ -31,6 +31,10 @@ case $i in
     projectid="${i#*=}"
     shift # past argument=value
     ;;
+    --region=*)
+    region="${i#*=}"
+    shift # past argument=value
+    ;;
     *)
         # unknown option
     ;;
@@ -40,3 +44,4 @@ done
 echo "Variables:"
 echo -e "  userid: $userid"
 echo -e "  projectid: $projectid"
+echo -e "  region: $region"
