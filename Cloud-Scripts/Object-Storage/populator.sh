@@ -34,13 +34,16 @@ echo "scriptsFolder: $scriptsFolder"
 # Parse input parameters
 source "$scriptsFolder/parse_inputs.sh"
 
-if [ $region != "dal" ] && [ $region != "lon" ] ; then
-  echo "Warning: Region must be set to a valid Object Storage location, either dal or lon."
+if [ "$region" == "" ] ; then
+  region="dal"
+  echo "Using default region 'dal'."
+elif [ $region != "dal" ] && [ $region != "lon" ] ; then
+  echo "WARNING: Region must be set to a valid Object Storage location, either dal or lon."
 fi
 
 # Variables
 authUrl=https://identity.open.softlayer.com/v3/auth/tokens
-accessPoint=$([ "$region" == "" ] && echo "dal.objectstorage.open.softlayer.com" || echo "$region.objectstorage.open.softlayer.com")
+accessPoint=$region.objectstorage.open.softlayer.com
 publicUrl=https://$accessPoint/v1/AUTH_$projectid
 
 # Containers (these should match the user ids)
