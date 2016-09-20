@@ -20,7 +20,6 @@ import KituraNet
 import CouchDB
 import LoggerAPI
 import SwiftyJSON
-import KituraSys
 import BluemixPushNotifications
 import MobileClientAccessKituraCredentialsPlugin
 import MobileClientAccess
@@ -62,13 +61,8 @@ func defineRoutes() {
     let baseStr = "\(mobileClientAccessProps.clientId):\(mobileClientAccessProps.secret)"
     
     var tempAuthHeader: String?
-    #if os(OSX)
-      let utf8BaseStr = baseStr.data(using: String.Encoding.utf8)
-      tempAuthHeader = utf8BaseStr?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
-    #else
-      let utf8BaseStr = baseStr.data(using: NSUTF8StringEncoding)
-      tempAuthHeader = utf8BaseStr?.base64EncodedString(NSDataBase64EncodingOptions(rawValue: 0))
-    #endif
+    let utf8BaseStr = baseStr.data(using: String.Encoding.utf8)
+    tempAuthHeader = utf8BaseStr?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
     
     guard let authHeader = tempAuthHeader else {
       print("Could not generate authHeader...")
@@ -99,11 +93,11 @@ func defineRoutes() {
 
     // Make REST call against MCA server
     let req = HTTP.request(requestOptions) { resp in
-      if let resp = resp where resp.statusCode == HTTPStatusCode.OK {
+      if let resp = resp , resp.statusCode == HTTPStatusCode.OK {
         do {
-          let body = NSMutableData()
-          try resp.readAllData(into: body)
-          let jsonResponse = JSON(data: body)
+          var body = Data()
+          try resp.readAllData(into: &body)
+          let jsonResponse = JSON(data: body as Data)
           //let accessToken = json["accessToken"].stringValue
           print("MCA response: \(jsonResponse)")
           response.status(HTTPStatusCode.OK).send(json: jsonResponse)
@@ -114,18 +108,19 @@ func defineRoutes() {
       } else {
         Log.error("Status error code or nil reponse received from MCA server.")
         if let resp = resp {
-          Log.error("Status code: \(resp.statusCode)")
-          if let rawUserData = try? BodyParser.readBodyData(with: resp) {
-            #if os(OSX)
-              let str = NSString(data: rawUserData as Data, encoding: String.Encoding.utf8.rawValue)
-            #else
-              let str = NSString(data: rawUserData, encoding: NSUTF8StringEncoding)
-            #endif
-            print("Response from MCA server: \(str)")
-          }
+            Log.error("Status code: \(resp.statusCode)")
+            do {
+                var body = Data()
+                try resp.read(into: &body) //  if let rawUserData = try? BodyParser.readBodyData(with: resp) {
+                let str = NSString(data: body, encoding: String.Encoding.utf8.rawValue)
+                print("Response from MCA server: \(str)")
+                
+            }catch {
+                
+            }
         }
         response.status(HTTPStatusCode.internalServerError).send(json: errorResponse)
-      }
+        }
       next()
     }
     req.end(requestBody)
@@ -145,7 +140,7 @@ func defineRoutes() {
   router.get("/tags") { request, response, next in
     let queryParams: [Database.QueryParameters] = [.group(true), .groupLevel(1)]
     database.queryByView("tags", ofDesign: "main_design", usingParameters: queryParams) { (document, error) in
-      if let document = document where error == nil {
+      if let document = document , error == nil {
         do {
           // Get tags (rows from JSON result document)
           guard var tags: [JSON] = document["rows"].array else {
@@ -193,9 +188,9 @@ func defineRoutes() {
       // let _ = tag.characters.split(separator: ",").map(String.init)
       tag = StringUtils.decodeWhiteSpace(inString: tag)
       let queryParams: [Database.QueryParameters] =
-      [.descending(true), .includeDocs(true), .reduce(false), .endKey([tag, "0", "0", 0]), .startKey([tag, NSObject()])]
+      [.descending(true), .includeDocs(true), .reduce(false), .endKey([tag as! AnyObject, "0" as! AnyObject, "0" as! AnyObject, 0 as! AnyObject]), .startKey([tag as! AnyObject, NSObject()])]
       database.queryByView("images_by_tags", ofDesign: "main_design", usingParameters: queryParams) { (document, error) in
-        if let document = document where error == nil {
+        if let document = document , error == nil {
           do {
             let images = try parseImages(document: document)
             response.status(HTTPStatusCode.OK).send(json: images)
@@ -212,7 +207,7 @@ func defineRoutes() {
     } else {
       // Get all images
       database.queryByView("images", ofDesign: "main_design", usingParameters: [.descending(true), .includeDocs(true)]) { (document, error) in
-        if let document = document where error == nil {
+        if let document = document , error == nil {
           do {
             let images = try parseImages(document: document)
             response.status(HTTPStatusCode.OK).send(json: images)
@@ -297,7 +292,7 @@ func defineRoutes() {
   */
   router.get("/users") { request, response, next in
     database.queryByView("users", ofDesign: "main_design", usingParameters: [.descending(true), .includeDocs(false)]) { (document, error) in
-      if let document = document where error == nil {
+      if let document = document , error == nil {
         do {
           let users = try parseUsers(document: document)
           response.status(HTTPStatusCode.OK).send(json: users)
@@ -325,8 +320,8 @@ func defineRoutes() {
     }
 
     // Retrieve JSON document for user
-    database.queryByView("users", ofDesign: "main_design", usingParameters: [ .descending(true), .includeDocs(false), .keys([userId]) ]) { (document, error) in
-      if let document = document where error == nil {
+    database.queryByView("users", ofDesign: "main_design", usingParameters: [ .descending(true), .includeDocs(false), .keys([userId as! AnyObject]) ]) { (document, error) in
+      if let document = document , error == nil {
         do {
           let json = try parseUsers(document: document)
           let users = json["records"].arrayValue
@@ -367,7 +362,7 @@ func defineRoutes() {
       if success {
         // Add image record to database
         database.create(imageJSON) { (id, revision, doc, error) in
-          guard let id = id, revision = revision where error == nil else {
+          guard let id = id, let revision = revision , error == nil else {
             Log.error("Failed to create image record in Cloudant database.")
             if let error = error {
               Log.error("Error domain: \(error._domain); error code: \(error._code).")
@@ -405,9 +400,9 @@ func defineRoutes() {
       return
     }
 
-    let queryParams: [Database.QueryParameters] = [.descending(true), .endKey([userId, "0"]), .startKey([userId, NSObject()])]
+    let queryParams: [Database.QueryParameters] = [.descending(true), .endKey([userId as! AnyObject, "0" as! AnyObject]), .startKey([userId as! AnyObject, NSObject()])]
     database.queryByView("images_per_user", ofDesign: "main_design", usingParameters: queryParams) { (document, error) in
-      if let document = document where error == nil {
+      if let document = document , error == nil {
         do {
           let images = try parseImages(forUserId: userId, usingDocument: document)
           response.status(HTTPStatusCode.OK).send(json: images)
@@ -449,7 +444,7 @@ func defineRoutes() {
       Log.verbose("About to add new user record '\(userId)' to the database.")
       database.create(userJson) { (id, revision, document, error) in
         do {
-          if let document = document where error == nil {
+          if let document = document , error == nil {
             // Add revision number response document
             userJson["_rev"] = document["rev"]
             // Return user document back to caller
@@ -470,8 +465,8 @@ func defineRoutes() {
     // Closure for verifying if user exists and creating new record
     let addUser = {
       // Verify if user already exists
-      database.queryByView("users", ofDesign: "main_design", usingParameters: [ .descending(true), .includeDocs(false), .keys([userId]) ]) { (document, error) in
-        if let document = document where error == nil {
+      database.queryByView("users", ofDesign: "main_design", usingParameters: [ .descending(true), .includeDocs(false), .keys([userId as! AnyObject]) ]) { (document, error) in
+        if let document = document , error == nil {
           do {
             let json = try parseUsers(document: document)
             let users = json["records"].arrayValue

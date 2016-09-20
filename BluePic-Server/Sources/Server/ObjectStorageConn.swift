@@ -21,11 +21,7 @@ import Dispatch
 
 // FIXME: Change to a struct when using a swift binary that supports the DispatchQueue type
 public class ObjectStorageConn {
-  #if os(OSX)
-    let connectQueue = DispatchQueue(label: "connectQueue")
-  #else
-    let connectQueue = dispatch_queue_create("connectQueue", nil)
-  #endif
+  let connectQueue = DispatchQueue(label: "connectQueue")
   let objStorage: ObjectStorage
   var test = 10
   let connProps: ObjectStorageConnProps
@@ -37,23 +33,17 @@ public class ObjectStorageConn {
     objStorage = ObjectStorage(projectId: connProps.projectId)
   }
 
-  func getObjectStorage(completionHandler: (objStorage: ObjectStorage?) -> Void) {
+  func getObjectStorage(completionHandler: (_ objStorage: ObjectStorage?) -> Void) {
     Log.verbose("Starting task in serialized block (getting ObjectStorage instance)...")
-    #if os(OSX)
-      connectQueue.sync {
+    connectQueue.sync {
         self.connect(completionHandler: completionHandler)
-      }
-    #else
-      dispatch_sync(connectQueue) {
-        self.connect(completionHandler: completionHandler)
-      }
-    #endif
+    }
     Log.verbose("Completed task in serialized block.")
     let param: ObjectStorage? = (authenticated) ? objStorage : nil
-    completionHandler(objStorage: param)
+    completionHandler(param)
   }
 
-  private func connect(completionHandler: (objStorage: ObjectStorage?) -> Void) {
+  private func connect(completionHandler: (_ objStorage: ObjectStorage?) -> Void) {
     Log.verbose("Determining if we have an ObjectStorage instance ready to use...")
     if authenticated, let lastAuthenticatedTs = lastAuthenticatedTs {
       // Check when was the last time we got an auth token
@@ -70,11 +60,7 @@ public class ObjectStorageConn {
     }
 
     // Network call should be synchronous since we need to know the result before proceeding.
-    #if os(OSX)
-      let semaphore = DispatchSemaphore(value: 0)
-    #else
-      let semaphore = dispatch_semaphore_create(0)
-    #endif
+    let semaphore = DispatchSemaphore(value: 0)
     
     Log.verbose("Making network call synchronous...")
     objStorage.connect(userId: connProps.userId, password: connProps.password, region: ObjectStorage.REGION_DALLAS) { (error) in
@@ -89,17 +75,11 @@ public class ObjectStorageConn {
         Log.verbose("lastAuthenticatedTs is \(self.lastAuthenticatedTs).")
       }
       Log.verbose("Signaling semaphore...")
-      #if os(OSX)
-        semaphore.signal()
-      #else
-        dispatch_semaphore_signal(semaphore)
-      #endif
+      semaphore.signal()
+      
     }
-    #if os(OSX)
-      let _ = semaphore.wait(timeout: DispatchTime.distantFuture)
-    #else
-      dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
-    #endif
+
+    let _ = semaphore.wait(timeout: DispatchTime.distantFuture)
     Log.verbose("Continuing execution after synchronous network call...")
   }
 

@@ -34,7 +34,7 @@ struct BluePic {
  - Image: Used when image data isn't what was expected
  - User:  Used when User data isn't what was expected
  */
-enum ProcessingError: ErrorProtocol {
+enum ProcessingError: Error {
   case Image(String)
   case User(String)
 }

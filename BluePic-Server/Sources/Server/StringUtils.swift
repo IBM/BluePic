@@ -38,15 +38,20 @@ public struct StringUtils {
    - returns: timestamp in String form
    */
   static func currentTimestamp() -> String {
-    #if os(Linux)
-    let dateStr = NSDate().descriptionWithLocale(nil).bridge()
-    #else
-    let dateStr = NSDate().description.bridge()
-    #endif
-    let ts = dateStr.substring(to: 10) + "T" + dateStr.substring(with: NSRange(location: 11, length: 8))
+    let dateStr = NSDate().description
+    let ts = dateStr.substring(r: Range(0..<10)) + "T" + dateStr.substring(r: Range(11..<18))
     Log.verbose("Current time string: \(dateStr)")
     Log.verbose("Current timestamp generated: \(ts)")
     return ts
   }
+}
 
+public extension String {
+    
+    func substring(r: Range<Int>) -> String {
+        let fromIndex = self.index(self.startIndex, offsetBy: r.lowerBound)
+        let toIndex = self.index(self.startIndex, offsetBy: r.upperBound)
+        return self.substring(with: Range<String.Index>(uncheckedBounds: (lower: fromIndex, upper: toIndex)))
+    }
+    
 }

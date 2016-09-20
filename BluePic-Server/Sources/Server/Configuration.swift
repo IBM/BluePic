@@ -25,29 +25,36 @@ public struct Configuration {
 
   /**
    Enum used for Configuration errors
-
    - IO: case to indicate input/output error
    */
-  public enum Error: ErrorProtocol {
+  public enum BluePicError: Error {
     case IO(String)
   }
 
-  // Instance constants
-  let configurationFile = "cloud_config.json"
-  let appEnv: AppEnv
-
-  init() throws {
-    let path = Configuration.getAbsolutePath(relativePath: "/\(configurationFile)", useFallback: false)
-
-    if let finalPath = path, configData = NSData(contentsOfFile: finalPath) {
-      let configJson = JSON(data: configData)
-      appEnv = try CloudFoundryEnv.getAppEnv(options: configJson)
-      Log.info("Using configuration values from '\(configurationFile)'.")
-    } else {
-      Log.warning("Could not find '\(configurationFile)'.")
-      appEnv = try CloudFoundryEnv.getAppEnv()
+    // Instance constants
+    let configurationFile = "cloud_config.json"
+    let appEnv: AppEnv
+    
+    init?()  {
+        let path = Configuration.getAbsolutePath(relativePath: "/\(configurationFile)", useFallback: false)
+        
+        do {
+            if let finalPath = path {
+                let configData = try Data(contentsOf: URL(string:finalPath)!)
+                let configJson = JSON(data: configData)
+                appEnv = try CloudFoundryEnv.getAppEnv(options: configJson)
+                Log.info("Using configuration values from '\(configurationFile)'.")
+            }
+            else {
+                Log.warning("Could not find '\(configurationFile)'.")
+                appEnv = try CloudFoundryEnv.getAppEnv()
+            }
+        }
+        catch {
+            Log.warning("Could not find '\(configurationFile)'.")
+            return nil
+        }
     }
-  }
 
   /**
    Method to get CouchDB credentials in a consumable form
@@ -59,14 +66,14 @@ public struct Configuration {
   func getCouchDBConnProps() throws -> ConnectionProperties {
     if let couchDBCredentials = appEnv.getService(spec: "BluePic-Cloudant")?.credentials {
       if let host = couchDBCredentials["host"].string,
-      user = couchDBCredentials["username"].string,
-      password = couchDBCredentials["password"].string,
-      port = couchDBCredentials["port"].int {
+      let user = couchDBCredentials["username"].string,
+      let password = couchDBCredentials["password"].string,
+      let port = couchDBCredentials["port"].int {
         let connProperties = ConnectionProperties(host: host, port: Int16(port), secured: true, username: user, password: password)
         return connProperties
       }
     }
-    throw Error.IO("Failed to obtain database service and/or its credentials.")
+    throw BluePicError.IO("Failed to obtain database service and/or its credentials.")
   }
 
   /**
@@ -78,13 +85,13 @@ public struct Configuration {
    */
   func getObjectStorageConnProps() throws -> ObjectStorageConnProps {
     guard let objStoreCredentials = appEnv.getService(spec: "BluePic-Object-Storage")?.credentials else {
-      throw Error.IO("Failed to obtain object storage service and/or its credentials.")
+      throw BluePicError.IO("Failed to obtain object storage service and/or its credentials.")
     }
 
     guard let projectId = objStoreCredentials["projectId"].string,
-    userId = objStoreCredentials["userId"].string,
-    password = objStoreCredentials["password"].string else {
-      throw Error.IO("Failed to obtain object storage credentials.")
+    let userId = objStoreCredentials["userId"].string,
+    let password = objStoreCredentials["password"].string else {
+      throw BluePicError.IO("Failed to obtain object storage credentials.")
     }
 
     let connProperties = ObjectStorageConnProps(projectId: projectId, userId: userId, password: password)
@@ -100,13 +107,13 @@ public struct Configuration {
    */
   func getMobileClientAccessProps() throws -> MobileClientAccessProps {
     guard let mcaCredentials = appEnv.getService(spec: "BluePic-Mobile-Client-Access")?.credentials else {
-      throw Error.IO("Failed to obtain MCA service and/or its credentials.")
+      throw BluePicError.IO("Failed to obtain MCA service and/or its credentials.")
     }
 
     guard let secret = mcaCredentials["secret"].string,
-    serverUrl = mcaCredentials["serverUrl"].string,
-    clientId = mcaCredentials["clientId"].string else {
-      throw Error.IO("Failed to obtain MCA credentials.")
+    let serverUrl = mcaCredentials["serverUrl"].string,
+    let clientId = mcaCredentials["clientId"].string else {
+      throw BluePicError.IO("Failed to obtain MCA credentials.")
     }
 
     let mcaProperties = MobileClientAccessProps(secret: secret, serverUrl: serverUrl, clientId: clientId)
@@ -122,13 +129,13 @@ public struct Configuration {
    */
   func getIbmPushProps() throws -> IbmPushProps {
     guard let pushCredentials = appEnv.getService(spec: "BluePic-IBM-Push")?.credentials else {
-      throw Error.IO("Failed to obtain IBM Push service and/or its credentials.")
+      throw BluePicError.IO("Failed to obtain IBM Push service and/or its credentials.")
     }
 
     guard let url = pushCredentials["url"].string,
-      adminUrl = pushCredentials["admin_url"].string,
-      secret = pushCredentials["appSecret"].string else {
-        throw Error.IO("Failed to obtain IBM Push credentials.")
+      let adminUrl = pushCredentials["admin_url"].string,
+      let secret = pushCredentials["appSecret"].string else {
+        throw BluePicError.IO("Failed to obtain IBM Push credentials.")
     }
 
     let ibmPushProperties = IbmPushProps(url: url, adminUrl: adminUrl, secret: secret)
@@ -138,31 +145,24 @@ public struct Configuration {
   func getOpenWhiskProps() throws -> OpenWhiskProps {
     let relativePath = "/properties.json"
     guard let workingPath = Configuration.getAbsolutePath(relativePath: relativePath, useFallback: true) else {
-      throw Error.IO("Could not find file at relative path \(relativePath).")
+      throw BluePicError.IO("Could not find file at relative path \(relativePath).")
     }
 
-    if let propertiesData = NSData(contentsOfFile: workingPath) {
-      let propertiesJson = JSON(data: propertiesData)
-      if let openWhiskJson = propertiesJson.dictionary?["openWhisk"],
-                hostName = openWhiskJson["hostName"].string,
-                urlPath = openWhiskJson["urlPath"].string,
-                authToken = openWhiskJson["authToken"].string {
-        #if os(OSX)
-          let utf8BaseStr = authToken.data(using: String.Encoding.utf8)
-          guard let computedAuthToken = utf8BaseStr?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) else {
-            throw Error.IO("Could not perform base64 encoding on authToken")
-          }
-        #else
-          let utf8BaseStr = authToken.data(using: NSUTF8StringEncoding)
-          guard let computedAuthToken = utf8BaseStr?.base64EncodedString(NSDataBase64EncodingOptions(rawValue: 0)) else {
-            throw Error.IO("Could not perform base64 encoding on authToken")
-          }
-        #endif
+    let propertiesData = try Data(contentsOf: URL(string:workingPath)!)
+    let propertiesJson = JSON(data: propertiesData)
+    if let openWhiskJson = propertiesJson.dictionary?["openWhisk"],
+        let hostName = openWhiskJson["hostName"].string,
+        let urlPath = openWhiskJson["urlPath"].string,
+        let authToken = openWhiskJson["authToken"].string {
+            let utf8BaseStr = authToken.data(using: String.Encoding.utf8)
+            guard let computedAuthToken = utf8BaseStr?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) else {
+                throw BluePicError.IO("Could not perform base64 encoding on authToken")
+            }
         return OpenWhiskProps(hostName: hostName, urlPath: urlPath, authToken: computedAuthToken)
-      }
     }
-    throw Error.IO("Failed to obtain OpenWhisk credentials.")
-  }
+    
+    throw BluePicError.IO("Failed to obtain OpenWhisk credentials.")
+    }
 
   private static func getAbsolutePath(relativePath: String, useFallback: Bool) -> String? {
     let initialPath = #file
@@ -170,11 +170,7 @@ public struct Configuration {
     let notLastThree = components[0..<components.count - 3]
     var filePath = "/" + notLastThree.joined(separator: "/") + relativePath
 
-    #if os(Linux)
-      let fileManager = NSFileManager.defaultManager()
-    #else
-      let fileManager = FileManager.default()
-    #endif
+    let fileManager = FileManager.default
 
     if fileManager.fileExists(atPath: filePath) {
       return filePath

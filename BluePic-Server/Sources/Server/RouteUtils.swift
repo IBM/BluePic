@@ -53,42 +53,37 @@ func processImage(withId imageId: String) {
 
   // Make REST call
   let req = HTTP.request(requestOptions) { resp in
-    if let resp = resp where resp.statusCode == HTTPStatusCode.OK || resp.statusCode == HTTPStatusCode.accepted {
+    if let resp = resp , resp.statusCode == HTTPStatusCode.OK || resp.statusCode == HTTPStatusCode.accepted {
       do {
-        let body = NSMutableData()
-        try resp.readAllData(into: body)
+        var body = Data() //NSMutableData()
+        try resp.readAllData(into: &body)
         let jsonResponse = JSON(data: body)
         print("OpenWhisk response: \(jsonResponse)")
       } catch {
         Log.error("Bad JSON document received from OpenWhisk.")
       }
     } else {
-      Log.error("Status error code or nil reponse received from OpenWhisk.")
-      if let resp = resp {
-        Log.error("Status code: \(resp.statusCode)")
-        if let rawUserData = try? BodyParser.readBodyData(with: resp) {
-          #if os(OSX)
-            let str = NSString(data: rawUserData as Data, encoding: String.Encoding.utf8.rawValue)
-          #else
-            let str = NSString(data: rawUserData, encoding: NSUTF8StringEncoding)
-          #endif
-          print("Error response from OpenWhisk: \(str)")
+        Log.error("Status error code or nil reponse received from OpenWhisk.")
+        if let resp = resp {
+            Log.error("Status code: \(resp.statusCode)")
+            var rawUserData = Data()
+            do {
+                try resp.read(into: &rawUserData)  //try? BodyParser.readBodyData(with: resp) {
+                let str = NSString(data: rawUserData as Data, encoding: String.Encoding.utf8.rawValue)
+                print("Error response from OpenWhisk: \(str)")
+            }
+            catch {
+                
+            }
         }
       }
     }
-  }
-  // Kitura does not yet execute certain functionaliy asynchronously,
+  
+  // Kitura does not yet execute certain functionality asynchronously,
   // hence the need for this block.
-  #if os(OSX)
-    DispatchQueue.global(attributes: DispatchQueue.GlobalAttributes.qosDefault).async {
+  DispatchQueue.global().async {
       req.end(requestBody)
-    }
-  #else
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
-      req.end(requestBody)
-    }
-  #endif
-
+  }
 }
 
 /**
@@ -98,26 +93,26 @@ func processImage(withId imageId: String) {
 * - parameter imageId:  String id of the image document to retrieve.
 * - parameter callback: Callback to use within async method.
 */
-func readImage(database: Database, imageId: String, callback: ((jsonData: JSON?) -> ())) {
+func readImage(database: Database, imageId: String, callback: @escaping ((_ jsonData: JSON?) -> ())) {
   let queryParams: [Database.QueryParameters] =
-  [.descending(true), .includeDocs(true), .endKey([imageId, 0]), .startKey([imageId, NSObject()])]
+  [.descending(true), .includeDocs(true), .endKey([imageId as! AnyObject, 0 as! AnyObject]), .startKey([imageId as! AnyObject, NSObject()])]
   database.queryByView("images_by_id", ofDesign: "main_design", usingParameters: queryParams) { (document, error) in
-    if let document = document where error == nil {
+    if let document = document , error == nil {
       do {
         let json = try parseImages(document: document)
         let images = json["records"].arrayValue
         if images.count == 1 {
-          callback(jsonData: images[0])
+          callback(images[0])
         } else {
           throw ProcessingError.Image("Image not found!")
         }
       } catch {
         Log.error("Failed to get specific image document.")
-        callback(jsonData: nil)
+        callback(nil)
       }
     } else {
       Log.error("Failed to get specific image document.")
-      callback(jsonData: nil)
+      callback(nil)
     }
   }
 }
@@ -196,23 +191,20 @@ func parseUsers(document: JSON) throws -> JSON {
 
  - returns: valid json image data and image binary in an NSData object
  */
-func parseMultipart(fromRequest request: RouterRequest) throws -> (JSON, NSData) {
+func parseMultipart(fromRequest request: RouterRequest) throws -> (JSON, Data) {
   guard let requestBody: ParsedBody = request.body else {
     throw ProcessingError.Image("No request body present.")
   }
   var imageJson: JSON?
-  var imageData: NSData?
+//  var imageData: NSData?
+  var imageData: Data?
   switch (requestBody) {
   case .multipart(let parts):
     for part in parts {
       if part.name == "imageJson" {
         switch (part.body) {
         case .text(let stringJson):
-          #if os(OSX)
-            let encoding = String.Encoding.utf8
-          #else
-            let encoding = NSUTF8StringEncoding
-          #endif
+          let encoding = String.Encoding.utf8
           if let dataJson = stringJson.data(using: encoding, allowLossyConversion: false) {
             imageJson = JSON(data: dataJson)
           }
@@ -222,7 +214,7 @@ func parseMultipart(fromRequest request: RouterRequest) throws -> (JSON, NSData)
       } else if part.name == "imageBinary" {
         switch (part.body) {
         case .raw(let data):
-          imageData = data
+          imageData = data as Data?
         default:
           Log.warning("Couldn't process image binary from multi-part form.")
         }
@@ -232,7 +224,7 @@ func parseMultipart(fromRequest request: RouterRequest) throws -> (JSON, NSData)
     throw ProcessingError.Image("Failed to parse request body: \(requestBody)")
   }
 
-  guard let json = imageJson, data = imageData else {
+  guard let json = imageJson, let data = imageData else {
     throw ProcessingError.Image("Failed to parse multipart form data in request body.")
   }
   return (json, data)
@@ -251,7 +243,7 @@ func parseMultipart(fromRequest request: RouterRequest) throws -> (JSON, NSData)
 func updateImageJSON(json: JSON, withRequest request: RouterRequest) throws -> JSON {
   var updatedJson = json
   guard let authContext = request.userInfo["mcaAuthContext"] as? AuthorizationContext, 
-            contentType = ContentType.sharedInstance.getContentType(forFileName: updatedJson["fileName"].stringValue) else {
+            let contentType = ContentType.sharedInstance.getContentType(forFileName: updatedJson["fileName"].stringValue) else {
     throw ProcessingError.Image("Invalid image document!")
   }
 
@@ -277,7 +269,7 @@ func updateImageJSON(json: JSON, withRequest request: RouterRequest) throws -> J
  - returns: NSError object
  */
 func generateInternalError() -> NSError {
-  return NSError(domain: BluePic.Domain, code: BluePic.Error.Internal.rawValue, userInfo: [NSLocalizedDescriptionKey: String(BluePic.Error.Internal)])
+  return NSError(domain: BluePic.Domain, code: BluePic.Error.Internal.rawValue, userInfo: [NSLocalizedDescriptionKey: String(describing: BluePic.Error.Internal)])
 }
 
 /**
@@ -301,17 +293,17 @@ func generateUrl(forContainer containerName: String, forImage imageName: String)
  - parameter name: name of the container to create
  - parameter completionHandler: callback to use on success or failure
  */
- func createContainer(withName name: String, completionHandler: (success: Bool) -> Void) {
+ func createContainer(withName name: String, completionHandler: @escaping (_ success: Bool) -> Void) {
    // Cofigure container for public access and web hosting
    let configureContainer = { (container: ObjectStorageContainer) -> Void in
      let metadata:Dictionary<String, String> = ["X-Container-Meta-Web-Listings" : "true", "X-Container-Read" : ".r:*,.rlistings"]
      container.updateMetadata(metadata: metadata) { (error) in
        if let _ = error {
          Log.error("Could not configure container named '\(name)' for public access and web hosting.")
-         completionHandler(success: false)
+         completionHandler(false)
        } else {
          Log.verbose("Configured successfully container named '\(name)' for public access and web hosting.")
-         completionHandler(success: true)
+         completionHandler(true)
        }
      }
    }
@@ -320,16 +312,16 @@ func generateUrl(forContainer containerName: String, forImage imageName: String)
    let createContainer = { (objStorage: ObjectStorage?) -> Void in
      if let objStorage = objStorage {
        objStorage.createContainer(name: name) { (error, container) in
-         if let container = container where error == nil {
+         if let container = container , error == nil {
            configureContainer(container)
          } else {
            Log.error("Could not create container named '\(name)'.")
-           completionHandler(success: false)
+           completionHandler(false)
          }
        }
      } else {
        Log.verbose("Created successfully container named '\(name)'.")
-       completionHandler(success: false)
+       completionHandler(false)
      }
    }
 
@@ -345,16 +337,16 @@ func generateUrl(forContainer containerName: String, forImage imageName: String)
  - parameter containerName:     name of container to use
  - parameter completionHandler: callback to use on success or failure
  */
- func store(image: NSData, withName name: String, inContainer containerName: String, completionHandler: (success: Bool) -> Void) {
+ func store(image: Data, withName name: String, inContainer containerName: String, completionHandler: @escaping (_ success: Bool) -> Void) {
    // Store image in container
    let storeImage = { (container: ObjectStorageContainer) -> Void in
-     container.storeObject(name: name, data: image) { (error, object) in
+     container.storeObject(name: name, data: image as Data) { (error, object) in
        if let _ = error {
          Log.error("Could not save image named '\(name)' in container.")
-         completionHandler(success: false)
+         completionHandler(false)
        } else {
          Log.verbose("Stored successfully image '\(name)' in container.")
-         completionHandler(success: true)
+         completionHandler(true)
        }
      }
    }
@@ -363,15 +355,15 @@ func generateUrl(forContainer containerName: String, forImage imageName: String)
    let retrieveContainer = { (objStorage: ObjectStorage?) -> Void in
      if let objStorage = objStorage {
        objStorage.retrieveContainer(name: containerName) { (error, container) in
-         if let container = container where error == nil {
+         if let container = container , error == nil {
            storeImage(container)
          } else {
            Log.error("Could not find container named '\(containerName)'.")
-           completionHandler(success: false)
+           completionHandler(false)
          }
        }
      } else {
-       completionHandler(success: false)
+       completionHandler(false)
      }
    }
 

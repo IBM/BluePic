@@ -17,7 +17,6 @@
 import Foundation
 import Kitura
 import KituraNet
-import KituraSys
 import CouchDB
 import LoggerAPI
 import HeliumLogger
@@ -55,7 +54,7 @@ var objectStorageConn: ObjectStorageConn
 
 do {
   // Create configuration objects
-  let config = try Configuration()
+  let config = Configuration()!
   couchDBConnProps = try config.getCouchDBConnProps()
   objStorageConnProps = try config.getObjectStorageConnProps()
   mobileClientAccessProps = try config.getMobileClientAccessProps()
@@ -77,7 +76,7 @@ do {
   // Start server...
   Kitura.addHTTPServer(onPort: config.appEnv.port, with: router)
   Kitura.run()
-} catch Configuration.Error.IO {
+} catch Configuration.BluePicError.IO{
   Log.error("Oops, something went wrong... Server did not start!")
   exit(1)
 }
