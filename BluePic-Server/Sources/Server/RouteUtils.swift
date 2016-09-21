@@ -69,7 +69,7 @@ func processImage(withId imageId: String) {
             var rawUserData = Data()
             do {
                 let _ = try resp.read(into: &rawUserData)
-                let str = String(data: rawUserData as Data, encoding: String.Encoding(rawValue: String.Encoding.utf8.rawValue))
+                let str = String(data: rawUserData, encoding: String.Encoding(rawValue: String.Encoding.utf8.rawValue))
                 print("Error response from OpenWhisk: \(str)")
             }
             catch {
@@ -93,10 +93,10 @@ func processImage(withId imageId: String) {
 * - parameter imageId:  String id of the image document to retrieve.
 * - parameter callback: Callback to use within async method.
 */
-func readImage(database: Database, imageId: String, callback: @escaping ((_ jsonData: JSON?) -> ())) {
+func readImage(database: Database, imageId: String, callback: @escaping (_ jsonData: JSON?) -> ()) {
   let queryParams: [Database.QueryParameters] =
   [.descending(true), .includeDocs(true), .endKey([imageId as! AnyObject, 0 as! AnyObject]), .startKey([imageId as! AnyObject, NSObject()])]
-  database.queryByView("images_by_id", ofDesign: "main_design", usingParameters: queryParams) { (document, error) in
+  database.queryByView("images_by_id", ofDesign: "main_design", usingParameters: queryParams) { document, error in
     if let document = document , error == nil {
       do {
         let json = try parseImages(document: document)
@@ -159,11 +159,11 @@ func parseImages(forUserId userId: String, usingDocument document: JSON) throws 
     throw ProcessingError.Image("Invalid images document returned from Cloudant!")
   }
 
-  let images: [JSON] = rows.map({row in
+  let images: [JSON] = rows.map { row in
     var record = row["value"]
     massageImageRecord(containerName: userId, record: &record)
     return record
-  })
+  }
 
   return constructDocument(records: images)
 }
@@ -214,7 +214,7 @@ func parseMultipart(fromRequest request: RouterRequest) throws -> (JSON, Data) {
       } else if part.name == "imageBinary" {
         switch (part.body) {
         case .raw(let data):
-          imageData = data as Data?
+          imageData = data
         default:
           Log.warning("Couldn't process image binary from multi-part form.")
         }
@@ -292,7 +292,7 @@ func generateUrl(forContainer containerName: String, forImage imageName: String)
    // Cofigure container for public access and web hosting
    let configureContainer = { (container: ObjectStorageContainer) -> Void in
      let metadata:Dictionary<String, String> = ["X-Container-Meta-Web-Listings" : "true", "X-Container-Read" : ".r:*,.rlistings"]
-     container.updateMetadata(metadata: metadata) { (error) in
+     container.updateMetadata(metadata: metadata) { error in
        if let _ = error {
          Log.error("Could not configure container named '\(name)' for public access and web hosting.")
          completionHandler(false)
@@ -306,7 +306,7 @@ func generateUrl(forContainer containerName: String, forImage imageName: String)
    // Create container
    let createContainer = { (objStorage: ObjectStorage?) -> Void in
      if let objStorage = objStorage {
-       objStorage.createContainer(name: name) { (error, container) in
+       objStorage.createContainer(name: name) { error, container in
          if let container = container , error == nil {
            configureContainer(container)
          } else {
@@ -335,7 +335,7 @@ func generateUrl(forContainer containerName: String, forImage imageName: String)
  func store(image: Data, withName name: String, inContainer containerName: String, completionHandler: @escaping (_ success: Bool) -> Void) {
    // Store image in container
    let storeImage = { (container: ObjectStorageContainer) -> Void in
-     container.storeObject(name: name, data: image) { (error, object) in
+     container.storeObject(name: name, data: image) { error, object in
        if let _ = error {
          Log.error("Could not save image named '\(name)' in container.")
          completionHandler(false)
@@ -349,7 +349,7 @@ func generateUrl(forContainer containerName: String, forImage imageName: String)
    // Get reference to container
    let retrieveContainer = { (objStorage: ObjectStorage?) -> Void in
      if let objStorage = objStorage {
-       objStorage.retrieveContainer(name: containerName) { (error, container) in
+       objStorage.retrieveContainer(name: containerName) { error, container in
          if let container = container , error == nil {
            storeImage(container)
          } else {

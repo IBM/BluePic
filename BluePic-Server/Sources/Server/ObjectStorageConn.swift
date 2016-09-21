@@ -63,7 +63,7 @@ public class ObjectStorageConn {
     let semaphore = DispatchSemaphore(value: 0)
     
     Log.verbose("Making network call synchronous...")
-    objStorage.connect(userId: connProps.userId, password: connProps.password, region: ObjectStorage.REGION_DALLAS) { (error) in
+    objStorage.connect(userId: connProps.userId, password: connProps.password, region: ObjectStorage.REGION_DALLAS) { error in
       if let error = error {
         let errorMsg = "Could not connect to Object Storage."
         Log.error("\(errorMsg) Error was: '\(error)'.")

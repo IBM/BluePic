@@ -38,13 +38,14 @@ public struct Configuration {
     init() throws {
         let path = Configuration.getAbsolutePath(relativePath: "/\(configurationFile)", useFallback: false)
 
-        guard let finalPath = path, let urlPath = URL(string:finalPath)  else {
+        guard let finalPath = path else {
             Log.warning("Could not find '\(configurationFile)'.")
             appEnv = try CloudFoundryEnv.getAppEnv()
             return
         }
-        
-        let configData = try Data(contentsOf: urlPath)
+
+        let url = URL(fileURLWithPath: finalPath)
+        let configData = try Data(contentsOf: url)
         let configJson = JSON(data: configData)
         appEnv = try CloudFoundryEnv.getAppEnv(options: configJson)
         Log.info("Using configuration values from '\(configurationFile)'.")
@@ -141,11 +142,8 @@ public struct Configuration {
     guard let workingPath = Configuration.getAbsolutePath(relativePath: relativePath, useFallback: true) else {
       throw BluePicError.IO("Could not find file at relative path \(relativePath).")
     }
-    
-    guard let url = URL(string:workingPath) else {
-        throw BluePicError.IO("Could not create URL from working path")
-    }
 
+    let url = URL(fileURLWithPath: workingPath)
     let propertiesData = try Data(contentsOf: url)
     let propertiesJson = JSON(data: propertiesData)
     if let openWhiskJson = propertiesJson.dictionary?["openWhisk"],
