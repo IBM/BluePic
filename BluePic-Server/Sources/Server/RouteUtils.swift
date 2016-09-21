@@ -24,6 +24,10 @@ import BluemixObjectStorage
 import MobileClientAccess
 import Dispatch
 
+struct BluePicLocalizedError : LocalizedError {
+    var errorDescription: String?
+}
+
 /**
  This method kicks off asynchronously an OpenWhisk sequence and returns immediately.
  This method should not wait for the outcome of the OpenWhisk sequence/actions.
@@ -53,7 +57,7 @@ func processImage(withId imageId: String) {
 
   // Make REST call
   let req = HTTP.request(requestOptions) { resp in
-    if let resp = resp , resp.statusCode == HTTPStatusCode.OK || resp.statusCode == HTTPStatusCode.accepted {
+    if let resp = resp, resp.statusCode == HTTPStatusCode.OK || resp.statusCode == HTTPStatusCode.accepted {
       do {
         var body = Data() //NSMutableData()
         try resp.readAllData(into: &body)
@@ -95,9 +99,12 @@ func processImage(withId imageId: String) {
 */
 func readImage(database: Database, imageId: String, callback: @escaping (_ jsonData: JSON?) -> ()) {
   let queryParams: [Database.QueryParameters] =
-  [.descending(true), .includeDocs(true), .endKey([imageId as! AnyObject, 0 as! AnyObject]), .startKey([imageId as! AnyObject, NSObject()])]
+  [.descending(true),
+   .includeDocs(true),
+   .endKey([NSString(string: imageId), NSNumber(integerLiteral: 0)]),
+   .startKey([NSString(string: imageId), NSObject()])]
   database.queryByView("images_by_id", ofDesign: "main_design", usingParameters: queryParams) { document, error in
-    if let document = document , error == nil {
+    if let document = document, error == nil {
       do {
         let json = try parseImages(document: document)
         let images = json["records"].arrayValue
@@ -196,7 +203,6 @@ func parseMultipart(fromRequest request: RouterRequest) throws -> (JSON, Data) {
     throw ProcessingError.Image("No request body present.")
   }
   var imageJson: JSON?
-//  var imageData: NSData?
   var imageData: Data?
   switch (requestBody) {
   case .multipart(let parts):
@@ -263,10 +269,6 @@ func updateImageJSON(json: JSON, withRequest request: RouterRequest) throws -> J
   return updatedJson
 }
 
-struct BluePicLocalizedError : LocalizedError {    
-    var errorDescription: String?
-}
-
 /**
  Convenience method to create a URL for a container.
 
@@ -307,7 +309,7 @@ func generateUrl(forContainer containerName: String, forImage imageName: String)
    let createContainer = { (objStorage: ObjectStorage?) -> Void in
      if let objStorage = objStorage {
        objStorage.createContainer(name: name) { error, container in
-         if let container = container , error == nil {
+         if let container = container, error == nil {
            configureContainer(container)
          } else {
            Log.error("Could not create container named '\(name)'.")
@@ -350,7 +352,7 @@ func generateUrl(forContainer containerName: String, forImage imageName: String)
    let retrieveContainer = { (objStorage: ObjectStorage?) -> Void in
      if let objStorage = objStorage {
        objStorage.retrieveContainer(name: containerName) { error, container in
-         if let container = container , error == nil {
+         if let container = container, error == nil {
            storeImage(container)
          } else {
            Log.error("Could not find container named '\(containerName)'.")
