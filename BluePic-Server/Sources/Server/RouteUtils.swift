@@ -68,8 +68,8 @@ func processImage(withId imageId: String) {
             Log.error("Status code: \(resp.statusCode)")
             var rawUserData = Data()
             do {
-                try resp.read(into: &rawUserData)  //try? BodyParser.readBodyData(with: resp) {
-                let str = NSString(data: rawUserData as Data, encoding: String.Encoding.utf8.rawValue)
+                let _ = try resp.read(into: &rawUserData)
+                let str = String(data: rawUserData as Data, encoding: String.Encoding(rawValue: String.Encoding.utf8.rawValue))
                 print("Error response from OpenWhisk: \(str)")
             }
             catch {
@@ -263,13 +263,8 @@ func updateImageJSON(json: JSON, withRequest request: RouterRequest) throws -> J
   return updatedJson
 }
 
-/**
- Convenience method to create consistently formatted error.
-
- - returns: NSError object
- */
-func generateInternalError() -> NSError {
-  return NSError(domain: BluePic.Domain, code: BluePic.Error.Internal.rawValue, userInfo: [NSLocalizedDescriptionKey: String(describing: BluePic.Error.Internal)])
+struct BluePicLocalizedError : LocalizedError {    
+    var errorDescription: String?
 }
 
 /**
@@ -340,7 +335,7 @@ func generateUrl(forContainer containerName: String, forImage imageName: String)
  func store(image: Data, withName name: String, inContainer containerName: String, completionHandler: @escaping (_ success: Bool) -> Void) {
    // Store image in container
    let storeImage = { (container: ObjectStorageContainer) -> Void in
-     container.storeObject(name: name, data: image as Data) { (error, object) in
+     container.storeObject(name: name, data: image) { (error, object) in
        if let _ = error {
          Log.error("Could not save image named '\(name)' in container.")
          completionHandler(false)

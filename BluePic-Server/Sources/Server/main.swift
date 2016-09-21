@@ -54,7 +54,7 @@ var objectStorageConn: ObjectStorageConn
 
 do {
   // Create configuration objects
-  let config = Configuration()!
+  let config = try Configuration()
   couchDBConnProps = try config.getCouchDBConnProps()
   objStorageConnProps = try config.getObjectStorageConnProps()
   mobileClientAccessProps = try config.getMobileClientAccessProps()

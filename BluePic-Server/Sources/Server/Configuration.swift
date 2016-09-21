@@ -35,25 +35,19 @@ public struct Configuration {
     let configurationFile = "cloud_config.json"
     let appEnv: AppEnv
     
-    init?()  {
+    init() throws {
         let path = Configuration.getAbsolutePath(relativePath: "/\(configurationFile)", useFallback: false)
-        
-        do {
-            if let finalPath = path {
-                let configData = try Data(contentsOf: URL(string:finalPath)!)
-                let configJson = JSON(data: configData)
-                appEnv = try CloudFoundryEnv.getAppEnv(options: configJson)
-                Log.info("Using configuration values from '\(configurationFile)'.")
-            }
-            else {
-                Log.warning("Could not find '\(configurationFile)'.")
-                appEnv = try CloudFoundryEnv.getAppEnv()
-            }
-        }
-        catch {
+
+        guard let finalPath = path, let urlPath = URL(string:finalPath)  else {
             Log.warning("Could not find '\(configurationFile)'.")
-            return nil
+            appEnv = try CloudFoundryEnv.getAppEnv()
+            return
         }
+        
+        let configData = try Data(contentsOf: urlPath)
+        let configJson = JSON(data: configData)
+        appEnv = try CloudFoundryEnv.getAppEnv(options: configJson)
+        Log.info("Using configuration values from '\(configurationFile)'.")
     }
 
   /**
@@ -147,15 +141,19 @@ public struct Configuration {
     guard let workingPath = Configuration.getAbsolutePath(relativePath: relativePath, useFallback: true) else {
       throw BluePicError.IO("Could not find file at relative path \(relativePath).")
     }
+    
+    guard let url = URL(string:workingPath) else {
+        throw BluePicError.IO("Could not create URL from working path")
+    }
 
-    let propertiesData = try Data(contentsOf: URL(string:workingPath)!)
+    let propertiesData = try Data(contentsOf: url)
     let propertiesJson = JSON(data: propertiesData)
     if let openWhiskJson = propertiesJson.dictionary?["openWhisk"],
         let hostName = openWhiskJson["hostName"].string,
         let urlPath = openWhiskJson["urlPath"].string,
         let authToken = openWhiskJson["authToken"].string {
             let utf8BaseStr = authToken.data(using: String.Encoding.utf8)
-            guard let computedAuthToken = utf8BaseStr?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) else {
+            guard let computedAuthToken = utf8BaseStr?.base64EncodedString(options: Data.Base64EncodingOptions(rawValue: 0)) else {
                 throw BluePicError.IO("Could not perform base64 encoding on authToken")
             }
         return OpenWhiskProps(hostName: hostName, urlPath: urlPath, authToken: computedAuthToken)

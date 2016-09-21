@@ -26,7 +26,7 @@ public class ObjectStorageConn {
   var test = 10
   let connProps: ObjectStorageConnProps
   private var authenticated: Bool = false
-  private var lastAuthenticatedTs: NSDate?
+  private var lastAuthenticatedTs: Date?
 
   init(objStorageConnProps: ObjectStorageConnProps) {
     connProps = objStorageConnProps
@@ -71,7 +71,7 @@ public class ObjectStorageConn {
       } else {
         Log.verbose("Successfully obtained authentication token for Object Storage.")
         self.authenticated = true
-        self.lastAuthenticatedTs = NSDate()
+        self.lastAuthenticatedTs = Date()
         Log.verbose("lastAuthenticatedTs is \(self.lastAuthenticatedTs).")
       }
       Log.verbose("Signaling semaphore...")

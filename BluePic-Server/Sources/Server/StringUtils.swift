@@ -38,7 +38,7 @@ public struct StringUtils {
    - returns: timestamp in String form
    */
   static func currentTimestamp() -> String {
-    let dateStr = NSDate().description
+    let dateStr = Date().description
     let ts = dateStr.substring(r: Range(0..<10)) + "T" + dateStr.substring(r: Range(11..<18))
     Log.verbose("Current time string: \(dateStr)")
     Log.verbose("Current timestamp generated: \(ts)")

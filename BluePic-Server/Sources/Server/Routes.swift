@@ -57,24 +57,24 @@ func defineRoutes() {
     // Define error response just in case...
     var errorResponse = JSON([:])
     errorResponse["error"].stringValue = "Failed to retrieve MCA token."
-
+    
     let baseStr = "\(mobileClientAccessProps.clientId):\(mobileClientAccessProps.secret)"
     
     var tempAuthHeader: String?
     let utf8BaseStr = baseStr.data(using: String.Encoding.utf8)
-    tempAuthHeader = utf8BaseStr?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
+    tempAuthHeader = utf8BaseStr?.base64EncodedString(options: Data.Base64EncodingOptions(rawValue: 0))
     
     guard let authHeader = tempAuthHeader else {
-      print("Could not generate authHeader...")
-      response.status(HTTPStatusCode.internalServerError).send(json: errorResponse)
-      next()
-      return
+        print("Could not generate authHeader...")
+        response.status(HTTPStatusCode.internalServerError).send(json: errorResponse)
+        next()
+        return
     }
-
+    
     let appGuid = mobileClientAccessProps.clientId
     print("authHeader: \(authHeader)")
     print("appGuid: \(appGuid)")
-
+    
     // Request options
     var requestOptions: [ClientRequest.Options] = []
     requestOptions.append(.method("POST"))
@@ -87,43 +87,44 @@ func defineRoutes() {
     headers["Content-Type"] = "application/x-www-form-urlencoded; charset=utf-8"
     headers["Authorization"] = "Basic \(authHeader)"
     requestOptions.append(.headers(headers))
-
+    
     // Body required for getting MCA token
     let requestBody = "grant_type=client_credentials"
-
+    
     // Make REST call against MCA server
     let req = HTTP.request(requestOptions) { resp in
-      if let resp = resp , resp.statusCode == HTTPStatusCode.OK {
-        do {
-          var body = Data()
-          try resp.readAllData(into: &body)
-          let jsonResponse = JSON(data: body as Data)
-          //let accessToken = json["accessToken"].stringValue
-          print("MCA response: \(jsonResponse)")
-          response.status(HTTPStatusCode.OK).send(json: jsonResponse)
-        } catch {
-          Log.error("Bad JSON document received from MCA server.")
-          response.status(resp.statusCode).send(json: errorResponse)
-        }
-      } else {
-        Log.error("Status error code or nil reponse received from MCA server.")
-        if let resp = resp {
-            Log.error("Status code: \(resp.statusCode)")
+        if let resp = resp , resp.statusCode == HTTPStatusCode.OK {
             do {
                 var body = Data()
-                try resp.read(into: &body) //  if let rawUserData = try? BodyParser.readBodyData(with: resp) {
-                let str = NSString(data: body, encoding: String.Encoding.utf8.rawValue)
-                print("Response from MCA server: \(str)")
-                
-            }catch {
-                
+                try resp.readAllData(into: &body)
+                let jsonResponse = JSON(data: body)
+                //let accessToken = json["accessToken"].stringValue
+                print("MCA response: \(jsonResponse)")
+                response.status(HTTPStatusCode.OK).send(json: jsonResponse)
+            } catch {
+                Log.error("Bad JSON document received from MCA server.")
+                response.status(resp.statusCode).send(json: errorResponse)
             }
+        } else {
+            Log.error("Status error code or nil reponse received from MCA server.")
+            if let resp = resp {
+                Log.error("Status code: \(resp.statusCode)")
+                do {
+                    var body = Data()
+                    let _ = try resp.read(into: &body)
+                    let str = String(data: body, encoding: String.Encoding(rawValue: String.Encoding.utf8.rawValue))
+                    print("Response from MCA server: \(str)")
+                    
+                }catch {
+                    Log.error("Failed to read response body.")
+                }
+            }
+            response.status(HTTPStatusCode.internalServerError).send(json: errorResponse)
         }
-        response.status(HTTPStatusCode.internalServerError).send(json: errorResponse)
-        }
-      next()
+        next()
     }
     req.end(requestBody)
+
   }
 
   /**
@@ -164,11 +165,11 @@ func defineRoutes() {
           response.status(HTTPStatusCode.OK).send(json: tagsDocument)
         } catch {
           Log.error("Failed to obtain tags from database.")
-          response.error = generateInternalError()
+          response.error = BluePicLocalizedError(errorDescription: "Failed to obtain tags from database.")
         }
       } else {
         Log.error("Failed to obtain tags from database.")
-        response.error = generateInternalError()
+        response.error = BluePicLocalizedError(errorDescription: "Failed to obtain tags from database.")
       }
       next()
     }
@@ -196,11 +197,11 @@ func defineRoutes() {
             response.status(HTTPStatusCode.OK).send(json: images)
           } catch {
             Log.error("Failed to find images by tag.")
-            response.error = generateInternalError()
+            response.error = BluePicLocalizedError(errorDescription: "Failed to find images by tag.")
           }
         } else {
           Log.error("Failed to find images by tag.")
-          response.error = generateInternalError()
+          response.error = BluePicLocalizedError(errorDescription: "Failed to find images by tag.")
         }
         next()
       }
@@ -213,11 +214,11 @@ func defineRoutes() {
             response.status(HTTPStatusCode.OK).send(json: images)
           } catch {
             Log.error("Failed to retrieve all images.")
-            response.error = generateInternalError()
+            response.error = BluePicLocalizedError(errorDescription: "Failed to retrieve all images.")
           }
         } else {
           Log.error("Failed to retrieve all images.")
-          response.error = generateInternalError()
+          response.error = BluePicLocalizedError(errorDescription: "Failed to retrieve all images.")
         }
         next()
       }
@@ -229,7 +230,7 @@ func defineRoutes() {
   */
   router.get("/images/:imageId") { request, response, next in
     guard let imageId = request.parameters["imageId"] else {
-      response.error = generateInternalError()
+      response.error = BluePicLocalizedError(errorDescription: "Failed to obtain imageId.")
       next()
       return
     }
@@ -238,7 +239,7 @@ func defineRoutes() {
       if let jsonData = jsonData {
         response.status(HTTPStatusCode.OK).send(json: jsonData)
       } else {
-        response.error = generateInternalError()
+        response.error = BluePicLocalizedError(errorDescription: "Failed to obtain JSON data from database.")
       }
       next()
     })
@@ -253,7 +254,6 @@ func defineRoutes() {
     responseBody["status"].boolValue = false
 
     guard let imageId = request.parameters["imageId"] else {
-      //response.error = generateInternalError()
       response.status(HTTPStatusCode.badRequest)
       response.send(json: responseBody)
       next()
@@ -269,7 +269,6 @@ func defineRoutes() {
         pushNotificationsClient.send(notification: notification) { (error) in
           if let error = error {
             Log.error("Failed to send push notification: \(error)")
-            //response.error = generateInternalError()
             response.status(HTTPStatusCode.internalServerError)
           } else {
             response.status(HTTPStatusCode.OK)
@@ -298,11 +297,11 @@ func defineRoutes() {
           response.status(HTTPStatusCode.OK).send(json: users)
         } catch {
           Log.error("Failed to read users from database.")
-          response.error = generateInternalError()
+          response.error = BluePicLocalizedError(errorDescription: "Failed to read users from database.")
         }
       } else {
         Log.error("Failed to read users from database.")
-        response.error = generateInternalError()
+        response.error = BluePicLocalizedError(errorDescription: "Failed to read users from database.")
       }
       next()
     }
@@ -314,7 +313,7 @@ func defineRoutes() {
   router.get("/users/:userId") { request, response, next in
     guard let userId = request.parameters["userId"] else {
       response.status(HTTPStatusCode.badRequest)
-      response.error = generateInternalError()
+      response.error = BluePicLocalizedError(errorDescription: "Failed to obtain userId.")
       next()
       return
     }
@@ -333,12 +332,12 @@ func defineRoutes() {
         } catch {
           response.status(HTTPStatusCode.notFound)
           Log.error("User with id \(userId) was not found.")
-          response.error = generateInternalError()
+          response.error = BluePicLocalizedError(errorDescription: "User with id \(userId) was not found.")
         }
       } else {
         response.status(HTTPStatusCode.internalServerError)
         Log.error("Failed to read requested user document.")
-        response.error = generateInternalError()
+        response.error = BluePicLocalizedError(errorDescription: "Failed to read requested user document.")
       }
       next()
     }
@@ -367,7 +366,7 @@ func defineRoutes() {
             if let error = error {
               Log.error("Error domain: \(error._domain); error code: \(error._code).")
             }
-            response.error = generateInternalError()
+            response.error = BluePicLocalizedError(errorDescription: "Failed to create image record in Cloudant database.")
             next()
             return
           }
@@ -382,7 +381,7 @@ func defineRoutes() {
         }
       } else {
         Log.error("Failed to create image record in Cloudant database.")
-        response.error = generateInternalError()
+        response.error = BluePicLocalizedError(errorDescription: "Failed to create image record in Cloudant database.")
       }
       next()
     }
@@ -395,7 +394,7 @@ func defineRoutes() {
   */
   router.get("/users/:userId/images") { request, response, next in
     guard let userId = request.parameters["userId"] else {
-      response.error = generateInternalError()
+      response.error = BluePicLocalizedError(errorDescription: "Failed to obtain userId.")
       next()
       return
     }
@@ -408,11 +407,11 @@ func defineRoutes() {
           response.status(HTTPStatusCode.OK).send(json: images)
         } catch {
           Log.error("Failed to get images for \(userId).")
-          response.error = generateInternalError()
+          response.error = BluePicLocalizedError(errorDescription: "Failed to get images for \(userId).")
         }
       } else {
         Log.error("Failed to get images for \(userId).")
-        response.error = generateInternalError()
+        response.error = BluePicLocalizedError(errorDescription: "Failed to get images for \(userId).")
       }
       next()
     }
@@ -452,12 +451,12 @@ func defineRoutes() {
             next()
           } else {
             Log.error("Failed to add user to the system of records.")
-            response.error = error ?? generateInternalError()
+            response.error = error ?? BluePicLocalizedError(errorDescription: "Failed to add user to the system of records.")
             next()
           }
         } catch {
           Log.error("Failed to add user to the system of records.")
-          response.error = generateInternalError()
+          response.error = BluePicLocalizedError(errorDescription: "Failed to add user to the system of records.")
           next()
         }
       }
@@ -482,7 +481,7 @@ func defineRoutes() {
         } else {
           response.status(HTTPStatusCode.internalServerError)
           Log.error("Failed to process user request.")
-          response.error = generateInternalError()
+          response.error = BluePicLocalizedError(errorDescription: "Failed to process user request.")
           next()
         }
       }
@@ -493,7 +492,7 @@ func defineRoutes() {
         addUser()
       } else {
         Log.error("Failed to add user to the system of records.")
-        response.error = generateInternalError()
+        response.error = BluePicLocalizedError(errorDescription: "Failed to add user to the system of records.")
         next()
       }
     }
