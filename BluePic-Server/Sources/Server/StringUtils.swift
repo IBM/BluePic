@@ -38,20 +38,12 @@ public struct StringUtils {
    - returns: timestamp in String form
    */
   static func currentTimestamp() -> String {
-    let dateStr = Date().description
-    let ts = dateStr.substring(r: Range(0..<10)) + "T" + dateStr.substring(r: Range(11..<18))
-    Log.verbose("Current time string: \(dateStr)")
+    let dateFormatter = DateFormatter()
+    dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+    dateFormatter.timeZone = TimeZone(abbreviation: "GMT")
+    dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+    let ts = dateFormatter.string(from: Date())
     Log.verbose("Current timestamp generated: \(ts)")
     return ts
   }
-}
-
-public extension String {
-    
-    func substring(r: Range<Int>) -> String {
-        let fromIndex = self.index(self.startIndex, offsetBy: r.lowerBound)
-        let toIndex = self.index(self.startIndex, offsetBy: r.upperBound)
-        return self.substring(with: Range<String.Index>(uncheckedBounds: (lower: fromIndex, upper: toIndex)))
-    }
-    
 }
