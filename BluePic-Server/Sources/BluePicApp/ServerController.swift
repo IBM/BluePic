@@ -79,7 +79,7 @@ public class ServerController {
     
     Log.verbose("Defining routes for server...")
     router.get("/ping", handler: ping)
-    router.get("/token", handler: token) // This route is only for testing purposes
+    router.get("/token", handler: token)
     router.get("/tags", handler: getPopularTags)
     router.get("/users", handler: getUsers)
     router.get("/users/:userId", handler: getUser)
@@ -100,6 +100,7 @@ extension ServerController: ServerProtocol {
     next()
   }
   
+  /// This route is only for testing purposes
   public func token(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
 
     // Define error response just in case...
@@ -174,6 +175,17 @@ extension ServerController: ServerProtocol {
     req.end(requestBody)
   }
   
+  /**
+   * Route for getting the top 10 most popular tags. The following URLs are kept
+   * here as reference:
+   * http://www.ramblingincode.com/building-a-couchdb-reduce-function/
+   * http://docs.couchdb.org/en/1.6.1/couchapp/ddocs.html#reduce-and-rereduce-functions
+   * http://guide.couchdb.org/draft/cookbook.html#aggregate
+   * http://www.slideshare.net/okurow/couchdb-mapreduce-13321353
+   * https://qnalist.com/questions/2434952/sorting-by-reduce-value
+   * https://gist.github.com/doppler/807315
+   * http://guide.couchdb.org/draft/transforming.html
+   */
   func getPopularTags(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
     let queryParams: [Database.QueryParameters] = [.group(true), .groupLevel(1)]
     database.queryByView("tags", ofDesign: "main_design", usingParameters: queryParams) { document, error in
@@ -211,6 +223,8 @@ extension ServerController: ServerProtocol {
     }
   }
   
+  
+  /// Route for getting all user documents.
   func getUsers(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
     database.queryByView("users", ofDesign: "main_design", usingParameters: [.descending(true), .includeDocs(false)]) { document, error in
       if let document = document, error == nil {
@@ -229,6 +243,7 @@ extension ServerController: ServerProtocol {
     }
   }
   
+  /// Route for getting a specific user document.
   func getUser(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
     guard let userId = request.parameters["userId"] else {
       response.status(HTTPStatusCode.badRequest)
@@ -262,6 +277,7 @@ extension ServerController: ServerProtocol {
     }
   }
   
+  /// Route for creating a new user document in the database.
   func createUser(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
     let rawUserData = try BodyParser.readBodyData(with: request)
     var userJson = JSON(data: rawUserData)
@@ -342,6 +358,14 @@ extension ServerController: ServerProtocol {
     createContainer(withName: userId, completionHandler: completionHandler)
   }
   
+  /**
+   * Route for getting all image documents or all images that match a given tag.
+   * As of now, searching on multiple tags is not supported in this app.
+   * To search using multiple tags, additional logic is required.
+   * See following URLs for further details:
+   * https://issues.apache.org/jira/browse/COUCHDB-523
+   * http://stackoverflow.com/questions/1468684/multiple-key-ranges-as-parameters-to-a-couchdb-view
+   */
   func getImages(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
     if var tag = request.queryParameters["tag"] {
       // Get images by tag
@@ -388,6 +412,7 @@ extension ServerController: ServerProtocol {
     }
   }
   
+  /// Route for getting a specific image document.
   func getImage(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
     guard let imageId = request.parameters["imageId"] else {
       response.error = BluePicLocalizedError(errorDescription: "Failed to obtain imageId.")
@@ -405,6 +430,7 @@ extension ServerController: ServerProtocol {
     })
   }
   
+  /// Route for getting all image documents for a given user.
   func getImagesForUser(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
     guard let userId = request.parameters["userId"] else {
       response.error = BluePicLocalizedError(errorDescription: "Failed to obtain userId.")
@@ -433,6 +459,13 @@ extension ServerController: ServerProtocol {
     }
   }
   
+  /**
+   * Route for uploading a new picture for a given user.
+   * Uses a multi-part form data request to send data in the body.
+   * The two items sent in the data is a Json string with image metadata
+   * and the second piece is the actual image binary.
+   * This route deals with processing and recording the data.
+   */
   func postImage(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
     // get multipart data for image metadata and imgage binary data
     var (imageJSON, image) = try parseMultipart(fromRequest: request)
@@ -471,6 +504,7 @@ extension ServerController: ServerProtocol {
     store(image: image, withName: imageJSON["fileName"].stringValue, inContainer: imageJSON["userId"].stringValue, completionHandler: completionHandler)
   }
   
+  /// Route for sending push notification (this uses the Push server SDK).
   func sendPushNotification(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
     // Define response body
     var responseBody = JSON([:])
@@ -501,7 +535,6 @@ extension ServerController: ServerProtocol {
           next()
         }
       } else {
-        //response.error = generateInternalError()
         response.status(HTTPStatusCode.internalServerError)
         response.send(json: responseBody)
         next()

@@ -21,14 +21,14 @@ import Dispatch
 import HeliumLogger
 import SwiftyJSON
 
-//@testable import Server
+@testable import BluePicApp
 
 class RouteTests: XCTestCase {
     
     private let queue = DispatchQueue(label: "Kitura runloop", qos: .userInitiated, attributes: .concurrent)
-    
-    // test get tags, images, images by ID,
-    
+  
+    private let serverController = try? ServerController()
+  
     static var allTests : [(String, (RouteTests) -> () throws -> Void)] {
         return [
             ("testGetTags", testGetTags)
@@ -40,53 +40,124 @@ class RouteTests: XCTestCase {
         
         HeliumLogger.use()
         
-        Kitura.addHTTPServer(onPort: 8090, with: Router())
+        Kitura.addHTTPServer(onPort: 8090, with: serverController!.router)
         
         queue.async {
             Kitura.run()
         }
         
     }
+  
+  func testPing() {
     
-    func testGetTags() {
-        
-        let tagExpectation = expectation(description: "Get the top 10 image tags.")
-        
-        URLRequest(forTestWithMethod: "GET", route: "tags")
-        .sendForTesting(expectation: tagExpectation) { data, expectation in
-            print("The data: \(data)")
-            print(String(data: data, encoding: String.Encoding.utf8)!)
-            expectation.fulfill()
-        }
-        waitForExpectations(timeout: 5.0) { error in
-            if let error = error {
-                XCTFail("Failed with error: \(error)")
-            }
-        }
+    let pingExpectation = expectation(description: "Hit ping endpoint and get simple text response.")
+
+    // TODO: perform request as authenticated user
+    URLRequest(forTestWithMethod: "GET", route: "ping")
+    .sendForTesting { data in
+      let pingResult = String(data: data, encoding: String.Encoding.utf8)!
+      XCTAssertTrue(pingResult.contains("Hello World"))
+      pingExpectation.fulfill()
     }
+    waitForExpectations(timeout: 5.0, handler: nil)
+  }
+  
+  func testGetTags() {
+    
+    let tagExpectation = expectation(description: "Get the top 10 image tags.")
+    let expectedResult = ["mountain", "flower", "nature", "bridge", "building", "city", "cloudy sky", "garden", "lake", "person"]
+    
+    URLRequest(forTestWithMethod: "GET", route: "tags")
+      .sendForTesting { data in
+        let tags = JSON(data: data)
+        for (index, pair) in tags["records"].arrayValue.enumerated() {
+          XCTAssertEqual(pair["key"].stringValue, expectedResult[index])
+        }
+        tagExpectation.fulfill()
+    }
+    waitForExpectations(timeout: 5.0, handler: nil)
+  }
+  
+  func testGettingImages() {
+    
+    func assertUserProperties(image: JSON) {
+      XCTAssertEqual(image["contentType"].stringValue, "image/png")
+      XCTAssertEqual(image["fileName"].stringValue, "road.png")
+      XCTAssertEqual(image["width"].intValue, 600)
+      XCTAssertEqual(image["height"].intValue, 402)
+      XCTAssertEqual(image["deviceId"].intValue, 3001)
+      XCTAssertEqual(image["_id"].intValue, 2010)
+      XCTAssertEqual(image["type"].stringValue, "image")
+      XCTAssertEqual(image["uploadedTs"].stringValue, "2016-05-05T13:25:43")
+      XCTAssertTrue(image["url"].stringValue.contains("1001/road.png"))
+      XCTAssertEqual(image["caption"].stringValue, "Road")
+      
+      let user = image["user"]
+      XCTAssertEqual(user["_id"].intValue, 1001)
+      XCTAssertEqual(user["name"].stringValue, "Peter Adams")
+      XCTAssertEqual(user["type"].stringValue, "user")
+      
+      let tags = image["tags"].arrayValue
+      XCTAssertEqual(tags.first!["confidence"].intValue, 89)
+      XCTAssertEqual(tags.first!["label"].stringValue, "road")
+      XCTAssertEqual(tags.last!["confidence"].intValue, 50)
+      XCTAssertEqual(tags.last!["label"].stringValue, "mountain")
+      
+      let location = image["location"]
+      XCTAssertEqual(location["latitude"].stringValue, "34.53")
+      XCTAssertEqual(location["longitude"].stringValue, "84.5")
+      XCTAssertEqual(location["name"].stringValue, "Austin, Texas")
+      XCTAssertEqual(location["weather"]["description"].stringValue, "Mostly Sunny")
+      XCTAssertEqual(location["weather"]["iconId"].intValue, 27)
+      XCTAssertEqual(location["weather"]["temperature"].intValue, 85)
+    }
+    
+    let imageExpectation = expectation(description: "Get all images and a specific image.")
+    
+    URLRequest(forTestWithMethod: "GET", route: "images")
+      .sendForTesting { data in
+        
+        let images = JSON(data: data)
+        let records = images["records"].arrayValue
+        XCTAssertEqual(records.count, 9)
+        let image = records.first!
+        assertUserProperties(image: image)
+        
+        let route = "images/" + image["_id"].stringValue
+        URLRequest(forTestWithMethod: "GET", route: route)
+          .sendForTesting { data in
+            
+            let image = JSON(data: data)
+            assertUserProperties(image: image)
+            imageExpectation.fulfill()
+        }
+
+    }
+    waitForExpectations(timeout: 8.0, handler: nil)
+  }
 
 }
 
 private extension URLRequest {
     
     init(forTestWithMethod method: String, route: String = "", message: String? = nil) {
-        self.init(url: URL(string: "http://127.0.0.1:8090/" + route)!)
-        addValue("application/json", forHTTPHeaderField: "Content-Type")
-        httpMethod = method
-        cachePolicy = .reloadIgnoringCacheData
+      self.init(url: URL(string: "http://127.0.0.1:8090/" + route)!)
+      addValue("application/json", forHTTPHeaderField: "Content-Type")
+      httpMethod = method
+      cachePolicy = .reloadIgnoringCacheData
     }
     
-    func sendForTesting(expectation: XCTestExpectation,  fn: @escaping (Data, XCTestExpectation) -> Void ) {
-        let dataTask = URLSession(configuration: .default).dataTask(with: self) {
-            data, response, error in
-            XCTAssertNil(error)
-            XCTAssertNotNil(data)
-            switch (response as? HTTPURLResponse)?.statusCode {
-                case nil: XCTFail("bad response")
-                case 200?: fn(data!, expectation)
-                case let sc?: XCTFail("bad status \(sc)")
-            }
+    func sendForTesting(fn: @escaping (Data) -> Void ) {
+      let dataTask = URLSession(configuration: .default).dataTask(with: self) {
+        data, response, error in
+        XCTAssertNil(error)
+        XCTAssertNotNil(data)
+        switch (response as? HTTPURLResponse)?.statusCode {
+          case nil: XCTFail("bad response")
+          case 200?: fn(data!)
+          case let sc?: XCTFail("bad status \(sc)")
         }
-        dataTask.resume()
+      }
+      dataTask.resume()
     }
 }
