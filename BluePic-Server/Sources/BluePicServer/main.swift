@@ -30,7 +30,7 @@ do {
   Kitura.addHTTPServer(onPort: serverController.port, with: serverController.router)
   Kitura.run()
 
-} catch Configuration.BluePicError.IO {
-  Log.error("Oops, something went wrong... Server did not start!")
+} catch let error {
+  Log.error("Oops, something went wrong... Server did not start! Failed with error: \(error.localizedDescription)")
   exit(1)
 }

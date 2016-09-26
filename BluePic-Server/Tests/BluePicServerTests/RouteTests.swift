@@ -31,7 +31,9 @@ class RouteTests: XCTestCase {
   
     static var allTests : [(String, (RouteTests) -> () throws -> Void)] {
         return [
-            ("testGetTags", testGetTags)
+            ("testPint", testPing),
+            ("testGetTags", testGetTags),
+            ("testGettingImages", testGettingImages)
         ]
     }
     
