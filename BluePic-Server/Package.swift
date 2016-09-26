@@ -17,8 +17,12 @@
 import PackageDescription
 
 let package = Package(
-  name: "BluePicApp",
+  name: "BluePic-Server",
   targets: [
+    Target(
+      name: "BluePicApp",
+      dependencies: []
+    ),
     Target(
       name: "BluePicServer", dependencies: [.Target(name: "BluePicApp")]
     ),

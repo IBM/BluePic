@@ -14,6 +14,12 @@
  * limitations under the License.
  **/
 
+#if os(Linux)
+  import Glibc
+#else
+  import Darwin
+#endif
+
 import Foundation
 import Kitura
 import XCTest
@@ -31,7 +37,7 @@ class RouteTests: XCTestCase {
   
     static var allTests : [(String, (RouteTests) -> () throws -> Void)] {
         return [
-            ("testPint", testPing),
+            ("testPing", testPing),
             ("testGetTags", testGetTags),
             ("testGettingImages", testGettingImages)
         ]
@@ -55,8 +61,10 @@ class RouteTests: XCTestCase {
     let pingExpectation = expectation(description: "Hit ping endpoint and get simple text response.")
 
     // TODO: perform request as authenticated user
+    print("before")
     URLRequest(forTestWithMethod: "GET", route: "ping")
     .sendForTesting { data in
+      print("after")
       let pingResult = String(data: data, encoding: String.Encoding.utf8)!
       XCTAssertTrue(pingResult.contains("Hello World"))
       pingExpectation.fulfill()
