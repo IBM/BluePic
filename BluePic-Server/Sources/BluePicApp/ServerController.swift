@@ -24,6 +24,7 @@ import BluemixPushNotifications
 import MobileClientAccessKituraCredentialsPlugin
 import MobileClientAccess
 import Credentials
+import CloudFoundryEnv
 
 ///
 /// Because bridging is not complete in Linux, we must use Any objects for dictionaries
@@ -48,10 +49,15 @@ public class ServerController {
   let pushNotificationsClient: PushNotifications
     
   public let router = Router()
+  let appEnv: AppEnv
+  public var port: Int {
+    return appEnv.port
+  }
     
   public init() throws {
     // Create configuration objects
 	  let config = try Configuration()
+    appEnv = config.appEnv
 	  couchDBConnProps = try config.getCouchDBConnProps()
 	  objStorageConnProps = try config.getObjectStorageConnProps()
 	  mobileClientAccessProps = try config.getMobileClientAccessProps()

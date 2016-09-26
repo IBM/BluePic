@@ -20,6 +20,7 @@ import Kitura
 protocol ServerProtocol {
     
   var router: Router { get }
+  var port: Int { get }
 
   func ping(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws
   func token(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws

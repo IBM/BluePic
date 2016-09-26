@@ -32,10 +32,10 @@ do {
   // CloudFoundryDeploymentTracker(repositoryURL: "https://github.com/IBM-Swift/BluePic.git", codeVersion: nil).track()
   let serverController = try ServerController()
   // Start server...
-  Kitura.addHTTPServer(onPort: 8090, with: serverController.router)
+  Kitura.addHTTPServer(onPort: serverController.port, with: serverController.router)
   Kitura.run()
 
-} catch Configuration.BluePicError.IO{
+} catch Configuration.BluePicError.IO {
   Log.error("Oops, something went wrong... Server did not start!")
   exit(1)
 }
