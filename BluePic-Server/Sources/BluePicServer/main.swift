@@ -21,12 +21,7 @@ import HeliumLogger
 import BluePicApp
 // import CloudFoundryDeploymentTracker
 
-// Disable all buffering on stdout
-setbuf(stdout, nil)
-
-// Logger
-Log.logger = HeliumLogger()
-
+HeliumLogger.use(LoggerMessageType.info)
 
 do {
   // CloudFoundryDeploymentTracker(repositoryURL: "https://github.com/IBM-Swift/BluePic.git", codeVersion: nil).track()
