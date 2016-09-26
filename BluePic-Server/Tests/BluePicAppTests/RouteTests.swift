@@ -30,48 +30,63 @@ import SwiftyJSON
 @testable import BluePicApp
 
 class RouteTests: XCTestCase {
+  
+  private let queue = DispatchQueue(label: "Kitura runloop", qos: .userInitiated, attributes: .concurrent)
+
+  private let serverController = try? ServerController()
+
+  static var allTests : [(String, (RouteTests) -> () throws -> Void)] {
+      return [
+          ("testPing", testPing),
+          ("testGetTags", testGetTags),
+          ("testGettingImages", testGettingImages)
+      ]
+  }
+  
+  func resetDatabase() {
+    let task = Process()
     
-    private let queue = DispatchQueue(label: "Kitura runloop", qos: .userInitiated, attributes: .concurrent)
+    let initialPath = #file
+    let components = initialPath.characters.split(separator: "/").map(String.init)
+    let notLastThree = components[0..<components.count - 4]
+    let directoryPath = "/" + notLastThree.joined(separator: "/") + "/Cloud-Scripts"
+
+    task.currentDirectoryPath = directoryPath
+    task.launchPath = "/bin/sh"
+    task.arguments = [directoryPath + "/populator.sh"]
+    task.launch()
+    task.waitUntilExit()
+  }
   
-    private let serverController = try? ServerController()
-  
-    static var allTests : [(String, (RouteTests) -> () throws -> Void)] {
-        return [
-            ("testPing", testPing),
-            ("testGetTags", testGetTags),
-            ("testGettingImages", testGettingImages)
-        ]
+  override func setUp() {
+    super.setUp()
+    
+    resetDatabase()
+    
+    HeliumLogger.use()
+    
+    Kitura.addHTTPServer(onPort: 8090, with: serverController!.router)
+    
+    queue.async {
+      Kitura.run()
     }
     
-    override func setUp() {
-        super.setUp()
-        
-        HeliumLogger.use()
-        
-        Kitura.addHTTPServer(onPort: 8090, with: serverController!.router)
-        
-        queue.async {
-            Kitura.run()
-        }
-        
-    }
-  
+  }
+
   func testPing() {
     
     let pingExpectation = expectation(description: "Hit ping endpoint and get simple text response.")
 
     // TODO: perform request as authenticated user
-    print("before")
     URLRequest(forTestWithMethod: "GET", route: "ping")
     .sendForTesting { data in
-      print("after")
       let pingResult = String(data: data, encoding: String.Encoding.utf8)!
       XCTAssertTrue(pingResult.contains("Hello World"))
       pingExpectation.fulfill()
     }
     waitForExpectations(timeout: 5.0, handler: nil)
   }
-  
+
   func testGetTags() {
     
     let tagExpectation = expectation(description: "Get the top 10 image tags.")
@@ -87,7 +102,7 @@ class RouteTests: XCTestCase {
     }
     waitForExpectations(timeout: 5.0, handler: nil)
   }
-  
+
   func testGettingImages() {
     
     func assertUserProperties(image: JSON) {
@@ -149,25 +164,25 @@ class RouteTests: XCTestCase {
 }
 
 private extension URLRequest {
-    
-    init(forTestWithMethod method: String, route: String = "", message: String? = nil) {
-      self.init(url: URL(string: "http://127.0.0.1:8090/" + route)!)
-      addValue("application/json", forHTTPHeaderField: "Content-Type")
-      httpMethod = method
-      cachePolicy = .reloadIgnoringCacheData
-    }
-    
-    func sendForTesting(fn: @escaping (Data) -> Void ) {
-      let dataTask = URLSession(configuration: .default).dataTask(with: self) {
-        data, response, error in
-        XCTAssertNil(error)
-        XCTAssertNotNil(data)
-        switch (response as? HTTPURLResponse)?.statusCode {
-          case nil: XCTFail("bad response")
-          case 200?: fn(data!)
-          case let sc?: XCTFail("bad status \(sc)")
-        }
+  
+  init(forTestWithMethod method: String, route: String = "", message: String? = nil) {
+    self.init(url: URL(string: "http://127.0.0.1:8090/" + route)!)
+    addValue("application/json", forHTTPHeaderField: "Content-Type")
+    httpMethod = method
+    cachePolicy = .reloadIgnoringCacheData
+  }
+  
+  func sendForTesting(fn: @escaping (Data) -> Void ) {
+    let dataTask = URLSession(configuration: .default).dataTask(with: self) {
+      data, response, error in
+      XCTAssertNil(error)
+      XCTAssertNotNil(data)
+      switch (response as? HTTPURLResponse)?.statusCode {
+        case nil: XCTFail("bad response")
+        case 200?: fn(data!)
+        case let sc?: XCTFail("bad status \(sc)")
       }
-      dataTask.resume()
     }
+    dataTask.resume()
+  }
 }
