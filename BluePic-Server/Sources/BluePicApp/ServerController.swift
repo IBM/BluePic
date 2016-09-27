@@ -74,6 +74,9 @@ public class ServerController {
     let credentials = Credentials() // middleware for securing endpoints
     credentials.register(plugin: MobileClientAccessKituraCredentialsPlugin())
     pushNotificationsClient = PushNotifications(bluemixRegion: PushNotifications.Region.US_SOUTH, bluemixAppGuid: mobileClientAccessProps.clientId, bluemixAppSecret: ibmPushProps.secret)
+    
+    // Serve static content from "public"
+    router.all("/", middleware: StaticFileServer())
 
     // Assign middleware instance
     router.get("/users", middleware: credentials)
