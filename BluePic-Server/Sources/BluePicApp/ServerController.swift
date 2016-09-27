@@ -377,12 +377,14 @@ extension ServerController: ServerProtocol {
       // Get images by tag
       // let _ = tag.characters.split(separator: ",").map(String.init)
       tag = StringUtils.decodeWhiteSpace(inString: tag)
+      let anyTag = tag as Database.KeyType
+      let zeroKey = "0" as Database.KeyType
       let queryParams: [Database.QueryParameters] =
         [.descending(true),
          .includeDocs(true),
          .reduce(false),
-         .endKey([NSString(string: tag), NSString(string:"0"), NSString(string:"0"), NSNumber(integerLiteral: 0)]),
-         .startKey([NSString(string: tag), NSObject()])]
+         .endKey([anyTag, zeroKey, zeroKey, NSNumber(integerLiteral: 0)]),
+         .startKey([anyTag, NSObject()])]
       database.queryByView("images_by_tags", ofDesign: "main_design", usingParameters: queryParams) { document, error in
         if let document = document, error == nil {
           do {
@@ -444,10 +446,11 @@ extension ServerController: ServerProtocol {
       return
     }
     
+    let anyUserId = userId as Database.KeyType
     let queryParams: [Database.QueryParameters] =
       [.descending(true),
-       .endKey([NSString(string: userId), NSString(string: "0")]),
-       .startKey([NSString(string: userId), NSObject()])]
+       .endKey([anyUserId, "0" as Database.KeyType]),
+       .startKey([anyUserId, NSObject()])]
     database.queryByView("images_per_user", ofDesign: "main_design", usingParameters: queryParams) { document, error in
       if let document = document, error == nil {
         do {

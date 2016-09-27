@@ -101,11 +101,12 @@ extension ServerController {
   * - parameter callback: Callback to use within async method.
   */
   func readImage(database: Database, imageId: String, callback: @escaping (_ jsonData: JSON?) -> ()) {
+    let anyImageId = imageId as Database.KeyType
     let queryParams: [Database.QueryParameters] =
     [.descending(true),
      .includeDocs(true),
-     .endKey([NSString(string: imageId), NSNumber(integerLiteral: 0)]),
-     .startKey([NSString(string: imageId), NSObject()])]
+     .endKey([anyImageId, NSNumber(integerLiteral: 0)]),
+     .startKey([anyImageId, NSObject()])]
     database.queryByView("images_by_id", ofDesign: "main_design", usingParameters: queryParams) { document, error in
       if let document = document, error == nil {
         do {
