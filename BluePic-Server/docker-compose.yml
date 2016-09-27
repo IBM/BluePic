@@ -1,8 +1,8 @@
 # To use this file, simply execute: docker-compose up
 app:
-  image: ibmcom/kitura-ubuntu
+  image: ibmcom/swift-ubuntu
   ports:
     - "8090:8090"
   volumes:
     - .:/root/BluePic
-  command: bash -c "make clean -C BluePic && make -C BluePic && BluePic/.build/debug/Server"
+  command: bash -c "make clean -C BluePic && make -C BluePic && BluePic/.build/debug/BluePicServer"
