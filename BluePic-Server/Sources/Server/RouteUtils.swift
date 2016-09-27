@@ -263,8 +263,39 @@ func updateImageJSON(json: JSON, withRequest request: RouterRequest) throws -> J
   return updatedJson
 }
 
-struct BluePicLocalizedError : LocalizedError {    
-    var errorDescription: String?
+enum BluePicLocalizedError : LocalizedError {
+    
+    case getTagsFailed
+    case noImagesByTag(String)
+    case getAllImagesFailed
+    case noImageId
+    case noJsonData(String)
+    case getUsersFailed
+    case noUserId(String)
+    case missingUserId
+    case readDocumentFailed
+    case addImageRecordFailed
+    case getImagesFailed(String)
+    case addUserRecordFailed(String)
+    case requestFailed
+    
+    var errorDescription: String? {
+        switch self {
+        case .getTagsFailed: return "Failed to obtain tags from database."
+        case .noImagesByTag(let tag): return "Failed to find images with tag: \(tag)."
+        case .getAllImagesFailed: return "Failed to retrieve all images."
+        case .noImageId: return "Failed to obtain imageId."
+        case .noJsonData(let imageId): return "Failed to obtain JSON data from database for imageId: \(imageId)."
+        case .getUsersFailed: return "Failed to read users from database."
+        case .noUserId(let userId): return "Failed to obtain userId: \(userId)."
+        case .missingUserId: return "Failed to obtain userId."
+        case .readDocumentFailed: return "Failed to read requested user document."
+        case .addImageRecordFailed: return "Failed to create image record in Cloudant database."
+        case .getImagesFailed(let userId): return "Failed to get images for \(userId)."
+        case .addUserRecordFailed(let userId): return "Failed to add user: \(userId) to the system of records."
+        case .requestFailed: return "Failed to process user request."
+        }
+    }
 }
 
 /**
