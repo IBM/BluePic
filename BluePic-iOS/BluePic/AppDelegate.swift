@@ -79,7 +79,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
 
         //could not grab instance of tab bar fail silently
-        guard let tabBarController = self.window?.rootViewController as? TabBarViewController, feedNav = tabBarController.viewControllers?.first as? FeedNavigationController else {
+        guard let tabBarController = self.window?.rootViewController as? TabBarViewController, let feedNav = tabBarController.viewControllers?.first as? FeedNavigationController else {
             completionHandler(UIBackgroundFetchResult.Failed)
             return
         }
@@ -88,8 +88,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if application.applicationState == UIApplicationState.Background || application.applicationState == UIApplicationState.Inactive {
             loadImageDetail(userInfo, tabBarController: tabBarController, feedNav: feedNav)
         } else {
-          if let aps = userInfo["aps"], category = aps["category"] as? String,
-            alert = aps["alert"] as? [String:AnyObject], body = alert["body"] as? String where category == "imageProcessed" {
+          if let aps = userInfo["aps"], let category = aps["category"] as? String,
+            let alert = aps["alert"] as? [String:AnyObject], let body = alert["body"] as? String where category == "imageProcessed" {
 
             let alert = UIAlertController(title: NSLocalizedString(body, tableName: "Server", bundle: NSBundle.mainBundle(), value: "", comment: ""),
                                               message: NSLocalizedString("Would you like to view your image now?", comment: ""),
@@ -113,8 +113,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
      - parameter feedNav:          root navigation controller for feed flow
      */
     func loadImageDetail(userInfo: [NSObject : AnyObject], tabBarController: TabBarViewController, feedNav: FeedNavigationController) {
-        if let payload = userInfo["payload"] as? String, dictionary = Utils.convertStringToDictionary(payload), image = Image(dictionary),
-            imageDetailVC = Utils.vcWithNameFromStoryboardWithName("ImageDetailViewController", storyboardName: "Feed") as? ImageDetailViewController {
+        if let payload = userInfo["payload"] as? String, let dictionary = Utils.convertStringToDictionary(payload), let image = Image(dictionary),
+            let imageDetailVC = Utils.vcWithNameFromStoryboardWithName("ImageDetailViewController", storyboardName: "Feed") as? ImageDetailViewController {
 
             let imageDetailViewModel = ImageDetailViewModel(image: image)
             imageDetailVC.viewModel = imageDetailViewModel

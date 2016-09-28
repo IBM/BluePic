@@ -8,7 +8,6 @@ Bluepic takes advantage of Swift in a typical iOS client setting, but also on th
 
 ## Known Issues
 
-- iOS devices with the BluePic app built from Xcode 8 [will not receive push notifications](https://github.com/IBM-Swift/BluePic/issues/299).
 - Weather functionality in OpenWhisk does not work due to [changes in the Bluemix Weather service](https://github.com/IBM-Swift/BluePic/issues/307). 
 
 ## Swift version
@@ -16,15 +15,15 @@ The back-end components (i.e. Kitura-based server and OpenWhisk actions) and the
 
 		Component | Swift Version
 		--- | ---
-		Kitura-based server | `DEVELOPMENT-SNAPSHOT-2016-06-20-a`
+		Kitura-based server | `3.0`
 		OpenWhisk actions | `DEVELOPMENT-SNAPSHOT-2016-05-03-a`
-		iOS App | Xcode 8 Beta 3 default (`Swift 2.3`)
+		iOS App | Xcode 8 default (`Swift 2.3`)
 
 You can download the development snapshots of the Swift binaries by following this [link](https://swift.org/download/). Compatibility with other Swift versions is not guaranteed.
 
-Optionally, if you'd like to run the BluePic Kitura-based server using Xcode, you should use Xcode 8 Beta 3 and configure it to use the `DEVELOPMENT-SNAPSHOT-2016-06-20-a` toolchain. For details on how to set up Xcode, see [Building your Kitura application on XCode](https://github.com/IBM-Swift/Kitura/wiki/Building-your-Kitura-application-on-XCode/d43b796976bfb533d3d209948de17716fce859b0). Please note that any other versions of Xcode are not guaranteed to work with the back-end code.
+Optionally, if you'd like to run the BluePic Kitura-based server using Xcode, you should use Xcode 8 and configure it to use the default toolchain. For details on how to set up Xcode, see [Building your Kitura application on XCode](https://github.com/IBM-Swift/Kitura/wiki/Building-your-Kitura-application-on-XCode/d43b796976bfb533d3d209948de17716fce859b0). Please note that any other versions of Xcode are not guaranteed to work with the back-end code.
 
-As shown in the table above, the iOS component of the BluePic app uses the default toolchain (Swift 2.3) prepackaged with Xcode 8 Beta 3. At the moment, any other versions of Xcode are not guaranteed to work, but you may view previous [releases](https://github.com/IBM-Swift/BluePic/releases) for possibly compatability with older versions of Xcode (i.e. Xcode 7.3.1).. You may get unexpected behavior and/or errors if attempting to use other versions of Xcode or Swift.
+As shown in the table above, the iOS component of the BluePic app uses the default toolchain (Swift 2.3) prepackaged with Xcode 8. At the moment, any other versions of Xcode are not guaranteed to work, but you may view previous [releases](https://github.com/IBM-Swift/BluePic/releases) for possibly compatability with older versions of Xcode (i.e. Xcode 7.3.1).. You may get unexpected behavior and/or errors if attempting to use other versions of Xcode or Swift.
 
 ## Getting started
 There are *two ways* you can compile and provision BluePic on Bluemix. Method 1 uses the [IBM Cloud Tools for Swift](https://ibm-cloud-tools.mybluemix.net/) application. Using IBM Cloud Tools for Swift is the easiest and quickest path to get BluePic up and running. Method 2 is manual, does not leverage this tool, and, therefore, takes longer but you get to understand exactly the steps that are happening behind the scenes. Regardless of what what path you choose, there are a few optional steps you can complete for additional functionality.
@@ -86,16 +85,17 @@ You can obtain the above credentials by accessing your application's page on Blu
 ```
 
 ### 5. Populate Object Storage
-To populate your Object Storage instance with sample data, you need to obtain the following credential values:
+To populate your Object Storage instance with sample data, you need to obtain the following credential values (region is optional):
 
 - `userid` - The userid for your Object Storage instance.
 - `password` - The password for your Object Storage instance.
 - `projectid` - The project ID for your Object Storage instance.
+- `region` - Optionally, you can set the region for Object Storage to save your data in, either `lon` or `dal` for London and Dallas. If not set, region defaults to Dallas.
 
 You can obtain the above credentials by accessing your application's page on Bluemix and clicking on the `Show Credentials` twisty found on your Object Storage instance. Once you have these credentials,  navigate to the `./Cloud-Scripts/Object-Storage/` directory in the BluePic repo and execute the `populator.sh` script as shown below:
 
 ```bash
-./populator.sh --userid=<object storage userid> --password=<object storage password> --projectid=<object storage projectid>
+./populator.sh --userid=<object storage userid> --password=<object storage password> --projectid=<object storage projectid> --region=<object storage region>
 ```
 
 ### 6. Update `BluePic-Server/cloud_config.json` file
@@ -178,7 +178,7 @@ If you don't have the iOS project already open, go to the `BluePic-iOS` director
 You can now build and run the iOS app using the Xcode capabilities you are used to!
 
 ## Running the Kitura-based server locally
-You can build the BluePic-Server by going to the `BluePic-Server` directory of the cloned repository and running `make`. To start the Kitura-based server for the BluePic app on your local system, go to the `BluePic-Server` directory of the cloned repository and run `.build/debug/Server`. You should also update the `bluemix.plist` file in the Xcode project in order to have the iOS app connect to this local server. See the [Update configuration for iOS app](#7-update-configuration-for-ios-app) section for details.
+You can build the BluePic-Server by going to the `BluePic-Server` directory of the cloned repository and running `make`. To start the Kitura-based server for the BluePic app on your local system, go to the `BluePic-Server` directory of the cloned repository and run `.build/debug/BluePicServer`. You should also update the `bluemix.plist` file in the Xcode project in order to have the iOS app connect to this local server. See the [Update configuration for iOS app](#7-update-configuration-for-ios-app) section for details.
 
 ## Using BluePic
 BluePic was designed with a lot of useful features. To see further information and details on how to use the iOS app, check out our walkthrough on [Using BluePic](Docs/Usage.md) page.

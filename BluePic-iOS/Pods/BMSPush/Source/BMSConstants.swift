@@ -1,5 +1,5 @@
 /*
-*     Copyright 2015 IBM Corp.
+*     Copyright 2016 IBM Corp.
 *     Licensed under the Apache License, Version 2.0 (the "License");
 *     you may not use this file except in compliance with the License.
 *     You may obtain a copy of the License at
@@ -30,7 +30,7 @@ internal let IMFPUSH_DEVICE_ID  = "deviceId"
 
 internal let IMFPUSH_DEVICES  = "devices"
 
-internal let IMFPUSH_USER_ID  = "pushUser"
+//internal let IMFPUSH_USER_ID  = "pushUser"
 
 internal let IMFPUSH_USERID  = "userId"
 

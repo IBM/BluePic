@@ -16,6 +16,7 @@ import BMSCore
 
 /// This class represents the base device identity class, with default methods and keys
 
+#if swift (>=3.0)
 public class MCADeviceIdentity : BaseDeviceIdentity {
     
     public override init() {
@@ -29,10 +30,10 @@ public class MCADeviceIdentity : BaseDeviceIdentity {
             ]
         #else
             dict = [
-                BaseDeviceIdentity.ID : (UIDevice.currentDevice().identifierForVendor?.UUIDString)!,
-                BaseDeviceIdentity.OS :  UIDevice.currentDevice().systemName,
-                BaseDeviceIdentity.OS_VERSION : UIDevice.currentDevice().systemVersion,
-                BaseDeviceIdentity.MODEL :  UIDevice.currentDevice().model
+                BaseDeviceIdentity.ID : (UIDevice.current.identifierForVendor?.uuidString)!,
+                BaseDeviceIdentity.OS :  UIDevice.current.systemName,
+                BaseDeviceIdentity.OS_VERSION : UIDevice.current.systemVersion,
+                BaseDeviceIdentity.MODEL :  UIDevice.current.model
             ]
         #endif
         super.init(map: dict)
@@ -42,3 +43,31 @@ public class MCADeviceIdentity : BaseDeviceIdentity {
         super.init(map: map)
     }
 }
+#else
+    public class MCADeviceIdentity : BaseDeviceIdentity {
+        
+        public override init() {
+            var dict:[String : String] = [:]
+            #if os(watchOS)
+                dict = [
+                    BaseDeviceIdentity.ID : "Not Available",
+                    BaseDeviceIdentity.OS :  WKInterfaceDevice.currentDevice().systemName,
+                    BaseDeviceIdentity.OS_VERSION : WKInterfaceDevice.currentDevice().systemVersion,
+                    BaseDeviceIdentity.MODEL :  WKInterfaceDevice.currentDevice().model
+                ]
+            #else
+                dict = [
+                    BaseDeviceIdentity.ID : (UIDevice.currentDevice().identifierForVendor?.UUIDString)!,
+                    BaseDeviceIdentity.OS :  UIDevice.currentDevice().systemName,
+                    BaseDeviceIdentity.OS_VERSION : UIDevice.currentDevice().systemVersion,
+                    BaseDeviceIdentity.MODEL :  UIDevice.currentDevice().model
+                ]
+            #endif
+            super.init(map: dict)
+        }
+        
+        public override init(map: [String : AnyObject]?) {
+            super.init(map: map)
+        }
+    }
+#endif
