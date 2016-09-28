@@ -262,7 +262,7 @@ extension ServerController: ServerProtocol {
     }
     
     // Retrieve JSON document for user
-    database.queryByView("users", ofDesign: "main_design", usingParameters: [ .descending(true), .includeDocs(false), .keys([NSString(string:userId)]) ]) { document, error in
+    database.queryByView("users", ofDesign: "main_design", usingParameters: [ .descending(true), .includeDocs(false), .keys([userId as Database.KeyType]) ]) { document, error in
       if let document = document, error == nil {
         do {
           let json = try self.parseUsers(document: document)
@@ -331,7 +331,7 @@ extension ServerController: ServerProtocol {
     // Closure for verifying if user exists and creating new record
     let addUser = {
       // Verify if user already exists
-      self.database.queryByView("users", ofDesign: "main_design", usingParameters: [ .descending(true), .includeDocs(false), .keys([NSString(string: userId)]) ]) { document, error in
+      self.database.queryByView("users", ofDesign: "main_design", usingParameters: [ .descending(true), .includeDocs(false), .keys([userId as Database.KeyType]) ]) { document, error in
         if let document = document, error == nil {
           do {
             let json = try self.parseUsers(document: document)
