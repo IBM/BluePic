@@ -222,11 +222,11 @@ extension ServerController: ServerProtocol {
           response.status(HTTPStatusCode.OK).send(json: tagsDocument)
         } catch {
           Log.error("Failed to obtain tags from database.")
-          response.error = BluePicLocalizedError(errorDescription: "Failed to obtain tags from database.")
+          response.error = BluePicLocalizedError.getTagsFailed
         }
       } else {
         Log.error("Failed to obtain tags from database.")
-        response.error = BluePicLocalizedError(errorDescription: "Failed to obtain tags from database.")
+        response.error = BluePicLocalizedError.getTagsFailed
       }
       next()
     }
@@ -242,11 +242,11 @@ extension ServerController: ServerProtocol {
           response.status(HTTPStatusCode.OK).send(json: users)
         } catch {
           Log.error("Failed to read users from database.")
-          response.error = BluePicLocalizedError(errorDescription: "Failed to read users from database.")
+          response.error = BluePicLocalizedError.getUsersFailed
         }
       } else {
         Log.error("Failed to read users from database.")
-        response.error = BluePicLocalizedError(errorDescription: "Failed to read users from database.")
+        response.error = BluePicLocalizedError.getUsersFailed
       }
       next()
     }
@@ -256,7 +256,7 @@ extension ServerController: ServerProtocol {
   func getUser(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
     guard let userId = request.parameters["userId"] else {
       response.status(HTTPStatusCode.badRequest)
-      response.error = BluePicLocalizedError(errorDescription: "Failed to obtain userId.")
+      response.error = BluePicLocalizedError.missingUserId
       next()
       return
     }
@@ -275,12 +275,12 @@ extension ServerController: ServerProtocol {
         } catch {
           response.status(HTTPStatusCode.notFound)
           Log.error("User with id \(userId) was not found.")
-          response.error = BluePicLocalizedError(errorDescription: "User with id \(userId) was not found.")
+          response.error = BluePicLocalizedError.noUserId(userId)
         }
       } else {
         response.status(HTTPStatusCode.internalServerError)
         Log.error("Failed to read requested user document.")
-        response.error = BluePicLocalizedError(errorDescription: "Failed to read requested user document.")
+        response.error = BluePicLocalizedError.readDocumentFailed
       }
       next()
     }
@@ -318,12 +318,12 @@ extension ServerController: ServerProtocol {
             next()
           } else {
             Log.error("Failed to add user to the system of records.")
-            response.error = error ?? BluePicLocalizedError(errorDescription: "Failed to add user to the system of records.")
+            response.error = error ?? BluePicLocalizedError.addUserRecordFailed(userId)
             next()
           }
         } catch {
           Log.error("Failed to add user to the system of records.")
-          response.error = BluePicLocalizedError(errorDescription: "Failed to add user to the system of records.")
+          response.error = BluePicLocalizedError.addUserRecordFailed(userId)
           next()
         }
       }
@@ -348,7 +348,7 @@ extension ServerController: ServerProtocol {
         } else {
           response.status(HTTPStatusCode.internalServerError)
           Log.error("Failed to process user request.")
-          response.error = BluePicLocalizedError(errorDescription: "Failed to process user request.")
+          response.error = BluePicLocalizedError.requestFailed
           next()
         }
       }
@@ -359,7 +359,7 @@ extension ServerController: ServerProtocol {
         addUser()
       } else {
         Log.error("Failed to add user to the system of records.")
-        response.error = BluePicLocalizedError(errorDescription: "Failed to add user to the system of records.")
+        response.error = BluePicLocalizedError.addUserRecordFailed(userId)
         next()
       }
     }
@@ -395,11 +395,11 @@ extension ServerController: ServerProtocol {
             response.status(HTTPStatusCode.OK).send(json: images)
           } catch {
             Log.error("Failed to find images by tag.")
-            response.error = BluePicLocalizedError(errorDescription: "Failed to find images by tag.")
+            response.error = BluePicLocalizedError.noImagesByTag(tag)
           }
         } else {
           Log.error("Failed to find images by tag.")
-          response.error = BluePicLocalizedError(errorDescription: "Failed to find images by tag.")
+          response.error = BluePicLocalizedError.noImagesByTag(tag)
         }
         next()
       }
@@ -412,11 +412,11 @@ extension ServerController: ServerProtocol {
             response.status(HTTPStatusCode.OK).send(json: images)
           } catch {
             Log.error("Failed to retrieve all images.")
-            response.error = BluePicLocalizedError(errorDescription: "Failed to retrieve all images.")
+            response.error = BluePicLocalizedError.getAllImagesFailed
           }
         } else {
           Log.error("Failed to retrieve all images.")
-          response.error = BluePicLocalizedError(errorDescription: "Failed to retrieve all images.")
+          response.error = BluePicLocalizedError.getAllImagesFailed
         }
         next()
       }
@@ -426,7 +426,7 @@ extension ServerController: ServerProtocol {
   /// Route for getting a specific image document.
   func getImage(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
     guard let imageId = request.parameters["imageId"] else {
-      response.error = BluePicLocalizedError(errorDescription: "Failed to obtain imageId.")
+      response.error = BluePicLocalizedError.noImageId
       next()
       return
     }
@@ -435,7 +435,7 @@ extension ServerController: ServerProtocol {
       if let jsonData = jsonData {
         response.status(HTTPStatusCode.OK).send(json: jsonData)
       } else {
-        response.error = BluePicLocalizedError(errorDescription: "Failed to obtain JSON data from database.")
+        response.error = BluePicLocalizedError.noJsonData(imageId)
       }
       next()
     })
@@ -444,7 +444,7 @@ extension ServerController: ServerProtocol {
   /// Route for getting all image documents for a given user.
   func getImagesForUser(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
     guard let userId = request.parameters["userId"] else {
-      response.error = BluePicLocalizedError(errorDescription: "Failed to obtain userId.")
+      response.error = BluePicLocalizedError.missingUserId
       next()
       return
     }
@@ -461,11 +461,11 @@ extension ServerController: ServerProtocol {
           response.status(HTTPStatusCode.OK).send(json: images)
         } catch {
           Log.error("Failed to get images for \(userId).")
-          response.error = BluePicLocalizedError(errorDescription: "Failed to get images for \(userId).")
+          response.error = BluePicLocalizedError.getImagesFailed(userId)
         }
       } else {
         Log.error("Failed to get images for \(userId).")
-        response.error = BluePicLocalizedError(errorDescription: "Failed to get images for \(userId).")
+        response.error = BluePicLocalizedError.getImagesFailed(userId)
       }
       next()
     }
@@ -493,7 +493,7 @@ extension ServerController: ServerProtocol {
             if let error = error {
               Log.error("Error domain: \(error._domain); error code: \(error._code).")
             }
-            response.error = BluePicLocalizedError(errorDescription: "Failed to create image record in Cloudant database.")
+            response.error = BluePicLocalizedError.addImageRecordFailed
             next()
             return
           }
@@ -508,7 +508,7 @@ extension ServerController: ServerProtocol {
         }
       } else {
         Log.error("Failed to create image record in Cloudant database.")
-        response.error = BluePicLocalizedError(errorDescription: "Failed to create image record in Cloudant database.")
+        response.error = BluePicLocalizedError.addImageRecordFailed
       }
       next()
     }
