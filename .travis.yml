@@ -20,4 +20,4 @@ before_install:
 
 script:
   - swift build
-  - swift test 
+    #  - swift test 
