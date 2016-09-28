@@ -19,11 +19,9 @@ import BluemixObjectStorage
 import LoggerAPI
 import Dispatch
 
-// FIXME: Change to a struct when using a swift binary that supports the DispatchQueue type
-public class ObjectStorageConn {
+public struct ObjectStorageConn {
   let connectQueue = DispatchQueue(label: "connectQueue")
   let objStorage: ObjectStorage
-  var test = 10
   let connProps: ObjectStorageConnProps
   private var authenticated: Bool = false
   private var lastAuthenticatedTs: Date?
@@ -33,7 +31,7 @@ public class ObjectStorageConn {
     objStorage = ObjectStorage(projectId: connProps.projectId)
   }
 
-  func getObjectStorage(completionHandler: (_ objStorage: ObjectStorage?) -> Void) {
+  mutating func getObjectStorage(completionHandler: @escaping (_ objStorage: ObjectStorage?) -> Void) {
     Log.verbose("Starting task in serialized block (getting ObjectStorage instance)...")
     connectQueue.sync {
         self.connect(completionHandler: completionHandler)
@@ -43,7 +41,7 @@ public class ObjectStorageConn {
     completionHandler(param)
   }
 
-  private func connect(completionHandler: (_ objStorage: ObjectStorage?) -> Void) {
+  private mutating func connect(completionHandler: (_ objStorage: ObjectStorage?) -> Void) {
     Log.verbose("Determining if we have an ObjectStorage instance ready to use...")
     if authenticated, let lastAuthenticatedTs = lastAuthenticatedTs {
       // Check when was the last time we got an auth token
@@ -61,25 +59,26 @@ public class ObjectStorageConn {
 
     // Network call should be synchronous since we need to know the result before proceeding.
     let semaphore = DispatchSemaphore(value: 0)
-    
+    var copy = self
     Log.verbose("Making network call synchronous...")
     objStorage.connect(userId: connProps.userId, password: connProps.password, region: ObjectStorage.REGION_DALLAS) { error in
       if let error = error {
         let errorMsg = "Could not connect to Object Storage."
         Log.error("\(errorMsg) Error was: '\(error)'.")
-        self.authenticated = false
+        copy.authenticated = false
       } else {
         Log.verbose("Successfully obtained authentication token for Object Storage.")
-        self.authenticated = true
-        self.lastAuthenticatedTs = Date()
-        Log.verbose("lastAuthenticatedTs is \(self.lastAuthenticatedTs).")
+        copy.authenticated = true
+        copy.lastAuthenticatedTs = Date()
+        Log.verbose("lastAuthenticatedTs is \(copy.lastAuthenticatedTs).")
       }
       Log.verbose("Signaling semaphore...")
       semaphore.signal()
       
     }
-
+    
     let _ = semaphore.wait(timeout: DispatchTime.distantFuture)
+    self = copy
     Log.verbose("Continuing execution after synchronous network call...")
   }
 
