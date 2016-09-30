@@ -35,8 +35,13 @@ import BMSCore
         
         internal final var pwUrl_ = String()
         internal final var reWritedomain = String()
-        
-        init(applicationID:String) {
+        internal final var clientSecretHeader = String()
+
+        init(applicationID:String, clientSecret:String) {
+            
+            if !(clientSecret.isEmpty) {
+                clientSecretHeader = clientSecret
+            }
             
             if(!BMSPushClient.overrideServerHost.isEmpty){
                 pwUrl_ += BMSPushClient.overrideServerHost
@@ -77,14 +82,20 @@ import BMSCore
         func addHeader() -> [String: String] {
             
             if reWritedomain.isEmpty {
-                return [IMFPUSH_CONTENT_TYPE_KEY:IMFPUSH_CONTENT_TYPE_JSON]
+                if(clientSecretHeader.isEmpty){
+                    return [IMFPUSH_CONTENT_TYPE_KEY:IMFPUSH_CONTENT_TYPE_JSON]
+                }
+                return [IMFPUSH_CONTENT_TYPE_KEY:IMFPUSH_CONTENT_TYPE_JSON, IMFPUSH_CLIENT_SECRET:clientSecretHeader]
             }
             else{
-                
-                return [IMFPUSH_CONTENT_TYPE_KEY:IMFPUSH_CONTENT_TYPE_JSON, IMFPUSH_X_REWRITE_DOMAIN:reWritedomain]
+                if clientSecretHeader.isEmpty {
+                    return [IMFPUSH_CONTENT_TYPE_KEY:IMFPUSH_CONTENT_TYPE_JSON, IMFPUSH_X_REWRITE_DOMAIN:reWritedomain]
+                }
+                return [IMFPUSH_CONTENT_TYPE_KEY:IMFPUSH_CONTENT_TYPE_JSON, IMFPUSH_X_REWRITE_DOMAIN:reWritedomain, IMFPUSH_CLIENT_SECRET:clientSecretHeader]
             }
             
         }
+
         
         func getSubscribedDevicesUrl(devID:String) -> String {
             
@@ -167,9 +178,13 @@ import BMSCore
     
     internal final var pwUrl_ = String()
     internal final var reWritedomain = String()
+    internal final var clientSecretHeader = String()
     
-        init(applicationID:String) {
+        init(applicationID:String, clientSecret:String) {
             
+            if !(clientSecret.isEmpty) {
+                clientSecretHeader = clientSecret
+            }
             if(!BMSPushClient.overrideServerHost.isEmpty){
                 pwUrl_ += BMSPushClient.overrideServerHost
             }
@@ -209,11 +224,16 @@ import BMSCore
         func addHeader() -> [String: String] {
             
             if reWritedomain.isEmpty {
-                return [IMFPUSH_CONTENT_TYPE_KEY:IMFPUSH_CONTENT_TYPE_JSON]
+                if(clientSecretHeader.isEmpty){
+                    return [IMFPUSH_CONTENT_TYPE_KEY:IMFPUSH_CONTENT_TYPE_JSON]
+                }
+                return [IMFPUSH_CONTENT_TYPE_KEY:IMFPUSH_CONTENT_TYPE_JSON, IMFPUSH_CLIENT_SECRET:clientSecretHeader]
             }
             else{
-                
-                return [IMFPUSH_CONTENT_TYPE_KEY:IMFPUSH_CONTENT_TYPE_JSON, IMFPUSH_X_REWRITE_DOMAIN:reWritedomain]
+                if clientSecretHeader.isEmpty {
+                    return [IMFPUSH_CONTENT_TYPE_KEY:IMFPUSH_CONTENT_TYPE_JSON, IMFPUSH_X_REWRITE_DOMAIN:reWritedomain]
+                }
+                return [IMFPUSH_CONTENT_TYPE_KEY:IMFPUSH_CONTENT_TYPE_JSON, IMFPUSH_X_REWRITE_DOMAIN:reWritedomain, IMFPUSH_CLIENT_SECRET:clientSecretHeader]
             }
             
         }

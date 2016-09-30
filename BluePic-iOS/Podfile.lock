@@ -1,23 +1,23 @@
 PODS:
-  - BMSAnalyticsAPI (1.1.1)
-  - BMSCore (1.3.0):
-    - BMSAnalyticsAPI (~> 1.1.0)
-  - BMSFacebookAuthentication (1.0.1):
-    - BMSSecurity (~> 1.0)
+  - BMSAnalyticsAPI (2.0.0)
+  - BMSCore (2.0.1):
+    - BMSAnalyticsAPI (~> 2.0)
+  - BMSFacebookAuthentication (2.0.1):
+    - BMSSecurity (~> 2.0)
     - FBSDKLoginKit (~> 4.9)
-  - BMSPush (1.1.01):
-    - BMSCore (~> 1.0)
-  - BMSSecurity (1.2.1):
-    - BMSCore (~> 1.0)
+  - BMSPush (2.0.01):
+    - BMSCore (~> 2.0)
+  - BMSSecurity (2.0.0):
+    - BMSCore (~> 2.0)
   - Bolts (1.8.4):
     - Bolts/AppLinks (= 1.8.4)
     - Bolts/Tasks (= 1.8.4)
   - Bolts/AppLinks (1.8.4):
     - Bolts/Tasks
   - Bolts/Tasks (1.8.4)
-  - FBSDKCoreKit (4.15.1):
+  - FBSDKCoreKit (4.16.0):
     - Bolts (~> 1.7)
-  - FBSDKLoginKit (4.15.1):
+  - FBSDKLoginKit (4.16.0):
     - FBSDKCoreKit
   - SDWebImage (3.8.2):
     - SDWebImage/Core (= 3.8.2)
@@ -31,14 +31,14 @@ DEPENDENCIES:
   - SVProgressHUD
 
 SPEC CHECKSUMS:
-  BMSAnalyticsAPI: 297b443a3d31f96aef8ab5ae9a3ce5da7e79c897
-  BMSCore: aed9aba77666dd330ee192ed27c1ec12968cc411
-  BMSFacebookAuthentication: ab422cf70167b4486616311809b3013034e0194e
-  BMSPush: 85854a571f38727a80b4c04874e3dc1490d65559
-  BMSSecurity: f74a6febb4c0a2b801e5bc87b93ee319f27fe144
+  BMSAnalyticsAPI: 04dcc022b5123f3615c2de766a7cfc052a541ad1
+  BMSCore: c776498a6e1ce04905fbaf67a99b68b2f7d4c8e1
+  BMSFacebookAuthentication: d47e3819a8627f4ad401e2c6ae890e31afc6c102
+  BMSPush: 6296850c297567a128da27029f31e006f85f5492
+  BMSSecurity: 8a18bc791c5186350a97caddad74122d5863be6b
   Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
-  FBSDKCoreKit: fc7fa53d16b095ee3fd53f0cd59f1df8bcbb634d
-  FBSDKLoginKit: 073f79b3b2e762fc6f54a283fe15f45372d59f5f
+  FBSDKCoreKit: 7a6baaed4a2b2a244ba253346713bdbc74df135b
+  FBSDKLoginKit: 9a514a55a7d05190f64d4ef09502737588b5b561
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
   SVProgressHUD: b0830714205bea1317ea1a2ebc71e5633af334d4
 

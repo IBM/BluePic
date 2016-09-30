@@ -46,25 +46,25 @@ class ImageInfoHeaderCollectionReusableView: UICollectionReusableView {
     @IBOutlet weak var tagsLabel: UILabel!
 
     //constant that defines the captionLabel letter spacing
-    private let kCaptionLabelLetterSpacing: CGFloat = 1.7
+    fileprivate let kCaptionLabelLetterSpacing: CGFloat = 1.7
 
     //constant that defines the captionLabel line spacing
-    private let kCaptionLabelLineSpacing: CGFloat = 10.0
+    fileprivate let kCaptionLabelLineSpacing: CGFloat = 10.0
 
     //prefix used to get the correct name of the weather icon from the image asset folder
-    private let kWeatherIconNamePrefix = "weather_icon_"
+    fileprivate let kWeatherIconNamePrefix = "weather_icon_"
 
     //degree string used for the temperature
-    private let kDegreeSymbolString = "°"
+    fileprivate let kDegreeSymbolString = "°"
 
     //prefix string used for the byUserLabel text
-    private let kByUserLabelPrefixString = NSLocalizedString("by", comment: "")
+    fileprivate let kByUserLabelPrefixString = NSLocalizedString("by", comment: "")
 
     //prefix for the dateLabel text
-    private let kDateLabelPrefixString = NSLocalizedString("on", comment: "")
+    fileprivate let kDateLabelPrefixString = NSLocalizedString("on", comment: "")
 
     //prefix for the timeLabel text
-    private let kTimeLabelPrefixString = NSLocalizedString("at", comment: "")
+    fileprivate let kTimeLabelPrefixString = NSLocalizedString("at", comment: "")
 
     /**
      Method is called when the view wakes from nib
@@ -78,7 +78,7 @@ class ImageInfoHeaderCollectionReusableView: UICollectionReusableView {
 
      - parameter image: Image?
      */
-    func setupWithData(image: Image) {
+    func setupWithData(_ image: Image) {
 
         //setup captionLabel
         setupCaptionLabelWithData(image.caption)
@@ -93,10 +93,10 @@ class ImageInfoHeaderCollectionReusableView: UICollectionReusableView {
         setupCoordinatesLabel(image.location.latitude, longitude: image.location.longitude)
 
         //setup dateLabel
-        setupDateLabelWithData(image.timeStamp)
+        setupDateLabelWithData(image.timeStamp as Date)
 
         //setup timeLabel
-        setupTimeLabelWithData(image.timeStamp)
+        setupTimeLabelWithData(image.timeStamp as Date)
 
         //setup weatherImageView and Temperature Label
         setupWeatherImageViewAndTemperatureLabel(image.location.weather?.iconId, temperature: image.location.weather?.temperature)
@@ -110,14 +110,14 @@ class ImageInfoHeaderCollectionReusableView: UICollectionReusableView {
 
      - parameter caption: String?
      */
-    private func setupCaptionLabelWithData(caption: String?) {
+    fileprivate func setupCaptionLabelWithData(_ caption: String?) {
 
         if let imageCaption = caption {
 
             var cap = ""
             if imageCaption != CameraDataManager.SharedInstance.kEmptyCaptionPlaceHolder {
                 cap = caption ?? ""
-                cap = cap.uppercaseString
+                cap = cap.uppercased()
             }
 
             captionLabel.attributedText = NSAttributedString.createAttributedStringWithLetterAndLineSpacingWithCentering(cap, letterSpacing: kCaptionLabelLetterSpacing, lineSpacing: kCaptionLabelLineSpacing, centered: true)
@@ -130,7 +130,7 @@ class ImageInfoHeaderCollectionReusableView: UICollectionReusableView {
 
      - parameter userFullName: String?
      */
-    private func setupByUserLabel(userFullName: String?) {
+    fileprivate func setupByUserLabel(_ userFullName: String?) {
         let fullName = userFullName ?? ""
         byUserLabel.text = kByUserLabelPrefixString + " " + fullName
     }
@@ -140,7 +140,7 @@ class ImageInfoHeaderCollectionReusableView: UICollectionReusableView {
 
      - parameter locationName: String?
      */
-    private func setupCityAndStateLabel(locationName: String?) {
+    fileprivate func setupCityAndStateLabel(_ locationName: String?) {
         cityStateLabel.text = locationName ?? ""
     }
 
@@ -150,14 +150,14 @@ class ImageInfoHeaderCollectionReusableView: UICollectionReusableView {
 
      - parameter timeStamp: NSDate?
      */
-    private func setupDateLabelWithData(timeStamp: NSDate?) {
+    fileprivate func setupDateLabelWithData(_ timeStamp: Date?) {
 
         if let date = timeStamp {
-            let dateFormatter = NSDateFormatter()
-            dateFormatter.dateStyle = NSDateFormatterStyle.LongStyle
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateStyle = DateFormatter.Style.long
             let locale = LocationDataManager.SharedInstance.getLanguageLocale()
-            dateFormatter.locale = NSLocale(localeIdentifier: locale)
-            let dateString = dateFormatter.stringFromDate(date)
+            dateFormatter.locale = Locale(identifier: locale)
+            let dateString = dateFormatter.string(from: date)
 
             dateLabel.text = kDateLabelPrefixString + " " + dateString
         } else {
@@ -171,14 +171,14 @@ class ImageInfoHeaderCollectionReusableView: UICollectionReusableView {
 
      - parameter timeStamp: NSDate?
      */
-    private func setupTimeLabelWithData(timeStamp: NSDate?) {
+    fileprivate func setupTimeLabelWithData(_ timeStamp: Date?) {
 
         if let date = timeStamp {
-            let dateFormatter = NSDateFormatter()
-            dateFormatter.timeStyle = .ShortStyle
+            let dateFormatter = DateFormatter()
+            dateFormatter.timeStyle = .short
             let locale = LocationDataManager.SharedInstance.getLanguageLocale()
-            dateFormatter.locale = NSLocale(localeIdentifier: locale)
-            let dateString = dateFormatter.stringFromDate(date)
+            dateFormatter.locale = Locale(identifier: locale)
+            let dateString = dateFormatter.string(from: date)
             timeLabel.text = kTimeLabelPrefixString + " " + dateString
 
         } else {
@@ -193,10 +193,10 @@ class ImageInfoHeaderCollectionReusableView: UICollectionReusableView {
      - parameter latitude:  String?
      - parameter longitude: String?
      */
-    private func setupCoordinatesLabel(latitude: Double?, longitude: Double?) {
+    fileprivate func setupCoordinatesLabel(_ latitude: Double?, longitude: Double?) {
 
         if let latit = latitude,
-            longit = longitude {
+            let longit = longitude {
 
             let formattedCordinatesString = Utils.coordinateString(latit, longitude: longit)
 
@@ -213,7 +213,7 @@ class ImageInfoHeaderCollectionReusableView: UICollectionReusableView {
      - parameter weatherIconId: Int?
      - parameter temperature:   Int?
      */
-    private func setupWeatherImageViewAndTemperatureLabel(weatherIconId: Int?, temperature: Int?) {
+    fileprivate func setupWeatherImageViewAndTemperatureLabel(_ weatherIconId: Int?, temperature: Int?) {
 
         if let iconId = weatherIconId {
             let imageName = kWeatherIconNamePrefix + "\(iconId)"
@@ -241,17 +241,17 @@ class ImageInfoHeaderCollectionReusableView: UICollectionReusableView {
 
      - parameter tags: [Tag]?
      */
-    private func setupTagsLabel(tags: [Tag]?) {
+    fileprivate func setupTagsLabel(_ tags: [Tag]?) {
 
         if let tags = tags {
 
             if tags.count > 0 {
-                tagsLabel.hidden = false
+                tagsLabel.isHidden = false
             } else {
-                tagsLabel.hidden = true
+                tagsLabel.isHidden = true
             }
         } else {
-            tagsLabel.hidden = true
+            tagsLabel.isHidden = true
         }
     }
 }

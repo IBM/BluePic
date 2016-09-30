@@ -48,9 +48,9 @@ class ProfileHeaderCollectionReusableView: UICollectionReusableView {
      - parameter numberOfShots:     Int?
      - parameter profilePictureURL: String
      */
-    func setupData(name: String?, numberOfShots: Int?, profilePictureURL: String) {
+    func setupData(_ name: String?, numberOfShots: Int?, profilePictureURL: String) {
 
-        nameLabel.text = name?.uppercaseString ?? ""
+        nameLabel.text = name?.uppercased() ?? ""
 
         if let shots = numberOfShots {
 
@@ -69,9 +69,9 @@ class ProfileHeaderCollectionReusableView: UICollectionReusableView {
             }
         }
 
-        if let url = NSURL(string: profilePictureURL) {
+        if let url = URL(string: profilePictureURL) {
 
-            profilePictureImageView.sd_setImageWithURL(url)
+            profilePictureImageView.sd_setImage(with: url)
 
         }
     }
@@ -81,8 +81,8 @@ class ProfileHeaderCollectionReusableView: UICollectionReusableView {
 
      - parameter sender: AnyObject
      */
-    @IBAction func moreButtonAction(sender: AnyObject) {
-         NSNotificationCenter.defaultCenter().postNotificationName(ProfileHeaderCollectionReusableViewNotification.ShowSettingsActionSheet.rawValue, object: nil)
+    @IBAction func moreButtonAction(_ sender: AnyObject) {
+         NotificationCenter.default.post(name: Notification.Name(rawValue: ProfileHeaderCollectionReusableViewNotification.ShowSettingsActionSheet.rawValue), object: nil)
     }
 
 }

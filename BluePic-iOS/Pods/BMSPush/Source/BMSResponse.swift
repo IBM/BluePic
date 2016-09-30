@@ -14,7 +14,6 @@
 import UIKit
 import BMSCore
 
-
 #if swift(>=3.0)
     
     /**
@@ -38,7 +37,7 @@ import BMSCore
             
             let subscription = NSMutableArray()
             
-            if  let  subscriptionDictionary:NSDictionary = convertStringToDictionary(text: self.responseText!)! as NSDictionary {
+            if  let  subscriptionDictionary = convertStringToDictionary(text: self.responseText!)! as NSDictionary? {
                 
                 if let subscriptionArray:NSArray = subscriptionDictionary.object(forKey: IMFPUSH_SUBSCRIPTIONS) as? NSArray{
                     
@@ -77,18 +76,18 @@ import BMSCore
             
             if let arraySub:NSArray = subscriptions.object(forKey: IMFPUSH_SUBSCRIPTIONEXISTS) as? NSArray {
                 
-                finalDict.setObject(arraySub, forKey:IMFPUSH_SUBSCRIPTIONEXISTS)
+                finalDict.setObject(arraySub, forKey:IMFPUSH_SUBSCRIPTIONEXISTS as NSCopying)
                 
             }
             if let dictionarySub:NSDictionary = subscriptions.object(forKey: IMFPUSH_TAGSNOTFOUND) as? NSDictionary {
                 
                 
-                finalDict.setObject(dictionarySub, forKey:IMFPUSH_TAGSNOTFOUND)
+                finalDict.setObject(dictionarySub, forKey:IMFPUSH_TAGSNOTFOUND as NSCopying)
                 
             }
             if let arraySub:NSArray = subscriptions.object(forKey: IMFPUSH_SUBSCRIBED) as? NSArray {
                 
-                finalDict.setObject(arraySub, forKey:IMFPUSH_SUBSCRIPTIONS)
+                finalDict.setObject(arraySub, forKey:IMFPUSH_SUBSCRIPTIONS as NSCopying)
             }
             
             return finalDict;
@@ -109,18 +108,18 @@ import BMSCore
             if let arraySub:NSArray = subscriptions.object(forKey: IMFPUSH_SUBSCRIPTIONEXISTS) as? NSArray {
                 
                 
-                finalDict.setObject(arraySub, forKey:IMFPUSH_SUBSCRIPTIONEXISTS)
+                finalDict.setObject(arraySub, forKey:IMFPUSH_SUBSCRIPTIONEXISTS as NSCopying)
                 
             }
             if let dictionarySub:NSDictionary = subscriptions.object(forKey: IMFPUSH_TAGSNOTFOUND) as? NSDictionary {
                 
                 
-                finalDict.setObject(dictionarySub, forKey:IMFPUSH_TAGSNOTFOUND)
+                finalDict.setObject(dictionarySub, forKey:IMFPUSH_TAGSNOTFOUND as NSCopying)
                 
             }
             if let arraySub:NSArray = subscriptions.object(forKey: IMFPUSH_SUBSCRIBED) as? NSArray {
                 
-                finalDict.setObject(arraySub, forKey:IMFPUSH_SUBSCRIPTIONS)
+                finalDict.setObject(arraySub, forKey:IMFPUSH_SUBSCRIPTIONS as NSCopying)
             }
             
             return finalDict;

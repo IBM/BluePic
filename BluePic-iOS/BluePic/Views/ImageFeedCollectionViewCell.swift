@@ -37,13 +37,13 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var loadingView: UIView!
 
     //string that is added to the numberOfTagsLabel at the end if there are multiple tags
-    private let kNumberOfTagsPostFix_MultipleTags = NSLocalizedString("Tags", comment: "")
+    fileprivate let kNumberOfTagsPostFix_MultipleTags = NSLocalizedString("Tags", comment: "")
 
      //string that is added to the numberOfTagsLabel at the end if there is one tag
-    private let kNumberOfTagsPostFix_OneTag = NSLocalizedString("Tag", comment: "")
+    fileprivate let kNumberOfTagsPostFix_OneTag = NSLocalizedString("Tag", comment: "")
 
     //string that is prefixed to the photographerNameLabel text
-    private let kByString = NSLocalizedString("by", comment: "")
+    fileprivate let kByString = NSLocalizedString("by", comment: "")
 
     /**
      Method is called when the view wakes from nib
@@ -62,21 +62,21 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
      - parameter timeStamp:   Double?
      - parameter fileName:    String?
      */
-    func setupDataWith(image: Image) {
+    func setupDataWith(_ image: Image) {
 
         if let numOfTags = image.tags?.count {
 
             if numOfTags == 0 {
-                numberOfTagsLabel.hidden = true
+                numberOfTagsLabel.isHidden = true
             } else if numOfTags == 1 {
-                numberOfTagsLabel.hidden = false
+                numberOfTagsLabel.isHidden = false
                 numberOfTagsLabel.text = "\(numOfTags)" + " " + kNumberOfTagsPostFix_OneTag
             } else {
-                numberOfTagsLabel.hidden = false
+                numberOfTagsLabel.isHidden = false
                 numberOfTagsLabel.text = "\(numOfTags)" + " " + kNumberOfTagsPostFix_MultipleTags
             }
         } else {
-            numberOfTagsLabel.hidden = true
+            numberOfTagsLabel.isHidden = true
         }
 
 
@@ -95,7 +95,7 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
         photographerNameLabel.text = ownerNameString
 
         //set the time since posted label's text
-        timeSincePostedLabel.text = NSDate.timeSinceDateString(image.timeStamp)
+        timeSincePostedLabel.text = Date.timeSinceDateString(image.timeStamp)
     }
 
     /**
@@ -104,9 +104,9 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
      - parameter url:      String?
      - parameter fileName: String?
      */
-    func setImageView(url: String?, fileName: String?) {
+    func setImageView(_ url: String?, fileName: String?) {
 
-        self.loadingView.hidden = false
+        self.loadingView.isHidden = false
 
         //first try to set image view with locally cached image (from a photo the user has posted during the app session)
         let locallyCachedImage = self.tryToSetImageViewWithLocallyCachedImage(fileName)
@@ -123,7 +123,7 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
 
      - returns: UIImage?
      */
-    private func tryToSetImageViewWithLocallyCachedImage(fileName: String?) -> UIImage? {
+    fileprivate func tryToSetImageViewWithLocallyCachedImage(_ fileName: String?) -> UIImage? {
 
         //check if file name and facebook user id aren't nil
         if let fName = fileName {
@@ -135,7 +135,7 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
             if let img = BluemixDataManager.SharedInstance.imagesTakenDuringAppSessionById[id] {
 
                 //hide loading placeholder view
-                self.loadingView.hidden = true
+                self.loadingView.isHidden = true
 
                 //set image view's image to locally cached image
                 imageView.image = img
@@ -153,7 +153,7 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
      - parameter url:              String?
      - parameter placeHolderImage: UIImage?
      */
-    private func tryToSetImageViewWithURL(url: String?, placeHolderImage: UIImage?) {
+    fileprivate func tryToSetImageViewWithURL(_ url: String?, placeHolderImage: UIImage?) {
 
         let urlString = url ?? ""
 
@@ -161,7 +161,7 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
         if urlString != "" {
 
             //check if we can turn the string into a valid NSURL
-            if let nsurl = NSURL(string: urlString) {
+            if let nsurl = URL(string: urlString) {
 
                 //if placeHolderImage parameter isn't nil, then set image with URL and use placeholder image
                 if let image = placeHolderImage {
@@ -181,15 +181,15 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
      - parameter url:              NSURL
      - parameter placeHolderImage: UIImage
      */
-    private func setImageViewWithURLAndPlaceHolderImage(url: NSURL, placeHolderImage: UIImage) {
+    fileprivate func setImageViewWithURLAndPlaceHolderImage(_ url: URL, placeHolderImage: UIImage) {
 
-        imageView.sd_setImageWithURL(url, placeholderImage: placeHolderImage, completed: { result in
-
-            if result.0 != nil {
-                self.loadingView.hidden = true
+        imageView.sd_setImage(with: url, placeholderImage: placeHolderImage, options: [.continueInBackground]) { image, error, cacheType, url in
+            
+            if image != nil {
+                self.loadingView.isHidden = true
             }
 
-        })
+        }
     }
 
     /**
@@ -197,11 +197,11 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
 
      - parameter url: NSURL
      */
-    private func setImageViewWithURL(url: NSURL) {
-        imageView.sd_setImageWithURL(url, completed: { result in
+    fileprivate func setImageViewWithURL(_ url: URL) {
+        imageView.sd_setImage(with: url, completed: { result in
 
             if result.0 != nil {
-                self.loadingView.hidden = true
+                self.loadingView.isHidden = true
             }
 
         })

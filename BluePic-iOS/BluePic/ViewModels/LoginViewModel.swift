@@ -17,14 +17,14 @@
 import UIKit
 
 enum LoginViewModelNotification {
-    case LoginSuccess
-    case LoginFailure
-    case UserCanceledLogin
+    case loginSuccess
+    case loginFailure
+    case userCanceledLogin
 }
 
 class LoginViewModel: NSObject {
 
-    var notifyLoginVC : ((loginViewModelNotification: LoginViewModelNotification) -> ())!
+    var notifyLoginVC : ((_ loginViewModelNotification: LoginViewModelNotification) -> ())!
 
     /**
      Method sets up the callback method to notify the login vc of login view model notifications
@@ -33,7 +33,7 @@ class LoginViewModel: NSObject {
 
      - returns: LoginViewModel
      */
-    init(notifyLoginVC: ((loginViewModelNotification: LoginViewModelNotification) -> ())) {
+    init(notifyLoginVC: @escaping ((_ loginViewModelNotification: LoginViewModelNotification) -> ())) {
         super.init()
 
         self.notifyLoginVC = notifyLoginVC
@@ -55,11 +55,11 @@ class LoginViewModel: NSObject {
         LoginDataManager.SharedInstance.login({ error in
 
             if error == nil {
-                self.notifyLoginVC(loginViewModelNotification: LoginViewModelNotification.LoginSuccess)
-            } else if error == LoginDataManagerError.UserCanceledLogin {
-                self.notifyLoginVC(loginViewModelNotification: LoginViewModelNotification.UserCanceledLogin)
+                self.notifyLoginVC(loginViewModelNotification: LoginViewModelNotification.loginSuccess)
+            } else if error == LoginDataManagerError.userCanceledLogin {
+                self.notifyLoginVC(loginViewModelNotification: LoginViewModelNotification.userCanceledLogin)
             } else {
-                self.notifyLoginVC(loginViewModelNotification: LoginViewModelNotification.LoginFailure)
+                self.notifyLoginVC(loginViewModelNotification: LoginViewModelNotification.loginFailure)
             }
 
         })

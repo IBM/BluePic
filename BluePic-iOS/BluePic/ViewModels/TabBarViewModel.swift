@@ -16,20 +16,20 @@
 
 enum TabBarViewModelNotification {
 
-    case ShowLoginVC
-    case HideLoginVC
-    case SwitchToFeedTab
-    case ShowImageUploadFailureAlert
-    case LogOutSuccess
-    case LogOutFailure
-    case ShowSettingsActionSheet
+    case showLoginVC
+    case hideLoginVC
+    case switchToFeedTab
+    case showImageUploadFailureAlert
+    case logOutSuccess
+    case logOutFailure
+    case showSettingsActionSheet
 
 }
 
 class TabBarViewModel: NSObject {
 
     //callback that allows the tab bar view model to send event notifications to the tabbar vc
-    private var notifyTabBarVC: ((tabBarViewModelNotification: TabBarViewModelNotification)->())!
+    fileprivate var notifyTabBarVC: ((_ tabBarViewModelNotification: TabBarViewModelNotification)->())!
 
 
     /**
@@ -39,7 +39,7 @@ class TabBarViewModel: NSObject {
 
      - returns:
      */
-    init(notifyTabBarVC : ((tabBarViewModelNotification: TabBarViewModelNotification)->())) {
+    init(notifyTabBarVC : @escaping ((_ tabBarViewModelNotification: TabBarViewModelNotification)->())) {
         super.init()
 
         self.notifyTabBarVC = notifyTabBarVC
@@ -53,11 +53,11 @@ class TabBarViewModel: NSObject {
      */
     func suscribeToBluemixDataManagerNotifications() {
 
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(TabBarViewModel.notifyTabBarVCToSwitchToFeedTab), name: BluemixDataManagerNotification.ImageUploadBegan.rawValue, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(TabBarViewModel.notifyTabBarVCToSwitchToFeedTab), name: NSNotification.Name(rawValue: BluemixDataManagerNotification.ImageUploadBegan.rawValue), object: nil)
 
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(TabBarViewModel.notifyTabbarVCToShowImageUploadFailureAlert), name: BluemixDataManagerNotification.ImageUploadFailure.rawValue, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(TabBarViewModel.notifyTabbarVCToShowImageUploadFailureAlert), name: NSNotification.Name(rawValue: BluemixDataManagerNotification.ImageUploadFailure.rawValue), object: nil)
 
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(TabBarViewModel.notifyTabBarVcToShowSettingsActionSheet), name: ProfileHeaderCollectionReusableViewNotification.ShowSettingsActionSheet.rawValue, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(TabBarViewModel.notifyTabBarVcToShowSettingsActionSheet), name: NSNotification.Name(rawValue: ProfileHeaderCollectionReusableViewNotification.ShowSettingsActionSheet.rawValue), object: nil)
 
     }
 
@@ -65,35 +65,35 @@ class TabBarViewModel: NSObject {
      Method notifies the tab bar vc to swift to the feed tab when image upload begins
      */
     func notifyTabBarVCToSwitchToFeedTab() {
-        notifyTabBarVC(tabBarViewModelNotification : TabBarViewModelNotification.SwitchToFeedTab)
+        notifyTabBarVC(tabBarViewModelNotification : TabBarViewModelNotification.switchToFeedTab)
     }
 
     /**
      Method notifies the tab bar vc to show the image upload failure alert when an image fails to upload
      */
     func notifyTabbarVCToShowImageUploadFailureAlert() {
-        notifyTabBarVC(tabBarViewModelNotification : TabBarViewModelNotification.ShowImageUploadFailureAlert)
+        notifyTabBarVC(tabBarViewModelNotification : TabBarViewModelNotification.showImageUploadFailureAlert)
     }
 
     /**
      Method notifies the tab bar vc to show the settings action sheet
      */
     func notifyTabBarVcToShowSettingsActionSheet() {
-        notifyTabBarVC(tabBarViewModelNotification : TabBarViewModelNotification.ShowSettingsActionSheet)
+        notifyTabBarVC(tabBarViewModelNotification : TabBarViewModelNotification.showSettingsActionSheet)
     }
 
     /**
      Method notifies the tab bar vc that log out was a success
      */
     func notifyTabBarVCLogOutSuccess() {
-        notifyTabBarVC(tabBarViewModelNotification : TabBarViewModelNotification.LogOutSuccess)
+        notifyTabBarVC(tabBarViewModelNotification : TabBarViewModelNotification.logOutSuccess)
     }
 
     /**
      Method notifies the tab bar vc that log in was a failure
      */
     func notifyTabBarVCLogOutFailure() {
-        notifyTabBarVC(tabBarViewModelNotification : TabBarViewModelNotification.LogOutFailure)
+        notifyTabBarVC(tabBarViewModelNotification : TabBarViewModelNotification.logOutFailure)
     }
 
     /**
@@ -102,9 +102,9 @@ class TabBarViewModel: NSObject {
     func tryToShowLogin() {
 
         if LoginDataManager.SharedInstance.isUserAuthenticatedOrPressedSignInLater() {
-            notifyTabBarVC(tabBarViewModelNotification: TabBarViewModelNotification.HideLoginVC)
+            notifyTabBarVC(tabBarViewModelNotification: TabBarViewModelNotification.hideLoginVC)
         } else {
-            notifyTabBarVC(tabBarViewModelNotification: TabBarViewModelNotification.ShowLoginVC)
+            notifyTabBarVC(tabBarViewModelNotification: TabBarViewModelNotification.showLoginVC)
         }
 
     }
@@ -124,7 +124,7 @@ class TabBarViewModel: NSObject {
      Method tells the BluemixDataManager to retry uploading images that failed to upload
      */
     func tellBluemixDataManagerToRetryUploadingImagesThatFailedToUpload() {
-        dispatch_async(dispatch_get_main_queue()) {
+        DispatchQueue.main.async {
             BluemixDataManager.SharedInstance.retryUploadingImagesThatFailedToUpload()
         }
     }
@@ -133,7 +133,7 @@ class TabBarViewModel: NSObject {
      Method tells BluemisDataManager to cancel uploading images that failed to upload
      */
     func tellBluemixDataManagerToCancelUploadingImagesThatFailedToUpload() {
-        dispatch_async(dispatch_get_main_queue()) {
+        DispatchQueue.main.async {
             BluemixDataManager.SharedInstance.cancelUploadingImagesThatFailedToUpload()
         }
 

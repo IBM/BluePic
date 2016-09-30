@@ -11,36 +11,99 @@
 *     limitations under the License.
 */
 
+
+
+// MARK: - Swift 3
+
+#if swift(>=3.0)
+
+    
+
 /// This class represents the base app identity class, with default methods and keys
-public class BaseAppIdentity : AppIdentity{
-
-    public static let ID = "id"
-
-    public static let VERSION = "version"
+open class BaseAppIdentity: AppIdentity {
     
-    public internal(set) var jsonData : [String:String] = ([:])
     
-	public var id:String? {
-		get{
-			return jsonData[BaseAppIdentity.ID]
+    public struct Key {
+        
+        public static let ID = "id"
+        public static let version = "version"
+    }
+    
+    
+    public internal(set) var jsonData: [String:String] = ([:])
+    
+    public var ID: String? {
+        get {
+            return jsonData[BaseAppIdentity.Key.ID]
+        }
+    }
+    public var version: String? {
+        get {
+            return jsonData[BaseAppIdentity.Key.version]
+        }
+    }
+    
+    public init() {
+        
+        jsonData[BaseAppIdentity.Key.ID] = Bundle(for:object_getClass(self)).bundleIdentifier
+        jsonData[BaseAppIdentity.Key.version] = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
+    }
+    
+    public init(map: [String:AnyObject]?) {
+        guard let json = map as? [String:String] else {
+            jsonData = ([:])
+            return
+        }
+        
+        jsonData = json
+    }
+    
+}
+    
+    
+    
+    
+    
+/**************************************************************************************************/
+    
+    
+    
+    
+    
+// MARK: - Swift 2
+    
+#else
+    
+    
+    
+/// This class represents the base app identity class, with default methods and keys
+public class BaseAppIdentity: AppIdentity {
+
+    
+    public struct Key {
+        
+        public static let ID = "id"
+        public static let version = "version"
+    }
+    
+    
+    public internal(set) var jsonData: [String:String] = ([:])
+    
+	public var ID: String? {
+		get {
+			return jsonData[BaseAppIdentity.Key.ID]
 		}
 	}
-	public var version:String? {
-		get{
-			return jsonData[BaseAppIdentity.VERSION]
+	public var version: String? {
+		get {
+			return jsonData[BaseAppIdentity.Key.version]
 		}
 	}
 	
 	public init() {
         
-        #if swift(>=3.0)
-            jsonData[BaseAppIdentity.ID] = Bundle(for:object_getClass(self)).bundleIdentifier;
-            jsonData[BaseAppIdentity.VERSION] = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String;
-        #else
-            jsonData[BaseAppIdentity.ID] = NSBundle(forClass:object_getClass(self)).bundleIdentifier;
-            jsonData[BaseAppIdentity.VERSION] = NSBundle.mainBundle().infoDictionary?["CFBundleShortVersionString"] as? String;
-        #endif
-        
+        jsonData[BaseAppIdentity.Key.ID] = NSBundle(forClass:object_getClass(self)).bundleIdentifier
+        jsonData[BaseAppIdentity.Key.version] = NSBundle.mainBundle().infoDictionary?["CFBundleShortVersionString"] as? String
 	}
 	
     public init(map: [String:AnyObject]?) {
@@ -51,5 +114,9 @@ public class BaseAppIdentity : AppIdentity{
 
         jsonData = json
     }
-
+    
 }
+
+
+    
+#endif

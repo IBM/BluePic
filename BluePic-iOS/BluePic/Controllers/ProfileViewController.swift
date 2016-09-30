@@ -40,7 +40,7 @@ class ProfileViewController: UIViewController {
     let kParalaxImageViewScrollRate: CGFloat = 0.50
 
     //constant that represents the duration it takes to fade the statusBarBackgroundView in
-    let kStatusBarBackgroundViewFadeDuration: NSTimeInterval = 0.3
+    let kStatusBarBackgroundViewFadeDuration: TimeInterval = 0.3
 
     //constant that represents the height of the profile picture image view
     let kHeightOfProfilePictureImageView: CGFloat = 75
@@ -66,8 +66,8 @@ class ProfileViewController: UIViewController {
 
      - parameter animated: Bool
      */
-    override func viewWillAppear(animated: Bool) {
-        UIApplication.sharedApplication().statusBarStyle = UIStatusBarStyle.Default
+    override func viewWillAppear(_ animated: Bool) {
+        UIApplication.shared.statusBarStyle = UIStatusBarStyle.default
     }
 
 
@@ -90,14 +90,14 @@ class ProfileViewController: UIViewController {
      */
     func setupStatusBarBackgroundView() {
 
-        let effect = UIBlurEffect(style: UIBlurEffectStyle.Light)
+        let effect = UIBlurEffect(style: UIBlurEffectStyle.light)
 
         let viewWithBlurredBackground = UIVisualEffectView(effect: effect)
-        viewWithBlurredBackground.frame = UIApplication.sharedApplication().statusBarFrame
+        viewWithBlurredBackground.frame = UIApplication.shared.statusBarFrame
         viewWithBlurredBackground.alpha = 1.0
 
-        statusBarBackgroundView = UIView(frame: UIApplication.sharedApplication().statusBarFrame)
-        statusBarBackgroundView .backgroundColor = UIColor.clearColor()
+        statusBarBackgroundView = UIView(frame: UIApplication.shared.statusBarFrame)
+        statusBarBackgroundView .backgroundColor = UIColor.clear
         statusBarBackgroundView .alpha = 0.0
         statusBarBackgroundView .addSubview(viewWithBlurredBackground)
 
@@ -110,7 +110,7 @@ class ProfileViewController: UIViewController {
 
      - parameter isInOrOut: Bool
      */
-    func animateInStatusBarBackgroundView(isInOrOut: Bool) {
+    func animateInStatusBarBackgroundView(_ isInOrOut: Bool) {
 
         var alpha: CGFloat = 0.0
 
@@ -118,7 +118,7 @@ class ProfileViewController: UIViewController {
             alpha = 1.0
         }
 
-        UIView.animateWithDuration(kStatusBarBackgroundViewFadeDuration, animations: {
+        UIView.animate(withDuration: kStatusBarBackgroundViewFadeDuration, animations: {
             self.statusBarBackgroundView.alpha = alpha
         })
 
@@ -131,7 +131,7 @@ class ProfileViewController: UIViewController {
 
         headerImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: kHeaderImageViewHeight))
 
-        headerImageView.contentMode = UIViewContentMode.ScaleAspectFill
+        headerImageView.contentMode = UIViewContentMode.scaleAspectFill
 
         headerImageView.image = UIImage(named: "profileBackground")
 
@@ -178,7 +178,7 @@ extension ProfileViewController: UICollectionViewDataSource {
 
      - returns:
      */
-    func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         return viewModel.setUpSectionHeaderViewForIndexPath(
             indexPath,
             kind: kind,
@@ -194,7 +194,7 @@ extension ProfileViewController: UICollectionViewDataSource {
 
      - returns: UICollectionViewCell
      */
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         return viewModel.setUpCollectionViewCell(indexPath, collectionView : collectionView)
     }
 
@@ -206,7 +206,7 @@ extension ProfileViewController: UICollectionViewDataSource {
 
      - returns: Int
      */
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel.numberOfItemsInSection(section)
     }
 
@@ -217,7 +217,7 @@ extension ProfileViewController: UICollectionViewDataSource {
 
      - returns: Int
      */
-    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
         return viewModel.numberOfSectionsInCollectionView()
     }
 
@@ -234,7 +234,7 @@ extension ProfileViewController: UICollectionViewDelegateFlowLayout {
 
      - returns:
      */
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
 
         let collectionWidth = collectionView.frame.size.width
 
@@ -254,7 +254,7 @@ extension ProfileViewController: UICollectionViewDelegateFlowLayout {
 
      - returns: CGSize
      */
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 
         let heightForEmptyProfileCollectionViewCell = self.view.frame.size.height - (self.view.frame.size.height/2 + kHeaderViewInfoViewHeight)
 
@@ -271,10 +271,10 @@ extension ProfileViewController : UIScrollViewDelegate {
      - parameter collectionView: UICollectionView
      - parameter indexPath:      NSIndexPath
      */
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 
         if let imageDetailViewModel = viewModel.prepareImageDetailViewModelForSelectedCellAtIndexPath(indexPath),
-            imageDetailVC = Utils.vcWithNameFromStoryboardWithName("ImageDetailViewController", storyboardName: "Feed") as? ImageDetailViewController {
+            let imageDetailVC = Utils.vcWithNameFromStoryboardWithName("ImageDetailViewController", storyboardName: "Feed") as? ImageDetailViewController {
 
             imageDetailVC.viewModel = imageDetailViewModel
             self.navigationController?.pushViewController(imageDetailVC, animated: true)
@@ -287,7 +287,7 @@ extension ProfileViewController : UIScrollViewDelegate {
 
      - parameter scrollView:
      */
-    func scrollViewDidScroll(scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
 
         checkOffSetForStatusBarBackgroundViewVisability(scrollView.contentOffset.y)
         updateImageViewFrameWithScrollViewDidScroll(scrollView.contentOffset.y)
@@ -298,7 +298,7 @@ extension ProfileViewController : UIScrollViewDelegate {
 
      - parameter scrollViewContentOffset:
      */
-    func updateImageViewFrameWithScrollViewDidScroll(scrollViewContentOffset: CGFloat) {
+    func updateImageViewFrameWithScrollViewDidScroll(_ scrollViewContentOffset: CGFloat) {
 
         if scrollViewContentOffset >= 0 {
             headerImageView.frame.origin.y = -(scrollViewContentOffset * kParalaxImageViewScrollRate)
@@ -312,11 +312,11 @@ extension ProfileViewController : UIScrollViewDelegate {
 
      - parameter scrollViewContentOffset: CGFloat
      */
-    func checkOffSetForStatusBarBackgroundViewVisability(scrollViewContentOffset: CGFloat) {
+    func checkOffSetForStatusBarBackgroundViewVisability(_ scrollViewContentOffset: CGFloat) {
 
         let headerImageViewHeight = self.view.frame.size.height/2
 
-        let magicLine = headerImageViewHeight - kHeightOfProfilePictureImageView/2 - UIApplication.sharedApplication().statusBarFrame.size.height
+        let magicLine = headerImageViewHeight - kHeightOfProfilePictureImageView/2 - UIApplication.shared.statusBarFrame.size.height
 
         if scrollViewContentOffset >= magicLine {
             animateInStatusBarBackgroundView(true)

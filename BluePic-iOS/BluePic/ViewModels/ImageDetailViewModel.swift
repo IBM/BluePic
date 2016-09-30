@@ -22,13 +22,13 @@ class ImageDetailViewModel: NSObject {
     var image: Image!
 
     //constant that represents the number of sections in the collection view
-    private let kNumberOfSectionsInCollectionView = 1
+    fileprivate let kNumberOfSectionsInCollectionView = 1
 
     //constant used for padded the width of the collection view cell
-    private let kCellPadding: CGFloat = 60
+    fileprivate let kCellPadding: CGFloat = 60
 
     //constant used to define the minimum height the image info header view must be
-    private let kImageInfoHeaderViewMinimumHeight: CGFloat = 357
+    fileprivate let kImageInfoHeaderViewMinimumHeight: CGFloat = 357
 
 
 
@@ -45,11 +45,11 @@ class ImageDetailViewModel: NSObject {
 
      - returns: String?
      */
-    private func getTagForIndexPath(indexPath: NSIndexPath) -> String? {
+    fileprivate func getTagForIndexPath(_ indexPath: IndexPath) -> String? {
 
         if let tags = image.tags {
-            if (tags.count - 1) >= indexPath.row {
-                return tags[indexPath.row].label
+            if (tags.count - 1) >= (indexPath as NSIndexPath).row {
+                return tags[(indexPath as NSIndexPath).row].label
             }
         }
 
@@ -82,7 +82,7 @@ extension ImageDetailViewModel {
 
      - returns: Int
      */
-    func numberOfItemsInSection(section: Int) -> Int {
+    func numberOfItemsInSection(_ section: Int) -> Int {
 
         if let tags = image.tags {
             return tags.count
@@ -101,9 +101,9 @@ extension ImageDetailViewModel {
 
      - returns: ImageInfoHeaderCollectionReusableView
      */
-    func setUpSectionHeaderViewForIndexPath(indexPath: NSIndexPath, kind: String, collectionView: UICollectionView) -> ImageInfoHeaderCollectionReusableView {
+    func setUpSectionHeaderViewForIndexPath(_ indexPath: IndexPath, kind: String, collectionView: UICollectionView) -> ImageInfoHeaderCollectionReusableView {
 
-        guard let header = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "ImageInfoHeaderCollectionReusableView", forIndexPath: indexPath) as? ImageInfoHeaderCollectionReusableView else {
+        guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "ImageInfoHeaderCollectionReusableView", for: indexPath) as? ImageInfoHeaderCollectionReusableView else {
             return ImageInfoHeaderCollectionReusableView()
         }
         header.setupWithData(image)
@@ -119,13 +119,13 @@ extension ImageDetailViewModel {
 
      - returns: UICollectionViewCell
      */
-    func setUpCollectionViewCell(indexPath: NSIndexPath, collectionView: UICollectionView) -> UICollectionViewCell {
+    func setUpCollectionViewCell(_ indexPath: IndexPath, collectionView: UICollectionView) -> UICollectionViewCell {
 
-        guard let cell = collectionView.dequeueReusableCellWithReuseIdentifier("TagCollectionViewCell", forIndexPath: indexPath) as? TagCollectionViewCell, tags = image.tags else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TagCollectionViewCell", for: indexPath) as? TagCollectionViewCell, let tags = image.tags else {
             return UICollectionViewCell()
         }
 
-        cell.tagLabel.text = tags[indexPath.item].label.uppercaseString
+        cell.tagLabel.text = tags[(indexPath as NSIndexPath).item].label.uppercased()
         return cell
 
     }
@@ -138,10 +138,10 @@ extension ImageDetailViewModel {
 
      - returns: CGSize
      */
-    func sizeForItemAtIndexPath(indexPath: NSIndexPath, collectionView: UICollectionView) -> CGSize {
+    func sizeForItemAtIndexPath(_ indexPath: IndexPath, collectionView: UICollectionView) -> CGSize {
 
         if let tags = image.tags {
-            let size = NSString(string: tags[indexPath.item].label).sizeWithAttributes(nil)
+            let size = NSString(string: tags[(indexPath as NSIndexPath).item].label).size(attributes: nil)
             return CGSize(width: size.width + kCellPadding, height: 30.0)
         }
         return CGSize.zero
@@ -157,7 +157,7 @@ extension ImageDetailViewModel {
 
      - returns: CGSize
      */
-    func referenceSizeForHeaderInSection(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, section: Int, superViewHeight: CGFloat) -> CGSize {
+    func referenceSizeForHeaderInSection(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, section: Int, superViewHeight: CGFloat) -> CGSize {
 
         let collectionWidth = collectionView.frame.size.width
 
@@ -184,9 +184,9 @@ extension ImageDetailViewModel {
 
      - returns: FeedViewController?
      */
-    func getFeedViewControllerForTagSearchAtIndexPath(indexPath: NSIndexPath) -> FeedViewController? {
+    func getFeedViewControllerForTagSearchAtIndexPath(_ indexPath: IndexPath) -> FeedViewController? {
 
-        if let vc = Utils.vcWithNameFromStoryboardWithName("FeedViewController", storyboardName: "Feed") as? FeedViewController, tagString = getTagForIndexPath(indexPath) {
+        if let vc = Utils.vcWithNameFromStoryboardWithName("FeedViewController", storyboardName: "Feed") as? FeedViewController, let tagString = getTagForIndexPath(indexPath) {
             vc.searchQuery = tagString
             return vc
         }

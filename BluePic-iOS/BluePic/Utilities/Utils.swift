@@ -27,10 +27,10 @@ class Utils: NSObject {
 
      - returns: String?
      */
-    class func getKeyFromPlist(plist: String, key: String) -> String? {
-        if let path: String = NSBundle.mainBundle().pathForResource(plist, ofType: "plist"),
-            keyList = NSDictionary(contentsOfFile: path),
-            key = keyList.objectForKey(key) as? String {
+    class func getKeyFromPlist(_ plist: String, key: String) -> String? {
+        if let path: String = Bundle.main.path(forResource: plist, ofType: "plist"),
+            let keyList = NSDictionary(contentsOfFile: path),
+            let key = keyList.object(forKey: key) as? String {
             return key
         }
         return nil
@@ -44,10 +44,10 @@ class Utils: NSObject {
 
      - returns: Bool?
      */
-    class func getBoolValueWithKeyFromPlist(plist: String, key: String) -> Bool? {
-        if let path: String = NSBundle.mainBundle().pathForResource(plist, ofType: "plist"),
-            keyList = NSDictionary(contentsOfFile: path),
-            key = keyList.objectForKey(key) as? Bool {
+    class func getBoolValueWithKeyFromPlist(_ plist: String, key: String) -> Bool? {
+        if let path: String = Bundle.main.path(forResource: plist, ofType: "plist"),
+            let keyList = NSDictionary(contentsOfFile: path),
+            let key = keyList.object(forKey: key) as? Bool {
             return key
         }
         return nil
@@ -61,10 +61,10 @@ class Utils: NSObject {
 
      - returns: String
      */
-    class func getStringValueWithKeyFromPlist(plist: String, key: String) -> String? {
-        if let path: String = NSBundle.mainBundle().pathForResource(plist, ofType: "plist"),
-            keyList = NSDictionary(contentsOfFile: path),
-            key = keyList.objectForKey(key) as? String {
+    class func getStringValueWithKeyFromPlist(_ plist: String, key: String) -> String? {
+        if let path: String = Bundle.main.path(forResource: plist, ofType: "plist"),
+            let keyList = NSDictionary(contentsOfFile: path),
+            let key = keyList.object(forKey: key) as? String {
             return key
         }
         return nil
@@ -76,7 +76,7 @@ class Utils: NSObject {
     - returns: UIStoryboard
     */
     class func mainStoryboard() -> UIStoryboard {
-        let storyboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
+        let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
         return storyboard
     }
 
@@ -87,8 +87,8 @@ class Utils: NSObject {
 
     - returns: UIStoryboard
     */
-    class func storyboardBoardWithName(storyboardName: String) -> UIStoryboard {
-        let storyboard = UIStoryboard(name: storyboardName, bundle: NSBundle.mainBundle())
+    class func storyboardBoardWithName(_ storyboardName: String) -> UIStoryboard {
+        let storyboard = UIStoryboard(name: storyboardName, bundle: Bundle.main)
         return storyboard
     }
 
@@ -100,9 +100,9 @@ class Utils: NSObject {
 
     - returns: UIViewController?
     */
-    class func vcWithNameFromStoryboardWithName(vcName: String, storyboardName: String) -> UIViewController? {
+    class func vcWithNameFromStoryboardWithName(_ vcName: String, storyboardName: String) -> UIViewController? {
         let storyboard = storyboardBoardWithName(storyboardName)
-        let viewController: AnyObject = storyboard.instantiateViewControllerWithIdentifier(vcName)
+        let viewController: AnyObject = storyboard.instantiateViewController(withIdentifier: vcName)
         return viewController as? UIViewController
     }
 
@@ -113,8 +113,8 @@ class Utils: NSObject {
 
     - returns: UINib?
     */
-    class func nib(name: String) -> UINib? {
-        let nib: UINib? = UINib(nibName: name, bundle: NSBundle.mainBundle())
+    class func nib(_ name: String) -> UINib? {
+        let nib: UINib? = UINib(nibName: name, bundle: Bundle.main)
         return nib
     }
 
@@ -124,9 +124,9 @@ class Utils: NSObject {
     - parameter nibName:        String
     - parameter collectionView: UICollectionView
     */
-    class func registerNibWithCollectionView(nibName: String, collectionView: UICollectionView) {
+    class func registerNibWithCollectionView(_ nibName: String, collectionView: UICollectionView) {
         let nib = Utils.nib(nibName)
-        collectionView.registerNib(nib, forCellWithReuseIdentifier: nibName)
+        collectionView.register(nib, forCellWithReuseIdentifier: nibName)
     }
 
     /**
@@ -136,11 +136,11 @@ class Utils: NSObject {
     - parameter kind:           String
     - parameter collectionView: UICollectionView
     */
-    class func registerSupplementaryElementOfKindNibWithCollectionView(nibName: String, kind: String, collectionView: UICollectionView) {
+    class func registerSupplementaryElementOfKindNibWithCollectionView(_ nibName: String, kind: String, collectionView: UICollectionView) {
 
         let nib = Utils.nib(nibName)
 
-        collectionView.registerNib(nib, forSupplementaryViewOfKind: kind, withReuseIdentifier: nibName)
+        collectionView.register(nib, forSupplementaryViewOfKind: kind, withReuseIdentifier: nibName)
     }
 
 
@@ -151,10 +151,10 @@ class Utils: NSObject {
 
      - returns: [String:AnyObject]?
      */
-    class func convertStringToDictionary(text: String) -> [String:AnyObject]? {
-        if let data = text.dataUsingEncoding(NSUTF8StringEncoding) {
+    class func convertStringToDictionary(_ text: String) -> [String:AnyObject]? {
+        if let data = text.data(using: String.Encoding.utf8) {
             do {
-                let json = try NSJSONSerialization.JSONObjectWithData(data, options: .MutableContainers) as? [String:AnyObject]
+                let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String:AnyObject]
                 return json
             } catch {
                 print(NSLocalizedString("Convert String To Dictionary Error", comment: ""))
@@ -172,7 +172,7 @@ class Utils: NSObject {
 
      - returns: [String : AnyObject]
      */
-    class func convertResponseToDictionary(response: Response?) -> [String : AnyObject]? {
+    class func convertResponseToDictionary(_ response: Response?) -> [String : AnyObject]? {
 
         if let resp = response {
             if let responseText = resp.responseText {
@@ -192,7 +192,7 @@ class Utils: NSObject {
      - parameter label:        UILabel
      - parameter spacingValue: CGFloat
      */
-    class func kernLabelString(label: UILabel, spacingValue: CGFloat) {
+    class func kernLabelString(_ label: UILabel, spacingValue: CGFloat) {
         if let text = label.text {
             let attributedString = NSMutableAttributedString(string: text)
             attributedString.addAttribute(NSKernAttributeName, value: spacingValue, range: NSRange(location: 0, length: attributedString.length))
@@ -208,7 +208,7 @@ class Utils: NSObject {
 
      - returns: String
      */
-    class func coordinateString(latitude: Double, longitude: Double) -> String {
+    class func coordinateString(_ latitude: Double, longitude: Double) -> String {
         var latSeconds = Int(latitude * 3600)
         let latDegrees = latSeconds / 3600
         latSeconds = abs(latSeconds % 3600)

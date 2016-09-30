@@ -38,7 +38,7 @@ class CameraConfirmationView: UIView, UITextFieldDelegate {
     var originalFrame: CGRect!
 
     /// Placeholder text for the titleTextField
-    private let kTextFieldPlaceholderText = NSLocalizedString("GIVE IT A TITLE", comment: "")
+    fileprivate let kTextFieldPlaceholderText = NSLocalizedString("GIVE IT A TITLE", comment: "")
 
 
     /**
@@ -46,8 +46,8 @@ class CameraConfirmationView: UIView, UITextFieldDelegate {
 
      - returns: an instance of this view
      */
-    static func instanceFromNibWithFrame(frame: CGRect) -> CameraConfirmationView? {
-        guard let cameraConfirmationView = UINib(nibName: "CameraConfirmationView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as? CameraConfirmationView else {
+    static func instanceFromNibWithFrame(_ frame: CGRect) -> CameraConfirmationView? {
+        guard let cameraConfirmationView = UINib(nibName: "CameraConfirmationView", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as? CameraConfirmationView else {
             print(NSLocalizedString("Unable to load camera confirmation view from nib", comment: ""))
             return nil
         }
@@ -74,9 +74,9 @@ class CameraConfirmationView: UIView, UITextFieldDelegate {
 
         let localizedString = kTextFieldPlaceholderText
         self.titleTextField.attributedPlaceholder = NSAttributedString(string:localizedString,
-            attributes:[NSForegroundColorAttributeName: UIColor.grayColor()])
+            attributes:[NSForegroundColorAttributeName: UIColor.gray])
         self.translatesAutoresizingMaskIntoConstraints = true
-        self.titleTextField.tintColor = UIColor.whiteColor()
+        self.titleTextField.tintColor = UIColor.white
 
     }
 
@@ -85,8 +85,8 @@ class CameraConfirmationView: UIView, UITextFieldDelegate {
 
      - parameter notification: show notification
      */
-    func keyboardWillShow(notification: NSNotification) {
-        UIApplication.sharedApplication().statusBarHidden = true
+    func keyboardWillShow(_ notification: Notification) {
+        UIApplication.shared.isStatusBarHidden = true
         adjustingHeight(true, notification: notification)
     }
 
@@ -95,7 +95,7 @@ class CameraConfirmationView: UIView, UITextFieldDelegate {
 
      - parameter notification: hide notification
      */
-    func keyboardWillHide(notification: NSNotification) {
+    func keyboardWillHide(_ notification: Notification) {
         adjustingHeight(false, notification: notification)
     }
 
@@ -105,7 +105,7 @@ class CameraConfirmationView: UIView, UITextFieldDelegate {
      - parameter touches: touches that began
      - parameter event:   event when touches began
      */
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.endEditing(true)
     }
 
@@ -113,16 +113,16 @@ class CameraConfirmationView: UIView, UITextFieldDelegate {
      Method to add show and hide keyboard observers
      */
     func addKeyboardObservers() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(CameraConfirmationView.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(CameraConfirmationView.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(CameraConfirmationView.keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(CameraConfirmationView.keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
 
     /**
      Method to remove show and hide keyboard observers
      */
     func removeKeyboardObservers() {
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
 
     /**
@@ -131,22 +131,22 @@ class CameraConfirmationView: UIView, UITextFieldDelegate {
      - parameter show:         whether or raise or lower view
      - parameter notification: hide or show notification called
      */
-    func adjustingHeight(show: Bool, notification: NSNotification) {
+    func adjustingHeight(_ show: Bool, notification: Notification) {
         // 1
-        if let userInfo = notification.userInfo,
-            keyboardFrameValue = userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue,
-            animationDuration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSTimeInterval {
+        if let userInfo = (notification as NSNotification).userInfo,
+            let keyboardFrameValue = userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue,
+            let animationDuration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as? TimeInterval {
         // 2
-        let keyboardFrame  = keyboardFrameValue.CGRectValue()
+        let keyboardFrame  = keyboardFrameValue.cgRectValue
         // 3
         let changeInHeight = (keyboardFrame.height) * (show ? -1 : 1)
         //4
         if show {
-            UIView.animateWithDuration(animationDuration, animations: { () -> Void in
+            UIView.animate(withDuration: animationDuration, animations: { () -> Void in
                 self.frame = CGRect(x: 0, y: 0 + changeInHeight, width: self.frame.width, height: self.frame.height)
             })
         } else {
-            UIView.animateWithDuration(animationDuration, animations: { () -> Void in
+            UIView.animate(withDuration: animationDuration, animations: { () -> Void in
                 self.frame = self.originalFrame
 
             })
@@ -161,7 +161,7 @@ class CameraConfirmationView: UIView, UITextFieldDelegate {
 
      - returns: end editing- true or false
      */
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.endEditing(true)
         return true
     }
@@ -171,8 +171,8 @@ class CameraConfirmationView: UIView, UITextFieldDelegate {
      */
     func enableUI() {
 
-        self.postButton.enabled = true
-        self.titleTextField.enabled = true
+        self.postButton.isEnabled = true
+        self.titleTextField.isEnabled = true
 
     }
 
@@ -181,8 +181,8 @@ class CameraConfirmationView: UIView, UITextFieldDelegate {
      */
     func disableUI() {
 
-        self.postButton.enabled = false
-        self.titleTextField.enabled = false
+        self.postButton.isEnabled = false
+        self.titleTextField.isEnabled = false
 
     }
 

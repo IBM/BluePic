@@ -16,22 +16,23 @@
 // MARK: DeviceEvent
 
 /**
-    Set of device events that the `Analytics` class will listen for. Whenever an event of the specified type occurs, analytics data for that event get recorded.
+    Set of device events that the `Analytics` class will listen for. Whenever an event of the specified type occurs, analytics data for that event will be recorded.
 
-    - Note: Register DeviceEvents in the `Analytics.initializeWithAppName()` method
+    - Note: Register DeviceEvents in the `Analytics.initialize()` method.
 */
 public enum DeviceEvent {
     
     /// Records the duration of the app's lifecycle from when it enters the foreground to when it goes to the background.
-    /// - Note: Only available for iOS apps. For watchOS apps, manually call the `recordApplicationDidBecomeActive()` and `recordApplicationWillResignActive()` methods in the appropriate `ExtensionDelegate` methods.
-    case LIFECYCLE
+    ///
+    /// - Note: Only available for iOS apps. For watchOS apps, call the `recordApplicationDidBecomeActive()` and `recordApplicationWillResignActive()` methods in the appropriate `ExtensionDelegate` methods.
+    case lifecycle
 }
 
 
 
 // MARK: - AnalyticsDelegate
 
-// This protocol is implemented in the BMSAnalytics framework
+// Connects the `Analytics` interface defined in BMSAnalyticsAPI with the implementation in BMSAnalytics.
 public protocol AnalyticsDelegate {
     
     var userIdentity: String? { get set }
@@ -42,7 +43,7 @@ public protocol AnalyticsDelegate {
 // MARK: - Analytics
 
 /**
-    `Analytics` provides a means of capturing analytics data and sending the data to the mobile analytics service.
+    Records analytics data and sends it to the Analytics server.
 */
 public class Analytics {
     
@@ -50,7 +51,7 @@ public class Analytics {
     // MARK: Properties (API)
     
     /// Determines whether analytics logs will be persisted to file.
-    public static var enabled: Bool = true
+    public static var isEnabled: Bool = true
     
     /// Identifies the current application user.
     /// To reset the userId, set the value to nil.
@@ -68,29 +69,50 @@ public class Analytics {
     // Public access required by BMSAnalytics framework, which is required to initialize this property
     public static var delegate: AnalyticsDelegate?
     
-	public static let logger = Logger.logger(forName: Logger.bmsLoggerPrefix + "analytics")
+	public static let logger = Logger.logger(name: Logger.bmsLoggerPrefix + "analytics")
     
+    
+    
+#if swift(>=3.0)
     
     
     // MARK: Methods (API)
     
     /**
-         Write analytics data to file.
+         Record analytics data.
          
-         Similar to the `Logger` class logging methods, old logs will be removed if the file size exceeds the `Logger.maxLogStoreSize` property.
+         Analytics logs are added to the log file until the file size is greater than the `maxLogStoreSize` property. At this point, the first half of the stored logs will be deleted to make room for new log data.
          
-         When ready, use the `Analytics.send()` method to send the logs to the Bluemix server.
+         When ready, use the `send()` method to send the recorded data to the Analytics server.
          
          - parameter metadata:  The analytics data
      */
-    public static func log(metadata: [String: AnyObject], file: String = #file, function: String = #function, line: Int = #line) {
+    public static func log(metadata: [String: Any], file: String = #file, function: String = #function, line: Int = #line) {
     
-        #if swift(>=3.0)
-            Analytics.logger.analytics(metadata: metadata, file: file, function: function, line: line)
-        #else
-            Analytics.logger.analytics(metadata, file: file, function: function, line: line)
-        #endif
-        
+        Analytics.logger.analytics(metadata: metadata, file: file, function: function, line: line)
     }
     
+    
+#else
+    
+    
+    // MARK: Methods (API)
+    
+    /**
+        Record analytics data.
+
+        Analytics logs are added to the log file until the file size is greater than the `maxLogStoreSize` property. At this point, the first half of the stored logs will be deleted to make room for new log data.
+
+        When ready, use the `send()` method to send the recorded data to the Analytics server.
+
+        - parameter metadata:  The analytics data
+    */
+    public static func log(metadata metadata: [String: AnyObject], file: String = #file, function: String = #function, line: Int = #line) {
+        
+        Analytics.logger.analytics(metadata: metadata, file: file, function: function, line: line)
+    }
+    
+    
+#endif
+
 }

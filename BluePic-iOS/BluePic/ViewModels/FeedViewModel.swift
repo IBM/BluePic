@@ -20,16 +20,16 @@ import UIKit
 enum FeedViewModelNotification {
 
     //called when there is new data in the pictureDataArray, used to tell the Feed VC to refresh it's data in the collection view
-    case ReloadCollectionView
+    case reloadCollectionView
 
     //called when a photo is uploading
-    case UploadingPhotoStarted
+    case uploadingPhotoStarted
 
     //called when no images were pulled from server because there was no connection with server
-    case GetImagesServerFailure
+    case getImagesServerFailure
 
     //called when there are no search results for a particular searchQuery
-    case NoSearchResults
+    case noSearchResults
 }
 
 class FeedViewModel: NSObject {
@@ -38,7 +38,7 @@ class FeedViewModel: NSObject {
     var imageDataArray = [Image]()
 
     //callback used to inform the Feed VC of notifications from its view model
-    var notifyFeedVC : ((feedViewModelNotification: FeedViewModelNotification)->())!
+    var notifyFeedVC : ((_ feedViewModelNotification: FeedViewModelNotification)->())!
 
     //string that holds the search query if it is present, meaning we are looking at search results
     var searchQuery: String?
@@ -70,7 +70,7 @@ class FeedViewModel: NSObject {
 
      - returns: FeedViewModel
      */
-    init(notifyFeedVC : ((feedViewModelNotification: FeedViewModelNotification)->()), searchQuery: String?) {
+    init(notifyFeedVC : @escaping ((_ feedViewModelNotification: FeedViewModelNotification)->()), searchQuery: String?) {
         super.init()
 
         //save callback to notify Feed View Controller of events
@@ -99,24 +99,24 @@ class FeedViewModel: NSObject {
      */
     func suscribeToBluemixDataManagerNotifications() {
 
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(FeedViewModel.updateImageDataArrayAndNotifyViewControllerToReloadCollectionView), name: BluemixDataManagerNotification.ImagesRefreshed.rawValue, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(FeedViewModel.updateImageDataArrayAndNotifyViewControllerToReloadCollectionView), name: NSNotification.Name(rawValue: BluemixDataManagerNotification.ImagesRefreshed.rawValue), object: nil)
 
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(FeedViewModel.repullForNewData), name: BluemixDataManagerNotification.ImageUploadSuccess.rawValue, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(FeedViewModel.repullForNewData), name: NSNotification.Name(rawValue: BluemixDataManagerNotification.ImageUploadSuccess.rawValue), object: nil)
 
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(FeedViewModel.notifyViewControllerToTriggerLoadingAnimation), name: BluemixDataManagerNotification.ImageUploadBegan.rawValue, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(FeedViewModel.notifyViewControllerToTriggerLoadingAnimation), name: NSNotification.Name(rawValue: BluemixDataManagerNotification.ImageUploadBegan.rawValue), object: nil)
 
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(FeedViewModel.handleImageUploadFailure), name: BluemixDataManagerNotification.ImageUploadFailure.rawValue, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(FeedViewModel.handleImageUploadFailure), name: NSNotification.Name(rawValue: BluemixDataManagerNotification.ImageUploadFailure.rawValue), object: nil)
 
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(FeedViewModel.notifyViewControllerGetImagesServerError), name: BluemixDataManagerNotification.GetAllImagesFailure.rawValue, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(FeedViewModel.notifyViewControllerGetImagesServerError), name: NSNotification.Name(rawValue: BluemixDataManagerNotification.GetAllImagesFailure.rawValue), object: nil)
 
     }
 
     func unsubscribeFromBluemixDataManagerNotifications() {
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: BluemixDataManagerNotification.ImagesRefreshed.rawValue, object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: BluemixDataManagerNotification.ImageUploadSuccess.rawValue, object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: BluemixDataManagerNotification.ImageUploadBegan.rawValue, object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: BluemixDataManagerNotification.ImageUploadFailure.rawValue, object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: BluemixDataManagerNotification.GetAllImagesFailure.rawValue, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: BluemixDataManagerNotification.ImagesRefreshed.rawValue), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: BluemixDataManagerNotification.ImageUploadSuccess.rawValue), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: BluemixDataManagerNotification.ImageUploadBegan.rawValue), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: BluemixDataManagerNotification.ImageUploadFailure.rawValue), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: BluemixDataManagerNotification.GetAllImagesFailure.rawValue), object: nil)
     }
 
     /**
@@ -151,7 +151,7 @@ extension FeedViewModel {
 
      - returns: Bool
      */
-    private func isShowingSearchResults() -> Bool {
+    fileprivate func isShowingSearchResults() -> Bool {
 
         if searchQuery != nil {
             return true
@@ -165,7 +165,7 @@ extension FeedViewModel {
 
      - parameter images: [Image]?
      */
-    private func handleSearchResultsResponse(images: [Image]?) {
+    fileprivate func handleSearchResultsResponse(_ images: [Image]?) {
 
         if let images = images {
             imageDataArray = images
@@ -243,7 +243,7 @@ extension FeedViewModel {
 
      - returns: Int
      */
-    func numberOfItemsInSection(section: Int) -> Int {
+    func numberOfItemsInSection(_ section: Int) -> Int {
         //if the section is 0, then it depends on how many items are in imagesCurrentlyUploading array of the BluemixDataManager
         if section == 0 {
             if isShowingSearchResults() {
@@ -271,10 +271,10 @@ extension FeedViewModel {
 
      - returns: CGSize
      */
-    func sizeForItemAtIndexPath(indexPath: NSIndexPath, collectionView: UICollectionView) -> CGSize {
+    func sizeForItemAtIndexPath(_ indexPath: IndexPath, collectionView: UICollectionView) -> CGSize {
 
         //Section 0 corresponds to showing ImagesCurrentlyUploadingImageFeedCollectionViewCell collection view cells. These cells show when there are images in the imagesCurrentlyUploading array of the BluemixDataManager
-        if indexPath.section == 0 {
+        if (indexPath as NSIndexPath).section == 0 {
             return CGSize(width: collectionView.frame.width, height: kPictureUploadCollectionViewCellHeight)
         }
             //section 1 corresponds to either the empty feed collection view cell or the standard image feed collection view cell depending on how many images are in the image data array
@@ -287,7 +287,7 @@ extension FeedViewModel {
                 //return size for image feed collection view cell
             else {
 
-                let image = imageDataArray[indexPath.row]
+                let image = imageDataArray[(indexPath as NSIndexPath).row]
 
                 let ratio = image.height / image.width
 
@@ -311,16 +311,16 @@ extension FeedViewModel {
 
      - returns: UICollectionViewCell
      */
-    func setUpCollectionViewCell(indexPath: NSIndexPath, collectionView: UICollectionView) -> UICollectionViewCell {
+    func setUpCollectionViewCell(_ indexPath: IndexPath, collectionView: UICollectionView) -> UICollectionViewCell {
 
         //Section 0 corresponds to showing ImagesCurrentlyUploadingImageFeedCollectionViewCell collection view cells. These cells show when there are images in the imagesCurrentlyUploading array of the BluemixDataManager
-        if indexPath.section == 0 {
+        if (indexPath as NSIndexPath).section == 0 {
 
-            guard let cell = collectionView.dequeueReusableCellWithReuseIdentifier("ImagesCurrentlyUploadingImageFeedCollectionViewCell", forIndexPath: indexPath) as? ImagesCurrentlyUploadingImageFeedCollectionViewCell else {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImagesCurrentlyUploadingImageFeedCollectionViewCell", for: indexPath) as? ImagesCurrentlyUploadingImageFeedCollectionViewCell else {
                 return UICollectionViewCell()
             }
 
-            let image = BluemixDataManager.SharedInstance.imagesCurrentlyUploading[indexPath.row]
+            let image = BluemixDataManager.SharedInstance.imagesCurrentlyUploading[(indexPath as NSIndexPath).row]
 
             cell.setupData(image.image, caption: image.caption)
 
@@ -332,7 +332,7 @@ extension FeedViewModel {
 
             if imageDataArray.count == 0 && searchQuery == nil {
 
-                guard let cell = collectionView.dequeueReusableCellWithReuseIdentifier("EmptyFeedCollectionViewCell", forIndexPath: indexPath) as? EmptyFeedCollectionViewCell else {
+                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "EmptyFeedCollectionViewCell", for: indexPath) as? EmptyFeedCollectionViewCell else {
                     return UICollectionViewCell()
                 }
 
@@ -340,15 +340,15 @@ extension FeedViewModel {
 
             } else {
 
-                guard let cell = collectionView.dequeueReusableCellWithReuseIdentifier("ImageFeedCollectionViewCell", forIndexPath: indexPath) as? ImageFeedCollectionViewCell else {
+                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageFeedCollectionViewCell", for: indexPath) as? ImageFeedCollectionViewCell else {
                     return UICollectionViewCell()
                 }
 
-                let image = imageDataArray[indexPath.row]
+                let image = imageDataArray[(indexPath as NSIndexPath).row]
                 cell.setupDataWith(image)
 
                 cell.layer.shouldRasterize = true
-                cell.layer.rasterizationScale = UIScreen.mainScreen().scale
+                cell.layer.rasterizationScale = UIScreen.main.scale
 
                 return cell
             }
@@ -363,11 +363,11 @@ extension FeedViewModel {
 
      - returns: ImageDetailViewModel?
      */
-    func prepareImageDetailViewModelForSelectedCellAtIndexPath(indexPath: NSIndexPath) -> ImageDetailViewModel? {
+    func prepareImageDetailViewModelForSelectedCellAtIndexPath(_ indexPath: IndexPath) -> ImageDetailViewModel? {
 
-        if (imageDataArray.count - 1 ) >= indexPath.row {
+        if (imageDataArray.count - 1 ) >= (indexPath as NSIndexPath).row {
 
-            let viewModel = ImageDetailViewModel(image: imageDataArray[indexPath.row])
+            let viewModel = ImageDetailViewModel(image: imageDataArray[(indexPath as NSIndexPath).row])
 
             return viewModel
 
@@ -387,8 +387,8 @@ extension FeedViewModel {
     func notifyViewControllerToTriggerLoadingAnimation() {
 
         if !isShowingSearchResults() {
-            dispatch_async(dispatch_get_main_queue()) {
-                self.notifyFeedVC(feedViewModelNotification: FeedViewModelNotification.UploadingPhotoStarted)
+            DispatchQueue.main.async {
+                self.notifyFeedVC(feedViewModelNotification: FeedViewModelNotification.uploadingPhotoStarted)
             }
         }
     }
@@ -397,8 +397,8 @@ extension FeedViewModel {
      Method notifies the feed vc to reload the collection view
      */
     func notifyViewControllerToTriggerReloadCollectionView() {
-        dispatch_async(dispatch_get_main_queue()) {
-            self.notifyFeedVC(feedViewModelNotification : FeedViewModelNotification.ReloadCollectionView)
+        DispatchQueue.main.async {
+            self.notifyFeedVC(feedViewModelNotification : FeedViewModelNotification.reloadCollectionView)
         }
     }
 
@@ -406,8 +406,8 @@ extension FeedViewModel {
      Method notifies the feed vc that app failed to get images from server, handle appropriately
      */
     func notifyViewControllerGetImagesServerError() {
-        dispatch_async(dispatch_get_main_queue()) {
-            self.notifyFeedVC(feedViewModelNotification : FeedViewModelNotification.GetImagesServerFailure)
+        DispatchQueue.main.async {
+            self.notifyFeedVC(feedViewModelNotification : FeedViewModelNotification.getImagesServerFailure)
         }
     }
 
@@ -415,8 +415,8 @@ extension FeedViewModel {
      Method notifies the feed vc that there were no search results
      */
     func notifiyViewControllerToTriggerAlert() {
-        dispatch_async(dispatch_get_main_queue()) {
-            self.notifyFeedVC(feedViewModelNotification : FeedViewModelNotification.NoSearchResults)
+        DispatchQueue.main.async {
+            self.notifyFeedVC(feedViewModelNotification : FeedViewModelNotification.noSearchResults)
         }
     }
 }

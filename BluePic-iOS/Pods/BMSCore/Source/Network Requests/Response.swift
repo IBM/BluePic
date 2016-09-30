@@ -12,37 +12,43 @@
 */
 
 
+
+// MARK: - Swift 3
+
+#if swift(>=3.0)
+
+
+    
 /**
-    Contains useful data received from an HTTP network response.
+    Contains useful response data from an HTTP request made by the `Request` class.
 */
 public class Response {
 	
+    
     // MARK: Properties (API)
     
-    /// HTTP status of the response
+    /// The HTTP status of the response.
     public let statusCode: Int?
     
-    /// HTTP headers from the response
-    public let headers: [NSObject: AnyObject]?
+    /// HTTP headers from the response.
+    public let headers: [AnyHashable: Any]?
     
-    /// The body of the response as a String.
-    /// Returns nil if there is no body or an exception occurred when building the response string.
+    /// The body of the response.
+    /// Returns nil if there is no body or the body cannot be converted to a `String`.
     public let responseText: String?
     
-    /// The body of the response as NSData.
-    /// Returns nil if there is no body or if the response is not valid NSData.
-    public let responseData: NSData?
-    
-    /// Does the response contain a 2xx status code
+    /// The body of the response.
+    /// Returns nil if there is no body or if the response is not valid `Data`.
+    public let responseData: Data?
+
+    /// Does the response contain a status code in the [200, 300) range.
     public let isSuccessful: Bool
+    
+    
     
     // MARK: Properties (internal)
     
-#if swift(>=3.0)
     internal let httpResponse: HTTPURLResponse?
-#else
-    internal let httpResponse: NSHTTPURLResponse?
-#endif
     
     internal let isRedirect: Bool
     
@@ -50,15 +56,13 @@ public class Response {
     
     // MARK: Initializer
     
-#if swift(>=3.0)
-    
     /**
-        Store data from the NSHTTPURLResponse
-         
-        - parameter responseData: Data returned from the server
-        - parameter httpResponse: Response object returned from the NSURLSession request
-        - parameter isRedirect:   True if the response requires a redirect
-     */
+        Convert an HTTPURLResponse to a more accessible response object.
+
+        - parameter responseData: Data returned from the server.
+        - parameter httpResponse: Response object returned from the NSURLSession request.
+        - parameter isRedirect:   True if the response requires a redirect.
+    */
     public init(responseData: Data?, httpResponse: HTTPURLResponse?, isRedirect: Bool) {
         
         self.isRedirect = isRedirect
@@ -71,7 +75,7 @@ public class Response {
             self.responseText = String(data: responseData, encoding: .utf8)
         }
         else {
-             self.responseText = nil
+            self.responseText = nil
         }
         
         if let status = statusCode {
@@ -82,17 +86,70 @@ public class Response {
         }
     }
     
+}
+    
+    
+    
+    
+    
+/**************************************************************************************************/
+    
+    
+    
+    
+    
+// MARK: - Swift 2
+    
 #else
     
-    /**
-        Store data from the NSHTTPURLResponse
     
-        - parameter responseData: Data returned from the server
-        - parameter httpResponse: Response object returned from the NSURLSession request
-        - parameter isRedirect:   True if the response requires a redirect
+    
+/**
+    Contains useful response data from an HTTP request made by the `Request` class.
+*/
+public class Response {
+    
+    
+    // MARK: Properties (API)
+    
+    /// The HTTP status of the response.
+    public let statusCode: Int?
+    
+    /// HTTP headers from the response.
+    public let headers: [NSObject: AnyObject]?
+    
+    /// The body of the response.
+    /// Returns nil if there is no body or the body cannot be converted to a `String`.
+    public let responseText: String?
+    
+    /// The body of the response.
+    /// Returns nil if there is no body or if the response is not valid `NSData`.
+    public let responseData: NSData?
+    
+    /// Does the response contain a status code in the [200, 300) range.
+    public let isSuccessful: Bool
+    
+    
+    
+    // MARK: Properties (internal)
+    
+    internal let httpResponse: NSHTTPURLResponse?
+    
+    internal let isRedirect: Bool
+    
+    
+    
+    // MARK: Initializer
+    
+    /**
+        Convert an HTTPURLResponse to a more accessible response object.
+
+        - parameter responseData: Data returned from the server.
+        - parameter httpResponse: Response object returned from the NSURLSession request.
+        - parameter isRedirect:   True if the response requires a redirect.
     */
     public init(responseData: NSData?, httpResponse: NSHTTPURLResponse?, isRedirect: Bool) {
-        
+    
         self.isRedirect = isRedirect
         self.httpResponse = httpResponse
         self.headers = httpResponse?.allHeaderFields
@@ -113,8 +170,9 @@ public class Response {
             isSuccessful = false
         }
     }
-
-    
-#endif
     
 }
+
+
+
+#endif

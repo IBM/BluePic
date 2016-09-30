@@ -88,9 +88,9 @@ class FeedViewController: UIViewController {
 
         if let query = searchQuery {
             searchTopBarView.frame = defaultTopBarView.frame
-            defaultTopBarView.hidden = true
-            searchTopBarView.hidden = false
-            wordTagLabel.text = query.uppercaseString
+            defaultTopBarView.isHidden = true
+            searchTopBarView.isHidden = false
+            wordTagLabel.text = query.uppercased()
             Utils.kernLabelString(wordTagLabel, spacingValue: 1.4)
             self.view.addSubview(searchTopBarView)
             alertBannerLabel.text = NSLocalizedString("Error Fetching Images, try again later.", comment: "")
@@ -103,11 +103,11 @@ class FeedViewController: UIViewController {
      */
     func observeWhenApplicationBecomesActive() {
 
-        let notificationCenter = NSNotificationCenter.defaultCenter()
+        let notificationCenter = NotificationCenter.default
 
         notificationCenter.addObserver(self,
                                        selector:#selector(FeedViewController.didBecomeActive),
-                                       name:UIApplicationDidBecomeActiveNotification,
+                                       name:NSNotification.Name.UIApplicationDidBecomeActive,
                                        object:nil)
     }
 
@@ -123,37 +123,37 @@ class FeedViewController: UIViewController {
 
      - parameter animated: Bool
      */
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         viewModel.suscribeToBluemixDataManagerNotifications()
         // ensure collection view loads correctly under different circumstances
-        if collectionView.numberOfItemsInSection(1) < BluemixDataManager.SharedInstance.images.count {
+        if collectionView.numberOfItems(inSection: 1) < BluemixDataManager.SharedInstance.images.count {
             logoImageView.startRotating(1)
             viewModel.repullForNewData()
         } else {
             reloadDataInCollectionView()
         }
 
-        UIApplication.sharedApplication().statusBarStyle = UIStatusBarStyle.Default
+        UIApplication.shared.statusBarStyle = UIStatusBarStyle.default
 
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         tryToStartLoadingAnimation()
 
     }
 
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        if searchQuery != nil && self.isMovingToParentViewController() &&
-            collectionView.numberOfItemsInSection(1) < 1 && noResultsLabel.hidden {
+        if searchQuery != nil && self.isMovingToParentViewController &&
+            collectionView.numberOfItems(inSection: 1) < 1 && noResultsLabel.isHidden {
             SVProgressHUD.show()
         } else {
             tryToShowImageFeedAlert()
         }
     }
 
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         viewModel.unsubscribeFromBluemixDataManagerNotifications()
     }
@@ -187,9 +187,9 @@ class FeedViewController: UIViewController {
         Utils.registerNibWithCollectionView("ImagesCurrentlyUploadingImageFeedCollectionViewCell", collectionView: collectionView)
 
         self.refreshControl = UIRefreshControl()
-        self.refreshControl.addTarget(self, action: #selector(FeedViewController.userTriggeredRefresh), forControlEvents: UIControlEvents.ValueChanged)
-        self.refreshControl.hidden = true
-        self.refreshControl.tintColor = UIColor.clearColor()
+        self.refreshControl.addTarget(self, action: #selector(FeedViewController.userTriggeredRefresh), for: UIControlEvents.valueChanged)
+        self.refreshControl.isHidden = true
+        self.refreshControl.tintColor = UIColor.clear
 
         self.collectionView.addSubview(refreshControl)
     }
@@ -227,7 +227,7 @@ class FeedViewController: UIViewController {
      */
     func startLoadingAnimationAtAppLaunch() {
         if viewModel.shouldBeginLoadingAtAppLaunch() {
-            dispatch_async(dispatch_get_main_queue()) {
+            DispatchQueue.main.async {
                 self.logoImageView.startRotating(1)
             }
         }
@@ -264,9 +264,9 @@ class FeedViewController: UIViewController {
 
         if self.isVisible() {
 
-            noResultsLabel.hidden = true
+            noResultsLabel.isHidden = true
             self.topAlertConstraint.constant = self.alertBannerView.frame.size.height - 20
-            UIView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 0.4, initialSpringVelocity: 15, options: .CurveEaseInOut, animations: {
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.4, initialSpringVelocity: 15, options: UIViewAnimationOptions(), animations: {
                 self.view.layoutIfNeeded()
             }, completion: nil)
             failedToPresentImageFeedErrorAlert = false
@@ -279,9 +279,9 @@ class FeedViewController: UIViewController {
     func dismissImageFeedErrorAlert() {
         if self.topAlertConstraint.constant > 0 {
             self.topAlertConstraint.constant = 0
-            UIView.animateWithDuration(0.2) {
+            UIView.animate(withDuration: 0.2, animations: {
                 self.view.layoutIfNeeded()
-            }
+            }) 
         }
     }
 
@@ -289,7 +289,7 @@ class FeedViewController: UIViewController {
     /**
      Method will be called in viewDidAppear if we were unable to present this alert because the FeedViewController wasn't visible
      */
-    private func tryToShowImageFeedAlert() {
+    fileprivate func tryToShowImageFeedAlert() {
 
         if failedToPresentImageFeedErrorAlert {
             displayImageFeedErrorAlert()
@@ -302,7 +302,7 @@ class FeedViewController: UIViewController {
 
      - parameter sender: AnyObject
      */
-    @IBAction func transitionToSearch(sender: AnyObject) {
+    @IBAction func transitionToSearch(_ sender: AnyObject) {
         if let vc = Utils.vcWithNameFromStoryboardWithName("SearchViewController", storyboardName: "Feed") as? SearchViewController {
             self.navigationController?.pushViewController(vc, animated: true)
         }
@@ -313,9 +313,9 @@ class FeedViewController: UIViewController {
 
      - parameter sender: AnyObject
      */
-    @IBAction func popVC(sender: AnyObject) {
+    @IBAction func popVC(_ sender: AnyObject) {
         SVProgressHUD.dismiss()
-        self.navigationController?.popViewControllerAnimated(true)
+        self.navigationController?.popViewController(animated: true)
     }
 }
 
@@ -329,7 +329,7 @@ extension FeedViewController: UICollectionViewDataSource {
 
      - returns: UICollectionViewCell
      */
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         return viewModel.setUpCollectionViewCell(indexPath, collectionView : collectionView)
     }
 
@@ -341,7 +341,7 @@ extension FeedViewController: UICollectionViewDataSource {
 
      - returns: Int
      */
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel.numberOfItemsInSection(section)
     }
 
@@ -353,7 +353,7 @@ extension FeedViewController: UICollectionViewDataSource {
 
      - returns: Int
      */
-    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
         return viewModel.numberOfSectionsInCollectionView()
     }
 
@@ -367,10 +367,10 @@ extension FeedViewController: UICollectionViewDelegate {
      - parameter collectionView: UICollectionView
      - parameter indexPath:      NSIndexPath
      */
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 
         if let imageDetailViewModel = viewModel.prepareImageDetailViewModelForSelectedCellAtIndexPath(indexPath),
-            imageDetailVC = Utils.vcWithNameFromStoryboardWithName("ImageDetailViewController", storyboardName: "Feed") as? ImageDetailViewController {
+            let imageDetailVC = Utils.vcWithNameFromStoryboardWithName("ImageDetailViewController", storyboardName: "Feed") as? ImageDetailViewController {
 
             imageDetailVC.viewModel = imageDetailViewModel
             self.navigationController?.pushViewController(imageDetailVC, animated: true)
@@ -392,7 +392,7 @@ extension FeedViewController: UICollectionViewDelegateFlowLayout {
 
      - returns: CGSize
      */
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 
         return viewModel.sizeForItemAtIndexPath(indexPath, collectionView: collectionView)
     }
@@ -407,22 +407,22 @@ extension FeedViewController {
 
      - parameter feedViewModelNotification: FeedviewModelNotifications
      */
-    func handleFeedViewModelNotifications(feedViewModelNotification: FeedViewModelNotification) {
+    func handleFeedViewModelNotifications(_ feedViewModelNotification: FeedViewModelNotification) {
 
-        if feedViewModelNotification == FeedViewModelNotification.ReloadCollectionView {
+        if feedViewModelNotification == FeedViewModelNotification.reloadCollectionView {
             reloadDataInCollectionView()
             if searchQuery != nil {
                 SVProgressHUD.dismiss()
             }
-        } else if feedViewModelNotification == FeedViewModelNotification.UploadingPhotoStarted {
+        } else if feedViewModelNotification == FeedViewModelNotification.uploadingPhotoStarted {
             collectionView.reloadData()
             collectionView.contentOffset.y = 0
             dismissImageFeedErrorAlert()
             tryToStartLoadingAnimation()
-        } else if feedViewModelNotification == FeedViewModelNotification.NoSearchResults {
+        } else if feedViewModelNotification == FeedViewModelNotification.noSearchResults {
             SVProgressHUD.dismiss()
-            noResultsLabel.hidden = self.topAlertConstraint.constant > 0
-        } else if feedViewModelNotification == FeedViewModelNotification.GetImagesServerFailure {
+            noResultsLabel.isHidden = self.topAlertConstraint.constant > 0
+        } else if feedViewModelNotification == FeedViewModelNotification.getImagesServerFailure {
             reloadDataInCollectionView()
             displayImageFeedErrorAlert()
         }

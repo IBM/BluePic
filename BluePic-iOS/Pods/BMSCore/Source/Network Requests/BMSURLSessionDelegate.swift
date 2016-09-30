@@ -12,17 +12,15 @@
 */
 
 
-// Custom wrapper for UrlSessionDelegate
-// Uses AuthorizationManager from the BMSSecurity framework to handle network requests to MCA-protected backends
 
-
-
-// MARK: - BMSURLSessionDelegate (Swift 3)
+// MARK: - Swift 3
 
 #if swift(>=3.0)
     
 
-
+    
+// Custom wrapper for UrlSessionDelegate
+// Uses AuthorizationManager from the BMSSecurity framework to handle network requests to MCA-protected backends
 internal class BMSURLSessionDelegate: NSObject {
     
     
@@ -51,7 +49,7 @@ extension BMSURLSessionDelegate: URLSessionDelegate {
         parentDelegate?.urlSession!(session, didBecomeInvalidWithError: error)
     }
     
-    func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+    func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
         
         completionHandler(.performDefaultHandling, nil)
     }
@@ -69,17 +67,17 @@ extension BMSURLSessionDelegate: URLSessionDelegate {
 extension BMSURLSessionDelegate: URLSessionTaskDelegate {
     
     
-    func urlSession(_ session: URLSession, task: URLSessionTask, willPerformHTTPRedirection response: HTTPURLResponse, newRequest request: URLRequest, completionHandler: (URLRequest?) -> Void) {
+    func urlSession(_ session: URLSession, task: URLSessionTask, willPerformHTTPRedirection response: HTTPURLResponse, newRequest request: URLRequest, completionHandler: @escaping (URLRequest?) -> Void) {
         
         (parentDelegate as? URLSessionTaskDelegate)?.urlSession!(session, task: task, willPerformHTTPRedirection: response, newRequest: request, completionHandler: completionHandler)
     }
     
-    func urlSession(_ session: URLSession, task: URLSessionTask, didReceive challenge: URLAuthenticationChallenge, completionHandler: (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+    func urlSession(_ session: URLSession, task: URLSessionTask, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
         
         completionHandler(.performDefaultHandling, nil)
     }
     
-    func urlSession(_ session: URLSession, task: URLSessionTask, needNewBodyStream completionHandler: (InputStream?) -> Void) {
+    func urlSession(_ session: URLSession, task: URLSessionTask, needNewBodyStream completionHandler: @escaping (InputStream?) -> Void) {
         
         (parentDelegate as? URLSessionTaskDelegate)?.urlSession!(session, task: task, needNewBodyStream: completionHandler)
     }
@@ -109,7 +107,7 @@ extension BMSURLSessionDelegate: URLSessionTaskDelegate {
 extension BMSURLSessionDelegate: URLSessionDataDelegate {
     
     
-    func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive response: URLResponse, completionHandler: (URLSession.ResponseDisposition) -> Void) {
+    func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive response: URLResponse, completionHandler: @escaping (URLSession.ResponseDisposition) -> Void) {
         
         if BMSURLSession.isAuthorizationManagerRequired(for: response) {
             
@@ -148,19 +146,27 @@ extension BMSURLSessionDelegate: URLSessionDataDelegate {
         (parentDelegate as? URLSessionDataDelegate)?.urlSession!(session, dataTask: dataTask, didReceive: data)
     }
     
-    func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, willCacheResponse proposedResponse: CachedURLResponse, completionHandler: (CachedURLResponse?) -> Void) {
+    func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, willCacheResponse proposedResponse: CachedURLResponse, completionHandler: @escaping (CachedURLResponse?) -> Void) {
         
         (parentDelegate as? URLSessionDataDelegate)?.urlSession!(session, dataTask: dataTask, willCacheResponse: proposedResponse, completionHandler: completionHandler)
     }
 }
-  
     
+    
+    
+    
+    
+/**************************************************************************************************/
+    
+    
+    
+    
+    
+// MARK: - Swift 2
     
 #else
-
     
-
-// MARK: - BMSURLSessionDelegate (Swift 2)
+    
 
 internal class BMSURLSessionDelegate: NSObject {
     
@@ -245,7 +251,7 @@ extension BMSURLSessionDelegate: NSURLSessionDataDelegate {
             
             // originalRequest should always have a value. It can only be nil for stream tasks, which is not supported by BMSURLSession.
             let originalRequest = dataTask.originalRequest!.mutableCopy() as! NSMutableURLRequest
-            BMSURLSession.handleAuthorizationChallenge(session, request: originalRequest, originalTask: self.originalTask, handleTask: { (urlSessionTask) in
+            BMSURLSession.handleAuthorizationChallenge(session: session, request: originalRequest, originalTask: self.originalTask, handleTask: { (urlSessionTask) in
                 
                 if let taskWithAuthorization = urlSessionTask {
                     taskWithAuthorization.resume()

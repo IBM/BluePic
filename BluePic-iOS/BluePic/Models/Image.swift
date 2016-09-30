@@ -31,7 +31,7 @@ protocol ImageUpload {
 protocol ImageDownload: ImageUpload {
     var user: User {get}
     var id: String {get}
-    var timeStamp: NSDate {get}
+    var timeStamp: Date {get}
     var url: String {get}
     var tags: [Tag]? {get}
 }
@@ -69,12 +69,12 @@ func ==(lhs: Weather, rhs: Weather) -> Bool {
 }
 
 struct ImagePayload: ImageUpload, Equatable {
-    private(set) var caption: String
-    private(set) var fileName: String
-    private(set) var width: CGFloat
-    private(set) var height: CGFloat
-    private(set) var location: Location
-    private(set) var image: UIImage?
+    fileprivate(set) var caption: String
+    fileprivate(set) var fileName: String
+    fileprivate(set) var width: CGFloat
+    fileprivate(set) var height: CGFloat
+    fileprivate(set) var location: Location
+    fileprivate(set) var image: UIImage?
 }
 
 func ==(lhs: ImagePayload, rhs: ImagePayload) -> Bool {
@@ -87,17 +87,17 @@ func ==(lhs: ImagePayload, rhs: ImagePayload) -> Bool {
 }
 
 struct Image: ImageDownload {
-    private(set) var caption: String
-    private(set) var fileName: String
-    private(set) var width: CGFloat
-    private(set) var height: CGFloat
-    private(set) var location: Location
-    private(set) var user: User
-    private(set) var id: String
-    private(set) var timeStamp: NSDate
-    private(set) var url: String
-    private(set) var image: UIImage?
-    private(set) var tags: [Tag]?
+    fileprivate(set) var caption: String
+    fileprivate(set) var fileName: String
+    fileprivate(set) var width: CGFloat
+    fileprivate(set) var height: CGFloat
+    fileprivate(set) var location: Location
+    fileprivate(set) var user: User
+    fileprivate(set) var id: String
+    fileprivate(set) var timeStamp: Date
+    fileprivate(set) var url: String
+    fileprivate(set) var image: UIImage?
+    fileprivate(set) var tags: [Tag]?
 
     init?(_ dict: [String : AnyObject]) {
 
@@ -106,7 +106,7 @@ struct Image: ImageDownload {
         if let tags = dict["tags"] as? [[String: AnyObject]] {
             for tag in tags {
                 if let label = tag["label"] as? String,
-                    confidence = tag["confidence"] as? CGFloat {
+                    let confidence = tag["confidence"] as? CGFloat {
                     let tag = Tag(label: label, confidence: confidence)
                     tagsArray.append(tag)
                 }
@@ -117,15 +117,15 @@ struct Image: ImageDownload {
         // MARK: Set required properties
 
         if let id = dict["_id"] as? String,
-            caption = dict["caption"] as? String,
-            fileName = dict["fileName"] as? String,
-            width = dict["width"] as? CGFloat,
-            height = dict["height"] as? CGFloat,
-            user = dict["user"] as? [String : AnyObject],
-            usersName = user["name"] as? String,
-            usersId = user["_id"] as? String,
-            url = dict["url"] as? String,
-            timeStamp = dict["uploadedTs"] as? String {
+            let caption = dict["caption"] as? String,
+            let fileName = dict["fileName"] as? String,
+            let width = dict["width"] as? CGFloat,
+            let height = dict["height"] as? CGFloat,
+            let user = dict["user"] as? [String : AnyObject],
+            let usersName = user["name"] as? String,
+            let usersId = user["_id"] as? String,
+            let url = dict["url"] as? String,
+            let timeStamp = dict["uploadedTs"] as? String {
 
             self.id = id
             self.caption = caption
@@ -137,16 +137,16 @@ struct Image: ImageDownload {
 
             //Parse location data
             if let location = dict["location"] as? [String : AnyObject],
-                name = location["name"] as? String,
-                latitude = location["latitude"] as? CLLocationDegrees,
-                longitude = location["longitude"] as? CLLocationDegrees {
+                let name = location["name"] as? String,
+                let latitude = location["latitude"] as? CLLocationDegrees,
+                let longitude = location["longitude"] as? CLLocationDegrees {
 
                 //Parse weather object
                 var weatherObject: Weather?
                 if let weather = location["weather"] as? [String : AnyObject],
-                    temperature = weather["temperature"] as? Int,
-                    iconId = weather["iconId"] as? Int,
-                    description = weather["description"] as? String {
+                    let temperature = weather["temperature"] as? Int,
+                    let iconId = weather["iconId"] as? Int,
+                    let description = weather["description"] as? String {
                     weatherObject = Weather(temperature: temperature, iconId: iconId, description: description)
                 }
 
@@ -157,10 +157,10 @@ struct Image: ImageDownload {
                 return nil
             }
 
-            let dateFormatter = NSDateFormatter()
+            let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
-            dateFormatter.timeZone = NSTimeZone(abbreviation: "UTC")
-            guard let date = dateFormatter.dateFromString(timeStamp) else {
+            dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
+            guard let date = dateFormatter.date(from: timeStamp) else {
                 print(NSLocalizedString("Couldn't process timestamp", comment: ""))
                 return nil
             }

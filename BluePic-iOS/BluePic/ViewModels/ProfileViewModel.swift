@@ -19,25 +19,25 @@ import UIKit
 class ProfileViewModel: NSObject {
 
     //array that holds all that pictures that are displayed in the collection view
-    private var imageDataArray = [Image]()
+    fileprivate var imageDataArray = [Image]()
 
     //callback used to tell the ProfileViewController when to refresh its collection view
-    private var refreshVCCallback : (()->())!
+    fileprivate var refreshVCCallback : (()->())!
 
     //constant that represents the number of sections in the collection view
-    private let kNumberOfSectionsInCollectionView = 1
+    fileprivate let kNumberOfSectionsInCollectionView = 1
 
     //constant that represents the height of the info view in the collection view cell that shows the photos caption and photographer name
-    private let kCollectionViewCellInfoViewHeight: CGFloat = 60
+    fileprivate let kCollectionViewCellInfoViewHeight: CGFloat = 60
 
     //constant that represents the limit of how big the colection view cell height can be
-    private let kCollectionViewCellHeightLimit: CGFloat = 480
+    fileprivate let kCollectionViewCellHeightLimit: CGFloat = 480
 
     //constant that represents a value added to the height of the EmptyFeedCollectionViewCell when its given a size in the sizeForItemAtIndexPath method, this value allows the collection view to scroll
-    private let kEmptyFeedCollectionViewCellBufferToAllowForScrolling: CGFloat = 1
+    fileprivate let kEmptyFeedCollectionViewCellBufferToAllowForScrolling: CGFloat = 1
 
     //constant that represents the number of cells in the collection view when there is no photos
-    private let kNumberOfCellsWhenUserHasNoPhotos = 1
+    fileprivate let kNumberOfCellsWhenUserHasNoPhotos = 1
 
     /**
      Method called upon init, it sets up the method used to inform the profile vc of events, suscribes to BlueMixDataManager notifications, and updates the image data araay and tells the profile vc to reload its collection view
@@ -46,7 +46,7 @@ class ProfileViewModel: NSObject {
 
      - returns:
      */
-    init(refreshVCCallback : (()->())) {
+    init(refreshVCCallback : @escaping (()->())) {
        super.init()
 
         self.refreshVCCallback  = refreshVCCallback
@@ -62,7 +62,7 @@ class ProfileViewModel: NSObject {
      */
     func suscribeToBluemixDataManagerNotifications() {
 
-         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ProfileViewModel.updateImageArrayAndNotifyViewControllerToReloadCollectionView), name: BluemixDataManagerNotification.ImagesRefreshed.rawValue, object: nil)
+         NotificationCenter.default.addObserver(self, selector: #selector(ProfileViewModel.updateImageArrayAndNotifyViewControllerToReloadCollectionView), name: NSNotification.Name(rawValue: BluemixDataManagerNotification.ImagesRefreshed.rawValue), object: nil)
 
     }
 
@@ -82,7 +82,7 @@ class ProfileViewModel: NSObject {
      */
     func callRefreshCallBack() {
         if let callback = refreshVCCallback {
-            dispatch_async(dispatch_get_main_queue()) {
+            DispatchQueue.main.async {
                 callback()
             }
         }
@@ -109,7 +109,7 @@ extension ProfileViewModel {
 
      - returns: Int
      */
-    func numberOfItemsInSection(section: Int) -> Int {
+    func numberOfItemsInSection(_ section: Int) -> Int {
 
         if imageDataArray.count == 0 {
             return kNumberOfCellsWhenUserHasNoPhotos
@@ -127,7 +127,7 @@ extension ProfileViewModel {
 
      - returns: CGSize
      */
-    func sizeForItemAtIndexPath(indexPath: NSIndexPath, collectionView: UICollectionView, heightForEmptyProfileCollectionViewCell: CGFloat) -> CGSize {
+    func sizeForItemAtIndexPath(_ indexPath: IndexPath, collectionView: UICollectionView, heightForEmptyProfileCollectionViewCell: CGFloat) -> CGSize {
 
         //no images so show empty feed collection view cell
         if imageDataArray.count == 0 {
@@ -137,7 +137,7 @@ extension ProfileViewModel {
         //there are images so show profile collection view
         else {
 
-            let picture = imageDataArray[indexPath.row]
+            let picture = imageDataArray[(indexPath as NSIndexPath).row]
 
             let ratio = picture.height / picture.width
 
@@ -160,11 +160,11 @@ extension ProfileViewModel {
 
      - returns: UICollectionViewCell
      */
-    func setUpCollectionViewCell(indexPath: NSIndexPath, collectionView: UICollectionView) -> UICollectionViewCell {
+    func setUpCollectionViewCell(_ indexPath: IndexPath, collectionView: UICollectionView) -> UICollectionViewCell {
 
         if imageDataArray.count == 0 {
 
-            guard let cell = collectionView.dequeueReusableCellWithReuseIdentifier("EmptyFeedCollectionViewCell", forIndexPath: indexPath) as? EmptyFeedCollectionViewCell else {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "EmptyFeedCollectionViewCell", for: indexPath) as? EmptyFeedCollectionViewCell else {
                 return EmptyFeedCollectionViewCell()
             }
 
@@ -172,16 +172,16 @@ extension ProfileViewModel {
 
         } else {
 
-            guard let cell = collectionView.dequeueReusableCellWithReuseIdentifier("ProfileCollectionViewCell", forIndexPath: indexPath) as? ProfileCollectionViewCell else {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProfileCollectionViewCell", for: indexPath) as? ProfileCollectionViewCell else {
                 return ProfileCollectionViewCell()
             }
 
-            let image = imageDataArray[indexPath.row]
+            let image = imageDataArray[(indexPath as NSIndexPath).row]
 
             cell.setupDataWith(image)
 
             cell.layer.shouldRasterize = true
-            cell.layer.rasterizationScale = UIScreen.mainScreen().scale
+            cell.layer.rasterizationScale = UIScreen.main.scale
 
             return cell
 
@@ -197,9 +197,9 @@ extension ProfileViewModel {
 
      - returns: TripDetailSupplementaryView
      */
-    func setUpSectionHeaderViewForIndexPath(indexPath: NSIndexPath, kind: String, collectionView: UICollectionView) -> ProfileHeaderCollectionReusableView {
+    func setUpSectionHeaderViewForIndexPath(_ indexPath: IndexPath, kind: String, collectionView: UICollectionView) -> ProfileHeaderCollectionReusableView {
 
-        guard let header = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "ProfileHeaderCollectionReusableView", forIndexPath: indexPath) as? ProfileHeaderCollectionReusableView else {
+        guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "ProfileHeaderCollectionReusableView", for: indexPath) as? ProfileHeaderCollectionReusableView else {
             return ProfileHeaderCollectionReusableView()
         }
 
@@ -215,11 +215,11 @@ extension ProfileViewModel {
 
      - returns: ImageDetailViewModel?
      */
-    func prepareImageDetailViewModelForSelectedCellAtIndexPath(indexPath: NSIndexPath) -> ImageDetailViewModel? {
+    func prepareImageDetailViewModelForSelectedCellAtIndexPath(_ indexPath: IndexPath) -> ImageDetailViewModel? {
 
-        if (imageDataArray.count - 1 ) >= indexPath.row {
+        if (imageDataArray.count - 1 ) >= (indexPath as NSIndexPath).row {
 
-            let viewModel = ImageDetailViewModel(image: imageDataArray[indexPath.row])
+            let viewModel = ImageDetailViewModel(image: imageDataArray[(indexPath as NSIndexPath).row])
 
             return viewModel
         } else {

@@ -18,12 +18,13 @@ import BMSCore
 public class MCAAppIdentity : BaseAppIdentity{
     
     public override init() {
+        
         let appInfo = Utils.getApplicationDetails()
         let dict:[String : String] = [
-            BaseAppIdentity.ID : appInfo.name,
-            BaseAppIdentity.VERSION : appInfo.version
+            BaseAppIdentity.Key.ID : appInfo.name,
+            BaseAppIdentity.Key.version : appInfo.version
         ]
-        super.init(map: dict)
+        super.init(map: dict as [String : AnyObject]?)
     }
     
     public override init(map: [String : AnyObject]?) {

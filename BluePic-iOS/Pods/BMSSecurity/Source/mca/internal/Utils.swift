@@ -143,12 +143,12 @@ public class Utils {
         let deviceIdentity = MCADeviceIdentity()
         let appIdentity = MCAAppIdentity()
         var device = [String : AnyObject]()
-        device[BMSSecurityConstants.JSON_DEVICE_ID_KEY] = deviceIdentity.id
-        device[BMSSecurityConstants.JSON_MODEL_KEY] =  deviceIdentity.model
-        device[BMSSecurityConstants.JSON_OS_KEY] = deviceIdentity.OS
-        device[BMSSecurityConstants.JSON_APPLICATION_ID_KEY] =  appIdentity.id
-        device[BMSSecurityConstants.JSON_APPLICATION_VERSION_KEY] =  appIdentity.version
-        device[BMSSecurityConstants.JSON_ENVIRONMENT_KEY] =  BMSSecurityConstants.JSON_IOS_ENVIRONMENT_VALUE
+        device[BMSSecurityConstants.JSON_DEVICE_ID_KEY] = deviceIdentity.ID as AnyObject?
+        device[BMSSecurityConstants.JSON_MODEL_KEY] =  deviceIdentity.model as AnyObject?
+        device[BMSSecurityConstants.JSON_OS_KEY] = deviceIdentity.OS as AnyObject?
+        device[BMSSecurityConstants.JSON_APPLICATION_ID_KEY] =  appIdentity.ID as AnyObject?
+        device[BMSSecurityConstants.JSON_APPLICATION_VERSION_KEY] =  appIdentity.version as AnyObject?
+        device[BMSSecurityConstants.JSON_ENVIRONMENT_KEY] =  BMSSecurityConstants.JSON_IOS_ENVIRONMENT_VALUE as AnyObject?
         
         return device
     }
@@ -246,7 +246,7 @@ public class Utils {
         }
         
         // Setup the return NSData
-        return Data(bytes: UnsafePointer<UInt8>(result), count: j)
+        return Data(bytes: UnsafeRawPointer(result), count: j)
     }
     
     internal static func base64StringFromData(_ data:Data, length:Int, isSafeUrl:Bool) -> String {
@@ -259,9 +259,9 @@ public class Utils {
             return ""
         }
         var result:String = ""
-        let count = data.count / sizeof(Int8.self)
+        let count = data.count / MemoryLayout<Int8>.size
         var raw = [Int8](repeating: 0, count: count)
-        (data as NSData).getBytes(&raw, length:count * sizeof(Int8.self))
+        (data as NSData).getBytes(&raw, length:count * MemoryLayout<Int8>.size)
         while (true) {
             ctremaining = data.count - ixtext
             if ctremaining <= 0 {
@@ -431,11 +431,11 @@ public class Utils {
         var version = NSBundle.mainBundle().infoDictionary?["CFBundleShortVersionString"] as? String
         var name = NSBundle(forClass:object_getClass(self)).bundleIdentifier
         if name == nil {
-            AuthorizationProcessManager.logger.error("Could not retrieve application name. Application name is set to nil")
+            AuthorizationProcessManager.logger.error(message: "Could not retrieve application name. Application name is set to nil")
             name = "nil"
         }
         if version == nil {
-            AuthorizationProcessManager.logger.error("Could not retrieve application version. Application version is set to nil")
+            AuthorizationProcessManager.logger.error(message: "Could not retrieve application version. Application version is set to nil")
             version = "nil"
         }
         return (name!, version!)
@@ -446,10 +446,10 @@ public class Utils {
         let deviceIdentity = MCADeviceIdentity()
         let appIdentity = MCAAppIdentity()
         var device = [String : AnyObject]()
-        device[BMSSecurityConstants.JSON_DEVICE_ID_KEY] = deviceIdentity.id
+        device[BMSSecurityConstants.JSON_DEVICE_ID_KEY] = deviceIdentity.ID
         device[BMSSecurityConstants.JSON_MODEL_KEY] =  deviceIdentity.model
         device[BMSSecurityConstants.JSON_OS_KEY] = deviceIdentity.OS
-        device[BMSSecurityConstants.JSON_APPLICATION_ID_KEY] =  appIdentity.id
+        device[BMSSecurityConstants.JSON_APPLICATION_ID_KEY] =  appIdentity.ID
         device[BMSSecurityConstants.JSON_APPLICATION_VERSION_KEY] =  appIdentity.version
         device[BMSSecurityConstants.JSON_ENVIRONMENT_KEY] =  BMSSecurityConstants.JSON_IOS_ENVIRONMENT_VALUE
         

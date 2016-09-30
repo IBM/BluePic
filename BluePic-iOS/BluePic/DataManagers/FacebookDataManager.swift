@@ -20,16 +20,16 @@ import BMSCore
 enum FacebookAuthenticationError {
 
     //Error when the Authentiction header is not found
-    case AuthenticationHeaderNotFound
+    case authenticationHeaderNotFound
 
     //Error when the facebook user id is not found
-    case FacebookUserIdNotFound
+    case facebookUserIdNotFound
 
     //Error when the facebook user identity is not found
-    case FacebookuserIdentifyNotFound
+    case facebookuserIdentifyNotFound
 
     //Error when user canceled login
-    case UserCanceledLogin
+    case userCanceledLogin
 
 }
 
@@ -50,7 +50,7 @@ class FacebookDataManager: NSObject {
 
      - returns:
      */
-    private override init() {}
+    fileprivate override init() {}
 
 
     /**
@@ -58,7 +58,7 @@ class FacebookDataManager: NSObject {
 
      - parameter callback: ((facebookUserId : String?, facebookUserFullName : String?, error : FacebookAuthenticationError?) -> ())
      */
-    func loginWithFacebook(callback : ((facebookUserId: String?, facebookUserFullName: String?, error: FacebookAuthenticationError?) -> ())) {
+    func loginWithFacebook(_ callback : @escaping ((_ facebookUserId: String?, _ facebookUserFullName: String?, _ error: FacebookAuthenticationError?) -> ())) {
 
         if isFacebookConfigured() {
             authenticateFacebookUser(callback)
@@ -71,29 +71,29 @@ class FacebookDataManager: NSObject {
 
      - returns: true if configured, false if not
      */
-    private func isFacebookConfigured() -> Bool {
+    fileprivate func isFacebookConfigured() -> Bool {
 
-        guard let facebookAppID = NSBundle.mainBundle().objectForInfoDictionaryKey("FacebookAppID") as? NSString,
-            facebookDisplayName = NSBundle.mainBundle().objectForInfoDictionaryKey("FacebookDisplayName") as? NSString,
-            urlTypes = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleURLTypes") as? NSArray,
-            firstUrlType = urlTypes.firstObject as? NSDictionary,
-            urlSchemes = firstUrlType["CFBundleURLSchemes"] as? NSArray,
-            facebookURLScheme = urlSchemes.firstObject as? NSString else {
+        guard let facebookAppID = Bundle.main.object(forInfoDictionaryKey: "FacebookAppID") as? NSString,
+            let facebookDisplayName = Bundle.main.object(forInfoDictionaryKey: "FacebookDisplayName") as? NSString,
+            let urlTypes = Bundle.main.object(forInfoDictionaryKey: "CFBundleURLTypes") as? NSArray,
+            let firstUrlType = urlTypes.firstObject as? NSDictionary,
+            let urlSchemes = firstUrlType["CFBundleURLSchemes"] as? NSArray,
+            let facebookURLScheme = urlSchemes.firstObject as? NSString else {
 
             print(NSLocalizedString("Is Facebook Congigured Error: Authentication is not configured in Info.plist. You have to configure Info.plist with the same Authentication method configured on Bluemix such as Facebook", comment: ""))
             return false
         }
 
-        if facebookAppID.isEqualToString("") || facebookAppID == "123456789" {
+        if facebookAppID.isEqual(to: "") || facebookAppID == "123456789" {
             print(NSLocalizedString("Is Facebook Congigured Error: Authentication is not configured in Info.plist. You have to configure Info.plist with the same Authentication method configured on Bluemix such as Facebook", comment: ""))
             return false
         }
-        if facebookDisplayName.isEqualToString("") {
+        if facebookDisplayName.isEqual(to: "") {
             print(NSLocalizedString("Is Facebook Congigured Error: Authentication is not configured in Info.plist. You have to configure Info.plist with the same Authentication method configured on Bluemix such as Facebook", comment: ""))
             return false
         }
 
-        if facebookURLScheme.isEqualToString("") || facebookURLScheme.isEqualToString("fb123456789") || !(facebookURLScheme.hasPrefix("fb")) {
+        if facebookURLScheme.isEqual(to: "") || facebookURLScheme.isEqual(to: "fb123456789") || !(facebookURLScheme.hasPrefix("fb")) {
             print(NSLocalizedString("Is Facebook Congigured Error: Authentication is not configured in Info.plist. You have to configure Info.plist with the same Authentication method configured on Bluemix such as Facebook", comment: ""))
             return false
         }
@@ -107,7 +107,7 @@ class FacebookDataManager: NSObject {
 
      - parameter callback: ((facebookUserId : String?, facebookUserFullName : String?, error : FacebookAuthenticationError?) -> ())
      */
-    private func authenticateFacebookUser(callback : ((facebookUserId: String?, facebookUserFullName: String?, error: FacebookAuthenticationError?) -> ())) {
+    fileprivate func authenticateFacebookUser(_ callback : @escaping ((_ facebookUserId: String?, _ facebookUserFullName: String?, _ error: FacebookAuthenticationError?) -> ())) {
 
         let authManager = BMSClient.sharedInstance.authorizationManager
 
@@ -157,7 +157,7 @@ class FacebookDataManager: NSObject {
 
      - parameter completionHandler: BMSCompletionHandler?
      */
-    func logOut(completionHandler: BmsCompletionHandler?) {
+    func logOut(_ completionHandler: BmsCompletionHandler?) {
 
         FacebookAuthenticationManager.sharedInstance.logout(completionHandler)
 

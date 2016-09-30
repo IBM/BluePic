@@ -16,15 +16,15 @@
 
 import Foundation
 
-extension NSDate {
+extension Date {
 
     /**
      Method returns a NSCalendar Unit
 
      - returns: NSCalendarUnit
      */
-    private class func componentFlags() -> NSCalendarUnit {
-        return NSCalendarUnit.Year.union(.Month).union(.Day).union(.WeekOfYear).union(.Hour).union(.Minute).union(.Second).union(.Weekday).union(.WeekdayOrdinal)
+    fileprivate static func componentFlags() -> NSCalendar.Unit {
+        return NSCalendar.Unit.year.union(.month).union(.day).union(.weekOfYear).union(.hour).union(.minute).union(.second).union(.weekday).union(.weekdayOrdinal)
     }
 
     /**
@@ -34,8 +34,8 @@ extension NSDate {
 
      - returns: NSDateComponents
      */
-    private class func components(fromDate fromDate: NSDate) -> NSDateComponents {
-        return NSCalendar.currentCalendar().components(NSDate.componentFlags(), fromDate: fromDate)
+    fileprivate static func components(fromDate: Date) -> DateComponents {
+        return (Calendar.current as NSCalendar).components(Date.componentFlags(), from: fromDate)
     }
 
     /**
@@ -43,8 +43,8 @@ extension NSDate {
 
      - returns: NSDateComponents
      */
-    private func components() -> NSDateComponents {
-        return NSDate.components(fromDate: self)
+    fileprivate func components() -> DateComponents {
+        return Date.components(fromDate: self)
     }
 
     /**
@@ -54,9 +54,9 @@ extension NSDate {
 
      - returns: String
      */
-    class func timeStringSinceIntervalSinceReferenceDate(timeInterval: NSTimeInterval) -> String {
+    static func timeStringSinceIntervalSinceReferenceDate(_ timeInterval: TimeInterval) -> String {
 
-        let postedDate = NSDate(timeIntervalSinceReferenceDate: timeInterval)
+        let postedDate = Date(timeIntervalSinceReferenceDate: timeInterval)
 
         return timeSinceDateString(postedDate)
 
@@ -69,8 +69,8 @@ extension NSDate {
 
      - returns: Int
      */
-    private class func yearsFrom(date: NSDate) -> Int {
-        return NSCalendar.currentCalendar().components(.Year, fromDate: date, toDate: NSDate(), options: []).year
+    fileprivate static func yearsFrom(_ date: Date) -> Int {
+        return (Calendar.current as NSCalendar).components(.year, from: date, to: Date(), options: []).year!
     }
 
     /**
@@ -80,8 +80,8 @@ extension NSDate {
 
      - returns: Int
      */
-    private class func monthsFrom(date: NSDate) -> Int {
-        return NSCalendar.currentCalendar().components(.Month, fromDate: date, toDate: NSDate(), options: []).month
+    fileprivate static func monthsFrom(_ date: Date) -> Int {
+        return (Calendar.current as NSCalendar).components(.month, from: date, to: Date(), options: []).month!
     }
 
     /**
@@ -91,8 +91,8 @@ extension NSDate {
 
      - returns: Int
      */
-    private class func weeksFrom(date: NSDate) -> Int {
-        return NSCalendar.currentCalendar().components(.WeekOfYear, fromDate: date, toDate: NSDate(), options: []).weekOfYear
+    fileprivate static func weeksFrom(_ date: Date) -> Int {
+        return (Calendar.current as NSCalendar).components(.weekOfYear, from: date, to: Date(), options: []).weekOfYear!
     }
 
     /**
@@ -102,8 +102,8 @@ extension NSDate {
 
      - returns: Int
      */
-    private class func daysFrom(date: NSDate) -> Int {
-        return NSCalendar.currentCalendar().components(.Day, fromDate: date, toDate: NSDate(), options: []).day
+    fileprivate static func daysFrom(_ date: Date) -> Int {
+        return (Calendar.current as NSCalendar).components(.day, from: date, to: Date(), options: []).day!
     }
 
     /**
@@ -113,8 +113,8 @@ extension NSDate {
 
      - returns: Int
      */
-    private class func hoursFrom(date: NSDate) -> Int {
-        return NSCalendar.currentCalendar().components(.Hour, fromDate: date, toDate: NSDate(), options: []).hour
+    fileprivate static func hoursFrom(_ date: Date) -> Int {
+        return (Calendar.current as NSCalendar).components(.hour, from: date, to: Date(), options: []).hour!
     }
 
     /**
@@ -124,8 +124,8 @@ extension NSDate {
 
      - returns: Int
      */
-    private class func minutesFrom(date: NSDate) -> Int {
-        return NSCalendar.currentCalendar().components(.Minute, fromDate: date, toDate: NSDate(), options: []).minute
+    fileprivate static func minutesFrom(_ date: Date) -> Int {
+        return (Calendar.current as NSCalendar).components(.minute, from: date, to: Date(), options: []).minute!
     }
 
     /**
@@ -135,8 +135,8 @@ extension NSDate {
 
      - returns: Int
      */
-    private class func secondsFrom(date: NSDate) -> Int {
-        return NSCalendar.currentCalendar().components(.Second, fromDate: date, toDate: NSDate(), options: []).second
+    fileprivate static func secondsFrom(_ date: Date) -> Int {
+        return (Calendar.current as NSCalendar).components(.second, from: date, to: Date(), options: []).second!
     }
 
     /**
@@ -146,7 +146,7 @@ extension NSDate {
 
      - returns: String
      */
-    class func timeSinceDateString(date: NSDate) -> String {
+    static func timeSinceDateString(_ date: Date) -> String {
         if weeksFrom(date)   > 0 { return "\(weeksFrom(date))" + NSLocalizedString("w", comment: "first letter of the word week")}
         if daysFrom(date)    > 0 { return "\(daysFrom(date))" +  NSLocalizedString("d", comment: "first letter of the word day")}
         if hoursFrom(date)   > 0 { return "\(hoursFrom(date))" +  NSLocalizedString("h", comment: "first letter of the word hour")}

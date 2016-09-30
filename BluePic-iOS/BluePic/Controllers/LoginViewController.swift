@@ -40,10 +40,10 @@ class LoginViewController: UIViewController {
     var viewModel: LoginViewModel!
 
     //error message shown to user when there is an error
-    private let kLoginErrorMessage = NSLocalizedString("Oops, an error occurred! Try again.", comment: "")
+    fileprivate let kLoginErrorMessage = NSLocalizedString("Oops, an error occurred! Try again.", comment: "")
 
     //string shown in the aboutBluePicLabel
-    private let kAboutBluePicLabelText = NSLocalizedString("BluePic's back-end component is written entirely in the Swift programming language and runs on a Kitura-based server that leverages several IBM Bluemix services and OpenWhisk actions.", comment: "")
+    fileprivate let kAboutBluePicLabelText = NSLocalizedString("BluePic's back-end component is written entirely in the Swift programming language and runs on a Kitura-based server that leverages several IBM Bluemix services and OpenWhisk actions.", comment: "")
 
     /**
      Method called upon view did load. In this case we set up the view model and the aboutBluePicLabel
@@ -61,8 +61,8 @@ class LoginViewController: UIViewController {
 
      - parameter animated: Bool
      */
-    override func viewWillAppear(animated: Bool) {
-        UIApplication.sharedApplication().statusBarStyle = .LightContent
+    override func viewWillAppear(_ animated: Bool) {
+        UIApplication.shared.statusBarStyle = .lightContent
     }
 
     /**
@@ -75,7 +75,7 @@ class LoginViewController: UIViewController {
     /**
      Method sets up the aboutBluePicLabel's text with the kAboutBluePicLabelText property
      */
-    private func setupAboutBluePicLabel() {
+    fileprivate func setupAboutBluePicLabel() {
 
         aboutBluePicLabel.text = kAboutBluePicLabelText
         aboutBluePicLabel.setLineHeight(1.5)
@@ -87,10 +87,10 @@ class LoginViewController: UIViewController {
 
      - parameter sender: sign in later button
      */
-    @IBAction func signInLaterTapped(sender: AnyObject) {
+    @IBAction func signInLaterTapped(_ sender: AnyObject) {
         viewModel.loginLater()
 
-        dismissViewControllerAnimated(true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
 
 
@@ -99,7 +99,7 @@ class LoginViewController: UIViewController {
 
      - parameter sender: button tapped
      */
-    @IBAction func loginTapped(sender: AnyObject) {
+    @IBAction func loginTapped(_ sender: AnyObject) {
         startLoading()
         viewModel.authenticateWithFacebook()
 
@@ -109,12 +109,12 @@ class LoginViewController: UIViewController {
      Method to start the loading animation and setup UI for loading
      */
     func startLoading() {
-        facebookButton.hidden = true
-        signInLaterButton.hidden = true
-        welcomeLabel.hidden = true
+        facebookButton.isHidden = true
+        signInLaterButton.isHidden = true
+        welcomeLabel.isHidden = true
         loadingIndicator.startAnimating()
-        loadingIndicator.hidden = false
-        connectingLabel.hidden = false
+        loadingIndicator.isHidden = false
+        connectingLabel.isHidden = false
     }
 
 
@@ -135,13 +135,13 @@ extension LoginViewController {
 
      - parameter loginViewModelNotification: LoginViewModelNotification
      */
-    func handleLoginViewModelNotifications(loginViewModelNotification: LoginViewModelNotification) {
+    func handleLoginViewModelNotifications(_ loginViewModelNotification: LoginViewModelNotification) {
 
-        if loginViewModelNotification == LoginViewModelNotification.LoginSuccess {
+        if loginViewModelNotification == LoginViewModelNotification.loginSuccess {
             handleLoginSuccess()
-        } else if loginViewModelNotification == LoginViewModelNotification.LoginFailure {
+        } else if loginViewModelNotification == LoginViewModelNotification.loginFailure {
             handleLoginFailure()
-        } else if loginViewModelNotification == LoginViewModelNotification.UserCanceledLogin {
+        } else if loginViewModelNotification == LoginViewModelNotification.userCanceledLogin {
             handleUserCanceledLogin()
         }
 
@@ -151,8 +151,8 @@ extension LoginViewController {
      Method handles when there was a login success
      */
     func handleLoginSuccess() {
-        dispatch_async(dispatch_get_main_queue()) {
-            self.dismissViewControllerAnimated(true, completion: nil)
+        DispatchQueue.main.async {
+            self.dismiss(animated: true, completion: nil)
         }
     }
 
@@ -160,13 +160,13 @@ extension LoginViewController {
      Method handles when the user canceled login
      */
     func handleUserCanceledLogin() {
-        dispatch_async(dispatch_get_main_queue()) {
-            self.welcomeLabel.hidden = true
-            self.facebookButton.hidden = false
-            self.signInLaterButton.hidden = false
-            self.connectingLabel.hidden = true
+        DispatchQueue.main.async {
+            self.welcomeLabel.isHidden = true
+            self.facebookButton.isHidden = false
+            self.signInLaterButton.isHidden = false
+            self.connectingLabel.isHidden = true
             self.loadingIndicator.stopAnimating()
-            self.loadingIndicator.hidden = true
+            self.loadingIndicator.isHidden = true
 
         }
     }
@@ -176,14 +176,14 @@ extension LoginViewController {
      */
     func handleLoginFailure() {
 
-        dispatch_async(dispatch_get_main_queue()) {
+        DispatchQueue.main.async {
             self.welcomeLabel.text = self.kLoginErrorMessage
-            self.welcomeLabel.hidden = false
-            self.facebookButton.hidden = false
-            self.signInLaterButton.hidden = false
-            self.connectingLabel.hidden = true
+            self.welcomeLabel.isHidden = false
+            self.facebookButton.isHidden = false
+            self.signInLaterButton.isHidden = false
+            self.connectingLabel.isHidden = true
             self.loadingIndicator.stopAnimating()
-            self.loadingIndicator.hidden = true
+            self.loadingIndicator.isHidden = true
         }
 
     }

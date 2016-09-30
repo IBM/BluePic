@@ -25,16 +25,16 @@ extension UIView {
 
      - parameter duration: Double
      */
-    func startRotating(duration: Double = 1) {
+    func startRotating(_ duration: Double = 1) {
         let kAnimationKey = "rotation"
-        self.layer.removeAnimationForKey(kAnimationKey)
-        if self.layer.animationForKey(kAnimationKey) == nil {
+        self.layer.removeAnimation(forKey: kAnimationKey)
+        if self.layer.animation(forKey: kAnimationKey) == nil {
             let animate = CABasicAnimation(keyPath: "transform.rotation")
             animate.duration = duration
             animate.repeatCount = Float.infinity
             animate.fromValue = 0.0
             animate.toValue = Float(M_PI * 2.0)
-            self.layer.addAnimation(animate, forKey: kAnimationKey)
+            self.layer.add(animate, forKey: kAnimationKey)
 
         }
     }
@@ -45,8 +45,8 @@ extension UIView {
     func stopRotating() {
         let kAnimationKey = "rotation"
 
-        if self.layer.animationForKey(kAnimationKey) != nil {
-            self.layer.removeAnimationForKey(kAnimationKey)
+        if self.layer.animation(forKey: kAnimationKey) != nil {
+            self.layer.removeAnimation(forKey: kAnimationKey)
         }
     }
 
@@ -58,9 +58,9 @@ extension UIView {
         animation.duration = 0.06
         animation.repeatCount = 3
         animation.autoreverses = true
-        animation.fromValue = NSValue(CGPoint: CGPoint(x: self.center.x - 10, y: self.center.y))
-        animation.toValue = NSValue(CGPoint: CGPoint(x: self.center.x + 10, y: self.center.y))
-        self.layer.addAnimation(animation, forKey: "position")
+        animation.fromValue = NSValue(cgPoint: CGPoint(x: self.center.x - 10, y: self.center.y))
+        animation.toValue = NSValue(cgPoint: CGPoint(x: self.center.x + 10, y: self.center.y))
+        self.layer.add(animation, forKey: "position")
     }
 
 }

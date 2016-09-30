@@ -20,13 +20,13 @@ import BMSCore
 enum LoginDataManagerError {
 
     //Error when there is a Facebook Authentication Error
-    case FacebookAuthenticationError
+    case facebookAuthenticationError
 
     //Error when user canceled Facebook Login
-    case UserCanceledLogin
+    case userCanceledLogin
 
     //Error when there is a connection failure
-    case ConnectionFailure
+    case connectionFailure
 
 }
 
@@ -46,11 +46,11 @@ class LoginDataManager: NSObject {
 
      - parameter callback: ((error : LoginDataManagerError?)->())
      */
-    func login(callback : ((error: LoginDataManagerError?)->())) {
+    func login(_ callback : @escaping ((_ error: LoginDataManagerError?)->())) {
 
         ///Check if user is already authenticated from previous sesssions, aka check nsuserdefaults for user info
         if isUserAlreadyAuthenticated() {
-            callback(error: nil)
+            callback(nil)
         }
             //user not already authenticated from previous sessions
         else {
@@ -61,12 +61,12 @@ class LoginDataManager: NSObject {
                 //facebook authentication failure
                 if let error = error {
 
-                    if error == FacebookAuthenticationError.UserCanceledLogin {
+                    if error == FacebookAuthenticationError.userCanceledLogin {
                         print(NSLocalizedString("Login Error: User Canceled Login", comment: ""))
-                        callback(error: LoginDataManagerError.UserCanceledLogin)
+                        callback(LoginDataManagerError.userCanceledLogin)
                     } else {
                         print(NSLocalizedString("Login Error: Facebook Authentication Error", comment: ""))
-                        callback(error: LoginDataManagerError.FacebookAuthenticationError)
+                        callback(LoginDataManagerError.facebookAuthenticationError)
                     }
 
                 }
@@ -74,7 +74,7 @@ class LoginDataManager: NSObject {
                 else {
 
                     //Check to make sure facebook id and name aren't nil
-                    if let facebookUserId = facebookUserId, facebookUserFullName = facebookUserFullName {
+                    if let facebookUserId = facebookUserId, let facebookUserFullName = facebookUserFullName {
 
                         //try to register user with backend if the user doesn't already exist
                         BluemixDataManager.SharedInstance.checkIfUserAlreadyExistsIfNotCreateNewUser(facebookUserId, name: facebookUserFullName, callback: { success in
@@ -83,10 +83,10 @@ class LoginDataManager: NSObject {
                                 CurrentUser.willLoginLater = false
                                 CurrentUser.facebookUserId = facebookUserId
                                 CurrentUser.fullName = facebookUserFullName
-                                callback(error: nil)
+                                callback(nil)
                             } else {
                                 print(NSLocalizedString("Login Error: Connection Failure", comment: ""))
-                                callback(error: LoginDataManagerError.ConnectionFailure )
+                                callback(LoginDataManagerError.connectionFailure )
                             }
 
                         })
@@ -94,7 +94,7 @@ class LoginDataManager: NSObject {
                     //Facebook id and name were nil
                     else {
                         print(NSLocalizedString("Login Error: Facebook Authentication Error", comment: ""))
-                        callback(error: LoginDataManagerError.FacebookAuthenticationError)
+                        callback(LoginDataManagerError.facebookAuthenticationError)
                     }
                 }
             })
@@ -140,7 +140,7 @@ class LoginDataManager: NSObject {
 
      - parameter callback: ((success: Bool)->())
      */
-    func logOut(callback : ((success: Bool)->())) {
+    func logOut(_ callback : @escaping ((_ success: Bool)->())) {
 
         FacebookDataManager.SharedInstance.logOut({ (respone: Response?, error: NSError?) in
 

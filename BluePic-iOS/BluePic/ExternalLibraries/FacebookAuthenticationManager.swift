@@ -24,24 +24,24 @@ import BMSSecurity
 import FBSDKLoginKit
 import BMSAnalyticsAPI
 
-public class FacebookAuthenticationManager: NSObject, AuthenticationDelegate {
+open class FacebookAuthenticationManager: NSObject, AuthenticationDelegate {
 
-    private static let FACEBOOK_REALM="wl_facebookRealm"
-    private static let ACCESS_TOKEN_KEY="accessToken"
-    private static let FACEBOOK_APP_ID_KEY="facebookAppId"
+    fileprivate static let FACEBOOK_REALM="wl_facebookRealm"
+    fileprivate static let ACCESS_TOKEN_KEY="accessToken"
+    fileprivate static let FACEBOOK_APP_ID_KEY="facebookAppId"
     let login: FBSDKLoginManager = FBSDKLoginManager()
 
-    static let logger = Logger.logger(forName: "bmssdk.security.FacebookAuthenticationManager")
+    static let logger = Logger.logger(name: "bmssdk.security.FacebookAuthenticationManager")
 
-    public static let sharedInstance: FacebookAuthenticationManager = FacebookAuthenticationManager()
+    open static let sharedInstance: FacebookAuthenticationManager = FacebookAuthenticationManager()
 
-    private override init() {
+    fileprivate override init() {
         super.init()
     }
     /**
      register for facebook realm in the authoraztion manager
      */
-    public func register() {
+    open func register() {
         MCAAuthorizationManager.sharedInstance.registerAuthenticationDelegate(self, realm: FacebookAuthenticationManager.FACEBOOK_REALM) //register the delegate for facebook realm
     }
 
@@ -50,62 +50,61 @@ public class FacebookAuthenticationManager: NSObject, AuthenticationDelegate {
 
      - parameter completionHandler: the network request completion handler
      */
-    public func logout(completionHandler: BmsCompletionHandler?) {
+    open func logout(_ completionHandler: BMSCompletionHandler?) {
         login.logOut()
         MCAAuthorizationManager.sharedInstance.logout(completionHandler)
     }
 
-    public func onAuthenticationChallengeReceived(authContext: AuthenticationContext, challenge: AnyObject) {
+    open func onAuthenticationChallengeReceived(_ authContext: AuthenticationContext, challenge: AnyObject) {
         //Make sure the user put Facebook appid in the plist
-        guard NSBundle.mainBundle().infoDictionary?["FacebookAppID"] != nil else {
-            authContext.submitAuthenticationFailure(["Error":"Please Put your facebook appid in your info.plist"])
+        guard Bundle.main.infoDictionary?["FacebookAppID"] != nil else {
+            authContext.submitAuthenticationFailure(["Error":"Please Put your facebook appid in your info.plist" as AnyObject])
             return
         }
         //make sure the challange appId is the same as plist appId
-        guard let appID = challenge[FacebookAuthenticationManager.FACEBOOK_APP_ID_KEY] as? String where appID == FBSDKLoginKit.FBSDKSettings.appID()
+        guard let appID = challenge[FacebookAuthenticationManager.FACEBOOK_APP_ID_KEY] as? String , appID == FBSDKLoginKit.FBSDKSettings.appID()
             else {
-                authContext.submitAuthenticationFailure(["Error":"App Id from MCA server doesn't match the one defined in the .plist file"])
+                authContext.submitAuthenticationFailure(["Error":"App Id from MCA server doesn't match the one defined in the .plist file" as AnyObject])
                 return
         }
 
         //Facebook showing popup so it need to run on main thread
-        dispatch_async(dispatch_get_main_queue(), {
-            self.login.logInWithReadPermissions(["public_profile"], fromViewController: nil,
-                handler: { (result: FBSDKLoginManagerLoginResult!, error: NSError!) -> Void in
-                    guard error == nil else {
-                        authContext.submitAuthenticationFailure(["Error":error])
-                        return
-                    }
+        DispatchQueue.main.async(execute: {
+            self.login.logIn(withReadPermissions: ["public_profile"], from: nil) { result, error in
+                guard error == nil, let result = result else {
+                    authContext.submitAuthenticationFailure(["Error": error as AnyObject])
+                    return
+                }
 
-                    if result.isCancelled {
-                        authContext.submitAuthenticationFailure(["Error":"The user canceled the operation"])
-                    } else {
-                        let accessToken = FBSDKAccessToken.currentAccessToken().tokenString
-                        authContext.submitAuthenticationChallengeAnswer([FacebookAuthenticationManager.ACCESS_TOKEN_KEY:accessToken])
-                    }
-
-            })
+                if result.isCancelled {
+                    authContext.submitAuthenticationFailure(["Error": "The user canceled the operation" as AnyObject])
+                } else {
+                    let accessToken = FBSDKAccessToken.current().tokenString
+                    authContext.submitAuthenticationChallengeAnswer([FacebookAuthenticationManager.ACCESS_TOKEN_KEY: accessToken as AnyObject])
+                }
+            }
         })
     }
+    
     //MARK: Protocol implemantion
 
-    public func onAuthenticationSuccess(info: AnyObject?) {
-        FacebookAuthenticationManager.logger.debug("onAuthenticationSuccess info = \(info)")
+    open func onAuthenticationSuccess(_ info: AnyObject?) {
+        FacebookAuthenticationManager.logger.debug(message: "onAuthenticationSuccess info = \(info)")
     }
 
-    public func onAuthenticationFailure(info: AnyObject?) {
+    open func onAuthenticationFailure(_ info: AnyObject?) {
     }
 
     //MARK: App Delegate code handler
     /******    needed by facebook you need to call those methods from your app delegate *******/
 
 
-    public func onOpenURL(application: UIApplication, url: NSURL,
+    open func onOpenURL(_ application: UIApplication, url: URL,
         sourceApplication: String?, annotation: AnyObject) -> Bool {
-            return FBSDKApplicationDelegate.sharedInstance().application(application, openURL: url, sourceApplication: sourceApplication, annotation: annotation)
+            return FBSDKApplicationDelegate.sharedInstance().application(application, open: url, sourceApplication: sourceApplication, annotation: annotation)
     }
 
-    public func onFinishLaunching(application: UIApplication, withOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+    open func onFinishLaunching(_ application: UIApplication, withOptions launchOptions: [AnyHashable: Any]?) -> Bool {
         return FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
 
     }
