@@ -159,7 +159,11 @@ Luckily, Bluemix has [instructions](https://console.ng.bluemix.net/docs/services
 
 Additionally, the `appGuid ` for your Push service acts independently of the BluePic app so we will need to add that value to our `bluemix.plist`. We get the `appGuid ` by viewing our credentials for the Push service in Bluemix, all your services should be under the "Connections" of your app. Once there, click on the "View Credentials" button for your Push Notifications service and you should see the `appGuid ` pop up, among other values. Now, simply put that value into your `bluemix.plist` corresponding with the `pushAppGUID` key. This should ensure your device gets registered properly with the Push service.
 
-Lastly, remember that push notifications will only show up on a physical iOS device.
+Lastly, remember that push notifications will only show up on a physical iOS device. To ensure your app can run on a device and receive push notifications, make sure you followed the [Bluemix instructions](https://console.ng.bluemix.net/docs/services/mobilepush/t_push_provider_ios.html) above. At this point, open the `BluePic.xcworkspace` in Xcode and navigate to the `Capabilities` tab for the BluePic app target. Here, flip the switch for push notifications, like so:
+
+<p align="center"><img src="Imgs/enablePush.png"  alt="Drawing" height=145 border=0 /></p>
+
+Now, make sure your app is using the push enabled provisioning profile you created earlier in the Bluemix instructions. Then at this point, you can run the app on your device and be able to receive push notifications.
 
 ### 4. Configure OpenWhisk
 BluePic leverages OpenWhisk actions written in Swift for accessing the Alchemy Vision and Weather APIs. For instructions on how to configure OpenWhisk, see the following [page](Docs/OpenWhisk.md). You will find there details on configuration and invocation of OpenWhisk commands.
@@ -176,7 +180,15 @@ After configuring the optional features, you should redeploy the BluePic app to 
 ## Running the iOS app
 If you don't have the iOS project already open, go to the `BluePic-iOS` directory and open the BluePic workspace using `open BluePic.xcworkspace`.
 
-You can now build and run the iOS app using the Xcode capabilities you are used to!
+You can now build and run the iOS app in the simulator using the Xcode capabilities you are used to!
+
+### Running the iOS app on a device
+
+For IBM developers, refer to the process in our [wiki](https://github.com/IBM-Swift/BluePic/wiki/Code-Signing-Configuration-for-Internal-Developers).
+
+For developers wanting to run the iOS app on a device, the easiest thing will be to change the bundle ID for BluePic to something unique (if you haven't already). Afterwards, check the box for `Automatically manage signing` located under the `General` tab for the BluePic app target. Assuming you have the Apple Developer Program team role of Agent or Admin, a provisioning profile will be created for the BluePic app, allowing you to run on a device.
+
+Alternativly, you can use a wildcard App ID to run the app on your device. If already created, simply select it in the provisioning profile dropdown in the `Signing (Debug)` section. If not created, you can create one through the Apple Developer Portal. This [link](https://developer.apple.com/library/content/qa/qa1713/_index.html) should be helpful in providing more info about wildcard App IDs.
 
 ## Running the Kitura-based server locally
 You can build the BluePic-Server by going to the `BluePic-Server` directory of the cloned repository and running `make`. To start the Kitura-based server for the BluePic app on your local system, go to the `BluePic-Server` directory of the cloned repository and run `.build/debug/BluePicServer`. You should also update the `bluemix.plist` file in the Xcode project in order to have the iOS app connect to this local server. See the [Update configuration for iOS app](#7-update-configuration-for-ios-app) section for details.
