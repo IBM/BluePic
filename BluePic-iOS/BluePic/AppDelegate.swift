@@ -56,8 +56,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application (_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         if BluemixDataManager.SharedInstance.bluemixConfig.pushAppGUID != "" {
             let push =  BMSPushClient.sharedInstance
-            push.initializeWithAppGUID(BluemixDataManager.SharedInstance.bluemixConfig.pushAppGUID)
-            push.registerWithDeviceToken(deviceToken) { (response, statusCode, error) in
+            push.initializeWithAppGUID(appGUID: BluemixDataManager.SharedInstance.bluemixConfig.pushAppGUID, clientSecret: nil)
+            push.registerWithDeviceToken(deviceToken: deviceToken) { response, statusCode, error in
                 if error.isEmpty {
                     print( "Response during device registration : \(response)")
                     print( "status code during device registration : \(statusCode)")
@@ -88,8 +88,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if application.applicationState == UIApplicationState.background || application.applicationState == UIApplicationState.inactive {
             loadImageDetail(userInfo, tabBarController: tabBarController, feedNav: feedNav)
         } else {
-          if let aps = userInfo["aps"], let category = aps["category"] as? String,
-            let alert = aps["alert"] as? [String:AnyObject], let body = alert["body"] as? String , category == "imageProcessed" {
+            if let aps = userInfo["aps"] as? [AnyHashable: Any], let category = aps["category"] as? String,
+            let alert = aps["alert"] as? [AnyHashable: Any], let body = alert["body"] as? String , category == "imageProcessed" {
 
             let alert = UIAlertController(title: NSLocalizedString(body, tableName: "Server", bundle: Bundle.main, value: "", comment: ""),
                                               message: NSLocalizedString("Would you like to view your image now?", comment: ""),
@@ -145,7 +145,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         BluemixDataManager.SharedInstance.initilizeBluemixAppRoute()
 
         //Initialize Facebook
-        MCAAuthorizationManager.sharedInstance.setAuthorizationPersistencePolicy(PersistencePolicy.ALWAYS)
+        MCAAuthorizationManager.sharedInstance.setAuthorizationPersistencePolicy(PersistencePolicy.always)
         BMSClient.sharedInstance.authorizationManager = MCAAuthorizationManager.sharedInstance
         FacebookAuthenticationManager.sharedInstance.register()
 
@@ -183,7 +183,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
      - returns: Bool
      */
     func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
-        return FacebookAuthenticationManager.sharedInstance.onOpenURL(application, url: url, sourceApplication: sourceApplication, annotation: annotation)
+        return FacebookAuthenticationManager.sharedInstance.onOpenURL(application, url: url, sourceApplication: sourceApplication, annotation: annotation as AnyObject)
     }
 
     func applicationWillTerminate(_ application: UIApplication) {

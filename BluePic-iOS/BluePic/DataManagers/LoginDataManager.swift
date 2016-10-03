@@ -140,18 +140,18 @@ class LoginDataManager: NSObject {
 
      - parameter callback: ((success: Bool)->())
      */
-    func logOut(_ callback : @escaping ((_ success: Bool)->())) {
+    func logOut(_ callback : @escaping (_ success: Bool)->()) {
 
-        FacebookDataManager.SharedInstance.logOut({ (respone: Response?, error: NSError?) in
+        FacebookDataManager.SharedInstance.logOut { respone, error in
 
             if let _ = error {
-                callback(success: false)
+                callback(false)
             } else {
                 CurrentUser.logOut()
-                callback(success: true)
+                callback(true)
             }
 
-        })
+        }
 
     }
 

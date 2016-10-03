@@ -33,7 +33,7 @@ class LoginViewModel: NSObject {
 
      - returns: LoginViewModel
      */
-    init(notifyLoginVC: @escaping ((_ loginViewModelNotification: LoginViewModelNotification) -> ())) {
+    init(notifyLoginVC: @escaping (_ loginViewModelNotification: LoginViewModelNotification) -> ()) {
         super.init()
 
         self.notifyLoginVC = notifyLoginVC
@@ -55,11 +55,11 @@ class LoginViewModel: NSObject {
         LoginDataManager.SharedInstance.login({ error in
 
             if error == nil {
-                self.notifyLoginVC(loginViewModelNotification: LoginViewModelNotification.loginSuccess)
+                self.notifyLoginVC(LoginViewModelNotification.loginSuccess)
             } else if error == LoginDataManagerError.userCanceledLogin {
-                self.notifyLoginVC(loginViewModelNotification: LoginViewModelNotification.userCanceledLogin)
+                self.notifyLoginVC(LoginViewModelNotification.userCanceledLogin)
             } else {
-                self.notifyLoginVC(loginViewModelNotification: LoginViewModelNotification.loginFailure)
+                self.notifyLoginVC(LoginViewModelNotification.loginFailure)
             }
 
         })

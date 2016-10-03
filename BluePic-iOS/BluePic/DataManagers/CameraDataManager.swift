@@ -422,7 +422,7 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
 
      - parameter callback: ((location : Location?)->())
      */
-    fileprivate func setLatLongAndLocationNameForImage(_ callback : ((_ location: Location?)->())) {
+    fileprivate func setLatLongAndLocationNameForImage(_ callback : @escaping (_ location: Location?)->()) {
 
         LocationDataManager.SharedInstance.getCurrentLatLongCityAndState() { (latitude: CLLocationDegrees?, longitude: CLLocationDegrees?, city: String?, state: String?, error: LocationDataManagerError?) in
 

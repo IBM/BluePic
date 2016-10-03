@@ -183,7 +183,7 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
      */
     fileprivate func setImageViewWithURLAndPlaceHolderImage(_ url: URL, placeHolderImage: UIImage) {
 
-        imageView.sd_setImage(with: url, placeholderImage: placeHolderImage, options: [.continueInBackground]) { image, error, cacheType, url in
+        imageView.sd_setImage(with: url, placeholderImage: placeHolderImage, options: [.delayPlaceholder]) { image, error, cacheType, url in
             
             if image != nil {
                 self.loadingView.isHidden = true

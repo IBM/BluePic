@@ -104,7 +104,7 @@ class BluemixDataManager: NSObject {
         BMSClient.sharedInstance.initialize(bluemixAppRoute: bluemixConfig.remoteBaseRequestURL,
                                             bluemixAppGUID: bluemixConfig.appGUID,
                                             bluemixRegion: bluemixConfig.appRegion)
-        BMSClient.sharedInstance.defaultRequestTimeout = 10.0
+        BMSClient.sharedInstance.requestTimeout = 10.0
 
     }
 
@@ -141,7 +141,7 @@ extension BluemixDataManager {
 
         request.timeout = kDefaultTimeOut
 
-        request.sendWithCompletionHandler { (response, error) -> Void in
+        request.send { response, error in
             //error
             if let error = error {
                 if let response = response,
@@ -150,31 +150,31 @@ extension BluemixDataManager {
                     //user does not exist
                     if statusCode == 404 {
 
-                        result(user: nil, error: BlueMixDataManagerError.UserDoesNotExist)
+                        result(nil, BlueMixDataManagerError.userDoesNotExist)
                     }
                         //any other error code means that it was a connection failure
                     else {
                         print(NSLocalizedString("Get User By ID Error:", comment : "") + " \(error.localizedDescription)")
-                        result(user: nil, error: BlueMixDataManagerError.ConnectionFailure)
+                        result(nil, BlueMixDataManagerError.connectionFailure)
                     }
 
                 }
                     //connection failure
                 else {
                     print(NSLocalizedString("Get User By ID Error:", comment : "") + " \(error.localizedDescription)")
-                    result(user: nil, error: BlueMixDataManagerError.ConnectionFailure)
+                    result(nil, BlueMixDataManagerError.connectionFailure)
                 }
             }
                 //No error
             else {
                 //success
                 if let user = User(response) {
-                    result(user: user, error: nil)
+                    result(user, nil)
                 }
                     //can't parse response - error
                 else {
                     print(NSLocalizedString("Get User By ID Error: Invalid Response JSON)", comment: ""))
-                    result(user: nil, error: BlueMixDataManagerError.ConnectionFailure)
+                    result(nil, BlueMixDataManagerError.connectionFailure)
                 }
             }
         }
@@ -188,7 +188,7 @@ extension BluemixDataManager {
      - parameter name:   String
      - parameter result: ((user : User?) -> ())
      */
-    func createNewUser(_ userId: String, name: String, result : @escaping ((_ user: User?) -> ())) {
+    func createNewUser(_ userId: String, name: String, result : @escaping (_ user: User?) -> ()) {
 
         let requestURL = getBluemixBaseRequestURL() + "/" + kUsersEndPoint
 
@@ -201,19 +201,19 @@ extension BluemixDataManager {
         do {
             let jsonData = try JSONSerialization.data(withJSONObject: json, options: .prettyPrinted)
 
-            request.sendData(jsonData, completionHandler: { (response, error) -> Void in
+            request.send(requestBody: jsonData) { response, error in
                 if let error = error {
-                    result(user: nil)
+                    result(nil)
                     print(NSLocalizedString("Create New User Error:)", comment: "") + " \(error.localizedDescription)")
                 } else {
                     if let user = User(response) {
-                        result(user: user)
+                        result(user)
                     } else {
-                        result(user: nil)
+                        result(nil)
                         print(NSLocalizedString("Create New User Error: Invalid Response JSON", comment: ""))
                     }
                 }
-            })
+            }
 
         } catch {
             print(NSLocalizedString("Create New User Error", comment: ""))
@@ -327,13 +327,13 @@ extension BluemixDataManager {
 
         request.timeout = kDefaultTimeOut
 
-        request.sendWithCompletionHandler { (response, error) -> Void in
+        request.send { response, error in
             if let error = error {
                 print(NSLocalizedString("Get Images Error:", comment: "") + " \(error.localizedDescription)")
-                result(images: nil)
+                result(nil)
             } else {
                 let images = self.parseGetImagesResponse(response, userId: nil, usersName: nil)
-                result(images: images)
+                result(images)
             }
         }
 
@@ -384,7 +384,7 @@ extension BluemixDataManager {
 
      - parameter callback: (response: Response?, error: NSError?) -> Void
      */
-    fileprivate func ping(_ callback : @escaping (_ response: Response?, _ error: NSError?) -> Void) {
+    fileprivate func ping(_ callback : @escaping (_ response: Response?, _ error: Error?) -> Void) {
 
         let requestURL = getBluemixBaseRequestURL() + "/" + kPingEndPoint
 
@@ -392,8 +392,8 @@ extension BluemixDataManager {
 
         request.timeout = kDefaultTimeOut
 
-        request.sendWithCompletionHandler { (response, error) -> Void in
-            callback(response: response, error: error)
+        request.send { response, error in
+            callback(response, error)
         }
 
     }
@@ -421,7 +421,7 @@ extension BluemixDataManager {
             //successfully pinged service
             else {
                 //Check if User Authenticated with Facebook (aka is MCA configured)
-                if let userIdentity = FacebookDataManager.SharedInstance.getFacebookUserIdentity(), let facebookUserId = userIdentity.id, let facebookUserFullName = userIdentity.displayName {
+                if let userIdentity = FacebookDataManager.SharedInstance.getFacebookUserIdentity(), let facebookUserId = userIdentity.ID, let facebookUserFullName = userIdentity.displayName {
 
                     //User is authenticated with Facebook, create new user record
                     self.createNewUser(facebookUserId, name: facebookUserFullName, result: { user in
@@ -476,6 +476,7 @@ extension BluemixDataManager {
             let request = Request(url: requestURL, method: HttpMethod.POST)
             request.headers = ["Content-Type" : "multipart/form-data; boundary=\(boundary)"]
 
+            // TODO: convert to DAta
             let body = NSMutableData()
             guard let jsonString = tempJsonString, let boundaryStart = "--\(boundary)\r\n".data(using: String.Encoding.utf8),
                 let dispositionEncoding = "Content-Disposition:form-data; name=\"imageJson\"\r\n\r\n".data(using: String.Encoding.utf8),
@@ -500,7 +501,7 @@ extension BluemixDataManager {
 
             request.timeout = kDefaultTimeOut
 
-            request.sendData(body, completionHandler: { (response, error) -> Void in
+            request.send(requestBody: body as Data) { response, error in
 
                 //failure
                 if let error = error {
@@ -513,9 +514,9 @@ extension BluemixDataManager {
                     self.addImageToImageTakenDuringAppSessionByIdDictionary(image)
                     self.removeImageFromImagesCurrentlyUploading(image)
 
-                    NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImageUploadSuccess.rawValue, object: nil)
+                    NotificationCenter.default.post(name: Notification.Name(BluemixDataManagerNotification.ImageUploadSuccess.rawValue), object: nil)
                 }
-            })
+            }
 
         } catch {
             print("Error converting image dictionary to Json")
@@ -638,7 +639,7 @@ extension BluemixDataManager {
 
         request.timeout = kDefaultTimeOut
 
-        request.sendWithCompletionHandler { (response, error) -> Void in
+        request.send { response, error in
             if let error = error {
                 print(NSLocalizedString("Get Popular Tags Error:", comment: "") + " \(error.localizedDescription)")
             } else {
@@ -646,11 +647,11 @@ extension BluemixDataManager {
                     // Extract string tags from server results
                     self.tags = records.flatMap { value in
                         if let key = value["key"] as? String {
-                            return key.uppercaseString
+                            return key.uppercased()
                         }
                         return nil
                     }
-                    NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.PopularTagsReceived.rawValue, object: nil)
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: BluemixDataManagerNotification.PopularTagsReceived.rawValue), object: nil)
                 }
             }
         }

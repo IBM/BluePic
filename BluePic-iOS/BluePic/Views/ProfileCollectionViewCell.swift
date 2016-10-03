@@ -175,13 +175,13 @@ class ProfileCollectionViewCell: UICollectionViewCell {
      */
     fileprivate func setImageViewWithURLAndPlaceHolderImage(_ url: URL, placeHolderImage: UIImage) {
 
-        imageView.sd_setImage(with: url, placeholderImage: placeHolderImage, completed: { result in
+        imageView.sd_setImage(with: url, placeholderImage: placeHolderImage, options: [.delayPlaceholder]) { image, error, cacheType, url in
 
-            if result.0 != nil {
+            if image != nil {
                 self.loadingView.isHidden = true
             }
 
-        })
+        }
     }
 
     /**

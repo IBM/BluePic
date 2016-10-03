@@ -388,7 +388,7 @@ extension FeedViewModel {
 
         if !isShowingSearchResults() {
             DispatchQueue.main.async {
-                self.notifyFeedVC(feedViewModelNotification: FeedViewModelNotification.uploadingPhotoStarted)
+                self.notifyFeedVC(FeedViewModelNotification.uploadingPhotoStarted)
             }
         }
     }
@@ -398,7 +398,7 @@ extension FeedViewModel {
      */
     func notifyViewControllerToTriggerReloadCollectionView() {
         DispatchQueue.main.async {
-            self.notifyFeedVC(feedViewModelNotification : FeedViewModelNotification.reloadCollectionView)
+            self.notifyFeedVC(FeedViewModelNotification.reloadCollectionView)
         }
     }
 
@@ -407,7 +407,7 @@ extension FeedViewModel {
      */
     func notifyViewControllerGetImagesServerError() {
         DispatchQueue.main.async {
-            self.notifyFeedVC(feedViewModelNotification : FeedViewModelNotification.getImagesServerFailure)
+            self.notifyFeedVC(FeedViewModelNotification.getImagesServerFailure)
         }
     }
 
@@ -416,7 +416,7 @@ extension FeedViewModel {
      */
     func notifiyViewControllerToTriggerAlert() {
         DispatchQueue.main.async {
-            self.notifyFeedVC(feedViewModelNotification : FeedViewModelNotification.noSearchResults)
+            self.notifyFeedVC(FeedViewModelNotification.noSearchResults)
         }
     }
 }

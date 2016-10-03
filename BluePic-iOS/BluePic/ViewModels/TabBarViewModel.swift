@@ -39,7 +39,7 @@ class TabBarViewModel: NSObject {
 
      - returns:
      */
-    init(notifyTabBarVC : @escaping ((_ tabBarViewModelNotification: TabBarViewModelNotification)->())) {
+    init(notifyTabBarVC : @escaping (_ tabBarViewModelNotification: TabBarViewModelNotification)->()) {
         super.init()
 
         self.notifyTabBarVC = notifyTabBarVC
@@ -65,35 +65,35 @@ class TabBarViewModel: NSObject {
      Method notifies the tab bar vc to swift to the feed tab when image upload begins
      */
     func notifyTabBarVCToSwitchToFeedTab() {
-        notifyTabBarVC(tabBarViewModelNotification : TabBarViewModelNotification.switchToFeedTab)
+        notifyTabBarVC(TabBarViewModelNotification.switchToFeedTab)
     }
 
     /**
      Method notifies the tab bar vc to show the image upload failure alert when an image fails to upload
      */
     func notifyTabbarVCToShowImageUploadFailureAlert() {
-        notifyTabBarVC(tabBarViewModelNotification : TabBarViewModelNotification.showImageUploadFailureAlert)
+        notifyTabBarVC(TabBarViewModelNotification.showImageUploadFailureAlert)
     }
 
     /**
      Method notifies the tab bar vc to show the settings action sheet
      */
     func notifyTabBarVcToShowSettingsActionSheet() {
-        notifyTabBarVC(tabBarViewModelNotification : TabBarViewModelNotification.showSettingsActionSheet)
+        notifyTabBarVC(TabBarViewModelNotification.showSettingsActionSheet)
     }
 
     /**
      Method notifies the tab bar vc that log out was a success
      */
     func notifyTabBarVCLogOutSuccess() {
-        notifyTabBarVC(tabBarViewModelNotification : TabBarViewModelNotification.logOutSuccess)
+        notifyTabBarVC(TabBarViewModelNotification.logOutSuccess)
     }
 
     /**
      Method notifies the tab bar vc that log in was a failure
      */
     func notifyTabBarVCLogOutFailure() {
-        notifyTabBarVC(tabBarViewModelNotification : TabBarViewModelNotification.logOutFailure)
+        notifyTabBarVC(TabBarViewModelNotification.logOutFailure)
     }
 
     /**
@@ -102,9 +102,9 @@ class TabBarViewModel: NSObject {
     func tryToShowLogin() {
 
         if LoginDataManager.SharedInstance.isUserAuthenticatedOrPressedSignInLater() {
-            notifyTabBarVC(tabBarViewModelNotification: TabBarViewModelNotification.hideLoginVC)
+            notifyTabBarVC(TabBarViewModelNotification.hideLoginVC)
         } else {
-            notifyTabBarVC(tabBarViewModelNotification: TabBarViewModelNotification.showLoginVC)
+            notifyTabBarVC(TabBarViewModelNotification.showLoginVC)
         }
 
     }

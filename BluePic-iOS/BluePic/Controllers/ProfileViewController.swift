@@ -271,7 +271,7 @@ extension ProfileViewController : UIScrollViewDelegate {
      - parameter collectionView: UICollectionView
      - parameter indexPath:      NSIndexPath
      */
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    func collectionView(collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 
         if let imageDetailViewModel = viewModel.prepareImageDetailViewModelForSelectedCellAtIndexPath(indexPath),
             let imageDetailVC = Utils.vcWithNameFromStoryboardWithName("ImageDetailViewController", storyboardName: "Feed") as? ImageDetailViewController {

@@ -107,48 +107,49 @@ class FacebookDataManager: NSObject {
 
      - parameter callback: ((facebookUserId : String?, facebookUserFullName : String?, error : FacebookAuthenticationError?) -> ())
      */
-    fileprivate func authenticateFacebookUser(_ callback : @escaping ((_ facebookUserId: String?, _ facebookUserFullName: String?, _ error: FacebookAuthenticationError?) -> ())) {
+    fileprivate func authenticateFacebookUser(_ callback : @escaping (_ facebookUserId: String?, _ facebookUserFullName: String?, _ error: FacebookAuthenticationError?) -> ()) {
 
         let authManager = BMSClient.sharedInstance.authorizationManager
 
-        authManager.obtainAuthorization(completionHandler: {(response: Response?, error: NSError?) in
+        authManager.obtainAuthorization { response, error in
 
             //error
             if let errorObject = error {
                 //user canceled login
-                if errorObject.code == -1 {
+                
+//                if errorObject.code == -1 {
                     print(NSLocalizedString("Authenticate Facebook User Error: User Canceled login:", comment: "") + " \(errorObject.localizedDescription)")
-                    callback(facebookUserId: nil, facebookUserFullName: nil, error: FacebookAuthenticationError.UserCanceledLogin)
-                } else {
-                    print(NSLocalizedString("Authenticate Facebook User Error: Error obtaining Authentication Header.", comment: "") + " \(errorObject.localizedDescription)")
-                    //"Error obtaining Authentication Header.\nCheck Bundle Identifier and Bundle version string\n\n"
-                    callback(facebookUserId: nil, facebookUserFullName: nil, error: FacebookAuthenticationError.AuthenticationHeaderNotFound)
-                }
+                    callback(nil, nil, FacebookAuthenticationError.userCanceledLogin)
+//                } else {
+//                    print(NSLocalizedString("Authenticate Facebook User Error: Error obtaining Authentication Header.", comment: "") + " \(errorObject.localizedDescription)")
+//                    //"Error obtaining Authentication Header.\nCheck Bundle Identifier and Bundle version string\n\n"
+//                    callback(nil, nil, FacebookAuthenticationError.authenticationHeaderNotFound)
+//                }
             }
             //error is nil
             else {
                 if let identity = authManager.userIdentity {
-                    if let userId = identity.id {
+                    if let userId = identity.ID {
                         if let fullName = identity.displayName {
                             //success!
-                            callback(facebookUserId: userId, facebookUserFullName: fullName, error: nil)
+                            callback(userId, fullName, nil)
                         }
                     }
                     //error
                     else {
                         print(NSLocalizedString("Authenticate Facebook User Error: Valid Authentication Header and userIdentity, but id not found", comment: ""))
-                        callback(facebookUserId: nil, facebookUserFullName: nil, error: FacebookAuthenticationError.FacebookUserIdNotFound)
+                        callback(nil, nil, FacebookAuthenticationError.facebookUserIdNotFound)
                     }
 
                 }
                 //error
                 else {
                     print(NSLocalizedString("Authenticate Facebook User Error: Valid Authentication Header, but userIdentity not found. You have to configure the Facebook Mobile Client Access service available on Bluemix", comment: ""))
-                    callback(facebookUserId: nil, facebookUserFullName: nil, error: FacebookAuthenticationError.FacebookuserIdentifyNotFound)
+                    callback(nil, nil, FacebookAuthenticationError.facebookuserIdentifyNotFound)
                 }
             }
 
-        })
+        }
     }
 
 
@@ -157,7 +158,7 @@ class FacebookDataManager: NSObject {
 
      - parameter completionHandler: BMSCompletionHandler?
      */
-    func logOut(_ completionHandler: BmsCompletionHandler?) {
+    func logOut(_ completionHandler: BMSCompletionHandler?) {
 
         FacebookAuthenticationManager.sharedInstance.logout(completionHandler)
 
