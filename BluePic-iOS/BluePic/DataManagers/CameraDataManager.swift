@@ -250,14 +250,14 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
      Method is called after the user takes a photo or chooses a photo from their photo library. This method will save information about the photo taken
 
      - parameter picker: UIImagePickerController
-     - parameter info:   [String : AnyObject]
+     - parameter info:   [String : Any]
      */
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         picker.dismiss(animated: true, completion: nil)
 
         resetStateVariables()
 
-        if !canPostImage(info as [String : AnyObject]) {
+        if !canPostImage(info) {
             self.destroyConfirmationView()
 
             self.showPhotoCouldntBeChosenAlert()
@@ -271,7 +271,7 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
 
      - returns: true if valid image, false if not
      */
-    func canPostImage(_ info: [String : AnyObject]) -> Bool {
+    func canPostImage(_ info: [String : Any]) -> Bool {
 
         if let takenImage = info[UIImagePickerControllerOriginalImage] as? UIImage, let resizedAndRotatedImage = UIImage.resizeAndRotateImage(takenImage) {
 
@@ -292,7 +292,7 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
     func prepareImageToPost() {
 
         // need image to be non-nil and post button to have been pressed already
-        guard let pickedImage = self.pickedImage , userPressedPostPhoto && !userPressedCancelButton else {
+        guard let pickedImage = self.pickedImage, userPressedPostPhoto && !userPressedCancelButton else {
             return
         }
 
@@ -313,7 +313,7 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
                 let fileName = dateFormatter.string(from: todaysDate) + ".png"
 
                 var captionText: String = self.kEmptyCaptionPlaceHolder
-                if let text = self.confirmationView.titleTextField.text , text != "" {
+                if let text = self.confirmationView.titleTextField.text, text != "" {
                     captionText = text
                 }
 

@@ -23,15 +23,13 @@ import BMSPush
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
-    /**
-     Method called when app finishes up launching. In this case we initialize Bluemix Mobile Client Access with Facebook
-
-     - parameter application:   UIApplication.
-     - parameter launchOptions: [NSObject: Anyobject]?
-
-     - returns: Bool
-     */
+    
+    /// Method called when app finishes up launching. In this case we initialize Bluemix Mobile Client Access with Facebook
+    ///
+    /// - parameter application:   UIApplication
+    /// - parameter launchOptions: [UIApplicationLaunchOptionsKey: Any]?
+    ///
+    /// - returns: Bool
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 
         //register for remote notifications aka prompt user to give permission for notifications
@@ -89,7 +87,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             loadImageDetail(userInfo, tabBarController: tabBarController, feedNav: feedNav)
         } else {
             if let aps = userInfo["aps"] as? [AnyHashable: Any], let category = aps["category"] as? String,
-            let alert = aps["alert"] as? [AnyHashable: Any], let body = alert["body"] as? String , category == "imageProcessed" {
+            let alert = aps["alert"] as? [AnyHashable: Any], let body = alert["body"] as? String, category == "imageProcessed" {
 
             let alert = UIAlertController(title: NSLocalizedString(body, tableName: "Server", bundle: Bundle.main, value: "", comment: ""),
                                               message: NSLocalizedString("Would you like to view your image now?", comment: ""),
@@ -176,14 +174,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
      Method handles opening a facebook url for facebook login
 
      - parameter application:       UIApplication
-     - parameter url:               NSURL
+     - parameter url:               URL
      - parameter sourceApplication: String?
-     - parameter annotation:        AnyObject
+     - parameter annotation:        Any
 
      - returns: Bool
      */
-    func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
-        return FacebookAuthenticationManager.sharedInstance.onOpenURL(application, url: url, sourceApplication: sourceApplication, annotation: annotation as AnyObject)
+//    func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
+//        print("Appurl: \(url) and source: \(sourceApplication)   and annotation: \(annotation)")
+//        let val = FacebookAuthenticationManager.sharedInstance.onOpenURL(application, url: url, sourceApplication: sourceApplication, annotation: annotation)
+//        print("Result: \(val)")
+//        return val
+//    }
+
+    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+        print("opt: \(options)")
+        if let sourceApp = options[UIApplicationOpenURLOptionsKey.sourceApplication] as? String {//, let annotation = options[UIApplicationOpenURLOptionsKey.annotation] {
+            return FacebookAuthenticationManager.sharedInstance.onOpenURL(app, url: url, sourceApplication: sourceApp, annotation: "")
+        } else {
+            return false
+        }
     }
 
     func applicationWillTerminate(_ application: UIApplication) {

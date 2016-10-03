@@ -105,7 +105,7 @@ class FacebookDataManager: NSObject {
     /**
      Method authenticates user with facebook and returns the facebook user id and facebook user full name if authentication was a success, else it will return a FacebookAuthenticationError.
 
-     - parameter callback: ((facebookUserId : String?, facebookUserFullName : String?, error : FacebookAuthenticationError?) -> ())
+     - parameter callback: (facebookUserId : String?, facebookUserFullName : String?, error : FacebookAuthenticationError?) -> ()
      */
     fileprivate func authenticateFacebookUser(_ callback : @escaping (_ facebookUserId: String?, _ facebookUserFullName: String?, _ error: FacebookAuthenticationError?) -> ()) {
 
@@ -115,16 +115,9 @@ class FacebookDataManager: NSObject {
 
             //error
             if let errorObject = error {
-                //user canceled login
-                
-//                if errorObject.code == -1 {
-                    print(NSLocalizedString("Authenticate Facebook User Error: User Canceled login:", comment: "") + " \(errorObject.localizedDescription)")
-                    callback(nil, nil, FacebookAuthenticationError.userCanceledLogin)
-//                } else {
-//                    print(NSLocalizedString("Authenticate Facebook User Error: Error obtaining Authentication Header.", comment: "") + " \(errorObject.localizedDescription)")
-//                    //"Error obtaining Authentication Header.\nCheck Bundle Identifier and Bundle version string\n\n"
-//                    callback(nil, nil, FacebookAuthenticationError.authenticationHeaderNotFound)
-//                }
+                print(NSLocalizedString("Authenticate Facebook User Error: Error obtaining Authentication Header.", comment: "") + " \(errorObject.localizedDescription)")
+                //"Error obtaining Authentication Header.\nCheck Bundle Identifier and Bundle version string\n\n"
+                callback(nil, nil, FacebookAuthenticationError.authenticationHeaderNotFound)
             }
             //error is nil
             else {

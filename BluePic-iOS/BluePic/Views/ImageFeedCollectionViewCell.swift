@@ -84,7 +84,7 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
         self.setImageView(image.url, fileName: image.fileName)
 
         //set the captionLabel's text
-        var cap = image.caption ?? ""
+        var cap = image.caption
         if cap == CameraDataManager.SharedInstance.kEmptyCaptionPlaceHolder {
             cap = ""
         }
@@ -183,11 +183,10 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
      */
     fileprivate func setImageViewWithURLAndPlaceHolderImage(_ url: URL, placeHolderImage: UIImage) {
 
+        // Compiler complains if options parameter isn't present, related to objc to swift conversion
         imageView.sd_setImage(with: url, placeholderImage: placeHolderImage, options: [.delayPlaceholder]) { image, error, cacheType, url in
-            
-            if image != nil {
-                self.loadingView.isHidden = true
-            }
+
+            self.loadingView.isHidden = image != nil && error == nil
 
         }
     }
@@ -198,12 +197,10 @@ class ImageFeedCollectionViewCell: UICollectionViewCell {
      - parameter url: NSURL
      */
     fileprivate func setImageViewWithURL(_ url: URL) {
-        imageView.sd_setImage(with: url, completed: { result in
+        imageView.sd_setImage(with: url) { (image, error, cacheType, url) in
 
-            if result.0 != nil {
-                self.loadingView.isHidden = true
-            }
+            self.loadingView.isHidden = image != nil && error == nil
 
-        })
+        }
     }
 }

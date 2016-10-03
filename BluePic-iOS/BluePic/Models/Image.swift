@@ -99,11 +99,11 @@ struct Image: ImageDownload {
     fileprivate(set) var image: UIImage?
     fileprivate(set) var tags: [Tag]?
 
-    init?(_ dict: [String : AnyObject]) {
+    init?(_ dict: [String : Any]) {
 
         //Parse tags data
         var tagsArray = [Tag]()
-        if let tags = dict["tags"] as? [[String: AnyObject]] {
+        if let tags = dict["tags"] as? [[String: Any]] {
             for tag in tags {
                 if let label = tag["label"] as? String,
                     let confidence = tag["confidence"] as? CGFloat {
@@ -121,7 +121,7 @@ struct Image: ImageDownload {
             let fileName = dict["fileName"] as? String,
             let width = dict["width"] as? CGFloat,
             let height = dict["height"] as? CGFloat,
-            let user = dict["user"] as? [String : AnyObject],
+            let user = dict["user"] as? [String : Any],
             let usersName = user["name"] as? String,
             let usersId = user["_id"] as? String,
             let url = dict["url"] as? String,
@@ -136,14 +136,14 @@ struct Image: ImageDownload {
             self.url = url
 
             //Parse location data
-            if let location = dict["location"] as? [String : AnyObject],
+            if let location = dict["location"] as? [String : Any],
                 let name = location["name"] as? String,
                 let latitude = location["latitude"] as? CLLocationDegrees,
                 let longitude = location["longitude"] as? CLLocationDegrees {
 
                 //Parse weather object
                 var weatherObject: Weather?
-                if let weather = location["weather"] as? [String : AnyObject],
+                if let weather = location["weather"] as? [String : Any],
                     let temperature = weather["temperature"] as? Int,
                     let iconId = weather["iconId"] as? Int,
                     let description = weather["description"] as? String {

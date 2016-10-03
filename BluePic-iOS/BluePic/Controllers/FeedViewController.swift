@@ -281,7 +281,7 @@ class FeedViewController: UIViewController {
             self.topAlertConstraint.constant = 0
             UIView.animate(withDuration: 0.2, animations: {
                 self.view.layoutIfNeeded()
-            }) 
+            })
         }
     }
 
@@ -300,9 +300,9 @@ class FeedViewController: UIViewController {
     /**
      Method is caleld when the search icon in the top right corner is pressed
 
-     - parameter sender: AnyObject
+     - parameter sender: Any
      */
-    @IBAction func transitionToSearch(_ sender: AnyObject) {
+    @IBAction func transitionToSearch(_ sender: Any) {
         if let vc = Utils.vcWithNameFromStoryboardWithName("SearchViewController", storyboardName: "Feed") as? SearchViewController {
             self.navigationController?.pushViewController(vc, animated: true)
         }
@@ -311,11 +311,11 @@ class FeedViewController: UIViewController {
     /**
      Method pops the vc on the navigation stack when the back button is pressed when search results are shown
 
-     - parameter sender: AnyObject
+     - parameter sender: Any
      */
-    @IBAction func popVC(_ sender: AnyObject) {
+    @IBAction func popVC(_ sender: Any) {
         SVProgressHUD.dismiss()
-        self.navigationController?.popViewController(animated: true)
+        let _ = self.navigationController?.popViewController(animated: true)
     }
 }
 

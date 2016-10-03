@@ -81,7 +81,7 @@ class ProfileCollectionViewCell: UICollectionViewCell {
         setImageView(image.url, fileName: image.fileName)
 
         //label that displays the photos caption
-        var cap = image.caption ?? ""
+        var cap = image.caption
         if cap == CameraDataManager.SharedInstance.kEmptyCaptionPlaceHolder {
             cap = ""
         }
@@ -177,9 +177,7 @@ class ProfileCollectionViewCell: UICollectionViewCell {
 
         imageView.sd_setImage(with: url, placeholderImage: placeHolderImage, options: [.delayPlaceholder]) { image, error, cacheType, url in
 
-            if image != nil {
-                self.loadingView.isHidden = true
-            }
+            self.loadingView.isHidden = image != nil && error == nil
 
         }
     }
@@ -190,13 +188,11 @@ class ProfileCollectionViewCell: UICollectionViewCell {
      - parameter url: NSURL
      */
     fileprivate func setImageViewWithURL(_ url: URL) {
-        imageView.sd_setImage(with: url, completed: { result in
+        imageView.sd_setImage(with: url) { (image, error, cacheType, url) in
 
-            if result.0 != nil {
-                self.loadingView.isHidden = true
-            }
+            self.loadingView.isHidden = image != nil && error == nil
 
-        })
+        }
     }
 
 }

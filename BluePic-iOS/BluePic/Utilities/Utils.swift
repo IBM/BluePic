@@ -102,8 +102,7 @@ class Utils: NSObject {
     */
     class func vcWithNameFromStoryboardWithName(_ vcName: String, storyboardName: String) -> UIViewController? {
         let storyboard = storyboardBoardWithName(storyboardName)
-        let viewController: AnyObject = storyboard.instantiateViewController(withIdentifier: vcName)
-        return viewController as? UIViewController
+        return storyboard.instantiateViewController(withIdentifier: vcName)
     }
 
     /**
@@ -149,12 +148,12 @@ class Utils: NSObject {
 
      - parameter text: String
 
-     - returns: [String:AnyObject]?
+     - returns: [String : Any]?
      */
-    class func convertStringToDictionary(_ text: String) -> [String:AnyObject]? {
+    class func convertStringToDictionary(_ text: String) -> [String : Any]? {
         if let data = text.data(using: String.Encoding.utf8) {
             do {
-                let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String:AnyObject]
+                let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String : Any]
                 return json
             } catch {
                 print(NSLocalizedString("Convert String To Dictionary Error", comment: ""))
@@ -170,9 +169,9 @@ class Utils: NSObject {
 
      - parameter response: Response?
 
-     - returns: [String : AnyObject]
+     - returns: [String : Any]
      */
-    class func convertResponseToDictionary(_ response: Response?) -> [String : AnyObject]? {
+    class func convertResponseToDictionary(_ response: Response?) -> [String : Any]? {
 
         if let resp = response {
             if let responseText = resp.responseText {

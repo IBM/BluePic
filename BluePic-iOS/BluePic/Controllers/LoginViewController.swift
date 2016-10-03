@@ -87,7 +87,7 @@ class LoginViewController: UIViewController {
 
      - parameter sender: sign in later button
      */
-    @IBAction func signInLaterTapped(_ sender: AnyObject) {
+    @IBAction func signInLaterTapped(_ sender: Any) {
         viewModel.loginLater()
 
         dismiss(animated: true, completion: nil)
@@ -99,7 +99,7 @@ class LoginViewController: UIViewController {
 
      - parameter sender: button tapped
      */
-    @IBAction func loginTapped(_ sender: AnyObject) {
+    @IBAction func loginTapped(_ sender: Any) {
         startLoading()
         viewModel.authenticateWithFacebook()
 

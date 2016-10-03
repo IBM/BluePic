@@ -65,11 +65,11 @@ class ImageDetailViewController: UIViewController {
     /**
      Method is called when the back button is pressed
 
-     - parameter sender: AnyObject
+     - parameter sender: Any
      */
-    @IBAction func backButtonAction(_ sender: AnyObject) {
+    @IBAction func backButtonAction(_ sender: Any) {
 
-        self.navigationController?.popViewController(animated: true)
+        let _ = self.navigationController?.popViewController(animated: true)
 
     }
 

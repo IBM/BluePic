@@ -79,9 +79,9 @@ class ProfileHeaderCollectionReusableView: UICollectionReusableView {
     /**
      Method defines the action when the moreButton is pressed. It notifies the rest of the app with the ProfileHeaderCollectionReusableViewNotification.ShowSettingsActionSheet notification
 
-     - parameter sender: AnyObject
+     - parameter sender: Any
      */
-    @IBAction func moreButtonAction(_ sender: AnyObject) {
+    @IBAction func moreButtonAction(_ sender: Any) {
          NotificationCenter.default.post(name: Notification.Name(rawValue: ProfileHeaderCollectionReusableViewNotification.ShowSettingsActionSheet.rawValue), object: nil)
     }
 

@@ -274,7 +274,7 @@ extension FeedViewModel {
     func sizeForItemAtIndexPath(_ indexPath: IndexPath, collectionView: UICollectionView) -> CGSize {
 
         //Section 0 corresponds to showing ImagesCurrentlyUploadingImageFeedCollectionViewCell collection view cells. These cells show when there are images in the imagesCurrentlyUploading array of the BluemixDataManager
-        if (indexPath as NSIndexPath).section == 0 {
+        if indexPath.section == 0 {
             return CGSize(width: collectionView.frame.width, height: kPictureUploadCollectionViewCellHeight)
         }
             //section 1 corresponds to either the empty feed collection view cell or the standard image feed collection view cell depending on how many images are in the image data array
@@ -287,7 +287,7 @@ extension FeedViewModel {
                 //return size for image feed collection view cell
             else {
 
-                let image = imageDataArray[(indexPath as NSIndexPath).row]
+                let image = imageDataArray[indexPath.row]
 
                 let ratio = image.height / image.width
 
@@ -314,13 +314,13 @@ extension FeedViewModel {
     func setUpCollectionViewCell(_ indexPath: IndexPath, collectionView: UICollectionView) -> UICollectionViewCell {
 
         //Section 0 corresponds to showing ImagesCurrentlyUploadingImageFeedCollectionViewCell collection view cells. These cells show when there are images in the imagesCurrentlyUploading array of the BluemixDataManager
-        if (indexPath as NSIndexPath).section == 0 {
+        if indexPath.section == 0 {
 
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImagesCurrentlyUploadingImageFeedCollectionViewCell", for: indexPath) as? ImagesCurrentlyUploadingImageFeedCollectionViewCell else {
                 return UICollectionViewCell()
             }
 
-            let image = BluemixDataManager.SharedInstance.imagesCurrentlyUploading[(indexPath as NSIndexPath).row]
+            let image = BluemixDataManager.SharedInstance.imagesCurrentlyUploading[indexPath.row]
 
             cell.setupData(image.image, caption: image.caption)
 
@@ -344,7 +344,7 @@ extension FeedViewModel {
                     return UICollectionViewCell()
                 }
 
-                let image = imageDataArray[(indexPath as NSIndexPath).row]
+                let image = imageDataArray[indexPath.row]
                 cell.setupDataWith(image)
 
                 cell.layer.shouldRasterize = true
@@ -365,9 +365,9 @@ extension FeedViewModel {
      */
     func prepareImageDetailViewModelForSelectedCellAtIndexPath(_ indexPath: IndexPath) -> ImageDetailViewModel? {
 
-        if (imageDataArray.count - 1 ) >= (indexPath as NSIndexPath).row {
+        if (imageDataArray.count - 1 ) >= indexPath.row {
 
-            let viewModel = ImageDetailViewModel(image: imageDataArray[(indexPath as NSIndexPath).row])
+            let viewModel = ImageDetailViewModel(image: imageDataArray[indexPath.row])
 
             return viewModel
 

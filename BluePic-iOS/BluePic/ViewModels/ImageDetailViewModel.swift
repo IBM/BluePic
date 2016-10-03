@@ -48,8 +48,8 @@ class ImageDetailViewModel: NSObject {
     fileprivate func getTagForIndexPath(_ indexPath: IndexPath) -> String? {
 
         if let tags = image.tags {
-            if (tags.count - 1) >= (indexPath as NSIndexPath).row {
-                return tags[(indexPath as NSIndexPath).row].label
+            if (tags.count - 1) >= indexPath.row {
+                return tags[indexPath.row].label
             }
         }
 
@@ -125,7 +125,7 @@ extension ImageDetailViewModel {
             return UICollectionViewCell()
         }
 
-        cell.tagLabel.text = tags[(indexPath as NSIndexPath).item].label.uppercased()
+        cell.tagLabel.text = tags[indexPath.item].label.uppercased()
         return cell
 
     }
@@ -141,7 +141,7 @@ extension ImageDetailViewModel {
     func sizeForItemAtIndexPath(_ indexPath: IndexPath, collectionView: UICollectionView) -> CGSize {
 
         if let tags = image.tags {
-            let size = NSString(string: tags[(indexPath as NSIndexPath).item].label).size(attributes: nil)
+            let size = NSString(string: tags[indexPath.item].label).size(attributes: nil)
             return CGSize(width: size.width + kCellPadding, height: 30.0)
         }
         return CGSize.zero

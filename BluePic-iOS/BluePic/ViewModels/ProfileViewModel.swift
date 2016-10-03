@@ -137,7 +137,7 @@ extension ProfileViewModel {
         //there are images so show profile collection view
         else {
 
-            let picture = imageDataArray[(indexPath as NSIndexPath).row]
+            let picture = imageDataArray[indexPath.row]
 
             let ratio = picture.height / picture.width
 
@@ -176,7 +176,7 @@ extension ProfileViewModel {
                 return ProfileCollectionViewCell()
             }
 
-            let image = imageDataArray[(indexPath as NSIndexPath).row]
+            let image = imageDataArray[indexPath.row]
 
             cell.setupDataWith(image)
 
@@ -217,9 +217,9 @@ extension ProfileViewModel {
      */
     func prepareImageDetailViewModelForSelectedCellAtIndexPath(_ indexPath: IndexPath) -> ImageDetailViewModel? {
 
-        if (imageDataArray.count - 1 ) >= (indexPath as NSIndexPath).row {
+        if (imageDataArray.count - 1 ) >= indexPath.row {
 
-            let viewModel = ImageDetailViewModel(image: imageDataArray[(indexPath as NSIndexPath).row])
+            let viewModel = ImageDetailViewModel(image: imageDataArray[indexPath.row])
 
             return viewModel
         } else {

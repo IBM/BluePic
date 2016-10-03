@@ -100,11 +100,11 @@ class SearchViewController: UIViewController {
     /**
      Method called when the back button is pressed
 
-     - parameter sender: AnyObject
+     - parameter sender: Any
      */
-    @IBAction func popVC(_ sender: AnyObject) {
+    @IBAction func popVC(_ sender: Any) {
         searchField.resignFirstResponder()
-        self.navigationController?.popViewController(animated: true)
+        let _ = self.navigationController?.popViewController(animated: true)
     }
 
 }
@@ -165,7 +165,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
             return UICollectionViewCell()
         }
 
-        cell.tagLabel.text = popularTags[(indexPath as NSIndexPath).item]
+        cell.tagLabel.text = popularTags[indexPath.item]
         return cell
     }
 
@@ -179,7 +179,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
      - returns: CGSize
      */
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let size = NSString(string: popularTags[(indexPath as NSIndexPath).item]).size(attributes: nil)
+        let size = NSString(string: popularTags[indexPath.item]).size(attributes: nil)
         return CGSize(width: size.width + kCellPadding, height: 30.0)
     }
 
@@ -193,7 +193,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
         collectionView.deselectItem(at: indexPath, animated: true)
         // open feed of items with selected tag
         if let vc = Utils.vcWithNameFromStoryboardWithName("FeedViewController", storyboardName: "Feed") as? FeedViewController {
-            vc.searchQuery = popularTags[(indexPath as NSIndexPath).item]
+            vc.searchQuery = popularTags[indexPath.item]
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }
@@ -212,8 +212,7 @@ extension SearchViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
 
-        if let query = textField.text, let vc = Utils.vcWithNameFromStoryboardWithName("FeedViewController", storyboardName: "Feed") as? FeedViewController
-            , query.characters.count > 0 {
+        if let query = textField.text, let vc = Utils.vcWithNameFromStoryboardWithName("FeedViewController", storyboardName: "Feed") as? FeedViewController, query.characters.count > 0 {
 
             vc.searchQuery = query
 
@@ -236,7 +235,7 @@ extension SearchViewController: UITextFieldDelegate {
      - returns: Bool
      */
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if let text = textField.text , text.characters.count + string.characters.count <= 40 {
+        if let text = textField.text, text.characters.count + string.characters.count <= 40 {
             return true
         }
         return false

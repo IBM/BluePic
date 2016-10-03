@@ -118,7 +118,7 @@ class TabBarViewController: UITabBarController {
         }
     }
 
-    override var shouldAutomaticallyForwardAppearanceMethods : Bool {
+    override var shouldAutomaticallyForwardAppearanceMethods: Bool {
         return true
     }
 

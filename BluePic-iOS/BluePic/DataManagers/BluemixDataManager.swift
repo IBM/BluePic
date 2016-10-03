@@ -323,7 +323,7 @@ extension BluemixDataManager {
      - parameter request: Request
      - parameter result:  (images : [Image]?)-> ()
      */
-    func getImages(_ request: Request, result : @escaping (_ images: [Image]?)-> ()) {
+    func getImages(_ request: Request, result : @escaping (_ images: [Image]?) -> ()) {
 
         request.timeout = kDefaultTimeOut
 
@@ -353,16 +353,16 @@ extension BluemixDataManager {
         var images = [Image]()
 
         if let dict = Utils.convertResponseToDictionary(response),
-             let records = dict["records"] as? [[String:AnyObject]] {
+             let records = dict["records"] as? [[String: Any]] {
 
             for var record in records {
 
                 if let userId = userId, let usersName = usersName {
 
-                    var user = [String : String]()
+                    var user = [String: String]()
                     user["name"] = usersName
                     user["_id"] = userId
-                    record["user"] = user as AnyObject
+                    record["user"] = user
                 }
 
                 if let image = Image(record) {
@@ -620,8 +620,8 @@ extension BluemixDataManager {
      */
     fileprivate func addImageToImageTakenDuringAppSessionByIdDictionary(_ image: ImagePayload) {
 
-            let id = image.fileName + CurrentUser.facebookUserId
-            imagesTakenDuringAppSessionById[id] = image.image
+        let id = image.fileName + CurrentUser.facebookUserId
+        imagesTakenDuringAppSessionById[id] = image.image
 
     }
 }
@@ -643,7 +643,7 @@ extension BluemixDataManager {
             if let error = error {
                 print(NSLocalizedString("Get Popular Tags Error:", comment: "") + " \(error.localizedDescription)")
             } else {
-                if let text = response?.responseText, let result = Utils.convertStringToDictionary(text), let records = result["records"] as? [[String:AnyObject]] {
+                if let text = response?.responseText, let result = Utils.convertStringToDictionary(text), let records = result["records"] as? [[String: Any]] {
                     // Extract string tags from server results
                     self.tags = records.flatMap { value in
                         if let key = value["key"] as? String {
