@@ -182,11 +182,11 @@ If you don't have the iOS project already open, go to the `BluePic-iOS` director
 
 You can now build and run the iOS app in the simulator using the Xcode capabilities you are used to!
 
-### Running the iOS app on a device
+### Running the iOS app on a physical device
 
-For IBM developers, refer to the process in our [wiki](https://github.com/IBM-Swift/BluePic/wiki/Code-Signing-Configuration-for-Internal-Developers).
+For IBM developers, see our [Wiki](https://github.com/IBM-Swift/BluePic/wiki/Code-Signing-Configuration-for-Internal-Developers) for details on the steps to follow.
 
-For developers wanting to run the iOS app on a device, the easiest thing will be to change the bundle ID for BluePic to something unique (if you haven't already). Afterwards, check the box for `Automatically manage signing` located under the `General` tab for the BluePic app target. After checking the box, you need to ensure the team for your personal Apple Developer account is selected from the dropdown. Assuming you have the Apple Developer Program team role of Agent or Admin, either a provisioning profile will be created for the BluePic app or a wildcard profile will be used (if exists), allowing you to run on a device.
+The easiest method for running the iOS app on a physical device is to change the bundle ID for BluePic to a unique value (if you haven't already). Afterwards, check the box for `Automatically manage signing` located under the `General` tab for the BluePic app target (in Xcode). After checking that box, you need to ensure the team for your personal Apple Developer account is selected from the dropdown. Assuming you have the Apple Developer Program team role of `Agent` or `Admin`, either a provisioning profile will be created for the BluePic app or a wildcard profile will be used (if exists), allowing you to run on a device.
 
 Alternatively, you can manually configure code signing of the app by using a wildcard App ID to run the app on your device. If already created, simply select it in the provisioning profile dropdown in the `Signing (Debug)` section. If not created, you can create one through the Apple Developer Portal. This [link](https://developer.apple.com/library/content/qa/qa1713/_index.html) should be helpful in providing more info about wildcard App IDs.
 
