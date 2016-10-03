@@ -18,7 +18,7 @@ import UIKit
 
 class CurrentUser: NSObject {
 
-    /// Grab facebook user id of user from NsUserDefaults
+    /// Grab facebook user id of user from UserDefaults
     class var facebookUserId: String {
         get {
             if let userId = UserDefaults.standard.object(forKey: "facebook_user_id") as? String {
@@ -34,7 +34,7 @@ class CurrentUser: NSObject {
         }
     }
 
-    /// grab full name of user from NSUserDefaults
+    /// grab full name of user from UserDefaults
     class var fullName: String {
         get {
             if let full_name = UserDefaults.standard.object(forKey: "user_full_name") as? String {
@@ -64,7 +64,7 @@ class CurrentUser: NSObject {
         }
     }
 
-    /// Grab bool value representing if the user has chosen to login later or not from NSUSerDefaults
+    /// Grab bool value representing if the user has chosen to login later or not from USerDefaults
     class var willLoginLater: Bool {
         get {
             if let log_in_later = UserDefaults.standard.object(forKey: "log_in_later") as? Bool {

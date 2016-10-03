@@ -325,7 +325,7 @@ extension FeedViewController: UICollectionViewDataSource {
      Method sets up the cell for item at indexPath by asking the view model to set up the collection view cell
 
      - parameter collectionView: UICollectionView
-     - parameter indexPath:      NSIndexpath
+     - parameter indexPath:      Indexpath
 
      - returns: UICollectionViewCell
      */
@@ -365,7 +365,7 @@ extension FeedViewController: UICollectionViewDelegate {
      Method is called when a cell in the collection view is selected
 
      - parameter collectionView: UICollectionView
-     - parameter indexPath:      NSIndexPath
+     - parameter indexPath:      IndexPath
      */
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 
@@ -388,7 +388,7 @@ extension FeedViewController: UICollectionViewDelegateFlowLayout {
 
      - parameter collectionView:       UICollectionView
      - parameter collectionViewLayout: UICollectionViewLayout
-     - parameter indexPath:            NSIndexPath
+     - parameter indexPath:            IndexPath
 
      - returns: CGSize
      */

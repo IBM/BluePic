@@ -148,7 +148,7 @@ class ImageInfoHeaderCollectionReusableView: UICollectionReusableView {
     /**
      Method sets up the date label with data
 
-     - parameter timeStamp: NSDate?
+     - parameter timeStamp: Date?
      */
     fileprivate func setupDateLabelWithData(_ timeStamp: Date?) {
 
@@ -169,7 +169,7 @@ class ImageInfoHeaderCollectionReusableView: UICollectionReusableView {
     /**
      Method sets up the time label with data
 
-     - parameter timeStamp: NSDate?
+     - parameter timeStamp: Date?
      */
     fileprivate func setupTimeLabelWithData(_ timeStamp: Date?) {
 

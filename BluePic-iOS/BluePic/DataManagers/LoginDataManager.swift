@@ -42,7 +42,7 @@ class LoginDataManager: NSObject {
     }()
 
     /**
-     Method will login the user into BluePic. It will first check if the user is already authenticated by checking if there is a user saved in NSUserDefaulted by called the isUserAlreadyAuthenticated method. If the user isn't already authenticated then it will call the FacebookDataManager's loginWithFacebook method
+     Method will login the user into BluePic. It will first check if the user is already authenticated by checking if there is a user saved in UserDefaults by calling the isUserAlreadyAuthenticated method. If the user isn't already authenticated then it will call the FacebookDataManager's loginWithFacebook method
 
      - parameter callback: ((error : LoginDataManagerError?)->())
      */

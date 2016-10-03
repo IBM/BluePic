@@ -266,7 +266,7 @@ extension FeedViewModel {
     /**
      Method returns the size for item at index path
 
-     - parameter indexPath: NSIndexPath
+     - parameter indexPath: IndexPath
      - parameter collectionView: UICollectionViewcell
 
      - returns: CGSize
@@ -359,7 +359,7 @@ extension FeedViewModel {
     /**
      Method return an ImageDetailViewModel for the image at the indexPath parameter
 
-     - parameter indexPath: NSIndexPath
+     - parameter indexPath: IndexPath
 
      - returns: ImageDetailViewModel?
      */

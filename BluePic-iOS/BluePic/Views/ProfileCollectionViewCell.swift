@@ -152,7 +152,7 @@ class ProfileCollectionViewCell: UICollectionViewCell {
         //check if string is empty, if it is, then its not a valid url
         if urlString != "" {
 
-            //check if we can turn the string into a valid NSURL
+            //check if we can turn the string into a valid URL
             if let nsurl = URL(string: urlString) {
 
                 //if placeHolderImage parameter isn't nil, then set image with URL and use placeholder image
@@ -170,7 +170,7 @@ class ProfileCollectionViewCell: UICollectionViewCell {
     /**
      Method sets the imageView with a url to an image and uses a locally cached image
 
-     - parameter url:              NSURL
+     - parameter url:              URL
      - parameter placeHolderImage: UIImage
      */
     fileprivate func setImageViewWithURLAndPlaceHolderImage(_ url: URL, placeHolderImage: UIImage) {
@@ -185,7 +185,7 @@ class ProfileCollectionViewCell: UICollectionViewCell {
     /**
      Method sets the imageView with a url to an image using no placeholder
 
-     - parameter url: NSURL
+     - parameter url: URL
      */
     fileprivate func setImageViewWithURL(_ url: URL) {
         imageView.sd_setImage(with: url) { (image, error, cacheType, url) in

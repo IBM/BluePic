@@ -19,29 +19,29 @@ import Foundation
 extension Date {
 
     /**
-     Method returns a NSCalendar Unit
+     Method returns a Calendar Unit
 
-     - returns: NSCalendarUnit
+     - returns: CalendarUnit
      */
-    fileprivate static func componentFlags() -> NSCalendar.Unit {
-        return NSCalendar.Unit.year.union(.month).union(.day).union(.weekOfYear).union(.hour).union(.minute).union(.second).union(.weekday).union(.weekdayOrdinal)
+    fileprivate static func componentFlags() -> Set<Calendar.Component> {
+        return [.year, .month, .day, .weekOfYear, .hour, .minute, .second, .weekday, .weekdayOrdinal]
     }
 
     /**
-     Method returns the components of the NSCalendar
+     Method returns the components of the Calendar
 
-     - parameter fromDate: NSDate
+     - parameter fromDate: Date
 
-     - returns: NSDateComponents
+     - returns: DateComponents
      */
     fileprivate static func components(fromDate: Date) -> DateComponents {
-        return (Calendar.current as NSCalendar).components(Date.componentFlags(), from: fromDate)
+        return Calendar.current.dateComponents(Date.componentFlags(), from: fromDate)
     }
 
     /**
-     Method returns the NSDate components
+     Method returns the Date components
 
-     - returns: NSDateComponents
+     - returns: DateComponents
      */
     fileprivate func components() -> DateComponents {
         return Date.components(fromDate: self)
@@ -50,7 +50,7 @@ extension Date {
     /**
      Method takes in a time interval since reference date and converts it to the number of seconds, minutes, hours, or weeks since the photo was taken
 
-     - parameter timeInterval: NSTimeInterval
+     - parameter timeInterval: TimeInterval
 
      - returns: String
      */
@@ -65,84 +65,84 @@ extension Date {
     /**
      Method returns the number of years since the date parameter
 
-     - parameter date: NSDate
+     - parameter date: Date
 
      - returns: Int
      */
     fileprivate static func yearsFrom(_ date: Date) -> Int {
-        return (Calendar.current as NSCalendar).components(.year, from: date, to: Date(), options: []).year!
+        return Calendar.current.dateComponents([.year], from: date, to: Date()).year!
     }
 
     /**
      Method returns the number of months since the date parameter
 
-     - parameter date: NSDate
+     - parameter date: Date
 
      - returns: Int
      */
     fileprivate static func monthsFrom(_ date: Date) -> Int {
-        return (Calendar.current as NSCalendar).components(.month, from: date, to: Date(), options: []).month!
+        return Calendar.current.dateComponents([.month], from: date, to: Date()).month!
     }
 
     /**
      Method returns the number of weeks since the date parameter
 
-     - parameter date: NSDate
+     - parameter date: Date
 
      - returns: Int
      */
     fileprivate static func weeksFrom(_ date: Date) -> Int {
-        return (Calendar.current as NSCalendar).components(.weekOfYear, from: date, to: Date(), options: []).weekOfYear!
+        return Calendar.current.dateComponents([.weekOfYear], from: date, to: Date()).weekOfYear!
     }
 
     /**
      Method returns the number of days since the date parameter
 
-     - parameter date: NSDate
+     - parameter date: Date
 
      - returns: Int
      */
     fileprivate static func daysFrom(_ date: Date) -> Int {
-        return (Calendar.current as NSCalendar).components(.day, from: date, to: Date(), options: []).day!
+        return Calendar.current.dateComponents([.day], from: date, to: Date()).day!
     }
 
     /**
      Method returns the number of hours since the date parameter
 
-     - parameter date: NSDate
+     - parameter date: Date
 
      - returns: Int
      */
     fileprivate static func hoursFrom(_ date: Date) -> Int {
-        return (Calendar.current as NSCalendar).components(.hour, from: date, to: Date(), options: []).hour!
+        return Calendar.current.dateComponents([.hour], from: date, to: Date()).hour!
     }
 
     /**
      Method returns the number of minutes since the date parameter
 
-     - parameter date: NSDate
+     - parameter date: Date
 
      - returns: Int
      */
     fileprivate static func minutesFrom(_ date: Date) -> Int {
-        return (Calendar.current as NSCalendar).components(.minute, from: date, to: Date(), options: []).minute!
+        return Calendar.current.dateComponents([.minute], from: date, to: Date()).minute!
     }
 
     /**
      Method returns the number of seconds since the date parameter
 
-     - parameter date: NSDate
+     - parameter date: Date
 
      - returns: Int
      */
     fileprivate static func secondsFrom(_ date: Date) -> Int {
-        return (Calendar.current as NSCalendar).components(.second, from: date, to: Date(), options: []).second!
+        return Calendar.current.dateComponents([.second], from: date, to: Date()).second!
     }
 
     /**
      Method returns the time since the data parameter as a string
 
-     - parameter date: NSDate
+     - parameter date: Date
 
      - returns: String
      */

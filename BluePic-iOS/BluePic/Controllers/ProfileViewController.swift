@@ -190,7 +190,7 @@ extension ProfileViewController: UICollectionViewDataSource {
      Method sets up the cell for item at indexPath by asking the view model to set up the cell for item at indexPath
 
      - parameter collectionView: UICollectionView
-     - parameter indexPath:      NSIndexPath
+     - parameter indexPath:      IndexPath
 
      - returns: UICollectionViewCell
      */
@@ -250,7 +250,7 @@ extension ProfileViewController: UICollectionViewDelegateFlowLayout {
 
      - parameter collectionView:       UICollectionview
      - parameter collectionViewLayout: UICollectionviewLayout
-     - parameter indexPath:            NSIndexPath
+     - parameter indexPath:            IndexPath
 
      - returns: CGSize
      */
@@ -269,7 +269,7 @@ extension ProfileViewController : UIScrollViewDelegate {
      Method is called upon when a cell in the collection view is selected. It this case we segue to the image detail, first asking the view model to set up the view model of the image detail vc were about to segue to
 
      - parameter collectionView: UICollectionView
-     - parameter indexPath:      NSIndexPath
+     - parameter indexPath:      IndexPath
      */
     func collectionView(collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 

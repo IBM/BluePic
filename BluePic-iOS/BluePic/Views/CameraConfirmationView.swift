@@ -113,16 +113,16 @@ class CameraConfirmationView: UIView, UITextFieldDelegate {
      Method to add show and hide keyboard observers
      */
     func addKeyboardObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(CameraConfirmationView.keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(CameraConfirmationView.keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(CameraConfirmationView.keyboardWillShow(_:)), name: Notification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(CameraConfirmationView.keyboardWillHide(_:)), name: Notification.Name.UIKeyboardWillHide, object: nil)
     }
 
     /**
      Method to remove show and hide keyboard observers
      */
     func removeKeyboardObservers() {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.removeObserver(self, name: Notification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: Notification.Name.UIKeyboardWillHide, object: nil)
     }
 
     /**
@@ -133,7 +133,7 @@ class CameraConfirmationView: UIView, UITextFieldDelegate {
      */
     func adjustingHeight(_ show: Bool, notification: Notification) {
         // 1
-        if let userInfo = (notification as NSNotification).userInfo,
+        if let userInfo = notification.userInfo,
             let keyboardFrameValue = userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue,
             let animationDuration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as? TimeInterval {
         // 2

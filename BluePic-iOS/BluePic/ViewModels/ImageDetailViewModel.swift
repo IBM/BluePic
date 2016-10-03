@@ -41,7 +41,7 @@ class ImageDetailViewModel: NSObject {
     /**
      Method returns the tag for indexPath
 
-     - parameter indexPath: NSIndexPath
+     - parameter indexPath: IndexPath
 
      - returns: String?
      */
@@ -95,7 +95,7 @@ extension ImageDetailViewModel {
     /**
      Method sets up the header view with image data for index path, specifically the ImageInfoHeaderCollectionReusableView
 
-     - parameter indexPath:      NSIndexPath
+     - parameter indexPath:      IndexPath
      - parameter kind:           String
      - parameter collectionView: UICollectionView
 
@@ -114,7 +114,7 @@ extension ImageDetailViewModel {
     /**
      Method sets up the collection view cell with tag data for indexPath, specifically the TagCollectionViewCell
 
-     - parameter indexPath:      NSIndexPath
+     - parameter indexPath:      IndexPath
      - parameter collectionView: UICollectionView
 
      - returns: UICollectionViewCell
@@ -133,7 +133,7 @@ extension ImageDetailViewModel {
     /**
      Method returns the size for item at indexPath
 
-     - parameter indexPath:      NSIndexPath
+     - parameter indexPath:      IndexPath
      - parameter collectionView: UICollectionVIew
 
      - returns: CGSize
@@ -180,7 +180,7 @@ extension ImageDetailViewModel {
     /**
      Method gets the tagString for indexPath, and then sets up a new instance of the feed view controller with this tag as its search query
 
-     - parameter indexPath: NSIndexPath
+     - parameter indexPath: IndexPath
 
      - returns: FeedViewController?
      */

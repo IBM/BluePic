@@ -176,7 +176,7 @@ extension ImageDetailViewController : UICollectionViewDataSource {
 
      - parameter collectionView: UICollectionView
      - parameter kind:           String
-     - parameter indexPath:      NSIndexPath
+     - parameter indexPath:      IndexPath
 
      - returns: UICollectionReusableView
      */
@@ -192,7 +192,7 @@ extension ImageDetailViewController : UICollectionViewDataSource {
      Method asks the viewModel to set up the collection view for indexPath
 
      - parameter collectionView: UICollectionView
-     - parameter indexPath:      NSIndexPath
+     - parameter indexPath:      IndexPath
 
      - returns: UICollectionViewCell
      */
@@ -209,7 +209,7 @@ extension ImageDetailViewController: UICollectionViewDelegateFlowLayout {
 
      - parameter collectionView:       UICollectionView
      - parameter collectionViewLayout: UICollectionViewLayout
-     - parameter indexPath:            NSIndexPath
+     - parameter indexPath:            IndexPath
 
      - returns: CGSize
      */
@@ -240,7 +240,7 @@ extension ImageDetailViewController : UICollectionViewDelegate {
      Method is called when a cell in the collection view is selected
 
      - parameter collectionView: UICollectionView
-     - parameter indexPath:      NSIndexPath
+     - parameter indexPath:      IndexPath
      */
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if let vc = viewModel.getFeedViewControllerForTagSearchAtIndexPath(indexPath) {

@@ -121,7 +121,7 @@ extension ProfileViewModel {
     /**
      Method returns the size for item at indexPath
 
-     - parameter indexPath:                               NSIndexPath
+     - parameter indexPath:                               IndexPath
      - parameter collectionView:                          UICollectionView
      - parameter heightForEmptyProfileCollectionViewCell: CGFloat
 
@@ -155,7 +155,7 @@ extension ProfileViewModel {
     /**
      Method sets up the collection view cell for indexPath. If the imageDataArray.count is equal to 0 then we return an instance EmptyfeedCollectionviewCell
 
-     - parameter indexPath:      NSIndexPath
+     - parameter indexPath:      IndexPath
      - parameter collectionView: UICollectionViewCell
 
      - returns: UICollectionViewCell
@@ -191,7 +191,7 @@ extension ProfileViewModel {
     /**
      Method sets up the section header for the indexPath parameter
 
-     - parameter indexPath:      NSIndexPath
+     - parameter indexPath:      IndexPath
      - parameter kind:           String
      - parameter collectionView: UICollectionView
 
@@ -211,7 +211,7 @@ extension ProfileViewModel {
     /**
      Method return an ImageDetailViewModel for the image at the indexPath parameter
 
-     - parameter indexPath: NSIndexPath
+     - parameter indexPath: IndexPath
 
      - returns: ImageDetailViewModel?
      */

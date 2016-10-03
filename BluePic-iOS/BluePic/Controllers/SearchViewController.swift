@@ -44,7 +44,7 @@ class SearchViewController: UIViewController {
         super.viewDidLoad()
 
         setupPopularTags()
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: Notification.Name.UIKeyboardWillShow, object: nil)
         initializeDataRetrieval()
     }
 
@@ -86,10 +86,10 @@ class SearchViewController: UIViewController {
     /**
      Method to make sure keyboard doesn't hide parts of the collectionView
 
-     - parameter n: NSNotification
+     - parameter n: Notification
      */
     func keyboardWillShow(_ n: Notification) {
-        let userInfo = (n as NSNotification).userInfo
+        let userInfo = n.userInfo
 
         if let info = userInfo, let keyboardRect = info[UIKeyboardFrameEndUserInfoKey] as? NSValue {
             let rectValue = keyboardRect.cgRectValue
@@ -156,7 +156,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
      Method sets up the cell for item at indexPath
 
      - parameter collectionView: UICollectionView
-     - parameter indexPath:      NSIndexPath
+     - parameter indexPath:      IndexPath
 
      - returns: UICollectionViewCell
      */
@@ -174,7 +174,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
 
      - parameter collectionView:       UICollectionVIew
      - parameter collectionViewLayout: UICollectionViewLayout
-     - parameter indexPath:            NSIndexPath
+     - parameter indexPath:            IndexPath
 
      - returns: CGSize
      */
@@ -187,7 +187,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
      Method is called when a cell in the collection view is selected. In this case we segue to the feed vc with search results for that tag
 
      - parameter collectionView: UICollectionView
-     - parameter indexPath:      NSIndexPath
+     - parameter indexPath:      IndexPath
      */
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
