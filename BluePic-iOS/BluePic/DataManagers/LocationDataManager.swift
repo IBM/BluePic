@@ -258,7 +258,7 @@ extension LocationDataManager : CLLocationManagerDelegate {
      Method is called after the locationManager requests location and the locationManager failed at getting the user's location. It will return that there was an error by calling the getUsersCurrentLocationCallback
 
      - parameter manager: CLLocationManager
-     - parameter error:   NSError
+     - parameter error:   Error
      */
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print(NSLocalizedString("Get User's Current Location Error:", comment: "") + " \(error.localizedDescription)")

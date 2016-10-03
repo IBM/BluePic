@@ -16,9 +16,9 @@
 
 import UIKit
 
-enum ProfileHeaderCollectionReusableViewNotification: String {
+extension Notification.Name {
 
-    case ShowSettingsActionSheet = "ShowSettingsActionSheet"
+    static let showSettingsActionSheet = Notification.Name("ShowSettingsActionSheet")
 
 }
 
@@ -82,7 +82,7 @@ class ProfileHeaderCollectionReusableView: UICollectionReusableView {
      - parameter sender: Any
      */
     @IBAction func moreButtonAction(_ sender: Any) {
-         NotificationCenter.default.post(name: Notification.Name(rawValue: ProfileHeaderCollectionReusableViewNotification.ShowSettingsActionSheet.rawValue), object: nil)
+         NotificationCenter.default.post(name: .showSettingsActionSheet, object: nil)
     }
 
 }

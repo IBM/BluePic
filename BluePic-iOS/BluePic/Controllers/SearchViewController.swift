@@ -119,7 +119,7 @@ extension SearchViewController {
      */
     func initializeDataRetrieval() {
 
-        NotificationCenter.default.addObserver(self, selector: #selector(updateWithTagData), name: NSNotification.Name(rawValue: BluemixDataManagerNotification.PopularTagsReceived.rawValue), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateWithTagData), name: .popularTagsReceived, object: nil)
 
         BluemixDataManager.SharedInstance.getPopularTags()
     }

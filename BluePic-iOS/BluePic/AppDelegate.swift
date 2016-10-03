@@ -23,7 +23,7 @@ import BMSPush
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    
+
     /// Method called when app finishes up launching. In this case we initialize Bluemix Mobile Client Access with Facebook
     ///
     /// - parameter application:   UIApplication

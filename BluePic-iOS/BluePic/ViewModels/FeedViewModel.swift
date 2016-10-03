@@ -99,24 +99,24 @@ class FeedViewModel: NSObject {
      */
     func suscribeToBluemixDataManagerNotifications() {
 
-        NotificationCenter.default.addObserver(self, selector: #selector(FeedViewModel.updateImageDataArrayAndNotifyViewControllerToReloadCollectionView), name: NSNotification.Name(rawValue: BluemixDataManagerNotification.ImagesRefreshed.rawValue), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(FeedViewModel.updateImageDataArrayAndNotifyViewControllerToReloadCollectionView), name: .imagesRefreshed, object: nil)
 
-        NotificationCenter.default.addObserver(self, selector: #selector(FeedViewModel.repullForNewData), name: NSNotification.Name(rawValue: BluemixDataManagerNotification.ImageUploadSuccess.rawValue), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(FeedViewModel.repullForNewData), name: .imageUploadSuccess, object: nil)
 
-        NotificationCenter.default.addObserver(self, selector: #selector(FeedViewModel.notifyViewControllerToTriggerLoadingAnimation), name: NSNotification.Name(rawValue: BluemixDataManagerNotification.ImageUploadBegan.rawValue), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(FeedViewModel.notifyViewControllerToTriggerLoadingAnimation), name: .imageUploadBegan, object: nil)
 
-        NotificationCenter.default.addObserver(self, selector: #selector(FeedViewModel.handleImageUploadFailure), name: NSNotification.Name(rawValue: BluemixDataManagerNotification.ImageUploadFailure.rawValue), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(FeedViewModel.handleImageUploadFailure), name: .imageUploadFailure, object: nil)
 
-        NotificationCenter.default.addObserver(self, selector: #selector(FeedViewModel.notifyViewControllerGetImagesServerError), name: NSNotification.Name(rawValue: BluemixDataManagerNotification.GetAllImagesFailure.rawValue), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(FeedViewModel.notifyViewControllerGetImagesServerError), name: .getAllImagesFailure, object: nil)
 
     }
 
     func unsubscribeFromBluemixDataManagerNotifications() {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: BluemixDataManagerNotification.ImagesRefreshed.rawValue), object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: BluemixDataManagerNotification.ImageUploadSuccess.rawValue), object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: BluemixDataManagerNotification.ImageUploadBegan.rawValue), object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: BluemixDataManagerNotification.ImageUploadFailure.rawValue), object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: BluemixDataManagerNotification.GetAllImagesFailure.rawValue), object: nil)
+        NotificationCenter.default.removeObserver(self, name: .imagesRefreshed, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .imageUploadSuccess, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .imageUploadBegan, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .imageUploadFailure, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .getAllImagesFailure, object: nil)
     }
 
     /**

@@ -62,7 +62,7 @@ class ProfileViewModel: NSObject {
      */
     func suscribeToBluemixDataManagerNotifications() {
 
-         NotificationCenter.default.addObserver(self, selector: #selector(ProfileViewModel.updateImageArrayAndNotifyViewControllerToReloadCollectionView), name: NSNotification.Name(rawValue: BluemixDataManagerNotification.ImagesRefreshed.rawValue), object: nil)
+         NotificationCenter.default.addObserver(self, selector: #selector(ProfileViewModel.updateImageArrayAndNotifyViewControllerToReloadCollectionView), name: .imagesRefreshed, object: nil)
 
     }
 

@@ -53,11 +53,11 @@ class TabBarViewModel: NSObject {
      */
     func suscribeToBluemixDataManagerNotifications() {
 
-        NotificationCenter.default.addObserver(self, selector: #selector(TabBarViewModel.notifyTabBarVCToSwitchToFeedTab), name: NSNotification.Name(rawValue: BluemixDataManagerNotification.ImageUploadBegan.rawValue), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(TabBarViewModel.notifyTabBarVCToSwitchToFeedTab), name: .imageUploadBegan, object: nil)
 
-        NotificationCenter.default.addObserver(self, selector: #selector(TabBarViewModel.notifyTabbarVCToShowImageUploadFailureAlert), name: NSNotification.Name(rawValue: BluemixDataManagerNotification.ImageUploadFailure.rawValue), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(TabBarViewModel.notifyTabbarVCToShowImageUploadFailureAlert), name: .imageUploadFailure, object: nil)
 
-        NotificationCenter.default.addObserver(self, selector: #selector(TabBarViewModel.notifyTabBarVcToShowSettingsActionSheet), name: NSNotification.Name(rawValue: ProfileHeaderCollectionReusableViewNotification.ShowSettingsActionSheet.rawValue), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(TabBarViewModel.notifyTabBarVcToShowSettingsActionSheet), name: .showSettingsActionSheet, object: nil)
 
     }
 

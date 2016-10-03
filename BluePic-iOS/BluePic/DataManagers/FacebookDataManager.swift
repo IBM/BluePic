@@ -73,27 +73,27 @@ class FacebookDataManager: NSObject {
      */
     fileprivate func isFacebookConfigured() -> Bool {
 
-        guard let facebookAppID = Bundle.main.object(forInfoDictionaryKey: "FacebookAppID") as? NSString,
-            let facebookDisplayName = Bundle.main.object(forInfoDictionaryKey: "FacebookDisplayName") as? NSString,
-            let urlTypes = Bundle.main.object(forInfoDictionaryKey: "CFBundleURLTypes") as? NSArray,
-            let firstUrlType = urlTypes.firstObject as? NSDictionary,
-            let urlSchemes = firstUrlType["CFBundleURLSchemes"] as? NSArray,
-            let facebookURLScheme = urlSchemes.firstObject as? NSString else {
+        guard let facebookAppID = Bundle.main.object(forInfoDictionaryKey: "FacebookAppID") as? String,
+            let facebookDisplayName = Bundle.main.object(forInfoDictionaryKey: "FacebookDisplayName") as? String,
+            let urlTypes = Bundle.main.object(forInfoDictionaryKey: "CFBundleURLTypes") as? [Any],
+            let firstUrlType = urlTypes.first as? [String : Any],
+            let urlSchemes = firstUrlType["CFBundleURLSchemes"] as? [String],
+            let facebookURLScheme = urlSchemes.first else {
 
             print(NSLocalizedString("Is Facebook Congigured Error: Authentication is not configured in Info.plist. You have to configure Info.plist with the same Authentication method configured on Bluemix such as Facebook", comment: ""))
             return false
         }
 
-        if facebookAppID.isEqual(to: "") || facebookAppID == "123456789" {
+        if facebookAppID == "" || facebookAppID == "123456789" {
             print(NSLocalizedString("Is Facebook Congigured Error: Authentication is not configured in Info.plist. You have to configure Info.plist with the same Authentication method configured on Bluemix such as Facebook", comment: ""))
             return false
         }
-        if facebookDisplayName.isEqual(to: "") {
+        if facebookDisplayName == "" {
             print(NSLocalizedString("Is Facebook Congigured Error: Authentication is not configured in Info.plist. You have to configure Info.plist with the same Authentication method configured on Bluemix such as Facebook", comment: ""))
             return false
         }
 
-        if facebookURLScheme.isEqual(to: "") || facebookURLScheme.isEqual(to: "fb123456789") || !(facebookURLScheme.hasPrefix("fb")) {
+        if facebookURLScheme == "" || facebookURLScheme == "fb123456789" || !(facebookURLScheme.hasPrefix("fb")) {
             print(NSLocalizedString("Is Facebook Congigured Error: Authentication is not configured in Info.plist. You have to configure Info.plist with the same Authentication method configured on Bluemix such as Facebook", comment: ""))
             return false
         }
