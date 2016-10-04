@@ -69,7 +69,8 @@ open class FacebookAuthenticationManager: NSObject, AuthenticationDelegate {
         }
 
         //Facebook showing popup so it need to run on main thread
-        DispatchQueue.main.async(execute: {
+        DispatchQueue.main.async {
+
             self.login.logIn(withReadPermissions: ["public_profile"], from: nil) { result, error in
                 guard error == nil, let result = result else {
                     authContext.submitAuthenticationFailure(["Error": error as AnyObject])
@@ -79,11 +80,12 @@ open class FacebookAuthenticationManager: NSObject, AuthenticationDelegate {
                 if result.isCancelled {
                     authContext.submitAuthenticationFailure(["Error": FacebookAuthenticationError.userCanceledLogin as AnyObject])
                 } else {
-                    let accessToken = FBSDKAccessToken.current().tokenString
-                    authContext.submitAuthenticationChallengeAnswer([FacebookAuthenticationManager.ACCESS_TOKEN_KEY: accessToken as AnyObject])
+                    if let accessToken = FBSDKAccessToken.current().tokenString {
+                        authContext.submitAuthenticationChallengeAnswer([FacebookAuthenticationManager.ACCESS_TOKEN_KEY: accessToken as AnyObject])
+                    }
                 }
             }
-        })
+        }
     }
 
     // MARK: Protocol implemantion

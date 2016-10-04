@@ -170,26 +170,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UIApplication.shared.applicationIconBadgeNumber = 0
     }
 
-    /**
-     Method handles opening a facebook url for facebook login
-
-     - parameter application:       UIApplication
-     - parameter url:               URL
-     - parameter sourceApplication: String?
-     - parameter annotation:        Any
-
-     - returns: Bool
-     */
-//    func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
-//        print("Appurl: \(url) and source: \(sourceApplication)   and annotation: \(annotation)")
-//        let val = FacebookAuthenticationManager.sharedInstance.onOpenURL(application, url: url, sourceApplication: sourceApplication, annotation: annotation)
-//        print("Result: \(val)")
-//        return val
-//    }
-
+    /// Method handles opening a facebook url for facebook login
+    ///
+    /// - parameter app:     UIApplication
+    /// - parameter url:     URL
+    /// - parameter options: options dictionary containing UIApplicationOpenURLOptions
+    ///
+    /// - returns: Bool
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
-        print("opt: \(options)")
-        if let sourceApp = options[UIApplicationOpenURLOptionsKey.sourceApplication] as? String {//, let annotation = options[UIApplicationOpenURLOptionsKey.annotation] {
+
+        if let sourceApp = options[UIApplicationOpenURLOptionsKey.sourceApplication] as? String {
             return FacebookAuthenticationManager.sharedInstance.onOpenURL(app, url: url, sourceApplication: sourceApp, annotation: "")
         } else {
             return false
