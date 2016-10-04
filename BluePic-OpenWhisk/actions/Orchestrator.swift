@@ -11,7 +11,7 @@ func main(args: [String:Any]) -> [String:Any] {
 
     var error:String = "";
     var returnValue:String = "";
-    let imageId: String? = String(args["imageId"]!)
+    let imageId: String? = String(describing: args["imageId"]!)
     let targetNamespace: String? = args["targetNamespace"] as? String
 
     let cloudantReadInvocation = Whisk.invoke(actionNamed: "/\(targetNamespace!)/bluepic/cloudantRead", withParameters: ["cloudantId": imageId!])
@@ -19,7 +19,7 @@ func main(args: [String:Any]) -> [String:Any] {
     let payload = response["result"] as! [String:Any]
     let documentString:String = payload["document"] as! String
 
-    let documentData = documentString.data(using: NSUTF8StringEncoding, allowLossyConversion: true)!
+    let documentData = documentString.data(using: String.Encoding.utf8, allowLossyConversion: true)!
     var document = JSON(data: documentData)
 
     // check if document was read from cloudant successfully
@@ -44,7 +44,7 @@ func main(args: [String:Any]) -> [String:Any] {
         let weatherResponse = weatherInvocation["response"] as! [String:Any]
         let weatherPayload = weatherResponse["result"] as! [String:Any]
         let weatherString:String = weatherPayload["weather"] as! String
-        let weatherData = weatherString.data(using: NSUTF8StringEncoding, allowLossyConversion: true)!
+        let weatherData = weatherString.data(using: String.Encoding.utf8, allowLossyConversion: true)!
         let weather = JSON(data: weatherData)
 
         // if the weather data exists without error, add it to the cloudant document, otherwise don't add it
@@ -61,7 +61,7 @@ func main(args: [String:Any]) -> [String:Any] {
         let alchemyResponse = alchemyInvocation["response"] as! [String:Any]
         let alchemyPayload = alchemyResponse["result"] as! [String:Any]
         let alchemyString:String = alchemyPayload["alchemy"] as! String
-        let alchemyData = alchemyString.data(using: NSUTF8StringEncoding, allowLossyConversion: true)!
+        let alchemyData = alchemyString.data(using: String.Encoding.utf8, allowLossyConversion: true)!
         let alchemy = JSON(data: alchemyData)
         document["tags"] = alchemy
         
@@ -73,7 +73,7 @@ func main(args: [String:Any]) -> [String:Any] {
         let writeResponse = cloudantWriteInvocation["response"] as! [String:Any]
         let writePayload = writeResponse["result"] as! [String:Any]
         let writeResultString:String = writePayload["cloudantResult"] as! String
-        let writeData = writeResultString.data(using: NSUTF8StringEncoding, allowLossyConversion: true)!
+        let writeData = writeResultString.data(using: String.Encoding.utf8, allowLossyConversion: true)!
         let writeJSON = JSON(data: writeData)
 
         if (writeJSON.exists() && !writeJSON["error"].exists()) {

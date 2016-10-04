@@ -18,8 +18,8 @@ func main(args:[String:Any]) -> [String:Any] {
     //first get MCA auth token
     let baseStr = "\(mcaClientId!):\(mcaSecret!)"
    
-    let utf8BaseStr = baseStr.data(using: NSUTF8StringEncoding)
-    guard let authHeader = utf8BaseStr?.base64EncodedString(NSDataBase64EncodingOptions(rawValue: 0)) else {
+    let utf8BaseStr = baseStr.data(using: String.Encoding.utf8)
+    guard let authHeader = utf8BaseStr?.base64EncodedString(options: Data.Base64EncodingOptions(rawValue: 0)) else {
         print("Could not generate authHeader...")
         return [
             "response": "Could not generate authHeader..."
@@ -49,7 +49,7 @@ func main(args:[String:Any]) -> [String:Any] {
 
     // Make REST call
     let req = HTTP.request(requestOptions) { resp in
-        if let resp = resp where resp.statusCode == HTTPStatusCode.OK {
+        if let resp = resp, resp.statusCode == HTTPStatusCode.OK {
             do {
                 str = try resp.readString()!
                 
