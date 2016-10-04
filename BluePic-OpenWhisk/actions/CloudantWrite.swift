@@ -31,7 +31,7 @@ func main(args: [String:Any]) -> [String:Any] {
     
     var str = "" 
     if let body = cloudantBody {
-        let requestData:NSData? = body.data(using: NSUTF8StringEncoding, allowLossyConversion: true)
+        let requestData:Data? = body.data(using: String.Encoding.utf8, allowLossyConversion: true)
         
         if let data = requestData {
             

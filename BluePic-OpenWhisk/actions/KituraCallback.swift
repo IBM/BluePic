@@ -10,12 +10,12 @@ import SwiftyJSON
 func main(args:[String:Any]) -> [String:Any] {
        
        
-    let cloudantId: String? = String(args["cloudantId"]!)
+    let cloudantId: String? = String(describing: args["cloudantId"]!)
     let kituraHost: String? = args["kituraHost"] as? String
     let kituraPortInt:Int? = args["kituraPort"] as? Int
     let kituraPort:Int16 = Int16(kituraPortInt!)
     let kituraSchema: String? = args["kituraSchema"] as? String
-    let authHeader: String? = String(args["authHeader"]!)
+    let authHeader: String? = String(describing: args["authHeader"]!)
     
     var str = "" 
     
