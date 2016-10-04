@@ -38,7 +38,6 @@
 		1B6132161C270DD300B57231 /* ImagesCurrentlyUploadingImageFeedCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B6132141C270DD300B57231 /* ImagesCurrentlyUploadingImageFeedCollectionViewCell.swift */; };
 		1B9199231CC6EB1B005CC4AC /* FacebookAuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9199221CC6EB1B005CC4AC /* FacebookAuthenticationManager.swift */; };
 		1BC7AF5C1C0E39F100DDFD02 /* FeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC7AF5B1C0E39F100DDFD02 /* FeedViewModel.swift */; };
-		1BC7AF5F1C0E480800DDFD02 /* ImageFeedCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC7AF5D1C0E480800DDFD02 /* ImageFeedCollectionViewCell.swift */; };
 		1BC7AF601C0E480800DDFD02 /* ImageFeedCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1BC7AF5E1C0E480800DDFD02 /* ImageFeedCollectionViewCell.xib */; };
 		1BF00D0A1CEACF68009472B5 /* ProfileNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BF00D091CEACF68009472B5 /* ProfileNavigationController.swift */; };
 		1BF00D0C1CEAD27E009472B5 /* FeedNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BF00D0B1CEAD27E009472B5 /* FeedNavigationController.swift */; };
@@ -131,7 +130,6 @@
 		1B6132141C270DD300B57231 /* ImagesCurrentlyUploadingImageFeedCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagesCurrentlyUploadingImageFeedCollectionViewCell.swift; sourceTree = "<group>"; };
 		1B9199221CC6EB1B005CC4AC /* FacebookAuthenticationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookAuthenticationManager.swift; sourceTree = "<group>"; };
 		1BC7AF5B1C0E39F100DDFD02 /* FeedViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedViewModel.swift; sourceTree = "<group>"; };
-		1BC7AF5D1C0E480800DDFD02 /* ImageFeedCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageFeedCollectionViewCell.swift; sourceTree = "<group>"; };
 		1BC7AF5E1C0E480800DDFD02 /* ImageFeedCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageFeedCollectionViewCell.xib; sourceTree = "<group>"; };
 		1BF00D091CEACF68009472B5 /* ProfileNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileNavigationController.swift; sourceTree = "<group>"; };
 		1BF00D0B1CEAD27E009472B5 /* FeedNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedNavigationController.swift; sourceTree = "<group>"; };
@@ -376,7 +374,6 @@
 				1B0432E41C17E967007643B1 /* ProfileCollectionViewCell.xib */,
 				1BF00D821CF4D58A009472B5 /* CameraConfirmationView.xib */,
 				346F94811C0F9225004999A8 /* CameraConfirmationView.swift */,
-				1BC7AF5D1C0E480800DDFD02 /* ImageFeedCollectionViewCell.swift */,
 				1BC7AF5E1C0E480800DDFD02 /* ImageFeedCollectionViewCell.xib */,
 				1B057E071C17C03400AC21EE /* ProfileHeaderCollectionReusableView.swift */,
 				1B057E081C17C03400AC21EE /* ProfileHeaderCollectionReusableView.xib */,
@@ -623,7 +620,6 @@
 				2EAAC0E81CE39C13006A0B41 /* KTCenterFlowLayout.m in Sources */,
 				1BF00D0A1CEACF68009472B5 /* ProfileNavigationController.swift in Sources */,
 				1B40BF841CE3989C0097F435 /* User.swift in Sources */,
-				1BC7AF5F1C0E480800DDFD02 /* ImageFeedCollectionViewCell.swift in Sources */,
 				347472EF1BFA8DEF0018B7F6 /* Utils.swift in Sources */,
 				346F947C1C0F868C004999A8 /* CameraDataManager.swift in Sources */,
 				1BF00D121CEF7939009472B5 /* ImageDetailViewModel.swift in Sources */,
