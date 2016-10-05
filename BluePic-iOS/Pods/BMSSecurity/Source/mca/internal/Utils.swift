@@ -221,11 +221,11 @@ public class Utils {
             
             i+=1
             
-            if count == intLengthFixed {
+            if count == intLengthFixed - 1 {
                 break
             }
-            current = objPointer[objPointer.characters.index(objPointer.startIndex, offsetBy: count)]
             count+=1
+            current = objPointer[objPointer.characters.index(objPointer.startIndex, offsetBy: count)]
         }
         
         // mop things up if we ended on a boundary

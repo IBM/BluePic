@@ -244,7 +244,7 @@ internal class AuthorizationProcessManager {
     private func getUserIdentityFromToken(_ idToken:String) -> [String:AnyObject]?
     {
         do {
-            if let decodedIdTokenData = Utils.decodeBase64WithString(idToken.components(separatedBy: ".")[1]), let _ = NSString(data: decodedIdTokenData, encoding: String.Encoding.utf8.rawValue), let decodedIdTokenString = String(data: decodedIdTokenData, encoding: String.Encoding.utf8), let userIdentity = try Utils.parseJsonStringtoDictionary(decodedIdTokenString)[caseInsensitive : BMSSecurityConstants.JSON_IMF_USER_KEY] as? [String:AnyObject] {
+            if let decodedIdTokenData = Utils.decodeBase64WithString(idToken.components(separatedBy: ".")[1]), let _ = String(data: decodedIdTokenData, encoding: String.Encoding.utf8), let decodedIdTokenString = String(data: decodedIdTokenData, encoding: String.Encoding.utf8), let userIdentity = try Utils.parseJsonStringtoDictionary(decodedIdTokenString)[caseInsensitive : BMSSecurityConstants.JSON_IMF_USER_KEY] as? [String:AnyObject] {
                 return userIdentity
             }
         } catch {

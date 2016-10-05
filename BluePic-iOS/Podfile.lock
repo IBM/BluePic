@@ -7,7 +7,7 @@ PODS:
     - FBSDKLoginKit (~> 4.9)
   - BMSPush (2.0.01):
     - BMSCore (~> 2.0)
-  - BMSSecurity (2.0.0):
+  - BMSSecurity (2.0.1):
     - BMSCore (~> 2.0)
   - Bolts (1.8.4):
     - Bolts/AppLinks (= 1.8.4)
@@ -35,7 +35,7 @@ SPEC CHECKSUMS:
   BMSCore: c776498a6e1ce04905fbaf67a99b68b2f7d4c8e1
   BMSFacebookAuthentication: d47e3819a8627f4ad401e2c6ae890e31afc6c102
   BMSPush: 6296850c297567a128da27029f31e006f85f5492
-  BMSSecurity: 8a18bc791c5186350a97caddad74122d5863be6b
+  BMSSecurity: c8611fe3d5a3825a75a7362c47900d4d9d37da96
   Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
   FBSDKCoreKit: 7a6baaed4a2b2a244ba253346713bdbc74df135b
   FBSDKLoginKit: 9a514a55a7d05190f64d4ef09502737588b5b561
