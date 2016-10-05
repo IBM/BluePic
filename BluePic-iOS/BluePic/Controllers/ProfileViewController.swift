@@ -223,6 +223,27 @@ extension ProfileViewController: UICollectionViewDataSource {
 
 }
 
+extension ProfileViewController: UICollectionViewDelegate {
+
+    /**
+     Method is called upon when a cell in the collection view is selected. It this case we segue to the image detail, first asking the view model to set up the view model of the image detail vc were about to segue to
+
+     - parameter collectionView: UICollectionView
+     - parameter indexPath:      IndexPath
+     */
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+
+        if let imageDetailViewModel = viewModel.prepareImageDetailViewModelForSelectedCellAtIndexPath(indexPath),
+            let imageDetailVC = Utils.vcWithNameFromStoryboardWithName("ImageDetailViewController", storyboardName: "Feed") as? ImageDetailViewController {
+
+            imageDetailVC.viewModel = imageDetailViewModel
+            self.navigationController?.pushViewController(imageDetailVC, animated: true)
+        }
+
+    }
+
+}
+
 extension ProfileViewController: UICollectionViewDelegateFlowLayout {
 
     /**
@@ -264,23 +285,6 @@ extension ProfileViewController: UICollectionViewDelegateFlowLayout {
 }
 
 extension ProfileViewController : UIScrollViewDelegate {
-
-    /**
-     Method is called upon when a cell in the collection view is selected. It this case we segue to the image detail, first asking the view model to set up the view model of the image detail vc were about to segue to
-
-     - parameter collectionView: UICollectionView
-     - parameter indexPath:      IndexPath
-     */
-    func collectionView(collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-
-        if let imageDetailViewModel = viewModel.prepareImageDetailViewModelForSelectedCellAtIndexPath(indexPath),
-            let imageDetailVC = Utils.vcWithNameFromStoryboardWithName("ImageDetailViewController", storyboardName: "Feed") as? ImageDetailViewController {
-
-            imageDetailVC.viewModel = imageDetailViewModel
-            self.navigationController?.pushViewController(imageDetailVC, animated: true)
-        }
-
-    }
 
     /**
      Method that is called when the scrollView scrolls. When the scrollView scrolls we call the updateImageViewFrameWithScrollViewDidScroll method
