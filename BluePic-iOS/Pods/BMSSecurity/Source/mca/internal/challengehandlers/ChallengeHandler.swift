@@ -73,7 +73,7 @@ public class ChallengeHandler : AuthenticationContext{
             if self.activeRequest == nil {
                 self.activeRequest = request
                 if let unWrappedListener = self.authenticationDelegate{
-                    unWrappedListener.onAuthenticationChallengeReceived(self, challenge: challenge)
+                    unWrappedListener.onAuthenticationChallengeReceived(self, challenge: challenge as AnyObject)
                 }
             } else {
                 self.waitingRequests.append(request)
@@ -84,7 +84,7 @@ public class ChallengeHandler : AuthenticationContext{
     internal func handleSuccess(_ success:[String:AnyObject]) {
         lockQueue.async(flags: .barrier, execute: {
             if let unWrappedListener = self.authenticationDelegate{
-                unWrappedListener.onAuthenticationSuccess(success)
+                unWrappedListener.onAuthenticationSuccess(success as AnyObject?)
             }
             self.releaseWaitingList()
             self.activeRequest = nil
@@ -93,7 +93,7 @@ public class ChallengeHandler : AuthenticationContext{
     internal func handleFailure(_ failure:[String:AnyObject]) {
         lockQueue.async(flags: .barrier, execute: {
             if let unWrappedListener = self.authenticationDelegate{
-                unWrappedListener.onAuthenticationFailure(failure)
+                unWrappedListener.onAuthenticationFailure(failure as AnyObject?)
             }
             self.clearWaitingList()
             self.activeRequest = nil

@@ -19,13 +19,13 @@ import UIKit
 class BluemixConfiguration: NSObject {
 
     //Plist Keys
-    private let kBluemixKeysPlistName = "bluemix"
-    private let kIsLocalKey = "isLocal"
-    private let kAppRouteLocal = "appRouteLocal"
-    private let kAppRouteRemote = "appRouteRemote"
-    private let kBluemixAppGUIDKey = "bluemixAppGUID"
-    private let kBluemixAppRegionKey = "bluemixAppRegion"
-    private let kBluemixPushAppGUIDKey = "pushAppGUID"
+    fileprivate let kBluemixKeysPlistName = "bluemix"
+    fileprivate let kIsLocalKey = "isLocal"
+    fileprivate let kAppRouteLocal = "appRouteLocal"
+    fileprivate let kAppRouteRemote = "appRouteRemote"
+    fileprivate let kBluemixAppGUIDKey = "bluemixAppGUID"
+    fileprivate let kBluemixAppRegionKey = "bluemixAppRegion"
+    fileprivate let kBluemixPushAppGUIDKey = "pushAppGUID"
 
     let localBaseRequestURL: String
     let remoteBaseRequestURL: String
@@ -37,18 +37,18 @@ class BluemixConfiguration: NSObject {
     override init() {
 
         if var localBaseRequestURL = Utils.getStringValueWithKeyFromPlist(kBluemixKeysPlistName, key: kAppRouteLocal),
-                remoteBaseRequestURL = Utils.getStringValueWithKeyFromPlist(kBluemixKeysPlistName, key: kAppRouteRemote),
+                var remoteBaseRequestURL = Utils.getStringValueWithKeyFromPlist(kBluemixKeysPlistName, key: kAppRouteRemote),
                 let appGUID = Utils.getStringValueWithKeyFromPlist(kBluemixKeysPlistName, key: kBluemixAppGUIDKey),
-                appRegion = Utils.getStringValueWithKeyFromPlist(kBluemixKeysPlistName, key: kBluemixAppRegionKey),
-                isLocal = Utils.getBoolValueWithKeyFromPlist(kBluemixKeysPlistName, key: kIsLocalKey) {
+                let appRegion = Utils.getStringValueWithKeyFromPlist(kBluemixKeysPlistName, key: kBluemixAppRegionKey),
+                let isLocal = Utils.getBoolValueWithKeyFromPlist(kBluemixKeysPlistName, key: kIsLocalKey) {
             self.appGUID = appGUID
             self.appRegion = appRegion
             self.isLocal = isLocal
-            if let lastChar = localBaseRequestURL.characters.last where lastChar == "/" as Character {
-                localBaseRequestURL.removeAtIndex(localBaseRequestURL.endIndex.predecessor())
+            if let lastChar = localBaseRequestURL.characters.last, lastChar == "/" as Character {
+                localBaseRequestURL.remove(at: localBaseRequestURL.characters.index(before: localBaseRequestURL.endIndex))
             }
-            if let lastChar = remoteBaseRequestURL.characters.last where lastChar == "/" as Character {
-                remoteBaseRequestURL.removeAtIndex(remoteBaseRequestURL.endIndex.predecessor())
+            if let lastChar = remoteBaseRequestURL.characters.last, lastChar == "/" as Character {
+                remoteBaseRequestURL.remove(at: remoteBaseRequestURL.characters.index(before: remoteBaseRequestURL.endIndex))
             }
             self.localBaseRequestURL = localBaseRequestURL
             self.remoteBaseRequestURL = remoteBaseRequestURL

@@ -20,12 +20,12 @@ internal class SecurityUtils {
     private static func savePublicKeyToKeyChain(_ key:SecKey,tag:String) throws {
         let publicKeyAttr : [NSString:AnyObject] = [
             kSecValueRef: key,
-            kSecAttrIsPermanent : true,
-            kSecAttrApplicationTag : tag,
+            kSecAttrIsPermanent : true as AnyObject,
+            kSecAttrApplicationTag : tag as AnyObject,
             kSecAttrKeyClass : kSecAttrKeyClassPublic
             
         ]
-        let addStatus:OSStatus = SecItemAdd(publicKeyAttr, nil)
+        let addStatus:OSStatus = SecItemAdd(publicKeyAttr as CFDictionary, nil)
         guard addStatus == errSecSuccess else {
             throw BMSSecurityError.generalError
         }
@@ -35,13 +35,13 @@ internal class SecurityUtils {
     private static func getKeyBitsFromKeyChain(_ tag:String) throws -> Data {
         let keyAttr : [NSString:AnyObject] = [
             kSecClass : kSecClassKey,
-            kSecAttrApplicationTag: tag,
+            kSecAttrApplicationTag: tag as AnyObject,
             kSecAttrKeyType : kSecAttrKeyTypeRSA,
-            kSecReturnData : true
+            kSecReturnData : true as AnyObject
         ]
         var result: AnyObject?
         
-        let status = SecItemCopyMatching(keyAttr, &result)
+        let status = SecItemCopyMatching(keyAttr as CFDictionary, &result)
         
         guard status == errSecSuccess else {
             throw BMSSecurityError.generalError
@@ -60,25 +60,25 @@ internal class SecurityUtils {
         var publicKey:SecKey?
         
         let privateKeyAttr : [NSString:AnyObject] = [
-            kSecAttrIsPermanent : true,
-            kSecAttrApplicationTag : privateTag,
+            kSecAttrIsPermanent : true as AnyObject,
+            kSecAttrApplicationTag : privateTag as AnyObject,
             kSecAttrKeyClass : kSecAttrKeyClassPrivate
         ]
         
         let publicKeyAttr : [NSString:AnyObject] = [
-            kSecAttrIsPermanent : true,
-            kSecAttrApplicationTag : publicTag,
+            kSecAttrIsPermanent : true as AnyObject,
+            kSecAttrApplicationTag : publicTag as AnyObject,
             kSecAttrKeyClass : kSecAttrKeyClassPublic,
             ]
         
         let keyPairAttr : [NSString:AnyObject] = [
             kSecAttrKeyType : kSecAttrKeyTypeRSA,
-            kSecAttrKeySizeInBits : keySize,
-            kSecPublicKeyAttrs : publicKeyAttr,
-            kSecPrivateKeyAttrs : privateKeyAttr
+            kSecAttrKeySizeInBits : keySize as AnyObject,
+            kSecPublicKeyAttrs : publicKeyAttr as AnyObject,
+            kSecPrivateKeyAttrs : privateKeyAttr as AnyObject
         ]
         
-        status = SecKeyGeneratePair(keyPairAttr, &publicKey, &privateKey)
+        status = SecKeyGeneratePair(keyPairAttr as CFDictionary, &publicKey, &privateKey)
         if (status != errSecSuccess) {
             throw BMSSecurityError.generalError
         } else {
@@ -97,13 +97,13 @@ internal class SecurityUtils {
     private static func getKeyRefFromKeyChain(_ tag:String) throws -> SecKey {
         let keyAttr : [NSString:AnyObject] = [
             kSecClass : kSecClassKey,
-            kSecAttrApplicationTag: tag,
+            kSecAttrApplicationTag: tag as AnyObject,
             kSecAttrKeyType : kSecAttrKeyTypeRSA,
             kSecReturnRef : kCFBooleanTrue
         ]
         var result: AnyObject?
         
-        let status = SecItemCopyMatching(keyAttr, &result)
+        let status = SecItemCopyMatching(keyAttr as CFDictionary, &result)
         
         guard status == errSecSuccess else {
             throw BMSSecurityError.generalError
@@ -116,11 +116,11 @@ internal class SecurityUtils {
     internal static func getCertificateFromKeyChain(_ certificateLabel:String) throws -> SecCertificate {
         let getQuery :  [NSString: AnyObject] = [
             kSecClass : kSecClassCertificate,
-            kSecReturnRef : true,
-            kSecAttrLabel : certificateLabel
+            kSecReturnRef : true as AnyObject,
+            kSecAttrLabel : certificateLabel as AnyObject
         ]
         var result: AnyObject?
-        let getStatus = SecItemCopyMatching(getQuery, &result)
+        let getStatus = SecItemCopyMatching(getQuery as CFDictionary, &result)
         
         guard getStatus == errSecSuccess else {
             throw BMSSecurityError.generalError
@@ -132,11 +132,11 @@ internal class SecurityUtils {
     internal static func getItemFromKeyChain(_ label:String) ->  String? {
         let query: [NSString: AnyObject] = [
             kSecClass: kSecClassGenericPassword,
-            kSecAttrService: label,
+            kSecAttrService: label as AnyObject,
             kSecReturnData: kCFBooleanTrue
         ]
         var results: AnyObject?
-        let status = SecItemCopyMatching(query, &results)
+        let status = SecItemCopyMatching(query as CFDictionary, &results)
         if status == errSecSuccess {
             let data = results as! Data
             let password = String(data: data, encoding: String.Encoding.utf8)!
@@ -149,12 +149,12 @@ internal class SecurityUtils {
     
     internal static func signCsr(_ payloadJSON:[String : AnyObject], keyIds ids:(publicKey: String, privateKey: String), keySize: Int) throws -> String {
         do {
-            let strPayloadJSON = try Utils.JSONStringify(payloadJSON)
+            let strPayloadJSON = try Utils.JSONStringify(payloadJSON as AnyObject)
             let keys = try getKeyPairBitsFromKeyChain(ids.publicKey, privateTag: ids.privateKey)
             let publicKey = keys.publicKey
             
             let privateKeySec = try getKeyPairRefFromKeyChain(ids.publicKey, privateTag: ids.privateKey).privateKey
-            let strJwsHeaderJSON = try Utils.JSONStringify(getJWSHeaderForPublicKey(publicKey))
+            let strJwsHeaderJSON = try Utils.JSONStringify(getJWSHeaderForPublicKey(publicKey) as AnyObject)
             guard let jwsHeaderData : Data = strJwsHeaderJSON.data(using: String.Encoding.utf8), let payloadJSONData : Data = strPayloadJSON.data(using: String.Encoding.utf8) else {
                 throw BMSSecurityError.generalError
             }
@@ -187,13 +187,13 @@ internal class SecurityUtils {
         let exp:String = pkExponent.base64EncodedString(options: base64Options)
         
         let publicKeyJSON : [String:AnyObject] = [
-            BMSSecurityConstants.JSON_ALG_KEY : BMSSecurityConstants.JSON_RSA_VALUE,
-            BMSSecurityConstants.JSON_MOD_KEY : mod,
-            BMSSecurityConstants.JSON_EXP_KEY : exp
+            BMSSecurityConstants.JSON_ALG_KEY : BMSSecurityConstants.JSON_RSA_VALUE as AnyObject,
+            BMSSecurityConstants.JSON_MOD_KEY : mod as AnyObject,
+            BMSSecurityConstants.JSON_EXP_KEY : exp as AnyObject
         ]
         let jwsHeaderJSON :[String:AnyObject] = [
-            BMSSecurityConstants.JSON_ALG_KEY : BMSSecurityConstants.JSON_RS256_VALUE,
-            BMSSecurityConstants.JSON_JPK_KEY : publicKeyJSON
+            BMSSecurityConstants.JSON_ALG_KEY : BMSSecurityConstants.JSON_RS256_VALUE as AnyObject,
+            BMSSecurityConstants.JSON_JPK_KEY : publicKeyJSON as AnyObject
         ]
         return jwsHeaderJSON
         
@@ -234,12 +234,12 @@ internal class SecurityUtils {
     private static func derEncodingGetSizeFrom(_ buf : Data, at iterator: inout Int) -> Int{
         
         // Have to cast the pointer to the right size
-        let pointer = UnsafePointer<UInt8>((buf as NSData).bytes)
-        let count = buf.count
+        //let pointer = UnsafePointer<UInt8>((buf as NSData).bytes)
+        //let count = buf.count
         
         // Get our buffer pointer and make an array out of it
-        let buffer = UnsafeBufferPointer<UInt8>(start:pointer, count:count)
-        let data = [UInt8](buffer)
+        //let buffer = UnsafeBufferPointer<UInt8>(start:pointer, count:count)
+        let data = buf//[UInt8](buffer)
         
         var itr : Int = iterator
         var num_bytes :UInt8 = 1
@@ -277,11 +277,12 @@ internal class SecurityUtils {
         
         var signedDataLength: Int = signedData.length
         
-        let digestBytes = UnsafePointer<UInt8>((digest as NSData).bytes)
+        let digestBytes: UnsafePointer<UInt8> = ((digest as NSData).bytes).bindMemory(to: UInt8.self, capacity: digest.count)
         let digestlen = digest.count
+        let mutableBytes: UnsafeMutablePointer<UInt8> = signedData.mutableBytes.assumingMemoryBound(to: UInt8.self)
         
-        let signStatus:OSStatus = SecKeyRawSign(privateKey, SecPadding.PKCS1SHA256, digestBytes, digestlen, UnsafeMutablePointer<UInt8>(signedData.mutableBytes),
-                                                &signedDataLength)
+        let signStatus:OSStatus = SecKeyRawSign(privateKey, SecPadding.PKCS1SHA256, digestBytes, digestlen,
+                                                mutableBytes, &signedDataLength)
         
         guard signStatus == errSecSuccess else {
             throw BMSSecurityError.generalError
@@ -296,13 +297,13 @@ internal class SecurityUtils {
         }
         let key: [NSString: AnyObject] = [
             kSecClass: kSecClassGenericPassword,
-            kSecAttrService: label,
-            kSecValueData: stringData
+            kSecAttrService: label as AnyObject,
+            kSecValueData: stringData as AnyObject
         ]
-        var status = SecItemAdd(key, nil)
+        var status = SecItemAdd(key as CFDictionary, nil)
         if(status != errSecSuccess){
             if(SecurityUtils.removeItemFromKeyChain(label) == true) {
-                status = SecItemAdd(key, nil)
+                status = SecItemAdd(key as CFDictionary, nil)
             }
         }
         return status == errSecSuccess
@@ -311,10 +312,10 @@ internal class SecurityUtils {
         
         let delQuery : [NSString:AnyObject] = [
             kSecClass: kSecClassGenericPassword,
-            kSecAttrService: label
+            kSecAttrService: label as AnyObject
         ]
         
-        let delStatus:OSStatus = SecItemDelete(delQuery)
+        let delStatus:OSStatus = SecItemDelete(delQuery as CFDictionary)
         return delStatus == errSecSuccess
         
     }
@@ -323,7 +324,7 @@ internal class SecurityUtils {
     internal static func getCertificateFromString(_ stringData:String) throws -> SecCertificate{
         
         if let data:Data = Data(base64Encoded: stringData, options: NSData.Base64DecodingOptions.ignoreUnknownCharacters)  {
-            if let certificate = SecCertificateCreateWithData(kCFAllocatorDefault, data) {
+            if let certificate = SecCertificateCreateWithData(kCFAllocatorDefault, data as CFData) {
                 return certificate
             }
         }
@@ -333,9 +334,9 @@ internal class SecurityUtils {
     internal static func deleteCertificateFromKeyChain(_ certificateLabel:String) -> Bool{
         let delQuery : [NSString:AnyObject] = [
             kSecClass: kSecClassCertificate,
-            kSecAttrLabel: certificateLabel
+            kSecAttrLabel: certificateLabel as AnyObject
         ]
-        let delStatus:OSStatus = SecItemDelete(delQuery)
+        let delStatus:OSStatus = SecItemDelete(delQuery as CFDictionary)
         
         return delStatus == errSecSuccess
         
@@ -344,9 +345,9 @@ internal class SecurityUtils {
     private static func deleteKeyFromKeyChain(_ tag:String) -> Bool{
         let delQuery : [NSString:AnyObject] = [
             kSecClass  : kSecClassKey,
-            kSecAttrApplicationTag : tag
+            kSecAttrApplicationTag : tag as AnyObject
         ]
-        let delStatus:OSStatus = SecItemDelete(delQuery)
+        let delStatus:OSStatus = SecItemDelete(delQuery as CFDictionary)
         return delStatus == errSecSuccess
     }
     
@@ -358,10 +359,10 @@ internal class SecurityUtils {
         let setQuery: [NSString: AnyObject] = [
             kSecClass: kSecClassCertificate,
             kSecValueRef: certificate,
-            kSecAttrLabel: certificateLabel,
+            kSecAttrLabel: certificateLabel as AnyObject,
             kSecAttrAccessible: kSecAttrAccessibleWhenUnlockedThisDeviceOnly,
             ]
-        let addStatus:OSStatus = SecItemAdd(setQuery, nil)
+        let addStatus:OSStatus = SecItemAdd(setQuery as CFDictionary, nil)
         
         guard addStatus == errSecSuccess else {
             throw BMSSecurityError.generalError

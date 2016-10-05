@@ -22,7 +22,7 @@ class EmptyFeedCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var userHasNoImagesLabel: UILabel!
 
     //message that is shown in the userHasNoImagesLabel
-    private let kUserHasNoImagesLabelText = NSLocalizedString("Snap a pic or select one from your library!", comment: "message that describes to the user to upload a picture to begin")
+    fileprivate let kUserHasNoImagesLabelText = NSLocalizedString("Snap a pic or select one from your library!", comment: "message that describes to the user to upload a picture to begin")
 
     /**
      Method is called when the view wakes from nib

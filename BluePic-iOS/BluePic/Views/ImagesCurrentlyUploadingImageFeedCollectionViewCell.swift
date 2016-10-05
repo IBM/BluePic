@@ -34,7 +34,7 @@ class ImagesCurrentlyUploadingImageFeedCollectionViewCell: UICollectionViewCell 
      - parameter image:   UIImage?
      - parameter caption: String?
      */
-    func setupData(image: UIImage?, caption: String?) {
+    func setupData(_ image: UIImage?, caption: String?) {
 
         if let img = image {
 

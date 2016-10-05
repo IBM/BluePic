@@ -28,7 +28,7 @@ extension UIImage {
 
      - returns: UIImage?
      */
-    class func resizeImage(image: UIImage) -> UIImage? {
+    class func resizeImage(_ image: UIImage) -> UIImage? {
 
         var actualHeight = image.size.height
         var actualWidth =  image.size.width
@@ -59,8 +59,8 @@ extension UIImage {
 
         let rect = CGRect(x: 0, y: 0, width: actualWidth, height: actualHeight)
         UIGraphicsBeginImageContext(rect.size)
-        image.drawInRect(rect)
-        var imageData: NSData?
+        image.draw(in: rect)
+        var imageData: Data?
         if let img = UIGraphicsGetImageFromCurrentImageContext() {
             imageData = UIImageJPEGRepresentation(img, compressionQuality)
         }
@@ -81,7 +81,7 @@ extension UIImage {
 
      - returns: UIImage
      */
-    class func rotateImageIfNecessary(imageToRotate: UIImage) -> UIImage? {
+    class func rotateImageIfNecessary(_ imageToRotate: UIImage) -> UIImage? {
         let imageOrientation = imageToRotate.imageOrientation.rawValue
         switch imageOrientation {
         case 0: //Up
@@ -105,14 +105,14 @@ extension UIImage {
 
      - returns: UIImage
      */
-    public func imageRotatedByDegrees(degrees: CGFloat, flip: Bool) -> UIImage? {
+    public func imageRotatedByDegrees(_ degrees: CGFloat, flip: Bool) -> UIImage? {
         let degreesToRadians: (CGFloat) -> CGFloat = {
             return $0 / 180.0 * CGFloat(M_PI)
         }
 
         // calculate the size of the rotated view's containing box for our drawing space
         let rotatedViewBox = UIView(frame: CGRect(origin: CGPoint.zero, size: size))
-        let t = CGAffineTransformMakeRotation(degreesToRadians(degrees))
+        let t = CGAffineTransform(rotationAngle: degreesToRadians(degrees))
         rotatedViewBox.transform = t
         let rotatedSize = rotatedViewBox.frame.size
 
@@ -124,10 +124,10 @@ extension UIImage {
         }
 
         // Move the origin to the middle of the image so we will rotate and scale around the center.
-        CGContextTranslateCTM(bitmap, rotatedSize.width / 2.0, rotatedSize.height / 2.0)
+        bitmap.translateBy(x: rotatedSize.width / 2.0, y: rotatedSize.height / 2.0)
 
         //   // Rotate the image context
-        CGContextRotateCTM(bitmap, degreesToRadians(degrees))
+        bitmap.rotate(by: degreesToRadians(degrees))
 
         // Now, draw the rotated/scaled image into the context
         var yFlip: CGFloat
@@ -138,8 +138,8 @@ extension UIImage {
             yFlip = CGFloat(1.0)
         }
 
-        CGContextScaleCTM(bitmap, yFlip, -1.0)
-        CGContextDrawImage(bitmap, CGRect(x: -size.width / 2, y: -size.height / 2, width: size.width, height: size.height), self.CGImage!)
+        bitmap.scaleBy(x: yFlip, y: -1.0)
+        bitmap.draw(self.cgImage!, in: CGRect(x: -size.width / 2, y: -size.height / 2, width: size.width, height: size.height))
 
         let newImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
@@ -155,7 +155,7 @@ extension UIImage {
 
      - returns: UIImage?
      */
-    class func resizeAndRotateImage(image: UIImage) -> UIImage? {
+    class func resizeAndRotateImage(_ image: UIImage) -> UIImage? {
 
         if let resizedImage = resizeImage(image) {
             return rotateImageIfNecessary(resizedImage)

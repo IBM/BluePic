@@ -33,7 +33,7 @@ class TabBarViewController: UITabBarController {
 
         viewModel = TabBarViewModel(notifyTabBarVC: handleTabBarViewModelNotifications)
 
-        self.tabBar.tintColor = UIColor.whiteColor()
+        self.tabBar.tintColor = UIColor.white
 
         self.addBackgroundImageView()
 
@@ -46,7 +46,7 @@ class TabBarViewController: UITabBarController {
 
      - parameter animated: Bool
      */
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         self.tryToShowLogin()
     }
 
@@ -81,7 +81,7 @@ class TabBarViewController: UITabBarController {
     func hideBackgroundImage() {
 
         //hide temp background image used to prevent flash animation
-        self.backgroundImageView.hidden = true
+        self.backgroundImageView.isHidden = true
         self.backgroundImageView.removeFromSuperview()
 
     }
@@ -92,11 +92,11 @@ class TabBarViewController: UITabBarController {
      - parameter animated: Bool to determine if VC should be animated on presentation
      - parameter callback: callback for actions once presentation is done
      */
-    func presentLoginVC(animated: Bool, callback: (()->())?) {
+    func presentLoginVC(_ animated: Bool, callback: (()->())?) {
 
         if let loginVC = Utils.vcWithNameFromStoryboardWithName("loginVC", storyboardName: "Main") as? LoginViewController {
 
-            self.presentViewController(loginVC, animated: animated, completion: { _ in
+            self.present(loginVC, animated: animated, completion: { _ in
 
                 self.hideBackgroundImage()
                 print(NSLocalizedString("If MCA is configured, user needs to sign in with Facebook.", comment: ""))
@@ -114,11 +114,11 @@ class TabBarViewController: UITabBarController {
 
         self.selectedIndex = 0
         if let feedNavigationVC = self.viewControllers?[0] as? FeedNavigationController {
-            feedNavigationVC.popToRootViewControllerAnimated(false)
+            feedNavigationVC.popToRootViewController(animated: false)
         }
     }
 
-    override func shouldAutomaticallyForwardAppearanceMethods() -> Bool {
+    override var shouldAutomaticallyForwardAppearanceMethods: Bool {
         return true
     }
 
@@ -134,7 +134,7 @@ extension TabBarViewController: UITabBarControllerDelegate {
 
      - returns: Bool
      */
-    func tabBarController(tabBarController: UITabBarController, shouldSelectViewController viewController: UIViewController) -> Bool {
+    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
         if let _ = viewController as? CameraViewController { //if camera tab is selected, show camera picker
             handleCameraTabBeingSelected()
             return false
@@ -178,21 +178,21 @@ extension TabBarViewController: UITabBarControllerDelegate {
      */
     func showLocationServiceRequiredAlert() {
 
-        let alertController = UIAlertController(title: NSLocalizedString("Location Services Required", comment: ""), message: NSLocalizedString("Please go to Settings to enable Location Services for BluePic", comment: ""), preferredStyle: .Alert)
+        let alertController = UIAlertController(title: NSLocalizedString("Location Services Required", comment: ""), message: NSLocalizedString("Please go to Settings to enable Location Services for BluePic", comment: ""), preferredStyle: .alert)
 
-        let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .Cancel, handler: nil)
+        let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil)
         alertController.addAction(cancelAction)
 
-        let OKAction = UIAlertAction(title: NSLocalizedString("Settings", comment: ""), style: .Default) { (action) in
+        let OKAction = UIAlertAction(title: NSLocalizedString("Settings", comment: ""), style: .default) { (action) in
 
-            if let settingsUrl = NSURL(string: UIApplicationOpenSettingsURLString) {
-                UIApplication.sharedApplication().openURL(settingsUrl)
+            if let settingsUrl = URL(string: UIApplicationOpenSettingsURLString) {
+                UIApplication.shared.openURL(settingsUrl)
             }
 
         }
         alertController.addAction(OKAction)
 
-        self.presentViewController(alertController, animated: true, completion: nil)
+        self.present(alertController, animated: true, completion: nil)
 
     }
 
@@ -201,22 +201,22 @@ extension TabBarViewController: UITabBarControllerDelegate {
      */
     func showImageUploadFailureAlert() {
 
-        let alert = UIAlertController(title: NSLocalizedString("Failed To Upload Image", comment: ""), message: "", preferredStyle: UIAlertControllerStyle.Alert)
+        let alert = UIAlertController(title: NSLocalizedString("Failed To Upload Image", comment: ""), message: "", preferredStyle: UIAlertControllerStyle.alert)
 
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .Default, handler: { (action: UIAlertAction) in
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .default, handler: { (action: UIAlertAction) in
 
             self.viewModel.tellBluemixDataManagerToCancelUploadingImagesThatFailedToUpload()
 
         }))
 
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Try Again", comment: ""), style: .Default, handler: { (action: UIAlertAction) in
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Try Again", comment: ""), style: .default, handler: { (action: UIAlertAction) in
 
             self.viewModel.tellBluemixDataManagerToRetryUploadingImagesThatFailedToUpload()
 
         }))
 
-        dispatch_async(dispatch_get_main_queue()) {
-            self.presentViewController(alert, animated: true, completion: nil)
+        DispatchQueue.main.async {
+            self.present(alert, animated: true, completion: nil)
         }
 
     }
@@ -232,21 +232,21 @@ extension TabBarViewController {
 
      - parameter tabBarNotification: TabBarViewModelNotification
      */
-    func handleTabBarViewModelNotifications(tabBarNotification: TabBarViewModelNotification) {
+    func handleTabBarViewModelNotifications(_ tabBarNotification: TabBarViewModelNotification) {
 
-        if tabBarNotification == TabBarViewModelNotification.ShowLoginVC {
+        if tabBarNotification == TabBarViewModelNotification.showLoginVC {
             presentLoginVC(false, callback: nil)
-        } else if tabBarNotification == TabBarViewModelNotification.HideLoginVC {
+        } else if tabBarNotification == TabBarViewModelNotification.hideLoginVC {
             hideBackgroundImage()
-        } else if tabBarNotification == TabBarViewModelNotification.SwitchToFeedTab {
+        } else if tabBarNotification == TabBarViewModelNotification.switchToFeedTab {
             switchToFeedTabAndPopToRootViewController()
-        } else if tabBarNotification == TabBarViewModelNotification.ShowImageUploadFailureAlert {
+        } else if tabBarNotification == TabBarViewModelNotification.showImageUploadFailureAlert {
             showImageUploadFailureAlert()
-        } else if tabBarNotification == TabBarViewModelNotification.ShowSettingsActionSheet {
+        } else if tabBarNotification == TabBarViewModelNotification.showSettingsActionSheet {
             showSettingsActionSheet()
-        } else if tabBarNotification == TabBarViewModelNotification.LogOutSuccess {
+        } else if tabBarNotification == TabBarViewModelNotification.logOutSuccess {
             handleLogOutSuccess()
-        } else if tabBarNotification == TabBarViewModelNotification.LogOutFailure {
+        } else if tabBarNotification == TabBarViewModelNotification.logOutFailure {
             handleLogOutFailure()
         }
     }
@@ -256,15 +256,15 @@ extension TabBarViewController {
      */
     func showSettingsActionSheet() {
 
-        let alert: UIAlertController=UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
-        let cameraAction = UIAlertAction(title: NSLocalizedString("Log Out", comment: ""), style: UIAlertActionStyle.Default) {
+        let alert: UIAlertController=UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
+        let cameraAction = UIAlertAction(title: NSLocalizedString("Log Out", comment: ""), style: UIAlertActionStyle.default) {
             UIAlertAction in
 
             SVProgressHUD.show()
             self.viewModel.logOutUser()
         }
 
-        let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: UIAlertActionStyle.Cancel) {
+        let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: UIAlertActionStyle.cancel) {
             UIAlertAction in
         }
 
@@ -274,11 +274,11 @@ extension TabBarViewController {
 
         // on iPad, this will be a Popover
         // on iPhone, this will be an action sheet
-        alert.modalPresentationStyle = .Popover
+        alert.modalPresentationStyle = .popover
 
 
         // Present the controller
-        self.presentViewController(alert, animated: true, completion: nil)
+        self.present(alert, animated: true, completion: nil)
     }
 
     /**
@@ -286,7 +286,7 @@ extension TabBarViewController {
      */
     func handleLogOutSuccess() {
         SVProgressHUD.dismiss()
-        dispatch_async(dispatch_get_main_queue()) {
+        DispatchQueue.main.async {
             self.presentLoginVC(true, callback: {
                 self.selectedIndex = 0
             })
@@ -297,15 +297,15 @@ extension TabBarViewController {
      Method hanldes when logout was a failure. It presents an alert, alerting the user that there was a log out failure
      */
     func handleLogOutFailure() {
-        let alert = UIAlertController(title: NSLocalizedString("Log Out Failure", comment: ""), message: NSLocalizedString("Please Try Again", comment: ""), preferredStyle: UIAlertControllerStyle.Alert)
+        let alert = UIAlertController(title: NSLocalizedString("Log Out Failure", comment: ""), message: NSLocalizedString("Please Try Again", comment: ""), preferredStyle: UIAlertControllerStyle.alert)
 
-        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .Default, handler: { (action: UIAlertAction) in
+        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default, handler: { (action: UIAlertAction) in
 
         }))
 
         SVProgressHUD.dismiss()
-        dispatch_async(dispatch_get_main_queue()) {
-            self.presentViewController(alert, animated: true, completion: nil)
+        DispatchQueue.main.async {
+            self.present(alert, animated: true, completion: nil)
         }
 
     }

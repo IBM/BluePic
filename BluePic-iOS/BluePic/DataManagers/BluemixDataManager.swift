@@ -17,35 +17,35 @@
 import UIKit
 import BMSCore
 
-enum BlueMixDataManagerError: ErrorType {
+enum BlueMixDataManagerError: Error {
     //error when the user does not exist when we attempt to get the user by id
-    case UserDoesNotExist
+    case userDoesNotExist
 
     //error when there is a connection failure when doing a REST call
-    case ConnectionFailure
+    case connectionFailure
 }
 
-enum BluemixDataManagerNotification: String {
+extension Notification.Name {
     //Notification to notify the app that the REST call to get all images has started
-    case GetAllImagesStarted = "GetAllImagesStarted"
+    static let getAllImagesStarted = Notification.Name("GetAllImagesStarted")
 
     //Notification to notify the app that repulling for images has completed, the images have been refreshed
-    case ImagesRefreshed = "ImagesRefreshed"
+    static let imagesRefreshed = Notification.Name("ImagesRefreshed")
 
     //Notification to notify the app that uploading an image has began
-    case ImageUploadBegan = "ImageUploadBegan"
+    static let imageUploadBegan = Notification.Name("ImageUploadBegan")
 
     //Notification to nofify the app that Image upload was successfull
-    case ImageUploadSuccess = "ImageUploadSuccess"
+    static let imageUploadSuccess = Notification.Name("ImageUploadSuccess")
 
     //Notification to notify the app that image upload failed
-    case ImageUploadFailure = "ImageUploadFailure"
+    static let imageUploadFailure = Notification.Name("ImageUploadFailure")
 
     //Notificaiton used when there was a server error getting all the images
-    case GetAllImagesFailure = "GetAllImagesFailure"
+    static let getAllImagesFailure = Notification.Name("GetAllImagesFailure")
 
     //Notification to notify the app that the popular tags were receieved
-    case PopularTagsReceived = "PopularTagsReceived"
+    static let popularTagsReceived = Notification.Name("PopularTagsReceived")
 }
 
 class BluemixDataManager: NSObject {
@@ -85,13 +85,13 @@ class BluemixDataManager: NSObject {
     let bluemixConfig = BluemixConfiguration()
 
     //default timeout is 60 seconds
-    private let kDefaultTimeOut: Double = 60
+    fileprivate let kDefaultTimeOut: Double = 60
 
     //End Points
-    private let kImagesEndPoint = "images"
-    private let kUsersEndPoint = "users"
-    private let kTagsEndPoint = "tags"
-    private let kPingEndPoint = "ping"
+    fileprivate let kImagesEndPoint = "images"
+    fileprivate let kUsersEndPoint = "users"
+    fileprivate let kTagsEndPoint = "tags"
+    fileprivate let kPingEndPoint = "ping"
 
     //used to help the feed view model decide to show the loading animaiton on the feed vc
     var hasReceievedInitialImages = false
@@ -104,7 +104,7 @@ class BluemixDataManager: NSObject {
         BMSClient.sharedInstance.initialize(bluemixAppRoute: bluemixConfig.remoteBaseRequestURL,
                                             bluemixAppGUID: bluemixConfig.appGUID,
                                             bluemixRegion: bluemixConfig.appRegion)
-        BMSClient.sharedInstance.defaultRequestTimeout = 10.0
+        BMSClient.sharedInstance.requestTimeout = 10.0
 
     }
 
@@ -133,7 +133,7 @@ extension BluemixDataManager {
      - parameter userId: String
      - parameter result: (user : User?, error : BlueMixDataManagerError?) -> ()
      */
-    func getUserById(userId: String, result: (user: User?, error: BlueMixDataManagerError?) -> ()) {
+    func getUserById(_ userId: String, result: @escaping (_ user: User?, _ error: BlueMixDataManagerError?) -> ()) {
 
         let requestURL = getBluemixBaseRequestURL() + "/" + kUsersEndPoint + "/" + userId
 
@@ -141,40 +141,40 @@ extension BluemixDataManager {
 
         request.timeout = kDefaultTimeOut
 
-        request.sendWithCompletionHandler { (response, error) -> Void in
+        request.send { response, error in
             //error
             if let error = error {
                 if let response = response,
-                    statusCode = response.statusCode {
+                    let statusCode = response.statusCode {
 
                     //user does not exist
                     if statusCode == 404 {
 
-                        result(user: nil, error: BlueMixDataManagerError.UserDoesNotExist)
+                        result(nil, BlueMixDataManagerError.userDoesNotExist)
                     }
                         //any other error code means that it was a connection failure
                     else {
                         print(NSLocalizedString("Get User By ID Error:", comment : "") + " \(error.localizedDescription)")
-                        result(user: nil, error: BlueMixDataManagerError.ConnectionFailure)
+                        result(nil, BlueMixDataManagerError.connectionFailure)
                     }
 
                 }
                     //connection failure
                 else {
                     print(NSLocalizedString("Get User By ID Error:", comment : "") + " \(error.localizedDescription)")
-                    result(user: nil, error: BlueMixDataManagerError.ConnectionFailure)
+                    result(nil, BlueMixDataManagerError.connectionFailure)
                 }
             }
                 //No error
             else {
                 //success
                 if let user = User(response) {
-                    result(user: user, error: nil)
+                    result(user, nil)
                 }
                     //can't parse response - error
                 else {
                     print(NSLocalizedString("Get User By ID Error: Invalid Response JSON)", comment: ""))
-                    result(user: nil, error: BlueMixDataManagerError.ConnectionFailure)
+                    result(nil, BlueMixDataManagerError.connectionFailure)
                 }
             }
         }
@@ -188,7 +188,7 @@ extension BluemixDataManager {
      - parameter name:   String
      - parameter result: ((user : User?) -> ())
      */
-    func createNewUser(userId: String, name: String, result : ((user: User?) -> ())) {
+    func createNewUser(_ userId: String, name: String, result : @escaping (_ user: User?) -> ()) {
 
         let requestURL = getBluemixBaseRequestURL() + "/" + kUsersEndPoint
 
@@ -199,25 +199,25 @@ extension BluemixDataManager {
         let json = ["_id": userId, "name": name]
 
         do {
-            let jsonData = try NSJSONSerialization.dataWithJSONObject(json, options: .PrettyPrinted)
+            let jsonData = try JSONSerialization.data(withJSONObject: json, options: .prettyPrinted)
 
-            request.sendData(jsonData, completionHandler: { (response, error) -> Void in
+            request.send(requestBody: jsonData) { response, error in
                 if let error = error {
-                    result(user: nil)
+                    result(nil)
                     print(NSLocalizedString("Create New User Error:)", comment: "") + " \(error.localizedDescription)")
                 } else {
                     if let user = User(response) {
-                        result(user: user)
+                        result(user)
                     } else {
-                        result(user: nil)
+                        result(nil)
                         print(NSLocalizedString("Create New User Error: Invalid Response JSON", comment: ""))
                     }
                 }
-            })
+            }
 
         } catch {
             print(NSLocalizedString("Create New User Error", comment: ""))
-            result(user: nil)
+            result(nil)
         }
 
     }
@@ -230,29 +230,29 @@ extension BluemixDataManager {
      - parameter name:     String
      - parameter callback: ((success : Bool) -> ())
      */
-    func checkIfUserAlreadyExistsIfNotCreateNewUser(userId: String, name: String, callback : ((success: Bool) -> ())) {
+    func checkIfUserAlreadyExistsIfNotCreateNewUser(_ userId: String, name: String, callback : @escaping ((_ success: Bool) -> ())) {
 
         getUserById(userId, result: { (user, error) in
 
             if let error = error {
 
                 //user does not exist so create new user
-                if error == BlueMixDataManagerError.UserDoesNotExist {
+                if error == BlueMixDataManagerError.userDoesNotExist {
                     self.createNewUser(userId, name: name, result: { user in
 
                         if user != nil {
-                            callback(success: true)
+                            callback(true)
                         } else {
-                            callback(success: false)
+                            callback(false)
                         }
 
                     })
-                } else if error == BlueMixDataManagerError.ConnectionFailure {
+                } else if error == BlueMixDataManagerError.connectionFailure {
                     print(NSLocalizedString("Check If User Already Exists Error: Connection Failure", comment: ""))
-                    callback(success: false)
+                    callback(false)
                 }
             } else {
-                callback(success: true)
+                callback(true)
             }
 
         })
@@ -268,7 +268,7 @@ extension BluemixDataManager {
      */
     func getImages() {
 
-        NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.GetAllImagesStarted.rawValue, object: nil)
+        NotificationCenter.default.post(name: .getAllImagesStarted, object: nil)
 
         let requestURL = getBluemixBaseRequestURL() + "/" + kImagesEndPoint
         let request = Request(url: requestURL, method: HttpMethod.GET)
@@ -278,11 +278,11 @@ extension BluemixDataManager {
             if let images = images {
                 self.images = images
                 self.hasReceievedInitialImages = true
-                NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImagesRefreshed.rawValue, object: nil)
+                NotificationCenter.default.post(name: .imagesRefreshed, object: nil)
             } else {
                 print(NSLocalizedString("Get Images Error: Connection Failure", comment: ""))
                 self.hasReceievedInitialImages = true
-                NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.GetAllImagesFailure.rawValue, object: nil)
+                NotificationCenter.default.post(name: .getAllImagesFailure, object: nil)
             }
         }
     }
@@ -293,26 +293,26 @@ extension BluemixDataManager {
      - parameter tags:     [String]
      - parameter callback: (images : [Image]?)->()
      */
-    func getImagesByTags(tags: [String], callback : (images: [Image]?)->()) {
+    func getImagesByTags(_ tags: [String], callback : @escaping (_ images: [Image]?)->()) {
 
         var requestURL = getBluemixBaseRequestURL() + "/" + kImagesEndPoint + "?tag="
-        for (index, tag) in tags.enumerate() {
+        for (index, tag) in tags.enumerated() {
 
-            guard let encodedTag = tag.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet()) else {
+            guard let encodedTag = tag.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed) else {
                 print(NSLocalizedString("Get Images By Tags Error: Failed to encode search tag", comment: ""))
                 continue
             }
 
             if index == 0 {
-                requestURL.appendContentsOf(encodedTag.lowercaseString)
+                requestURL.append(encodedTag.lowercased())
             } else {
-                requestURL.appendContentsOf(",\(encodedTag.lowercaseString)")
+                requestURL.append(",\(encodedTag.lowercased())")
             }
         }
         let request = Request(url: requestURL, method: HttpMethod.GET)
 
         self.getImages(request) { images in
-            callback(images: images)
+            callback(images)
         }
 
     }
@@ -323,17 +323,17 @@ extension BluemixDataManager {
      - parameter request: Request
      - parameter result:  (images : [Image]?)-> ()
      */
-    func getImages(request: Request, result : (images: [Image]?)-> ()) {
+    func getImages(_ request: Request, result : @escaping (_ images: [Image]?) -> ()) {
 
         request.timeout = kDefaultTimeOut
 
-        request.sendWithCompletionHandler { (response, error) -> Void in
+        request.send { response, error in
             if let error = error {
                 print(NSLocalizedString("Get Images Error:", comment: "") + " \(error.localizedDescription)")
-                result(images: nil)
+                result(nil)
             } else {
                 let images = self.parseGetImagesResponse(response, userId: nil, usersName: nil)
-                result(images: images)
+                result(images)
             }
         }
 
@@ -349,17 +349,17 @@ extension BluemixDataManager {
 
      - returns: [Image]
      */
-    private func parseGetImagesResponse(response: Response?, userId: String?, usersName: String?) -> [Image] {
+    fileprivate func parseGetImagesResponse(_ response: Response?, userId: String?, usersName: String?) -> [Image] {
         var images = [Image]()
 
         if let dict = Utils.convertResponseToDictionary(response),
-             records = dict["records"] as? [[String:AnyObject]] {
+             let records = dict["records"] as? [[String: Any]] {
 
             for var record in records {
 
-                if let userId = userId, usersName = usersName {
+                if let userId = userId, let usersName = usersName {
 
-                    var user = [String : AnyObject]()
+                    var user = [String: String]()
                     user["name"] = usersName
                     user["_id"] = userId
                     record["user"] = user
@@ -382,9 +382,9 @@ extension BluemixDataManager {
     /**
      Method pings service and will be challanged if the app has MCA configured but the user hasn't signed in yet.
 
-     - parameter callback: (response: Response?, error: NSError?) -> Void
+     - parameter callback: (response: Response?, error: Error?) -> Void
      */
-    private func ping(callback : (response: Response?, error: NSError?) -> Void) {
+    fileprivate func ping(_ callback : @escaping (_ response: Response?, _ error: Error?) -> Void) {
 
         let requestURL = getBluemixBaseRequestURL() + "/" + kPingEndPoint
 
@@ -392,8 +392,8 @@ extension BluemixDataManager {
 
         request.timeout = kDefaultTimeOut
 
-        request.sendWithCompletionHandler { (response, error) -> Void in
-            callback(response: response, error: error)
+        request.send { response, error in
+            callback(response, error)
         }
 
     }
@@ -404,10 +404,10 @@ extension BluemixDataManager {
 
      - parameter image: Image
      */
-    func tryToPostNewImage(image: ImagePayload) {
+    func tryToPostNewImage(_ image: ImagePayload) {
 
         addImageToImagesCurrentlyUploading(image)
-        NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImageUploadBegan.rawValue, object: nil)
+        NotificationCenter.default.post(name: .imageUploadBegan, object: nil)
 
         //ping backend to trigger Facebook login if MCA is configured
         ping({ (response, error) -> Void in
@@ -421,7 +421,7 @@ extension BluemixDataManager {
             //successfully pinged service
             else {
                 //Check if User Authenticated with Facebook (aka is MCA configured)
-                if let userIdentity = FacebookDataManager.SharedInstance.getFacebookUserIdentity(), facebookUserId = userIdentity.id, facebookUserFullName = userIdentity.displayName {
+                if let userIdentity = FacebookDataManager.SharedInstance.getFacebookUserIdentity(), let facebookUserId = userIdentity.ID, let facebookUserFullName = userIdentity.displayName {
 
                     //User is authenticated with Facebook, create new user record
                     self.createNewUser(facebookUserId, name: facebookUserFullName, result: { user in
@@ -457,50 +457,50 @@ extension BluemixDataManager {
 
      - parameter image: Image
      */
-    private func postNewImage(image: ImagePayload) {
+    fileprivate func postNewImage(_ image: ImagePayload) {
 
-        guard let uiImage = image.image, imageData = UIImagePNGRepresentation(uiImage) else {
+        guard let uiImage = image.image, let imageData = UIImagePNGRepresentation(uiImage) else {
             print(NSLocalizedString("Post New Image Error: Could not process image data properly", comment: ""))
-            NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImageUploadFailure.rawValue, object: nil)
+            NotificationCenter.default.post(name: .imageUploadFailure, object: nil)
             return
         }
 
         let requestURL = getBluemixBaseRequestURL() + "/" + kImagesEndPoint
-        let imageDictionary = ["fileName": image.fileName, "caption" : image.caption, "width" : image.width, "height" : image.height, "location" : ["name" : image.location.name, "latitude" : image.location.latitude, "longitude" : image.location.longitude]]
+        let imageDictionary = ["fileName": image.fileName, "caption" : image.caption, "width" : image.width, "height" : image.height, "location" : ["name" : image.location.name, "latitude" : image.location.latitude, "longitude" : image.location.longitude]] as [String : Any]
 
         do {
-            let jsonData = try NSJSONSerialization.dataWithJSONObject(imageDictionary, options: NSJSONWritingOptions(rawValue: 0))
-            let tempJsonString = String(data: jsonData, encoding: NSUTF8StringEncoding)
+            let jsonData = try JSONSerialization.data(withJSONObject: imageDictionary, options: JSONSerialization.WritingOptions(rawValue: 0))
+            let tempJsonString = String(data: jsonData, encoding: String.Encoding.utf8)
             let boundary = generateBoundaryString()
             let mimeType = "image/png"
             let request = Request(url: requestURL, method: HttpMethod.POST)
             request.headers = ["Content-Type" : "multipart/form-data; boundary=\(boundary)"]
 
-            let body = NSMutableData()
-            guard let jsonString = tempJsonString, boundaryStart = "--\(boundary)\r\n".dataUsingEncoding(NSUTF8StringEncoding),
-                dispositionEncoding = "Content-Disposition:form-data; name=\"imageJson\"\r\n\r\n".dataUsingEncoding(NSUTF8StringEncoding),
-                jsonEncoding = "\(jsonString)\r\n".dataUsingEncoding(NSUTF8StringEncoding),
-                imageDispositionEncoding = "Content-Disposition:form-data; name=\"imageBinary\"; filename=\"\(image.fileName)\"\r\n".dataUsingEncoding(NSUTF8StringEncoding),
-                imageTypeEncoding = "Content-Type: \(mimeType)\r\n\r\n".dataUsingEncoding(NSUTF8StringEncoding),
-                imageEndEncoding = "\r\n".dataUsingEncoding(NSUTF8StringEncoding),
-                boundaryEnd = "--\(boundary)--\r\n".dataUsingEncoding(NSUTF8StringEncoding) else {
+            var body = Data()
+            guard let jsonString = tempJsonString, let boundaryStart = "--\(boundary)\r\n".data(using: String.Encoding.utf8),
+                let dispositionEncoding = "Content-Disposition:form-data; name=\"imageJson\"\r\n\r\n".data(using: String.Encoding.utf8),
+                let jsonEncoding = "\(jsonString)\r\n".data(using: String.Encoding.utf8),
+                let imageDispositionEncoding = "Content-Disposition:form-data; name=\"imageBinary\"; filename=\"\(image.fileName)\"\r\n".data(using: String.Encoding.utf8),
+                let imageTypeEncoding = "Content-Type: \(mimeType)\r\n\r\n".data(using: String.Encoding.utf8),
+                let imageEndEncoding = "\r\n".data(using: String.Encoding.utf8),
+                let boundaryEnd = "--\(boundary)--\r\n".data(using: String.Encoding.utf8) else {
                     print("Post New Image Error: Could not encode all values for multipart data")
-                    NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImageUploadFailure.rawValue, object: nil)
+                    NotificationCenter.default.post(name: .imageUploadFailure, object: nil)
                     return
             }
-            body.appendData(boundaryStart)
-            body.appendData(dispositionEncoding)
-            body.appendData(jsonEncoding)
-            body.appendData(boundaryStart)
-            body.appendData(imageDispositionEncoding)
-            body.appendData(imageTypeEncoding)
-            body.appendData(imageData)
-            body.appendData(imageEndEncoding)
-            body.appendData(boundaryEnd)
+            body.append(boundaryStart)
+            body.append(dispositionEncoding)
+            body.append(jsonEncoding)
+            body.append(boundaryStart)
+            body.append(imageDispositionEncoding)
+            body.append(imageTypeEncoding)
+            body.append(imageData)
+            body.append(imageEndEncoding)
+            body.append(boundaryEnd)
 
             request.timeout = kDefaultTimeOut
 
-            request.sendData(body, completionHandler: { (response, error) -> Void in
+            request.send(requestBody: body) { response, error in
 
                 //failure
                 if let error = error {
@@ -513,9 +513,9 @@ extension BluemixDataManager {
                     self.addImageToImageTakenDuringAppSessionByIdDictionary(image)
                     self.removeImageFromImagesCurrentlyUploading(image)
 
-                    NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImageUploadSuccess.rawValue, object: nil)
+                    NotificationCenter.default.post(name: .imageUploadSuccess, object: nil)
                 }
-            })
+            }
 
         } catch {
             print("Error converting image dictionary to Json")
@@ -523,7 +523,7 @@ extension BluemixDataManager {
     }
 
     func generateBoundaryString() -> String {
-        return "Boundary-\(NSUUID().UUIDString)"
+        return "Boundary-\(UUID().uuidString)"
     }
 
 
@@ -532,12 +532,12 @@ extension BluemixDataManager {
 
      - parameter image: Image
      */
-    private func handleImageUploadFailure(image: ImagePayload) {
+    fileprivate func handleImageUploadFailure(_ image: ImagePayload) {
 
         self.removeImageFromImagesCurrentlyUploading(image)
         self.addImageToImagesThatFailedToUpload(image)
 
-        NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.ImageUploadFailure.rawValue, object: nil)
+        NotificationCenter.default.post(name: .imageUploadFailure, object: nil)
 
     }
 
@@ -575,7 +575,7 @@ extension BluemixDataManager {
 
      - parameter image: Image
      */
-    private func addImageToImagesThatFailedToUpload(image: ImagePayload) {
+    fileprivate func addImageToImagesThatFailedToUpload(_ image: ImagePayload) {
 
         imagesThatFailedToUpload.append(image)
 
@@ -586,7 +586,7 @@ extension BluemixDataManager {
 
      - parameter image: Image
      */
-    private func removeImageFromImagesThatFailedToUpload(image: ImagePayload) {
+    fileprivate func removeImageFromImagesThatFailedToUpload(_ image: ImagePayload) {
 
         imagesThatFailedToUpload = imagesThatFailedToUpload.filter({ $0 != image})
 
@@ -597,7 +597,7 @@ extension BluemixDataManager {
 
      - parameter image: Image
      */
-    private func addImageToImagesCurrentlyUploading(image: ImagePayload) {
+    fileprivate func addImageToImagesCurrentlyUploading(_ image: ImagePayload) {
 
         imagesCurrentlyUploading.append(image)
 
@@ -608,7 +608,7 @@ extension BluemixDataManager {
 
      - parameter image: Image
      */
-    private func removeImageFromImagesCurrentlyUploading(image: ImagePayload) {
+    fileprivate func removeImageFromImagesCurrentlyUploading(_ image: ImagePayload) {
 
         imagesCurrentlyUploading = imagesCurrentlyUploading.filter({ $0 != image})
 
@@ -617,10 +617,10 @@ extension BluemixDataManager {
     /**
      Method adds the photo to the imagesTakenDuringAppSessionById cache to display the photo in the image feed or profile feed while we wait for the photo to upload to.
      */
-    private func addImageToImageTakenDuringAppSessionByIdDictionary(image: ImagePayload) {
+    fileprivate func addImageToImageTakenDuringAppSessionByIdDictionary(_ image: ImagePayload) {
 
-            let id = image.fileName + CurrentUser.facebookUserId
-            imagesTakenDuringAppSessionById[id] = image.image
+        let id = image.fileName + CurrentUser.facebookUserId
+        imagesTakenDuringAppSessionById[id] = image.image
 
     }
 }
@@ -638,19 +638,19 @@ extension BluemixDataManager {
 
         request.timeout = kDefaultTimeOut
 
-        request.sendWithCompletionHandler { (response, error) -> Void in
+        request.send { response, error in
             if let error = error {
                 print(NSLocalizedString("Get Popular Tags Error:", comment: "") + " \(error.localizedDescription)")
             } else {
-                if let text = response?.responseText, result = Utils.convertStringToDictionary(text), records = result["records"] as? [[String:AnyObject]] {
+                if let text = response?.responseText, let result = Utils.convertStringToDictionary(text), let records = result["records"] as? [[String: Any]] {
                     // Extract string tags from server results
                     self.tags = records.flatMap { value in
                         if let key = value["key"] as? String {
-                            return key.uppercaseString
+                            return key.uppercased()
                         }
                         return nil
                     }
-                    NSNotificationCenter.defaultCenter().postNotificationName(BluemixDataManagerNotification.PopularTagsReceived.rawValue, object: nil)
+                    NotificationCenter.default.post(name: .popularTagsReceived, object: nil)
                 }
             }
         }

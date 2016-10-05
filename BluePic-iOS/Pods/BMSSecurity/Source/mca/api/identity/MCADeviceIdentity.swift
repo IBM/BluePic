@@ -21,22 +21,23 @@ public class MCADeviceIdentity : BaseDeviceIdentity {
     
     public override init() {
         var dict:[String : String] = [:]
+        
         #if os(watchOS)
             dict = [
-                BaseDeviceIdentity.ID : "Not Available",
-                BaseDeviceIdentity.OS :  WKInterfaceDevice.currentDevice().systemName,
-                BaseDeviceIdentity.OS_VERSION : WKInterfaceDevice.currentDevice().systemVersion,
-                BaseDeviceIdentity.MODEL :  WKInterfaceDevice.currentDevice().model
+                BaseDeviceIdentity.Key.ID : "Not Available",
+                BaseDeviceIdentity.Key.OS :  WKInterfaceDevice.currentDevice().systemName,
+                BaseDeviceIdentity.Key.OSVersion : WKInterfaceDevice.currentDevice().systemVersion,
+                BaseDeviceIdentity.Key.model :  WKInterfaceDevice.currentDevice().model
             ]
         #else
             dict = [
-                BaseDeviceIdentity.ID : (UIDevice.current.identifierForVendor?.uuidString)!,
-                BaseDeviceIdentity.OS :  UIDevice.current.systemName,
-                BaseDeviceIdentity.OS_VERSION : UIDevice.current.systemVersion,
-                BaseDeviceIdentity.MODEL :  UIDevice.current.model
+                BaseDeviceIdentity.Key.ID : (UIDevice.current.identifierForVendor?.uuidString)!,
+                BaseDeviceIdentity.Key.OS :  UIDevice.current.systemName,
+                BaseDeviceIdentity.Key.OSVersion : UIDevice.current.systemVersion,
+                BaseDeviceIdentity.Key.model :  UIDevice.current.model
             ]
         #endif
-        super.init(map: dict)
+        super.init(map: dict as [String : AnyObject]?)
     }
     
     public override init(map: [String : AnyObject]?) {
@@ -50,17 +51,17 @@ public class MCADeviceIdentity : BaseDeviceIdentity {
             var dict:[String : String] = [:]
             #if os(watchOS)
                 dict = [
-                    BaseDeviceIdentity.ID : "Not Available",
-                    BaseDeviceIdentity.OS :  WKInterfaceDevice.currentDevice().systemName,
-                    BaseDeviceIdentity.OS_VERSION : WKInterfaceDevice.currentDevice().systemVersion,
-                    BaseDeviceIdentity.MODEL :  WKInterfaceDevice.currentDevice().model
+                    BaseDeviceIdentity.Key.ID  : "Not Available",
+                    BaseDeviceIdentity.Key.OS :  WKInterfaceDevice.currentDevice().systemName,
+                    BaseDeviceIdentity.Key.OSVersion : WKInterfaceDevice.currentDevice().systemVersion,
+                    BaseDeviceIdentity.Key.model :  WKInterfaceDevice.currentDevice().model
                 ]
             #else
                 dict = [
-                    BaseDeviceIdentity.ID : (UIDevice.currentDevice().identifierForVendor?.UUIDString)!,
-                    BaseDeviceIdentity.OS :  UIDevice.currentDevice().systemName,
-                    BaseDeviceIdentity.OS_VERSION : UIDevice.currentDevice().systemVersion,
-                    BaseDeviceIdentity.MODEL :  UIDevice.currentDevice().model
+                    BaseDeviceIdentity.Key.ID : (UIDevice.currentDevice().identifierForVendor?.UUIDString)!,
+                    BaseDeviceIdentity.Key.OS :  UIDevice.currentDevice().systemName,
+                    BaseDeviceIdentity.Key.OSVersion : UIDevice.currentDevice().systemVersion,
+                    BaseDeviceIdentity.Key.model :  UIDevice.currentDevice().model
                 ]
             #endif
             super.init(map: dict)

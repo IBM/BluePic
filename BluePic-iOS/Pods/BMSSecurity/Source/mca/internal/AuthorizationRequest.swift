@@ -22,7 +22,7 @@ import BMSCore
 //AuthorizationRequest is used internally to send authorization requests.
 internal class AuthorizationRequest : BaseRequest {
     
-    internal func send(_ completionHandler: BmsCompletionHandler?) {
+    internal func send(_ completionHandler: BMSCompletionHandler?) {
         super.send(completionHandler: completionHandler)
     }
     
@@ -39,7 +39,7 @@ internal class AuthorizationRequest : BaseRequest {
     }
     
     internal init(url:String, method:HttpMethod) {
-        super.init(url: url, headers: nil, queryParameters: nil, method: method, timeout: 0)
+        super.init(url: url, method: method, headers: nil, queryParameters: nil, timeout: 0)
         allowRedirects = false
         
         let configuration = URLSessionConfiguration.default
@@ -54,8 +54,8 @@ internal class AuthorizationRequest : BaseRequest {
      * @param formParameters The parameters to put in the request body
      * @param listener       The listener whose onSuccess or onFailure methods will be called when this request finishes.
      */
-    internal func sendWithCompletionHandler(_ formParamaters : [String : String], callback: BmsCompletionHandler?) {
-        headers[BaseRequest.CONTENT_TYPE] = "application/x-www-form-urlencoded"
+    internal func sendWithCompletionHandler(_ formParamaters : [String : String], callback: BMSCompletionHandler?) {
+        headers[BaseRequest.contentType] = "application/x-www-form-urlencoded"
         var body = ""
         var i = 0
         //creating body params
@@ -66,7 +66,7 @@ internal class AuthorizationRequest : BaseRequest {
             }
             i+=1
         }
-        sendString(requestBody: body, completionHandler: callback)
+        send(requestBody: body.data(using: .utf8), completionHandler: callback)
     }
     private func urlEncode(_ str:String) -> String{
         var encodedString = ""
@@ -74,8 +74,8 @@ internal class AuthorizationRequest : BaseRequest {
         let FORM_ENCODE_SET = " \"':;<=>@[]^`{}|/\\?#&!$(),~%"
         
         for element: Int in 0x20..<0x7f {
-            if !FORM_ENCODE_SET.contains(String(UnicodeScalar(element))) {
-                unchangedCharacters += String(Character(UnicodeScalar(element)))
+            if !FORM_ENCODE_SET.contains(String(describing: UnicodeScalar(element))) {
+                unchangedCharacters += String(Character(UnicodeScalar(element)!))
             }
         }
         
@@ -97,8 +97,8 @@ internal class AuthorizationRequest : BaseRequest {
 
 internal class AuthorizationRequest : BaseRequest {
     
-    internal func send(completionHandler: BmsCompletionHandler?) {
-        sendWithCompletionHandler(completionHandler)
+    internal func send(completionHandler: BMSCompletionHandler?) {
+        super.send(requestBody: nil, completionHandler: completionHandler)
     }
     
     //Add new header
@@ -129,8 +129,8 @@ internal class AuthorizationRequest : BaseRequest {
      * @param formParameters The parameters to put in the request body
      * @param listener       The listener whose onSuccess or onFailure methods will be called when this request finishes.
      */
-    internal func sendWithCompletionHandler(formParamaters : [String : String], callback: BmsCompletionHandler?) {
-        headers[BaseRequest.CONTENT_TYPE] = "application/x-www-form-urlencoded"
+    internal func sendWithCompletionHandler(formParamaters : [String : String], callback: BMSCompletionHandler?) {
+        headers[BaseRequest.contentType] = "application/x-www-form-urlencoded"
         var body = ""
         var i = 0
         //creating body params
@@ -141,7 +141,8 @@ internal class AuthorizationRequest : BaseRequest {
             }
             i+=1
         }
-        sendString(body, completionHandler: callback)
+        
+        send(requestBody: body.dataUsingEncoding(NSUTF8StringEncoding), completionHandler: callback)
     }
     private func urlEncode(str:String) -> String{
         var encodedString = ""

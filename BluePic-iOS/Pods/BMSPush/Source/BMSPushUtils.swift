@@ -13,7 +13,6 @@
 
 import UIKit
 import BMSCore
-import BMSAnalyticsAPI
 
 #if swift(>=3.0)
     
@@ -73,11 +72,11 @@ import BMSAnalyticsAPI
             
             var devId = String()
             let authManager  = BMSClient.sharedInstance.authorizationManager
-            devId = authManager.deviceIdentity.id!
-            let testLogger = Logger.logger(forName: devId)
-            Logger.logLevelFilter = LogLevel.Debug
+            devId = authManager.deviceIdentity.ID!
+            let testLogger = Logger.logger(name:devId)
+            Logger.logLevelFilter = LogLevel.debug
             testLogger.debug(message: loggerMessage)
-            Logger.logLevelFilter = LogLevel.Info
+            Logger.logLevelFilter = LogLevel.info
             testLogger.info(message: loggerMessage)
             
         }
@@ -144,12 +143,12 @@ import BMSAnalyticsAPI
             
             var devId = String()
             let authManager  = BMSClient.sharedInstance.authorizationManager
-            devId = authManager.deviceIdentity.id!
-            let testLogger = Logger.logger(forName: devId)
-            Logger.logLevelFilter = LogLevel.Debug
-            testLogger.debug(loggerMessage)
-            Logger.logLevelFilter = LogLevel.Info
-            testLogger.info(loggerMessage)
+            devId = authManager.deviceIdentity.ID!
+            let testLogger = Logger.logger(name: devId)
+            Logger.logLevelFilter = LogLevel.debug
+            testLogger.debug(message: loggerMessage)
+            Logger.logLevelFilter = LogLevel.info
+            testLogger.info(message: loggerMessage)
             
         }
         

@@ -20,16 +20,16 @@ import BMSCore
 enum FacebookAuthenticationError {
 
     //Error when the Authentiction header is not found
-    case AuthenticationHeaderNotFound
+    case authenticationHeaderNotFound
 
     //Error when the facebook user id is not found
-    case FacebookUserIdNotFound
+    case facebookUserIdNotFound
 
     //Error when the facebook user identity is not found
-    case FacebookuserIdentifyNotFound
+    case facebookuserIdentifyNotFound
 
     //Error when user canceled login
-    case UserCanceledLogin
+    case userCanceledLogin
 
 }
 
@@ -50,7 +50,7 @@ class FacebookDataManager: NSObject {
 
      - returns:
      */
-    private override init() {}
+    fileprivate override init() {}
 
 
     /**
@@ -58,7 +58,7 @@ class FacebookDataManager: NSObject {
 
      - parameter callback: ((facebookUserId : String?, facebookUserFullName : String?, error : FacebookAuthenticationError?) -> ())
      */
-    func loginWithFacebook(callback : ((facebookUserId: String?, facebookUserFullName: String?, error: FacebookAuthenticationError?) -> ())) {
+    func loginWithFacebook(_ callback : @escaping ((_ facebookUserId: String?, _ facebookUserFullName: String?, _ error: FacebookAuthenticationError?) -> ())) {
 
         if isFacebookConfigured() {
             authenticateFacebookUser(callback)
@@ -71,29 +71,29 @@ class FacebookDataManager: NSObject {
 
      - returns: true if configured, false if not
      */
-    private func isFacebookConfigured() -> Bool {
+    fileprivate func isFacebookConfigured() -> Bool {
 
-        guard let facebookAppID = NSBundle.mainBundle().objectForInfoDictionaryKey("FacebookAppID") as? NSString,
-            facebookDisplayName = NSBundle.mainBundle().objectForInfoDictionaryKey("FacebookDisplayName") as? NSString,
-            urlTypes = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleURLTypes") as? NSArray,
-            firstUrlType = urlTypes.firstObject as? NSDictionary,
-            urlSchemes = firstUrlType["CFBundleURLSchemes"] as? NSArray,
-            facebookURLScheme = urlSchemes.firstObject as? NSString else {
+        guard let facebookAppID = Bundle.main.object(forInfoDictionaryKey: "FacebookAppID") as? String,
+            let facebookDisplayName = Bundle.main.object(forInfoDictionaryKey: "FacebookDisplayName") as? String,
+            let urlTypes = Bundle.main.object(forInfoDictionaryKey: "CFBundleURLTypes") as? [Any],
+            let firstUrlType = urlTypes.first as? [String : Any],
+            let urlSchemes = firstUrlType["CFBundleURLSchemes"] as? [String],
+            let facebookURLScheme = urlSchemes.first else {
 
             print(NSLocalizedString("Is Facebook Congigured Error: Authentication is not configured in Info.plist. You have to configure Info.plist with the same Authentication method configured on Bluemix such as Facebook", comment: ""))
             return false
         }
 
-        if facebookAppID.isEqualToString("") || facebookAppID == "123456789" {
+        if facebookAppID == "" || facebookAppID == "123456789" {
             print(NSLocalizedString("Is Facebook Congigured Error: Authentication is not configured in Info.plist. You have to configure Info.plist with the same Authentication method configured on Bluemix such as Facebook", comment: ""))
             return false
         }
-        if facebookDisplayName.isEqualToString("") {
+        if facebookDisplayName == "" {
             print(NSLocalizedString("Is Facebook Congigured Error: Authentication is not configured in Info.plist. You have to configure Info.plist with the same Authentication method configured on Bluemix such as Facebook", comment: ""))
             return false
         }
 
-        if facebookURLScheme.isEqualToString("") || facebookURLScheme.isEqualToString("fb123456789") || !(facebookURLScheme.hasPrefix("fb")) {
+        if facebookURLScheme == "" || facebookURLScheme == "fb123456789" || !(facebookURLScheme.hasPrefix("fb")) {
             print(NSLocalizedString("Is Facebook Congigured Error: Authentication is not configured in Info.plist. You have to configure Info.plist with the same Authentication method configured on Bluemix such as Facebook", comment: ""))
             return false
         }
@@ -105,50 +105,44 @@ class FacebookDataManager: NSObject {
     /**
      Method authenticates user with facebook and returns the facebook user id and facebook user full name if authentication was a success, else it will return a FacebookAuthenticationError.
 
-     - parameter callback: ((facebookUserId : String?, facebookUserFullName : String?, error : FacebookAuthenticationError?) -> ())
+     - parameter callback: (facebookUserId : String?, facebookUserFullName : String?, error : FacebookAuthenticationError?) -> ()
      */
-    private func authenticateFacebookUser(callback : ((facebookUserId: String?, facebookUserFullName: String?, error: FacebookAuthenticationError?) -> ())) {
+    fileprivate func authenticateFacebookUser(_ callback : @escaping (_ facebookUserId: String?, _ facebookUserFullName: String?, _ error: FacebookAuthenticationError?) -> ()) {
 
         let authManager = BMSClient.sharedInstance.authorizationManager
 
-        authManager.obtainAuthorization(completionHandler: {(response: Response?, error: NSError?) in
+        authManager.obtainAuthorization { response, error in
 
             //error
             if let errorObject = error {
-                //user canceled login
-                if errorObject.code == -1 {
-                    print(NSLocalizedString("Authenticate Facebook User Error: User Canceled login:", comment: "") + " \(errorObject.localizedDescription)")
-                    callback(facebookUserId: nil, facebookUserFullName: nil, error: FacebookAuthenticationError.UserCanceledLogin)
-                } else {
-                    print(NSLocalizedString("Authenticate Facebook User Error: Error obtaining Authentication Header.", comment: "") + " \(errorObject.localizedDescription)")
-                    //"Error obtaining Authentication Header.\nCheck Bundle Identifier and Bundle version string\n\n"
-                    callback(facebookUserId: nil, facebookUserFullName: nil, error: FacebookAuthenticationError.AuthenticationHeaderNotFound)
-                }
+                print(NSLocalizedString("Authenticate Facebook User Error: Error obtaining Authentication Header.", comment: "") + " \(errorObject.localizedDescription)")
+                //"Error obtaining Authentication Header.\nCheck Bundle Identifier and Bundle version string\n\n"
+                callback(nil, nil, FacebookAuthenticationError.authenticationHeaderNotFound)
             }
             //error is nil
             else {
                 if let identity = authManager.userIdentity {
-                    if let userId = identity.id {
+                    if let userId = identity.ID {
                         if let fullName = identity.displayName {
                             //success!
-                            callback(facebookUserId: userId, facebookUserFullName: fullName, error: nil)
+                            callback(userId, fullName, nil)
                         }
                     }
                     //error
                     else {
                         print(NSLocalizedString("Authenticate Facebook User Error: Valid Authentication Header and userIdentity, but id not found", comment: ""))
-                        callback(facebookUserId: nil, facebookUserFullName: nil, error: FacebookAuthenticationError.FacebookUserIdNotFound)
+                        callback(nil, nil, FacebookAuthenticationError.facebookUserIdNotFound)
                     }
 
                 }
                 //error
                 else {
                     print(NSLocalizedString("Authenticate Facebook User Error: Valid Authentication Header, but userIdentity not found. You have to configure the Facebook Mobile Client Access service available on Bluemix", comment: ""))
-                    callback(facebookUserId: nil, facebookUserFullName: nil, error: FacebookAuthenticationError.FacebookuserIdentifyNotFound)
+                    callback(nil, nil, FacebookAuthenticationError.facebookuserIdentifyNotFound)
                 }
             }
 
-        })
+        }
     }
 
 
@@ -157,7 +151,7 @@ class FacebookDataManager: NSObject {
 
      - parameter completionHandler: BMSCompletionHandler?
      */
-    func logOut(completionHandler: BmsCompletionHandler?) {
+    func logOut(_ completionHandler: BMSCompletionHandler?) {
 
         FacebookAuthenticationManager.sharedInstance.logout(completionHandler)
 

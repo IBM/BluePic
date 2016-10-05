@@ -16,47 +16,47 @@
 
 import Foundation
 
-extension NSDate {
+extension Date {
 
     /**
-     Method returns a NSCalendar Unit
+     Method returns a Calendar Unit
 
-     - returns: NSCalendarUnit
+     - returns: CalendarUnit
      */
-    private class func componentFlags() -> NSCalendarUnit {
-        return NSCalendarUnit.Year.union(.Month).union(.Day).union(.WeekOfYear).union(.Hour).union(.Minute).union(.Second).union(.Weekday).union(.WeekdayOrdinal)
+    fileprivate static func componentFlags() -> Set<Calendar.Component> {
+        return [.year, .month, .day, .weekOfYear, .hour, .minute, .second, .weekday, .weekdayOrdinal]
     }
 
     /**
-     Method returns the components of the NSCalendar
+     Method returns the components of the Calendar
 
-     - parameter fromDate: NSDate
+     - parameter fromDate: Date
 
-     - returns: NSDateComponents
+     - returns: DateComponents
      */
-    private class func components(fromDate fromDate: NSDate) -> NSDateComponents {
-        return NSCalendar.currentCalendar().components(NSDate.componentFlags(), fromDate: fromDate)
+    fileprivate static func components(fromDate: Date) -> DateComponents {
+        return Calendar.current.dateComponents(Date.componentFlags(), from: fromDate)
     }
 
     /**
-     Method returns the NSDate components
+     Method returns the Date components
 
-     - returns: NSDateComponents
+     - returns: DateComponents
      */
-    private func components() -> NSDateComponents {
-        return NSDate.components(fromDate: self)
+    fileprivate func components() -> DateComponents {
+        return Date.components(fromDate: self)
     }
 
     /**
      Method takes in a time interval since reference date and converts it to the number of seconds, minutes, hours, or weeks since the photo was taken
 
-     - parameter timeInterval: NSTimeInterval
+     - parameter timeInterval: TimeInterval
 
      - returns: String
      */
-    class func timeStringSinceIntervalSinceReferenceDate(timeInterval: NSTimeInterval) -> String {
+    static func timeStringSinceIntervalSinceReferenceDate(_ timeInterval: TimeInterval) -> String {
 
-        let postedDate = NSDate(timeIntervalSinceReferenceDate: timeInterval)
+        let postedDate = Date(timeIntervalSinceReferenceDate: timeInterval)
 
         return timeSinceDateString(postedDate)
 
@@ -65,88 +65,88 @@ extension NSDate {
     /**
      Method returns the number of years since the date parameter
 
-     - parameter date: NSDate
+     - parameter date: Date
 
      - returns: Int
      */
-    private class func yearsFrom(date: NSDate) -> Int {
-        return NSCalendar.currentCalendar().components(.Year, fromDate: date, toDate: NSDate(), options: []).year
+    fileprivate static func yearsFrom(_ date: Date) -> Int {
+        return Calendar.current.dateComponents([.year], from: date, to: Date()).year!
     }
 
     /**
      Method returns the number of months since the date parameter
 
-     - parameter date: NSDate
+     - parameter date: Date
 
      - returns: Int
      */
-    private class func monthsFrom(date: NSDate) -> Int {
-        return NSCalendar.currentCalendar().components(.Month, fromDate: date, toDate: NSDate(), options: []).month
+    fileprivate static func monthsFrom(_ date: Date) -> Int {
+        return Calendar.current.dateComponents([.month], from: date, to: Date()).month!
     }
 
     /**
      Method returns the number of weeks since the date parameter
 
-     - parameter date: NSDate
+     - parameter date: Date
 
      - returns: Int
      */
-    private class func weeksFrom(date: NSDate) -> Int {
-        return NSCalendar.currentCalendar().components(.WeekOfYear, fromDate: date, toDate: NSDate(), options: []).weekOfYear
+    fileprivate static func weeksFrom(_ date: Date) -> Int {
+        return Calendar.current.dateComponents([.weekOfYear], from: date, to: Date()).weekOfYear!
     }
 
     /**
      Method returns the number of days since the date parameter
 
-     - parameter date: NSDate
+     - parameter date: Date
 
      - returns: Int
      */
-    private class func daysFrom(date: NSDate) -> Int {
-        return NSCalendar.currentCalendar().components(.Day, fromDate: date, toDate: NSDate(), options: []).day
+    fileprivate static func daysFrom(_ date: Date) -> Int {
+        return Calendar.current.dateComponents([.day], from: date, to: Date()).day!
     }
 
     /**
      Method returns the number of hours since the date parameter
 
-     - parameter date: NSDate
+     - parameter date: Date
 
      - returns: Int
      */
-    private class func hoursFrom(date: NSDate) -> Int {
-        return NSCalendar.currentCalendar().components(.Hour, fromDate: date, toDate: NSDate(), options: []).hour
+    fileprivate static func hoursFrom(_ date: Date) -> Int {
+        return Calendar.current.dateComponents([.hour], from: date, to: Date()).hour!
     }
 
     /**
      Method returns the number of minutes since the date parameter
 
-     - parameter date: NSDate
+     - parameter date: Date
 
      - returns: Int
      */
-    private class func minutesFrom(date: NSDate) -> Int {
-        return NSCalendar.currentCalendar().components(.Minute, fromDate: date, toDate: NSDate(), options: []).minute
+    fileprivate static func minutesFrom(_ date: Date) -> Int {
+        return Calendar.current.dateComponents([.minute], from: date, to: Date()).minute!
     }
 
     /**
      Method returns the number of seconds since the date parameter
 
-     - parameter date: NSDate
+     - parameter date: Date
 
      - returns: Int
      */
-    private class func secondsFrom(date: NSDate) -> Int {
-        return NSCalendar.currentCalendar().components(.Second, fromDate: date, toDate: NSDate(), options: []).second
+    fileprivate static func secondsFrom(_ date: Date) -> Int {
+        return Calendar.current.dateComponents([.second], from: date, to: Date()).second!
     }
 
     /**
      Method returns the time since the data parameter as a string
 
-     - parameter date: NSDate
+     - parameter date: Date
 
      - returns: String
      */
-    class func timeSinceDateString(date: NSDate) -> String {
+    static func timeSinceDateString(_ date: Date) -> String {
         if weeksFrom(date)   > 0 { return "\(weeksFrom(date))" + NSLocalizedString("w", comment: "first letter of the word week")}
         if daysFrom(date)    > 0 { return "\(daysFrom(date))" +  NSLocalizedString("d", comment: "first letter of the word day")}
         if hoursFrom(date)   > 0 { return "\(hoursFrom(date))" +  NSLocalizedString("h", comment: "first letter of the word hour")}

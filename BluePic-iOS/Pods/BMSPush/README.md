@@ -17,8 +17,8 @@ This package contains the Push components of the Swift SDK.
 ##Requirements
 
 * iOS 8.0+
-* Xcode 7.3, 8.0 beta 4, 8.0 beta 5
-* Swift 2.2 - 3.0
+* Xcode 7.3, 8.0
+* Swift 2.3 - 3.0
 
 ##Installation
 
@@ -32,8 +32,8 @@ use_frameworks!
 
 target 'MyApp' do
     platform :ios, '8.0'
-    pod 'BMSCore'
-    pod 'BMSPush'
+    pod 'BMSCore', '~> 2.0'
+    pod 'BMSPush', '~> 2.0'
 end
 ```
 From the Terminal, go to your project folder and install the dependencies with the following command:
@@ -50,7 +50,7 @@ Before running the `pod install` command, make sure to use Cocoapods version [1.
 
 Before running the `pod install` command, make sure to use Cocoapods version [1.1.0.beta.1](https://github.com/CocoaPods/CocoaPods/releases/tag/1.1.0.beta.1).
 
-For apps built with Swift 3.0, you may receive a prompt saying "Convert to Current Swift Syntax?" when opening your project in Xcode 8 (following the installation of BMSCore). Always choose the Later option.
+For apps built with Swift 3.0, you may receive a prompt saying "Convert to Current Swift Syntax?" when opening your project in Xcode 8 (following the installation of BMSCore) do not convert BMSPush, BMSCore or BMSAnalyticsAPI
 
 This will installs your dependencies and creates a new Xcode workspace.
 ***Note:*** Ensure that you always open the new Xcode workspace, instead of the original Xcode project file:
@@ -72,7 +72,7 @@ To complete the integration, follow the instructions [here](https://github.com/C
 
 ####Xcode 8
 
-Carthage currently is not supported for BMSPush in Xcode 8 beta. Please use Cocoapods instead.
+For apps built with Swift 2.3, use the command `carthage update --toolchain com.apple.dt.toolchain.Swift_2_3.` Otherwise, use `carthage update`
 
 ##Enabling iOS applications to receive push notifications
 
@@ -101,26 +101,11 @@ myBMSClient.defaultRequestTimeout = 10.0 // Timeout in seconds
 
 #####bluemixRegion
 
-- Specifies the location where the app hosted. You can use one of three values - `BMSClient.REGION_US_SOUTH`, `BMSClient.REGION_UK` and `BMSClient.REGION_SYDNEY`.
+- Specifies the location where the app hosted. You can use one of three values - `BMSClient.Region.usSouth`, `BMSClient.Region.unitedKingdom` and `BMSClient.Region.sydney`.
 
 ###Initializing the Push SDK
 
-```
-let push =  BMSPushClient.sharedInstance
-
-//Swift 3
-push.initializeWithAppGUID(appGUID: "")
-
-//Swift 2.3 or Older
-push.initializeWithAppGUID("appGUID")
-```
-#####appGUID
-
-- The Push app GUID value.
-
-###Initializing the Push SDK with UserId
-If you wish to associate a userId with this client so as to be able to send `userId` based notifications then initialize the `BMSPush` with `clientSecret` .
-
+ initialize the `BMSPushClient`  using the following code.
 ```
 let push =  BMSPushClient.sharedInstance
 
@@ -128,9 +113,9 @@ let push =  BMSPushClient.sharedInstance
 
 push.initializeWithAppGUID(appGUID: "your push appGUID", clientSecret:"your push client secret")
 
-//Swift2.3 or Older
+//Swift Older
 
-push.initializeWithAppGUID("appGUID", clientSecret:"clientSecret")
+push.initializeWithAppGUID(appGUID:"your push appGUID", clientSecret:"your push client secret")
 
 ```
 
@@ -152,7 +137,7 @@ let settings = UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], ca
 UIApplication.sharedApplication().registerUserNotificationSettings(settings)
 UIApplication.sharedApplication().registerForRemoteNotifications()
 
-//For iOS 10 beta
+//For iOS 10
 
  UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge])
  { (granted, error) in
@@ -173,7 +158,7 @@ After the token is received from APNS, pass the token to Push Notifications as p
  func application (_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data){
 
    let push =  BMSPushClient.sharedInstance
-   push.initializeWithAppGUID(appGUID: "your pushAppGUID")
+   push.initializeWithAppGUID(appGUID: "your push App GUID")
    push.registerWithDeviceToken(deviceToken: deviceToken) { (response, statusCode, error) -> Void in
     if error.isEmpty {
       print( "Response during device registration : \(response)")
@@ -190,7 +175,7 @@ After the token is received from APNS, pass the token to Push Notifications as p
  func application (application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData){
 
    let push =  BMSPushClient.sharedInstance
-   push.initializeWithAppGUID("pushAppGUID")
+   push.initializeWithAppGUID("your push App GUID")
    push.registerWithDeviceToken(deviceToken) { (response, statusCode, error) -> Void in
         if error.isEmpty {
             print( "Response during device registration : \(response)")
@@ -214,7 +199,7 @@ For `userId` based notification, the register method will accept one more parame
 func application (_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data){
 
    let push =  BMSPushClient.sharedInstance
-   push.initializeWithAppGUID(appGUID: "your pushAppGUID", clientSecret:"your pushApp Client Secret")
+   push.initializeWithAppGUID(appGUID: "your push App GUID", clientSecret:"your pushApp Client Secret")
    push.registerWithDeviceToken(deviceToken: deviceToken, WithUserId: "your userId") { (response, statusCode, error) -> Void in
     if error.isEmpty {
       print( "Response during device registration : \(response)")
@@ -230,7 +215,7 @@ func application (_ application: UIApplication, didRegisterForRemoteNotification
 func application (application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData){
 
     let push =  BMSPushClient.sharedInstance
-    push.initializeWithAppGUID("your pushAppGUID", clientSecret:"your pushApp Client Secret")
+    push.initializeWithAppGUID("your push App GUID", clientSecret:"your pushApp Client Secret")
     push.registerWithDeviceToken(deviceToken, WithUserId: "your userId") { (response, statusCode, error) -> Void in
         if error.isEmpty {
             print( "Response during device registration : \(response)")

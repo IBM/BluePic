@@ -49,8 +49,8 @@ class ImageDetailViewController: UIViewController {
 
      - parameter animated: Bool
      */
-    override func viewWillAppear(animated: Bool) {
-        UIApplication.sharedApplication().statusBarStyle = .LightContent
+    override func viewWillAppear(_ animated: Bool) {
+        UIApplication.shared.statusBarStyle = .lightContent
     }
 
     /**
@@ -65,11 +65,11 @@ class ImageDetailViewController: UIViewController {
     /**
      Method is called when the back button is pressed
 
-     - parameter sender: AnyObject
+     - parameter sender: Any
      */
-    @IBAction func backButtonAction(sender: AnyObject) {
+    @IBAction func backButtonAction(_ sender: Any) {
 
-        self.navigationController?.popViewControllerAnimated(true)
+        let _ = self.navigationController?.popViewController(animated: true)
 
     }
 
@@ -115,8 +115,8 @@ extension ImageDetailViewController {
     func setupImageView() {
 
         if let urlString = viewModel.getImageURLString() {
-            let nsurl = NSURL(string: urlString)
-            imageView.sd_setImageWithURL(nsurl)
+            let nsurl = URL(string: urlString)
+            imageView.sd_setImage(with: nsurl)
         }
     }
 
@@ -125,13 +125,13 @@ extension ImageDetailViewController {
      */
     func setupBlurView() {
 
-        dimView.hidden = true
+        dimView.isHidden = true
 
         let blurViewFrame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height)
 
         let blurViewHolderView = UIView(frame: blurViewFrame)
 
-        let darkBlur = UIBlurEffect(style: UIBlurEffectStyle.Dark)
+        let darkBlur = UIBlurEffect(style: UIBlurEffectStyle.dark)
 
         let blurView = UIVisualEffectView(effect: darkBlur)
         blurView.frame = blurViewFrame
@@ -156,7 +156,7 @@ extension ImageDetailViewController : UICollectionViewDataSource {
 
      - returns: Int
      */
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel.numberOfItemsInSection(section)
     }
 
@@ -167,7 +167,7 @@ extension ImageDetailViewController : UICollectionViewDataSource {
 
      - returns: Int
      */
-    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
         return viewModel.numberOfSectionsInCollectionView()
     }
 
@@ -176,11 +176,11 @@ extension ImageDetailViewController : UICollectionViewDataSource {
 
      - parameter collectionView: UICollectionView
      - parameter kind:           String
-     - parameter indexPath:      NSIndexPath
+     - parameter indexPath:      IndexPath
 
      - returns: UICollectionReusableView
      */
-    func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         return viewModel.setUpSectionHeaderViewForIndexPath(
             indexPath,
             kind: kind,
@@ -192,11 +192,11 @@ extension ImageDetailViewController : UICollectionViewDataSource {
      Method asks the viewModel to set up the collection view for indexPath
 
      - parameter collectionView: UICollectionView
-     - parameter indexPath:      NSIndexPath
+     - parameter indexPath:      IndexPath
 
      - returns: UICollectionViewCell
      */
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         return viewModel.setUpCollectionViewCell(indexPath, collectionView: collectionView)
     }
 
@@ -209,11 +209,11 @@ extension ImageDetailViewController: UICollectionViewDelegateFlowLayout {
 
      - parameter collectionView:       UICollectionView
      - parameter collectionViewLayout: UICollectionViewLayout
-     - parameter indexPath:            NSIndexPath
+     - parameter indexPath:            IndexPath
 
      - returns: CGSize
      */
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 
         return viewModel.sizeForItemAtIndexPath(indexPath, collectionView: collectionView)
     }
@@ -227,7 +227,7 @@ extension ImageDetailViewController: UICollectionViewDelegateFlowLayout {
 
      - returns: CGSize
      */
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
 
        return viewModel.referenceSizeForHeaderInSection(collectionView, layout: collectionViewLayout, section: section, superViewHeight: self.view.frame.size.height)
     }
@@ -240,9 +240,9 @@ extension ImageDetailViewController : UICollectionViewDelegate {
      Method is called when a cell in the collection view is selected
 
      - parameter collectionView: UICollectionView
-     - parameter indexPath:      NSIndexPath
+     - parameter indexPath:      IndexPath
      */
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if let vc = viewModel.getFeedViewControllerForTagSearchAtIndexPath(indexPath) {
             self.navigationController?.pushViewController(vc, animated: true)
         }
