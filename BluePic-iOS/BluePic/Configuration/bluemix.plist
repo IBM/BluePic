@@ -14,5 +14,7 @@
 	<string>&lt;appRegion&gt;</string>
 	<key>pushAppGUID</key>
 	<string></string>
+	<key>mcaTenantId</key>
+	<string></string>
 </dict>
 </plist>
