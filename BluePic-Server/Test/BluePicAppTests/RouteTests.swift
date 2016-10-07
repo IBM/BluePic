@@ -37,11 +37,11 @@ class RouteTests: XCTestCase {
 
   static var allTests : [(String, (RouteTests) -> () throws -> Void)] {
       return [
-//          ("testPing", testPing),
+          ("testPing", testPing),
           ("testGetTags", testGetTags),
           ("testGettingImages", testGettingImages),
-          ("testGettingSingleImage", testGettingSingleImage)
-        // TODO: write test to get by specific tag
+          ("testGettingSingleImage", testGettingSingleImage),
+          ("testGettingImagesByTag", testGettingImagesByTag)
       ]
   }
   
@@ -67,7 +67,7 @@ class RouteTests: XCTestCase {
   override func setUp() {
     super.setUp()
     
-    resetDatabase()
+//    resetDatabase()
     
     HeliumLogger.use()
     
@@ -83,19 +83,25 @@ class RouteTests: XCTestCase {
     Kitura.stop()
   }
 
-  /*func testPing() {
+  func testPing() {
     
     let pingExpectation = expectation(description: "Hit ping endpoint and get simple text response.")
+    
+    URLRequest(forTestWithMethod: "GET", route: "token")
+      .sendForTesting { data in
 
-    // TODO: perform request as authenticated user
-    URLRequest(forTestWithMethod: "GET", route: "ping")
-    .sendForTesting { data in
-      let pingResult = String(data: data, encoding: String.Encoding.utf8)!
-      XCTAssertTrue(pingResult.contains("Hello World"))
-      pingExpectation.fulfill()
+        let tokenData = JSON(data: data)
+        let accessToken = tokenData["access_token"].stringValue
+        URLRequest(forTestWithMethod: "GET", route: "ping", authToken: accessToken)
+          .sendForTesting { data in
+                
+            let pingResult = String(data: data, encoding: String.Encoding.utf8)!
+            XCTAssertTrue(pingResult.contains("Hello World"))
+            pingExpectation.fulfill()
+        }
     }
-    waitForExpectations(timeout: 5.0, handler: nil)
-  }*/
+    waitForExpectations(timeout: 10.0, handler: nil)
+  }
 
   func testGetTags() {
     
@@ -110,7 +116,7 @@ class RouteTests: XCTestCase {
         }
         tagExpectation.fulfill()
     }
-    waitForExpectations(timeout: 5.0, handler: nil)
+    waitForExpectations(timeout: 10.0, handler: nil)
   }
   
   func assertUserProperties(image: JSON) {
@@ -147,7 +153,7 @@ class RouteTests: XCTestCase {
 
   func testGettingImages() {
     
-    let imageExpectation = expectation(description: "Get all images and a specific image.")
+    let imageExpectation = expectation(description: "Get all images.")
     
     URLRequest(forTestWithMethod: "GET", route: "images")
       .sendForTesting { data in
@@ -165,7 +171,7 @@ class RouteTests: XCTestCase {
   
   func testGettingSingleImage() {
     
-    let imageExpectation = expectation(description: "Get all images and a specific image.")
+    let imageExpectation = expectation(description: "Get an image with a specific image.")
     
     URLRequest(forTestWithMethod: "GET", route: "images/2010")
       .sendForTesting { data in
@@ -177,14 +183,56 @@ class RouteTests: XCTestCase {
     
     waitForExpectations(timeout: 8.0, handler: nil)
   }
+  
+  func testGettingImagesByTag() {
+    
+    let imageExpectation = expectation(description: "Get all images with a specific tag.")
+    
+    URLRequest(forTestWithMethod: "GET", route: "images?tag=mountain")
+      .sendForTesting { data in
+        
+        let images = JSON(data: data)
+        let records = images["records"].arrayValue
+        print("img: \(images)")
+        XCTAssertEqual(records.count, 3)
+        let image = records.first!
+        self.assertUserProperties(image: image)
+        imageExpectation.fulfill()
+        
+    }
+    waitForExpectations(timeout: 8.0, handler: nil)
+  }
+  
+  /*func testPostingImage() {
+    
+    let imageExpectation = expectation(description: "Post an image with server.")
+    let fileName = "bluepic-eye.png"
+    let initialPath = #file
+    let components = initialPath.characters.split(separator: "/").map(String.init)
+    let notLastThree = components[0..<components.count - 3]
+    let directoryPath = "/" + notLastThree.joined(separator: "/") + "/public/" + fileName
+    let image = try? Data(contentsOf: URL(string: directoryPath)!)
+    print("IMg: \(image)")
+    
+    var request = URLRequest(url: URL(string: "http://127.0.0.1:8090/images")!, cachePolicy: .reloadIgnoringCacheData, timeoutInterval: 10.0)
+    request.httpMethod = "POST"
+    
+//    let imageDictionary = ["fileName": image.fileName, "caption" : image.caption, "width" : image.width, "height" : image.height, "location" : ["name" : image.location.name, "latitude" : image.location.latitude, "longitude" : image.location.longitude]] as [String : Any]
+    
+
+    waitForExpectations(timeout: 8.0, handler: nil)
+  }*/
 
 }
 
 private extension URLRequest {
   
-  init(forTestWithMethod method: String, route: String = "", message: String? = nil) {
+  init(forTestWithMethod method: String, route: String = "", message: String? = nil, authToken: String? = nil) {
     self.init(url: URL(string: "http://127.0.0.1:8090/" + route)!)
     addValue("application/json", forHTTPHeaderField: "Content-Type")
+    if let authToken = authToken {
+        addValue("Bearer \(authToken)", forHTTPHeaderField: "Authorization")
+    }
     httpMethod = method
     cachePolicy = .reloadIgnoringCacheData
   }
