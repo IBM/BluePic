@@ -150,6 +150,8 @@ In order to have the app authenticate with Facebook, you must create an applicat
 1. On the next page, enter your Facebook application ID (see [Create an application instance on Facebook](#1-create-an-application-instance-on-facebook) section for further details). Click on the Save button.
 <p align="center"><img src="Imgs/facebook-mca-setup.png"  alt="Drawing" height=250 border=0 /></p>
 
+1. One more thing that needs to be done for MCA to work properly is that you need add the `tenantId` for MCA into the `bluemix.plist` for BluePic-iOS. We get the `tenantId ` by viewing our credentials for the Mobile-Client-Access service in Bluemix, all your services should be under the "Connections" of your app. Once there, click on the "View Credentials" or "Show Credentials" button for your MCA service and you should see the `tenantId ` pop up, among other values. Now, simply put that value into your `bluemix.plist` corresponding with the `mcaTenantId` key.
+
 1. Facebook authentication with Bluemix Mobile Client Access is now completely set up!
 
 ### 3. Configure Bluemix Push service
@@ -157,7 +159,7 @@ To utilize push notification capabilities on Bluemix, you need to configure a no
 
 Luckily, Bluemix has [instructions](https://console.ng.bluemix.net/docs/services/mobilepush/t_push_provider_ios.html) to walk you through the process of configuring APNS with your Bluemix Push service. Please note that you'd need to upload a `.p12` certificate to Bluemix and enter the password for it, as described in the Bluemix instructions.
 
-Additionally, the `appGuid ` for your Push service acts independently of the BluePic app so we will need to add that value to our `bluemix.plist`. We get the `appGuid ` by viewing our credentials for the Push service in Bluemix, all your services should be under the "Connections" of your app. Once there, click on the "View Credentials" button for your Push Notifications service and you should see the `appGuid ` pop up, among other values. Now, simply put that value into your `bluemix.plist` corresponding with the `pushAppGUID` key. This should ensure your device gets registered properly with the Push service.
+Additionally, the `appGuid ` for your Push service acts independently of the BluePic app so we will need to add that value to our `bluemix.plist`. We get the `appGuid ` by viewing our credentials for the Push service in Bluemix, all your services should be under the "Connections" of your app. Once there, click on the "View Credentials" or "Show Credentials" button for your Push Notifications service and you should see the `appGuid ` pop up, among other values. Now, simply put that value into your `bluemix.plist` corresponding with the `pushAppGUID` key. This should ensure your device gets registered properly with the Push service.
 
 Lastly, remember that push notifications will only show up on a physical iOS device. To ensure your app can run on a device and receive push notifications, make sure you followed the [Bluemix instructions](https://console.ng.bluemix.net/docs/services/mobilepush/t_push_provider_ios.html) above. At this point, open the `BluePic.xcworkspace` in Xcode and navigate to the `Capabilities` tab for the BluePic app target. Here, flip the switch for push notifications, like so:
 

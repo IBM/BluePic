@@ -19,5 +19,5 @@ import XCTest
 @testable import BluePicAppTests
 
 XCTMain([
-    testCase(RouteTests.allTests)
+//    testCase(RouteTests.allTests)
 ])

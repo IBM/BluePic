@@ -144,6 +144,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         //Initialize Facebook
         MCAAuthorizationManager.sharedInstance.setAuthorizationPersistencePolicy(PersistencePolicy.always)
+        if BluemixDataManager.SharedInstance.bluemixConfig.mcaTenantId != "" {
+            MCAAuthorizationManager.sharedInstance.initialize(tenantId: BluemixDataManager.SharedInstance.bluemixConfig.mcaTenantId, bluemixRegion: BluemixDataManager.SharedInstance.bluemixConfig.appRegion)
+        }
         BMSClient.sharedInstance.authorizationManager = MCAAuthorizationManager.sharedInstance
         FacebookAuthenticationManager.sharedInstance.register()
 

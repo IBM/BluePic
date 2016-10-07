@@ -67,7 +67,7 @@ class RouteTests: XCTestCase {
   override func setUp() {
     super.setUp()
     
-//    resetDatabase()
+    resetDatabase()
     
     HeliumLogger.use()
     
