@@ -54,8 +54,8 @@ class RouteTests: XCTestCase {
     
     let initialPath = #file
     let components = initialPath.characters.split(separator: "/").map(String.init)
-    let notLastThree = components[0..<components.count - 4]
-    let directoryPath = "/" + notLastThree.joined(separator: "/") + "/Cloud-Scripts"
+    let notLastFour = components[0..<components.count - 4]
+    let directoryPath = "/" + notLastFour.joined(separator: "/") + "/Cloud-Scripts"
 
     task.currentDirectoryPath = directoryPath
     task.launchPath = "/bin/sh"
@@ -118,8 +118,145 @@ class RouteTests: XCTestCase {
     }
     waitForExpectations(timeout: 10.0, handler: nil)
   }
+
+  func testGettingImages() {
+    
+    let imageExpectation = expectation(description: "Get all images.")
+    
+    URLRequest(forTestWithMethod: "GET", route: "images")
+      .sendForTesting { data in
+        
+        let images = JSON(data: data)
+        let records = images["records"].arrayValue
+        XCTAssertEqual(records.count, 9)
+        let firstImage = records.first!
+        self.assertImage2010(image: firstImage)
+        let lastImage = records.last!
+        self.assertImage2001(image: lastImage)
+        imageExpectation.fulfill()
+
+    }
+    waitForExpectations(timeout: 8.0, handler: nil)
+  }
   
-  func assertUserProperties(image: JSON) {
+  func testGettingSingleImage() {
+    
+    let imageExpectation = expectation(description: "Get an image with a specific image.")
+    
+    URLRequest(forTestWithMethod: "GET", route: "images/2010")
+      .sendForTesting { data in
+        
+        let image = JSON(data: data)
+        self.assertImage2010(image: image)
+        imageExpectation.fulfill()
+    }
+    
+    waitForExpectations(timeout: 8.0, handler: nil)
+  }
+  
+  func testGettingImagesByTag() {
+    
+    let imageExpectation = expectation(description: "Get all images with a specific tag.")
+    
+    URLRequest(forTestWithMethod: "GET", route: "images?tag=mountain")
+      .sendForTesting { data in
+        
+        let images = JSON(data: data)
+        let records = images["records"].arrayValue
+        XCTAssertEqual(records.count, 3)
+        let image = records.first!
+        self.assertImage2010(image: image)
+        
+        // No need to test contents of every image, mainly want to know we got the correct images.
+        let imageIds = [2010, 2008, 2003]
+        for (index, img) in records.enumerated() {
+          XCTAssertEqual(img["_id"].intValue, imageIds[index])
+        }
+        imageExpectation.fulfill()
+        
+    }
+    waitForExpectations(timeout: 8.0, handler: nil)
+  }
+  
+  func testPostingImage() {
+    
+    let imageExpectation = expectation(description: "Post an image with server.")
+    
+    URLRequest(forTestWithMethod: "GET", route: "token")
+      .sendForTesting { data in
+        
+        let tokenData = JSON(data: data)
+        let accessToken = tokenData["access_token"].stringValue
+    
+        // find image
+        let fileName = "city.png"
+        let initialPath = #file
+        let components = initialPath.characters.split(separator: "/").map(String.init)
+        let notLastFour = components[0..<components.count - 4]
+        let directoryPath = "/" + notLastFour.joined(separator: "/") + "/Cloud-Scripts/Object-Storage/images/city.png"
+        let imageURL = URL(fileURLWithPath: directoryPath)
+        
+        let imageDictionary = ["fileName": fileName, "caption" : "my caption", "width" : 250, "height" : 300, "location" : ["name" : "Austin, TX", "latitude" : 34.53, "longitude" : 84.5]] as [String : Any]
+        let boundary = "Boundary-\(UUID().uuidString)"
+        let mimeType = "image/png"
+        
+        do {
+          let imageData = try Data(contentsOf: imageURL)
+          let jsonData = try JSONSerialization.data(withJSONObject: imageDictionary, options: JSONSerialization.WritingOptions(rawValue: 0))
+          let tempJsonString = String(data: jsonData, encoding: String.Encoding.utf8)
+          var request = URLRequest(url: URL(string: "http://127.0.0.1:8090/images")!, cachePolicy: .reloadIgnoringCacheData, timeoutInterval: 10.0)
+          request.timeoutInterval = 60
+          request.httpMethod = "POST"
+          request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+          request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+          
+          var body = Data()
+          guard let jsonString = tempJsonString, let boundaryStart = "--\(boundary)\r\n".data(using: String.Encoding.utf8),
+            let dispositionEncoding = "Content-Disposition:form-data; name=\"imageJson\"\r\n\r\n".data(using: String.Encoding.utf8),
+            let jsonEncoding = "\(jsonString)\r\n".data(using: String.Encoding.utf8),
+            let imageDispositionEncoding = "Content-Disposition:form-data; name=\"imageBinary\"; filename=\"\(fileName)\"\r\n".data(using: String.Encoding.utf8),
+            let imageTypeEncoding = "Content-Type: \(mimeType)\r\n\r\n".data(using: String.Encoding.utf8),
+            let imageEndEncoding = "\r\n".data(using: String.Encoding.utf8),
+            let boundaryEnd = "--\(boundary)--\r\n".data(using: String.Encoding.utf8) else {
+              XCTFail("Post New Image Error: Could not encode all values for multipart data")
+              return
+          }
+          body.append(boundaryStart)
+          body.append(dispositionEncoding)
+          body.append(jsonEncoding)
+          body.append(boundaryStart)
+          body.append(imageDispositionEncoding)
+          body.append(imageTypeEncoding)
+          body.append(imageData)
+          body.append(imageEndEncoding)
+          body.append(boundaryEnd)
+          request.httpBody = body
+
+          print("executing request: \(request)")
+          URLSession(configuration: .default).dataTask(with: request) { data, response, error in
+            if let error = error {
+              XCTFail("Image Post failed with error: \(error)")
+            } else {
+              print("Image saved")
+              imageExpectation.fulfill()
+            }
+          }
+          
+          
+        } catch {
+          XCTFail("Failed to convert image dictionary to binary data.")
+        }
+    }
+
+    waitForExpectations(timeout: 18.0, handler: nil)
+  }
+
+}
+
+// Used for helper testing methods
+extension RouteTests {
+  
+  func assertImage2010(image: JSON) {
     XCTAssertEqual(image["contentType"].stringValue, "image/png")
     XCTAssertEqual(image["fileName"].stringValue, "road.png")
     XCTAssertEqual(image["width"].intValue, 600)
@@ -150,79 +287,41 @@ class RouteTests: XCTestCase {
     XCTAssertEqual(location["weather"]["iconId"].intValue, 27)
     XCTAssertEqual(location["weather"]["temperature"].intValue, 85)
   }
-
-  func testGettingImages() {
+  
+  func assertImage2001(image: JSON) {
+    XCTAssertEqual(image["contentType"].stringValue, "image/png")
+    XCTAssertEqual(image["fileName"].stringValue, "bridge.png")
+    XCTAssertEqual(image["width"].intValue, 600)
+    XCTAssertEqual(image["height"].intValue, 900)
+    XCTAssertEqual(image["deviceId"].intValue, 3001)
+    XCTAssertEqual(image["_id"].intValue, 2001)
+    XCTAssertEqual(image["type"].stringValue, "image")
+    XCTAssertEqual(image["uploadedTs"].stringValue, "2016-04-07T16:25:43")
+    XCTAssertTrue(image["url"].stringValue.contains("1001/bridge.png"))
+    XCTAssertEqual(image["caption"].stringValue, "Bridge")
     
-    let imageExpectation = expectation(description: "Get all images.")
+    let user = image["user"]
+    XCTAssertEqual(user["_id"].intValue, 1001)
+    XCTAssertEqual(user["name"].stringValue, "Peter Adams")
+    XCTAssertEqual(user["type"].stringValue, "user")
     
-    URLRequest(forTestWithMethod: "GET", route: "images")
-      .sendForTesting { data in
-        
-        let images = JSON(data: data)
-        let records = images["records"].arrayValue
-        XCTAssertEqual(records.count, 9)
-        let image = records.first!
-        self.assertUserProperties(image: image)
-        imageExpectation.fulfill()
-
-    }
-    waitForExpectations(timeout: 8.0, handler: nil)
+    let tags = image["tags"].arrayValue
+    XCTAssertEqual(tags.first!["confidence"].intValue, 75)
+    XCTAssertEqual(tags.first!["label"].stringValue, "bridge")
+    XCTAssertEqual(tags[1]["confidence"].intValue, 60)
+    XCTAssertEqual(tags[1]["label"].stringValue, "city")
+    XCTAssertEqual(tags.last!["confidence"].intValue, 50)
+    XCTAssertEqual(tags.last!["label"].stringValue, "building")
+    
+    let location = image["location"]
+    XCTAssertEqual(location["latitude"].stringValue, "34.53")
+    XCTAssertEqual(location["longitude"].stringValue, "84.5")
+    XCTAssertEqual(location["name"].stringValue, "Boston, Massachusetts")
+    XCTAssertEqual(location["weather"]["description"].stringValue, "Mostly Cloudy")
+    XCTAssertEqual(location["weather"]["iconId"].intValue, 27)
+    XCTAssertEqual(location["weather"]["temperature"].intValue, 70)
   }
   
-  func testGettingSingleImage() {
-    
-    let imageExpectation = expectation(description: "Get an image with a specific image.")
-    
-    URLRequest(forTestWithMethod: "GET", route: "images/2010")
-      .sendForTesting { data in
-        
-        let image = JSON(data: data)
-        self.assertUserProperties(image: image)
-        imageExpectation.fulfill()
-    }
-    
-    waitForExpectations(timeout: 8.0, handler: nil)
-  }
-  
-  func testGettingImagesByTag() {
-    
-    let imageExpectation = expectation(description: "Get all images with a specific tag.")
-    
-    URLRequest(forTestWithMethod: "GET", route: "images?tag=mountain")
-      .sendForTesting { data in
-        
-        let images = JSON(data: data)
-        let records = images["records"].arrayValue
-        print("img: \(images)")
-        XCTAssertEqual(records.count, 3)
-        let image = records.first!
-        self.assertUserProperties(image: image)
-        imageExpectation.fulfill()
-        
-    }
-    waitForExpectations(timeout: 8.0, handler: nil)
-  }
-  
-  /*func testPostingImage() {
-    
-    let imageExpectation = expectation(description: "Post an image with server.")
-    let fileName = "bluepic-eye.png"
-    let initialPath = #file
-    let components = initialPath.characters.split(separator: "/").map(String.init)
-    let notLastThree = components[0..<components.count - 3]
-    let directoryPath = "/" + notLastThree.joined(separator: "/") + "/public/" + fileName
-    let image = try? Data(contentsOf: URL(string: directoryPath)!)
-    print("IMg: \(image)")
-    
-    var request = URLRequest(url: URL(string: "http://127.0.0.1:8090/images")!, cachePolicy: .reloadIgnoringCacheData, timeoutInterval: 10.0)
-    request.httpMethod = "POST"
-    
-//    let imageDictionary = ["fileName": image.fileName, "caption" : image.caption, "width" : image.width, "height" : image.height, "location" : ["name" : image.location.name, "latitude" : image.location.latitude, "longitude" : image.location.longitude]] as [String : Any]
-    
-
-    waitForExpectations(timeout: 8.0, handler: nil)
-  }*/
-
 }
 
 private extension URLRequest {
