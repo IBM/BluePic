@@ -114,10 +114,15 @@ class FacebookDataManager: NSObject {
         authManager.obtainAuthorization { response, error in
 
             //error
-            if let errorObject = error {
-                print(NSLocalizedString("Authenticate Facebook User Error: Error obtaining Authentication Header.", comment: "") + " \(errorObject.localizedDescription)")
-                //"Error obtaining Authentication Header.\nCheck Bundle Identifier and Bundle version string\n\n"
-                callback(nil, nil, FacebookAuthenticationError.authenticationHeaderNotFound)
+            if let errorObject = error as? NSError {
+
+                if errorObject.code == -1 {
+                    print(NSLocalizedString("Authenticate Facebook User Error: User Canceled login:", comment: "") + " \(errorObject.localizedDescription)")
+                    callback(nil, nil, FacebookAuthenticationError.userCanceledLogin)
+                } else {
+                    print(NSLocalizedString("Authenticate Facebook User Error: Error obtaining Authentication Header.", comment: "") + " \(errorObject.localizedDescription)")
+                    callback(nil, nil, FacebookAuthenticationError.authenticationHeaderNotFound)
+                }
             }
             //error is nil
             else {
