@@ -92,8 +92,9 @@ typedef NS_ENUM(NSUInteger, FBSDKInternalUtilityVersionShift)
   static NSBundle *bundle;
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
-    NSString *stringsBundlePath = [[NSBundle mainBundle] pathForResource:@"FacebookSDKStrings"
-                                                                  ofType:@"bundle"];
+    NSString *stringsBundlePath = [[NSBundle bundleForClass:[FBSDKApplicationDelegate class]]
+                                   pathForResource:@"FacebookSDKStrings"
+                                   ofType:@"bundle"];
     bundle = [NSBundle bundleWithPath:stringsBundlePath] ?: [NSBundle mainBundle];
   });
   return bundle;
@@ -187,7 +188,7 @@ setJSONStringForObject:(id)object
   }
   host = [NSString stringWithFormat:@"%@%@", hostPrefix ?: @"", host ?: @""];
 
-  NSString *version = defaultVersion ?: FBSDK_TARGET_PLATFORM_VERSION;
+  NSString *version = defaultVersion ?: [FBSDKSettings graphAPIVersion];
   if ([version length]) {
     version = [@"/" stringByAppendingString:version];
   }
@@ -198,6 +199,10 @@ setJSONStringForObject:(id)object
         [versionScanner scanInteger:NULL] &&
         [versionScanner scanString:@"." intoString:NULL] &&
         [versionScanner scanInteger:NULL]) {
+      [FBSDKLogger singleShotLogEntry:FBSDKLoggingBehaviorDeveloperErrors
+                             logEntry:[NSString stringWithFormat:@"Invalid Graph API version:%@, assuming %@ instead",
+                                       version,
+                                       [FBSDKSettings graphAPIVersion]]];
       version = nil;
     }
     if (![path hasPrefix:@"/"]) {

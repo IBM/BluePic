@@ -16,9 +16,9 @@
 
 import UIKit
 
-enum ProfileHeaderCollectionReusableViewNotification: String {
+extension Notification.Name {
 
-    case ShowSettingsActionSheet = "ShowSettingsActionSheet"
+    static let showSettingsActionSheet = Notification.Name("ShowSettingsActionSheet")
 
 }
 
@@ -48,9 +48,9 @@ class ProfileHeaderCollectionReusableView: UICollectionReusableView {
      - parameter numberOfShots:     Int?
      - parameter profilePictureURL: String
      */
-    func setupData(name: String?, numberOfShots: Int?, profilePictureURL: String) {
+    func setupData(_ name: String?, numberOfShots: Int?, profilePictureURL: String) {
 
-        nameLabel.text = name?.uppercaseString ?? ""
+        nameLabel.text = name?.uppercased() ?? ""
 
         if let shots = numberOfShots {
 
@@ -69,9 +69,9 @@ class ProfileHeaderCollectionReusableView: UICollectionReusableView {
             }
         }
 
-        if let url = NSURL(string: profilePictureURL) {
+        if let url = URL(string: profilePictureURL) {
 
-            profilePictureImageView.sd_setImageWithURL(url)
+            profilePictureImageView.sd_setImage(with: url)
 
         }
     }
@@ -79,10 +79,10 @@ class ProfileHeaderCollectionReusableView: UICollectionReusableView {
     /**
      Method defines the action when the moreButton is pressed. It notifies the rest of the app with the ProfileHeaderCollectionReusableViewNotification.ShowSettingsActionSheet notification
 
-     - parameter sender: AnyObject
+     - parameter sender: Any
      */
-    @IBAction func moreButtonAction(sender: AnyObject) {
-         NSNotificationCenter.defaultCenter().postNotificationName(ProfileHeaderCollectionReusableViewNotification.ShowSettingsActionSheet.rawValue, object: nil)
+    @IBAction func moreButtonAction(_ sender: Any) {
+         NotificationCenter.default.post(name: .showSettingsActionSheet, object: nil)
     }
 
 }

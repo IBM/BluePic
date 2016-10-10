@@ -38,7 +38,6 @@
 		1B6132161C270DD300B57231 /* ImagesCurrentlyUploadingImageFeedCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B6132141C270DD300B57231 /* ImagesCurrentlyUploadingImageFeedCollectionViewCell.swift */; };
 		1B9199231CC6EB1B005CC4AC /* FacebookAuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9199221CC6EB1B005CC4AC /* FacebookAuthenticationManager.swift */; };
 		1BC7AF5C1C0E39F100DDFD02 /* FeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC7AF5B1C0E39F100DDFD02 /* FeedViewModel.swift */; };
-		1BC7AF5F1C0E480800DDFD02 /* ImageFeedCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC7AF5D1C0E480800DDFD02 /* ImageFeedCollectionViewCell.swift */; };
 		1BC7AF601C0E480800DDFD02 /* ImageFeedCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1BC7AF5E1C0E480800DDFD02 /* ImageFeedCollectionViewCell.xib */; };
 		1BF00D0A1CEACF68009472B5 /* ProfileNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BF00D091CEACF68009472B5 /* ProfileNavigationController.swift */; };
 		1BF00D0C1CEAD27E009472B5 /* FeedNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BF00D0B1CEAD27E009472B5 /* FeedNavigationController.swift */; };
@@ -131,7 +130,6 @@
 		1B6132141C270DD300B57231 /* ImagesCurrentlyUploadingImageFeedCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagesCurrentlyUploadingImageFeedCollectionViewCell.swift; sourceTree = "<group>"; };
 		1B9199221CC6EB1B005CC4AC /* FacebookAuthenticationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookAuthenticationManager.swift; sourceTree = "<group>"; };
 		1BC7AF5B1C0E39F100DDFD02 /* FeedViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedViewModel.swift; sourceTree = "<group>"; };
-		1BC7AF5D1C0E480800DDFD02 /* ImageFeedCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageFeedCollectionViewCell.swift; sourceTree = "<group>"; };
 		1BC7AF5E1C0E480800DDFD02 /* ImageFeedCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageFeedCollectionViewCell.xib; sourceTree = "<group>"; };
 		1BF00D091CEACF68009472B5 /* ProfileNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileNavigationController.swift; sourceTree = "<group>"; };
 		1BF00D0B1CEAD27E009472B5 /* FeedNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedNavigationController.swift; sourceTree = "<group>"; };
@@ -376,7 +374,6 @@
 				1B0432E41C17E967007643B1 /* ProfileCollectionViewCell.xib */,
 				1BF00D821CF4D58A009472B5 /* CameraConfirmationView.xib */,
 				346F94811C0F9225004999A8 /* CameraConfirmationView.swift */,
-				1BC7AF5D1C0E480800DDFD02 /* ImageFeedCollectionViewCell.swift */,
 				1BC7AF5E1C0E480800DDFD02 /* ImageFeedCollectionViewCell.xib */,
 				1B057E071C17C03400AC21EE /* ProfileHeaderCollectionReusableView.swift */,
 				1B057E081C17C03400AC21EE /* ProfileHeaderCollectionReusableView.xib */,
@@ -468,6 +465,8 @@
 					347472891BFA8C6A0018B7F6 = {
 						CreatedOnToolsVersion = 7.1.1;
 						DevelopmentTeam = PP64RT7P8Z;
+						LastSwiftMigration = 0800;
+						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -475,10 +474,14 @@
 							com.apple.Keychain = {
 								enabled = 1;
 							};
+							com.apple.Push = {
+								enabled = 0;
+							};
 						};
 					};
 					3474729D1BFA8C6A0018B7F6 = {
 						CreatedOnToolsVersion = 7.1.1;
+						LastSwiftMigration = 0800;
 						TestTargetID = 347472891BFA8C6A0018B7F6;
 					};
 				};
@@ -554,7 +557,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		13C15CA20DC2EF6687E144C0 /* [CP] Embed Pods Frameworks */ = {
@@ -617,7 +620,6 @@
 				2EAAC0E81CE39C13006A0B41 /* KTCenterFlowLayout.m in Sources */,
 				1BF00D0A1CEACF68009472B5 /* ProfileNavigationController.swift in Sources */,
 				1B40BF841CE3989C0097F435 /* User.swift in Sources */,
-				1BC7AF5F1C0E480800DDFD02 /* ImageFeedCollectionViewCell.swift in Sources */,
 				347472EF1BFA8DEF0018B7F6 /* Utils.swift in Sources */,
 				346F947C1C0F868C004999A8 /* CameraDataManager.swift in Sources */,
 				1BF00D121CEF7939009472B5 /* ImageDetailViewModel.swift in Sources */,
@@ -804,8 +806,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -832,6 +836,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "";
 			};
@@ -850,8 +855,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -871,6 +878,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "";
 				VALIDATE_PRODUCT = YES;
@@ -886,6 +894,8 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = BluePic/BluePic.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = PP64RT7P8Z;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -896,9 +906,11 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ibm.test1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "11518d98-27f4-4d82-8a06-9aa90bb1badb";
+				PROVISIONING_PROFILE_SPECIFIER = "@IBM MobileFirst Wildcard App ID Dev Profile";
 				SWIFT_OBJC_BRIDGING_HEADER = "BluePic/SupportingFiles/BluePic-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -912,6 +924,8 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = BluePic/BluePic.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -922,8 +936,10 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ibm.test1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "BluePic/SupportingFiles/BluePic-Bridging-Header.h";
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
@@ -936,7 +952,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bundle.id.BluePicTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BluePic.app/BluePic";
 			};
 			name = Debug;
@@ -949,7 +965,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bundle.id.ibm.BluePicTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BluePic.app/BluePic";
 			};
 			name = Release;

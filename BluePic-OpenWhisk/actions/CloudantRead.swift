@@ -12,7 +12,7 @@ func main(args: [String:Any]) -> [String:Any] {
     let cloudantUsername: String? = args["cloudantUsername"] as? String
     let cloudantPassword: String? = args["cloudantPassword"] as? String
     let cloudantHost: String? = args["cloudantHost"] as? String
-    let cloudantId: String? = String(args["cloudantId"]!)
+    let cloudantId: String? = String(describing: args["cloudantId"]!)
     
     var requestOptions = [ClientRequestOptions]()
     requestOptions.append(.username(cloudantUsername!))

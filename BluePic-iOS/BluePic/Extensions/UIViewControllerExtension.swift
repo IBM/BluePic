@@ -21,7 +21,7 @@ extension UIViewController {
      */
     func isVisible() -> Bool {
 
-        if let navigationController = self.navigationController, visibleViewController = navigationController.visibleViewController {
+        if let navigationController = self.navigationController, let visibleViewController = navigationController.visibleViewController {
             if self == visibleViewController {
                 return true
             } else {

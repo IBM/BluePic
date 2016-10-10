@@ -67,7 +67,7 @@ class CameraDataManager: NSObject {
 
      - returns:
      */
-    private override init() {}
+    fileprivate override init() {}
 
 
     /**
@@ -75,19 +75,19 @@ class CameraDataManager: NSObject {
 
      - parameter presentingVC: tab VC to present over top of
      */
-    func showImagePickerActionSheet(presentingVC: TabBarViewController) {
+    func showImagePickerActionSheet(_ presentingVC: TabBarViewController) {
         self.tabVC = presentingVC
         self.picker = UIImagePickerController()
-        let alert: UIAlertController=UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
-        let cameraAction = UIAlertAction(title: NSLocalizedString("Photo Library", comment: ""), style: UIAlertActionStyle.Default) {
+        let alert: UIAlertController=UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
+        let cameraAction = UIAlertAction(title: NSLocalizedString("Photo Library", comment: ""), style: UIAlertActionStyle.default) {
                 UIAlertAction in
                 self.openGallery()
         }
-        let galleryAction = UIAlertAction(title: NSLocalizedString("Take Photo", comment: ""), style: UIAlertActionStyle.Default) {
+        let galleryAction = UIAlertAction(title: NSLocalizedString("Take Photo", comment: ""), style: UIAlertActionStyle.default) {
                 UIAlertAction in
                 self.openCamera()
         }
-        let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: UIAlertActionStyle.Cancel) {
+        let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: UIAlertActionStyle.cancel) {
                 UIAlertAction in
         }
 
@@ -99,11 +99,11 @@ class CameraDataManager: NSObject {
 
         // on iPad, this will be a Popover
         // on iPhone, this will be an action sheet
-        alert.modalPresentationStyle = .Popover
+        alert.modalPresentationStyle = .popover
 
 
         // Present the controller
-        self.tabVC.presentViewController(alert, animated: true, completion: nil)
+        self.tabVC.present(alert, animated: true, completion: nil)
 
     }
 
@@ -111,10 +111,10 @@ class CameraDataManager: NSObject {
      Method called when user wants to take a photo with the camera
      */
     func openCamera() {
-        if UIImagePickerController .isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera) {
+        if UIImagePickerController .isSourceTypeAvailable(UIImagePickerControllerSourceType.camera) {
 
-            picker.sourceType = UIImagePickerControllerSourceType.Camera
-            self.tabVC.presentViewController(picker, animated: true, completion: { _ in
+            picker.sourceType = UIImagePickerControllerSourceType.camera
+            self.tabVC.present(picker, animated: true, completion: { _ in
                 self.showCameraConfirmation()
             })
         } else {
@@ -126,8 +126,8 @@ class CameraDataManager: NSObject {
      Method called when user wants to choose a photo from Photo Album for posting
      */
     func openGallery() {
-        picker.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
-        self.tabVC.presentViewController(picker, animated: true, completion: { _ in
+        picker.sourceType = UIImagePickerControllerSourceType.photoLibrary
+        self.tabVC.present(picker, animated: true, completion: { _ in
             self.showCameraConfirmation()
         })
 
@@ -140,8 +140,8 @@ class CameraDataManager: NSObject {
         self.confirmationView = CameraConfirmationView.instanceFromNibWithFrame(CGRect(x: 0, y: 0, width: self.tabVC.view.frame.width, height: self.tabVC.view.frame.height))
 
         //set up button actions
-        self.confirmationView.cancelButton.addTarget(self, action: #selector(CameraDataManager.userPressedCancelButtonAction), forControlEvents: .TouchUpInside)
-        self.confirmationView.postButton.addTarget(self, action: #selector(CameraDataManager.postPhotoButtonAction), forControlEvents: .TouchUpInside)
+        self.confirmationView.cancelButton.addTarget(self, action: #selector(CameraDataManager.userPressedCancelButtonAction), for: .touchUpInside)
+        self.confirmationView.postButton.addTarget(self, action: #selector(CameraDataManager.postPhotoButtonAction), for: .touchUpInside)
 
         //show view
         self.tabVC.view.addSubview(self.confirmationView)
@@ -151,7 +151,7 @@ class CameraDataManager: NSObject {
     /**
      Method resets the state variables
      */
-    private func resetStateVariables() {
+    fileprivate func resetStateVariables() {
 
         imageUserDecidedToPost = nil
         failureGettingUserLocation = false
@@ -163,13 +163,13 @@ class CameraDataManager: NSObject {
     /**
      Method shows the progress hud and disables UI
      */
-    private func showProgressHudAndDisableUI() {
-        dispatch_async(dispatch_get_main_queue()) {
+    fileprivate func showProgressHudAndDisableUI() {
+        DispatchQueue.main.async {
 
             self.confirmationView.titleTextField.resignFirstResponder()
             self.confirmationView.disableUI()
 
-            SVProgressHUD.showWithStatus("Determining Location")
+            SVProgressHUD.show(withStatus: "Determining Location")
 
         }
 
@@ -178,8 +178,8 @@ class CameraDataManager: NSObject {
     /**
      Method dismisses the progress hud and re-enables the UI
      */
-    private func dismissProgressHUDAndReEnableUI() {
-        dispatch_async(dispatch_get_main_queue()) {
+    fileprivate func dismissProgressHUDAndReEnableUI() {
+        DispatchQueue.main.async {
             self.confirmationView.enableUI()
             SVProgressHUD.dismiss()
         }
@@ -204,14 +204,14 @@ class CameraDataManager: NSObject {
      */
     func dismissCameraConfirmation() {
         self.confirmationView.enableUI()
-        UIApplication.sharedApplication().statusBarHidden = false
+        UIApplication.shared.isStatusBarHidden = false
         self.confirmationView.loadingIndicator.stopAnimating()
         self.confirmationView.endEditing(true) //dismiss keyboard first if shown
-        UIView.animateWithDuration(0.4, animations: { _ in
+        UIView.animate(withDuration: 0.4, animations: { _ in
             self.confirmationView.frame = CGRect(x: 0, y: self.tabVC.view.frame.height, width: self.tabVC.view.frame.width, height: self.tabVC.view.frame.height)
             }, completion: { _ in
                 self.destroyConfirmationView()
-                self.tabVC.view.userInteractionEnabled = true
+                self.tabVC.view.isUserInteractionEnabled = true
         })
 
     }
@@ -229,14 +229,14 @@ class CameraDataManager: NSObject {
      Alert to be shown if photo couldn't be loaded from disk (iCloud photo stream photo not loaded, for example)
      */
     func showPhotoCouldntBeChosenAlert() {
-        let alert = UIAlertController(title: nil, message: NSLocalizedString("This photo couldn't be loaded. Please use a different one!", comment: ""), preferredStyle: UIAlertControllerStyle.Alert)
+        let alert = UIAlertController(title: nil, message: NSLocalizedString("This photo couldn't be loaded. Please use a different one!", comment: ""), preferredStyle: UIAlertControllerStyle.alert)
 
-        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .Default, handler: { (action: UIAlertAction) in
+        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default, handler: { (action: UIAlertAction) in
             self.openGallery()
         }))
 
-        dispatch_async(dispatch_get_main_queue()) {
-            self.tabVC.presentViewController(alert, animated: true, completion: nil)
+        DispatchQueue.main.async {
+            self.tabVC.present(alert, animated: true, completion: nil)
         }
 
     }
@@ -250,10 +250,10 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
      Method is called after the user takes a photo or chooses a photo from their photo library. This method will save information about the photo taken
 
      - parameter picker: UIImagePickerController
-     - parameter info:   [String : AnyObject]
+     - parameter info:   [String : Any]
      */
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
-        picker.dismissViewControllerAnimated(true, completion: nil)
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        picker.dismiss(animated: true, completion: nil)
 
         resetStateVariables()
 
@@ -271,9 +271,9 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
 
      - returns: true if valid image, false if not
      */
-    func canPostImage(info: [String : AnyObject]) -> Bool {
+    func canPostImage(_ info: [String : Any]) -> Bool {
 
-        if let takenImage = info[UIImagePickerControllerOriginalImage] as? UIImage, resizedAndRotatedImage = UIImage.resizeAndRotateImage(takenImage) {
+        if let takenImage = info[UIImagePickerControllerOriginalImage] as? UIImage, let resizedAndRotatedImage = UIImage.resizeAndRotateImage(takenImage) {
 
             self.confirmationView.photoImageView.image = takenImage
             self.pickedImage = resizedAndRotatedImage
@@ -292,7 +292,7 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
     func prepareImageToPost() {
 
         // need image to be non-nil and post button to have been pressed already
-        guard let pickedImage = self.pickedImage where userPressedPostPhoto && !userPressedCancelButton else {
+        guard let pickedImage = self.pickedImage, userPressedPostPhoto && !userPressedCancelButton else {
             return
         }
 
@@ -307,13 +307,13 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
             if let location = location {
 
                 //save name of image as current date and time
-                let dateFormatter = NSDateFormatter()
+                let dateFormatter = DateFormatter()
                 dateFormatter.dateFormat = "MM-dd-yyyy_HHmmss"
-                let todaysDate = NSDate()
-                let fileName = dateFormatter.stringFromDate(todaysDate) + ".png"
+                let todaysDate = Date()
+                let fileName = dateFormatter.string(from: todaysDate) + ".png"
 
                 var captionText: String = self.kEmptyCaptionPlaceHolder
-                if let text = self.confirmationView.titleTextField.text where text != "" {
+                if let text = self.confirmationView.titleTextField.text, text != "" {
                     captionText = text
                 }
 
@@ -339,7 +339,7 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
     /**
      Method tries to post the photo only if the user has pressed the post photo button already.
      */
-    private func tryToPostPhoto() {
+    fileprivate func tryToPostPhoto() {
 
         //only post photo if user has chosen to
         if userPressedPostPhoto && !userPressedCancelButton {
@@ -377,13 +377,13 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
         dismissProgressHUDAndReEnableUI()
 
         self.confirmationView.endEditing(true) //dismiss keyboard first if shown
-        self.confirmationView.userInteractionEnabled = false
-        self.tabVC.view.userInteractionEnabled = false
+        self.confirmationView.isUserInteractionEnabled = false
+        self.tabVC.view.isUserInteractionEnabled = false
         self.confirmationView.loadingIndicator.startAnimating()
-        self.confirmationView.cancelButton.hidden = true
-        self.confirmationView.postButton.hidden = true
+        self.confirmationView.cancelButton.isHidden = true
+        self.confirmationView.postButton.isHidden = true
 
-        dispatch_async(dispatch_get_main_queue()) {
+        DispatchQueue.main.async {
             BluemixDataManager.SharedInstance.tryToPostNewImage(imageToPost)
         }
 
@@ -399,20 +399,20 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
 
         dismissProgressHUDAndReEnableUI()
 
-        let alert = UIAlertController(title: NSLocalizedString("Location Not Found", comment: ""), message: NSLocalizedString("Location is required to post a photo", comment: ""), preferredStyle: UIAlertControllerStyle.Alert)
+        let alert = UIAlertController(title: NSLocalizedString("Location Not Found", comment: ""), message: NSLocalizedString("Location is required to post a photo", comment: ""), preferredStyle: UIAlertControllerStyle.alert)
 
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .Default, handler: { (action: UIAlertAction) in
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .default, handler: { (action: UIAlertAction) in
 
         }))
 
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Try Again", comment: ""), style: .Default, handler: { (action: UIAlertAction) in
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Try Again", comment: ""), style: .default, handler: { (action: UIAlertAction) in
 
             self.prepareImageToPost()
 
         }))
 
-        dispatch_async(dispatch_get_main_queue()) {
-            self.tabVC.presentViewController(alert, animated: true, completion: nil)
+        DispatchQueue.main.async {
+            self.tabVC.present(alert, animated: true, completion: nil)
         }
 
     }
@@ -422,27 +422,27 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
 
      - parameter callback: ((location : Location?)->())
      */
-    private func setLatLongAndLocationNameForImage(callback : ((location: Location?)->())) {
+    fileprivate func setLatLongAndLocationNameForImage(_ callback : @escaping (_ location: Location?)->()) {
 
         LocationDataManager.SharedInstance.getCurrentLatLongCityAndState() { (latitude: CLLocationDegrees?, longitude: CLLocationDegrees?, city: String?, state: String?, error: LocationDataManagerError?) in
 
             //failure
             if error != nil {
-                callback(location: nil)
+                callback(nil)
             }
             //success
             else if let latitude = latitude,
-                longitude = longitude,
-                city = city,
-                state = state {
+                let longitude = longitude,
+                let city = city,
+                let state = state {
 
                 let location = Location(name: "\(city), \(state)", latitude: latitude, longitude: longitude, weather: nil)
 
-                callback(location: location)
+                callback(location)
             }
             //failure
             else {
-                callback(location: nil)
+                callback(nil)
             }
 
         }
@@ -453,9 +453,9 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
 
      - parameter picker: UIImagePickerController
      */
-    func imagePickerControllerDidCancel(picker: UIImagePickerController) {
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         self.destroyConfirmationView()
-        picker.dismissViewControllerAnimated(true, completion: nil)
+        picker.dismiss(animated: true, completion: nil)
     }
 
 }

@@ -11,73 +11,186 @@
 *     limitations under the License.
 */
 
+
+
+// MARK: - Swift 3
+
+#if swift(>=3.0)
+    
+
+
 /**
     A singleton that serves as an entry point to Bluemix client-server communication.
 */
 public class BMSClient {
-	
+    
+    
     // MARK: Constants
     
-    /// The southern United States Bluemix region
-    /// - Note: Use this in the `BMSClient initializeWithBluemixAppRoute` method.
-    public static let REGION_US_SOUTH = ".ng.bluemix.net"
-    
-    /// The United Kingdom Bluemix region
-    /// - Note: Use this in the `BMSClient initializeWithBluemixAppRoute` method.
-    public static let REGION_UK = ".eu-gb.bluemix.net"
-    
-    /// The Sydney Bluemix region
-    /// - Note: Use this in the `BMSClient initializeWithBluemixAppRoute` method.
-    public static let REGION_SYDNEY = ".au-syd.bluemix.net"
+    /**
+        The region where your Bluemix service is hosted.
+    */
+    public struct Region {
+        
+        /// The southern United States Bluemix region.
+        /// - Note: Use this in the `initialize` method.
+        public static let usSouth = ".ng.bluemix.net"
+        
+        /// The United Kingdom Bluemix region.
+        /// - Note: Use this in the `initialize` method.
+        public static let unitedKingdom = ".eu-gb.bluemix.net"
+        
+        /// The Sydney Bluemix region.
+        /// - Note: Use this in the `initialize` method.
+        public static let sydney = ".au-syd.bluemix.net"
+    }
     
     
 
     // MARK: Properties (API)
     
-    /// This singleton should be used for all `BMSClient` activity
+    /// The singleton that is used for all `BMSClient` activity.
     public static let sharedInstance = BMSClient()
     
-    /// Specifies the base backend URL
+    /// Specifies the base Bluemix application backend URL.
     public private(set) var bluemixAppRoute: String?
     
-    // Specifies the bluemix region
+    // Specifies the region where the Bluemix service is hosted.
     public private(set) var bluemixRegion: String?
     
-    /// Specifies the backend application id
+    /// Specifies the Bluemix application backend identifier.
     public private(set) var bluemixAppGUID: String?
         
-    /// Specifies the default timeout (in seconds) for all BMS network requests.
-    public var defaultRequestTimeout: Double = 20.0
+    /// Specifies the allowed timeout (in seconds) for all `BMSClient` network requests.
+    public var requestTimeout: Double = 20.0
     
-    
+    // Handles the authentication process for network requests.
 	public var authorizationManager: AuthorizationManager
 	
+    
+    
     // MARK: Initializers
     
     /**
         The required intializer for the `BMSClient` class.
-    
-        Sets the base URL for the authorization server.
-    
-        - Note: The `backendAppRoute` and `backendAppGUID` parameters are not required to use the `BMSAnalytics` framework.
+     
+        Call this method on `BMSClient.sharedInstance`.
 
-        - parameter backendAppRoute:           The base URL for the authorization server
-        - parameter backendAppGUID:            The GUID of the Bluemix application
-        - parameter bluemixRegion:          The region where your Bluemix application is hosted. Use one of the `BMSClient.REGION` constants.
-     */
-    public func initializeWithBluemixAppRoute(bluemixAppRoute: String?, bluemixAppGUID: String?, bluemixRegion: String) {
+        - Note: The `backendAppRoute` and `backendAppGUID` parameters are not required; they are only used for making network requests to the Bluemix server using the `Request` class.
+
+        - parameter backendAppRoute:           (Optional) The base URL for the authorization server.
+        - parameter backendAppGUID:            (Optional) The GUID of the Bluemix application.
+        - parameter bluemixRegion:             The region where your Bluemix application is hosted. Use one of the `BMSClient.Region` constants.
+    */
+    public func initialize(bluemixAppRoute: String? = nil, bluemixAppGUID: String? = nil, bluemixRegion: String...) {
         
         self.bluemixAppRoute = bluemixAppRoute
         self.bluemixAppGUID = bluemixAppGUID
-        self.bluemixRegion = bluemixRegion
-        
-        #if swift(>=3.0)
-            Logger.logger(forName: Logger.bmsLoggerPrefix + "BMSClient").info(message: "While Swift 3 is in beta, APIs in the Bluemix Mobile Services SDKs may change across non-major releases.")
-        #endif
+        self.bluemixRegion = bluemixRegion[0]
     }
     
+    
+    // Prevent users from using BMSClient() initializer - They must use BMSClient.sharedInstance
 	private init() {
 		self.authorizationManager = BaseAuthorizationManager()
-	} // Prevent users from using BMSClient() initializer - They must use BMSClient.sharedInstance
+	}
+
+}
+
+
+
+
+
+/**************************************************************************************************/
+
+
+
+
+
+// MARK: - Swift 2
+
+#else
+
+
+
+/**
+    A singleton that serves as an entry point to Bluemix client-server communication.
+*/
+public class BMSClient {
+    
+    
+    // MARK: Constants
+    
+    /**
+        The region where your Bluemix service is hosted.
+    */
+    public struct Region {
+        
+        /// The southern United States Bluemix region.
+        /// - Note: Use this in the `initialize` method.
+        public static let usSouth = ".ng.bluemix.net"
+        
+        /// The United Kingdom Bluemix region.
+        /// - Note: Use this in the `initialize` method.
+        public static let unitedKingdom = ".eu-gb.bluemix.net"
+        
+        /// The Sydney Bluemix region.
+        /// - Note: Use this in the `initialize` method.
+        public static let sydney = ".au-syd.bluemix.net"
+    }
+    
+    
+    
+    // MARK: Properties (API)
+    
+    /// The singleton that is used for all `BMSClient` activity.
+    public static let sharedInstance = BMSClient()
+    
+    /// Specifies the base Bluemix application backend URL.
+    public private(set) var bluemixAppRoute: String?
+    
+    // Specifies the region where the Bluemix service is hosted.
+    public private(set) var bluemixRegion: String?
+    
+    /// Specifies the Bluemix application backend identifier.
+    public private(set) var bluemixAppGUID: String?
+    
+    /// Specifies the allowed timeout (in seconds) for all `BMSClient` network requests.
+    public var requestTimeout: Double = 20.0
+    
+    // Handles the authentication process for network requests.
+    public var authorizationManager: AuthorizationManager
+    
+    
+    
+    // MARK: Initializers
+    
+    /**
+        The required intializer for the `BMSClient` class.
+
+        Call this method on `BMSClient.sharedInstance`.
+
+        - Note: The `backendAppRoute` and `backendAppGUID` parameters are not required; they are only used for making network requests to the Bluemix server using the `Request` class.
+
+        - parameter backendAppRoute:           (Optional) The base URL for the authorization server.
+        - parameter backendAppGUID:            (Optional) The GUID of the Bluemix application.
+        - parameter bluemixRegion:             The region where your Bluemix application is hosted. Use one of the `BMSClient.Region` constants.
+    */
+    public func initialize(bluemixAppRoute bluemixAppRoute: String? = nil, bluemixAppGUID: String? = nil, bluemixRegion: String...) {
+    
+        self.bluemixAppRoute = bluemixAppRoute
+        self.bluemixAppGUID = bluemixAppGUID
+        self.bluemixRegion = bluemixRegion[0]
+    }
+    
+    
+    // Prevent users from using BMSClient() initializer - They must use BMSClient.sharedInstance
+    private init() {
+        self.authorizationManager = BaseAuthorizationManager()
+    }
     
 }
+
+
+
+#endif

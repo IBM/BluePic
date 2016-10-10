@@ -23,7 +23,7 @@ extension UILabel {
 
      - parameter lineHeight: CGFloat
      */
-    func setLineHeight(lineHeight: CGFloat) {
+    func setLineHeight(_ lineHeight: CGFloat) {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = 1.0
         paragraphStyle.lineHeightMultiple = lineHeight

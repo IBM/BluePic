@@ -20,3 +20,17 @@ FOUNDATION_EXPORT double BMSSecurityVersionNumber;
 FOUNDATION_EXPORT const unsigned char BMSSecurityVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <BMSSecurity/PublicHeader.h>
+
+#if defined(__cplusplus)
+extern "C" {
+#endif
+typedef uint32_t CC_LONG;       /* 32 bit unsigned integer */
+    
+#define CC_SHA256_DIGEST_LENGTH     32          /* digest length in bytes */
+#define CC_SHA256_BLOCK_BYTES       64          /* block size in bytes */
+extern unsigned char *CC_SHA256(const void *data, CC_LONG len, unsigned char *md)
+__OSX_AVAILABLE_STARTING(__MAC_10_4, __IPHONE_2_0);
+
+#if defined(__cplusplus)
+}
+#endif

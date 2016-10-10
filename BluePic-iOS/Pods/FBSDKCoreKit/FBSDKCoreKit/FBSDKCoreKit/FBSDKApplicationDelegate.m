@@ -39,7 +39,6 @@
 #import "FBSDKBridgeAPIResponse.h"
 #import "FBSDKContainerViewController.h"
 #import "FBSDKProfile+Internal.h"
-#import "FBSDKOrganicDeeplinkHelper.h"
 #endif
 
 NSString *const FBSDKApplicationDidBecomeActiveNotification = @"com.facebook.sdk.FBSDKApplicationDidBecomeActiveNotification";
@@ -52,7 +51,6 @@ static NSString *const FBSDKAppLinkInboundEvent = @"fb_al_inbound";
   FBSDKBridgeAPIRequest *_pendingRequest;
   FBSDKBridgeAPICallbackBlock _pendingRequestCompletionBlock;
   id<FBSDKURLOpening> _pendingURLOpen;
-  FBSDKDeferredAppInviteHandler _organicDeeplinkHandler;
 #endif
   BOOL _expectingBackground;
   UIViewController *_safariViewController;
@@ -137,32 +135,6 @@ static NSString *const FBSDKAppLinkInboundEvent = @"fb_al_inbound";
   [FBSDKTimeSpentData setSourceApplication:sourceApplication openURL:url];
 
 #if !TARGET_OS_TV
-  if (_organicDeeplinkHandler) {
-    NSDictionary *params = [FBSDKUtility dictionaryWithQueryString:url.query];
-    if([params[@"fbsdk_deeplink"]  isEqualToString: @"1"]) {
-
-      NSURL *sanitizedUrl = nil;
-
-      if(![params[@"fbsdk_deeplink_exception"] isEqualToString:@"1"]) {
-
-        NSMutableDictionary *sanitizedParams = [NSMutableDictionary dictionaryWithDictionary:params];
-        [sanitizedParams removeObjectForKey:@"fbsdk_deeplink"];
-        sanitizedUrl =  [FBSDKInternalUtility URLWithScheme:url.scheme
-                                                       host:url.host
-                                                       path:url.path
-                                            queryParameters:sanitizedParams
-                                                      error:nil];
-      }
-      dispatch_async(dispatch_get_main_queue(), ^{
-        // Callback handler for organic deeplinking.
-        _organicDeeplinkHandler(sanitizedUrl);
-        _organicDeeplinkHandler = nil;
-      });
-
-      return YES;
-    }
-  }
-
   // if they completed a SFVC flow, dismiss it.
   [_safariViewController.presentingViewController dismissViewControllerAnimated:YES completion: nil];
   _safariViewController = nil;
@@ -338,12 +310,16 @@ static NSString *const FBSDKAppLinkInboundEvent = @"fb_al_inbound";
       [parent.transitionCoordinator animateAlongsideTransition:NULL completion:^(id<UIViewControllerTransitionCoordinatorContext> context) {
         // Note SFVC init must occur inside block to avoid blank screen.
         _safariViewController = [[SFSafariViewControllerClass alloc] initWithURL:url];
+        // Disable dismissing with edge pan gesture
+        _safariViewController.modalPresentationStyle = UIModalPresentationOverFullScreen;
         [_safariViewController performSelector:@selector(setDelegate:) withObject:self];
         [container displayChildController:_safariViewController];
         [parent presentViewController:container animated:YES completion:nil];
       }];
     } else {
       _safariViewController = [[SFSafariViewControllerClass alloc] initWithURL:url];
+      // Disable dismissing with edge pan gesture
+      _safariViewController.modalPresentationStyle = UIModalPresentationOverFullScreen;
       [_safariViewController performSelector:@selector(setDelegate:) withObject:self];
       [container displayChildController:_safariViewController];
       [parent presentViewController:container animated:YES completion:nil];

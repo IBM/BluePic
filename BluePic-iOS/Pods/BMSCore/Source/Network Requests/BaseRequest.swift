@@ -12,120 +12,122 @@
 */
 
 
-// MARK: HttpMethod
+
+// MARK: - Swift 3
+
+#if swift(>=3.0)
+
+    
 
 /**
     The HTTP method to be used in the `Request` class initializer.
 */
 public enum HttpMethod: String {
+    
     case GET, POST, PUT, DELETE, TRACE, HEAD, OPTIONS, CONNECT, PATCH
 }
 
+    
 
-
-// MARK: - BmsCompletionHandler
+// MARK: - BMSCompletionHandler
 
 /**
-    The type of callback sent with BMS network requests
+    The type of callback sent with BMS network requests.
 */
-public typealias BmsCompletionHandler = (Response?, NSError?) -> Void
-
-
-
-#if swift(>=3.0)
+public typealias BMSCompletionHandler = (Response?, Error?) -> Void
 
     
-    
-// MARK: - BaseRequest (Swift 3)
     
     
 /**
-    Build and send HTTP network requests.
+    Sends HTTP network requests. 
+     
+    Analytics data is automatically gathered for all requests initiated by this class.
 
-    When building a Request object, all components of the HTTP request must be provided in the initializer, except for the `requestBody`, which can be supplied as either Data or plain text when sending the request via one of the following methods:
-
-        sendString(requestBody: String, withCompletionHandler callback: BmsCompletionHandler?)
-        sendData(requestBody: Data, withCompletionHandler callback: BmsCompletionHandler?)
+    When building a Request object, all components of the HTTP request must be provided in the initializer, except for the `requestBody`, which can be supplied as Data when sending the request via the `send()` method.
 */
-public class BaseRequest: NSObject, URLSessionTaskDelegate {
+open class BaseRequest: NSObject, URLSessionTaskDelegate {
     
     
     // MARK: Constants
     
-    public static let CONTENT_TYPE = "Content-Type"
+    public static let contentType = "Content-Type"
     
     
     
     // MARK: Properties (API)
     
-    /// URL that the request is being sent to
+    /// URL that the request is being sent to.
     public private(set) var resourceUrl: String
     
-    /// HTTP method (GET, POST, etc.)
+    /// The HTTP method (GET, POST, etc.).
     public let httpMethod: HttpMethod
     
-    /// Request timeout measured in seconds
+    /// Request timeout measured in seconds.
     public var timeout: Double
     
-    /// All request headers
+    /// All request headers.
     public var headers: [String: String] = [:]
     
-    /// Query parameters to append to the `resourceURL`
+    /// The query parameters to append to the `resourceURL`.
     public var queryParameters: [String: String]?
     
-    /// The request body can be set when sending the request via the `sendString` or `sendData` methods.
+    /// The request body is set when sending the request via the `send()` method.
     public private(set) var requestBody: Data?
     
-    /// Determines whether request should follow http redirects
+    /// Determines whether request should follow HTTP redirects.
     public var allowRedirects : Bool = true
 	
-	/// Deterimes the cache policy to use for sending request
+	/// Deterimes the cache policy to use for sending request.
 	public var cachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy
     
     
     
     // MARK: Properties (internal)
     
-    // Public access required by BMSSecurity framework
-    // The request timeout is set in this URLSession's configuration
+    // The request timeout is set in this URLSession's configuration.
+    // Public access required by BMSSecurity framework.
     public var networkSession: URLSession!
     
-    // Public access required by BMSAnalytics framework
-    public private(set) var startTime: TimeInterval = 0.0
+    // The time at which the request is sent.
+    // Public access required by BMSAnalytics framework.
+    open private(set) var startTime: TimeInterval = 0.0
     
-    // Public access required by BMSAnalytics framework
-    public private(set) var trackingId: String = ""
+    // The unique ID to keep track of each request.
+    // Public access required by BMSAnalytics framework.
+    open private(set) var trackingId: String = ""
     
-    // Public access required by BMSAnalytics framework
-    // This will obtain a value when the Analytics class from BMSAnalytics is initialized
+    // Metadata for the request.
+    // This will obtain a value when the Analytics class from BMSAnalytics is initialized.
+    // Public access required by BMSAnalytics framework.
     public static var requestAnalyticsData: String?
 
+    // The current request.
     var networkRequest: URLRequest
     
-	private static let logger = Logger.logger(forName: Logger.bmsLoggerPrefix + "request")
+	private static let logger = Logger.logger(name: Logger.bmsLoggerPrefix + "request")
     
     
     
     // MARK: Initializer
     
     /**
-        Constructs a new request with the specified URL, using the specified HTTP method.
-        Additionally this constructor sets a custom timeout.
+        Creates a new request.
 
-        - parameter url:             The resource URL
-        - parameter method:          The HTTP method to use
+        - parameter url:             The resource URL.
+        - parameter method:          The HTTP method.
         - parameter headers:         Optional headers to add to the request.
         - parameter queryParameters: Optional query parameters to add to the request.
-        - parameter timeout:         Timeout in seconds for this request
-		- parameter cachePolicy:	 Cache policy to use when sending request
+        - parameter timeout:         Timeout in seconds for this request.
+        - parameter cachePolicy:     Cache policy to use when sending request.
     
-        - Note: A relative URL may be supplied if the `BMSClient` class is initialized with an app route beforehand.
+        - Note: A relative `url` may be supplied if the `BMSClient` class is initialized with a Bluemix app route beforehand.
     */
     public init(url: String,
-               headers: [String: String]?,
-               queryParameters: [String: String]?,
                method: HttpMethod = HttpMethod.GET,
-               timeout: Double = BMSClient.sharedInstance.defaultRequestTimeout,
+               headers: [String: String]? = nil,
+               queryParameters: [String: String]? = nil,
+               timeout: Double = BMSClient.sharedInstance.requestTimeout,
                cachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy) {
         
         // Relative URL
@@ -147,7 +149,7 @@ public class BaseRequest: NSObject, URLSessionTaskDelegate {
         self.queryParameters = queryParameters
                 
         // Set timeout and initialize network session and request
-        let configuration = URLSessionConfiguration.default()
+        let configuration = URLSessionConfiguration.default
         configuration.timeoutIntervalForRequest = timeout
 
 		self.cachePolicy = cachePolicy
@@ -162,59 +164,21 @@ public class BaseRequest: NSObject, URLSessionTaskDelegate {
     
     
     // MARK: Methods (API)
-    
+
     /**
-        Add a request body and send the request asynchronously.
-    
-        If the Content-Type header is not already set, it will be set to "text/plain".
-    
-        The response received from the server is packaged into a `Response` object which is passed back via the completion handler parameter.
+        Send the request asynchronously with an optional request body.
+        
+        The response received from the server is packaged into a `Response` object which is passed back via the supplied completion handler.
     
         If the `resourceUrl` string is a malformed url or if the `queryParameters` cannot be appended to it, the completion handler will be called back with an error and a nil `Response`.
     
-        - parameter requestBody: HTTP request body as a String
-        - parameter withCompletionHandler: The closure that will be called when this request finishes
+        - parameter requestBody: The HTTP request body.
+        - parameter completionHandler: The block that will be called when this request finishes.
     */
-    public func sendString(requestBody: String, completionHandler: BmsCompletionHandler?) {
-        
-        self.requestBody = requestBody.data(using: String.Encoding.utf8)
-        
-        // Don't want to overwrite content type if it has already been specified as something else
-        if headers[BaseRequest.CONTENT_TYPE] == nil {
-            headers[BaseRequest.CONTENT_TYPE] = "text/plain"
-        }
-        
-		self.send(completionHandler: completionHandler)
-    }
-    
-    /**
-        Add a request body and send the request asynchronously.
-        
-        The response received from the server is packaged into a `Response` object which is passed back via the completion handler parameter.
-    
-        If the `resourceUrl` string is a malformed url or if the `queryParameters` cannot be appended to it, the completion handler will be called back with an error and a nil `Response`.
-    
-        - parameter requestBody: HTTP request body as Data
-        - parameter withCompletionHandler: The closure that will be called when this request finishes
-    */
-    public func sendData(requestBody: Data, completionHandler: BmsCompletionHandler?) {
+    public func send(requestBody: Data? = nil, completionHandler: BMSCompletionHandler?) {
         
         self.requestBody = requestBody
-		self.send(completionHandler: completionHandler)
-    }
-    
-    
-    /**
-        Send the request asynchronously.
-    
-        The response received from the server is packaged into a `Response` object which is passed back via the completion handler parameter.
-    
-        If the `resourceUrl` string is a malformed url or if the `queryParameters` cannot be appended to it, the completion handler will be called back with an error and a nil `Response`.
-
-        - parameter completionHandler: The closure that will be called when this request finishes
-    */
-    public func send(completionHandler: BmsCompletionHandler?) {
-        
+		
         // Add metadata to the request header so that analytics data can be obtained for ALL bms network requests
         
         // The analytics server needs this ID to match each request with its corresponding response
@@ -234,8 +198,7 @@ public class BaseRequest: NSObject, URLSessionTaskDelegate {
         else {
             let urlErrorMessage = "The supplied resource url is not a valid url."
             BaseRequest.logger.error(message: urlErrorMessage)
-            let malformedUrlError = NSError(domain: BMSCoreError.domain, code: BMSCoreError.MalformedUrl.rawValue, userInfo: [NSLocalizedDescriptionKey: urlErrorMessage])
-            completionHandler?(nil, malformedUrlError)
+            completionHandler?(nil, BMSCoreError.malformedUrl)
         }
     }
     
@@ -243,16 +206,15 @@ public class BaseRequest: NSObject, URLSessionTaskDelegate {
     
     // MARK: Methods (internal)
     
-    
-    private func buildAndSendRequest(url: URL, callback: BmsCompletionHandler?) {
+    private func buildAndSendRequest(url: URL, callback: BMSCompletionHandler?) {
         
         // A callback that builds the Response object and passes it to the user
         let buildAndSendResponse = {
-            (data: Data?, response: URLResponse?, error: NSError?) -> Void in
+            (data: Data?, response: URLResponse?, error: Error?) -> Void in
             
             let networkResponse = Response(responseData: data, httpResponse: response as? HTTPURLResponse, isRedirect: self.allowRedirects)
 
-            callback?(networkResponse as Response, error)
+            callback?(networkResponse, error)
         }
         
         var requestUrl = url
@@ -263,15 +225,14 @@ public class BaseRequest: NSObject, URLSessionTaskDelegate {
                 // This scenario does not seem possible due to the robustness of appendQueryParameters(), but it will stay just in case
                 let urlErrorMessage = "Failed to append the query parameters to the resource url."
                 BaseRequest.logger.error(message: urlErrorMessage)
-                let malformedUrlError = NSError(domain: BMSCoreError.domain, code: BMSCoreError.MalformedUrl.rawValue, userInfo: [NSLocalizedDescriptionKey: urlErrorMessage])
-                callback?(nil, malformedUrlError)
+                callback?(nil, BMSCoreError.malformedUrl)
                 return
             }
             requestUrl = urlWithQueryParameters
         }
         
         // Build request
-        resourceUrl = String(requestUrl)
+        resourceUrl = String(describing: requestUrl)
         networkRequest.url = requestUrl
         networkRequest.httpMethod = httpMethod.rawValue
         networkRequest.allHTTPHeaderFields = headers
@@ -328,11 +289,11 @@ public class BaseRequest: NSObject, URLSessionTaskDelegate {
                           task: URLSessionTask,
                           willPerformHTTPRedirection response: HTTPURLResponse,
                           newRequest request: URLRequest,
-                          completionHandler: (URLRequest?) -> Void) {
+                          completionHandler: @escaping (URLRequest?) -> Void) {
         
         var redirectRequest: URLRequest?
         if allowRedirects {
-            BaseRequest.logger.debug(message: "Redirecting: " + String(session))
+            BaseRequest.logger.debug(message: "Redirecting: " + String(describing: session))
             redirectRequest = request
         }
         
@@ -341,102 +302,131 @@ public class BaseRequest: NSObject, URLSessionTaskDelegate {
     
 }
     
-
-
+    
+    
+    
+    
+/**************************************************************************************************/
+    
+    
+    
+    
+    
+// MARK: - Swift 2
+    
 #else
     
     
+
+/**
+    The HTTP method to be used in the `Request` class initializer.
+*/
+public enum HttpMethod: String {
+
+    case GET, POST, PUT, DELETE, TRACE, HEAD, OPTIONS, CONNECT, PATCH
+}
     
-// MARK: - BaseRequest (Swift 2)
+    
+    
+// MARK: - BMSCompletionHandler
+
+/**
+    The type of callback sent with BMS network requests.
+*/
+public typealias BMSCompletionHandler = (Response?, NSError?) -> Void
+    
+    
 
 
 /**
-    Build and send HTTP network requests.
+    Sends HTTP network requests.
+     
+    Analytics data is automatically gathered for all requests initiated by this class.
 
-    When building a Request object, all components of the HTTP request must be provided in the initializer, except for the `requestBody`, which can be supplied as either NSData or plain text when sending the request via one of the following methods:
-
-        sendString(requestBody: String, withCompletionHandler callback: BmsCompletionHandler?)
-        sendData(requestBody: NSData, withCompletionHandler callback: BmsCompletionHandler?)
+    When building a Request object, all components of the HTTP request must be provided in the initializer, except for the `requestBody`, which can be supplied as NSData when sending the request via the `send()` method.
 */
 public class BaseRequest: NSObject, NSURLSessionTaskDelegate {
     
     
     // MARK: Constants
     
-    public static let CONTENT_TYPE = "Content-Type"
+    public static let contentType = "Content-Type"
     
     
     
     // MARK: Properties (API)
     
-    /// URL that the request is being sent to
+    /// URL that the request is being sent to.
     public private(set) var resourceUrl: String
     
-    /// HTTP method (GET, POST, etc.)
+    /// The HTTP method (GET, POST, etc.).
     public let httpMethod: HttpMethod
     
-    /// Request timeout measured in seconds
+    /// Request timeout measured in seconds.
     public var timeout: Double
     
-    /// All request headers
+    /// All request headers.
     public var headers: [String: String] = [:]
     
-    /// Query parameters to append to the `resourceURL`
+    /// Query parameters to append to the `resourceURL`.
     public var queryParameters: [String: String]?
     
-    /// The request body can be set when sending the request via the `sendString` or `sendData` methods.
+    /// The request body can be set when sending the request via the `send()` method.
     public private(set) var requestBody: NSData?
     
-    /// Determines whether request should follow http redirects
+    /// Determines whether request should follow HTTP redirects.
     public var allowRedirects : Bool = true
     
-    /// Deterimes the cache policy to use for sending request
+    /// Deterimes the cache policy to use for sending request.
     public var cachePolicy: NSURLRequestCachePolicy = .UseProtocolCachePolicy
     
     
     
     // MARK: Properties (internal)
     
-    // Public access required by BMSSecurity framework
-    // The request timeout is set in this NSURLSession's configuration
+    // The request timeout is set in this URLSession's configuration.
+    // Public access required by BMSSecurity framework.
     public var networkSession: NSURLSession!
     
-    // Public access required by BMSAnalytics framework
+    // The time at which the request is sent.
+    // Public access required by BMSAnalytics framework.
     public private(set) var startTime: NSTimeInterval = 0.0
     
-    // Public access required by BMSAnalytics framework
+    // The unique ID to keep track of each request.
+    // Public access required by BMSAnalytics framework.
     public private(set) var trackingId: String = ""
     
-    // Public access required by BMSAnalytics framework
-    // This will obtain a value when the Analytics class from BMSAnalytics is initialized
+    // Metadata for the request.
+    // This will obtain a value when the Analytics class from BMSAnalytics is initialized.
+    // Public access required by BMSAnalytics framework.
     public static var requestAnalyticsData: String?
     
+    // The current request.
     var networkRequest: NSMutableURLRequest
     
-    private static let logger = Logger.logger(forName: Logger.bmsLoggerPrefix + "request")
+    private static let logger = Logger.logger(name: Logger.bmsLoggerPrefix + "request")
     
     
     
     // MARK: Initializer
     
     /**
-        Constructs a new request with the specified URL, using the specified HTTP method.
-        Additionally this constructor sets a custom timeout.
+        Creates a new request.
 
-        - parameter url:             The resource URL
-        - parameter method:          The HTTP method to use
+        - parameter url:             The resource URL.
+        - parameter method:          The HTTP method.
         - parameter headers:         Optional headers to add to the request.
         - parameter queryParameters: Optional query parameters to add to the request.
-        - parameter timeout:         Timeout in seconds for this request
-        - parameter cachePolicy:	 Cache policy to use when sending request
+        - parameter timeout:         Timeout in seconds for this request.
+        - parameter cachePolicy:	  Cache policy to use when sending request.
 
-        - Note: A relative URL may be supplied if the `BMSClient` class is initialized with an app route beforehand.
-     */
+        - Note: A relative `url` may be supplied if the `BMSClient` class is initialized with a Bluemix app route beforehand.
+    */
     public init(url: String,
-               headers: [String: String]?,
-               queryParameters: [String: String]?,
                method: HttpMethod = HttpMethod.GET,
-               timeout: Double = BMSClient.sharedInstance.defaultRequestTimeout,
+               headers: [String: String]? = nil,
+               queryParameters: [String: String]? = nil,
+               timeout: Double = BMSClient.sharedInstance.requestTimeout,
                cachePolicy: NSURLRequestCachePolicy = NSURLRequestCachePolicy.UseProtocolCachePolicy) {
     
         // Relative URL
@@ -474,56 +464,18 @@ public class BaseRequest: NSObject, NSURLSessionTaskDelegate {
     // MARK: Methods (API)
     
     /**
-        Add a request body and send the request asynchronously.
+        Send the request asynchronously with an optional request body.
 
-        If the Content-Type header is not already set, it will be set to "text/plain".
-
-        The response received from the server is packaged into a `Response` object which is passed back via the completion handler parameter.
+        The response received from the server is packaged into a `Response` object which is passed back via the supplied completion handler.
 
         If the `resourceUrl` string is a malformed url or if the `queryParameters` cannot be appended to it, the completion handler will be called back with an error and a nil `Response`.
 
-        - parameter requestBody: HTTP request body as a String
-        - parameter withCompletionHandler: The closure that will be called when this request finishes
-     */
-    public func sendString(requestBody: String, completionHandler: BmsCompletionHandler?) {
-    
-        self.requestBody = requestBody.dataUsingEncoding(NSUTF8StringEncoding)
+        - parameter requestBody: The HTTP request body.
+        - parameter completionHandler: The block that will be called when this request finishes.
+    */
+    public func send(requestBody requestBody: NSData? = nil, completionHandler: BMSCompletionHandler?) {
         
-        // Don't want to overwrite content type if it has already been specified as something else
-        if headers[BaseRequest.CONTENT_TYPE] == nil {
-            headers[BaseRequest.CONTENT_TYPE] = "text/plain"
-        }
-        
-        self.sendWithCompletionHandler(completionHandler)
-    }
-    
-    /**
-        Add a request body and send the request asynchronously.
-
-        The response received from the server is packaged into a `Response` object which is passed back via the completion handler parameter.
-
-        If the `resourceUrl` string is a malformed url or if the `queryParameters` cannot be appended to it, the completion handler will be called back with an error and a nil `Response`.
-
-        - parameter requestBody: HTTP request body as NSData
-        - parameter withCompletionHandler: The closure that will be called when this request finishes
-     */
-    public func sendData(requestBody: NSData, completionHandler: BmsCompletionHandler?) {
-    
         self.requestBody = requestBody
-        self.sendWithCompletionHandler(completionHandler)
-    }
-    
-    
-    /**
-        Send the request asynchronously.
-
-        The response received from the server is packaged into a `Response` object which is passed back via the completion handler parameter.
-
-        If the `resourceUrl` string is a malformed url or if the `queryParameters` cannot be appended to it, the completion handler will be called back with an error and a nil `Response`.
-
-        - parameter completionHandler: The closure that will be called when this request finishes
-     */
-    public func sendWithCompletionHandler(completionHandler: BmsCompletionHandler?) {
     
         // Add metadata to the request header so that analytics data can be obtained for ALL bms network requests
         
@@ -538,12 +490,12 @@ public class BaseRequest: NSObject, NSURLSessionTaskDelegate {
         self.startTime = NSDate.timeIntervalSinceReferenceDate()
         
         if let url = NSURL(string: self.resourceUrl) {
-            buildAndSendRequestWithUrl(url, callback: completionHandler)
+            buildAndSendRequest(url: url, callback: completionHandler)
         }
         else {
             let urlErrorMessage = "The supplied resource url is not a valid url."
-            BaseRequest.logger.error(urlErrorMessage)
-            let malformedUrlError = NSError(domain: BMSCoreError.domain, code: BMSCoreError.MalformedUrl.rawValue, userInfo: [NSLocalizedDescriptionKey: urlErrorMessage])
+            BaseRequest.logger.error(message: urlErrorMessage)
+            let malformedUrlError = NSError(domain: BMSCoreError.domain, code: BMSCoreError.malformedUrl.rawValue, userInfo: [NSLocalizedDescriptionKey: urlErrorMessage])
             completionHandler?(nil, malformedUrlError)
         }
     }
@@ -552,8 +504,7 @@ public class BaseRequest: NSObject, NSURLSessionTaskDelegate {
     
     // MARK: Methods (internal)
     
-    
-    private func buildAndSendRequestWithUrl(url: NSURL, callback: BmsCompletionHandler?) {
+    private func buildAndSendRequest(url url: NSURL, callback: BMSCompletionHandler?) {
     
         // A callback that builds the Response object and passes it to the user
         let buildAndSendResponse = {
@@ -568,11 +519,11 @@ public class BaseRequest: NSObject, NSURLSessionTaskDelegate {
     
         // Add query parameters to URL
         if queryParameters != nil {
-            guard let urlWithQueryParameters = BaseRequest.appendQueryParameters(queryParameters!, toURL: requestUrl) else {
+            guard let urlWithQueryParameters = BaseRequest.append(queryParameters: queryParameters!, toURL: requestUrl) else {
                 // This scenario does not seem possible due to the robustness of appendQueryParameters(), but it will stay just in case
                 let urlErrorMessage = "Failed to append the query parameters to the resource url."
-                BaseRequest.logger.error(urlErrorMessage)
-                let malformedUrlError = NSError(domain: BMSCoreError.domain, code: BMSCoreError.MalformedUrl.rawValue, userInfo: [NSLocalizedDescriptionKey: urlErrorMessage])
+                BaseRequest.logger.error(message: urlErrorMessage)
+                let malformedUrlError = NSError(domain: BMSCoreError.domain, code: BMSCoreError.malformedUrl.rawValue, userInfo: [NSLocalizedDescriptionKey: urlErrorMessage])
                 callback?(nil, malformedUrlError)
                 return
             }
@@ -587,7 +538,7 @@ public class BaseRequest: NSObject, NSURLSessionTaskDelegate {
         networkRequest.HTTPBody = requestBody
         networkRequest.cachePolicy = cachePolicy
         
-        BaseRequest.logger.debug("Sending Request to " + resourceUrl)
+        BaseRequest.logger.debug(message: "Sending Request to " + resourceUrl)
         
         // Send request
         self.networkSession.dataTaskWithRequest(networkRequest as NSURLRequest, completionHandler: buildAndSendResponse).resume()
@@ -602,8 +553,8 @@ public class BaseRequest: NSObject, NSURLSessionTaskDelegate {
         - parameter originalURL: The url that the parameters will be appeneded to
 
         - returns: The original URL with the query parameters appended to it
-     */
-    static func appendQueryParameters(parameters: [String: String], toURL originalUrl: NSURL) -> NSURL? {
+    */
+    static func append(queryParameters parameters: [String: String], toURL originalUrl: NSURL) -> NSURL? {
     
         if parameters.isEmpty {
             return originalUrl
@@ -641,7 +592,7 @@ public class BaseRequest: NSObject, NSURLSessionTaskDelegate {
     
         var redirectRequest: NSURLRequest?
         if allowRedirects {
-            BaseRequest.logger.debug("Redirecting: " + String(session))
+            BaseRequest.logger.debug(message: "Redirecting: " + String(session))
             redirectRequest = request
         }
     

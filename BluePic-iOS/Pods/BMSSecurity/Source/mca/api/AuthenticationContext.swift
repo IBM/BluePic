@@ -13,6 +13,35 @@
 
 import Foundation
 
+#if swift (>=3.0)
+
+// MARK: - AuthenticationContext (Swift 3)
+    
+public protocol AuthenticationContext {
+    
+    /**
+     Submits authentication challenge response.
+     - Parameter answer - Dictionary with challenge responses
+     */
+    
+    func submitAuthenticationChallengeAnswer(_ answer:[String:AnyObject]?)
+    
+    /**
+     Informs client about successful authentication.
+     */
+    
+    func submitAuthenticationSuccess ()
+    
+    /**
+     Informs client about failed authentication.
+     - Parameter info - Dictionary with extended information about failure
+     */
+    
+    func submitAuthenticationFailure (_ info:[String:AnyObject]?)
+}
+
+#else
+    
 public protocol AuthenticationContext {
     
     /**
@@ -35,3 +64,5 @@ public protocol AuthenticationContext {
     
     func submitAuthenticationFailure (info:[String:AnyObject]?)
 }
+
+#endif

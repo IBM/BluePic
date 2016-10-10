@@ -44,7 +44,7 @@ class SearchViewController: UIViewController {
         super.viewDidLoad()
 
         setupPopularTags()
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: Notification.Name.UIKeyboardWillShow, object: nil)
         initializeDataRetrieval()
     }
 
@@ -71,7 +71,7 @@ class SearchViewController: UIViewController {
 
      - parameter animated: Bool
      */
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         searchField.becomeFirstResponder()
     }
@@ -86,13 +86,13 @@ class SearchViewController: UIViewController {
     /**
      Method to make sure keyboard doesn't hide parts of the collectionView
 
-     - parameter n: NSNotification
+     - parameter n: Notification
      */
-    func keyboardWillShow(n: NSNotification) {
+    func keyboardWillShow(_ n: Notification) {
         let userInfo = n.userInfo
 
-        if let info = userInfo, keyboardRect = info[UIKeyboardFrameEndUserInfoKey] as? NSValue {
-            let rectValue = keyboardRect.CGRectValue()
+        if let info = userInfo, let keyboardRect = info[UIKeyboardFrameEndUserInfoKey] as? NSValue {
+            let rectValue = keyboardRect.cgRectValue
             bottomCollectionViewConstraint.constant = rectValue.height - 40 // with offset
         }
     }
@@ -100,11 +100,11 @@ class SearchViewController: UIViewController {
     /**
      Method called when the back button is pressed
 
-     - parameter sender: AnyObject
+     - parameter sender: Any
      */
-    @IBAction func popVC(sender: AnyObject) {
+    @IBAction func popVC(_ sender: Any) {
         searchField.resignFirstResponder()
-        self.navigationController?.popViewControllerAnimated(true)
+        let _ = self.navigationController?.popViewController(animated: true)
     }
 
 }
@@ -119,7 +119,7 @@ extension SearchViewController {
      */
     func initializeDataRetrieval() {
 
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(updateWithTagData), name: BluemixDataManagerNotification.PopularTagsReceived.rawValue, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateWithTagData), name: .popularTagsReceived, object: nil)
 
         BluemixDataManager.SharedInstance.getPopularTags()
     }
@@ -128,10 +128,10 @@ extension SearchViewController {
      Method is called when the BluemixDataManager has successfully received tags. It updates the tag collection view with this new data
      */
     func updateWithTagData() {
-        dispatch_async(dispatch_get_main_queue(), {
+        DispatchQueue.main.async(execute: {
             self.popularTags = BluemixDataManager.SharedInstance.tags
             self.tagCollectionView.performBatchUpdates({
-                self.tagCollectionView.reloadSections(NSIndexSet(index: 0))
+                self.tagCollectionView.reloadSections(IndexSet(integer: 0))
             }, completion: nil)
         })
     }
@@ -148,7 +148,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
 
      - returns: Int
      */
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return popularTags.count
     }
 
@@ -156,12 +156,12 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
      Method sets up the cell for item at indexPath
 
      - parameter collectionView: UICollectionView
-     - parameter indexPath:      NSIndexPath
+     - parameter indexPath:      IndexPath
 
      - returns: UICollectionViewCell
      */
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCellWithReuseIdentifier("TagCollectionViewCell", forIndexPath: indexPath) as? TagCollectionViewCell else {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TagCollectionViewCell", for: indexPath) as? TagCollectionViewCell else {
             return UICollectionViewCell()
         }
 
@@ -174,12 +174,12 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
 
      - parameter collectionView:       UICollectionVIew
      - parameter collectionViewLayout: UICollectionViewLayout
-     - parameter indexPath:            NSIndexPath
+     - parameter indexPath:            IndexPath
 
      - returns: CGSize
      */
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        let size = NSString(string: popularTags[indexPath.item]).sizeWithAttributes(nil)
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let size = NSString(string: popularTags[indexPath.item]).size(attributes: nil)
         return CGSize(width: size.width + kCellPadding, height: 30.0)
     }
 
@@ -187,10 +187,10 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
      Method is called when a cell in the collection view is selected. In this case we segue to the feed vc with search results for that tag
 
      - parameter collectionView: UICollectionView
-     - parameter indexPath:      NSIndexPath
+     - parameter indexPath:      IndexPath
      */
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        collectionView.deselectItemAtIndexPath(indexPath, animated: true)
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: true)
         // open feed of items with selected tag
         if let vc = Utils.vcWithNameFromStoryboardWithName("FeedViewController", storyboardName: "Feed") as? FeedViewController {
             vc.searchQuery = popularTags[indexPath.item]
@@ -209,11 +209,10 @@ extension SearchViewController: UITextFieldDelegate {
 
      - returns: Bool
      */
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
 
-        if let query = textField.text, vc = Utils.vcWithNameFromStoryboardWithName("FeedViewController", storyboardName: "Feed") as? FeedViewController
-            where query.characters.count > 0 {
+        if let query = textField.text, let vc = Utils.vcWithNameFromStoryboardWithName("FeedViewController", storyboardName: "Feed") as? FeedViewController, query.characters.count > 0 {
 
             vc.searchQuery = query
 
@@ -235,8 +234,8 @@ extension SearchViewController: UITextFieldDelegate {
 
      - returns: Bool
      */
-    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
-        if let text = textField.text where text.characters.count + string.characters.count <= 40 {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if let text = textField.text, text.characters.count + string.characters.count <= 40 {
             return true
         }
         return false

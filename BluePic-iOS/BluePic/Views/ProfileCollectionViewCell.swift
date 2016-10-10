@@ -17,6 +17,17 @@
 import UIKit
 import SDWebImage
 
+class ImageFeedCollectionViewCell: ProfileCollectionViewCell {
+
+    override func setupDataWith(_ image: Image) {
+        super.setupDataWith(image)
+
+        //set the photographerNameLabel's text
+        let ownerNameString = NSLocalizedString("by", comment: "") + " \(image.user.name)"
+        self.photographerNameLabel.text = ownerNameString
+    }
+}
+
 class ProfileCollectionViewCell: UICollectionViewCell {
 
     //image view used to display image
@@ -38,10 +49,10 @@ class ProfileCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var loadingView: UIView!
 
     //string that is added to the numberOfTagsLabel at the end if there are multiple tags
-    private let kNumberOfTagsPostFix_MultipleTags = NSLocalizedString("Tags", comment: "")
+    fileprivate let kNumberOfTagsPostFix_MultipleTags = NSLocalizedString("Tags", comment: "")
 
     //String that is added to the numberOfTagsLabel at the end if there is one tag
-    private let kNumberOfTagsPostFix_OneTag = NSLocalizedString("Tag", comment: "")
+    fileprivate let kNumberOfTagsPostFix_OneTag = NSLocalizedString("Tag", comment: "")
 
     /**
      Method is called when the view wakes from nib
@@ -50,45 +61,39 @@ class ProfileCollectionViewCell: UICollectionViewCell {
         super.awakeFromNib()
     }
 
-    /**
-     Method sets up the data for the profile collection view cell
-
-     - parameter url:         String?
-     - parameter image:       UIImage?
-     - parameter displayName: String?
-     - parameter timeStamp:   Double?
-     - parameter fileName:    String?
-     */
-    func setupDataWith(image: Image) {
+    /// Method sets up the data for the profile collection view cell
+    ///
+    /// - parameter image: Image object to use for populating UI
+    func setupDataWith(_ image: Image) {
 
         if let numOfTags = image.tags?.count {
 
             if numOfTags == 0 {
-                numberOfTagsLabel.hidden = true
+                self.numberOfTagsLabel.isHidden = true
             } else if numOfTags == 1 {
-                numberOfTagsLabel.hidden = false
-                numberOfTagsLabel.text = "\(numOfTags)" + " " + kNumberOfTagsPostFix_OneTag
+                self.numberOfTagsLabel.isHidden = false
+                self.numberOfTagsLabel.text = "\(numOfTags)" + " " + self.kNumberOfTagsPostFix_OneTag
             } else {
-                numberOfTagsLabel.hidden = false
-                numberOfTagsLabel.text = "\(numOfTags)" + " " + kNumberOfTagsPostFix_MultipleTags
+                self.numberOfTagsLabel.isHidden = false
+                self.numberOfTagsLabel.text = "\(numOfTags)" + " " + self.kNumberOfTagsPostFix_MultipleTags
             }
 
         } else {
-            numberOfTagsLabel.hidden = true
+            self.numberOfTagsLabel.isHidden = true
         }
 
         //set the image view's image
-        setImageView(image.url, fileName: image.fileName)
+        self.setImageView(image.url, fileName: image.fileName)
 
         //label that displays the photos caption
-        var cap = image.caption ?? ""
+        var cap = image.caption
         if cap == CameraDataManager.SharedInstance.kEmptyCaptionPlaceHolder {
             cap = ""
         }
-        captionLabel.text = cap
+        self.captionLabel.text = cap
 
         //set the time since posted label's text
-        timeSincePostedLabel.text = NSDate.timeSinceDateString(image.timeStamp)
+        self.timeSincePostedLabel.text = Date.timeSinceDateString(image.timeStamp)
     }
 
     /**
@@ -97,9 +102,9 @@ class ProfileCollectionViewCell: UICollectionViewCell {
      - parameter url:      String?
      - parameter fileName: String?
      */
-    func setImageView(url: String?, fileName: String?) {
+    func setImageView(_ url: String?, fileName: String?) {
 
-        self.loadingView.hidden = false
+        self.loadingView.isHidden = false
 
         //first try to set image view with locally cached image (from a photo the user has posted during the app session)
         let locallyCachedImage = self.tryToSetImageViewWithLocallyCachedImage(fileName)
@@ -116,7 +121,7 @@ class ProfileCollectionViewCell: UICollectionViewCell {
 
      - returns: UIImage?
      */
-    private func tryToSetImageViewWithLocallyCachedImage(fileName: String?) -> UIImage? {
+    fileprivate func tryToSetImageViewWithLocallyCachedImage(_ fileName: String?) -> UIImage? {
 
         //check if file name and facebook user id aren't nil
         if let fName = fileName {
@@ -128,10 +133,10 @@ class ProfileCollectionViewCell: UICollectionViewCell {
             if let img = BluemixDataManager.SharedInstance.imagesTakenDuringAppSessionById[id] {
 
                 //hide loading placeholder view
-                self.loadingView.hidden = true
+                self.loadingView.isHidden = true
 
                 //set image view's image to locally cached image
-                imageView.image = img
+                self.imageView.image = img
 
                 return img
             }
@@ -145,23 +150,23 @@ class ProfileCollectionViewCell: UICollectionViewCell {
      - parameter url:              String?
      - parameter placeHolderImage: UIImage?
      */
-    private func tryToSetImageViewWithURL(url: String?, placeHolderImage: UIImage?) {
+    fileprivate func tryToSetImageViewWithURL(_ url: String?, placeHolderImage: UIImage?) {
 
         let urlString = url ?? ""
 
         //check if string is empty, if it is, then its not a valid url
         if urlString != "" {
 
-            //check if we can turn the string into a valid NSURL
-            if let nsurl = NSURL(string: urlString) {
+            //check if we can turn the string into a valid URL
+            if let nsurl = URL(string: urlString) {
 
                 //if placeHolderImage parameter isn't nil, then set image with URL and use placeholder image
                 if let image = placeHolderImage {
-                    setImageViewWithURLAndPlaceHolderImage(nsurl, placeHolderImage: image)
+                    self.setImageViewWithURLAndPlaceHolderImage(nsurl, placeHolderImage: image)
                 }
                     //else dont use placeholder image and
                 else {
-                    setImageViewWithURL(nsurl)
+                    self.setImageViewWithURL(nsurl)
                 }
             }
         }
@@ -170,33 +175,29 @@ class ProfileCollectionViewCell: UICollectionViewCell {
     /**
      Method sets the imageView with a url to an image and uses a locally cached image
 
-     - parameter url:              NSURL
+     - parameter url:              URL
      - parameter placeHolderImage: UIImage
      */
-    private func setImageViewWithURLAndPlaceHolderImage(url: NSURL, placeHolderImage: UIImage) {
+    fileprivate func setImageViewWithURLAndPlaceHolderImage(_ url: URL, placeHolderImage: UIImage) {
 
-        imageView.sd_setImageWithURL(url, placeholderImage: placeHolderImage, completed: { result in
+        self.imageView.sd_setImage(with: url, placeholderImage: placeHolderImage, options: [.delayPlaceholder]) { image, error, cacheType, url in
 
-            if result.0 != nil {
-                self.loadingView.hidden = true
-            }
+            self.loadingView.isHidden = image != nil && error == nil
 
-        })
+        }
     }
 
     /**
      Method sets the imageView with a url to an image using no placeholder
 
-     - parameter url: NSURL
+     - parameter url: URL
      */
-    private func setImageViewWithURL(url: NSURL) {
-        imageView.sd_setImageWithURL(url, completed: { result in
+    fileprivate func setImageViewWithURL(_ url: URL) {
+        self.imageView.sd_setImage(with: url) { (image, error, cacheType, url) in
 
-            if result.0 != nil {
-                self.loadingView.hidden = true
-            }
+            self.loadingView.isHidden = image != nil && error == nil
 
-        })
+        }
     }
 
 }

@@ -16,11 +16,17 @@ internal class Queue<Element> {
     internal var size:Int {return items.count}
     
     internal init() {}
-
+    
     //adds element to queue
+#if swift(>=3.0)
+    internal func add(_ element:Element){
+        items.append(element)
+    }
+#else
     internal func add(element:Element){
         items.append(element)
     }
+#endif
 
     //remove element from queue. if queue empty returns nil
     internal func remove()->Element?{

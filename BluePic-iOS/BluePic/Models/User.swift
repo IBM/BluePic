@@ -30,8 +30,8 @@ class User: NSObject {
     init?(_ response: Response?) {
 
         if let dict = Utils.convertResponseToDictionary(response),
-            facebookID = dict["_id"] as? String,
-            name = dict["name"] as? String {
+            let facebookID = dict["_id"] as? String,
+            let name = dict["name"] as? String {
 
             self.facebookID = facebookID
             self.name = name

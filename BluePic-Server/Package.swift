@@ -18,15 +18,24 @@ import PackageDescription
 
 let package = Package(
   name: "BluePic-Server",
-  dependencies: [
-    .Package(url: "https://github.com/IBM-Swift/Kitura.git", majorVersion: 0, minor: 24),
-    .Package(url: "https://github.com/IBM-Swift/Kitura-CouchDB.git", majorVersion: 0, minor: 24),
-    .Package(url: "https://github.com/IBM-Swift/Swift-cfenv.git", majorVersion: 1, minor: 4),
-    .Package(url: "https://github.com/IBM-Bluemix/cf-deployment-tracker-client-swift.git", majorVersion: 0, minor: 1),
-    .Package(url: "https://github.com/ibm-bluemix-mobile-services/bluemix-objectstorage-swift-sdk.git", majorVersion: 0, minor: 5),
-    .Package(url: "https://github.com/ibm-bluemix-mobile-services/bms-mca-kitura-credentials-plugin.git", majorVersion: 0, minor: 3),
-    .Package(url: "https://github.com/ibm-bluemix-mobile-services/bms-pushnotifications-serversdk-swift.git", majorVersion: 0, minor: 3),
-    .Package(url: "https://github.com/IBM-Swift/Kitura-CredentialsFacebook.git", majorVersion: 0, minor: 24)
+  targets: [
+    Target(
+      name: "BluePicApp",
+      dependencies: []
+    ),
+    Target(
+      name: "BluePicServer", dependencies: [.Target(name: "BluePicApp")]
+    ),
   ],
-  exclude: ["Makefile", "Kitura-Build"]
+  dependencies: [
+    .Package(url: "https://github.com/IBM-Swift/Kitura.git", majorVersion: 1, minor: 0),
+    .Package(url: "https://github.com/IBM-Swift/Kitura-CouchDB.git", majorVersion: 1, minor: 0),
+    .Package(url: "https://github.com/IBM-Swift/Swift-cfenv.git", majorVersion: 1, minor: 7),
+    .Package(url: "https://github.com/IBM-Bluemix/cf-deployment-tracker-client-swift.git", majorVersion: 0, minor: 4),
+    .Package(url: "https://github.com/ibm-bluemix-mobile-services/bluemix-simple-http-client-swift.git", majorVersion: 0, minor: 5),
+    .Package(url: "https://github.com/ibm-bluemix-mobile-services/bluemix-objectstorage-serversdk-swift.git", majorVersion: 0, minor: 6),
+    .Package(url: "https://github.com/ibm-bluemix-mobile-services/bms-mca-kitura-credentials-plugin.git", majorVersion: 0, minor: 4),
+    .Package(url: "https://github.com/ibm-bluemix-mobile-services/bms-pushnotifications-serversdk-swift.git", majorVersion: 0, minor: 4)
+  ],
+  exclude: ["Makefile", "Package-Builder"]
 )
