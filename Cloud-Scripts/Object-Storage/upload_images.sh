@@ -16,16 +16,13 @@
 # limitations under the License.
 ##
 
+# This script is kept as a reference on how to use curl for submitting a multipart request.
+
 # If any commands fail, we want the shell script to exit immediately.
 set -e
 
-imagesFolder=`dirname $( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )`/images
+imagesFolder=`cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd`/images
 authHeader="Bearer <valid auth token>"
 
 # Upload images via Kitura-based server (localhost)
-curl -v --data-binary @$imagesFolder/bridge.png -X POST http://localhost:8090/images/bridge.png/Bridge/100/100/34.2/80.5/Austin,%20Texas -H "Authorization: $authHeader"
-curl -v --data-binary @$imagesFolder/city.png -X POST http://localhost:8090/images/city.png/Car/90/90/50.2/90.5/Tuscon,%20Arizona -H "Authorization: $authHeader"
-
-# Upload images via Kitura-based server (running on Bluemix)
-#curl -v --data-binary @$imagesFolder/bridge.png -X POST http://bluepic-superconductive-ebonite.mybluemix.net/users/1003/images/bridge.png/Bridge/100/100/34.2/80.5/Austin,%20Texas -H "Authorization: $authHeader"
-#curl -v --data-binary @$imagesFolder/car.png -X POST http://bluepic-superconductive-ebonite.mybluemix.net/users/1003/images/car.png/Car/90/90/50.2/90.5/Tuscon,%20Arizona -H "Authorization: $authHeader"
+curl -v -F "imageJson=@$imagesFolder/bridge.json;type=application/json" -F "imageBinary=@$imagesFolder/bridge.png;type=image/png" -X POST http://localhost:8090/images -H "Content-Type:multipart/form-data" -H "Authorization: $authHeader"
