@@ -73,12 +73,13 @@ public class ServerController {
 	objectStorageConn = ObjectStorageConn(objStorageConnProps: objStorageConnProps)
         
     let credentials = Credentials() // middleware for securing endpoints
-    //credentials.register(plugin: MobileClientAccessKituraCredentialsPlugin())
-
+    
     // Facebook credentials
     let fbCredentialsPlugin = CredentialsFacebookToken()
     credentials.register(plugin: fbCredentialsPlugin)
-
+    
+    // MCA credentials
+    credentials.register(plugin: MobileClientAccessKituraCredentialsPlugin())
 
     pushNotificationsClient = PushNotifications(bluemixRegion: PushNotifications.Region.US_SOUTH, bluemixAppGuid: mobileClientAccessProps.clientId, bluemixAppSecret: ibmPushProps.secret)
     
