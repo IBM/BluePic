@@ -378,11 +378,9 @@ img.bannerImg {
 }
 
 .placeholderIcon {
-    /* update icon to search */
-    background-image: url('../img/Setings.png');
+    background-image: url('../img/Search-icon.png');
     background-repeat: no-repeat;
-    text-indent: 20px;
-    background-position: 95px;
+    background-position: 39%;
 }
 
 @media (min-width: 700px) {
