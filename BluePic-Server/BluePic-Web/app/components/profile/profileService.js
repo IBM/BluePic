@@ -8,10 +8,11 @@ angular.module('bluepicWebApp')
 
             var token = PropertiesService.getAccessToken();
             var userId = PropertiesService.getUserId();
-
+            var url = '/users/' +userId+ '/images';
+                                     
             var req = {
                 method: 'GET',
-                url: '/users/' +userId+ '/images',
+                url: url,
                 headers: {
                     'X-token-type': 'FacebookToken',
                     'content-type': 'application/json',
@@ -26,10 +27,11 @@ angular.module('bluepicWebApp')
 
             var token = PropertiesService.getAccessToken();
             var userId = PropertiesService.getUserId();
-
+            var url = '/users/' +userId;
+                                     
             var req = {
                 method: 'GET',
-                url: '/users/' +userId,
+                url: url,
                 headers: {
                     'X-token-type': 'FacebookToken',
                     'content-type': 'application/json',
