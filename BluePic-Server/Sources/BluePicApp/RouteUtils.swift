@@ -25,7 +25,7 @@ import MobileClientAccess
 import Dispatch
 
 enum BluePicLocalizedError : LocalizedError {
-    
+
     case getTagsFailed
     case noImagesByTag(String)
     case getAllImagesFailed
@@ -39,7 +39,7 @@ enum BluePicLocalizedError : LocalizedError {
     case getImagesFailed(String)
     case addUserRecordFailed(String)
     case requestFailed
-    
+
     var errorDescription: String? {
         switch self {
         case .getTagsFailed: return "Failed to obtain tags from database."
@@ -111,12 +111,12 @@ extension ServerController {
                   print("Error response from OpenWhisk: \(str)")
               }
               catch {
-                  
+
               }
           }
         }
       }
-    
+
     // Kitura does not yet execute certain functionality asynchronously,
     // hence the need for this block.
     DispatchQueue.global().async {
@@ -244,6 +244,8 @@ extension ServerController {
       for part in parts {
         if part.name == "imageJson" {
           switch (part.body) {
+          case .json(let jsonDoc):
+            imageJson  = jsonDoc
           case .text(let stringJson):
             let encoding = String.Encoding.utf8
             if let dataJson = stringJson.data(using: encoding, allowLossyConversion: false) {
@@ -283,7 +285,7 @@ extension ServerController {
    */
   func updateImageJSON(json: JSON, withRequest request: RouterRequest) throws -> JSON {
     var updatedJson = json
-    guard let authContext = request.userInfo["mcaAuthContext"] as? AuthorizationContext, 
+    guard let authContext = request.userInfo["mcaAuthContext"] as? AuthorizationContext,
               let contentType = ContentType.sharedInstance.getContentType(forFileName: updatedJson["fileName"].stringValue) else {
       throw ProcessingError.Image("Invalid image document!")
     }
