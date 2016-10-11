@@ -1,0 +1,11 @@
+{
+  "fileName": "bridge.png",
+  "caption": "A bridge",
+  "width": 100,
+  "height": 100,
+  "location": {
+    "name": "Austin, TX",
+    "latitude": 36.2,
+    "longitude": 80.5
+  }
+}
