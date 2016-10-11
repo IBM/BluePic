@@ -41,7 +41,11 @@ class RouteTests: XCTestCase {
           ("testGetTags", testGetTags),
           ("testGettingImages", testGettingImages),
           ("testGettingSingleImage", testGettingSingleImage),
-          ("testGettingImagesByTag", testGettingImagesByTag)
+          ("testGettingImagesByTag", testGettingImagesByTag),
+          ("testPostingImage", testPostingImage),
+          ("testGettingImagesForUser", testGettingImagesForUser),
+          ("testGettingUsers", testGettingUsers),
+          ("testGettingSingleUser", testGettingSingleUser)
       ]
   }
   
@@ -114,6 +118,8 @@ class RouteTests: XCTestCase {
     }
     waitForExpectations(timeout: 10.0, handler: nil)
   }
+  
+  // MARK: Image related tests
 
   func testGettingImages() {
     
@@ -132,7 +138,7 @@ class RouteTests: XCTestCase {
         imageExpectation.fulfill()
 
     }
-    waitForExpectations(timeout: 8.0, handler: nil)
+    waitForExpectations(timeout: 10.0, handler: nil)
   }
   
   func testGettingSingleImage() {
@@ -147,7 +153,7 @@ class RouteTests: XCTestCase {
         imageExpectation.fulfill()
     }
     
-    waitForExpectations(timeout: 8.0, handler: nil)
+    waitForExpectations(timeout: 10.0, handler: nil)
   }
   
   func testGettingImagesByTag() {
@@ -171,7 +177,7 @@ class RouteTests: XCTestCase {
         imageExpectation.fulfill()
         
     }
-    waitForExpectations(timeout: 8.0, handler: nil)
+    waitForExpectations(timeout: 10.0, handler: nil)
   }
   
   func testPostingImage() {
@@ -277,6 +283,73 @@ class RouteTests: XCTestCase {
     }
     waitForExpectations(timeout: 10.0, handler: nil)
   }
+  
+  // MARK: User related tests
+  
+  func testGettingUsers() {
+    
+    let userExpectation = expectation(description: "Gets all Users.")
+    
+    self.getAccessToken { accessToken in
+      URLRequest(forTestWithMethod: "GET", route: "users", authToken: accessToken)
+        .sendForTesting { data in
+          
+          let users = JSON(data: data)
+          let records = users["records"].arrayValue
+          XCTAssertEqual(records.count, 5)
+          let userValues: [(String, String)] = [("anonymous", "Anonymous"), ("1003", "Kevin White"), ("1002", "Sharon den Adel"), ("1001", "Peter Adams"), ("1000", "John Smith")]
+          for (index, user) in records.enumerated() {
+            XCTAssertEqual(userValues[index].0, user["_id"].stringValue)
+            XCTAssertEqual(userValues[index].1, user["name"].stringValue)
+            XCTAssertEqual("user", user["type"].stringValue)
+          }
+          userExpectation.fulfill()
+      }
+    }
+    waitForExpectations(timeout: 10.0, handler: nil)
+  }
+  
+  func testGettingSingleUser() {
+    
+    let userExpectation = expectation(description: "Gets a specific User.")
+    
+    self.getAccessToken { accessToken in
+      URLRequest(forTestWithMethod: "GET", route: "users/1003", authToken: accessToken)
+        .sendForTesting { data in
+
+          let user = JSON(data: data)
+          XCTAssertEqual(user["_id"].stringValue, "1003")
+          XCTAssertEqual(user["name"].stringValue, "Kevin White")
+          XCTAssertEqual("user", user["type"].stringValue)
+          XCTAssertNotNil(user["_rev"].string)
+          userExpectation.fulfill()
+      }
+    }
+    waitForExpectations(timeout: 10.0, handler: nil)
+  }
+  
+  func testCreatingUser() {
+    
+    let userExpectation = expectation(description: "Creates a new User.")
+    
+    self.getAccessToken { accessToken in
+      
+      let json = ["_id": "3434", "name": "Tim Billings"]
+      do {
+        let jsonData = try JSONSerialization.data(withJSONObject: json, options: JSONSerialization.WritingOptions(rawValue: 0))
+        URLRequest(forTestWithMethod: "POST", route: "users", authToken: accessToken, body: jsonData)
+          .sendForTesting { data in
+            
+            let user = JSON(data: data)
+            print("result: \(user.debugDescription)")
+            userExpectation.fulfill()
+        }
+      } catch {
+        XCTFail("Faild to convert dictionary to JSON")
+      }
+    }
+    waitForExpectations(timeout: 10.0, handler: nil)
+  }
 
 }
 
@@ -362,7 +435,7 @@ extension RouteTests {
 
 private extension URLRequest {
   
-  init(forTestWithMethod method: String, route: String = "", message: String? = nil, authToken: String? = nil) {
+  init(forTestWithMethod method: String, route: String = "", message: String? = nil, authToken: String? = nil, body: Data? = nil) {
     self.init(url: URL(string: "http://127.0.0.1:8090/" + route)!)
     addValue("application/json", forHTTPHeaderField: "Content-Type")
     if let authToken = authToken {
@@ -370,6 +443,9 @@ private extension URLRequest {
     }
     httpMethod = method
     cachePolicy = .reloadIgnoringCacheData
+    if let body = body {
+      httpBody = body
+    }
   }
   
   func sendForTesting(fn: @escaping (Data) -> Void ) {
