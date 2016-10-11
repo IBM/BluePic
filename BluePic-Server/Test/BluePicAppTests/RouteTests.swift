@@ -45,7 +45,9 @@ class RouteTests: XCTestCase {
           ("testPostingImage", testPostingImage),
           ("testGettingImagesForUser", testGettingImagesForUser),
           ("testGettingUsers", testGettingUsers),
-          ("testGettingSingleUser", testGettingSingleUser)
+          ("testGettingSingleUser", testGettingSingleUser),
+          ("testCreatingUser", testCreatingUser),
+          ("testPushNotification", testPushNotification)
       ]
   }
   
@@ -287,7 +289,7 @@ class RouteTests: XCTestCase {
   // MARK: User related tests
   
   func testGettingUsers() {
-    
+        
     let userExpectation = expectation(description: "Gets all Users.")
     
     self.getAccessToken { accessToken in
@@ -341,12 +343,38 @@ class RouteTests: XCTestCase {
           .sendForTesting { data in
             
             let user = JSON(data: data)
-            print("result: \(user.debugDescription)")
+            XCTAssertEqual(user["_id"].stringValue, json["_id"])
+            XCTAssertEqual(user["name"].stringValue, json["name"])
+            XCTAssertEqual(user["type"].stringValue, "user")
+            XCTAssertNotNil(user["_rev"].string)
             userExpectation.fulfill()
         }
       } catch {
         XCTFail("Faild to convert dictionary to JSON")
       }
+    }
+    waitForExpectations(timeout: 10.0, handler: nil)
+  }
+  
+  func testPushNotification() {
+    
+    let pushExpectation = expectation(description: "Sends a push notification to a User.")
+    
+    self.getAccessToken { accessToken in
+      
+      var request = URLRequest(url: URL(string: "http://127.0.0.1:8090/push/images/2010")!)
+      request.httpMethod = "POST"
+      request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+      request.addValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+      request.cachePolicy = .reloadIgnoringLocalCacheData
+      URLSession(configuration: .default).dataTask(with: request) { data, response, error in
+        
+        XCTAssertNil(error)
+        // Only works with physical device, so we expect a bad status
+        let statusCode = (response as! HTTPURLResponse).statusCode
+        XCTAssertEqual(statusCode, 500)
+        pushExpectation.fulfill()
+      }.resume()
     }
     waitForExpectations(timeout: 10.0, handler: nil)
   }
