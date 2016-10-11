@@ -29,7 +29,7 @@
 .flexLeft,.flexCenter{flex-grow: 1;}
 
 .authorFont {
-    font-family: SanFranciscoText;
+    font-family: Arial;
     font-size: 18px;
     font-weight: 400;
     font-style: italic;
@@ -38,7 +38,7 @@
 }
 
 .authorFont2 {
-    font-family: SanFranciscoText;
+    font-family: Arial;
     height: 40px;
     font-size: 18px;
     font-weight: 400;
@@ -48,7 +48,7 @@
 }
 
 .locationFont {
-    font-family: SanFranciscoText;
+    font-family: Arial;
     font-size: 18px;
     font-weight: bold;
     height: 40px;
@@ -60,7 +60,7 @@
 }
 
 .locationFontLeft {
-    font-family: SanFranciscoText;
+    font-family: Arial;
     height: 40px;
     font-size: 18px;
     font-weight: bold;
@@ -97,7 +97,7 @@
 
 .metadataFont {
     opacity: 0.7;
-    font-family: SanFranciscoText;
+    font-family: Arial;
     font-size: 14px;
     font-weight: 400;
     font-style: italic;
@@ -106,7 +106,7 @@
 
 .metadataFont2 {
     opacity: 0.7;
-    font-family: SanFranciscoText;
+    font-family: Arial;
     font-size: 14px;
     font-weight: 400;
     font-style: italic;
@@ -218,7 +218,7 @@ img.bannerImg {
 }
 
 .welcomeTitle {
-    font-family: SanFranciscoText;
+    font-family: Arial;
     font-size: 30px;
     line-height: 2.33;
     text-align: center;
@@ -226,7 +226,7 @@ img.bannerImg {
 }
 
 .welcomeBlurb {
-    font-family: SanFranciscoText;
+    font-family: Arial;
     font-size: 21px;
     font-weight: 300;
     line-height: 1.67;
@@ -235,7 +235,7 @@ img.bannerImg {
 }
 
 .signInLater {
-    font-family: SanFranciscoText;
+    font-family: Arial;
     font-size: 18px;
     line-height: 2;
     letter-spacing: 0.6px;
@@ -306,7 +306,7 @@ img.bannerImg {
 
 .tagLabel {
     height: 19.3px;
-    font-family: SanFranciscoText;
+    font-family: Arial;
     font-size: 12.5px;
     font-weight: bold;
     letter-spacing: 2.8px;
@@ -322,7 +322,7 @@ img.bannerImg {
 
 .searchResults {
     height: 40px;
-    font-family: SanFranciscoText;
+    font-family: Arial;
     font-size: 18px;
     font-weight: bold;
     font-style: normal;
@@ -355,21 +355,16 @@ img.bannerImg {
     object-fit:cover;
 }
 
-@font-face {
-    font-family: 'SanFranciscoText';
-    src: url('../fonts/SanFranFonts/SanFranciscoText-Regular.otf');
-}
-
 .loginFont {
     text-transform: uppercase;
     width: 320px;
-    font-family: SanFranciscoText;
+    font-family: Arial;
     line-height: 2;
     letter-spacing: 1.5px;
 }
 
 .search {
-    font-family: SanFranciscoText;
+    font-family: Arial;
     font-size: 14px;
     font-weight: 400;
     color: #999999;
