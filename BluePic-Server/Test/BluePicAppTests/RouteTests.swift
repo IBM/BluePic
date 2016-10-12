@@ -34,6 +34,8 @@ class RouteTests: XCTestCase {
   private let queue = DispatchQueue(label: "Kitura runloop", qos: .userInitiated, attributes: .concurrent)
 
   private let serverController = try? ServerController()
+  
+  private var accessToken: String = ""
 
   static var allTests : [(String, (RouteTests) -> () throws -> Void)] {
       return [
@@ -80,6 +82,16 @@ class RouteTests: XCTestCase {
     
 //    resetDatabase()
     
+    if self.accessToken == "" {
+      let tokenFileName = "authToken"
+      let tokenFileURL = fileURL(directoriesUp: 1, path: tokenFileName)
+      do {
+        self.accessToken = try String(contentsOf: tokenFileURL)
+      } catch {
+        XCTFail("Could not get authToken from file.")
+      }
+    }
+    
     HeliumLogger.use()
     
     Kitura.addHTTPServer(onPort: 8090, with: serverController!.router)
@@ -98,14 +110,12 @@ class RouteTests: XCTestCase {
     
     let pingExpectation = expectation(description: "Hit ping endpoint and get simple text response.")
     
-    self.getAccessToken { accessToken in
-      URLRequest(forTestWithMethod: "GET", route: "ping", authToken: accessToken)
-        .sendForTesting { data in
-          
-          let pingResult = String(data: data, encoding: String.Encoding.utf8)!
-          XCTAssertTrue(pingResult.contains("Hello World"))
-          pingExpectation.fulfill()
-      }
+    URLRequest(forTestWithMethod: "GET", route: "ping", authToken: self.accessToken)
+      .sendForTesting { data in
+        
+        let pingResult = String(data: data, encoding: String.Encoding.utf8)!
+        XCTAssertTrue(pingResult.contains("Hello World"))
+        pingExpectation.fulfill()
     }
     waitForExpectations(timeout: 10.0, handler: nil)
   }
@@ -190,10 +200,6 @@ class RouteTests: XCTestCase {
   func testPostingImage() {
     
     let imageExpectation = expectation(description: "Post an image with server.")
-    
-    // get access token
-    let tokenFileName = "authToken"
-    let tokenFileURL = fileURL(directoriesUp: 1, path: tokenFileName)
   
     // find image
     let imageFileName = "city.png"
@@ -204,14 +210,13 @@ class RouteTests: XCTestCase {
     let mimeType = "image/png"
     
     do {
-      let accessToken = try String(contentsOf: tokenFileURL)
       let imageData = try Data(contentsOf: imageURL)
       let jsonData = try JSONSerialization.data(withJSONObject: imageDictionary, options: JSONSerialization.WritingOptions(rawValue: 0))
       var request = URLRequest(url: URL(string: "http://127.0.0.1:8090/images")!, cachePolicy: .reloadIgnoringCacheData, timeoutInterval: 10.0)
       request.timeoutInterval = 60
       request.httpMethod = "POST"
       request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-      request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+      request.setValue("Bearer \(self.accessToken)", forHTTPHeaderField: "Authorization")
       
       var body = Data()
       guard let boundaryStart = "--\(boundary)\r\n".data(using: String.Encoding.utf8),
@@ -262,20 +267,18 @@ class RouteTests: XCTestCase {
     
     let imageExpectation = expectation(description: "Gets all images posted by a specific user.")
     
-    self.getAccessToken { accessToken in
-      URLRequest(forTestWithMethod: "GET", route: "users/1001/images", authToken: accessToken)
-        .sendForTesting { data in
-          
-          let images = JSON(data: data)
-          let records = images["records"].arrayValue
-          XCTAssertEqual(records.count, 4)
-          
-          let imageIds = [2010, 2007, 2004, 2001]
-          for (index, img) in records.enumerated() {
-            XCTAssertEqual(img["_id"].intValue, imageIds[index])
-          }
-          imageExpectation.fulfill()
-      }
+    URLRequest(forTestWithMethod: "GET", route: "users/1001/images", authToken: self.accessToken)
+      .sendForTesting { data in
+        
+        let images = JSON(data: data)
+        let records = images["records"].arrayValue
+        XCTAssertEqual(records.count, 4)
+        
+        let imageIds = [2010, 2007, 2004, 2001]
+        for (index, img) in records.enumerated() {
+          XCTAssertEqual(img["_id"].intValue, imageIds[index])
+        }
+        imageExpectation.fulfill()
     }
     waitForExpectations(timeout: 10.0, handler: nil)
   }
@@ -286,21 +289,19 @@ class RouteTests: XCTestCase {
         
     let userExpectation = expectation(description: "Gets all Users.")
     
-    self.getAccessToken { accessToken in
-      URLRequest(forTestWithMethod: "GET", route: "users", authToken: accessToken)
-        .sendForTesting { data in
-          
-          let users = JSON(data: data)
-          let records = users["records"].arrayValue
-          XCTAssertEqual(records.count, 5)
-          let userValues: [(String, String)] = [("anonymous", "Anonymous"), ("1003", "Kevin White"), ("1002", "Sharon den Adel"), ("1001", "Peter Adams"), ("1000", "John Smith")]
-          for (index, user) in records.enumerated() {
-            XCTAssertEqual(userValues[index].0, user["_id"].stringValue)
-            XCTAssertEqual(userValues[index].1, user["name"].stringValue)
-            XCTAssertEqual("user", user["type"].stringValue)
-          }
-          userExpectation.fulfill()
-      }
+    URLRequest(forTestWithMethod: "GET", route: "users", authToken: self.accessToken)
+      .sendForTesting { data in
+        
+        let users = JSON(data: data)
+        let records = users["records"].arrayValue
+        XCTAssertEqual(records.count, 5)
+        let userValues: [(String, String)] = [("anonymous", "Anonymous"), ("1003", "Kevin White"), ("1002", "Sharon den Adel"), ("1001", "Peter Adams"), ("1000", "John Smith")]
+        for (index, user) in records.enumerated() {
+          XCTAssertEqual(userValues[index].0, user["_id"].stringValue)
+          XCTAssertEqual(userValues[index].1, user["name"].stringValue)
+          XCTAssertEqual("user", user["type"].stringValue)
+        }
+        userExpectation.fulfill()
     }
     waitForExpectations(timeout: 10.0, handler: nil)
   }
@@ -309,17 +310,15 @@ class RouteTests: XCTestCase {
     
     let userExpectation = expectation(description: "Gets a specific User.")
     
-    self.getAccessToken { accessToken in
-      URLRequest(forTestWithMethod: "GET", route: "users/1003", authToken: accessToken)
-        .sendForTesting { data in
+    URLRequest(forTestWithMethod: "GET", route: "users/1003", authToken: self.accessToken)
+      .sendForTesting { data in
 
-          let user = JSON(data: data)
-          XCTAssertEqual(user["_id"].stringValue, "1003")
-          XCTAssertEqual(user["name"].stringValue, "Kevin White")
-          XCTAssertEqual("user", user["type"].stringValue)
-          XCTAssertNotNil(user["_rev"].string)
-          userExpectation.fulfill()
-      }
+        let user = JSON(data: data)
+        XCTAssertEqual(user["_id"].stringValue, "1003")
+        XCTAssertEqual(user["name"].stringValue, "Kevin White")
+        XCTAssertEqual("user", user["type"].stringValue)
+        XCTAssertNotNil(user["_rev"].string)
+        userExpectation.fulfill()
     }
     waitForExpectations(timeout: 10.0, handler: nil)
   }
@@ -327,25 +326,22 @@ class RouteTests: XCTestCase {
   func testCreatingUser() {
     
     let userExpectation = expectation(description: "Creates a new User.")
-    
-    self.getAccessToken { accessToken in
-      
-      let json = ["_id": "3434", "name": "Tim Billings"]
-      do {
-        let jsonData = try JSONSerialization.data(withJSONObject: json, options: JSONSerialization.WritingOptions(rawValue: 0))
-        URLRequest(forTestWithMethod: "POST", route: "users", authToken: accessToken, body: jsonData)
-          .sendForTesting { data in
-            
-            let user = JSON(data: data)
-            XCTAssertEqual(user["_id"].stringValue, json["_id"])
-            XCTAssertEqual(user["name"].stringValue, json["name"])
-            XCTAssertEqual(user["type"].stringValue, "user")
-            XCTAssertNotNil(user["_rev"].string)
-            userExpectation.fulfill()
-        }
-      } catch {
-        XCTFail("Faild to convert dictionary to JSON")
+
+    let json = ["_id": "3434", "name": "Tim Billings"]
+    do {
+      let jsonData = try JSONSerialization.data(withJSONObject: json, options: JSONSerialization.WritingOptions(rawValue: 0))
+      URLRequest(forTestWithMethod: "POST", route: "users", authToken: self.accessToken, body: jsonData)
+        .sendForTesting { data in
+          
+          let user = JSON(data: data)
+          XCTAssertEqual(user["_id"].stringValue, json["_id"])
+          XCTAssertEqual(user["name"].stringValue, json["name"])
+          XCTAssertEqual(user["type"].stringValue, "user")
+          XCTAssertNotNil(user["_rev"].string)
+          userExpectation.fulfill()
       }
+    } catch {
+      XCTFail("Faild to convert dictionary to JSON")
     }
     waitForExpectations(timeout: 10.0, handler: nil)
   }
@@ -353,23 +349,21 @@ class RouteTests: XCTestCase {
   func testPushNotification() {
     
     let pushExpectation = expectation(description: "Sends a push notification to a User.")
-    
-    self.getAccessToken { accessToken in
+
+    var request = URLRequest(url: URL(string: "http://127.0.0.1:8090/push/images/2010")!)
+    request.httpMethod = "POST"
+    request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+    request.addValue("Bearer \(self.accessToken)", forHTTPHeaderField: "Authorization")
+    request.cachePolicy = .reloadIgnoringLocalCacheData
+    URLSession(configuration: .default).dataTask(with: request) { data, response, error in
       
-      var request = URLRequest(url: URL(string: "http://127.0.0.1:8090/push/images/2010")!)
-      request.httpMethod = "POST"
-      request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-      request.addValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
-      request.cachePolicy = .reloadIgnoringLocalCacheData
-      URLSession(configuration: .default).dataTask(with: request) { data, response, error in
-        
-        XCTAssertNil(error)
-        // Only works with physical device, so we expect a bad status
-        let statusCode = (response as! HTTPURLResponse).statusCode
-        XCTAssertEqual(statusCode, 500)
-        pushExpectation.fulfill()
-      }.resume()
-    }
+      XCTAssertNil(error)
+      // Only works with physical device, so we expect a bad status
+      if let httpResponse = response as? HTTPURLResponse {
+        XCTAssertEqual(httpResponse.statusCode, 500)
+      }
+      pushExpectation.fulfill()
+    }.resume()
     waitForExpectations(timeout: 10.0, handler: nil)
   }
 
@@ -442,15 +436,6 @@ extension RouteTests {
     XCTAssertEqual(location["weather"]["description"].stringValue, "Mostly Cloudy")
     XCTAssertEqual(location["weather"]["iconId"].intValue, 27)
     XCTAssertEqual(location["weather"]["temperature"].intValue, 70)
-  }
-  
-  func getAccessToken(completionHandler: @escaping (_ accessToken: String) -> Void) {
-    URLRequest(forTestWithMethod: "GET", route: "token")
-      .sendForTesting { data in
-        let tokenData = JSON(data: data)
-        let accessToken = tokenData["access_token"].stringValue
-        completionHandler(accessToken)
-    }
   }
   
 }
