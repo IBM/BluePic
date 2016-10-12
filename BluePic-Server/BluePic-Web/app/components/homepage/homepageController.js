@@ -1,9 +1,9 @@
 
 angular.module('bluepicWebApp')
-.controller('homepageController', ['$scope', 'photos', "PropertiesService",
-    function($scope, photos, PropertiesService) {
+.controller('homepageController', ['$scope', "PropertiesService", 'photos',
+    function($scope, PropertiesService, photos) {
         'use strict';
-
+                            
         $scope.photos = photos.data.records;
 
         // searchTerm initializes to "" or to a string set by Explore page
