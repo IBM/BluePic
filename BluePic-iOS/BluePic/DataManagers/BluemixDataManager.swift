@@ -470,18 +470,17 @@ extension BluemixDataManager {
 
         do {
             let jsonData = try JSONSerialization.data(withJSONObject: imageDictionary, options: JSONSerialization.WritingOptions(rawValue: 0))
-            let tempJsonString = String(data: jsonData, encoding: String.Encoding.utf8)
             let boundary = generateBoundaryString()
-            let mimeType = "image/png"
+            let mimeType = ("application/json", "image/png")
             let request = Request(url: requestURL, method: HttpMethod.POST)
             request.headers = ["Content-Type" : "multipart/form-data; boundary=\(boundary)"]
 
             var body = Data()
-            guard let jsonString = tempJsonString, let boundaryStart = "--\(boundary)\r\n".data(using: String.Encoding.utf8),
-                let dispositionEncoding = "Content-Disposition:form-data; name=\"imageJson\"\r\n\r\n".data(using: String.Encoding.utf8),
-                let jsonEncoding = "\(jsonString)\r\n".data(using: String.Encoding.utf8),
+            guard let boundaryStart = "--\(boundary)\r\n".data(using: String.Encoding.utf8),
+                let dispositionEncoding = "Content-Disposition:form-data; name=\"imageJson\"\r\n".data(using: String.Encoding.utf8),
+                let typeEncoding = "Content-Type: \(mimeType.0)\r\n\r\n".data(using: String.Encoding.utf8),
                 let imageDispositionEncoding = "Content-Disposition:form-data; name=\"imageBinary\"; filename=\"\(image.fileName)\"\r\n".data(using: String.Encoding.utf8),
-                let imageTypeEncoding = "Content-Type: \(mimeType)\r\n\r\n".data(using: String.Encoding.utf8),
+                let imageTypeEncoding = "Content-Type: \(mimeType.1)\r\n\r\n".data(using: String.Encoding.utf8),
                 let imageEndEncoding = "\r\n".data(using: String.Encoding.utf8),
                 let boundaryEnd = "--\(boundary)--\r\n".data(using: String.Encoding.utf8) else {
                     print("Post New Image Error: Could not encode all values for multipart data")
@@ -490,7 +489,8 @@ extension BluemixDataManager {
             }
             body.append(boundaryStart)
             body.append(dispositionEncoding)
-            body.append(jsonEncoding)
+            body.append(typeEncoding)
+            body.append(jsonData)
             body.append(boundaryStart)
             body.append(imageDispositionEncoding)
             body.append(imageTypeEncoding)
