@@ -51,17 +51,22 @@ class RouteTests: XCTestCase {
       ]
   }
   
+  func fileURL(directoriesUp: Int, path: String) -> URL {
+    let initialPath = #file
+    let components = initialPath.characters.split(separator: "/").map(String.init)
+    let notLastFour = components[0..<components.count - directoriesUp]
+    let directoryPath = "/" + notLastFour.joined(separator: "/") + "/" + path
+    return URL(fileURLWithPath: directoryPath)
+  }
+  
   func resetDatabase() {
     #if os(Linux)
     let task = Task()
     #else
     let task = Process()
     #endif
-    
-    let initialPath = #file
-    let components = initialPath.characters.split(separator: "/").map(String.init)
-    let notLastFour = components[0..<components.count - 4]
-    let directoryPath = "/" + notLastFour.joined(separator: "/") + "/Cloud-Scripts"
+
+    let directoryPath = fileURL(directoriesUp: 4, path: "Cloud-Scripts").relativePath
 
     task.currentDirectoryPath = directoryPath
     task.launchPath = "/bin/sh"
@@ -96,7 +101,7 @@ class RouteTests: XCTestCase {
     self.getAccessToken { accessToken in
       URLRequest(forTestWithMethod: "GET", route: "ping", authToken: accessToken)
         .sendForTesting { data in
-              
+          
           let pingResult = String(data: data, encoding: String.Encoding.utf8)!
           XCTAssertTrue(pingResult.contains("Hello World"))
           pingExpectation.fulfill()
@@ -186,79 +191,68 @@ class RouteTests: XCTestCase {
     
     let imageExpectation = expectation(description: "Post an image with server.")
     
-    self.getAccessToken { accessToken in
+    // get access token
+    let tokenFileName = "authToken"
+    let tokenFileURL = fileURL(directoriesUp: 1, path: tokenFileName)
+  
+    // find image
+    let imageFileName = "city.png"
+    let imageURL = fileURL(directoriesUp: 4, path: "Cloud-Scripts/Object-Storage/images/city.png")
     
-      // find image
-      let fileName = "city.png"
-      let initialPath = #file
-      let components = initialPath.characters.split(separator: "/").map(String.init)
-      let notLastFour = components[0..<components.count - 4]
-      let directoryPath = "/" + notLastFour.joined(separator: "/") + "/Cloud-Scripts/Object-Storage/images/city.png"
-      let imageURL = URL(fileURLWithPath: directoryPath)
+    let imageDictionary = ["fileName": imageFileName, "caption" : "my caption", "width" : 250, "height" : 300, "location" : ["name" : "Austin, TX", "latitude" : 30.2, "longitude" : -97.7]] as [String : Any]
+    let boundary = "Boundary-\(UUID().uuidString)"
+    let mimeType = "image/png"
+    
+    do {
+      let accessToken = try String(contentsOf: tokenFileURL)
+      let imageData = try Data(contentsOf: imageURL)
+      let jsonData = try JSONSerialization.data(withJSONObject: imageDictionary, options: JSONSerialization.WritingOptions(rawValue: 0))
+      var request = URLRequest(url: URL(string: "http://127.0.0.1:8090/images")!, cachePolicy: .reloadIgnoringCacheData, timeoutInterval: 10.0)
+      request.timeoutInterval = 60
+      request.httpMethod = "POST"
+      request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+      request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
       
-      let imageDictionary = ["fileName": fileName, "caption" : "my caption", "width" : 250, "height" : 300, "location" : ["name" : "Austin, TX", "latitude" : 34.53, "longitude" : 84.5]] as [String : Any]
-      let boundary = "Boundary-\(UUID().uuidString)"
-      let mimeType = "image/png"
-      
-      do {
-        let imageData = try Data(contentsOf: imageURL)
-        let jsonData = try JSONSerialization.data(withJSONObject: imageDictionary, options: JSONSerialization.WritingOptions(rawValue: 0))
-        let tempJsonString = String(data: jsonData, encoding: String.Encoding.utf8)
-        var request = URLRequest(url: URL(string: "http://127.0.0.1:8090/images")!, cachePolicy: .reloadIgnoringCacheData, timeoutInterval: 10.0)
-        request.timeoutInterval = 60
-        request.httpMethod = "POST"
-        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-        request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
-        
-        var body = Data()
-        guard let jsonString = tempJsonString, let boundaryStart = "--\(boundary)\r\n".data(using: String.Encoding.utf8),
-          let dispositionEncoding = "Content-Disposition:form-data; name=\"imageJson\"\r\n\r\n".data(using: String.Encoding.utf8),
-          let jsonEncoding = "\(jsonString)\r\n".data(using: String.Encoding.utf8),
-          let imageDispositionEncoding = "Content-Disposition:form-data; name=\"imageBinary\"; filename=\"\(fileName)\"\r\n".data(using: String.Encoding.utf8),
-          let imageTypeEncoding = "Content-Type: \(mimeType)\r\n\r\n".data(using: String.Encoding.utf8),
-          let imageEndEncoding = "\r\n".data(using: String.Encoding.utf8),
-          let boundaryEnd = "--\(boundary)--\r\n".data(using: String.Encoding.utf8) else {
-            XCTFail("Post New Image Error: Could not encode all values for multipart data")
-            return
-        }
-        body.append(boundaryStart)
-        body.append(dispositionEncoding)
-        body.append(jsonEncoding)
-        body.append(boundaryStart)
-        body.append(imageDispositionEncoding)
-        body.append(imageTypeEncoding)
-        body.append(imageData)
-        body.append(imageEndEncoding)
-        body.append(boundaryEnd)
-        request.httpBody = body
-
-        print("executing request: \(request)")
-        URLSession(configuration: .default).dataTask(with: request) { data, response, error in
-          if let error = error {
-            XCTFail("Image Post failed with error: \(error)")
-          } else {
-            print("Image saved with resp: \(response)")
-  //              if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode != 404 {
-  //                URLRequest(forTestWithMethod: "GET", route: "images/\(22)")
-  //                  .sendForTesting { data in
-  //                    
-  //                    let image = JSON(data: data)
-  //                    XCTAssertEqual(image["fileName"].stringValue, fileName)
-  //                    XCTAssertEqual(image["caption"].stringValue, imageDictionary["caption"] as! String)
-  //                    imageExpectation.fulfill()
-  //                }
-  //              } else {
-  //                XCTFail("Bad response from ther server.")
-  //              }
-            
-            imageExpectation.fulfill()
-          }
-        }.resume()
-        
-        
-      } catch {
-        XCTFail("Failed to convert image dictionary to binary data.")
+      var body = Data()
+      guard let boundaryStart = "--\(boundary)\r\n".data(using: String.Encoding.utf8),
+        let dispositionEncoding = "Content-Disposition:form-data; name=\"imageJson\"\r\n\r\n".data(using: String.Encoding.utf8),
+        let imageDispositionEncoding = "Content-Disposition:form-data; name=\"imageBinary\"; filename=\"\(imageFileName)\"\r\n".data(using: String.Encoding.utf8),
+        let imageTypeEncoding = "Content-Type: \(mimeType)\r\n\r\n".data(using: String.Encoding.utf8),
+        let imageEndEncoding = "\r\n".data(using: String.Encoding.utf8),
+        let boundaryEnd = "--\(boundary)--\r\n".data(using: String.Encoding.utf8) else {
+          XCTFail("Post New Image Error: Could not encode all values for multipart data")
+          return
       }
+      body.append(boundaryStart)
+      body.append(dispositionEncoding)
+      body.append(jsonData)
+      body.append(boundaryStart)
+      body.append(imageDispositionEncoding)
+      body.append(imageTypeEncoding)
+      body.append(imageData)
+      body.append(imageEndEncoding)
+      body.append(boundaryEnd)
+      request.httpBody = body
+
+      URLSession(configuration: .default).dataTask(with: request) { data, response, error in
+        if let error = error {
+          XCTFail("Image Post failed with error: \(error)")
+        } else {
+          
+          if let httpResponse = response as? HTTPURLResponse {
+            XCTAssertNotEqual(httpResponse.statusCode, 404)
+            XCTAssertEqual(httpResponse.statusCode, 200)
+          } else {
+            XCTFail("Bad response from ther server.")
+          }
+          
+          imageExpectation.fulfill()
+        }
+      }.resume()
+      
+      
+    } catch {
+      XCTFail("Failed to convert image dictionary to binary data.")
     }
 
     waitForExpectations(timeout: 18.0, handler: nil)
