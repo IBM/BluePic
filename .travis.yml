@@ -1,3 +1,9 @@
+branches:
+  only:
+    - master
+    - develop
+    - setup_travis
+
 
 matrix:
   include:
@@ -8,16 +14,10 @@ matrix:
       osx_image: xcode8
 
 before_install:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update   ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install curl openssl; fi
-
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update -y ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then wget https://swift.org/builds/swift-3.0-release/ubuntu1404/swift-3.0-RELEASE/swift-3.0-RELEASE-ubuntu14.04.tar.gz    ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then tar xzvf swift-3.0-RELEASE-ubuntu14.04.tar.gz    ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export PATH=$PWD/swift-3.0-RELEASE-ubuntu14.04/usr/bin:$PATH    ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get -y install clang-3.8 ; fi
+  - git submodule update --init --remote --merge --recursive
+  - git clone -b master https://$GITHUB_USER:$GITHUB_PWD@github.com/IBM-Swift/BluePic-Testing-Credentials.git
   - cd BluePic-Server
-
+   
 script:
-  - swift build
-    #  - swift test 
+  - ./Package-Builder/build-package.sh $TRAVIS_BRANCH $TRAVIS_BUILD_DIR $TRAVIS_BUILD_DIR/BluePic-Testing-Credentials/development
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cd ../BluePic-iOS; xcodebuild -workspace BluePic.xcworkspace/ -scheme BluePic -sdk iphonesimulator10.0 ONLY_ACTIVE_ARCH=NO; fi
