@@ -16,5 +16,5 @@ before_install:
   - git clone -b master https://$GITHUB_USER:$GITHUB_PWD@github.com/IBM-Swift/BluePic-Testing-Credentials.git
 
 script:
-  - cd BluePic-Server && ./Package-Builder/build-package.sh $TRAVIS_BRANCH $TRAVIS_BUILD_DIR $TRAVIS_BUILD_DIR/BluePic-Testing-Credentials/development
+  - cd BluePic-Server && ./Package-Builder/build-package.sh $TRAVIS_BRANCH $TRAVIS_BUILD_DIR $TRAVIS_BUILD_DIR/BluePic-Testing-Credentials/ci
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cd $TRAVIS_BUILD_DIR/BluePic-iOS; xcodebuild -workspace BluePic.xcworkspace/ -scheme BluePic -sdk iphonesimulator10.0 ONLY_ACTIVE_ARCH=NO; fi
