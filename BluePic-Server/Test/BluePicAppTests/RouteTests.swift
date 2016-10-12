@@ -81,12 +81,15 @@ class RouteTests: XCTestCase {
     super.setUp()
     
 //    resetDatabase()
-    
+
     if self.accessToken == "" {
       let tokenFileName = "authToken"
       let tokenFileURL = fileURL(directoriesUp: 1, path: tokenFileName)
+
       do {
-        self.accessToken = try String(contentsOf: tokenFileURL)
+        // contentsOf not yet supported on Linux for String type
+        let fileContents = try NSString(contentsOf: tokenFileURL, encoding: String.Encoding.utf8.rawValue)
+        self.accessToken = String(describing: fileContents)
       } catch {
         XCTFail("Could not get authToken from file.")
       }
@@ -260,7 +263,7 @@ class RouteTests: XCTestCase {
       XCTFail("Failed to convert image dictionary to binary data.")
     }
 
-    waitForExpectations(timeout: 18.0, handler: nil)
+    waitForExpectations(timeout: 20.0, handler: nil)
   }
   
   func testGettingImagesForUser() {
@@ -343,7 +346,7 @@ class RouteTests: XCTestCase {
     } catch {
       XCTFail("Faild to convert dictionary to JSON")
     }
-    waitForExpectations(timeout: 10.0, handler: nil)
+    waitForExpectations(timeout: 20.0, handler: nil)
   }
   
   func testPushNotification() {
@@ -360,7 +363,7 @@ class RouteTests: XCTestCase {
       XCTAssertNil(error)
       // Only works with physical device, so we expect a bad status
       if let httpResponse = response as? HTTPURLResponse {
-        XCTAssertEqual(httpResponse.statusCode, 500)
+        XCTAssertNotEqual(httpResponse.statusCode, 200)
       }
       pushExpectation.fulfill()
     }.resume()
