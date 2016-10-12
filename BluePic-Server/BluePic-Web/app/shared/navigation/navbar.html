@@ -1,0 +1,21 @@
+<nav class="navbar navbar-full navbar-dark flexParent navStyles" ng-controller="navbarController">
+    <ul class="nav navbar-nav flexLeft marginLeft">
+        <li class="nav-item ">
+            <img ng-click="goToHomepage()" src="assets/img/Logo.png" alt="">
+        </li>
+    </ul>
+    <div class="nav navbar-nav flexCenter">
+        <form class="form-inline nav-item" >
+            <input id="placeholder" class="form-control search placeholderIcon" ng-model="searchTerm.value"
+                   type="text" ng-change=checkPlaceholder() placeholder="Search">
+        </form>
+    </div>
+    <ul class="nav navbar-nav flexRight marginsRight">
+        <li class="nav-item">
+            <img ui-sref="explore" src="assets/img/Explore.png" alt="">
+        </li>
+        <li class="nav-item marginLeft2">
+            <img src="assets/img/Profile.png" ng-click="goToProfile()" alt="">
+        </li>
+    </ul>
+</nav>

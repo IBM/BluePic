@@ -1,0 +1,26 @@
+<div ng-include="'app/shared/navigation/navbar.html'"></div>
+
+<div class="cropHeight">
+    <img class="bannerImg" ng-src="{{fbCoverImg}}">
+</div>
+
+<div class="row profileCardMargin">
+    <div class="col-sm-3 topMargin">
+        <p class="authorFont floatLeft">{{photoCount}} Shots</p>
+    </div>
+    <div class="col-sm-6">
+        <div class="text-xs-center">
+            <img id="profileImage" ng-src="{{fbProfileImg}}" class="img-circle profileImg">
+        </div>
+        <div>
+            <h4 class="card-title locationFont marginTop30">{{userName || backupUserName}}</h4>
+            <p class="card-subtitle authorFont">{{userName}}</p>
+            <div class="lineCenter"><img src="assets/img/line.png"></div>
+        </div>
+    </div>
+    <div class="col-sm-3 topMargin">
+        <img src="assets/img/Setings.png" class="floatRight">
+    </div>
+</div>
+
+<div ng-include="'app/shared/photoCards/photoCards.html'"></div>

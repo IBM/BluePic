@@ -1,0 +1,17 @@
+<div class="card-columns cardColumnMargin" ng-controller="photoCardsController">
+    <div class="card card-outline-blank text-xs-center" ng-repeat="photo in photos | filter:searchTerm.value" ng-click="openPhoto(photo._id, $index);">
+        <div id="overlay" class="imgOverlay">
+            <img class="card-img-top greyBackground" ng-src={{photo.url}} >
+            <div class="card-img-overlay card-inverse hideMetadata">
+                <p class="card-text metadataFont">{{convertDMS(photo.location.latitude, photo.location.longitude);}}</p>
+                <h4 class="card-title locationFont">{{photo.location.name}}</h4>
+                <p class="card-text metadataFont">{{formatTimestamp(photo.uploadedTs);}}</p>
+            </div>
+        </div>
+        <div class="marginBottom">
+            <h4 class="card-title locationFont autoMargin">{{photo.location.name}}</h4>
+            <p class="card-subtitle authorFont">by {{photo.user.name || userName}} </p>
+            <img src="assets/img/line.png">
+        </div>
+    </div>
+</div>

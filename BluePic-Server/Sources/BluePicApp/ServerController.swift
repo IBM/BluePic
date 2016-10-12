@@ -25,6 +25,7 @@ import MobileClientAccessKituraCredentialsPlugin
 import MobileClientAccess
 import Credentials
 import CloudFoundryEnv
+import CredentialsFacebook
 
 ///
 /// Because bridging is not complete in Linux, we must use Any objects for dictionaries
@@ -72,11 +73,19 @@ public class ServerController {
 	objectStorageConn = ObjectStorageConn(objStorageConnProps: objStorageConnProps)
         
     let credentials = Credentials() // middleware for securing endpoints
+    
+    // Facebook credentials
+    let fbCredentialsPlugin = CredentialsFacebookToken()
+    credentials.register(plugin: fbCredentialsPlugin)
+    
+    // MCA credentials
     credentials.register(plugin: MobileClientAccessKituraCredentialsPlugin())
+
     pushNotificationsClient = PushNotifications(bluemixRegion: PushNotifications.Region.US_SOUTH, bluemixAppGuid: mobileClientAccessProps.clientId, bluemixAppSecret: ibmPushProps.secret)
     
     // Serve static content from "public"
-    router.all("/", middleware: StaticFileServer())
+    //router.all("/", middleware: StaticFileServer())
+    router.all("/", middleware: StaticFileServer(path: "./BluePic-Web"))
 
     // Assign middleware instance
     router.get("/users", middleware: credentials)

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js" type="text/javascript"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular-resource.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.10/angular-route.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.8/angular-ui-router.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js" integrity="sha384-THPy051/pYDQGanwU6poAc/hOdQxjnOEXzbT+OuUAFqNqFjL+4IGLBgCJC3ZOShY" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.2.0/js/tether.min.js" integrity="sha384-Plbmg8JY28KFelvJVai01l8WyZzrYWG825m+cZ0eDDS1f7d/js6ikvy1+X+guPIB" crossorigin="anonymous"></script>
+
+        <!-- Bootstrap 4 has built-in card blocks -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.3/css/bootstrap.min.css" integrity="sha384-MIwDKRSSImVFAZCVLtU0LMDdON6KVCrZHyVQQj6e8wIEJkW4tvwqXrbMIya1vriY" crossorigin="anonymous">
+
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+        <script src="routes.js"></script>
+        <script src="app/components/homepage/homepageService.js"></script>
+        <script src="app/components/homepage/homepageController.js"></script>
+        <script src="app/components/explore/exploreService.js"></script>
+        <script src="app/components/explore/exploreController.js"></script>
+        <script src="app/components/profile/profileService.js"></script>
+        <script src="app/components/profile/profileController.js"></script>
+        <script src="app/components/login/loginController.js"></script>
+        <script src="app/shared/properties/propertiesService.js"></script>
+        <script src="app/shared/navigation/navbarController.js"></script>
+        <script src="app/shared/tagCloud/tagCloudController.js"></script>
+        <script src="app/components/singlePhoto/singlePhotoController.js"></script>
+        <script src="app/components/singlePhoto/singlePhotoService.js"></script>
+        <script src="app/shared/photoCards/photoCardsController.js"></script>
+
+        <link rel="stylesheet" href="assets/css/styles.css" type="text/css" />
+    </head>
+
+    <body ng-app="bluepicWebApp">
+        <div id="main">
+            <div ui-view fbParseDirective></div>
+        </div>
+    </body>
+</html>

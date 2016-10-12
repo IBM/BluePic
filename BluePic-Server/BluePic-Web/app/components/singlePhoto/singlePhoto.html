@@ -1,0 +1,36 @@
+<div ng-include="'app/shared/navigation/navbar.html'"></div>
+
+<div class="column cardMargin">
+    <div class="row autoMargin">
+        <div class="col-md-8 padding0">
+            <img class="img-responsive imgSizing" ng-src="{{photoUrl}}" alt="">
+        </div>
+        <div class="col-md-4 paddingMetadata">
+            <div class="locationFontLeft">{{locationName}}</div>
+            <div class="authorFont2">by {{userName}}</div>
+            <img class="paddingBottom40 topMargin" src="assets/img/line.png">
+            <div class="metadataFont2">{{coords}}</div>
+            <div class="locationFontLeft">{{caption || ""}}</div>
+            <div class="metadataFont2 paddingBottom40">{{timestamp}}</div>
+            <div class="paddingBottom40">{{temp}}</div>
+            <div class="locationFontLeft">MAP</div>
+            <img class="mapSizing" ng-src={{mapUrl}}>
+        </div>
+    </div>
+    <div class="row autoMargin">
+        <div class="">
+            <ul class="pager">
+                <li class="previous" ng-click="pagePhoto('left')"><a class="pagerCustom authorFont2">&lang; Previous</a></li>
+                <li class="next" ng-click="pagePhoto('right')"><a class="pagerCustom">Next &rang;</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="row autoMargin">
+            <div ng-show="searchTerm.value" ng-include="'app/shared/tagCloud/tagCloud.html'"></div>
+    </div>
+    <div class="row autoMargin"><img class="line" src="assets/img/line-long.png"></div>
+    <div class="row locationFontLeft autoMargin marginTop30">similar photos</div>
+    <div class="row autoMargin">
+        <div ng-include="'app/shared/photoCards/photoCards.html'"></div>
+    </div>
+</div>

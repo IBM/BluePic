@@ -1,0 +1,11 @@
+<div ng-controller="tagCloudController">
+    <div class="row locationFontLeft autoMargin">related tags</div>
+    <div class="row authorFont2 autoMargin">Discover content through related tags:</div>
+    <div class="row autoMargin adjustMargin">
+        <span ng-repeat="tag in tags">
+            <button type="button" class="btn btn-primary tagCustom" ng-click="searchTag(tag.label)">
+                <label class="tagLabel">{{tag.label}}</label>
+            </button>
+        </span>
+    </div>
+</div>
