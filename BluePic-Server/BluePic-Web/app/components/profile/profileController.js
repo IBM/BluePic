@@ -1,7 +1,9 @@
 
 angular.module('bluepicWebApp')
-    .controller('profileController', ['$scope', 'usersPhotos', 'userName', 'fbProfileImg', 'fbCoverImg', 'PropertiesService', '$state',
-        function($scope, usersPhotos, userName, fbProfileImg, fbCoverImg, PropertiesService, $state) {
+    .controller('profileController', ['$scope',   'fbProfileImg', 'fbCoverImg', 'PropertiesService',
+                                      '$state', 'fbHometown', 'usersPhotos', 'userName',
+        function($scope, fbProfileImg, fbCoverImg, PropertiesService,
+                 $state, fbHometown, usersPhotos, userName) {
             'use strict';
                                       
             $scope.state = $state;
@@ -11,6 +13,8 @@ angular.module('bluepicWebApp')
             $scope.photoCount = usersPhotos.data.number_of_records;
                                       
             $scope.userName = PropertiesService.getFbUserName();
+                                      
+            $scope.hometown = fbHometown;
                                       
             $scope.backupUserName = userName.data.name;
                                       
