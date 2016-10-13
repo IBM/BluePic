@@ -50,7 +50,7 @@ class RouteTests: XCTestCase {
           ("testGettingUsers", testGettingUsers),
           ("testGettingSingleUser", testGettingSingleUser),
 //          ("testCreatingUser", testCreatingUser),
-//          ("testPushNotification", testPushNotification)
+          ("testPushNotification", testPushNotification)
       ]
   }
 
@@ -363,7 +363,7 @@ class RouteTests: XCTestCase {
 
     let pushExpectation = expectation(description: "Sends a push notification to a User.")
 
-    let url = URL(string: "http://127.0.0.1:8090/push/images/2010")
+    /*let url = URL(string: "http://127.0.0.1:8090/push/images/2010")
     XCTAssertNotNil(url, "Push notification URL for image 2010 is nil.")
     var request = URLRequest(url: url!)
     request.httpMethod = "POST"
@@ -378,7 +378,22 @@ class RouteTests: XCTestCase {
         XCTAssertNotEqual(httpResponse.statusCode, 200)
       }
       pushExpectation.fulfill()
-    }.resume()
+    }.resume()*/
+    
+    var requestOptions: [ClientRequest.Options] = [.method("POST"), .hostname("127.0.0.1"), .port(8090), .path("/push/images/2010")]
+    var headers = [String:String]()
+    headers["Content-Type"] = "application/json"
+    headers["Authorization"] = "Bearer \(self.accessToken)"
+    requestOptions.append(.headers(headers))
+    
+    let req = HTTP.request(requestOptions) { resp in
+      if let resp = resp {
+        XCTAssertNotEqual(resp.statusCode.rawValue, 200)
+      }
+      pushExpectation.fulfill()
+    }
+    req.end(close: true)
+    
     waitForExpectations(timeout: 15.0, handler: nil)
   }
 
@@ -503,25 +518,18 @@ private extension URLRequest {
       path += "?" + query
     }
     
-    var requestOptions: [ClientRequest.Options] = []
-    requestOptions.append(.method(method))
-    requestOptions.append(.schema("http://"))
-    requestOptions.append(.hostname("127.0.0.1"))
-    requestOptions.append(.port(8090))
-    requestOptions.append(.path(path))
+    var requestOptions: [ClientRequest.Options] = [.method(method), .hostname("127.0.0.1"), .port(8090), .path(path)]
     var headers = [String:String]()
     headers["Content-Type"] = "application/json"
     headers["Authorization"] = value(forHTTPHeaderField: "Authorization")
-    print("t: \(headers)")
     requestOptions.append(.headers(headers))
     
     let req = HTTP.request(requestOptions) { resp in
+      print("in Closure with response: \(resp)")
       if let resp = resp, resp.statusCode == HTTPStatusCode.OK || resp.statusCode == HTTPStatusCode.accepted {
         do {
           var body = Data()
           try resp.readAllData(into: &body)
-          let jsonResponse = JSON(data: body)
-          print("BluePic-Server response: \(jsonResponse)")
           fn(body)
         } catch {
           print("Bad JSON document received from BluePic-Server.")
