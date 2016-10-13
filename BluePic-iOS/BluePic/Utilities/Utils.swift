@@ -219,10 +219,10 @@ class Utils: NSObject {
         let longMinutes = longSeconds / 60
         longSeconds %= 60
         return String(format:"%d° %d' %d\" %@, %d° %d' %d\" %@",
-                      abs(latDegrees),
+                      latDegrees,
                       latMinutes,
                       latSeconds, {return latDegrees >= 0 ? NSLocalizedString("N", comment: "first letter of the word North") : NSLocalizedString("S", comment: "first letter of the word South")}(),
-                      abs(longDegrees),
+                      longDegrees,
                       longMinutes,
                       longSeconds, {return longDegrees >= 0 ? NSLocalizedString("E", comment: "first letter of the word East") : NSLocalizedString("W", comment: "first letter of the word West")}() )
     }
