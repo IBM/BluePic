@@ -64,6 +64,9 @@ angular.module('bluepicWebApp')
                     }],
                     fbCoverImg: ['ProfilePhotoService', function (ProfilePhotoService) {
                         return ProfilePhotoService.getProfileCoverImg();
+                    }],
+                    fbHometown: ['ProfilePhotoService', function (ProfilePhotoService) {
+                        return ProfilePhotoService.getHometown();
                     }]
                 },
                 controller: 'profileController'

@@ -12,10 +12,10 @@
     </div>
     <ul class="nav navbar-nav flexRight marginsRight">
         <li class="nav-item">
-            <img ui-sref="explore" src="assets/img/Explore.png" alt="">
+            <img ui-sref="explore" ng-src= "{{ state.current.name == 'explore' && 'assets/img/Explore-Selected.png' || 'assets/img/Explore.png' }}">
         </li>
         <li class="nav-item marginLeft2">
-            <img src="assets/img/Profile.png" ng-click="goToProfile()" alt="">
+            <img ng-src="{{ state.current.name == 'profile' &&  'assets/img/Profile-Selected.png' || 'assets/img/Profile.png' }}" ng-click="goToProfile()">
         </li>
     </ul>
 </nav>

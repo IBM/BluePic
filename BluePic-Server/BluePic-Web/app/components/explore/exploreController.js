@@ -1,8 +1,10 @@
 
 angular.module('bluepicWebApp')
-.controller('exploreController', ['$scope', 'photos', '$state', 'PropertiesService',
-    function($scope, photos, $state, PropertiesService) {
+.controller('exploreController', ['$scope', '$state', 'PropertiesService', 'photos',
+    function($scope, $state, PropertiesService, photos) {
         'use strict';
+                                  
+        $scope.state = $state;
 
         $scope.photos = photos.data.records;
 

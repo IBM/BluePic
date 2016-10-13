@@ -52,7 +52,7 @@ angular.module('bluepicWebApp')
                     $rootScope.$apply(deferred.resolve(response.data.url));
                 }
                 else {  // if user has no profile photo, return default image
-                    $rootScope.$apply(deferred.resolve("../../assets/img/puppy.jpg"));
+                    $rootScope.$apply(deferred.resolve("../../assets/img/flower.png"));
                 }
             });
 
@@ -72,6 +72,22 @@ angular.module('bluepicWebApp')
                 }
             });
 
+            return deferred.promise;
+        }
+                                     
+        this.getHometown = function () {
+                                     
+            var deferred = $q.defer();
+         
+            FB.api('/me?fields=hometown', function (response) {
+                if(response.hometown && response.hometown.name) {
+                    $rootScope.$apply(deferred.resolve(response.hometown.name));
+                }
+                else {  // if user has not set hometown in facebook profile
+                    $rootScope.$apply(deferred.resolve(""));
+                }
+            });
+         
             return deferred.promise;
         }
 

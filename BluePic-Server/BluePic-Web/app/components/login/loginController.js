@@ -51,7 +51,7 @@ angular.module('bluepicWebApp')
                 FB.getLoginStatus(function(response) {
                     $scope.statusChangeCallback(response);
                 });
-            }, {scope: 'public_profile, email'});
+            }, {scope: 'public_profile, email, user_hometown'});
         }
 
         $scope.logoutFacebook = function() {
