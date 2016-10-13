@@ -97,6 +97,7 @@ class RouteTests: XCTestCase {
 
     HeliumLogger.use()
 
+    XCTAssertNotNil(serverController, "ServerController object is nil and is not getting created properly.")
     Kitura.addHTTPServer(onPort: 8090, with: serverController!.router)
 
     queue.async {
@@ -116,8 +117,9 @@ class RouteTests: XCTestCase {
     URLRequest(forTestWithMethod: "GET", route: "ping", authToken: self.accessToken)
       .sendForTesting { data in
 
-        let pingResult = String(data: data, encoding: String.Encoding.utf8)!
-        XCTAssertTrue(pingResult.contains("Hello World"))
+        let pingResult = String(data: data, encoding: String.Encoding.utf8)
+        XCTAssertNotNil(pingResult, "pingResult string is nil, data couldn't be decoded.")
+        XCTAssertTrue(pingResult!.contains("Hello World"))
         pingExpectation.fulfill()
     }
     waitForExpectations(timeout: 10.0, handler: nil)
@@ -151,10 +153,12 @@ class RouteTests: XCTestCase {
         let images = JSON(data: data)
         let records = images["records"].arrayValue
         XCTAssertEqual(records.count, 9)
-        let firstImage = records.first!
-        self.assertImage2010(image: firstImage)
-        let lastImage = records.last!
-        self.assertImage2001(image: lastImage)
+        let firstImage = records.first
+        XCTAssertNotNil(firstImage, "firstImage is nil within collection of all images.")
+        self.assertImage2010(image: firstImage!)
+        let lastImage = records.last
+        XCTAssertNotNil(lastImage, "lastImage is nil within collection of all images.")
+        self.assertImage2001(image: lastImage!)
         imageExpectation.fulfill()
 
     }
@@ -186,8 +190,9 @@ class RouteTests: XCTestCase {
         let images = JSON(data: data)
         let records = images["records"].arrayValue
         XCTAssertEqual(records.count, 3)
-        let image = records.first!
-        self.assertImage2010(image: image)
+        let image = records.first
+        XCTAssertNotNil(image, "First image with tag, mountain, is nil.")
+        self.assertImage2010(image: image!)
 
         // No need to test contents of every image, mainly want to know we got the correct images.
         let imageIds = [2010, 2008, 2003]
@@ -215,7 +220,9 @@ class RouteTests: XCTestCase {
     do {
       let imageData = try Data(contentsOf: imageURL)
       let jsonData = try JSONSerialization.data(withJSONObject: imageDictionary, options: JSONSerialization.WritingOptions(rawValue: 0))
-      var request = URLRequest(url: URL(string: "http://127.0.0.1:8090/images")!, cachePolicy: .reloadIgnoringCacheData, timeoutInterval: 10.0)
+      let url = URL(string: "http://127.0.0.1:8090/images")
+      XCTAssertNotNil(url, "Post image URL is nil.")
+      var request = URLRequest(url: url!, cachePolicy: .reloadIgnoringCacheData, timeoutInterval: 10.0)
       request.timeoutInterval = 60
       request.httpMethod = "POST"
       request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
@@ -353,7 +360,9 @@ class RouteTests: XCTestCase {
 
     let pushExpectation = expectation(description: "Sends a push notification to a User.")
 
-    var request = URLRequest(url: URL(string: "http://127.0.0.1:8090/push/images/2010")!)
+    let url = URL(string: "http://127.0.0.1:8090/push/images/2010")
+    XCTAssertNotNil(url, "Push notification URL for image 2010 is nil.")
+    var request = URLRequest(url: url!)
     request.httpMethod = "POST"
     request.addValue("application/json", forHTTPHeaderField: "Content-Type")
     request.addValue("Bearer \(self.accessToken)", forHTTPHeaderField: "Authorization")
@@ -393,10 +402,12 @@ extension RouteTests {
     XCTAssertEqual(user["type"].stringValue, "user")
 
     let tags = image["tags"].arrayValue
-    XCTAssertEqual(tags.first!["confidence"].intValue, 89)
-    XCTAssertEqual(tags.first!["label"].stringValue, "road")
-    XCTAssertEqual(tags.last!["confidence"].intValue, 50)
-    XCTAssertEqual(tags.last!["label"].stringValue, "mountain")
+    XCTAssertNotNil(tags.first, "First tag for image 2010 is nil.")
+    XCTAssertEqual(tags.first?["confidence"].intValue, 89)
+    XCTAssertEqual(tags.first?["label"].stringValue, "road")
+    XCTAssertNotNil(tags.last, "Last tag for image 2010 is nil.")
+    XCTAssertEqual(tags.last?["confidence"].intValue, 50)
+    XCTAssertEqual(tags.last?["label"].stringValue, "mountain")
 
     let location = image["location"]
     XCTAssertEqual(location["latitude"].stringValue, "34.53")
@@ -425,12 +436,15 @@ extension RouteTests {
     XCTAssertEqual(user["type"].stringValue, "user")
 
     let tags = image["tags"].arrayValue
-    XCTAssertEqual(tags.first!["confidence"].intValue, 75)
-    XCTAssertEqual(tags.first!["label"].stringValue, "bridge")
+    XCTAssertNotNil(tags.first, "First tag for image 2001 is nil.")
+    XCTAssertEqual(tags.first?["confidence"].intValue, 75)
+    XCTAssertEqual(tags.first?["label"].stringValue, "bridge")
+    XCTAssertNotNil(tags[1], "Second tag for image 2001 is nil.")
     XCTAssertEqual(tags[1]["confidence"].intValue, 60)
     XCTAssertEqual(tags[1]["label"].stringValue, "city")
-    XCTAssertEqual(tags.last!["confidence"].intValue, 50)
-    XCTAssertEqual(tags.last!["label"].stringValue, "building")
+    XCTAssertNotNil(tags.last, "Last tag for image 2001 is nil.")
+    XCTAssertEqual(tags.last?["confidence"].intValue, 50)
+    XCTAssertEqual(tags.last?["label"].stringValue, "building")
 
     let location = image["location"]
     XCTAssertEqual(location["latitude"].stringValue, "34.53")
@@ -446,7 +460,9 @@ extension RouteTests {
 private extension URLRequest {
 
   init(forTestWithMethod method: String, route: String = "", message: String? = nil, authToken: String? = nil, body: Data? = nil) {
-    self.init(url: URL(string: "http://127.0.0.1:8090/" + route)!)
+    let url = URL(string: "http://127.0.0.1:8090/" + route)
+    XCTAssertNotNil(url, "URL is nil, the following route may be invalid: \(route)")
+    self.init(url: url!)
     addValue("application/json", forHTTPHeaderField: "Content-Type")
     if let authToken = authToken {
         addValue("Bearer \(authToken)", forHTTPHeaderField: "Authorization")
@@ -459,13 +475,14 @@ private extension URLRequest {
   }
 
   func sendForTesting(fn: @escaping (Data) -> Void ) {
-    let dataTask = URLSession(configuration: .default).dataTask(with: self) {
-      data, response, error in
+    let dataTask = URLSession(configuration: .default).dataTask(with: self) { data, response, error in
       XCTAssertNil(error)
       XCTAssertNotNil(data)
       switch (response as? HTTPURLResponse)?.statusCode {
         case nil: XCTFail("bad response")
-        case 200?: fn(data!)
+        case 200?:
+          XCTAssertNotNil(data, "Data from endpoint is nil.")
+          fn(data!)
         case let sc?: XCTFail("bad status \(sc)")
       }
     }
