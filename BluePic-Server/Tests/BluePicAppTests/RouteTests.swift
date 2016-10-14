@@ -70,9 +70,9 @@ class RouteTests: XCTestCase {
     #endif
 
     let directoryPath = fileURL(directoriesUp: 4, path: "Cloud-Scripts").relativePath
-
+    
     task.currentDirectoryPath = directoryPath
-    task.launchPath = "/bin/sh"
+    task.launchPath = "/bin/bash"
     task.arguments = [directoryPath + "/populator.sh"]
     task.launch()
     task.waitUntilExit()
