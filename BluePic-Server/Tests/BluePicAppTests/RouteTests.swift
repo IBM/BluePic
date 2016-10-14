@@ -81,7 +81,7 @@ class RouteTests: XCTestCase {
   override func setUp() {
     super.setUp()
 
-//    resetDatabase()
+    resetDatabase()
 
     if self.accessToken == "" {
       let tokenFileName = "authToken"

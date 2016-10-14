@@ -4,7 +4,7 @@
 <div class="searchResults ">Collections</div>
 <div class="card-deck-wrapper">
     <div class="card-deck text-xs-center deckMargin">
-        <div class="card" ng-repeat="collection in collections.tags" ng-click="openCollection(collection.tagLabel);">
+        <div class="card" ng-repeat="collection in collections.tags" ng-show="collection.photos.length > 1" ng-click="openCollection(collection.tagLabel);">
             <div id="" class="">
                 <img class="card-img-top cardDeckCustom" ng-src={{collections.images[collection.photos[0]].url}}>
             </div>
