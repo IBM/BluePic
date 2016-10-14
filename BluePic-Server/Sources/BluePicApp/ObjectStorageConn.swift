@@ -24,6 +24,7 @@ public struct ObjectStorageConn {
   let objStorage: ObjectStorage
   let connProps: ObjectStorageConnProps
   private var authenticated: Bool = false
+  // FIXME: Accessing Date object more than once will cause seg fault, related to https://bugs.swift.org/browse/SR-2462
   private var lastAuthenticatedTs: Date?
 
   init(objStorageConnProps: ObjectStorageConnProps) {
@@ -70,7 +71,6 @@ public struct ObjectStorageConn {
         Log.verbose("Successfully obtained authentication token for Object Storage.")
         copy.authenticated = true
         copy.lastAuthenticatedTs = Date()
-        Log.verbose("lastAuthenticatedTs is \(copy.lastAuthenticatedTs).")
       }
       Log.verbose("Signaling semaphore...")
       semaphore.signal()

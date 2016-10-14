@@ -22,6 +22,7 @@
 
 import Foundation
 import Kitura
+import KituraNet
 import XCTest
 import Dispatch
 import HeliumLogger
@@ -69,9 +70,9 @@ class RouteTests: XCTestCase {
     #endif
 
     let directoryPath = fileURL(directoriesUp: 4, path: "Cloud-Scripts").relativePath
-
+    
     task.currentDirectoryPath = directoryPath
-    task.launchPath = "/bin/sh"
+    task.launchPath = "/bin/bash"
     task.arguments = [directoryPath + "/populator.sh"]
     task.launch()
     task.waitUntilExit()
@@ -104,6 +105,9 @@ class RouteTests: XCTestCase {
       Kitura.start()
     }
 
+    print("------------------------------")
+    print("------------New Test----------")
+    print("------------------------------")
   }
 
   override func tearDown() {
@@ -111,11 +115,11 @@ class RouteTests: XCTestCase {
   }
 
   func testPing() {
-
+    
     let pingExpectation = expectation(description: "Hit ping endpoint and get simple text response.")
-
+    
     URLRequest(forTestWithMethod: "GET", route: "ping", authToken: self.accessToken)
-      .sendForTesting { data in
+      .sendForTestingWithKitura { data in
 
         let pingResult = String(data: data, encoding: String.Encoding.utf8)
         XCTAssertNotNil(pingResult, "pingResult string is nil, data couldn't be decoded.")
@@ -126,12 +130,12 @@ class RouteTests: XCTestCase {
   }
 
   func testGetTags() {
-
+    
     let tagExpectation = expectation(description: "Get the top 10 image tags.")
     let expectedResult = ["mountain", "flower", "nature", "bridge", "building", "city", "cloudy sky", "garden", "lake", "person"]
 
     URLRequest(forTestWithMethod: "GET", route: "tags")
-      .sendForTesting { data in
+      .sendForTestingWithKitura { data in
         let tags = JSON(data: data)
         for (index, pair) in tags["records"].arrayValue.enumerated() {
           XCTAssertEqual(pair["key"].stringValue, expectedResult[index])
@@ -148,7 +152,7 @@ class RouteTests: XCTestCase {
     let imageExpectation = expectation(description: "Get all images.")
 
     URLRequest(forTestWithMethod: "GET", route: "images")
-      .sendForTesting { data in
+      .sendForTestingWithKitura { data in
 
         let images = JSON(data: data)
         let records = images["records"].arrayValue
@@ -170,7 +174,7 @@ class RouteTests: XCTestCase {
     let imageExpectation = expectation(description: "Get an image with a specific image.")
 
     URLRequest(forTestWithMethod: "GET", route: "images/2010")
-      .sendForTesting { data in
+      .sendForTestingWithKitura { data in
 
         let image = JSON(data: data)
         self.assertImage2010(image: image)
@@ -185,7 +189,7 @@ class RouteTests: XCTestCase {
     let imageExpectation = expectation(description: "Get all images with a specific tag.")
 
     URLRequest(forTestWithMethod: "GET", route: "images?tag=mountain")
-      .sendForTesting { data in
+      .sendForTestingWithKitura { data in
 
         let images = JSON(data: data)
         let records = images["records"].arrayValue
@@ -223,7 +227,6 @@ class RouteTests: XCTestCase {
       let url = URL(string: "http://127.0.0.1:8090/images")
       XCTAssertNotNil(url, "Post image URL is nil.")
       var request = URLRequest(url: url!, cachePolicy: .reloadIgnoringCacheData, timeoutInterval: 10.0)
-      request.timeoutInterval = 60
       request.httpMethod = "POST"
       request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
       request.setValue("Bearer \(self.accessToken)", forHTTPHeaderField: "Authorization")
@@ -248,8 +251,25 @@ class RouteTests: XCTestCase {
       body.append(imageEndEncoding)
       body.append(boundaryEnd)
       request.httpBody = body
+      
+      guard let headers = request.allHTTPHeaderFields else {
+        XCTFail("Invalid request params")
+        return
+      }
+      let requestOptions: [ClientRequest.Options] = [.method("POST"), .hostname("localhost"), .port(8090), .path("/images"), .headers(headers)]
+      
+      let req = HTTP.request(requestOptions) { resp in
+        XCTAssertNotNil(resp, "Response came back nil.")
+        if let resp = resp {
+          XCTAssertNotEqual(resp.statusCode.rawValue, 404)
+          XCTAssertEqual(resp.statusCode.rawValue, 200)
+        }
+        imageExpectation.fulfill()
+      }
+      req.end(body)
 
-      URLSession(configuration: .default).dataTask(with: request) { data, response, error in
+      // Use when URLSession is more reliable on Linux
+      /*URLSession(configuration: .default).dataTask(with: request) { data, response, error in
         if let error = error {
           XCTFail("Image Post failed with error: \(error)")
         } else {
@@ -263,8 +283,7 @@ class RouteTests: XCTestCase {
 
           imageExpectation.fulfill()
         }
-      }.resume()
-
+      }.resume()*/
 
     } catch {
       XCTFail("Failed to convert image dictionary to binary data.")
@@ -278,8 +297,7 @@ class RouteTests: XCTestCase {
     let imageExpectation = expectation(description: "Gets all images posted by a specific user.")
 
     URLRequest(forTestWithMethod: "GET", route: "users/1001/images", authToken: self.accessToken)
-      .sendForTesting { data in
-
+      .sendForTestingWithKitura { data in
         let images = JSON(data: data)
         let records = images["records"].arrayValue
         XCTAssertEqual(records.count, 4)
@@ -300,7 +318,7 @@ class RouteTests: XCTestCase {
     let userExpectation = expectation(description: "Gets all Users.")
 
     URLRequest(forTestWithMethod: "GET", route: "users", authToken: self.accessToken)
-      .sendForTesting { data in
+      .sendForTestingWithKitura { data in
 
         let users = JSON(data: data)
         let records = users["records"].arrayValue
@@ -321,7 +339,7 @@ class RouteTests: XCTestCase {
     let userExpectation = expectation(description: "Gets a specific User.")
 
     URLRequest(forTestWithMethod: "GET", route: "users/1003", authToken: self.accessToken)
-      .sendForTesting { data in
+      .sendForTestingWithKitura { data in
 
         let user = JSON(data: data)
         XCTAssertEqual(user["_id"].stringValue, "1003")
@@ -341,7 +359,7 @@ class RouteTests: XCTestCase {
     do {
       let jsonData = try JSONSerialization.data(withJSONObject: json, options: JSONSerialization.WritingOptions(rawValue: 0))
       URLRequest(forTestWithMethod: "POST", route: "users", authToken: self.accessToken, body: jsonData)
-        .sendForTesting { data in
+        .sendForTestingWithKitura { data in
 
           let user = JSON(data: data)
           XCTAssertEqual(user["_id"].stringValue, json["_id"])
@@ -360,7 +378,8 @@ class RouteTests: XCTestCase {
 
     let pushExpectation = expectation(description: "Sends a push notification to a User.")
 
-    let url = URL(string: "http://127.0.0.1:8090/push/images/2010")
+    // Use when URLSession is more reliable on Linux
+    /*let url = URL(string: "http://127.0.0.1:8090/push/images/2010")
     XCTAssertNotNil(url, "Push notification URL for image 2010 is nil.")
     var request = URLRequest(url: url!)
     request.httpMethod = "POST"
@@ -375,8 +394,23 @@ class RouteTests: XCTestCase {
         XCTAssertNotEqual(httpResponse.statusCode, 200)
       }
       pushExpectation.fulfill()
-    }.resume()
-    waitForExpectations(timeout: 10.0, handler: nil)
+    }.resume()*/
+    
+    var requestOptions: [ClientRequest.Options] = [.method("POST"), .hostname("localhost"), .port(8090), .path("/push/images/2010")]
+    var headers = [String:String]()
+    headers["Content-Type"] = "application/json"
+    headers["Authorization"] = "Bearer \(self.accessToken)"
+    requestOptions.append(.headers(headers))
+    
+    let req = HTTP.request(requestOptions) { resp in
+      if let resp = resp {
+        XCTAssertNotEqual(resp.statusCode.rawValue, 200)
+      }
+      pushExpectation.fulfill()
+    }
+    req.end(close: true)
+    
+    waitForExpectations(timeout: 15.0, handler: nil)
   }
 
 }
@@ -487,5 +521,50 @@ private extension URLRequest {
       }
     }
     dataTask.resume()
+  }
+  
+  func sendForTestingWithKitura(fn: @escaping (Data) -> Void) {
+    
+    guard let method = httpMethod, var path = url?.path, let headers = allHTTPHeaderFields else {
+      XCTFail("Invalid request params")
+      return
+    }
+    
+    if let query = url?.query {
+      path += "?" + query
+    }
+    
+    let requestOptions: [ClientRequest.Options] = [.method(method), .hostname("localhost"), .port(8090), .path(path), .headers(headers)]
+    
+    let req = HTTP.request(requestOptions) { resp in
+      print("In closure with resp: \(resp)")
+      if let resp = resp, resp.statusCode == HTTPStatusCode.OK || resp.statusCode == HTTPStatusCode.accepted {
+        do {
+          var body = Data()
+          try resp.readAllData(into: &body)
+          fn(body)
+        } catch {
+          print("Bad JSON document received from BluePic-Server.")
+        }
+      } else {
+        if let resp = resp {
+          print("Status code: \(resp.statusCode)")
+          var rawUserData = Data()
+          do {
+            let _ = try resp.read(into: &rawUserData)
+            let str = String(data: rawUserData, encoding: String.Encoding(rawValue: String.Encoding.utf8.rawValue))
+            print("Error response from BluePic-Server: \(str)")
+          } catch {
+            print("Failed to read response data.")
+          }
+        }
+      }
+    }
+    if let dataBody = httpBody {
+      req.end(dataBody)
+    } else {
+      req.end()
+    }
+    
   }
 }
