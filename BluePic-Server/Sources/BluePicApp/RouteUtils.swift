@@ -111,7 +111,7 @@ extension ServerController {
                   print("Error response from OpenWhisk: \(str)")
               }
               catch {
-
+                Log.warning("Failed to read response data in processImage error state.")
               }
           }
         }

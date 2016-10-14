@@ -45,11 +45,11 @@ class RouteTests: XCTestCase {
           ("testGettingImages", testGettingImages),
           ("testGettingSingleImage", testGettingSingleImage),
           ("testGettingImagesByTag", testGettingImagesByTag),
-//          ("testPostingImage", testPostingImage),
+          ("testPostingImage", testPostingImage),
           ("testGettingImagesForUser", testGettingImagesForUser),
           ("testGettingUsers", testGettingUsers),
           ("testGettingSingleUser", testGettingSingleUser),
-//          ("testCreatingUser", testCreatingUser),
+          ("testCreatingUser", testCreatingUser),
           ("testPushNotification", testPushNotification)
       ]
   }
@@ -105,9 +105,9 @@ class RouteTests: XCTestCase {
       Kitura.start()
     }
 
-    print("------------")
+    print("------------------------------")
     print("------------New Test----------")
-    print("------------")
+    print("------------------------------")
   }
 
   override func tearDown() {
@@ -115,9 +115,9 @@ class RouteTests: XCTestCase {
   }
 
   func testPing() {
-
+    
     let pingExpectation = expectation(description: "Hit ping endpoint and get simple text response.")
-
+    
     URLRequest(forTestWithMethod: "GET", route: "ping", authToken: self.accessToken)
       .sendForTestingWithKitura { data in
 
@@ -130,7 +130,7 @@ class RouteTests: XCTestCase {
   }
 
   func testGetTags() {
-
+    
     let tagExpectation = expectation(description: "Get the top 10 image tags.")
     let expectedResult = ["mountain", "flower", "nature", "bridge", "building", "city", "cloudy sky", "garden", "lake", "person"]
 
@@ -227,7 +227,6 @@ class RouteTests: XCTestCase {
       let url = URL(string: "http://127.0.0.1:8090/images")
       XCTAssertNotNil(url, "Post image URL is nil.")
       var request = URLRequest(url: url!, cachePolicy: .reloadIgnoringCacheData, timeoutInterval: 10.0)
-      request.timeoutInterval = 60
       request.httpMethod = "POST"
       request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
       request.setValue("Bearer \(self.accessToken)", forHTTPHeaderField: "Authorization")
@@ -252,8 +251,25 @@ class RouteTests: XCTestCase {
       body.append(imageEndEncoding)
       body.append(boundaryEnd)
       request.httpBody = body
+      
+      guard let headers = request.allHTTPHeaderFields else {
+        XCTFail("Invalid request params")
+        return
+      }
+      let requestOptions: [ClientRequest.Options] = [.method("POST"), .hostname("localhost"), .port(8090), .path("/images"), .headers(headers)]
+      
+      let req = HTTP.request(requestOptions) { resp in
+        XCTAssertNotNil(resp, "Response came back nil.")
+        if let resp = resp {
+          XCTAssertNotEqual(resp.statusCode.rawValue, 404)
+          XCTAssertEqual(resp.statusCode.rawValue, 200)
+        }
+        imageExpectation.fulfill()
+      }
+      req.end(body)
 
-      URLSession(configuration: .default).dataTask(with: request) { data, response, error in
+      // Use when URLSession is more reliable on Linux
+      /*URLSession(configuration: .default).dataTask(with: request) { data, response, error in
         if let error = error {
           XCTFail("Image Post failed with error: \(error)")
         } else {
@@ -267,8 +283,7 @@ class RouteTests: XCTestCase {
 
           imageExpectation.fulfill()
         }
-      }.resume()
-
+      }.resume()*/
 
     } catch {
       XCTFail("Failed to convert image dictionary to binary data.")
@@ -363,6 +378,7 @@ class RouteTests: XCTestCase {
 
     let pushExpectation = expectation(description: "Sends a push notification to a User.")
 
+    // Use when URLSession is more reliable on Linux
     /*let url = URL(string: "http://127.0.0.1:8090/push/images/2010")
     XCTAssertNotNil(url, "Push notification URL for image 2010 is nil.")
     var request = URLRequest(url: url!)
@@ -380,7 +396,7 @@ class RouteTests: XCTestCase {
       pushExpectation.fulfill()
     }.resume()*/
     
-    var requestOptions: [ClientRequest.Options] = [.method("POST"), .hostname("127.0.0.1"), .port(8090), .path("/push/images/2010")]
+    var requestOptions: [ClientRequest.Options] = [.method("POST"), .hostname("localhost"), .port(8090), .path("/push/images/2010")]
     var headers = [String:String]()
     headers["Content-Type"] = "application/json"
     headers["Authorization"] = "Bearer \(self.accessToken)"
@@ -509,7 +525,7 @@ private extension URLRequest {
   
   func sendForTestingWithKitura(fn: @escaping (Data) -> Void) {
     
-    guard let method = httpMethod, var path = url?.path else {
+    guard let method = httpMethod, var path = url?.path, let headers = allHTTPHeaderFields else {
       XCTFail("Invalid request params")
       return
     }
@@ -518,14 +534,10 @@ private extension URLRequest {
       path += "?" + query
     }
     
-    var requestOptions: [ClientRequest.Options] = [.method(method), .hostname("127.0.0.1"), .port(8090), .path(path)]
-    var headers = [String:String]()
-    headers["Content-Type"] = "application/json"
-    headers["Authorization"] = value(forHTTPHeaderField: "Authorization")
-    requestOptions.append(.headers(headers))
+    let requestOptions: [ClientRequest.Options] = [.method(method), .hostname("localhost"), .port(8090), .path(path), .headers(headers)]
     
     let req = HTTP.request(requestOptions) { resp in
-      print("in Closure with response: \(resp)")
+      print("In closure with resp: \(resp)")
       if let resp = resp, resp.statusCode == HTTPStatusCode.OK || resp.statusCode == HTTPStatusCode.accepted {
         do {
           var body = Data()
@@ -542,15 +554,16 @@ private extension URLRequest {
             let _ = try resp.read(into: &rawUserData)
             let str = String(data: rawUserData, encoding: String.Encoding(rawValue: String.Encoding.utf8.rawValue))
             print("Error response from BluePic-Server: \(str)")
+          } catch {
+            print("Failed to read response data.")
           }
-          catch {}
         }
       }
     }
     if let dataBody = httpBody {
       req.end(dataBody)
     } else {
-      req.end(close: true)
+      req.end()
     }
     
   }
