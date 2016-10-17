@@ -57,21 +57,21 @@ public class ServerController {
     
   public init() throws {
     // Create configuration objects
-	let config = try Configuration()
+    let config = try Configuration()
     appEnv = config.appEnv
-	couchDBConnProps = try config.getCouchDBConnProps()
-	objStorageConnProps = try config.getObjectStorageConnProps()
-	mobileClientAccessProps = try config.getMobileClientAccessProps()
-	ibmPushProps = try config.getIbmPushProps()
-	openWhiskProps = try config.getOpenWhiskProps()
+    couchDBConnProps = try config.getCouchDBConnProps()
+    objStorageConnProps = try config.getObjectStorageConnProps()
+    mobileClientAccessProps = try config.getMobileClientAccessProps()
+    ibmPushProps = try config.getIbmPushProps()
+    openWhiskProps = try config.getOpenWhiskProps()
 
-	// Create cloudant access database object
-	let dbClient = CouchDBClient(connectionProperties: couchDBConnProps)
-	database = dbClient.database("bluepic_db")
+    // Create cloudant access database object
+    let dbClient = CouchDBClient(connectionProperties: couchDBConnProps)
+    database = dbClient.database("bluepic_db")
 
-	// Create object storage connection object
-	objectStorageConn = ObjectStorageConn(objStorageConnProps: objStorageConnProps)
-        
+    // Create object storage connection object
+    objectStorageConn = ObjectStorageConn(objStorageConnProps: objStorageConnProps)
+    
     let credentials = Credentials() // middleware for securing endpoints
     
     // Facebook credentials
