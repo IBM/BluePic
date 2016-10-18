@@ -355,6 +355,22 @@ extension FeedViewModel {
         }
     }
 
+    func setUpTableViewCell(_ indexPath: IndexPath, tableView: UITableView) -> UITableViewCell {
+
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "ImageFeedTableViewCell", for: indexPath) as? ImageFeedTableViewCell else {
+            return UITableViewCell()
+        }
+
+        let image = imageDataArray[indexPath.row]
+        cell.setupDataWith(image)
+        
+        cell.layer.shouldRasterize = true
+        cell.layer.rasterizationScale = UIScreen.main.scale
+
+        return cell
+    }
+
+
 
     /**
      Method return an ImageDetailViewModel for the image at the indexPath parameter

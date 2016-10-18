@@ -47,6 +47,8 @@
 		1BF00D491CF4B60D009472B5 /* UILabelExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BF00D481CF4B60D009472B5 /* UILabelExtension.swift */; };
 		1BF00D511CF4BEEA009472B5 /* ImageInfoHeaderCollectionReusableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1BF00D531CF4BEEA009472B5 /* ImageInfoHeaderCollectionReusableView.xib */; };
 		1BF00D841CF4D58A009472B5 /* CameraConfirmationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1BF00D821CF4D58A009472B5 /* CameraConfirmationView.xib */; };
+		2E1D66001DB6AC760004E2C9 /* ImageFeedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E1D65FE1DB6AC760004E2C9 /* ImageFeedTableViewCell.swift */; };
+		2E1D66011DB6AC760004E2C9 /* ImageFeedTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2E1D65FF1DB6AC760004E2C9 /* ImageFeedTableViewCell.xib */; };
 		2E71D6171CE1197800EEBD2B /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E71D6161CE1197800EEBD2B /* SearchViewController.swift */; };
 		2E72BC441CFF5D940085239B /* Server.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2E72BC461CFF5D940085239B /* Server.strings */; };
 		2E7C95621CE13DCE0044F6ED /* TagCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7C95601CE13DCE0044F6ED /* TagCollectionViewCell.swift */; };
@@ -142,6 +144,8 @@
 		1BF00D551CF4BEEC009472B5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/ImageInfoHeaderCollectionReusableView.strings; sourceTree = "<group>"; };
 		1BF00D831CF4D58A009472B5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/CameraConfirmationView.xib; sourceTree = "<group>"; };
 		1BF00D861CF4D592009472B5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/CameraConfirmationView.strings; sourceTree = "<group>"; };
+		2E1D65FE1DB6AC760004E2C9 /* ImageFeedTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageFeedTableViewCell.swift; sourceTree = "<group>"; };
+		2E1D65FF1DB6AC760004E2C9 /* ImageFeedTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageFeedTableViewCell.xib; sourceTree = "<group>"; };
 		2E71D6161CE1197800EEBD2B /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		2E72BC451CFF5D940085239B /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Server.strings; sourceTree = "<group>"; };
 		2E72BC471CFF5DA10085239B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Server.strings; sourceTree = "<group>"; };
@@ -385,6 +389,8 @@
 				2E7C95611CE13DCE0044F6ED /* TagCollectionViewCell.xib */,
 				1BF00D0D1CEF5F52009472B5 /* ImageInfoHeaderCollectionReusableView.swift */,
 				1BF00D531CF4BEEA009472B5 /* ImageInfoHeaderCollectionReusableView.xib */,
+				2E1D65FE1DB6AC760004E2C9 /* ImageFeedTableViewCell.swift */,
+				2E1D65FF1DB6AC760004E2C9 /* ImageFeedTableViewCell.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -516,6 +522,7 @@
 				1BF00D511CF4BEEA009472B5 /* ImageInfoHeaderCollectionReusableView.xib in Resources */,
 				1B0535481CFE86460006C6F2 /* Feed.storyboard in Resources */,
 				1BF00D2E1CF38DBA009472B5 /* ImagesCurrentlyUploadingImageFeedCollectionViewCell.xib in Resources */,
+				2E1D66011DB6AC760004E2C9 /* ImageFeedTableViewCell.xib in Resources */,
 				1B057E0A1C17C03400AC21EE /* ProfileHeaderCollectionReusableView.xib in Resources */,
 				34C8094D1BFCEA0400C48004 /* bluemix.plist in Resources */,
 				1B05354D1CFE86460006C6F2 /* Main.strings in Resources */,
@@ -642,6 +649,7 @@
 				3435C7D51C04110C004923BD /* FeedViewController.swift in Sources */,
 				1B057E091C17C03400AC21EE /* ProfileHeaderCollectionReusableView.swift in Sources */,
 				1B5555BE1C1616B000B3086E /* TabBarViewModel.swift in Sources */,
+				2E1D66001DB6AC760004E2C9 /* ImageFeedTableViewCell.swift in Sources */,
 				1B40BF7C1CDA79080097F435 /* CurrentUser.swift in Sources */,
 				2EFFCE0A1CF4F74E00820BCE /* BluemixConfiguration.swift in Sources */,
 				34C809551BFD0F2400C48004 /* FacebookDataManager.swift in Sources */,

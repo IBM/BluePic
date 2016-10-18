@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ImageFeedTableViewCell" rowHeight="178" id="KGk-i7-Jjw" customClass="ImageFeedTableViewCell" customModule="BluePic" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="238"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <frame key="frameInset" width="600" height="237"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="4qr-mN-LR3"/>
+                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" text="Sample Text info" textAlignment="center" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QJu-rO-sg5">
+                        <color key="backgroundColor" red="0.98823529409999999" green="0.72156862749999995" blue="0.27058823529999998" alpha="1" colorSpace="calibratedRGB"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                    </textView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="QJu-rO-sg5" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="8" id="1YK-GN-pRW"/>
+                    <constraint firstItem="QJu-rO-sg5" firstAttribute="top" secondItem="4qr-mN-LR3" secondAttribute="bottom" constant="8" id="28J-6t-fKk"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="QJu-rO-sg5" secondAttribute="bottom" constant="10" id="CTS-Jv-h1J"/>
+                    <constraint firstItem="4qr-mN-LR3" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="8" id="USk-Gr-8cG"/>
+                    <constraint firstItem="4qr-mN-LR3" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="gUO-5f-WBo"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="4qr-mN-LR3" secondAttribute="trailing" constant="8" id="qJg-XO-7nv"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="QJu-rO-sg5" secondAttribute="trailing" constant="8" id="vP1-an-LFC"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="captionTextView" destination="QJu-rO-sg5" id="O2V-UR-TdA"/>
+                <outlet property="userImageView" destination="4qr-mN-LR3" id="cYj-o0-XOv"/>
+            </connections>
+            <point key="canvasLocation" x="26" y="41"/>
+        </tableViewCell>
+    </objects>
+</document>
