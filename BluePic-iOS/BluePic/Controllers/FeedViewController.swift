@@ -171,19 +171,6 @@ class FeedViewController: UIViewController {
     }
 
     /**
-     Method sets up the collection view with various initial properties
-     */
-//    func setupCollectionView() {
-//
-//        Utils.registerNibWithCollectionView("EmptyFeedCollectionViewCell", collectionView: collectionView)
-//
-//        Utils.registerNibWithCollectionView("ImageFeedCollectionViewCell", collectionView: collectionView)
-//
-//        Utils.registerNibWithCollectionView("ImagesCurrentlyUploadingImageFeedCollectionViewCell", collectionView: collectionView)
-//
-//    }
-
-    /**
      Method sets up the table view with various initial properties
      */
     func setupTableView() {
@@ -191,6 +178,9 @@ class FeedViewController: UIViewController {
         Utils.registerNibWith("ImageFeedTableViewCell", tableView: tableView)
 
         Utils.registerNibWith("ImagesCurrentlyUploadingImageFeedTableViewCell", tableView: tableView)
+
+        let nib: UINib? = UINib(nibName: "EmptyFeedFooterView", bundle: Bundle.main)
+        tableView.register(nib, forHeaderFooterViewReuseIdentifier: "EmptyFeedFooterView")
 
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 300
@@ -364,9 +354,11 @@ extension FeedViewController: UITableViewDataSource {
 
         }
     }
+
 }
 
 extension FeedViewController: UITableViewDelegate {
+    // TODO: move stuff to view model
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
 
@@ -376,6 +368,21 @@ extension FeedViewController: UITableViewDelegate {
             imageDetailVC.viewModel = imageDetailViewModel
             self.navigationController?.pushViewController(imageDetailVC, animated: true)
         }
+    }
+
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        if section == 1, viewModel.imageDataArray.count == 0, let sectionFooter = tableView.dequeueReusableHeaderFooterView(withIdentifier: "EmptyFeedFooterView") as? EmptyFeedFooterView {
+            sectionFooter.userHasNoImagesLabel.text = sectionFooter.kUserHasNoImagesLabelText
+            return sectionFooter
+        }
+        return nil
+    }
+
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if section == 1, viewModel.imageDataArray.count == 0 {
+            return tableView.frame.size.height
+        }
+        return 0
     }
 }
 

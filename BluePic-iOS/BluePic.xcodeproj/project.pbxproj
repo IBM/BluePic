@@ -56,6 +56,8 @@
 		2E7C95621CE13DCE0044F6ED /* TagCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7C95601CE13DCE0044F6ED /* TagCollectionViewCell.swift */; };
 		2E7C95631CE13DCE0044F6ED /* TagCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2E7C95611CE13DCE0044F6ED /* TagCollectionViewCell.xib */; };
 		2EAAC0E81CE39C13006A0B41 /* KTCenterFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EAAC0E71CE39C13006A0B41 /* KTCenterFlowLayout.m */; };
+		2EEE1C0D1DB8136D00608359 /* EmptyFeedFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EEE1C0C1DB8136D00608359 /* EmptyFeedFooterView.swift */; };
+		2EEE1C0F1DB8159300608359 /* EmptyFeedFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2EEE1C0E1DB8159300608359 /* EmptyFeedFooterView.xib */; };
 		2EFFCE0A1CF4F74E00820BCE /* BluemixConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EFFCE091CF4F74E00820BCE /* BluemixConfiguration.swift */; };
 		3435C7CF1C036A60004923BD /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3435C7CE1C036A60004923BD /* TabBarViewController.swift */; };
 		3435C7D51C04110C004923BD /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3435C7D41C04110C004923BD /* FeedViewController.swift */; };
@@ -158,6 +160,8 @@
 		2E8DFED41D21925B00438540 /* SVProgressHUD.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SVProgressHUD.framework; path = "../../../../Library/Developer/Xcode/DerivedData/BluePic-fmifxzplrvvwvwfrcfhhqiasmxjo/Build/Products/Debug-iphonesimulator/SVProgressHUD/SVProgressHUD.framework"; sourceTree = "<group>"; };
 		2EAAC0E61CE39C13006A0B41 /* KTCenterFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTCenterFlowLayout.h; sourceTree = "<group>"; };
 		2EAAC0E71CE39C13006A0B41 /* KTCenterFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTCenterFlowLayout.m; sourceTree = "<group>"; };
+		2EEE1C0C1DB8136D00608359 /* EmptyFeedFooterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmptyFeedFooterView.swift; sourceTree = "<group>"; };
+		2EEE1C0E1DB8159300608359 /* EmptyFeedFooterView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EmptyFeedFooterView.xib; sourceTree = "<group>"; };
 		2EFFCE091CF4F74E00820BCE /* BluemixConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluemixConfiguration.swift; sourceTree = "<group>"; };
 		3435C7CE1C036A60004923BD /* TabBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		3435C7D41C04110C004923BD /* FeedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
@@ -397,6 +401,8 @@
 				2E1D65FF1DB6AC760004E2C9 /* ImageFeedTableViewCell.xib */,
 				2E3B03A41DB7F5890073266C /* ImagesCurrentlyUploadingImageFeedTableViewCell.swift */,
 				2E3B03A51DB7F5890073266C /* ImagesCurrentlyUploadingImageFeedTableViewCell.xib */,
+				2EEE1C0C1DB8136D00608359 /* EmptyFeedFooterView.swift */,
+				2EEE1C0E1DB8159300608359 /* EmptyFeedFooterView.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -531,6 +537,7 @@
 				2E1D66011DB6AC760004E2C9 /* ImageFeedTableViewCell.xib in Resources */,
 				1B057E0A1C17C03400AC21EE /* ProfileHeaderCollectionReusableView.xib in Resources */,
 				34C8094D1BFCEA0400C48004 /* bluemix.plist in Resources */,
+				2EEE1C0F1DB8159300608359 /* EmptyFeedFooterView.xib in Resources */,
 				1B05354D1CFE86460006C6F2 /* Main.strings in Resources */,
 				1B05354C1CFE86460006C6F2 /* Feed.strings in Resources */,
 				2E72BC441CFF5D940085239B /* Server.strings in Resources */,
@@ -630,6 +637,7 @@
 				1B2DC2531C1F360D00B4E77B /* EmptyFeedCollectionViewCell.swift in Sources */,
 				1B40BF861CE4DDB10097F435 /* NSAttributedStringExtension.swift in Sources */,
 				1B0535981D089AA80006C6F2 /* UIViewControllerExtension.swift in Sources */,
+				2EEE1C0D1DB8136D00608359 /* EmptyFeedFooterView.swift in Sources */,
 				1B40BF801CE0D0140097F435 /* LocationDataManager.swift in Sources */,
 				2EAAC0E81CE39C13006A0B41 /* KTCenterFlowLayout.m in Sources */,
 				1BF00D0A1CEACF68009472B5 /* ProfileNavigationController.swift in Sources */,
