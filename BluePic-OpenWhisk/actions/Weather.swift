@@ -6,54 +6,49 @@ import KituraNet
 import Dispatch
 import Foundation
 import RestKit
-import InsightsForWeather
+import WeatherCompanyData
 
 func main(args: [String:Any]) -> [String:Any] {
-
-    let weatherUsername: Any? = args["weatherUsername"]
-    let weatherPassword: Any? = args["weatherPassword"]
     
-    var latitude: Any? = args["latitude"]
-    var longitude: Any? = args["longitude"]
-    var language: Any? = args["language"]
-    var units: Any? = args["units"]
+    let weatherUsername = args["weatherUsername"] as? String ?? ""
+    let weatherPassword = args["weatherPassword"] as? String ?? ""
     
-    if latitude == nil {
-        latitude = "0.0"
-    }
-    if longitude == nil {
-        longitude = "0.0"
-    }
-    if language == nil {
-        language = "en-US"
-    }
-    if units == nil {
-        units = "e"
-    }
+    var latitude = args["latitude"] as? String ?? "0.0"
+    var longitude = args["longitude"] as? String ?? "0.0"
+    var language = args["language"] as? String ?? "en-US"
+    var units = args["units"] as? String ?? "e"
     
     var str = ""
-
-    let insightsForWeather = InsightsForWeather(username: "\(weatherUsername!)", password: "\(weatherPassword!)")
-    let failure = { (error: RestError) in 
-        print(error) 
+    
+    let weatherCompanyData = WeatherCompanyData(username: "\(weatherUsername)", password: "\(weatherPassword)")
+    let failure = { (error: RestError) in
+        print(error)
     }
-    insightsForWeather.getCurrentForecast(
-            units: "\(units!)",
-            geocode: "\(latitude!),\(longitude!)",
-            language: "\(language!)",
-            failure: failure) { response in
-
-        let icon_code = response.observation.icon_code 
-        let sky_cover = response.observation.sky_cover!
-        let temp = response.observation.measurement!.temp
-
-        str = "{ \"observation\":{" + 
-            "\"icon_code\":\(icon_code)," + 
-            "\"sky_cover\":\"\(sky_cover)\"," + 
-            "\"imperial\":{\"temp\":\(temp)}" + 
+    
+    weatherCompanyData.getCurrentForecast(
+        units: "\(units)",
+        latitude:"\(latitude)",
+        longitude: "\(longitude)",
+        language: "\(language)",
+        failure: failure) { response in
+        
+        let icon_code = response.observation.icon_code
+        let sky_cover = response.observation.sky_cover
+        
+        var temp: Int = 0
+        if let measurement = response.observation.measurement {
+            temp = measurement.temp
+        }
+        
+        str = "{ \"observation\":{" +
+            "\"icon_code\":\(icon_code)," +
+            "\"sky_cover\":\"\(sky_cover)\"," +
+            "\"imperial\":{\"temp\":\(temp)}" +
         "}}"
     }
-
+    
+    //workaround for JSON parsing defect in container
+    str = str.replacingOccurrences(of: "\"", with: "\\\"")
     let result:[String:Any] = [
         "weather": "\(str)"
     ]
