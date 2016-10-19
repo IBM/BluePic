@@ -63,7 +63,7 @@ class SearchViewController: UIViewController {
         if let label = tagsButton.titleLabel {
             Utils.kernLabelString(label, spacingValue: 1.7)
         }
-        Utils.registerNibWithCollectionView("TagCollectionViewCell", collectionView: tagCollectionView)
+        Utils.registerNibWith("TagCollectionViewCell", collectionView: tagCollectionView)
     }
 
     /**

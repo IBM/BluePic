@@ -152,9 +152,9 @@ class ProfileViewController: UIViewController {
 
         Utils.registerSupplementaryElementOfKindNibWithCollectionView("ProfileHeaderCollectionReusableView", kind: UICollectionElementKindSectionHeader, collectionView: collectionView)
 
-        Utils.registerNibWithCollectionView("EmptyFeedCollectionViewCell", collectionView: collectionView)
+        Utils.registerNibWith("EmptyFeedCollectionViewCell", collectionView: collectionView)
 
-        Utils.registerNibWithCollectionView("ProfileCollectionViewCell", collectionView: collectionView)
+        Utils.registerNibWith("ProfileCollectionViewCell", collectionView: collectionView)
 
     }
 

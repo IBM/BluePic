@@ -59,8 +59,8 @@
             <size key="customSize" width="414" height="73"/>
             <variation key="default">
                 <mask key="constraints">
-                    <exclude reference="XdC-BF-nUv"/>
                     <exclude reference="zgj-Is-vom"/>
+                    <exclude reference="XdC-BF-nUv"/>
                 </mask>
             </variation>
             <connections>

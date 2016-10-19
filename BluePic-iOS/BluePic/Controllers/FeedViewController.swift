@@ -188,8 +188,9 @@ class FeedViewController: UIViewController {
      */
     func setupTableView() {
 
-        let nib: UINib? = UINib(nibName: "ImageFeedTableViewCell", bundle: Bundle.main)
-        tableView.register(nib, forCellReuseIdentifier: "ImageFeedTableViewCell")
+        Utils.registerNibWith("ImageFeedTableViewCell", tableView: tableView)
+
+        Utils.registerNibWith("ImagesCurrentlyUploadingImageFeedTableViewCell", tableView: tableView)
 
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 300
@@ -394,8 +395,8 @@ extension FeedViewController {
                 SVProgressHUD.dismiss()
             }
         } else if feedViewModelNotification == FeedViewModelNotification.uploadingPhotoStarted {
-//            collectionView.reloadData()
-//            collectionView.contentOffset.y = 0
+            tableView.reloadData()
+            tableView.contentOffset.y = 0
             dismissImageFeedErrorAlert()
             tryToStartLoadingAnimation()
         } else if feedViewModelNotification == FeedViewModelNotification.noSearchResults {
