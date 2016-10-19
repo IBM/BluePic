@@ -10,6 +10,7 @@ import UIKit
 
 class ImageFeedTableViewCell: UITableViewCell {
 
+    //image view used to display image
     @IBOutlet weak var userImageView: UIImageView!
 
     @IBOutlet weak var captionTextView: UITextView!
@@ -18,15 +19,29 @@ class ImageFeedTableViewCell: UITableViewCell {
 
     @IBOutlet weak var photographerNameLabel: UILabel!
 
+    @IBOutlet weak var numberOfTagsLabel: UILabel!
+
+    @IBOutlet weak var timeSincePostedLabel: UILabel!
+
+    @IBOutlet weak var topConstraint: NSLayoutConstraint!
+
+    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
+
+    //string that is added to the numberOfTagsLabel at the end if there are multiple tags
+    fileprivate let kNumberOfTagsPostFix_MultipleTags = NSLocalizedString("Tags", comment: "")
+
+    //String that is added to the numberOfTagsLabel at the end if there is one tag
+    fileprivate let kNumberOfTagsPostFix_OneTag = NSLocalizedString("Tag", comment: "")
+
+    var defaultAttributes = [NSForegroundColorAttributeName: UIColor.black, NSFontAttributeName: UIFont.boldSystemFont(ofSize: 13.0)]
+
     override func awakeFromNib() {
         super.awakeFromNib()
         selectionStyle = UITableViewCellSelectionStyle.none
-    }
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
+        let style = NSMutableParagraphStyle()
+        style.alignment = .center
+        defaultAttributes[NSParagraphStyleAttributeName] = style
     }
 
     /// Method sets up the data for the profile collection view cell
@@ -34,21 +49,21 @@ class ImageFeedTableViewCell: UITableViewCell {
     /// - parameter image: Image object to use for populating UI
     func setupDataWith(_ image: Image) {
 
-//        if let numOfTags = image.tags?.count {
-//            
-//            if numOfTags == 0 {
-//                self.numberOfTagsLabel.isHidden = true
-//            } else if numOfTags == 1 {
-//                self.numberOfTagsLabel.isHidden = false
-//                self.numberOfTagsLabel.text = "\(numOfTags)" + " " + self.kNumberOfTagsPostFix_OneTag
-//            } else {
-//                self.numberOfTagsLabel.isHidden = false
-//                self.numberOfTagsLabel.text = "\(numOfTags)" + " " + self.kNumberOfTagsPostFix_MultipleTags
-//            }
-//            
-//        } else {
-//            self.numberOfTagsLabel.isHidden = true
-//        }
+        if let numOfTags = image.tags?.count {
+
+            if numOfTags == 0 {
+                self.numberOfTagsLabel.isHidden = true
+            } else if numOfTags == 1 {
+                self.numberOfTagsLabel.isHidden = false
+                self.numberOfTagsLabel.text = "\(numOfTags)" + " " + self.kNumberOfTagsPostFix_OneTag
+            } else {
+                self.numberOfTagsLabel.isHidden = false
+                self.numberOfTagsLabel.text = "\(numOfTags)" + " " + self.kNumberOfTagsPostFix_MultipleTags
+            }
+
+        } else {
+            self.numberOfTagsLabel.isHidden = true
+        }
 
         //set the image view's image
         self.setImageView(image.url, fileName: image.fileName)
@@ -57,8 +72,8 @@ class ImageFeedTableViewCell: UITableViewCell {
         _ = self.setCaptionText(image: image)
 
         //set the time since posted label's text
-//        self.timeSincePostedLabel.text = Date.timeSinceDateString(image.timeStamp)
-        
+        self.timeSincePostedLabel.text = Date.timeSinceDateString(image.timeStamp)
+
         //set the photographerNameLabel's text
         let ownerNameString = NSLocalizedString("by", comment: "") + " \(image.user.name)"
         self.photographerNameLabel.text = ownerNameString
@@ -66,24 +81,28 @@ class ImageFeedTableViewCell: UITableViewCell {
 
     func setCaptionText(image: Image) -> Bool {
 
+        let cutoffLength = 40
         if image.caption == CameraDataManager.SharedInstance.kEmptyCaptionPlaceHolder {
             self.captionTextView.text = ""
-        } else if image.caption.characters.count >= 50 {
+            self.topConstraint.constant = 0
+            self.bottomConstraint.constant = 0
+            self.captionTextView.textContainerInset = UIEdgeInsets.zero
+
+            self.captionTextView.isHidden = true
+        } else if image.caption.characters.count >= cutoffLength {
             if !image.isExpanded {
                 let moreText = "...more"
-                let cutoffLength = 50
 
-                var abc: String = (image.caption as NSString).substring(with: NSRange(location: 0, length: cutoffLength))
-                abc += moreText
-                let attributedString = NSMutableAttributedString(string: abc)
+                let abc: String = (image.caption as NSString).substring(with: NSRange(location: 0, length: cutoffLength)) + moreText
+                let attributedString = NSMutableAttributedString(string: abc, attributes: defaultAttributes)
                 attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor.gray, range: NSRange(location: cutoffLength, length: 7))
                 self.captionTextView.attributedText = attributedString
             } else {
-                self.captionTextView.attributedText = NSMutableAttributedString(string: image.caption, attributes: [NSForegroundColorAttributeName: UIColor.black])
+                self.captionTextView.attributedText = NSMutableAttributedString(string: image.caption, attributes: defaultAttributes)
             }
             return true
         } else {
-            self.captionTextView.attributedText = NSMutableAttributedString(string: image.caption, attributes: [NSForegroundColorAttributeName: UIColor.black])
+            self.captionTextView.attributedText = NSMutableAttributedString(string: image.caption, attributes: defaultAttributes)
         }
         return false
     }
@@ -187,7 +206,7 @@ class ImageFeedTableViewCell: UITableViewCell {
      */
     fileprivate func setImageViewWithURL(_ url: URL) {
         self.userImageView.sd_setImage(with: url) { (image, error, cacheType, url) in
-            print("imgView: \(self.userImageView.frame)")
+
             self.loadingView.isHidden = image != nil && error == nil
 
         }
