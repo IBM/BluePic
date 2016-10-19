@@ -271,37 +271,37 @@ extension FeedViewModel {
 
      - returns: CGSize
      */
-    func sizeForItemAtIndexPath(_ indexPath: IndexPath, collectionView: UICollectionView) -> CGSize {
-
-        //Section 0 corresponds to showing ImagesCurrentlyUploadingImageFeedCollectionViewCell collection view cells. These cells show when there are images in the imagesCurrentlyUploading array of the BluemixDataManager
-        if indexPath.section == 0 {
-            return CGSize(width: collectionView.frame.width, height: kPictureUploadCollectionViewCellHeight)
-        }
-            //section 1 corresponds to either the empty feed collection view cell or the standard image feed collection view cell depending on how many images are in the image data array
-        else {
-
-            //return size for empty feed collection view cell
-            if imageDataArray.count == 0 {
-                return CGSize(width: collectionView.frame.width, height: collectionView.frame.height)
-            }
-                //return size for image feed collection view cell
-            else {
-
-                let image = imageDataArray[indexPath.row]
-
-                let ratio = image.height / image.width
-
-                var height = collectionView.frame.width * ratio
-
-                if height > kCollectionViewCellHeightLimit {
-                    height = kCollectionViewCellHeightLimit
-                }
-
-                return CGSize(width: collectionView.frame.width, height: height + kCollectionViewCellInfoViewHeight)
-
-            }
-        }
-    }
+//    func sizeForItemAtIndexPath(_ indexPath: IndexPath, collectionView: UICollectionView) -> CGSize {
+//
+//        //Section 0 corresponds to showing ImagesCurrentlyUploadingImageFeedCollectionViewCell collection view cells. These cells show when there are images in the imagesCurrentlyUploading array of the BluemixDataManager
+//        if indexPath.section == 0 {
+//            return CGSize(width: collectionView.frame.width, height: kPictureUploadCollectionViewCellHeight)
+//        }
+//            //section 1 corresponds to either the empty feed collection view cell or the standard image feed collection view cell depending on how many images are in the image data array
+//        else {
+//
+//            //return size for empty feed collection view cell
+//            if imageDataArray.count == 0 {
+//                return CGSize(width: collectionView.frame.width, height: collectionView.frame.height)
+//            }
+//                //return size for image feed collection view cell
+//            else {
+//
+//                let image = imageDataArray[indexPath.row]
+//
+//                let ratio = image.height / image.width
+//
+//                var height = collectionView.frame.width * ratio
+//
+//                if height > kCollectionViewCellHeightLimit {
+//                    height = kCollectionViewCellHeightLimit
+//                }
+//
+//                return CGSize(width: collectionView.frame.width, height: height + kCollectionViewCellInfoViewHeight)
+//
+//            }
+//        }
+//    }
 
     /**
      Method sets up the collection view for indexPath. If the the imgageDataArray is 0, then it shows the EmptyFeedCollectionViewCell
@@ -363,7 +363,7 @@ extension FeedViewModel {
 
         let image = imageDataArray[indexPath.row]
         cell.setupDataWith(image)
-        
+
         cell.layer.shouldRasterize = true
         cell.layer.rasterizationScale = UIScreen.main.scale
 

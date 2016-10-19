@@ -14,9 +14,13 @@ class ImageFeedTableViewCell: UITableViewCell {
 
     @IBOutlet weak var captionTextView: UITextView!
 
+    @IBOutlet weak var loadingView: UIView!
+
+    @IBOutlet weak var photographerNameLabel: UILabel!
+
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        selectionStyle = UITableViewCellSelectionStyle.none
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -54,6 +58,10 @@ class ImageFeedTableViewCell: UITableViewCell {
 
         //set the time since posted label's text
 //        self.timeSincePostedLabel.text = Date.timeSinceDateString(image.timeStamp)
+        
+        //set the photographerNameLabel's text
+        let ownerNameString = NSLocalizedString("by", comment: "") + " \(image.user.name)"
+        self.photographerNameLabel.text = ownerNameString
     }
 
     func setCaptionText(image: Image) -> Bool {
@@ -89,7 +97,7 @@ class ImageFeedTableViewCell: UITableViewCell {
      */
     func setImageView(_ url: String?, fileName: String?) {
 
-//        self.loadingView.isHidden = false
+        self.loadingView.isHidden = false
 
         //first try to set image view with locally cached image (from a photo the user has posted during the app session)
         let locallyCachedImage = self.tryToSetImageViewWithLocallyCachedImage(fileName)
@@ -113,38 +121,38 @@ class ImageFeedTableViewCell: UITableViewCell {
 
             //generate id which is a concatenation of the file name and facebook user id
             let id = fName + CurrentUser.facebookUserId
-            
+
             //check to see if there is an image cached in the camera data manager's picturesTakenDuringAppSessionById cache
             if let img = BluemixDataManager.SharedInstance.imagesTakenDuringAppSessionById[id] {
-                
+
                 //hide loading placeholder view
-//                self.loadingView.isHidden = true
-                
+                self.loadingView.isHidden = true
+
                 //set image view's image to locally cached image
                 self.userImageView.image = img
-                
+
                 return img
             }
         }
         return nil
     }
-    
+
     /**
      Method trys to set the image view with a url to an image and sets the placeholder to a locally cached image if its not nil
-     
+
      - parameter url:              String?
      - parameter placeHolderImage: UIImage?
      */
     fileprivate func tryToSetImageViewWithURL(_ url: String?, placeHolderImage: UIImage?) {
-        
+
         let urlString = url ?? ""
-        
+
         //check if string is empty, if it is, then its not a valid url
         if urlString != "" {
-            
+
             //check if we can turn the string into a valid URL
             if let nsurl = URL(string: urlString) {
-                
+
                 //if placeHolderImage parameter isn't nil, then set image with URL and use placeholder image
                 if let image = placeHolderImage {
                     self.setImageViewWithURLAndPlaceHolderImage(nsurl, placeHolderImage: image)
@@ -167,7 +175,7 @@ class ImageFeedTableViewCell: UITableViewCell {
 
         self.userImageView.sd_setImage(with: url, placeholderImage: placeHolderImage, options: [.delayPlaceholder]) { image, error, cacheType, url in
 
-//            self.loadingView.isHidden = image != nil && error == nil
+            self.loadingView.isHidden = image != nil && error == nil
 
         }
     }
@@ -179,8 +187,8 @@ class ImageFeedTableViewCell: UITableViewCell {
      */
     fileprivate func setImageViewWithURL(_ url: URL) {
         self.userImageView.sd_setImage(with: url) { (image, error, cacheType, url) in
-
-//            self.loadingView.isHidden = image != nil && error == nil
+            print("imgView: \(self.userImageView.frame)")
+            self.loadingView.isHidden = image != nil && error == nil
 
         }
     }

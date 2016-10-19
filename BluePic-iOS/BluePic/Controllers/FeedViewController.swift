@@ -75,7 +75,6 @@ class FeedViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-//        setupCollectionView()
         setupTableView()
         setupViewModel()
 
@@ -132,12 +131,13 @@ class FeedViewController: UIViewController {
 
         viewModel.suscribeToBluemixDataManagerNotifications()
         // ensure collection view loads correctly under different circumstances
-//        if collectionView.numberOfItems(inSection: 1) < BluemixDataManager.SharedInstance.images.count {
-//            logoImageView.startRotating(1)
-//            viewModel.repullForNewData()
-//        } else {
-//            reloadDataInCollectionView()
-//        }
+        
+        if tableView.numberOfRows(inSection: 1) < BluemixDataManager.SharedInstance.images.count {
+            logoImageView.startRotating(1)
+            viewModel.repullForNewData()
+        } else {
+            reloadDataInCollectionView()
+        }
 
         UIApplication.shared.statusBarStyle = UIStatusBarStyle.default
 
@@ -149,12 +149,12 @@ class FeedViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-//        if searchQuery != nil && self.isMovingToParentViewController &&
-//            collectionView.numberOfItems(inSection: 1) < 1 && noResultsLabel.isHidden {
-//            SVProgressHUD.show()
-//        } else {
-//            tryToShowImageFeedAlert()
-//        }
+        if searchQuery != nil && self.isMovingToParentViewController &&
+            tableView.numberOfRows(inSection: 1) < 1 && noResultsLabel.isHidden {
+            SVProgressHUD.show()
+        } else {
+            tryToShowImageFeedAlert()
+        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -199,12 +199,19 @@ class FeedViewController: UIViewController {
 //    }
 
     func setupTableView() {
-//        Utils.registerNibWithCollectionView("ImageFeedTableViewCell", collectionView: tableView)
+
         let nib: UINib? = UINib(nibName: "ImageFeedTableViewCell", bundle: Bundle.main)
         tableView.register(nib, forCellReuseIdentifier: "ImageFeedTableViewCell")
-        
+
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 300
+
+        self.refreshControl = UIRefreshControl()
+        self.refreshControl.addTarget(self, action: #selector(FeedViewController.userTriggeredRefresh), for: UIControlEvents.valueChanged)
+        self.refreshControl.isHidden = true
+        self.refreshControl.tintColor = UIColor.clear
+
+        self.tableView.addSubview(refreshControl)
     }
 
     /**
@@ -447,23 +454,23 @@ extension FeedViewController: UITableViewDelegate {
 //}
 
 
-extension FeedViewController: UICollectionViewDelegateFlowLayout {
-
-    /**
-     Method returns the size for item at indexPath by asking the view Model for the size for item at indexPath
-
-     - parameter collectionView:       UICollectionView
-     - parameter collectionViewLayout: UICollectionViewLayout
-     - parameter indexPath:            IndexPath
-
-     - returns: CGSize
-     */
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-
-        return viewModel.sizeForItemAtIndexPath(indexPath, collectionView: collectionView)
-    }
-
-}
+//extension FeedViewController: UICollectionViewDelegateFlowLayout {
+//
+//    /**
+//     Method returns the size for item at indexPath by asking the view Model for the size for item at indexPath
+//
+//     - parameter collectionView:       UICollectionView
+//     - parameter collectionViewLayout: UICollectionViewLayout
+//     - parameter indexPath:            IndexPath
+//
+//     - returns: CGSize
+//     */
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+//
+//        return viewModel.sizeForItemAtIndexPath(indexPath, collectionView: collectionView)
+//    }
+//
+//}
 
 //ViewModel -> ViewController Communication
 extension FeedViewController {
