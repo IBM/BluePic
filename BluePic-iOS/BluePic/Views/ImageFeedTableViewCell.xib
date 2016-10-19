@@ -108,7 +108,6 @@
                 </constraints>
             </tableViewCellContentView>
             <connections>
-                <outlet property="bottomConstraint" destination="Eqx-e2-AaW" id="o5Y-mM-6q8"/>
                 <outlet property="captionTextView" destination="QJu-rO-sg5" id="O2V-UR-TdA"/>
                 <outlet property="loadingView" destination="JTz-M7-Ug6" id="mmr-jd-Nkk"/>
                 <outlet property="numberOfTagsLabel" destination="Woe-vU-fmt" id="6ZE-58-emj"/>

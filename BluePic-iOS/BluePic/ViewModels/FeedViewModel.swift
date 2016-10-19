@@ -59,7 +59,7 @@ class FeedViewModel: NSObject {
     var numberOfCellsWhenUserHasNoPhotos = 0
 
     //constant that defines the number of sections there are in the collection view
-    let kNumberOfSectionsInCollectionView = 2
+    let kNumberOfSectionsInTableView = 2
 
 
     /**
@@ -233,7 +233,7 @@ extension FeedViewModel {
      - returns: Int
      */
     func numberOfSectionsInCollectionView() -> Int {
-        return kNumberOfSectionsInCollectionView
+        return kNumberOfSectionsInTableView
     }
 
     /**
@@ -311,49 +311,49 @@ extension FeedViewModel {
 
      - returns: UICollectionViewCell
      */
-    func setUpCollectionViewCell(_ indexPath: IndexPath, collectionView: UICollectionView) -> UICollectionViewCell {
-
-        //Section 0 corresponds to showing ImagesCurrentlyUploadingImageFeedCollectionViewCell collection view cells. These cells show when there are images in the imagesCurrentlyUploading array of the BluemixDataManager
-        if indexPath.section == 0 {
-
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImagesCurrentlyUploadingImageFeedCollectionViewCell", for: indexPath) as? ImagesCurrentlyUploadingImageFeedCollectionViewCell else {
-                return UICollectionViewCell()
-            }
-
-            let image = BluemixDataManager.SharedInstance.imagesCurrentlyUploading[indexPath.row]
-
-            cell.setupData(image.image, caption: image.caption)
-
-            return cell
-
-        }
-            //section 1 corresponds to either the empty feed collection view cell or the standard image feed collection view cell depending on how many images are in the image data array
-        else {
-
-            if imageDataArray.count == 0 && searchQuery == nil {
-
-                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "EmptyFeedCollectionViewCell", for: indexPath) as? EmptyFeedCollectionViewCell else {
-                    return UICollectionViewCell()
-                }
-
-                return cell
-
-            } else {
-
-                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageFeedCollectionViewCell", for: indexPath) as? ImageFeedCollectionViewCell else {
-                    return UICollectionViewCell()
-                }
-
-                let image = imageDataArray[indexPath.row]
-                cell.setupDataWith(image)
-
-                cell.layer.shouldRasterize = true
-                cell.layer.rasterizationScale = UIScreen.main.scale
-
-                return cell
-            }
-        }
-    }
+//    func setUpCollectionViewCell(_ indexPath: IndexPath, collectionView: UICollectionView) -> UICollectionViewCell {
+//
+//        //Section 0 corresponds to showing ImagesCurrentlyUploadingImageFeedCollectionViewCell collection view cells. These cells show when there are images in the imagesCurrentlyUploading array of the BluemixDataManager
+//        if indexPath.section == 0 {
+//
+//            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImagesCurrentlyUploadingImageFeedCollectionViewCell", for: indexPath) as? ImagesCurrentlyUploadingImageFeedCollectionViewCell else {
+//                return UICollectionViewCell()
+//            }
+//
+//            let image = BluemixDataManager.SharedInstance.imagesCurrentlyUploading[indexPath.row]
+//
+//            cell.setupData(image.image, caption: image.caption)
+//
+//            return cell
+//
+//        }
+//            //section 1 corresponds to either the empty feed collection view cell or the standard image feed collection view cell depending on how many images are in the image data array
+//        else {
+//
+//            if imageDataArray.count == 0 && searchQuery == nil {
+//
+//                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "EmptyFeedCollectionViewCell", for: indexPath) as? EmptyFeedCollectionViewCell else {
+//                    return UICollectionViewCell()
+//                }
+//
+//                return cell
+//
+//            } else {
+//
+//                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageFeedCollectionViewCell", for: indexPath) as? ImageFeedCollectionViewCell else {
+//                    return UICollectionViewCell()
+//                }
+//
+//                let image = imageDataArray[indexPath.row]
+//                cell.setupDataWith(image)
+//
+//                cell.layer.shouldRasterize = true
+//                cell.layer.rasterizationScale = UIScreen.main.scale
+//
+//                return cell
+//            }
+//        }
+//    }
 
     func setUpTableViewCell(_ indexPath: IndexPath, tableView: UITableView) -> UITableViewCell {
 

@@ -1,31 +1,44 @@
-//
-//  ImageFeedTableViewCell.swift
-//  BluePic
-//
-//  Created by Taylor Franklin on 10/18/16.
-//  Copyright © 2016 MIL. All rights reserved.
-//
+/**
+ * Copyright IBM Corporation 2016
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ **/
 
 import UIKit
+import SDWebImage
 
 class ImageFeedTableViewCell: UITableViewCell {
 
     //image view used to display image
     @IBOutlet weak var userImageView: UIImageView!
 
+    //textView that displays the caption of the photo
     @IBOutlet weak var captionTextView: UITextView!
 
+    //the view that is shown while we wait for the image to download and display
     @IBOutlet weak var loadingView: UIView!
 
+    //label that displays the photographer's name
     @IBOutlet weak var photographerNameLabel: UILabel!
 
+    //label shows the number of tags an image has
     @IBOutlet weak var numberOfTagsLabel: UILabel!
 
+    //label that displays the amount of time since the photo was taken
     @IBOutlet weak var timeSincePostedLabel: UILabel!
 
+    //constraint for top of textView
     @IBOutlet weak var topConstraint: NSLayoutConstraint!
-
-    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
 
     //string that is added to the numberOfTagsLabel at the end if there are multiple tags
     fileprivate let kNumberOfTagsPostFix_MultipleTags = NSLocalizedString("Tags", comment: "")
@@ -85,7 +98,6 @@ class ImageFeedTableViewCell: UITableViewCell {
         if image.caption == CameraDataManager.SharedInstance.kEmptyCaptionPlaceHolder {
             self.captionTextView.text = ""
             self.topConstraint.constant = 0
-            self.bottomConstraint.constant = 0
             self.captionTextView.textContainerInset = UIEdgeInsets.zero
 
             self.captionTextView.isHidden = true

@@ -25,11 +25,7 @@ class FeedViewController: UIViewController {
     //represents the outer eye of the inner cicle that spins
     @IBOutlet weak var outerEyeImageView: UIImageView!
 
-    //collection view that displays the images in the feed
-//    @IBOutlet weak var collectionView: UICollectionView!
-    
     @IBOutlet weak var tableView: UITableView!
-    
 
     //constraint outlet for the outer eye image view's top space
     @IBOutlet weak var outerEyeImageViewTopSpaceConstraint: NSLayoutConstraint!
@@ -66,8 +62,6 @@ class FeedViewController: UIViewController {
 
     //Defines the minimum spacing between cells in the collection view
     let kMinimumInterItemSpacingForSectionAtIndex: CGFloat = 0
-
-
 
     /**
      Method called upon view did load. It sets up the collection view, sets up the view model, starts the loading animation at app launch, determines the feed model, and observes when the application becomes active
@@ -131,7 +125,7 @@ class FeedViewController: UIViewController {
 
         viewModel.suscribeToBluemixDataManagerNotifications()
         // ensure collection view loads correctly under different circumstances
-        
+
         if tableView.numberOfRows(inSection: 1) < BluemixDataManager.SharedInstance.images.count {
             logoImageView.startRotating(1)
             viewModel.repullForNewData()
@@ -181,23 +175,17 @@ class FeedViewController: UIViewController {
      */
 //    func setupCollectionView() {
 //
-//        collectionView.delegate = self
-//        collectionView.dataSource = self
-//
 //        Utils.registerNibWithCollectionView("EmptyFeedCollectionViewCell", collectionView: collectionView)
 //
 //        Utils.registerNibWithCollectionView("ImageFeedCollectionViewCell", collectionView: collectionView)
 //
 //        Utils.registerNibWithCollectionView("ImagesCurrentlyUploadingImageFeedCollectionViewCell", collectionView: collectionView)
 //
-//        self.refreshControl = UIRefreshControl()
-//        self.refreshControl.addTarget(self, action: #selector(FeedViewController.userTriggeredRefresh), for: UIControlEvents.valueChanged)
-//        self.refreshControl.isHidden = true
-//        self.refreshControl.tintColor = UIColor.clear
-//
-//        self.collectionView.addSubview(refreshControl)
 //    }
 
+    /**
+     Method sets up the table view with various initial properties
+     */
     func setupTableView() {
 
         let nib: UINib? = UINib(nibName: "ImageFeedTableViewCell", bundle: Bundle.main)
@@ -237,7 +225,6 @@ class FeedViewController: UIViewController {
         logoImageView.startRotating(1)
         self.refreshControl.endRefreshing()
         // fixes offset of emptyCollectionViewCell
-//        collectionView.setContentOffset(CGPoint.zero, animated: true)
         tableView.setContentOffset(CGPoint.zero, animated: true)
         viewModel.repullForNewData()
 
@@ -372,7 +359,6 @@ extension FeedViewController: UITableViewDataSource {
 
                 self.tableView.beginUpdates()
                 self.tableView.endUpdates()
-                self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
             }
 
         }
@@ -391,86 +377,6 @@ extension FeedViewController: UITableViewDelegate {
         }
     }
 }
-
-//extension FeedViewController: UICollectionViewDataSource {
-//
-//    /**
-//     Method sets up the cell for item at indexPath by asking the view model to set up the collection view cell
-//
-//     - parameter collectionView: UICollectionView
-//     - parameter indexPath:      Indexpath
-//
-//     - returns: UICollectionViewCell
-//     */
-//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        return viewModel.setUpCollectionViewCell(indexPath, collectionView : collectionView)
-//    }
-//
-//    /**
-//     Method sets the number of items in a section by asking the view model how many items are in this section
-//
-//     - parameter collectionView: UICollectionView
-//     - parameter section:        Int
-//
-//     - returns: Int
-//     */
-//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        return viewModel.numberOfItemsInSection(section)
-//    }
-//
-//
-//    /**
-//     Method returns the number of sections in the collection view by asking its view moddel how many sections are in the collection view
-//
-//     - parameter collectionView: UICollectionview
-//
-//     - returns: Int
-//     */
-//    func numberOfSections(in collectionView: UICollectionView) -> Int {
-//        return viewModel.numberOfSectionsInCollectionView()
-//    }
-//
-//}
-
-//extension FeedViewController: UICollectionViewDelegate {
-//
-//    /**
-//     Method is called when a cell in the collection view is selected
-//
-//     - parameter collectionView: UICollectionView
-//     - parameter indexPath:      IndexPath
-//     */
-//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//
-//        if let imageDetailViewModel = viewModel.prepareImageDetailViewModelForSelectedCellAtIndexPath(indexPath),
-//            let imageDetailVC = Utils.vcWithNameFromStoryboardWithName("ImageDetailViewController", storyboardName: "Feed") as? ImageDetailViewController {
-//
-//            imageDetailVC.viewModel = imageDetailViewModel
-//            self.navigationController?.pushViewController(imageDetailVC, animated: true)
-//        }
-//
-//    }
-//
-//}
-
-
-//extension FeedViewController: UICollectionViewDelegateFlowLayout {
-//
-//    /**
-//     Method returns the size for item at indexPath by asking the view Model for the size for item at indexPath
-//
-//     - parameter collectionView:       UICollectionView
-//     - parameter collectionViewLayout: UICollectionViewLayout
-//     - parameter indexPath:            IndexPath
-//
-//     - returns: CGSize
-//     */
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//
-//        return viewModel.sizeForItemAtIndexPath(indexPath, collectionView: collectionView)
-//    }
-//
-//}
 
 //ViewModel -> ViewController Communication
 extension FeedViewController {
