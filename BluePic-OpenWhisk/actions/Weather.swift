@@ -6,55 +6,58 @@ import KituraNet
 import Dispatch
 import Foundation
 import RestKit
-import InsightsForWeather
+import WeatherCompanyData
 
 func main(args: [String:Any]) -> [String:Any] {
-
-    let weatherUsername: Any? = args["weatherUsername"]
-    let weatherPassword: Any? = args["weatherPassword"]
-    
-    var latitude: Any? = args["latitude"]
-    var longitude: Any? = args["longitude"]
-    var language: Any? = args["language"]
-    var units: Any? = args["units"]
-    
-    if latitude == nil {
-        latitude = "0.0"
-    }
-    if longitude == nil {
-        longitude = "0.0"
-    }
-    if language == nil {
-        language = "en-US"
-    }
-    if units == nil {
-        units = "e"
-    }
     
     var str = ""
-
-    let insightsForWeather = InsightsForWeather(username: "\(weatherUsername!)", password: "\(weatherPassword!)")
-    let failure = { (error: RestError) in 
-        print(error) 
+    var result:[String:Any] = [
+        "weather": str
+    ]
+    
+    guard let weatherUsername = args["weatherUsername"] as? String,
+        let weatherPassword = args["weatherPassword"] as? String,
+        let latitude = args["latitude"] as? String,
+        let longitude = args["longitude"] as? String else {
+            
+            print("Error: missing a required parameter for retrieving weather data.")
+            return result
     }
-    insightsForWeather.getCurrentForecast(
-            units: "\(units!)",
-            geocode: "\(latitude!),\(longitude!)",
-            language: "\(language!)",
-            failure: failure) { response in
-
-        let icon_code = response.observation.icon_code 
-        let sky_cover = response.observation.sky_cover!
-        let temp = response.observation.measurement!.temp
-
-        str = "{ \"observation\":{" + 
-            "\"icon_code\":\(icon_code)," + 
-            "\"sky_cover\":\"\(sky_cover)\"," + 
-            "\"imperial\":{\"temp\":\(temp)}" + 
+    
+    let language = args["language"] as? String ?? "en-US"
+    let units = args["units"] as? String ?? "e"
+    
+    let weatherCompanyData = WeatherCompanyData(username: "\(weatherUsername)", password: "\(weatherPassword)")
+    let failure = { (error: RestError) in
+        print(error)
+    }
+    
+    weatherCompanyData.getCurrentForecast(
+        units: "\(units)",
+        latitude:"\(latitude)",
+        longitude: "\(longitude)",
+        language: "\(language)",
+        failure: failure) { response in
+        
+        let icon_code = response.observation.icon_code
+        let sky_cover = response.observation.sky_cover
+        
+        var temp: Int = 0
+        if let measurement = response.observation.measurement {
+            temp = measurement.temp
+        }
+        
+        str = "{ \"observation\":{" +
+            "\"icon_code\":\(icon_code)," +
+            "\"sky_cover\":\"\(sky_cover)\"," +
+            "\"imperial\":{\"temp\":\(temp)}" +
         "}}"
     }
-
-    let result:[String:Any] = [
+    
+    //workaround for JSON parsing defect in container
+    str = str.replacingOccurrences(of: "\"", with: "\\\"")
+    
+    result = [
         "weather": "\(str)"
     ]
     

@@ -1,5 +1,5 @@
 /**
- * read data from Cloudant 
+ * read data from Cloudant
  */
 
 import KituraNet
@@ -7,39 +7,54 @@ import Dispatch
 import Foundation
 
 func main(args: [String:Any]) -> [String:Any] {
-
-    let cloudantDbName: String? = args["cloudantDbName"] as? String
-    let cloudantUsername: String? = args["cloudantUsername"] as? String
-    let cloudantPassword: String? = args["cloudantPassword"] as? String
-    let cloudantHost: String? = args["cloudantHost"] as? String
-    let cloudantId: String? = String(describing: args["cloudantId"]!)
     
-    var requestOptions = [ClientRequestOptions]()
-    requestOptions.append(.username(cloudantUsername!))
-    requestOptions.append(.password(cloudantPassword!))
-    requestOptions.append(.schema("https://"))
-    requestOptions.append(.hostname(cloudantHost!))
-    requestOptions.append(.port(443))
-    requestOptions.append(.method("GET"))
-    requestOptions.append(.path("/\(cloudantDbName!)/\(cloudantId!)"))
+    var str = ""
+    var result:[String:Any] = [
+        "document": str
+    ]
+    
+    guard let cloudantDbName = args["cloudantDbName"] as? String,
+        let cloudantHost = args["cloudantHost"] as? String,
+        let cloudantUsername = args["cloudantUsername"] as? String,
+        let cloudantPassword = args["cloudantPassword"] as? String,
+        let cloudantId = args["cloudantId"] as? String else {
+            
+            print("Error: missing a required parameter for reading a Cloudant document.")
+            return result
+    }
+    
+    var requestOptions: [ClientRequest.Options] = [ .method("GET"),
+                                                    .schema("https://"),
+                                                    .hostname(cloudantHost),
+                                                    .username(cloudantUsername),
+                                                    .password(cloudantPassword),
+                                                    .port(443),
+                                                    .path("/\(cloudantDbName)/\(cloudantId)")
+    ]
     
     var headers = [String:String]()
     headers["Accept"] = "application/json"
     headers["Content-Type"] = "application/json"
     requestOptions.append(.headers(headers))
     
-    var str = "" 
     let req = HTTP.request(requestOptions) { response in
         do {
-            str = try response!.readString()!
+            if let response = response,
+                let responseStr = try response.readString() {
+                str = responseStr
+            }
         } catch {
-            print("Error \(error)")
+            print("Error: \(error)")
         }
     }
     req.end();
     
-    let result:[String:Any] = [
+    //workaround for JSON parsing defect in container
+    str = str.replacingOccurrences(of: "\"", with: "\\\"")
+    
+    result = [
         "document": str
     ]
+    
     return result
 }
