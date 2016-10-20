@@ -28,7 +28,6 @@ class ImageFeedTableViewCell: ProfileTableViewCell {
     }
 }
 
-
 class ProfileTableViewCell: UITableViewCell {
 
     //image view used to display image

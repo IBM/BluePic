@@ -256,7 +256,7 @@ extension FeedViewModel {
     /// - parameter indexPath: indexPath of cell to load
     /// - parameter tableView: tableView cell will be placed on
     ///
-    /// - returns: <#return value description#>
+    /// - returns: a tableview cell
     func setUpTableViewCell(_ indexPath: IndexPath, tableView: UITableView) -> UITableViewCell {
 
         //Section 0 corresponds to showing ImagesCurrentlyUploadingImageFeedTableViewCell table view cells. These cells show when there are images in the imagesCurrentlyUploading array of the BluemixDataManager
