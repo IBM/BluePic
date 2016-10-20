@@ -19,8 +19,8 @@ import UIKit
 //used to inform the Feed View Controller of notifications
 enum FeedViewModelNotification {
 
-    //called when there is new data in the pictureDataArray, used to tell the Feed VC to refresh it's data in the collection view
-    case reloadCollectionView
+    //called when there is new data in the pictureDataArray, used to tell the Feed VC to refresh it's data in the table view
+    case reloadTableView
 
     //called when a photo is uploading
     case uploadingPhotoStarted
@@ -34,7 +34,7 @@ enum FeedViewModelNotification {
 
 class FeedViewModel: NSObject {
 
-    //array that holds all the image data objects we used to populate the Feed VC's collection view
+    //array that holds all the image data objects we used to populate the Feed VC's table view
     var imageDataArray = [Image]()
 
     //callback used to inform the Feed VC of notifications from its view model
@@ -43,13 +43,10 @@ class FeedViewModel: NSObject {
     //string that holds the search query if it is present, meaning we are looking at search results
     var searchQuery: String?
 
-    //constant that represents a value added to the height of the EmptyFeedCollectionViewCell when its given a size in the sizeForItemAtIndexPath method, this value allows the collection view to scroll
-    let kEmptyFeedCollectionViewCellBufferToAllowForScrolling: CGFloat = 1
-
     //constant that defines the number of cells there is when the user has no photos
     var numberOfCellsWhenUserHasNoPhotos = 0
 
-    //constant that defines the number of sections there are in the collection view
+    //constant that defines the number of sections there are in the table view
     let kNumberOfSectionsInTableView = 2
 
 
@@ -78,9 +75,9 @@ class FeedViewModel: NSObject {
         }
         //doesn't need to show search results so set up like a normal feed vc
         else {
-            //Grab any data from BluemixDataManager if it has any and then tell view controller to reload its collection view
+            //Grab any data from BluemixDataManager if it has any and then tell view controller to reload its table view
             numberOfCellsWhenUserHasNoPhotos = 1
-            updateImageDataArrayAndNotifyViewControllerToReloadCollectionView()
+            updateImageDataArrayAndNotifyViewControllerToReloadTableView()
         }
 
     }
@@ -90,7 +87,7 @@ class FeedViewModel: NSObject {
      */
     func suscribeToBluemixDataManagerNotifications() {
 
-        NotificationCenter.default.addObserver(self, selector: #selector(FeedViewModel.updateImageDataArrayAndNotifyViewControllerToReloadCollectionView), name: .imagesRefreshed, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(FeedViewModel.updateImageDataArrayAndNotifyViewControllerToReloadTableView), name: .imagesRefreshed, object: nil)
 
         NotificationCenter.default.addObserver(self, selector: #selector(FeedViewModel.repullForNewData), name: .imageUploadSuccess, object: nil)
 
@@ -113,11 +110,11 @@ class FeedViewModel: NSObject {
     /**
      Method will update the image data array and notify the feed vc to refresh if this vc is setup like a normal feed vc and doesn't show search results
      */
-    func updateImageDataArrayAndNotifyViewControllerToReloadCollectionView() {
+    func updateImageDataArrayAndNotifyViewControllerToReloadTableView() {
 
         if !isShowingSearchResults() {
             self.imageDataArray = BluemixDataManager.SharedInstance.images
-            self.notifyViewControllerToTriggerReloadCollectionView()
+            self.notifyViewControllerToTriggerReloadTableView()
         }
     }
 
@@ -127,7 +124,7 @@ class FeedViewModel: NSObject {
     func handleImageUploadFailure() {
 
         if !isShowingSearchResults() {
-            self.notifyViewControllerToTriggerReloadCollectionView()
+            self.notifyViewControllerToTriggerReloadTableView()
         }
 
     }
@@ -152,7 +149,7 @@ extension FeedViewModel {
     }
 
     /**
-     Method is called when there is a response receieving for search for images by tags. This method handles this response and will either trigger the "there are no images found" message or update the imageDataArray with the search results and tell the feed vc to reload its collection view
+     Method is called when there is a response receieving for search for images by tags. This method handles this response and will either trigger the "there are no images found" message or update the imageDataArray with the search results and tell the feed vc to reload its table view
 
      - parameter images: [Image]?
      */
@@ -164,7 +161,7 @@ extension FeedViewModel {
             if imageDataArray.count < 1 {
                 self.notifiyViewControllerToTriggerAlert()
             } else {
-                self.notifyViewControllerToTriggerReloadCollectionView()
+                self.notifyViewControllerToTriggerReloadTableView()
             }
         } else {
             self.notifiyViewControllerToTriggerAlert()
@@ -219,11 +216,11 @@ extension FeedViewModel {
     }
 
     /**
-     Method returns the number of sections in the collection view
+     Method returns the number of sections in the table view
 
      - returns: Int
      */
-    func numberOfSectionsInCollectionView() -> Int {
+    func numberOfSectionsInTableView() -> Int {
         return kNumberOfSectionsInTableView
     }
 
@@ -254,9 +251,15 @@ extension FeedViewModel {
         }
     }
 
+    /// Method to build UITableViewCells, either a currently uploading cell or a standard image feed cell
+    ///
+    /// - parameter indexPath: indexPath of cell to load
+    /// - parameter tableView: tableView cell will be placed on
+    ///
+    /// - returns: <#return value description#>
     func setUpTableViewCell(_ indexPath: IndexPath, tableView: UITableView) -> UITableViewCell {
 
-        //Section 0 corresponds to showing ImagesCurrentlyUploadingImageFeedTableViewCell collection view cells. These cells show when there are images in the imagesCurrentlyUploading array of the BluemixDataManager
+        //Section 0 corresponds to showing ImagesCurrentlyUploadingImageFeedTableViewCell table view cells. These cells show when there are images in the imagesCurrentlyUploading array of the BluemixDataManager
         if indexPath.section == 0 {
 
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "ImagesCurrentlyUploadingImageFeedTableViewCell", for: indexPath) as? ImagesCurrentlyUploadingImageFeedTableViewCell else {
@@ -270,7 +273,7 @@ extension FeedViewModel {
             return cell
 
         }
-        //section 1 corresponds to either the empty feed collection view cell or the standard image feed collection view cell depending on how many images are in the image data array
+        //section 1 corresponds to showing image feed cells
         else if imageDataArray.count != 0 {
 
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "ImageFeedTableViewCell", for: indexPath) as? ImageFeedTableViewCell else {
@@ -287,6 +290,33 @@ extension FeedViewModel {
         } else {
             return UITableViewCell()
         }
+    }
+
+    /// Creates footer view to show when there is no image data
+    ///
+    /// - parameter section:   section to display view in
+    /// - parameter tableView: tableView to place view on.
+    ///
+    /// - returns: A view if applicable
+    func viewForFooterInSection(_ section: Int, tableView: UITableView) -> UIView? {
+        if section == 1, imageDataArray.count == 0, let sectionFooter = tableView.dequeueReusableHeaderFooterView(withIdentifier: "EmptyFeedFooterView") as? EmptyFeedFooterView {
+            sectionFooter.userHasNoImagesLabel.text = sectionFooter.kUserHasNoImagesLabelText
+            return sectionFooter
+        }
+        return nil
+    }
+
+    /// Generates height for footer view
+    ///
+    /// - parameter section:   section to display view in
+    /// - parameter tableView: tableView to place view on.
+    ///
+    /// - returns: height as CGFloat
+    func heightForFooterInSection(_ section: Int, tableView: UITableView) -> CGFloat {
+        if section == 1, imageDataArray.count == 0 {
+            return tableView.frame.size.height
+        }
+        return 0
     }
 
     /**
@@ -327,11 +357,11 @@ extension FeedViewModel {
     }
 
     /**
-     Method notifies the feed vc to reload the collection view
+     Method notifies the feed vc to reload the table view
      */
-    func notifyViewControllerToTriggerReloadCollectionView() {
+    func notifyViewControllerToTriggerReloadTableView() {
         DispatchQueue.main.async {
-            self.notifyFeedVC(FeedViewModelNotification.reloadCollectionView)
+            self.notifyFeedVC(FeedViewModelNotification.reloadTableView)
         }
     }
 

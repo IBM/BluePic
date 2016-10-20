@@ -97,10 +97,8 @@ class ImageFeedTableViewCell: UITableViewCell {
         let cutoffLength = 40
         if image.caption == CameraDataManager.SharedInstance.kEmptyCaptionPlaceHolder {
             self.captionTextView.text = ""
-            self.topConstraint.constant = 0
             self.captionTextView.textContainerInset = UIEdgeInsets.zero
-
-            self.captionTextView.isHidden = true
+            return false
         } else if image.caption.characters.count >= cutoffLength {
             if !image.isExpanded {
                 let moreText = "...more"
@@ -112,11 +110,13 @@ class ImageFeedTableViewCell: UITableViewCell {
             } else {
                 self.captionTextView.attributedText = NSMutableAttributedString(string: image.caption, attributes: defaultAttributes)
             }
+            self.captionTextView.textContainerInset = UIEdgeInsets(top: 8.0, left: 0, bottom: 8.0, right: 0)
             return true
         } else {
             self.captionTextView.attributedText = NSMutableAttributedString(string: image.caption, attributes: defaultAttributes)
+            self.captionTextView.textContainerInset = UIEdgeInsets(top: 8.0, left: 0, bottom: 8.0, right: 0)
+            return false
         }
-        return false
     }
 
 
