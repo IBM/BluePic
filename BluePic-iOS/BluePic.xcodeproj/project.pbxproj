@@ -58,6 +58,8 @@
 		2EAAC0E81CE39C13006A0B41 /* KTCenterFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EAAC0E71CE39C13006A0B41 /* KTCenterFlowLayout.m */; };
 		2EEE1C0D1DB8136D00608359 /* EmptyFeedFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EEE1C0C1DB8136D00608359 /* EmptyFeedFooterView.swift */; };
 		2EEE1C0F1DB8159300608359 /* EmptyFeedFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2EEE1C0E1DB8159300608359 /* EmptyFeedFooterView.xib */; };
+		2EEE1C111DB91CF500608359 /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EEE1C101DB91CF500608359 /* ProfileHeaderView.swift */; };
+		2EEE1C131DB91D3700608359 /* ProfileHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2EEE1C121DB91D3700608359 /* ProfileHeaderView.xib */; };
 		2EFFCE0A1CF4F74E00820BCE /* BluemixConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EFFCE091CF4F74E00820BCE /* BluemixConfiguration.swift */; };
 		3435C7CF1C036A60004923BD /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3435C7CE1C036A60004923BD /* TabBarViewController.swift */; };
 		3435C7D51C04110C004923BD /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3435C7D41C04110C004923BD /* FeedViewController.swift */; };
@@ -162,6 +164,8 @@
 		2EAAC0E71CE39C13006A0B41 /* KTCenterFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTCenterFlowLayout.m; sourceTree = "<group>"; };
 		2EEE1C0C1DB8136D00608359 /* EmptyFeedFooterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmptyFeedFooterView.swift; sourceTree = "<group>"; };
 		2EEE1C0E1DB8159300608359 /* EmptyFeedFooterView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EmptyFeedFooterView.xib; sourceTree = "<group>"; };
+		2EEE1C101DB91CF500608359 /* ProfileHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
+		2EEE1C121DB91D3700608359 /* ProfileHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileHeaderView.xib; sourceTree = "<group>"; };
 		2EFFCE091CF4F74E00820BCE /* BluemixConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluemixConfiguration.swift; sourceTree = "<group>"; };
 		3435C7CE1C036A60004923BD /* TabBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		3435C7D41C04110C004923BD /* FeedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
@@ -403,6 +407,8 @@
 				2E3B03A51DB7F5890073266C /* ImagesCurrentlyUploadingImageFeedTableViewCell.xib */,
 				2EEE1C0C1DB8136D00608359 /* EmptyFeedFooterView.swift */,
 				2EEE1C0E1DB8159300608359 /* EmptyFeedFooterView.xib */,
+				2EEE1C101DB91CF500608359 /* ProfileHeaderView.swift */,
+				2EEE1C121DB91D3700608359 /* ProfileHeaderView.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -547,6 +553,7 @@
 				1B3BA0761C0F5FBD0064C850 /* .gitkeep in Resources */,
 				347472981BFA8C6A0018B7F6 /* LaunchScreen.storyboard in Resources */,
 				1B0535491CFE86460006C6F2 /* Main.storyboard in Resources */,
+				2EEE1C131DB91D3700608359 /* ProfileHeaderView.xib in Resources */,
 				1BF00D841CF4D58A009472B5 /* CameraConfirmationView.xib in Resources */,
 				1B05354A1CFE86460006C6F2 /* Profile.storyboard in Resources */,
 				2E7C95631CE13DCE0044F6ED /* TagCollectionViewCell.xib in Resources */,
@@ -667,6 +674,7 @@
 				1B5555BE1C1616B000B3086E /* TabBarViewModel.swift in Sources */,
 				2E1D66001DB6AC760004E2C9 /* ImageFeedTableViewCell.swift in Sources */,
 				1B40BF7C1CDA79080097F435 /* CurrentUser.swift in Sources */,
+				2EEE1C111DB91CF500608359 /* ProfileHeaderView.swift in Sources */,
 				2EFFCE0A1CF4F74E00820BCE /* BluemixConfiguration.swift in Sources */,
 				34C809551BFD0F2400C48004 /* FacebookDataManager.swift in Sources */,
 				347AD2221C18F98600C3B473 /* LoginViewModel.swift in Sources */,

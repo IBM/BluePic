@@ -19,7 +19,8 @@ import UIKit
 class ProfileViewController: UIViewController {
 
     //the collection view that displays images for the user
-    @IBOutlet weak var collectionView: UICollectionView!
+//    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var tableView: UITableView!
 
     //view model that will keep state and handle data for the ProfileViewController
     var viewModel: ProfileViewModel!
@@ -53,7 +54,8 @@ class ProfileViewController: UIViewController {
 
         setupViewModel()
 
-        setupCollectionView()
+//        setupCollectionView()
+        setupTableView()
 
         setupHeaderView()
 
@@ -82,7 +84,7 @@ class ProfileViewController: UIViewController {
      Method called sets up the viewModel and passes it a method to call when there is new data and we need to reload the collection view of the profile vc
      */
     func setupViewModel() {
-        viewModel = ProfileViewModel(refreshVCCallback: reloadDataInCollectionView)
+        viewModel = ProfileViewModel(refreshVCCallback: reloadDataInTableView)
     }
 
     /**
@@ -138,100 +140,108 @@ class ProfileViewController: UIViewController {
         headerImageView.clipsToBounds = true
 
         self.view.addSubview(headerImageView)
-        self.view.insertSubview(headerImageView, belowSubview: collectionView)
+        self.view.insertSubview(headerImageView, belowSubview: tableView)
 
     }
 
     /**
-     Method sets up the collection view with initial properties
+     Method sets up the table view with various initial properties
      */
-    func setupCollectionView() {
+    func setupTableView() {
 
-        collectionView.delegate = self
-        collectionView.dataSource = self
+        Utils.registerNibWith("ImageFeedTableViewCell", tableView: tableView)
+        
+        let nib: UINib? = UINib(nibName: "ProfileHeaderView", bundle: Bundle.main)
+        tableView.register(nib, forHeaderFooterViewReuseIdentifier: "ProfileHeaderView")
 
-        Utils.registerSupplementaryElementOfKindNibWithCollectionView("ProfileHeaderCollectionReusableView", kind: UICollectionElementKindSectionHeader, collectionView: collectionView)
-
-        Utils.registerNibWith("EmptyFeedCollectionViewCell", collectionView: collectionView)
-
-        Utils.registerNibWith("ProfileCollectionViewCell", collectionView: collectionView)
-
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 300
     }
 
     /**
      Method reloads the data in the collection view
      */
-    func reloadDataInCollectionView() {
-        collectionView.reloadData()
+    func reloadDataInTableView() {
+        tableView.reloadData()
     }
 
 }
 
-extension ProfileViewController: UICollectionViewDataSource {
+extension ProfileViewController: UITableViewDataSource {
 
-    /**
-     Method setups up the viewForSupplementaryElementOfKind by asking the viewModel to set it up. This specifically sets up a header view on the top of the collection view to be clear so you can see the image view at the top of the collection view that is actually below the collection view.
-
-     - parameter collectionView:
-     - parameter kind:
-     - parameter indexPath:
-
-     - returns:
-     */
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        return viewModel.setUpSectionHeaderViewForIndexPath(
-            indexPath,
-            kind: kind,
-            collectionView: collectionView
-        )
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        return viewModel.setUpTableViewCell(indexPath, tableView: tableView)
     }
 
-    /**
-     Method sets up the cell for item at indexPath by asking the view model to set up the cell for item at indexPath
-
-     - parameter collectionView: UICollectionView
-     - parameter indexPath:      IndexPath
-
-     - returns: UICollectionViewCell
-     */
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        return viewModel.setUpCollectionViewCell(indexPath, collectionView : collectionView)
-    }
-
-    /**
-     Method sets the number of items in a section by asking the view model for the number of items in the section
-
-     - parameter collectionView: UICollectionView
-     - parameter section:        Int
-
-     - returns: Int
-     */
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.numberOfItemsInSection(section)
     }
 
-    /**
-     Method sets the number of sections in the collection view by asking the view model for the number of sections in the collection view
-
-     - parameter collectionView: UIcollectionView
-
-     - returns: Int
-     */
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return viewModel.numberOfSectionsInCollectionView()
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return viewModel.numberOfSectionsInTableView()
     }
 
 }
 
-extension ProfileViewController: UICollectionViewDelegate {
+//extension ProfileViewController: UICollectionViewDataSource {
+//
+//    /**
+//     Method setups up the viewForSupplementaryElementOfKind by asking the viewModel to set it up. This specifically sets up a header view on the top of the collection view to be clear so you can see the image view at the top of the collection view that is actually below the collection view.
+//
+//     - parameter collectionView:
+//     - parameter kind:
+//     - parameter indexPath:
+//
+//     - returns:
+//     */
+//    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+//        return viewModel.setUpSectionHeaderViewForIndexPath(
+//            indexPath,
+//            kind: kind,
+//            collectionView: collectionView
+//        )
+//    }
+//
+//    /**
+//     Method sets up the cell for item at indexPath by asking the view model to set up the cell for item at indexPath
+//
+//     - parameter collectionView: UICollectionView
+//     - parameter indexPath:      IndexPath
+//
+//     - returns: UICollectionViewCell
+//     */
+//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+//        return viewModel.setUpCollectionViewCell(indexPath, collectionView : collectionView)
+//    }
+//
+//    /**
+//     Method sets the number of items in a section by asking the view model for the number of items in the section
+//
+//     - parameter collectionView: UICollectionView
+//     - parameter section:        Int
+//
+//     - returns: Int
+//     */
+//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+//        return viewModel.numberOfItemsInSection(section)
+//    }
+//
+//    /**
+//     Method sets the number of sections in the collection view by asking the view model for the number of sections in the collection view
+//
+//     - parameter collectionView: UIcollectionView
+//
+//     - returns: Int
+//     */
+////    func numberOfSections(in collectionView: UICollectionView) -> Int {
+////        return viewModel.numberOfSectionsInCollectionView()
+////    }
+//
+//}
 
-    /**
-     Method is called upon when a cell in the collection view is selected. It this case we segue to the image detail, first asking the view model to set up the view model of the image detail vc were about to segue to
+extension ProfileViewController: UITableViewDelegate {
 
-     - parameter collectionView: UICollectionView
-     - parameter indexPath:      IndexPath
-     */
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
         if let imageDetailViewModel = viewModel.prepareImageDetailViewModelForSelectedCellAtIndexPath(indexPath),
             let imageDetailVC = Utils.vcWithNameFromStoryboardWithName("ImageDetailViewController", storyboardName: "Feed") as? ImageDetailViewController {
@@ -239,10 +249,44 @@ extension ProfileViewController: UICollectionViewDelegate {
             imageDetailVC.viewModel = imageDetailViewModel
             self.navigationController?.pushViewController(imageDetailVC, animated: true)
         }
+    }
 
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        return viewModel.viewForHeaderInSection(section, tableView: tableView)
+    }
+
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+//        return viewModel.heightForFooterInSection(section, tableView: tableView)
+//        let tableWidth = tableView.frame.size.width
+
+//        if section == 0 {
+//            return CGSize(width: tableWidth, height: self.view.frame.size.height/2 + kHeaderViewInfoViewHeight) //kHeaderViewHeight
+            return self.view.frame.size.height/2 + kHeaderViewInfoViewHeight
+//        }
     }
 
 }
+
+//extension ProfileViewController: UICollectionViewDelegate {
+//
+//    /**
+//     Method is called upon when a cell in the collection view is selected. It this case we segue to the image detail, first asking the view model to set up the view model of the image detail vc were about to segue to
+//
+//     - parameter collectionView: UICollectionView
+//     - parameter indexPath:      IndexPath
+//     */
+//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//
+//        if let imageDetailViewModel = viewModel.prepareImageDetailViewModelForSelectedCellAtIndexPath(indexPath),
+//            let imageDetailVC = Utils.vcWithNameFromStoryboardWithName("ImageDetailViewController", storyboardName: "Feed") as? ImageDetailViewController {
+//
+//            imageDetailVC.viewModel = imageDetailViewModel
+//            self.navigationController?.pushViewController(imageDetailVC, animated: true)
+//        }
+//
+//    }
+//
+//}
 
 extension ProfileViewController: UICollectionViewDelegateFlowLayout {
 
@@ -275,12 +319,12 @@ extension ProfileViewController: UICollectionViewDelegateFlowLayout {
 
      - returns: CGSize
      */
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-
-        let heightForEmptyProfileCollectionViewCell = self.view.frame.size.height - (self.view.frame.size.height/2 + kHeaderViewInfoViewHeight)
-
-        return viewModel.sizeForItemAtIndexPath(indexPath, collectionView: collectionView, heightForEmptyProfileCollectionViewCell: heightForEmptyProfileCollectionViewCell)
-    }
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+//
+//        let heightForEmptyProfileCollectionViewCell = self.view.frame.size.height - (self.view.frame.size.height/2 + kHeaderViewInfoViewHeight)
+//
+//        return viewModel.sizeForItemAtIndexPath(indexPath, collectionView: collectionView, heightForEmptyProfileCollectionViewCell: heightForEmptyProfileCollectionViewCell)
+//    }
 
 }
 

@@ -98,7 +98,7 @@ extension ProfileViewModel {
 
      - returns: Int
      */
-    func numberOfSectionsInCollectionView() -> Int {
+    func numberOfSectionsInTableView() -> Int {
         return kNumberOfSectionsInCollectionView
     }
 
@@ -127,30 +127,30 @@ extension ProfileViewModel {
 
      - returns: CGSize
      */
-    func sizeForItemAtIndexPath(_ indexPath: IndexPath, collectionView: UICollectionView, heightForEmptyProfileCollectionViewCell: CGFloat) -> CGSize {
-
-        //no images so show empty feed collection view cell
-        if imageDataArray.count == 0 {
-
-            return CGSize(width: collectionView.frame.width, height: heightForEmptyProfileCollectionViewCell + kEmptyFeedCollectionViewCellBufferToAllowForScrolling)
-        }
-        //there are images so show profile collection view
-        else {
-
-            let picture = imageDataArray[indexPath.row]
-
-            let ratio = picture.height / picture.width
-
-            var height = collectionView.frame.width * ratio
-
-            if height > kCollectionViewCellHeightLimit {
-                height = kCollectionViewCellHeightLimit
-            }
-
-            return CGSize(width: collectionView.frame.width, height: height + kCollectionViewCellInfoViewHeight)
-
-        }
-    }
+//    func sizeForItemAtIndexPath(_ indexPath: IndexPath, collectionView: UICollectionView, heightForEmptyProfileCollectionViewCell: CGFloat) -> CGSize {
+//
+//        //no images so show empty feed collection view cell
+//        if imageDataArray.count == 0 {
+//
+//            return CGSize(width: collectionView.frame.width, height: heightForEmptyProfileCollectionViewCell + kEmptyFeedCollectionViewCellBufferToAllowForScrolling)
+//        }
+//        //there are images so show profile collection view
+//        else {
+//
+//            let picture = imageDataArray[indexPath.row]
+//
+//            let ratio = picture.height / picture.width
+//
+//            var height = collectionView.frame.width * ratio
+//
+//            if height > kCollectionViewCellHeightLimit {
+//                height = kCollectionViewCellHeightLimit
+//            }
+//
+//            return CGSize(width: collectionView.frame.width, height: height + kCollectionViewCellInfoViewHeight)
+//
+//        }
+//    }
 
     /**
      Method sets up the collection view cell for indexPath. If the imageDataArray.count is equal to 0 then we return an instance EmptyfeedCollectionviewCell
@@ -186,6 +186,48 @@ extension ProfileViewModel {
             return cell
 
         }
+    }
+
+    func setUpTableViewCell(_ indexPath: IndexPath, tableView: UITableView) -> UITableViewCell {
+
+//        if imageDataArray.count == 0 {
+//            
+////            guard let cell = tableView.dequeueReusableCell(withReuseIdentifier: "EmptyFeedCollectionViewCell", for: indexPath) as? EmptyFeedCollectionViewCell else {
+////                return EmptyFeedCollectionViewCell()
+////            }
+//            guard let cell = tableView.dequeueReusableCell(withIdentifier: "", for: indexPath) as? EmptyFeedFooterView else {
+//                
+//            }
+//            
+//            return cell
+//            
+//        } else {
+//            
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "ImageFeedTableViewCell", for: indexPath) as? ProfileTableViewCell else {
+                return UITableViewCell()
+            }
+
+            let image = imageDataArray[indexPath.row]
+
+            cell.setupDataWith(image)
+
+            cell.layer.shouldRasterize = true
+            cell.layer.rasterizationScale = UIScreen.main.scale
+            cell.backgroundColor = UIColor.clear
+
+            return cell
+
+//        }
+
+    }
+
+    func viewForHeaderInSection(_ section: Int, tableView: UITableView) -> UIView? {
+        if let sectionHeader = tableView.dequeueReusableHeaderFooterView(withIdentifier: "ProfileHeaderView") as? ProfileHeaderView {
+            sectionHeader.setupData(CurrentUser.fullName, numberOfShots: imageDataArray.count, profilePictureURL: CurrentUser.facebookProfilePictureURL)
+            sectionHeader.contentView.backgroundColor = UIColor.clear
+            return sectionHeader
+        }
+        return nil
     }
 
     /**

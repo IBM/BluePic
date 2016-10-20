@@ -17,7 +17,19 @@
 import UIKit
 import SDWebImage
 
-class ImageFeedTableViewCell: UITableViewCell {
+class ImageFeedTableViewCell: ProfileTableViewCell {
+
+    override func setupDataWith(_ image: Image) {
+        super.setupDataWith(image)
+
+        //set the photographerNameLabel's text
+        let ownerNameString = NSLocalizedString("by", comment: "") + " \(image.user.name)"
+        self.photographerNameLabel.text = ownerNameString
+    }
+}
+
+
+class ProfileTableViewCell: UITableViewCell {
 
     //image view used to display image
     @IBOutlet weak var userImageView: UIImageView!
@@ -86,10 +98,6 @@ class ImageFeedTableViewCell: UITableViewCell {
 
         //set the time since posted label's text
         self.timeSincePostedLabel.text = Date.timeSinceDateString(image.timeStamp)
-
-        //set the photographerNameLabel's text
-        let ownerNameString = NSLocalizedString("by", comment: "") + " \(image.user.name)"
-        self.photographerNameLabel.text = ownerNameString
     }
 
     func setCaptionText(image: Image) -> Bool {

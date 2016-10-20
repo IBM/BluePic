@@ -32,7 +32,6 @@
                         </label>
                     </subviews>
                     <constraints>
-                        <constraint firstAttribute="width" constant="480" id="4Jp-A8-V9t"/>
                         <constraint firstItem="tqR-wi-fZZ" firstAttribute="width" secondItem="h7Q-NK-YAa" secondAttribute="width" id="For-TH-d4v"/>
                         <constraint firstItem="e0c-Ce-Oll" firstAttribute="centerX" secondItem="h7Q-NK-YAa" secondAttribute="centerX" id="M30-as-GQx"/>
                         <constraint firstItem="I64-wv-jB1" firstAttribute="top" secondItem="h7Q-NK-YAa" secondAttribute="top" constant="5" id="NzY-gy-a38"/>
@@ -42,14 +41,7 @@
                         <constraint firstAttribute="bottom" secondItem="e0c-Ce-Oll" secondAttribute="bottom" constant="15" id="hyq-sb-kyH"/>
                         <constraint firstItem="tqR-wi-fZZ" firstAttribute="centerX" secondItem="h7Q-NK-YAa" secondAttribute="centerX" id="mmG-ws-gjP"/>
                         <constraint firstItem="I64-wv-jB1" firstAttribute="width" secondItem="h7Q-NK-YAa" secondAttribute="width" id="nkP-to-HEr"/>
-                        <constraint firstItem="I64-wv-jB1" firstAttribute="top" secondItem="h7Q-NK-YAa" secondAttribute="top" constant="-1" id="oYX-uQ-fa0"/>
                     </constraints>
-                    <variation key="default">
-                        <mask key="constraints">
-                            <exclude reference="4Jp-A8-V9t"/>
-                            <exclude reference="oYX-uQ-fa0"/>
-                        </mask>
-                    </variation>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ksl-mr-hEt">
                     <subviews>
@@ -153,13 +145,7 @@
                 <constraint firstItem="GfT-yh-l3i" firstAttribute="top" secondItem="Ksl-mr-hEt" secondAttribute="bottom" constant="18" id="W5T-r3-HrN"/>
                 <constraint firstAttribute="bottom" secondItem="Ksl-mr-hEt" secondAttribute="bottom" constant="47" id="gwe-Gt-TlD"/>
                 <constraint firstItem="h7Q-NK-YAa" firstAttribute="top" secondItem="X47-ss-Z7Q" secondAttribute="top" constant="49" id="tiN-aQ-Pcf"/>
-                <constraint firstItem="h7Q-NK-YAa" firstAttribute="top" secondItem="X47-ss-Z7Q" secondAttribute="top" constant="36" id="zbS-9J-3YD"/>
             </constraints>
-            <variation key="default">
-                <mask key="constraints">
-                    <exclude reference="zbS-9J-3YD"/>
-                </mask>
-            </variation>
             <connections>
                 <outlet property="byUserLabel" destination="tqR-wi-fZZ" id="hdt-bM-HV5"/>
                 <outlet property="captionLabel" destination="I64-wv-jB1" id="J4R-RA-N7E"/>

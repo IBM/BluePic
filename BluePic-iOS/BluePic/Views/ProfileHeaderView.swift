@@ -16,13 +16,13 @@
 
 import UIKit
 
-//extension Notification.Name {
-//
-//    static let showSettingsActionSheet = Notification.Name("ShowSettingsActionSheet")
-//
-//}
+extension Notification.Name {
 
-class ProfileHeaderCollectionReusableView: UICollectionReusableView {
+    static let showSettingsActionSheet = Notification.Name("ShowSettingsActionSheet")
+
+}
+
+class ProfileHeaderView: UITableViewHeaderFooterView {
 
     //label displays the name of the user
     @IBOutlet weak var nameLabel: UILabel!
@@ -33,16 +33,8 @@ class ProfileHeaderCollectionReusableView: UICollectionReusableView {
     //image view displays the user's facebook profile picture
     @IBOutlet weak var profilePictureImageView: UIImageView!
 
-
     /**
-     Method is called when the view wakes from nib
-     */
-    override func awakeFromNib() {
-        super.awakeFromNib()
-    }
-
-    /**
-    Method sets up the data of the profileHeaderCollectionReusableView
+     Method sets up the data of the profileHeaderCollectionReusableView
 
      - parameter name:              String?
      - parameter numberOfShots:     Int?
@@ -81,8 +73,8 @@ class ProfileHeaderCollectionReusableView: UICollectionReusableView {
 
      - parameter sender: Any
      */
-    @IBAction func moreButtonAction(_ sender: Any) {
-         NotificationCenter.default.post(name: .showSettingsActionSheet, object: nil)
+    @IBAction func moreButtonAction(_ sender: AnyObject) {
+        NotificationCenter.default.post(name: .showSettingsActionSheet, object: nil)
     }
 
 }
