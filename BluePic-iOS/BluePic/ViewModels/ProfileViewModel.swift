@@ -198,8 +198,7 @@ extension ProfileViewModel {
             let viewModel = ImageDetailViewModel(image: imageDataArray[indexPath.row])
 
             return viewModel
-        } else {
-            return nil
         }
+        return nil
     }
 }

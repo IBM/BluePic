@@ -28,7 +28,7 @@ class ImageDetailViewModel: NSObject {
     fileprivate let kCellPadding: CGFloat = 60
 
     //constant used to define the minimum height the image info header view must be
-    fileprivate let kImageInfoHeaderViewMinimumHeight: CGFloat = 357
+    fileprivate let kImageInfoHeaderViewMinimumHeight: CGFloat = 380
 
     var captionHeightOffset: CGFloat = 20
 
@@ -108,16 +108,6 @@ extension ImageDetailViewModel {
         }
         header.setupWithData(image)
 
-        // create sample label to determine size of captionLabel, increase header height accordingly
-        let label = UILabel(frame: CGRect(x: 0, y: 0, width: collectionView.frame.width - 60, height: CGFloat.greatestFiniteMagnitude))
-        label.numberOfLines = 0
-        label.lineBreakMode = NSLineBreakMode.byWordWrapping
-        label.font = UIFont.boldSystemFont(ofSize: 16.0)
-        label.text = header.captionLabel.text
-        label.sizeToFit()
-        captionHeightOffset = label.frame.size.height - 19
-        header.frame.size.height += captionHeightOffset
-
         return header
     }
 
@@ -175,10 +165,17 @@ extension ImageDetailViewModel {
 
             let headerHeight = superViewHeight * 0.60
 
+            // create sample label to determine size of captionLabel, increase header height accordingly
+            let label = UILabel(frame: CGRect(x: 0, y: 0, width: collectionView.frame.width - 60, height: CGFloat.greatestFiniteMagnitude))
+            label.numberOfLines = 0
+            label.attributedText = NSAttributedString.createAttributedStringWithLetterAndLineSpacingWithCentering(image.caption.uppercased(), letterSpacing: 1.7, lineSpacing: 10.0, centered: true)
+            label.sizeToFit()
+            captionHeightOffset = label.frame.size.height - 20 // subtract default caption label height
+
             if headerHeight < kImageInfoHeaderViewMinimumHeight {
-                return CGSize(width: collectionWidth, height: kImageInfoHeaderViewMinimumHeight)
+                return CGSize(width: collectionWidth, height: kImageInfoHeaderViewMinimumHeight + captionHeightOffset)
             } else {
-                return CGSize(width: collectionWidth, height: headerHeight)
+                return CGSize(width: collectionWidth, height: headerHeight + captionHeightOffset)
             }
 
         } else {

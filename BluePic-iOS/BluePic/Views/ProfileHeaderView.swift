@@ -34,7 +34,7 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
     @IBOutlet weak var profilePictureImageView: UIImageView!
 
     /**
-     Method sets up the data of the profileHeaderCollectionReusableView
+     Method sets up the data of the profileHeaderView
 
      - parameter name:              String?
      - parameter numberOfShots:     Int?
@@ -69,7 +69,7 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
     }
 
     /**
-     Method defines the action when the moreButton is pressed. It notifies the rest of the app with the ProfileHeaderCollectionReusableViewNotification.ShowSettingsActionSheet notification
+     Method defines the action when the moreButton is pressed. It notifies the rest of the app with the .showSettingsActionSheet notification
 
      - parameter sender: Any
      */
