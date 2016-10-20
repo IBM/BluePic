@@ -94,7 +94,7 @@ extension ImageDetailViewController {
 
         Utils.registerSupplementaryElementOfKindNibWithCollectionView("ImageInfoHeaderCollectionReusableView", kind: UICollectionElementKindSectionHeader, collectionView: tagCollectionView)
 
-        Utils.registerNibWithCollectionView("TagCollectionViewCell", collectionView: tagCollectionView)
+        Utils.registerNibWith("TagCollectionViewCell", collectionView: tagCollectionView)
 
     }
 

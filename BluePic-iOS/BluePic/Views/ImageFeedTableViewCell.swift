@@ -17,7 +17,7 @@
 import UIKit
 import SDWebImage
 
-class ImageFeedCollectionViewCell: ProfileCollectionViewCell {
+class ImageFeedTableViewCell: ProfileTableViewCell {
 
     override func setupDataWith(_ image: Image) {
         super.setupDataWith(image)
@@ -28,25 +28,28 @@ class ImageFeedCollectionViewCell: ProfileCollectionViewCell {
     }
 }
 
-class ProfileCollectionViewCell: UICollectionViewCell {
+class ProfileTableViewCell: UITableViewCell {
 
     //image view used to display image
-    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var userImageView: UIImageView!
 
-    //label that displays the caption of the photo
-    @IBOutlet weak var captionLabel: UILabel!
+    //textView that displays the caption of the photo
+    @IBOutlet weak var captionTextView: UITextView!
+
+    //the view that is shown while we wait for the image to download and display
+    @IBOutlet weak var loadingView: UIView!
 
     //label that displays the photographer's name
     @IBOutlet weak var photographerNameLabel: UILabel!
 
-    //label that displays the amount of time since the photo was taken
-    @IBOutlet weak var timeSincePostedLabel: UILabel!
-
     //label shows the number of tags an image has
     @IBOutlet weak var numberOfTagsLabel: UILabel!
 
-    //the view that is shown while we wait for the image to download and display
-    @IBOutlet weak var loadingView: UIView!
+    //label that displays the amount of time since the photo was taken
+    @IBOutlet weak var timeSincePostedLabel: UILabel!
+
+    //constraint for top of textView
+    @IBOutlet weak var topConstraint: NSLayoutConstraint!
 
     //string that is added to the numberOfTagsLabel at the end if there are multiple tags
     fileprivate let kNumberOfTagsPostFix_MultipleTags = NSLocalizedString("Tags", comment: "")
@@ -54,11 +57,15 @@ class ProfileCollectionViewCell: UICollectionViewCell {
     //String that is added to the numberOfTagsLabel at the end if there is one tag
     fileprivate let kNumberOfTagsPostFix_OneTag = NSLocalizedString("Tag", comment: "")
 
-    /**
-     Method is called when the view wakes from nib
-     */
+    var defaultAttributes = [NSForegroundColorAttributeName: UIColor.black, NSFontAttributeName: UIFont.boldSystemFont(ofSize: 13.0)]
+
     override func awakeFromNib() {
         super.awakeFromNib()
+        selectionStyle = UITableViewCellSelectionStyle.none
+
+        let style = NSMutableParagraphStyle()
+        style.alignment = .center
+        defaultAttributes[NSParagraphStyleAttributeName] = style
     }
 
     /// Method sets up the data for the profile collection view cell
@@ -86,15 +93,39 @@ class ProfileCollectionViewCell: UICollectionViewCell {
         self.setImageView(image.url, fileName: image.fileName)
 
         //label that displays the photos caption
-        var cap = image.caption
-        if cap == CameraDataManager.SharedInstance.kEmptyCaptionPlaceHolder {
-            cap = ""
-        }
-        self.captionLabel.text = cap
+        _ = self.setCaptionText(image: image)
 
         //set the time since posted label's text
         self.timeSincePostedLabel.text = Date.timeSinceDateString(image.timeStamp)
     }
+
+    func setCaptionText(image: Image) -> Bool {
+
+        let cutoffLength = 40
+        if image.caption == CameraDataManager.SharedInstance.kEmptyCaptionPlaceHolder {
+            self.captionTextView.text = ""
+            self.captionTextView.textContainerInset = UIEdgeInsets.zero
+            return false
+        } else if image.caption.characters.count >= cutoffLength {
+            if !image.isExpanded {
+                let moreText = "...more"
+
+                let abc: String = (image.caption as NSString).substring(with: NSRange(location: 0, length: cutoffLength)) + moreText
+                let attributedString = NSMutableAttributedString(string: abc, attributes: defaultAttributes)
+                attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor.gray, range: NSRange(location: cutoffLength, length: 7))
+                self.captionTextView.attributedText = attributedString
+            } else {
+                self.captionTextView.attributedText = NSMutableAttributedString(string: image.caption, attributes: defaultAttributes)
+            }
+            self.captionTextView.textContainerInset = UIEdgeInsets(top: 8.0, left: 0, bottom: 8.0, right: 0)
+            return true
+        } else {
+            self.captionTextView.attributedText = NSMutableAttributedString(string: image.caption, attributes: defaultAttributes)
+            self.captionTextView.textContainerInset = UIEdgeInsets(top: 8.0, left: 0, bottom: 8.0, right: 0)
+            return false
+        }
+    }
+
 
     /**
      Method sets up the image view with the url provided or a locally cached verion of the image
@@ -136,7 +167,7 @@ class ProfileCollectionViewCell: UICollectionViewCell {
                 self.loadingView.isHidden = true
 
                 //set image view's image to locally cached image
-                self.imageView.image = img
+                self.userImageView.image = img
 
                 return img
             }
@@ -180,7 +211,7 @@ class ProfileCollectionViewCell: UICollectionViewCell {
      */
     fileprivate func setImageViewWithURLAndPlaceHolderImage(_ url: URL, placeHolderImage: UIImage) {
 
-        self.imageView.sd_setImage(with: url, placeholderImage: placeHolderImage, options: [.delayPlaceholder]) { image, error, cacheType, url in
+        self.userImageView.sd_setImage(with: url, placeholderImage: placeHolderImage, options: [.delayPlaceholder]) { image, error, cacheType, url in
 
             self.loadingView.isHidden = image != nil && error == nil
 
@@ -193,11 +224,10 @@ class ProfileCollectionViewCell: UICollectionViewCell {
      - parameter url: URL
      */
     fileprivate func setImageViewWithURL(_ url: URL) {
-        self.imageView.sd_setImage(with: url) { (image, error, cacheType, url) in
+        self.userImageView.sd_setImage(with: url) { (image, error, cacheType, url) in
 
             self.loadingView.isHidden = image != nil && error == nil
 
         }
     }
-
 }

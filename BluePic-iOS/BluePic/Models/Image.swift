@@ -98,6 +98,7 @@ struct Image: ImageDownload {
     fileprivate(set) var url: String
     fileprivate(set) var image: UIImage?
     fileprivate(set) var tags: [Tag]?
+    internal var isExpanded = false
 
     init?(_ dict: [String : Any]) {
 

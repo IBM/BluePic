@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" restorationIdentifier="ProfileHeaderView" id="iN0-l3-epB" customClass="ProfileHeaderView" customModule="BluePic" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="400"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pFr-p6-w6W">
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="JEFF JACOBS" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VAV-JK-IMZ">
+                            <constraints>
+                                <constraint firstAttribute="height" constant="21" id="pbm-75-WQF"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="14"/>
+                            <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GGp-Gw-jyJ">
+                            <constraints>
+                                <constraint firstAttribute="width" constant="125" id="45q-tA-D8i"/>
+                                <constraint firstAttribute="height" constant="21" id="910-TY-KEI"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="italicSystem" pointSize="14"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MQb-kd-f6r">
+                            <constraints>
+                                <constraint firstAttribute="width" constant="55" id="MSm-eW-Onx"/>
+                                <constraint firstAttribute="height" constant="46" id="Pae-ir-4Uc"/>
+                            </constraints>
+                            <state key="normal" image="moreIcon"/>
+                            <connections>
+                                <action selector="moreButtonAction:" destination="iN0-l3-epB" eventType="touchUpInside" id="bWv-G2-OEe"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="GGp-Gw-jyJ" firstAttribute="top" secondItem="VAV-JK-IMZ" secondAttribute="bottom" constant="1" id="JqP-xb-pyq"/>
+                        <constraint firstAttribute="trailing" secondItem="MQb-kd-f6r" secondAttribute="trailing" constant="-4" id="Psb-Lv-ZyE"/>
+                        <constraint firstAttribute="height" constant="105" id="W1N-QL-fv9"/>
+                        <constraint firstAttribute="trailing" secondItem="VAV-JK-IMZ" secondAttribute="trailing" constant="15" id="Xm8-wj-okv"/>
+                        <constraint firstItem="VAV-JK-IMZ" firstAttribute="leading" secondItem="pFr-p6-w6W" secondAttribute="leading" constant="15" id="acg-S9-9MD"/>
+                        <constraint firstItem="VAV-JK-IMZ" firstAttribute="centerX" secondItem="pFr-p6-w6W" secondAttribute="centerX" id="dCo-4V-RsE"/>
+                        <constraint firstItem="GGp-Gw-jyJ" firstAttribute="centerX" secondItem="pFr-p6-w6W" secondAttribute="centerX" id="nof-Nq-fVn"/>
+                        <constraint firstItem="MQb-kd-f6r" firstAttribute="top" secondItem="pFr-p6-w6W" secondAttribute="top" constant="-5" id="r21-SD-psG"/>
+                    </constraints>
+                </view>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="JbK-kU-7b0">
+                    <color key="backgroundColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="75" id="8PZ-9A-RFZ"/>
+                        <constraint firstAttribute="width" constant="75" id="QTL-7b-eLr"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <real key="value" value="37.5"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </imageView>
+            </subviews>
+            <constraints>
+                <constraint firstItem="pFr-p6-w6W" firstAttribute="top" secondItem="JbK-kU-7b0" secondAttribute="bottom" constant="-38" id="AK5-Ib-SNW"/>
+                <constraint firstItem="pFr-p6-w6W" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Hup-qC-Ddy"/>
+                <constraint firstItem="pFr-p6-w6W" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="QMF-56-tyx"/>
+                <constraint firstItem="JbK-kU-7b0" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="Txm-VL-Ze1"/>
+                <constraint firstItem="VAV-JK-IMZ" firstAttribute="top" secondItem="JbK-kU-7b0" secondAttribute="bottom" constant="8" id="WRg-ul-Awc"/>
+                <constraint firstAttribute="trailing" secondItem="pFr-p6-w6W" secondAttribute="trailing" id="ssC-RC-7Xu"/>
+                <constraint firstAttribute="bottom" secondItem="pFr-p6-w6W" secondAttribute="bottom" id="vQQ-DY-Efg"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="nameLabel" destination="VAV-JK-IMZ" id="dQx-Ku-CD3"/>
+                <outlet property="numberOfShotsLabel" destination="GGp-Gw-jyJ" id="QSO-QX-Us1"/>
+                <outlet property="profilePictureImageView" destination="JbK-kU-7b0" id="Jjk-bn-ni1"/>
+            </connections>
+        </view>
+    </objects>
+    <resources>
+        <image name="moreIcon" width="21" height="5"/>
+    </resources>
+</document>

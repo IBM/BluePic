@@ -18,8 +18,8 @@ import UIKit
 
 class ProfileViewController: UIViewController {
 
-    //the collection view that displays images for the user
-    @IBOutlet weak var collectionView: UICollectionView!
+    //the table view that displays images for the user
+    @IBOutlet weak var tableView: UITableView!
 
     //view model that will keep state and handle data for the ProfileViewController
     var viewModel: ProfileViewModel!
@@ -29,9 +29,6 @@ class ProfileViewController: UIViewController {
 
     //view that is shown when the status bar starts to overlap with the user's profile picture
     var statusBarBackgroundView: UIView!
-
-    //constant represents the height of the "info view" - the view that says the user's name and number of photos
-    let kHeaderViewInfoViewHeight: CGFloat = 105
 
     //constant that represents the height of the image view that represents the user's "cover photo"
     let kHeaderImageViewHeight: CGFloat = 375
@@ -46,14 +43,14 @@ class ProfileViewController: UIViewController {
     let kHeightOfProfilePictureImageView: CGFloat = 75
 
     /**
-     Method called upon view did load. It sets up the view model, sets up the colleciton view, sets up the head view, and sets up the status bar background view
+     Method called upon view did load. It sets up the view model, sets up the table view, sets up the head view, and sets up the status bar background view
      */
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setupViewModel()
 
-        setupCollectionView()
+        setupTableView()
 
         setupHeaderView()
 
@@ -79,10 +76,10 @@ class ProfileViewController: UIViewController {
     }
 
     /**
-     Method called sets up the viewModel and passes it a method to call when there is new data and we need to reload the collection view of the profile vc
+     Method called sets up the viewModel and passes it a method to call when there is new data and we need to reload the table view of the profile vc
      */
     func setupViewModel() {
-        viewModel = ProfileViewModel(refreshVCCallback: reloadDataInCollectionView)
+        viewModel = ProfileViewModel(refreshVCCallback: reloadDataInTableView)
     }
 
     /**
@@ -138,100 +135,82 @@ class ProfileViewController: UIViewController {
         headerImageView.clipsToBounds = true
 
         self.view.addSubview(headerImageView)
-        self.view.insertSubview(headerImageView, belowSubview: collectionView)
+        self.view.insertSubview(headerImageView, belowSubview: tableView)
 
     }
 
     /**
-     Method sets up the collection view with initial properties
+     Method sets up the table view with various initial properties
      */
-    func setupCollectionView() {
+    func setupTableView() {
 
-        collectionView.delegate = self
-        collectionView.dataSource = self
+        Utils.registerNibWith("ProfileTableViewCell", tableView: tableView)
 
-        Utils.registerSupplementaryElementOfKindNibWithCollectionView("ProfileHeaderCollectionReusableView", kind: UICollectionElementKindSectionHeader, collectionView: collectionView)
+        let nibHeader: UINib? = UINib(nibName: "ProfileHeaderView", bundle: Bundle.main)
+        tableView.register(nibHeader, forHeaderFooterViewReuseIdentifier: "ProfileHeaderView")
 
-        Utils.registerNibWithCollectionView("EmptyFeedCollectionViewCell", collectionView: collectionView)
+        let nibFooter: UINib? = UINib(nibName: "EmptyFeedFooterView", bundle: Bundle.main)
+        tableView.register(nibFooter, forHeaderFooterViewReuseIdentifier: "EmptyFeedFooterView")
 
-        Utils.registerNibWithCollectionView("ProfileCollectionViewCell", collectionView: collectionView)
-
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 300
+        tableView.backgroundColor = UIColor.clear
     }
 
     /**
-     Method reloads the data in the collection view
+     Method reloads the data in the table view
      */
-    func reloadDataInCollectionView() {
-        collectionView.reloadData()
+    func reloadDataInTableView() {
+        tableView.reloadData()
     }
 
 }
 
-extension ProfileViewController: UICollectionViewDataSource {
+extension ProfileViewController: UITableViewDataSource {
 
-    /**
-     Method setups up the viewForSupplementaryElementOfKind by asking the viewModel to set it up. This specifically sets up a header view on the top of the collection view to be clear so you can see the image view at the top of the collection view that is actually below the collection view.
-
-     - parameter collectionView:
-     - parameter kind:
-     - parameter indexPath:
-
-     - returns:
-     */
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        return viewModel.setUpSectionHeaderViewForIndexPath(
-            indexPath,
-            kind: kind,
-            collectionView: collectionView
-        )
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = viewModel.setUpTableViewCell(indexPath, tableView: tableView)
+        if let cell = cell as? ProfileTableViewCell {
+            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(textViewTapped(sender:)))
+            tapGesture.numberOfTapsRequired = 1
+            cell.captionTextView.addGestureRecognizer(tapGesture)
+        }
+        return cell
     }
 
-    /**
-     Method sets up the cell for item at indexPath by asking the view model to set up the cell for item at indexPath
-
-     - parameter collectionView: UICollectionView
-     - parameter indexPath:      IndexPath
-
-     - returns: UICollectionViewCell
-     */
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        return viewModel.setUpCollectionViewCell(indexPath, collectionView : collectionView)
-    }
-
-    /**
-     Method sets the number of items in a section by asking the view model for the number of items in the section
-
-     - parameter collectionView: UICollectionView
-     - parameter section:        Int
-
-     - returns: Int
-     */
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.numberOfItemsInSection(section)
     }
 
-    /**
-     Method sets the number of sections in the collection view by asking the view model for the number of sections in the collection view
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return viewModel.numberOfSectionsInTableView()
+    }
 
-     - parameter collectionView: UIcollectionView
+    /// Method responsible for expanding text view if more content is present
+    ///
+    /// - parameter sender: tapgesture calling method
+    func textViewTapped(sender: UITapGestureRecognizer) {
 
-     - returns: Int
-     */
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return viewModel.numberOfSectionsInCollectionView()
+        let tapLocation = sender.location(in: self.tableView)
+        if let indexPath = self.tableView.indexPathForRow(at: tapLocation), let cell = self.tableView.cellForRow(at: indexPath) as? ProfileTableViewCell {
+
+            var image = viewModel.imageDataArray[indexPath.row]
+            image.isExpanded = !image.isExpanded
+            viewModel.imageDataArray[indexPath.row] = image
+            if cell.setCaptionText(image: image) {
+
+                self.tableView.beginUpdates()
+                self.tableView.endUpdates()
+            }
+
+        }
     }
 
 }
 
-extension ProfileViewController: UICollectionViewDelegate {
+extension ProfileViewController: UITableViewDelegate {
 
-    /**
-     Method is called upon when a cell in the collection view is selected. It this case we segue to the image detail, first asking the view model to set up the view model of the image detail vc were about to segue to
-
-     - parameter collectionView: UICollectionView
-     - parameter indexPath:      IndexPath
-     */
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
         if let imageDetailViewModel = viewModel.prepareImageDetailViewModelForSelectedCellAtIndexPath(indexPath),
             let imageDetailVC = Utils.vcWithNameFromStoryboardWithName("ImageDetailViewController", storyboardName: "Feed") as? ImageDetailViewController {
@@ -239,49 +218,23 @@ extension ProfileViewController: UICollectionViewDelegate {
             imageDetailVC.viewModel = imageDetailViewModel
             self.navigationController?.pushViewController(imageDetailVC, animated: true)
         }
-
     }
 
-}
-
-extension ProfileViewController: UICollectionViewDelegateFlowLayout {
-
-    /**
-     Method sets the size of the section header at indexpath depending on what section it is.
-
-     - parameter collectionView:
-     - parameter collectionViewLayout:
-     - parameter section:
-
-     - returns:
-     */
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-
-        let collectionWidth = collectionView.frame.size.width
-
-        if section == 0 {
-            return CGSize(width: collectionWidth, height: self.view.frame.size.height/2 + kHeaderViewInfoViewHeight) //kHeaderViewHeight
-        } else {
-            return CGSize(width: collectionWidth, height: 0)
-        }
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        return viewModel.viewForHeaderInSection(section, tableView: tableView)
     }
 
-    /**
-     Method sets the size for item at indexpath, either for the empty feed colelction view cell or the profile collection cell by asking its view model for the size
-
-     - parameter collectionView:       UICollectionview
-     - parameter collectionViewLayout: UICollectionviewLayout
-     - parameter indexPath:            IndexPath
-
-     - returns: CGSize
-     */
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-
-        let heightForEmptyProfileCollectionViewCell = self.view.frame.size.height - (self.view.frame.size.height/2 + kHeaderViewInfoViewHeight)
-
-        return viewModel.sizeForItemAtIndexPath(indexPath, collectionView: collectionView, heightForEmptyProfileCollectionViewCell: heightForEmptyProfileCollectionViewCell)
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return viewModel.heightForHeaderInSection(section, tableView: tableView)
     }
 
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        return viewModel.viewForFooterInSection(section, tableView: tableView)
+    }
+
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return viewModel.heightForFooterInSection(section, tableView: tableView)
+    }
 }
 
 extension ProfileViewController : UIScrollViewDelegate {

@@ -16,12 +16,10 @@
 
 import UIKit
 
-class ImagesCurrentlyUploadingImageFeedCollectionViewCell: UICollectionViewCell {
+class ImagesCurrentlyUploadingImageFeedTableViewCell: UITableViewCell {
 
-    //imageView that shows a circle thumbnail of the image currently uplaoding
-    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var userImageView: UIImageView!
 
-    //label that shows the caption the user has chosen for the image currently uploading
     @IBOutlet weak var captionLabel: UILabel!
 
     override func awakeFromNib() {
@@ -37,9 +35,7 @@ class ImagesCurrentlyUploadingImageFeedCollectionViewCell: UICollectionViewCell 
     func setupData(_ image: UIImage?, caption: String?) {
 
         if let img = image {
-
-           imageView.image = img
-
+            userImageView.image = img
         }
 
         //set the captionLabel's text
@@ -50,5 +46,4 @@ class ImagesCurrentlyUploadingImageFeedCollectionViewCell: UICollectionViewCell 
         captionLabel.text = cap
 
     }
-
 }

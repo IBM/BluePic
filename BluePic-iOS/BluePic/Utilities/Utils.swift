@@ -123,9 +123,14 @@ class Utils: NSObject {
     - parameter nibName:        String
     - parameter collectionView: UICollectionView
     */
-    class func registerNibWithCollectionView(_ nibName: String, collectionView: UICollectionView) {
+    class func registerNibWith(_ nibName: String, collectionView: UICollectionView) {
         let nib = Utils.nib(nibName)
         collectionView.register(nib, forCellWithReuseIdentifier: nibName)
+    }
+
+    class func registerNibWith(_ nibName: String, tableView: UITableView) {
+        let nib = Utils.nib(nibName)
+        tableView.register(nib, forCellReuseIdentifier: nibName)
     }
 
     /**

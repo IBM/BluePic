@@ -18,25 +18,15 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="618"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="zly-lq-htn">
-                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="dHY-Gx-loz">
-                                    <size key="itemSize" width="50" height="50"/>
-                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                </collectionViewFlowLayout>
-                                <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="feed" id="F27-Qi-6hz">
-                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </view>
-                                    </collectionViewCell>
-                                </cells>
-                            </collectionView>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="3YU-lE-DsU">
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="separatorColor" red="0.60784313729999995" green="0.60784313729999995" blue="0.60784313729999995" alpha="1" colorSpace="calibratedRGB"/>
+                                <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="3iH-dT-DNB" id="VNw-bf-BHM"/>
+                                    <outlet property="delegate" destination="3iH-dT-DNB" id="7PZ-Bj-ftg"/>
+                                </connections>
+                            </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UGh-Ep-385" userLabel="Alert Banner">
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Error Fetching Images, pull down to retry." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="dtk-Og-mrO">
@@ -147,21 +137,21 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="zly-lq-htn" firstAttribute="top" secondItem="Omw-XB-9gH" secondAttribute="bottom" id="9nJ-c1-aY1"/>
-                            <constraint firstItem="FM8-p5-wjj" firstAttribute="top" secondItem="zly-lq-htn" secondAttribute="bottom" id="Hpc-Ib-GcE"/>
+                            <constraint firstItem="FM8-p5-wjj" firstAttribute="top" secondItem="3YU-lE-DsU" secondAttribute="bottom" id="7mG-3a-Pgi"/>
                             <constraint firstItem="X9n-fS-9dC" firstAttribute="centerX" secondItem="g4t-4c-UGB" secondAttribute="centerX" id="JHw-R0-b9J"/>
                             <constraint firstItem="f5a-5Z-S74" firstAttribute="leading" secondItem="g4t-4c-UGB" secondAttribute="leading" id="KNu-nO-fZD"/>
                             <constraint firstItem="Omw-XB-9gH" firstAttribute="centerX" secondItem="g4t-4c-UGB" secondAttribute="centerX" id="LPC-GM-uJK"/>
+                            <constraint firstAttribute="trailing" secondItem="3YU-lE-DsU" secondAttribute="trailing" id="NDZ-ID-Kzv"/>
+                            <constraint firstItem="3YU-lE-DsU" firstAttribute="top" secondItem="Omw-XB-9gH" secondAttribute="bottom" id="NHl-hz-Uub"/>
                             <constraint firstAttribute="trailing" secondItem="f5a-5Z-S74" secondAttribute="trailing" id="WpR-4e-qIK"/>
                             <constraint firstAttribute="topMargin" secondItem="Omw-XB-9gH" secondAttribute="top" id="XP7-Cv-7iG"/>
                             <constraint firstItem="UGh-Ep-385" firstAttribute="leading" secondItem="g4t-4c-UGB" secondAttribute="leading" id="fRw-lc-auS"/>
+                            <constraint firstItem="3YU-lE-DsU" firstAttribute="leading" secondItem="g4t-4c-UGB" secondAttribute="leading" id="hXw-mT-jfJ"/>
                             <constraint firstItem="f5a-5Z-S74" firstAttribute="top" secondItem="g4t-4c-UGB" secondAttribute="top" id="huk-0b-Ac1"/>
-                            <constraint firstItem="zly-lq-htn" firstAttribute="width" secondItem="g4t-4c-UGB" secondAttribute="width" id="k4W-8w-RaU"/>
                             <constraint firstItem="UGh-Ep-385" firstAttribute="top" secondItem="g4t-4c-UGB" secondAttribute="top" id="lU6-QO-bpl"/>
                             <constraint firstItem="Omw-XB-9gH" firstAttribute="width" secondItem="g4t-4c-UGB" secondAttribute="width" id="wGz-n4-uyp"/>
                             <constraint firstItem="X9n-fS-9dC" firstAttribute="top" secondItem="8wL-91-O7K" secondAttribute="bottom" constant="100" id="wLx-8f-nib"/>
                             <constraint firstAttribute="trailing" secondItem="UGh-Ep-385" secondAttribute="trailing" id="xyf-Qq-xMe"/>
-                            <constraint firstItem="zly-lq-htn" firstAttribute="centerX" secondItem="g4t-4c-UGB" secondAttribute="centerX" id="zJN-JX-bEf"/>
                         </constraints>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" top="YES"/>
@@ -171,21 +161,20 @@
                     <connections>
                         <outlet property="alertBannerLabel" destination="dtk-Og-mrO" id="Sw1-yO-yyx"/>
                         <outlet property="alertBannerView" destination="UGh-Ep-385" id="ose-ap-wu8"/>
-                        <outlet property="collectionView" destination="zly-lq-htn" id="Zs4-5s-gMJ"/>
-                        <outlet property="collectionViewTopSpaceConstraint" destination="9nJ-c1-aY1" id="L29-za-k4F"/>
                         <outlet property="defaultTopBarView" destination="Omw-XB-9gH" id="wbM-PZ-m3R"/>
                         <outlet property="logoImageView" destination="lgu-fG-Ypn" id="Gt6-WJ-PvK"/>
                         <outlet property="noResultsLabel" destination="X9n-fS-9dC" id="zhp-2T-y4T"/>
                         <outlet property="outerEyeImageView" destination="Bcc-wa-nkC" id="4dd-Wr-u4s"/>
                         <outlet property="outerEyeImageViewTopSpaceConstraint" destination="ibQ-nd-4ew" id="43V-eG-oYv"/>
                         <outlet property="searchTopBarView" destination="f5a-5Z-S74" id="GXK-lm-2BG"/>
+                        <outlet property="tableView" destination="3YU-lE-DsU" id="FXF-5r-g3J"/>
                         <outlet property="topAlertConstraint" destination="lU6-QO-bpl" id="T8Q-kr-GYt"/>
                         <outlet property="wordTagLabel" destination="vKy-dt-Sq6" id="Jps-sh-Rrl"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JIN-4Y-jeg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1679" y="88"/>
+            <point key="canvasLocation" x="1677.5999999999999" y="87.706146926536732"/>
         </scene>
         <!--Image Detail View Controller-->
         <scene sceneID="kIX-Xt-4ay">

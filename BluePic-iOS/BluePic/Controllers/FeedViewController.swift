@@ -25,14 +25,10 @@ class FeedViewController: UIViewController {
     //represents the outer eye of the inner cicle that spins
     @IBOutlet weak var outerEyeImageView: UIImageView!
 
-    //collection view that displays the images in the feed
-    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var tableView: UITableView!
 
     //constraint outlet for the outer eye image view's top space
     @IBOutlet weak var outerEyeImageViewTopSpaceConstraint: NSLayoutConstraint!
-
-    //constraint outlet for the collection view's top space
-    @IBOutlet weak var collectionViewTopSpaceConstraint: NSLayoutConstraint!
 
     //top bar that shows on intial load of the app
     @IBOutlet weak var defaultTopBarView: UIView!
@@ -61,18 +57,13 @@ class FeedViewController: UIViewController {
     //state variable used to know if we we were unable to present this alert because the FeedViewController wasn't visible
     var failedToPresentImageFeedErrorAlert = false
 
-    //Defines the minimum spacing between cells in the collection view
-    let kMinimumInterItemSpacingForSectionAtIndex: CGFloat = 0
-
-
-
     /**
-     Method called upon view did load. It sets up the collection view, sets up the view model, starts the loading animation at app launch, determines the feed model, and observes when the application becomes active
+     Method called upon view did load. It sets up the table view, sets up the view model, starts the loading animation at app launch, determines the feed model, and observes when the application becomes active
      */
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setupCollectionView()
+        setupTableView()
         setupViewModel()
 
         startLoadingAnimationAtAppLaunch()
@@ -127,12 +118,12 @@ class FeedViewController: UIViewController {
         super.viewWillAppear(animated)
 
         viewModel.suscribeToBluemixDataManagerNotifications()
-        // ensure collection view loads correctly under different circumstances
-        if collectionView.numberOfItems(inSection: 1) < BluemixDataManager.SharedInstance.images.count {
+        // ensure table view loads correctly under different circumstances
+        if tableView.numberOfRows(inSection: 1) < BluemixDataManager.SharedInstance.images.count {
             logoImageView.startRotating(1)
             viewModel.repullForNewData()
         } else {
-            reloadDataInCollectionView()
+            reloadDataInTableView()
         }
 
         UIApplication.shared.statusBarStyle = UIStatusBarStyle.default
@@ -146,7 +137,7 @@ class FeedViewController: UIViewController {
         super.viewDidAppear(animated)
 
         if searchQuery != nil && self.isMovingToParentViewController &&
-            collectionView.numberOfItems(inSection: 1) < 1 && noResultsLabel.isHidden {
+            tableView.numberOfRows(inSection: 1) < 1 && noResultsLabel.isHidden {
             SVProgressHUD.show()
         } else {
             tryToShowImageFeedAlert()
@@ -173,35 +164,36 @@ class FeedViewController: UIViewController {
     }
 
     /**
-     Method sets up the collection view with various initial properties
+     Method sets up the table view with various initial properties
      */
-    func setupCollectionView() {
+    func setupTableView() {
 
-        collectionView.delegate = self
-        collectionView.dataSource = self
+        Utils.registerNibWith("ImageFeedTableViewCell", tableView: tableView)
 
-        Utils.registerNibWithCollectionView("EmptyFeedCollectionViewCell", collectionView: collectionView)
+        Utils.registerNibWith("ImagesCurrentlyUploadingImageFeedTableViewCell", tableView: tableView)
 
-        Utils.registerNibWithCollectionView("ImageFeedCollectionViewCell", collectionView: collectionView)
+        let nib: UINib? = UINib(nibName: "EmptyFeedFooterView", bundle: Bundle.main)
+        tableView.register(nib, forHeaderFooterViewReuseIdentifier: "EmptyFeedFooterView")
 
-        Utils.registerNibWithCollectionView("ImagesCurrentlyUploadingImageFeedCollectionViewCell", collectionView: collectionView)
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 300
 
         self.refreshControl = UIRefreshControl()
         self.refreshControl.addTarget(self, action: #selector(FeedViewController.userTriggeredRefresh), for: UIControlEvents.valueChanged)
         self.refreshControl.isHidden = true
         self.refreshControl.tintColor = UIColor.clear
 
-        self.collectionView.addSubview(refreshControl)
+        self.tableView.addSubview(refreshControl)
     }
 
     /**
-     Method reloads the data in the collection view. It is typically called by its view model when it receives data.
+     Method reloads the data in the table view. It is typically called by its view model when it receives data.
      */
-    func reloadDataInCollectionView() {
+    func reloadDataInTableView() {
 
-        collectionView.reloadData()
+        tableView.reloadData()
         tryToStopLoadingAnimation()
-        self.collectionView.setContentOffset(CGPoint.zero, animated: true)
+        self.tableView.setContentOffset(CGPoint.zero, animated: true)
 
         if viewModel.numberOfItemsInSection(1) > viewModel.numberOfCellsWhenUserHasNoPhotos {
             dismissImageFeedErrorAlert()
@@ -216,10 +208,7 @@ class FeedViewController: UIViewController {
         dismissImageFeedErrorAlert()
         logoImageView.startRotating(1)
         self.refreshControl.endRefreshing()
-        // fixes offset of emptyCollectionViewCell
-        collectionView.setContentOffset(CGPoint.zero, animated: true)
         viewModel.repullForNewData()
-
     }
 
     /**
@@ -251,9 +240,7 @@ class FeedViewController: UIViewController {
     func tryToStopLoadingAnimation() {
 
         if viewModel.shouldStopLoadingAnimation() {
-
             logoImageView.stopRotating()
-
         }
     }
 
@@ -315,59 +302,55 @@ class FeedViewController: UIViewController {
      */
     @IBAction func popVC(_ sender: Any) {
         SVProgressHUD.dismiss()
-        let _ = self.navigationController?.popViewController(animated: true)
+        _ = self.navigationController?.popViewController(animated: true)
     }
 }
 
-extension FeedViewController: UICollectionViewDataSource {
+extension FeedViewController: UITableViewDataSource {
 
-    /**
-     Method sets up the cell for item at indexPath by asking the view model to set up the collection view cell
-
-     - parameter collectionView: UICollectionView
-     - parameter indexPath:      Indexpath
-
-     - returns: UICollectionViewCell
-     */
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        return viewModel.setUpCollectionViewCell(indexPath, collectionView : collectionView)
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return viewModel.numberOfSectionsInTableView()
     }
 
-    /**
-     Method sets the number of items in a section by asking the view model how many items are in this section
-
-     - parameter collectionView: UICollectionView
-     - parameter section:        Int
-
-     - returns: Int
-     */
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.numberOfItemsInSection(section)
     }
 
-
-    /**
-     Method returns the number of sections in the collection view by asking its view moddel how many sections are in the collection view
-
-     - parameter collectionView: UICollectionview
-
-     - returns: Int
-     */
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return viewModel.numberOfSectionsInCollectionView()
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = viewModel.setUpTableViewCell(indexPath, tableView: tableView)
+        if let cell = cell as? ImageFeedTableViewCell {
+            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(textViewTapped(sender:)))
+            tapGesture.numberOfTapsRequired = 1
+            cell.captionTextView.addGestureRecognizer(tapGesture)
+        }
+        return cell
     }
 
+    /// Method responsible for expanding text view if more content is present
+    ///
+    /// - parameter sender: tapgesture calling method
+    func textViewTapped(sender: UITapGestureRecognizer) {
+
+        let tapLocation = sender.location(in: self.tableView)
+        if let indexPath = self.tableView.indexPathForRow(at: tapLocation), let cell = self.tableView.cellForRow(at: indexPath) as? ImageFeedTableViewCell {
+
+            var image = viewModel.imageDataArray[indexPath.row]
+            image.isExpanded = !image.isExpanded
+            viewModel.imageDataArray[indexPath.row] = image
+            if cell.setCaptionText(image: image) {
+
+                self.tableView.beginUpdates()
+                self.tableView.endUpdates()
+            }
+
+        }
+    }
 }
 
-extension FeedViewController: UICollectionViewDelegate {
+extension FeedViewController: UITableViewDelegate {
 
-    /**
-     Method is called when a cell in the collection view is selected
-
-     - parameter collectionView: UICollectionView
-     - parameter indexPath:      IndexPath
-     */
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: false)
 
         if let imageDetailViewModel = viewModel.prepareImageDetailViewModelForSelectedCellAtIndexPath(indexPath),
             let imageDetailVC = Utils.vcWithNameFromStoryboardWithName("ImageDetailViewController", storyboardName: "Feed") as? ImageDetailViewController {
@@ -375,28 +358,15 @@ extension FeedViewController: UICollectionViewDelegate {
             imageDetailVC.viewModel = imageDetailViewModel
             self.navigationController?.pushViewController(imageDetailVC, animated: true)
         }
-
     }
 
-}
-
-
-extension FeedViewController: UICollectionViewDelegateFlowLayout {
-
-    /**
-     Method returns the size for item at indexPath by asking the view Model for the size for item at indexPath
-
-     - parameter collectionView:       UICollectionView
-     - parameter collectionViewLayout: UICollectionViewLayout
-     - parameter indexPath:            IndexPath
-
-     - returns: CGSize
-     */
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-
-        return viewModel.sizeForItemAtIndexPath(indexPath, collectionView: collectionView)
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        return viewModel.viewForFooterInSection(section, tableView: tableView)
     }
 
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return viewModel.heightForFooterInSection(section, tableView: tableView)
+    }
 }
 
 //ViewModel -> ViewController Communication
@@ -409,21 +379,21 @@ extension FeedViewController {
      */
     func handleFeedViewModelNotifications(_ feedViewModelNotification: FeedViewModelNotification) {
 
-        if feedViewModelNotification == FeedViewModelNotification.reloadCollectionView {
-            reloadDataInCollectionView()
+        if feedViewModelNotification == FeedViewModelNotification.reloadTableView {
+            reloadDataInTableView()
             if searchQuery != nil {
                 SVProgressHUD.dismiss()
             }
         } else if feedViewModelNotification == FeedViewModelNotification.uploadingPhotoStarted {
-            collectionView.reloadData()
-            collectionView.contentOffset.y = 0
+            tableView.reloadData()
+            tableView.contentOffset.y = 0
             dismissImageFeedErrorAlert()
             tryToStartLoadingAnimation()
         } else if feedViewModelNotification == FeedViewModelNotification.noSearchResults {
             SVProgressHUD.dismiss()
             noResultsLabel.isHidden = self.topAlertConstraint.constant > 0
         } else if feedViewModelNotification == FeedViewModelNotification.getImagesServerFailure {
-            reloadDataInCollectionView()
+            reloadDataInTableView()
             displayImageFeedErrorAlert()
         }
 
