@@ -164,7 +164,7 @@ extension ProfileViewModel {
     ///
     /// - returns: A view if applicable
     func viewForFooterInSection(_ section: Int, tableView: UITableView) -> UIView? {
-        if imageDataArray.count == 0, let sectionFooter = tableView.dequeueReusableHeaderFooterView(withIdentifier: "EmptyFeedFooterView") as? EmptyFeedFooterView {
+        if BluemixDataManager.SharedInstance.hasReceievedInitialImages, imageDataArray.count == 0, let sectionFooter = tableView.dequeueReusableHeaderFooterView(withIdentifier: "EmptyFeedFooterView") as? EmptyFeedFooterView {
             sectionFooter.userHasNoImagesLabel.text = sectionFooter.kUserHasNoImagesLabelText
             return sectionFooter
         }
@@ -178,7 +178,7 @@ extension ProfileViewModel {
     ///
     /// - returns: height as CGFloat
     func heightForFooterInSection(_ section: Int, tableView: UITableView) -> CGFloat {
-        if imageDataArray.count == 0 {
+        if BluemixDataManager.SharedInstance.hasReceievedInitialImages, imageDataArray.count == 0 {
             return tableView.frame.size.height / 2 - kHeaderViewInfoViewHeight
         }
         return 0
