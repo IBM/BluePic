@@ -30,7 +30,7 @@ class ImageDetailViewModel: NSObject {
     //constant used to define the minimum height the image info header view must be
     fileprivate let kImageInfoHeaderViewMinimumHeight: CGFloat = 357
 
-
+    var captionHeightOffset: CGFloat = 20
 
     init(image: Image) {
 
@@ -107,6 +107,16 @@ extension ImageDetailViewModel {
             return ImageInfoHeaderCollectionReusableView()
         }
         header.setupWithData(image)
+
+        // create sample label to determine size of captionLabel, increase header height accordingly
+        let label = UILabel(frame: CGRect(x: 0, y: 0, width: collectionView.frame.width - 60, height: CGFloat.greatestFiniteMagnitude))
+        label.numberOfLines = 0
+        label.lineBreakMode = NSLineBreakMode.byWordWrapping
+        label.font = UIFont.boldSystemFont(ofSize: 16.0)
+        label.text = header.captionLabel.text
+        label.sizeToFit()
+        captionHeightOffset = label.frame.size.height - 19
+        header.frame.size.height += captionHeightOffset
 
         return header
     }
