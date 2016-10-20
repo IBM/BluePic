@@ -10,12 +10,19 @@ import AlchemyVision
 
 func main(args:[String:Any]) -> [String:Any] {
     
-    let alchemyKey = args["alchemyKey"] as? String ?? ""
-    let imageURL = args["imageURL"] as? String ?? ""
+    var str = ""
+    var result:[String:Any] = [
+        "alchemy": str
+    ]
+    
+    guard let alchemyKey = args["alchemyKey"] as? String,
+        let imageURL = args["imageURL"] as? String else {
+            return result
+    }
+    
     let alchemyVision = AlchemyVision(apiKey: alchemyKey)
     let failure = { (error: RestError) in print(error) }
     
-    var str = ""
     alchemyVision.getRankedImageKeywords(url: imageURL,
                                          forceShowAll: true,
                                          knowledgeGraph: true,
@@ -38,8 +45,8 @@ func main(args:[String:Any]) -> [String:Any] {
     //workaround for JSON parsing defect in container
     str = str.replacingOccurrences(of: "\"", with: "\\\"")
     
-    let result:[String:Any] = [
-        "alchemy": "\(str)",
+    result = [
+        "alchemy": "\(str)"
     ]
     
     return result

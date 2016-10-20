@@ -8,11 +8,22 @@ import Foundation
 
 func main(args: [String:Any]) -> [String:Any] {
     
-    let cloudantDbName: String = args["cloudantDbName"] as? String ?? ""
-    let cloudantUsername: String = args["cloudantUsername"] as? String ?? ""
-    let cloudantPassword: String = args["cloudantPassword"] as? String ?? ""
-    let cloudantHost: String = args["cloudantHost"] as? String ?? ""
-    var cloudantBody: String = args["cloudantBody"] as? String ?? ""
+    var str = ""
+    var result:[String:Any] = [
+        "cloudantId": str,
+        "cloudantResult": str
+    ]
+    
+    guard let cloudantDbName = args["cloudantDbName"] as? String,
+        let cloudantUsername = args["cloudantUsername"] as? String,
+        let cloudantPassword = args["cloudantPassword"] as? String,
+        let cloudantHost = args["cloudantHost"] as? String,
+        let cloudantBody = args["cloudantBody"] as? String,
+        let cloudantId = args["cloudantId"] as? String else {
+            
+            print("Error: missing a required parameter for writing a Cloudant document.")
+            return result
+    }
     
     var requestOptions: [ClientRequest.Options] = [ .method("POST"),
                                                     .schema("https://"),
@@ -28,7 +39,7 @@ func main(args: [String:Any]) -> [String:Any] {
     headers["Content-Type"] = "application/json"
     requestOptions.append(.headers(headers))
     
-    var str = ""
+    
     if (cloudantBody == "") {
         str = "Error: Unable to serialize cloudantBody parameter as a String instance"
     }
@@ -39,10 +50,9 @@ func main(args: [String:Any]) -> [String:Any] {
             
             let req = HTTP.request(requestOptions) { response in
                 do {
-                    if let responseUnwrapped = response {
-                        if let responseStr = try responseUnwrapped.readString() {
-                            str = responseStr
-                        }
+                    if let responseUnwrapped = response,
+                        let responseStr = try responseUnwrapped.readString() {
+                        str = responseStr
                     }
                 } catch {
                     print("Error \(error)")
@@ -54,8 +64,9 @@ func main(args: [String:Any]) -> [String:Any] {
     
     //workaround for JSON parsing defect in container
     str = str.replacingOccurrences(of: "\"", with: "\\\"")
-    let result:[String:Any] = [
-        "cloudantId": args["cloudantId"],
+    
+    result = [
+        "cloudantId": cloudantId,
         "cloudantResult": str
     ]
     

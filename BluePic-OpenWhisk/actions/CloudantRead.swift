@@ -8,11 +8,20 @@ import Foundation
 
 func main(args: [String:Any]) -> [String:Any] {
     
-    let cloudantDbName = args["cloudantDbName"] as? String ?? ""
-    let cloudantHost = args["cloudantHost"] as? String ?? ""
-    let cloudantUsername = args["cloudantUsername"] as? String ?? ""
-    let cloudantPassword = args["cloudantPassword"] as? String ?? ""
-    let cloudantId = args["cloudantId"] as? String ?? ""
+    var str = ""
+    var result:[String:Any] = [
+        "document": str
+    ]
+    
+    guard let cloudantDbName = args["cloudantDbName"] as? String,
+        let cloudantHost = args["cloudantHost"] as? String,
+        let cloudantUsername = args["cloudantUsername"] as? String,
+        let cloudantPassword = args["cloudantPassword"] as? String,
+        let cloudantId = args["cloudantId"] as? String else {
+            
+            print("Error: missing a required parameter for reading a Cloudant document.")
+            return result
+    }
     
     var requestOptions: [ClientRequest.Options] = [ .method("GET"),
                                                     .schema("https://"),
@@ -28,16 +37,14 @@ func main(args: [String:Any]) -> [String:Any] {
     headers["Content-Type"] = "application/json"
     requestOptions.append(.headers(headers))
     
-    var str = ""
     let req = HTTP.request(requestOptions) { response in
         do {
-            if let response = response {
-                if let responseStr = try response.readString() {
-                    str = responseStr
-                }
+            if let response = response,
+                let responseStr = try response.readString() {
+                str = responseStr
             }
         } catch {
-            print("Error \(error)")
+            print("Error: \(error)")
         }
     }
     req.end();
@@ -45,7 +52,7 @@ func main(args: [String:Any]) -> [String:Any] {
     //workaround for JSON parsing defect in container
     str = str.replacingOccurrences(of: "\"", with: "\\\"")
     
-    let result:[String:Any] = [
+    result = [
         "document": str
     ]
     

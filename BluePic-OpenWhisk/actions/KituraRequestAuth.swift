@@ -9,20 +9,27 @@ import SwiftyJSON
 
 func main(args:[String:Any]) -> [String:Any] {
     
-    let mcaClientId: String = args["mcaClientId"] as? String ?? ""
-    let mcaSecret: String = args["mcaSecret"] as? String ?? ""
-    
     var str = ""
     var headerValue = ""
+    var result:[String:Any] = [
+        "authResponse": str,
+        "authHeader": headerValue
+    ]
+    
+    guard let mcaClientId: String = args["mcaClientId"] as? String,
+        let mcaSecret: String = args["mcaSecret"] as? String else {
+            
+            print("Error: missing a required parameter for the KituraRequestAuth action.")
+            return result
+    }
     
     //first get MCA auth token
     let baseStr = "\(mcaClientId):\(mcaSecret)"
     
     let utf8BaseStr = baseStr.data(using: String.Encoding.utf8)
     guard let authHeader = utf8BaseStr?.base64EncodedString(options: Data.Base64EncodingOptions(rawValue: 0)) else {
-        return [
-            "response": "Could not generate authHeader..."
-        ]
+        print("Error: Could not generate authHeader")
+        return result
     }
     
     let appGuid = mcaClientId
@@ -52,9 +59,8 @@ func main(args:[String:Any]) -> [String:Any] {
                     
                     let authData = str.data(using: String.Encoding.utf8, allowLossyConversion: true)
                     
-                    var authJson: JSON = [:]
                     if let authDataUnwrapped = authData {
-                        authJson = JSON(data: authDataUnwrapped)
+                        let authJson = JSON(data: authDataUnwrapped)
                         if let token = authJson["access_token"].string {
                             headerValue = "Bearer \(token)"
                         }
@@ -72,7 +78,7 @@ func main(args:[String:Any]) -> [String:Any] {
     //workaround for JSON parsing defect in container
     str = str.replacingOccurrences(of: "\"", with: "\\\"")
     headerValue = headerValue.replacingOccurrences(of: "\"", with: "\\\"")
-    var result:[String:Any] = [
+    result = [
         "authResponse": "\(str)",
         "authHeader": "\(headerValue)"
     ]

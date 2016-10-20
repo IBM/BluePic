@@ -10,15 +10,22 @@ import WeatherCompanyData
 
 func main(args: [String:Any]) -> [String:Any] {
     
-    let weatherUsername = args["weatherUsername"] as? String ?? ""
-    let weatherPassword = args["weatherPassword"] as? String ?? ""
-    
-    var latitude = args["latitude"] as? String ?? "0.0"
-    var longitude = args["longitude"] as? String ?? "0.0"
-    var language = args["language"] as? String ?? "en-US"
-    var units = args["units"] as? String ?? "e"
-    
     var str = ""
+    var result:[String:Any] = [
+        "weather": str
+    ]
+    
+    guard let weatherUsername = args["weatherUsername"] as? String,
+        let weatherPassword = args["weatherPassword"] as? String,
+        let latitude = args["latitude"] as? String,
+        let longitude = args["longitude"] as? String else {
+            
+            print("Error: missing a required parameter for retrieving weather data.")
+            return result
+    }
+    
+    let language = args["language"] as? String ?? "en-US"
+    let units = args["units"] as? String ?? "e"
     
     let weatherCompanyData = WeatherCompanyData(username: "\(weatherUsername)", password: "\(weatherPassword)")
     let failure = { (error: RestError) in
@@ -49,7 +56,8 @@ func main(args: [String:Any]) -> [String:Any] {
     
     //workaround for JSON parsing defect in container
     str = str.replacingOccurrences(of: "\"", with: "\\\"")
-    let result:[String:Any] = [
+    
+    result = [
         "weather": "\(str)"
     ]
     

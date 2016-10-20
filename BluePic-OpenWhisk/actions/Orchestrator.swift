@@ -16,14 +16,13 @@ func main(args: [String:Any]) -> [String:Any] {
     
     let cloudantReadInvocation = Whisk.invoke(actionNamed: "/\(targetNamespace)/bluepic/cloudantRead", withParameters: ["cloudantId": imageId])
     
-    let response = cloudantReadInvocation["response"] as! [String:Any]
-    let documentPayload = response["result"] as! [String:Any]
-    let documentString:String = documentPayload["document"] as! String
-    let documentData = documentString.data(using: String.Encoding.utf8, allowLossyConversion: true)
-    
     var document: JSON = [:]
-    if let documentDataUnwrapped = documentData {
-        document = JSON(data: documentDataUnwrapped)
+    if let documentResponse = cloudantReadInvocation["response"] as? [String:Any],
+        let documentPayload = documentResponse["result"] as? [String:Any],
+        let documentString = documentPayload["document"] as? String,
+        let documentData = documentString.data(using: String.Encoding.utf8, allowLossyConversion: true) {
+        
+        document = JSON(data: documentData)
     }
     
     // check if document was read from cloudant successfully
@@ -35,30 +34,30 @@ func main(args: [String:Any]) -> [String:Any] {
         let location = document["location"]
         
         var weatherInvocation:[String:Any] = [:]
-        if let latitude = location["latitude"].number, let longitude = location["longitude"].number {
+        if let latitude = location["latitude"].number,
+            let longitude = location["longitude"].number {
             weatherInvocation = Whisk.invoke(actionNamed: "/\(targetNamespace)/bluepic/weather", withParameters: [
-                "latitude": latitude,
-                "longitude": longitude
+                "latitude": String(describing: latitude),
+                "longitude": String(describing: longitude)
                 ])
         }
-        
         var alchemyInvocation:[String:Any] = [:]
         let imageURL = document["url"].string
         var imageURLUnwrapped:String = ""
         if let imageURLUnwrapped = imageURL {
             alchemyInvocation = Whisk.invoke(actionNamed: "/\(targetNamespace)/bluepic/alchemy", withParameters: [
                 "imageURL": "\(imageURLUnwrapped)"
-                ])}
+                ])
+        }
         
         // parse weather data and update cloudant document
-        let weatherResponse = weatherInvocation["response"] as! [String:Any]
-        let weatherPayload = weatherResponse["result"] as! [String:Any]
-        let weatherString:String = weatherPayload["weather"] as! String
-        let weatherData = weatherString.data(using: String.Encoding.utf8, allowLossyConversion: true)
-        
         var weather: JSON = [:]
-        if let weatherDataUnwrapped = weatherData {
-            weather = JSON(data: weatherDataUnwrapped)
+        if let weatherResponse = weatherInvocation["response"] as? [String:Any],
+            let weatherPayload = weatherResponse["result"] as? [String:Any],
+            let weatherString:String = weatherPayload["weather"] as? String,
+            let weatherData = weatherString.data(using: String.Encoding.utf8, allowLossyConversion: true) {
+            
+            weather = JSON(data: weatherData)
         }
         
         // if the weather data exists without error, add it to the cloudant document, otherwise don't add it
@@ -72,15 +71,15 @@ func main(args: [String:Any]) -> [String:Any] {
         }
         
         // parse alchemy data and update cloudant document
-        let alchemyResponse = alchemyInvocation["response"] as! [String:Any]
-        let alchemyPayload = alchemyResponse["result"] as! [String:Any]
-        let alchemyString:String = alchemyPayload["alchemy"] as! String
-        let alchemyData = alchemyString.data(using: String.Encoding.utf8, allowLossyConversion: true)
-        
         var alchemy: JSON = [:]
-        if let alchemyDataUnwrapped = alchemyData {
-            alchemy = JSON(data: alchemyDataUnwrapped)
+        if let alchemyResponse = alchemyInvocation["response"] as? [String:Any],
+            let alchemyPayload = alchemyResponse["result"] as? [String:Any],
+            let alchemyString:String = alchemyPayload["alchemy"] as? String,
+            let alchemyData = alchemyString.data(using: String.Encoding.utf8, allowLossyConversion: true) {
+            
+            alchemy = JSON(data: alchemyData)
         }
+        
         document["tags"] = alchemy
         
         var writeJSON: JSON = [:]
@@ -88,20 +87,19 @@ func main(args: [String:Any]) -> [String:Any] {
             
             //workaround for JSON parsing defect in container
             documentUnwrapped = documentUnwrapped.replacingOccurrences(of: "\"", with: "\\\"")
-            
             // write the results back to cloudant
             let cloudantWriteInvocation = Whisk.invoke(actionNamed: "/\(targetNamespace)/bluepic/cloudantWrite", withParameters: [
                 "cloudantId": imageId,
                 "cloudantBody": documentUnwrapped
                 ])
-            let writeResponse = cloudantWriteInvocation["response"] as! [String:Any]
-            let writePayload = writeResponse["result"] as! [String:Any]
-            let writeResultString:String = writePayload["cloudantResult"] as! String
-            let writeData = writeResultString.data(using: String.Encoding.utf8, allowLossyConversion: true)
-            
-            if let writeDataUnwrapped = writeData {
-                writeJSON = JSON(data: writeDataUnwrapped)
+            if let writeResponse = cloudantWriteInvocation["response"] as? [String:Any],
+                let writePayload = writeResponse["result"] as? [String:Any],
+                let writeResultString:String = writePayload["cloudantResult"] as? String,
+                let writeData = writeResultString.data(using: String.Encoding.utf8, allowLossyConversion: true) {
+                
+                writeJSON = JSON(data: writeData)
             }
+            
         }
         
         if (writeJSON.exists() && !writeJSON["error"].exists()) {
@@ -111,11 +109,11 @@ func main(args: [String:Any]) -> [String:Any] {
             else {
                 // obtain auth credentials for callback to kitura
                 let kituraAuthInvocation = Whisk.invoke(actionNamed: "/\(targetNamespace)/bluepic/kituraRequestAuth", withParameters: [:])
-                let authResponse: [String:Any] = kituraAuthInvocation["response"] as? [String:Any] ?? [:]
-                let authPayload: [String:Any] = authResponse["result"] as? [String:Any] ?? [:]
-                let authHeaderPayload = authPayload["authHeader"]
                 
-                if let authHeader:String = authHeaderPayload as? String {
+                if let authResponse: [String:Any] = kituraAuthInvocation["response"] as? [String:Any],
+                    let authPayload: [String:Any] = authResponse["result"] as? [String:Any],
+                    let authHeaderPayload = authPayload["authHeader"],
+                    let authHeader = authHeaderPayload as? String {
                     if (authHeader.isEmpty) {
                         error = "Unable to obtain auth header from Kitura"
                     }
@@ -123,20 +121,19 @@ func main(args: [String:Any]) -> [String:Any] {
                         "authHeader": authHeader,
                         "cloudantId": imageId
                         ])
-                    let callbackResponse = kituraCallbackInvocation["response"] as! [String:Any]
-                    let callbackPayload = callbackResponse["result"] as! [String:Any]
-                    let callbackResponseString:String = callbackPayload["response"] as! String
                     
-                    returnValue = "Processed request through callback to kitura with server response: \(callbackResponseString)"
+                    if let callbackResponse = kituraCallbackInvocation["response"] as? [String:Any],
+                        let callbackPayload = callbackResponse["result"] as? [String:Any],
+                        let callbackResponseString = callbackPayload["response"] as? String {
+                        
+                        returnValue = "Processed request through callback to kitura with server response: \(callbackResponseString)"
+                    }
                 }
             }
         }
         
     } else {
         error = "Unable to fetch document from Cloudant"
-        if (document["error"].exists()) {
-            error = "\(error): \(documentString)"
-        }
     }
     
     var result:[String:Any] = [

@@ -9,14 +9,22 @@ import SwiftyJSON
 
 func main(args:[String:Any]) -> [String:Any] {
     
-    let cloudantId: String = args["cloudantId"] as? String ?? ""
-    let kituraHost: String = args["kituraHost"] as? String ?? ""
-    let kituraPortInt: Int = args["kituraPort"] as? Int ?? 80
-    let kituraPort: Int16 = Int16(kituraPortInt) as? Int16 ?? 80
-    let kituraSchema: String = args["kituraSchema"] as? String ?? "http"
-    let authHeader: String = args["authHeader"] as? String ?? ""
-    
     var str = ""
+    var result:[String:Any] = [
+        "response": str
+    ]
+    
+    guard let cloudantId: String = args["cloudantId"] as? String,
+        let kituraHost: String = args["kituraHost"] as? String,
+        let kituraPortInt: Int = args["kituraPort"] as? Int,
+        let authHeader: String = args["authHeader"] as? String,
+        let kituraPort: Int16 = Int16(kituraPortInt) as? Int16 else {
+            
+            print("Error: missing a required parameter for the Kitura callback action.")
+            return result
+    }
+    
+    let kituraSchema: String = args["kituraSchema"] as? String ?? "http"
     
     var requestOptions: [ClientRequest.Options] = [ .method("POST"),
                                                     .schema(kituraSchema),
@@ -42,7 +50,7 @@ func main(args:[String:Any]) -> [String:Any] {
     
     //workaround for JSON parsing defect in container
     str = str.replacingOccurrences(of: "\"", with: "\\\"")
-    let result:[String:Any] = [
+    result = [
         "response": "\(str)"
     ]
     
