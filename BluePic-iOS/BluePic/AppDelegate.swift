@@ -52,9 +52,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
      - parameter deviceToken:
      */
     func application (_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        if BluemixDataManager.SharedInstance.bluemixConfig.pushAppGUID != "" {
+        if BluemixDataManager.SharedInstance.bluemixConfig.isPushConfigured {
             let push =  BMSPushClient.sharedInstance
-            push.initializeWithAppGUID(appGUID: BluemixDataManager.SharedInstance.bluemixConfig.pushAppGUID, clientSecret: nil)
+            push.initializeWithAppGUID(appGUID: BluemixDataManager.SharedInstance.bluemixConfig.pushAppGUID, clientSecret: BluemixDataManager.SharedInstance.bluemixConfig.pushClientSecret)
             push.registerWithDeviceToken(deviceToken: deviceToken) { response, statusCode, error in
                 if error.isEmpty {
                     print( "Response during device registration : \(response)")

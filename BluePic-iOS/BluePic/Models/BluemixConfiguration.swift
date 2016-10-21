@@ -26,6 +26,7 @@ class BluemixConfiguration: NSObject {
     fileprivate let kBluemixAppGUIDKey = "bluemixAppGUID"
     fileprivate let kBluemixAppRegionKey = "bluemixAppRegion"
     fileprivate let kBluemixPushAppGUIDKey = "pushAppGUID"
+    fileprivate let kBluemixPushAppClientSecret = "pushClientSecret"
     fileprivate let kBluemixMCATenantIdKey = "mcaTenantId"
 
     let localBaseRequestURL: String
@@ -33,8 +34,13 @@ class BluemixConfiguration: NSObject {
     let appGUID: String
     let appRegion: String
     var pushAppGUID: String = ""
+    var pushClientSecret: String = ""
     var mcaTenantId: String = ""
     var isLocal: Bool = true
+
+    var isPushConfigured: Bool {
+        return pushAppGUID != "" && pushClientSecret != ""
+    }
 
     override init() {
 
@@ -55,9 +61,13 @@ class BluemixConfiguration: NSObject {
             self.localBaseRequestURL = localBaseRequestURL
             self.remoteBaseRequestURL = remoteBaseRequestURL
 
-            // if present, add push app GUID
+            // if present, add push app GUID and push client secret
             if let pushAppGUID = Utils.getStringValueWithKeyFromPlist(kBluemixKeysPlistName, key: kBluemixPushAppGUIDKey) {
                 self.pushAppGUID = pushAppGUID
+            }
+
+            if let pushClientSecret = Utils.getStringValueWithKeyFromPlist(kBluemixKeysPlistName, key: kBluemixPushAppClientSecret) {
+                self.pushClientSecret = pushClientSecret
             }
 
             if let mcaTenantId = Utils.getStringValueWithKeyFromPlist(kBluemixKeysPlistName, key: kBluemixMCATenantIdKey) {
