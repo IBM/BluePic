@@ -537,8 +537,8 @@ private extension URLRequest {
     let requestOptions: [ClientRequest.Options] = [.method(method), .hostname("localhost"), .port(8090), .path(path), .headers(headers)]
     
     let req = HTTP.request(requestOptions) { resp in
-      print("In closure with resp: \(resp)")
-      if let resp = resp, resp.statusCode == HTTPStatusCode.OK || resp.statusCode == HTTPStatusCode.accepted {
+
+        if let resp = resp, resp.statusCode == HTTPStatusCode.OK || resp.statusCode == HTTPStatusCode.accepted {
         do {
           var body = Data()
           try resp.readAllData(into: &body)
