@@ -73,7 +73,7 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
 
      - parameter sender: Any
      */
-    @IBAction func moreButtonAction(_ sender: AnyObject) {
+    @IBAction func moreButtonAction(_ sender: Any) {
         NotificationCenter.default.post(name: .showSettingsActionSheet, object: nil)
     }
 

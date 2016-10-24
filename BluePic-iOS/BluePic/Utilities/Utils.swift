@@ -25,23 +25,6 @@ class Utils: NSObject {
      - parameter plist: String
      - parameter key:   String
 
-     - returns: String?
-     */
-    class func getKeyFromPlist(_ plist: String, key: String) -> String? {
-        if let path: String = Bundle.main.path(forResource: plist, ofType: "plist"),
-            let keyList = NSDictionary(contentsOfFile: path),
-            let key = keyList.object(forKey: key) as? String {
-            return key
-        }
-        return nil
-    }
-
-    /**
-     Method gets a key from a plist, both specified in parameters
-
-     - parameter plist: String
-     - parameter key:   String
-
      - returns: Bool?
      */
     class func getBoolValueWithKeyFromPlist(_ plist: String, key: String) -> Bool? {

@@ -127,13 +127,14 @@ public struct Configuration {
       throw BluePicError.IO("Failed to obtain IBM Push service and/or its credentials.")
     }
 
-    guard let url = pushCredentials["url"].string,
+    guard let appGuid = pushCredentials["appGuid"].string,
+      let url = pushCredentials["url"].string,
       let adminUrl = pushCredentials["admin_url"].string,
       let secret = pushCredentials["appSecret"].string else {
         throw BluePicError.IO("Failed to obtain IBM Push credentials.")
     }
 
-    let ibmPushProperties = IbmPushProps(url: url, adminUrl: adminUrl, secret: secret)
+    let ibmPushProperties = IbmPushProps(appGuid: appGuid, url: url, adminUrl: adminUrl, secret: secret)
     return ibmPushProperties
   }
 

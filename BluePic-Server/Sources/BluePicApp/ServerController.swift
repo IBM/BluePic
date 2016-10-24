@@ -81,7 +81,7 @@ public class ServerController {
     // MCA credentials
     credentials.register(plugin: MobileClientAccessKituraCredentialsPlugin())
 
-    pushNotificationsClient = PushNotifications(bluemixRegion: PushNotifications.Region.US_SOUTH, bluemixAppGuid: mobileClientAccessProps.clientId, bluemixAppSecret: ibmPushProps.secret)
+    pushNotificationsClient = PushNotifications(bluemixRegion: PushNotifications.Region.US_SOUTH, bluemixAppGuid: ibmPushProps.appGuid, bluemixAppSecret: ibmPushProps.secret)
     
     // Serve static content from "public"
     //router.all("/", middleware: StaticFileServer())
@@ -537,7 +537,7 @@ extension ServerController: ServerProtocol {
       next()
       return
     }
-    
+
     readImage(database: database, imageId: imageId) { jsonImage in
       if let jsonImage = jsonImage {
         let apnsSettings = Notification.Settings.Apns(badge: nil, category: "imageProcessed", iosActionKey: nil, sound: nil, type: ApnsType.DEFAULT, payload: jsonImage.dictionaryObject)
