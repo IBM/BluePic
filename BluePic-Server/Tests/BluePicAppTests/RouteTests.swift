@@ -404,7 +404,7 @@ class RouteTests: XCTestCase {
     
     let req = HTTP.request(requestOptions) { resp in
       if let resp = resp {
-        XCTAssertNotEqual(resp.statusCode.rawValue, 200)
+        XCTAssertEqual(resp.statusCode.rawValue, 200)
       }
       pushExpectation.fulfill()
     }
