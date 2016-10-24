@@ -299,7 +299,7 @@ extension FeedViewModel {
     ///
     /// - returns: A view if applicable
     func viewForFooterInSection(_ section: Int, tableView: UITableView) -> UIView? {
-        if section == 1, BluemixDataManager.SharedInstance.hasReceievedInitialImages, imageDataArray.count == 0, let sectionFooter = tableView.dequeueReusableHeaderFooterView(withIdentifier: "EmptyFeedFooterView") as? EmptyFeedFooterView {
+        if section == 1, BluemixDataManager.SharedInstance.hasReceievedInitialImages, imageDataArray.count == 0, searchQuery == nil, let sectionFooter = tableView.dequeueReusableHeaderFooterView(withIdentifier: "EmptyFeedFooterView") as? EmptyFeedFooterView {
             sectionFooter.userHasNoImagesLabel.text = sectionFooter.kUserHasNoImagesLabelText
             return sectionFooter
         }
@@ -313,7 +313,7 @@ extension FeedViewModel {
     ///
     /// - returns: height as CGFloat
     func heightForFooterInSection(_ section: Int, tableView: UITableView) -> CGFloat {
-        if section == 1, BluemixDataManager.SharedInstance.hasReceievedInitialImages, imageDataArray.count == 0 {
+        if section == 1, BluemixDataManager.SharedInstance.hasReceievedInitialImages, imageDataArray.count == 0, searchQuery == nil {
             return tableView.frame.size.height
         }
         return 0
