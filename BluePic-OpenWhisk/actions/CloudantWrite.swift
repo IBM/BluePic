@@ -61,10 +61,7 @@ func main(args: [String:Any]) -> [String:Any] {
             req.end(data);
         }
     }
-    
-    //workaround for JSON parsing defect in container
-    str = str.replacingOccurrences(of: "\"", with: "\\\"")
-    
+
     result = [
         "cloudantId": cloudantId,
         "cloudantResult": str

@@ -74,10 +74,7 @@ func main(args:[String:Any]) -> [String:Any] {
         }
     }
     req.end(requestBody)
-    
-    //workaround for JSON parsing defect in container
-    str = str.replacingOccurrences(of: "\"", with: "\\\"")
-    headerValue = headerValue.replacingOccurrences(of: "\"", with: "\\\"")
+
     result = [
         "authResponse": "\(str)",
         "authHeader": "\(headerValue)"

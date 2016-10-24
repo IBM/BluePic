@@ -84,9 +84,7 @@ func main(args: [String:Any]) -> [String:Any] {
         
         var writeJSON: JSON = [:]
         if var documentUnwrapped = document.rawString() {
-            
-            //workaround for JSON parsing defect in container
-            documentUnwrapped = documentUnwrapped.replacingOccurrences(of: "\"", with: "\\\"")
+
             // write the results back to cloudant
             let cloudantWriteInvocation = Whisk.invoke(actionNamed: "/\(targetNamespace)/bluepic/cloudantWrite", withParameters: [
                 "cloudantId": imageId,

@@ -47,9 +47,7 @@ func main(args:[String:Any]) -> [String:Any] {
         }
     }
     req.end("--request body (ignore this value)--");
-    
-    //workaround for JSON parsing defect in container
-    str = str.replacingOccurrences(of: "\"", with: "\\\"")
+
     result = [
         "response": "\(str)"
     ]

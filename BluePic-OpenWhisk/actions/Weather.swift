@@ -54,9 +54,6 @@ func main(args: [String:Any]) -> [String:Any] {
         "}}"
     }
     
-    //workaround for JSON parsing defect in container
-    str = str.replacingOccurrences(of: "\"", with: "\\\"")
-    
     result = [
         "weather": "\(str)"
     ]

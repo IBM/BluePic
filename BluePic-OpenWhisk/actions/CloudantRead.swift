@@ -48,10 +48,7 @@ func main(args: [String:Any]) -> [String:Any] {
         }
     }
     req.end();
-    
-    //workaround for JSON parsing defect in container
-    str = str.replacingOccurrences(of: "\"", with: "\\\"")
-    
+
     result = [
         "document": str
     ]

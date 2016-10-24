@@ -41,10 +41,7 @@ func main(args:[String:Any]) -> [String:Any] {
     }
     
     str = "[\(str)]"
-    
-    //workaround for JSON parsing defect in container
-    str = str.replacingOccurrences(of: "\"", with: "\\\"")
-    
+
     result = [
         "alchemy": "\(str)"
     ]
