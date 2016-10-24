@@ -1,7 +1,7 @@
 # Setup OpenWhisk
 1) Create an OpenWhisk account on the [Welcome to Bluemix OpenWhisk](https://new-console.ng.bluemix.net/openwhisk/) page.
 
-2) Download and install the [OpenWhisk CLI](https://new-console.ng.bluemix.net/openwhisk/cli) zip with an executable inside. Once downloaded, unzip the file and either start using the `wsk` command right there or add the wsk executable to your path. Then set your OpenWhisk namespace and auth key as mentioned in step 2 of the "Configure CLI" page.
+2) Download and install the [OpenWhisk CLI](https://new-console.ng.bluemix.net/openwhisk/cli) zip with an executable inside. Once downloaded, unzip the file and either start using the `wsk` command right there or add the wsk executable to your `PATH`. Then set your OpenWhisk namespace and auth key as mentioned in step 2 of the "Configure CLI" page.
 
 3) On that same [OpenWhisk CLI](https://new-console.ng.bluemix.net/openwhisk/cli) page, you can find the values needed to populate the [properties.json](../BluePic-Server/properties.json) file under the `Bluepic-Server` directory.
 
@@ -10,10 +10,11 @@
     `wsk property set --apihost <hostName> --auth <authKey> --namespace "<namespace>"`
 
 2. Take the value after `--apihost` and put it as the `hostName` value in `properties.json`.
+
 3. Next, insert the value after `--namespace`, within the existing `urlPath` value in `properties.json`. In the `<namespace>` spot to be exact:
 `"/api/v1/namespaces/<namespace>/actions/bluepic/processImage?blocking=false"`
-4. Lastly, take the value after `--auth` and put it as the `authToken` value in `properties.json`. That value will later be converted to a base64 encoded string that OpenWhisk needs for authentication.
 
+4. Lastly, take the value after `--auth` and put it as the `authToken` value in `properties.json`. That value will later be converted to a base64 encoded string that OpenWhisk needs for authentication.
 
 # Installing OpenWhisk Actions for BluePic
 ## Service Credentials
