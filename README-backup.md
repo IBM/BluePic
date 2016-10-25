@@ -1,6 +1,6 @@
 # BluePic
 
-[![Build Status - Master](https://travis-ci.org/IBM-Swift/BluePic.svg?branch=master)](https://travis-ci.org/IBM-Swift/BluePic)
+[![Build Status - Develop](https://travis-ci.org/IBM-Swift/BluePic.svg?branch=develop)](https://travis-ci.org/IBM-Swift/BluePic)
 ![Bluemix Deployments](https://deployment-tracker.mybluemix.net/stats/c45eeb765e77bf2bffd747e8d910e37d/badge.svg)
 
 BluePic is a photo and image sharing sample application that allows you to take photos and share them with other BluePic users. This sample application demonstrates how to leverage, in a mobile iOS 10 application, a Kitura-based server application written in Swift.
@@ -23,6 +23,23 @@ Optionally, if you'd like to run the BluePic Kitura-based server using Xcode, yo
 As shown in the table above, the iOS component of the BluePic app uses the default toolchain (Swift 3.0) prepackaged with Xcode 8. At the moment, any other versions of Xcode are not guaranteed to work, but you may view previous [releases](https://github.com/IBM-Swift/BluePic/releases) for possibly compatability with older versions of Xcode (i.e. Xcode 7.3.1).. You may get unexpected behavior and/or errors if attempting to use other versions of Xcode or Swift.
 
 ## Getting started
+There are *two ways* you can compile and provision BluePic on Bluemix. Method 1 uses the [IBM Cloud Tools for Swift](https://ibm-cloud-tools.mybluemix.net/) application. Using IBM Cloud Tools for Swift is the easiest and quickest path to get BluePic up and running. Method 2 is manual, does not leverage this tool, and, therefore, takes longer but you get to understand exactly the steps that are happening behind the scenes. Regardless of what path you choose, there are a few optional steps you can complete for additional functionality.
+
+## Method 1: IBM Cloud Tools for Swift
+Once you have the IBM Cloud Tools for Swift application installed for Mac, you can open it to get started. On the screen for creating a new project, you will find the option to create a BluePic Project. Select that option and name your project/runtime. This will kick off a process that automatically does the following:
+
+- Installs curl on your local system (requires Homebrew).
+- Clones the Bluepic repo on your Mac.
+- Creates your Bluemix runtime (i.e Kitura-based server) and provisions the Bluemix services that BluePic can leverage.
+- Populates the Cloudant and Object Storage services with demo data.
+- Updates the `cloud_config.json` file with all the service credentials needed by the Kitura-based server.
+- Updates the `bluemix.plist` file [in the Xcode project] so that the iOS application connects to the remote Kitura-based server running on Bluemix.
+
+After the IBM Cloud Tools for Swift completes the steps above, you can [run the application](#running-the-ios-app). If desired, you can also configured the Bluemix services that were provisioned in order to enable [optional features](#optional-features-to-configure) in BluePic (such as Facebook authentication and Push notifications).
+
+## Method 2: Manual configuration and deployment
+Instead of using IBM Cloud Tools for Swift, which gives you a seamless compilation and provisioning experience, you can follow the steps outlined in this section if you'd like to take a peek under the hood!
+
 ### 1. Install system dependencies
 The following system level dependencies should be installed on OS X using [Homebrew](http://brew.sh/):
 
@@ -150,6 +167,12 @@ Now, make sure your app is using the push enabled provisioning profile you creat
 BluePic leverages OpenWhisk actions written in Swift for accessing the Alchemy Vision and Weather APIs. For instructions on how to configure OpenWhisk, see the following [page](Docs/OpenWhisk.md). You will find there details on configuration and invocation of OpenWhisk commands.
 
 ### 5. Redeploy BluePic app to Bluemix
+#### Using the IBM Cloud Tools for Swift
+After configuring the optional features, you should redeploy the BluePic app to Bluemix. If you used the IBM Cloud Tools for Swift to initially deploy the BluePic app to Bluemix, you can also use this tool to redeploy the app. On your project's page in the IBM Cloud Tools for Swift, you should find an entry for the BluePic app runtime. On that entry, you will find options for deploying the runtime to Bluemix, as shown here:
+
+<p align="center"><img src="Imgs/cloud-tools-deploy.png"  alt="Deploy to server" height=250 border=0 /></p>
+
+#### Using the Cloud Foundry command line
 After configuring the optional features, you should redeploy the BluePic app to Bluemix. You can use the Cloud Foundry [command line](https://docs.cloudfoundry.org/devguide/cf-cli/install-go-cli.html) to do so. Once you have logged in to Bluemix using the command line, you can execute `cf push` from the root folder of this repo on your local file system. This will push the application code and configuration to Bluemix.
 
 ## Running the iOS app
@@ -173,6 +196,9 @@ BluePic was designed with a lot of useful features. To see further information a
 
 ## About BluePic
 To learn more about BluePic's folder structure, its architecture, and the Swift packages it depends on, see the [About](Docs/About.md) page.
+
+## Reporting issues against the IBM Cloud Tools for Swift
+You can use the [dW Answers](https://developer.ibm.com/answers/topics/cloud-tools-for-swift.html) web site to ask a question and/or report any issues you encounter while using the IBM Cloud Tools for Swift. Just make sure you use the tag `cloud-tools-for-swift` for the questions you post on dW Answers.
 
 ## Privacy Notice
 The BluePic-Server application includes code to track deployments to [IBM Bluemix](https://www.bluemix.net/) and other Cloud Foundry platforms. The following information is sent to a [Deployment Tracker](https://github.com/IBM-Bluemix/cf-deployment-tracker-service) service on each deployment:
