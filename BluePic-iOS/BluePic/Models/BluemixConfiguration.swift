@@ -23,7 +23,6 @@ class BluemixConfiguration: NSObject {
     fileprivate let kIsLocalKey = "isLocal"
     fileprivate let kAppRouteLocal = "appRouteLocal"
     fileprivate let kAppRouteRemote = "appRouteRemote"
-    fileprivate let kBluemixAppGUIDKey = "bluemixAppGUID"
     fileprivate let kBluemixAppRegionKey = "bluemixAppRegion"
     fileprivate let kBluemixPushAppGUIDKey = "pushAppGUID"
     fileprivate let kBluemixPushAppClientSecret = "pushClientSecret"
@@ -31,7 +30,6 @@ class BluemixConfiguration: NSObject {
 
     let localBaseRequestURL: String
     let remoteBaseRequestURL: String
-    let appGUID: String
     let appRegion: String
     var pushAppGUID: String = ""
     var pushClientSecret: String = ""
@@ -46,10 +44,8 @@ class BluemixConfiguration: NSObject {
 
         if var localBaseRequestURL = Utils.getStringValueWithKeyFromPlist(kBluemixKeysPlistName, key: kAppRouteLocal),
                 var remoteBaseRequestURL = Utils.getStringValueWithKeyFromPlist(kBluemixKeysPlistName, key: kAppRouteRemote),
-                let appGUID = Utils.getStringValueWithKeyFromPlist(kBluemixKeysPlistName, key: kBluemixAppGUIDKey),
                 let appRegion = Utils.getStringValueWithKeyFromPlist(kBluemixKeysPlistName, key: kBluemixAppRegionKey),
                 let isLocal = Utils.getBoolValueWithKeyFromPlist(kBluemixKeysPlistName, key: kIsLocalKey) {
-            self.appGUID = appGUID
             self.appRegion = appRegion
             self.isLocal = isLocal
             if let lastChar = localBaseRequestURL.characters.last, lastChar == "/" as Character {

@@ -101,9 +101,7 @@ class BluemixDataManager: NSObject {
      */
     func initilizeBluemixAppRoute() {
 
-        BMSClient.sharedInstance.initialize(bluemixAppRoute: bluemixConfig.remoteBaseRequestURL,
-                                            bluemixAppGUID: bluemixConfig.appGUID,
-                                            bluemixRegion: bluemixConfig.appRegion)
+        BMSClient.sharedInstance.initialize(bluemixRegion: bluemixConfig.appRegion)
         BMSClient.sharedInstance.requestTimeout = 10.0
 
     }

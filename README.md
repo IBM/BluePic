@@ -90,7 +90,7 @@ Go to the `BluePic-iOS` directory and open the BluePic workspace with Xcode usin
 
 1. You should set the `isLocal` value to `YES` if you'd like to use a locally running server; if you set the value to `NO`, then you will be accessing the server instance running on Bluemix.
 
-1. To get the `appRouteRemote` and `bluemixAppGUID` value, you should go to your application's page on Bluemix. There, you will find a `MOBILE OPTIONS` link near the top right. Clicking on it should open up a view that displays your `route` which maps to the `appRouteRemote` key in the plist. Make sure to include the `http://` protocol in your `appRouteRemote` and to exclude a forward slash at the end of the url. You will also see an `App GUID` value which maps to the `bluemixAppGUID` key in the plist.
+1. To get the `appRouteRemote` value, you should go to your application's page on Bluemix. There, you will find a `View App` button near the top right. Clicking on it should open up your app in a new tab, the url for this page is your `route` which maps to the `appRouteRemote` key in the plist. Make sure to include the `http://` protocol in your `appRouteRemote` and to exclude a forward slash at the end of the url.
 
 1. Lastly, we need to get the value for `bluemixAppRegion`, which can be one of three options currently:
 
