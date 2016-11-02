@@ -34,11 +34,19 @@ echo "scriptsFolder: $scriptsFolder"
 # Parse input parameters
 source "$scriptsFolder/parse_inputs.sh"
 
+# Validate region provided
 if [ "$region" == "" ] ; then
-  region="dal"
-  echo "Using default region 'dal'."
-elif [ $region != "dal" ] && [ $region != "lon" ] ; then
-  echo "WARNING: Region must be set to a valid Object Storage location, either dal or lon."
+  region="dallas"
+  echo "Using default region: dallas"
+elif [ $region != "dallas" ] && [ $region != "london" ] ; then
+  echo "WARNING: Region must be set to a valid Object Storage location, either dallas or london."
+fi
+
+# Map region to prefix for constructing URL
+if [ $region == "london" ] ; then
+  $region="lon"
+else
+  $region="dal"
 fi
 
 # Variables
