@@ -70,7 +70,7 @@ To populate your Object Storage instance with sample data, you need to obtain th
 - `userid` - The userid for your Object Storage instance.
 - `password` - The password for your Object Storage instance.
 - `projectid` - The project ID for your Object Storage instance.
-- `region` - Optionally, you can set the region for Object Storage to save your data in, either `lon` or `dal` for London and Dallas. If not set, region defaults to Dallas.
+- `region` - Optionally, you can set the region for Object Storage to save your data in, either `london` for London or `dallas` for Dallas. If not set, region defaults to `dallas`.
 
 You can obtain the above credentials by accessing your application's page on Bluemix and clicking on the `Show Credentials` twisty found on your Object Storage instance. Once you have these credentials,  navigate to the `./Cloud-Scripts/Object-Storage/` directory in the BluePic repo and execute the `populator.sh` script as shown below:
 
