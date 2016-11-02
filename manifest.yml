@@ -2,7 +2,7 @@
 declared-services:
   BluePic-Cloudant:
     label: cloudantNoSQLDB
-    plan: Shared
+    plan: Lite
   BluePic-Object-Storage:
     label: Object-Storage
     plan: Free
