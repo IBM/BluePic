@@ -44,9 +44,9 @@ fi
 
 # Map region to prefix for constructing URL
 if [ $region == "london" ] ; then
-  $region="lon"
+  region="lon"
 else
-  $region="dal"
+  region="dal"
 fi
 
 # Variables
