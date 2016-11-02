@@ -31,7 +31,7 @@ echo "Services deleted."
 
 # Create services
 echo "Creating services..."
-cf create-service cloudantNoSQLDB Shared "BluePic-Cloudant"
+cf create-service cloudantNoSQLDB Lite "BluePic-Cloudant"
 cf create-service Object-Storage Free "BluePic-Object-Storage"
 cf create-service AdvancedMobileAccess Gold "BluePic-Mobile-Client-Access"
 cf create-service imfpush Basic "BluePic-IBM-Push"
