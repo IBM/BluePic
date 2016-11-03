@@ -13,7 +13,7 @@ The back-end components (i.e. Kitura-based server and OpenWhisk actions) and the
 		Component | Swift Version
 		--- | ---
 		Kitura-based server | `3.0`
-		OpenWhisk actions | `DEVELOPMENT-SNAPSHOT-2016-05-03-a`
+		OpenWhisk actions | `3.0`
 		iOS App | Xcode 8 default (`Swift 3.0`)
 
 You can download the development snapshots of the Swift binaries by following this [link](https://swift.org/download/). Compatibility with other Swift versions is not guaranteed.
