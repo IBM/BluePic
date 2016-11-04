@@ -19,16 +19,16 @@
 for i in "$@"
 do
 case $i in
-    --userid=*)
-    userid="${i#*=}"
+    --userId=*)
+    userId="${i#*=}"
     shift # past argument=value
     ;;
     --password=*)
     password="${i#*=}"
     shift # past argument=value
     ;;
-    --projectid=*)
-    projectid="${i#*=}"
+    --projectId=*)
+    projectId="${i#*=}"
     shift # past argument=value
     ;;
     --region=*)
@@ -42,6 +42,6 @@ esac
 done
 
 echo "Variables:"
-echo -e "  userid: $userid"
-echo -e "  projectid: $projectid"
+echo -e "  userId: $userId"
+echo -e "  projectId: $projectId"
 echo -e "  region: $region"
