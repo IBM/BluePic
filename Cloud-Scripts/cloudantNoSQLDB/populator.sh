@@ -28,7 +28,7 @@ source "$scriptsFolder/parse_inputs.sh"
 
 # Variables (object storage - these are needed for storing URL in Cloudant database)
 accessPoint=dal.objectstorage.open.softlayer.com
-publicUrl=https://$accessPoint/v1/AUTH_$projectid
+publicUrl=https://$accessPoint/v1/AUTH_$projectId
 
 # Load images JSON file and expand variables in the JSON document
 # As a reference, see http://stackoverflow.com/questions/10683349/forcing-bash-to-expand-variables-in-a-string-loaded-from-a-file

@@ -72,27 +72,27 @@ To populate your Cloudant database instance with sample data, you need to obtain
 
 - `username` - The username for your Cloudant instance.
 - `password` - The password for your Cloudant instance.
-- `projectid` - The project ID for your Object Storage instance.
+- `projectId` - The project ID for your Object Storage instance.
 
 You can obtain the above credentials by accessing your application's page on Bluemix and clicking on the `Show Credentials` twisty found on your Cloudant service and Object Storage service instances. Once you have these credentials, navigate to the `Cloud-Scripts/cloudantNoSQLDB/` directory in the BluePic repo and execute the `populator.sh` script as shown below:
 
 ```bash
-./populator.sh --username=<cloudant username> --password=<cloudant password> --projectid=<object storage projectid>
+./populator.sh --username=<cloudant username> --password=<cloudant password> --projectId=<object storage projectId>
 
 ```
 
 ### 5. Populate Object Storage
 To populate your Object Storage instance with sample data, you need to obtain the following credential values (region is optional):
 
-- `userid` - The userid for your Object Storage instance.
+- `userId` - The userId for your Object Storage instance.
 - `password` - The password for your Object Storage instance.
-- `projectid` - The project ID for your Object Storage instance.
+- `projectId` - The project ID for your Object Storage instance.
 - `region` - Optionally, you can set the region for Object Storage to save your data in, either `london` for London or `dallas` for Dallas. If not set, region defaults to `dallas`.
 
 You can obtain the above credentials by accessing your application's page on Bluemix and clicking on the `Show Credentials` twisty found on your Object Storage instance. Once you have these credentials,  navigate to the `./Cloud-Scripts/Object-Storage/` directory in the BluePic repo and execute the `populator.sh` script as shown below:
 
 ```bash
-./populator.sh --userid=<object storage userid> --password=<object storage password> --projectid=<object storage projectid> --region=<object storage region>
+./populator.sh --userId=<object storage userId> --password=<object storage password> --projectId=<object storage projectId> --region=<object storage region>
 ```
 
 ### 6. Update `BluePic-Server/cloud_config.json` file

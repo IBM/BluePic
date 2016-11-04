@@ -27,8 +27,8 @@ case $i in
     password="${i#*=}"
     shift # past argument=value
     ;;
-    --projectid=*)
-    projectid="${i#*=}"
+    --projectId=*)
+    projectId="${i#*=}"
     shift # past argument=value
     ;;
     *)
@@ -43,4 +43,4 @@ database=bluepic_db
 echo "Variables:"
 echo -e "  username: $username"
 echo -e "  database: $database"
-echo -e "  projectid: $projectid"
+echo -e "  projectId: $projectId"
