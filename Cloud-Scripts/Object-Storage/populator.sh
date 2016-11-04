@@ -65,7 +65,7 @@ container5=anonymous
 echo "publicUrl: $publicUrl"
 
 # Get access token
-authToken=`curl -i -H "Content-Type: application/json" -d "{ \"auth\": { \"identity\": { \"methods\": [ \"password\" ], \"password\": { \"user\": { \"id\": \"$userid\", \"password\": \"$password\" } } }, \"scope\": { \"project\": { \"id\": \"$projectId\" } } } }" $authUrl | grep X-Subject-Token | awk '{print $2}' | tr -cd '[[:alnum:]]._-'`
+authToken=`curl -i -H "Content-Type: application/json" -d "{ \"auth\": { \"identity\": { \"methods\": [ \"password\" ], \"password\": { \"user\": { \"id\": \"$userId\", \"password\": \"$password\" } } }, \"scope\": { \"project\": { \"id\": \"$projectId\" } } } }" $authUrl | grep X-Subject-Token | awk '{print $2}' | tr -cd '[[:alnum:]]._-'`
 
 # Get all containers in this account and delete their contents (and delete them as well)
 containers=$(curl $publicUrl -X GET -H "Content-Length: 0" -H "X-Auth-Token: $authToken")
