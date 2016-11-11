@@ -2,6 +2,7 @@ branches:
   only:
     - master
     - develop
+    - credential_test
     - /^issue.*$/
 
 matrix:
