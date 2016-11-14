@@ -41,7 +41,7 @@ After the IBM Cloud Tools for Swift completes the steps above, you can [run the 
 Instead of using IBM Cloud Tools for Swift, which gives you a seamless compilation and provisioning experience, you can follow the steps outlined in this section if you'd like to take a peek under the hood!
 
 ### 1. Install system dependencies
-The following system level dependencies should be installed on OS X using [Homebrew](http://brew.sh/):
+The following system level dependencies should be installed on macOS using [Homebrew](http://brew.sh/):
 
 ```bash
 brew install curl
