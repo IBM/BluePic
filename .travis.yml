@@ -2,7 +2,6 @@ branches:
   only:
     - master
     - develop
-    - credential_test
     - /^issue.*$/
 
 matrix:
@@ -15,8 +14,8 @@ matrix:
 
 before_install:
   - git submodule update --init --remote --merge --recursive
-  - git clone -b general_credentials https://$GITHUB_USER:$GITHUB_PWD@github.com/IBM-Swift/BluePic-Testing-Credentials.git
+  - git clone -b master https://$GITHUB_USER:$GITHUB_PWD@github.com/IBM-Swift/Testing-Credentials.git
 
 script:
-  - cd BluePic-Server && ./Package-Builder/build-package.sh $TRAVIS_BUILD_DIR $TRAVIS_BUILD_DIR/BluePic-Testing-Credentials/BluePic/ci
+  - cd BluePic-Server && ./Package-Builder/build-package.sh $TRAVIS_BUILD_DIR $TRAVIS_BUILD_DIR/Testing-Credentials/BluePic/ci
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cd $TRAVIS_BUILD_DIR/BluePic-iOS; xcodebuild -workspace BluePic.xcworkspace/ -scheme BluePic -sdk iphonesimulator10.0 ONLY_ACTIVE_ARCH=NO; fi
