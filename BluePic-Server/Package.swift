@@ -28,7 +28,6 @@ let package = Package(
     ),
   ],
   dependencies: [
-    .Package(url: "https://github.com/IBM-Swift/BlueCryptor.git", "0.7.45"),
     .Package(url: "https://github.com/IBM-Swift/Kitura.git", majorVersion: 1, minor: 1),
     .Package(url: "https://github.com/IBM-Swift/Kitura-CouchDB.git", majorVersion: 1, minor: 1),
     .Package(url: "https://github.com/IBM-Swift/Swift-cfenv.git", majorVersion: 1, minor: 8),
