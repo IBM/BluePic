@@ -24,8 +24,14 @@
 */
 public enum BMSCoreError: Error {
     
+    
+    /// The URL provided in the `Request` initializer is invalid.
     case malformedUrl
+    
+    /// Need to call the `BMSClient.initialize(bluemixAppRoute:bluemixAppGUID:bluemixRegion:)` method.
     case clientNotInitialized
+    
+    /// The network request failed due to a 4xx or 5xx status code.
 	case serverRespondedWithError
     
     static let domain = "com.ibm.mobilefirstplatform.clientsdk.swift.bmscore"
@@ -52,8 +58,14 @@ public enum BMSCoreError: Error {
 */
 public enum BMSCoreError: Int, ErrorType {
     
+    
+    /// The URL provided in the `Request` initializer is invalid.
     case malformedUrl
+    
+    /// Need to call the `BMSClient.initialize(bluemixAppRoute:bluemixAppGUID:bluemixRegion:)` method.
     case clientNotInitialized
+    
+    /// The network request failed due to a 4xx or 5xx status code.
     case serverRespondedWithError
     
     static let domain = "com.ibm.mobilefirstplatform.clientsdk.swift.bmscore"

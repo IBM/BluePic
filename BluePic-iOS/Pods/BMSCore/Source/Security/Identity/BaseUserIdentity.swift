@@ -19,7 +19,7 @@
     
     
 
-/// This class represents the base user identity class, with default methods and keys
+// This class represents the base user identity class, with default methods and keys
 open class BaseUserIdentity: UserIdentity {
     
     
@@ -55,7 +55,11 @@ open class BaseUserIdentity: UserIdentity {
 
     }
     
-    public init(map: [String:AnyObject]?) {
+    public convenience init(map: [String:AnyObject]?) {
+        self.init(map : map as [String:Any]?)
+    }
+    
+    public init(map: [String:Any]?) {
         guard let json = map as? [String:String] else {
             jsonData = ([:])
             return
@@ -82,7 +86,7 @@ open class BaseUserIdentity: UserIdentity {
     
     
     
-/// This class represents the base user identity class, with default methods and keys
+// This class represents the base user identity class, with default methods and keys
 public class BaseUserIdentity: UserIdentity {
     
     

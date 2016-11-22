@@ -22,7 +22,7 @@ import WatchKit
 
     
 
-/// This class represents the base device identity class, with default methods and keys
+// This class represents the base device identity class, with default methods and keys
 open class BaseDeviceIdentity: DeviceIdentity {
     
     
@@ -78,8 +78,11 @@ open class BaseDeviceIdentity: DeviceIdentity {
             jsonData[BaseDeviceIdentity.Key.model] =  UIDevice.current.model
         #endif
 	}
+    public convenience init(map: [String:AnyObject]?) {
+        self.init(map : map as [String:Any]?)
+    }
     
-    public init(map: [String:AnyObject]?) {
+    public init(map: [String:Any]?) {
         guard let json = map as? [String:String] else {
             jsonData = ([:])
             return
@@ -106,7 +109,7 @@ open class BaseDeviceIdentity: DeviceIdentity {
     
     
     
-/// This class represents the base device identity class, with default methods and keys
+// This class represents the base device identity class, with default methods and keys
 public class BaseDeviceIdentity: DeviceIdentity {
     
     

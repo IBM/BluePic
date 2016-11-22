@@ -150,7 +150,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         BMSClient.sharedInstance.authorizationManager = MCAAuthorizationManager.sharedInstance
         FacebookAuthenticationManager.sharedInstance.register()
 
-        return FacebookAuthenticationManager.sharedInstance.onFinishLaunching(application, withOptions:  launchOptions)
+        return FacebookAuthenticationManager.sharedInstance.onFinishLaunching(application: application, withOptions:  launchOptions as? [UIApplicationLaunchOptionsKey : Any])
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -183,7 +183,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
 
         if let sourceApp = options[UIApplicationOpenURLOptionsKey.sourceApplication] as? String {
-            return FacebookAuthenticationManager.sharedInstance.onOpenURL(app, url: url, sourceApplication: sourceApp, annotation: "")
+            return FacebookAuthenticationManager.sharedInstance.onOpenURL(application: app, url: url, sourceApplication: sourceApp, annotation: "")
         } else {
             return false
         }

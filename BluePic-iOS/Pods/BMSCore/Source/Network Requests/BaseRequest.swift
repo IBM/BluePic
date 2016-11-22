@@ -24,7 +24,24 @@
 */
 public enum HttpMethod: String {
     
-    case GET, POST, PUT, DELETE, TRACE, HEAD, OPTIONS, CONNECT, PATCH
+    ///
+    case GET
+    ///
+    case POST
+    ///
+    case PUT
+    ///
+    case DELETE
+    ///
+    case TRACE
+    ///
+    case HEAD
+    ///
+    case OPTIONS
+    /// 
+    case CONNECT
+    ///
+    case PATCH
 }
 
     
@@ -32,7 +49,7 @@ public enum HttpMethod: String {
 // MARK: - BMSCompletionHandler
 
 /**
-    The type of callback sent with BMS network requests.
+    Callback for network requests made with `Request`.
 */
 public typealias BMSCompletionHandler = (Response?, Error?) -> Void
 
@@ -42,9 +59,9 @@ public typealias BMSCompletionHandler = (Response?, Error?) -> Void
 /**
     Sends HTTP network requests. 
      
-    Analytics data is automatically gathered for all requests initiated by this class.
-
-    When building a Request object, all components of the HTTP request must be provided in the initializer, except for the `requestBody`, which can be supplied as Data when sending the request via the `send()` method.
+    When building a BaseRequest object, all components of the HTTP request must be provided in the initializer, except for the `requestBody`, which can be supplied as Data when sending the request via `send(requestBody:completionHandler:)`.
+     
+    - important: It is recommended to use the `Request` class instead of `BaseRequest`.
 */
 open class BaseRequest: NSObject, URLSessionTaskDelegate {
     
@@ -72,7 +89,7 @@ open class BaseRequest: NSObject, URLSessionTaskDelegate {
     /// The query parameters to append to the `resourceURL`.
     public var queryParameters: [String: String]?
     
-    /// The request body is set when sending the request via the `send()` method.
+    /// The request body is set when sending the request via `send(requestBody:completionHandler:)`.
     public private(set) var requestBody: Data?
     
     /// Determines whether request should follow HTTP redirects.
@@ -88,10 +105,6 @@ open class BaseRequest: NSObject, URLSessionTaskDelegate {
     // The request timeout is set in this URLSession's configuration.
     // Public access required by BMSSecurity framework.
     public var networkSession: URLSession!
-    
-    // The time at which the request is sent.
-    // Public access required by BMSAnalytics framework.
-    open private(set) var startTime: TimeInterval = 0.0
     
     // The unique ID to keep track of each request.
     // Public access required by BMSAnalytics framework.
@@ -189,8 +202,6 @@ open class BaseRequest: NSObject, URLSessionTaskDelegate {
             self.headers["x-mfp-analytics-metadata"] = requestMetadata
         }
         
-        self.startTime = Date.timeIntervalSinceReferenceDate
-        
         if let url = URL(string: self.resourceUrl) {
             
             buildAndSendRequest(url: url, callback: completionHandler)
@@ -208,13 +219,27 @@ open class BaseRequest: NSObject, URLSessionTaskDelegate {
     
     private func buildAndSendRequest(url: URL, callback: BMSCompletionHandler?) {
         
-        // A callback that builds the Response object and passes it to the user
-        let buildAndSendResponse = {
-            (data: Data?, response: URLResponse?, error: Error?) -> Void in
+        // The time at which the request is sent.
+        let startTime = Int64(Date.timeIntervalSinceReferenceDate * 1000)
+        
+        // Our internal completion handler that does 2 things:
+        // 1) Builds the Response object and passes it to the user
+        // 2) Records network metadata for Analytics
+        let buildAndSendResponse = { (data: Data?, response: URLResponse?, error: Error?) -> Void in
             
             let networkResponse = Response(responseData: data, httpResponse: response as? HTTPURLResponse, isRedirect: self.allowRedirects)
 
             callback?(networkResponse, error)
+            
+            // Log network request metadata
+            if BMSURLSession.shouldRecordNetworkMetadata {
+                
+                let dataSent = Int64(self.requestBody?.count ?? 0)
+                let dataReceived = Int64(data?.count ?? 0)
+                let requestMetadata = BMSURLSession.getRequestMetadata(response: response, bytesSent: dataSent, bytesReceived: dataReceived, trackingId: self.trackingId, startTime: startTime, url: url)
+                
+                Analytics.log(metadata: requestMetadata)
+            }
         }
         
         var requestUrl = url
@@ -323,7 +348,24 @@ open class BaseRequest: NSObject, URLSessionTaskDelegate {
 */
 public enum HttpMethod: String {
 
-    case GET, POST, PUT, DELETE, TRACE, HEAD, OPTIONS, CONNECT, PATCH
+    ///
+    case GET
+    ///
+    case POST
+    ///
+    case PUT
+    ///
+    case DELETE
+    ///
+    case TRACE
+    ///
+    case HEAD
+    ///
+    case OPTIONS
+    ///
+    case CONNECT
+    ///
+    case PATCH
 }
     
     
@@ -331,7 +373,7 @@ public enum HttpMethod: String {
 // MARK: - BMSCompletionHandler
 
 /**
-    The type of callback sent with BMS network requests.
+     The type of callback sent with network requests made with `Request`.
 */
 public typealias BMSCompletionHandler = (Response?, NSError?) -> Void
     
@@ -340,10 +382,11 @@ public typealias BMSCompletionHandler = (Response?, NSError?) -> Void
 
 /**
     Sends HTTP network requests.
-     
-    Analytics data is automatically gathered for all requests initiated by this class.
 
-    When building a Request object, all components of the HTTP request must be provided in the initializer, except for the `requestBody`, which can be supplied as NSData when sending the request via the `send()` method.
+    When building a BaseRequest object, all components of the HTTP request must be provided in the initializer, except for the `requestBody`, which can be supplied as Data when sending the request via `send(requestBody:completionHandler:)`.
+
+     - important: It is recommended to use the `Request` class instead of `BaseRequest`.
+
 */
 public class BaseRequest: NSObject, NSURLSessionTaskDelegate {
     
@@ -371,7 +414,7 @@ public class BaseRequest: NSObject, NSURLSessionTaskDelegate {
     /// Query parameters to append to the `resourceURL`.
     public var queryParameters: [String: String]?
     
-    /// The request body can be set when sending the request via the `send()` method.
+    /// The request body is set when sending the request via `send(requestBody:completionHandler:)`.
     public private(set) var requestBody: NSData?
     
     /// Determines whether request should follow HTTP redirects.
@@ -387,10 +430,6 @@ public class BaseRequest: NSObject, NSURLSessionTaskDelegate {
     // The request timeout is set in this URLSession's configuration.
     // Public access required by BMSSecurity framework.
     public var networkSession: NSURLSession!
-    
-    // The time at which the request is sent.
-    // Public access required by BMSAnalytics framework.
-    public private(set) var startTime: NSTimeInterval = 0.0
     
     // The unique ID to keep track of each request.
     // Public access required by BMSAnalytics framework.
@@ -487,8 +526,6 @@ public class BaseRequest: NSObject, NSURLSessionTaskDelegate {
             self.headers["x-mfp-analytics-metadata"] = requestMetadata
         }
         
-        self.startTime = NSDate.timeIntervalSinceReferenceDate()
-        
         if let url = NSURL(string: self.resourceUrl) {
             buildAndSendRequest(url: url, callback: completionHandler)
         }
@@ -506,13 +543,27 @@ public class BaseRequest: NSObject, NSURLSessionTaskDelegate {
     
     private func buildAndSendRequest(url url: NSURL, callback: BMSCompletionHandler?) {
     
-        // A callback that builds the Response object and passes it to the user
-        let buildAndSendResponse = {
-            (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void in
-    
+        // The time at which the request is sent.
+        let startTime = Int64(NSDate.timeIntervalSinceReferenceDate() * 1000)
+        
+        // Our internal completion handler that does 2 things:
+        // 1) Builds the Response object and passes it to the user
+        // 2) Records network metadata for Analytics
+        let buildAndSendResponse = { (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void in
+            
             let networkResponse = Response(responseData: data, httpResponse: response as? NSHTTPURLResponse, isRedirect: self.allowRedirects)
             
-            callback?(networkResponse as Response, error)
+            callback?(networkResponse, error)
+            
+            // Log network request metadata
+            if BMSURLSession.shouldRecordNetworkMetadata {
+                
+                let dataSent = Int64(self.requestBody?.length ?? 0)
+                let dataReceived = Int64(data?.length ?? 0)
+                let requestMetadata = BMSURLSession.getRequestMetadata(response: response, bytesSent: dataSent, bytesReceived: dataReceived, trackingId: self.trackingId, startTime: startTime, url: url)
+                
+                Analytics.log(metadata: requestMetadata)
+            }
         }
     
         var requestUrl = url

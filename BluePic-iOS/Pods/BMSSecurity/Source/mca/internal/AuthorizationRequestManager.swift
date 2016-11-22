@@ -27,7 +27,7 @@ public class AuthorizationRequestManager {
     var requestPath : String?
     var requestOptions : RequestOptions?
     
-    var answers: [String : AnyObject]?
+    var answers: [String : Any]?
     
     public static var overrideServerHost: String?     
     
@@ -185,7 +185,7 @@ public class AuthorizationRequestManager {
      
      - parameter jsonFailures: Collection of authentication failures
      */
-    internal func processFailures(_ jsonFailures: [String:AnyObject]?) {
+    internal func processFailures(_ jsonFailures: [String:Any]?) {
         
         guard let failures = jsonFailures else {
             return
@@ -193,7 +193,7 @@ public class AuthorizationRequestManager {
         
         let mcaAuthManager = MCAAuthorizationManager.sharedInstance
         for (realm, challenge) in failures {
-            if let handler = mcaAuthManager.challengeHandlerForRealm(realm), let unWrappedChallenge = challenge as? [String : AnyObject] {
+            if let handler = mcaAuthManager.challengeHandlerForRealm(realm), let unWrappedChallenge = challenge as? [String : Any] {
                 handler.handleFailure(unWrappedChallenge)
             }
             else {
@@ -202,13 +202,22 @@ public class AuthorizationRequestManager {
         }
     }
     
-    internal func requestFailed(_ info:[String:AnyObject]?) {
+    
+    internal func requestFailed(_ info:[String:Any]?) {
         AuthorizationRequestManager.logger.error(message: "BaseRequest failed with info: \(info == nil ? "info is nil" : String(describing: info))")
-        defaultCompletionHandler(nil, NSError(domain: BMSSecurityConstants.BMSSecurityErrorDomain, code: -1, userInfo: [NSLocalizedDescriptionKey:"\(info)"]))
+        let json = try? Utils.JSONStringify(info as AnyObject)
+        if (json != nil) {
+            defaultCompletionHandler(nil, NSError(domain: BMSSecurityConstants.BMSSecurityErrorDomain, code: -1, userInfo: [NSLocalizedDescriptionKey: json!]))
+        } else if (info != nil){
+           defaultCompletionHandler(nil, NSError(domain: BMSSecurityConstants.BMSSecurityErrorDomain, code: -1, userInfo: [NSLocalizedDescriptionKey: info!]))
+        } else {
+            defaultCompletionHandler(nil, NSError(domain: BMSSecurityConstants.BMSSecurityErrorDomain, code: -1))
+        }
+
     }
     
     
-    internal func processSuccesses(_ jsonSuccesses: [String:AnyObject]?) {
+    internal func processSuccesses(_ jsonSuccesses: [String:Any]?) {
         
         guard let successes = jsonSuccesses else {
             return
@@ -216,7 +225,7 @@ public class AuthorizationRequestManager {
         
         let mcaAuthManager = MCAAuthorizationManager.sharedInstance
         for (realm, challenge) in successes {
-            if let handler = mcaAuthManager.challengeHandlerForRealm(realm), let unWrappedChallenge = challenge as? [String : AnyObject] {
+            if let handler = mcaAuthManager.challengeHandlerForRealm(realm), let unWrappedChallenge = challenge as? [String : Any] {
                 handler.handleSuccess(unWrappedChallenge)
             }
             else {
@@ -234,7 +243,7 @@ public class AuthorizationRequestManager {
         // at this point a server response should contain a secure JSON with challenges
         do {
             let responseJson = try Utils.extractSecureJson(response)
-            if let challenges = responseJson[caseInsensitive : BMSSecurityConstants.CHALLENGES_VALUE_NAME] as? [String: AnyObject]{
+            if let challenges = responseJson[caseInsensitive : BMSSecurityConstants.CHALLENGES_VALUE_NAME] as? [String:Any]{
                 try startHandleChallenges(challenges, response: response!)
             } else {
                 defaultCompletionHandler(response, nil)
@@ -248,7 +257,7 @@ public class AuthorizationRequestManager {
         }
     }
     
-    internal func startHandleChallenges(_ jsonChallenges: [String: AnyObject], response: Response) throws {
+    internal func startHandleChallenges(_ jsonChallenges: [String:Any], response: Response) throws {
         let challenges = Array(jsonChallenges.keys)
         
         if (AuthorizationRequestManager.isAuthorizationRequired(response)) {
@@ -256,7 +265,7 @@ public class AuthorizationRequestManager {
         }
         let mcaAuthManager = MCAAuthorizationManager.sharedInstance
         for (realm, challenge) in jsonChallenges {
-            if let handler = mcaAuthManager.challengeHandlerForRealm(realm), let unWrappedChallenge = challenge as? [String : AnyObject] {
+            if let handler = mcaAuthManager.challengeHandlerForRealm(realm), let unWrappedChallenge = challenge as? [String : Any] {
                 handler.handleChallenge(self, challenge:  unWrappedChallenge)
             }
             else {
@@ -296,14 +305,14 @@ public class AuthorizationRequestManager {
      - parameter answer: Answer to add.
      - parameter realm:  Authentication realm for the answer.
      */
-    internal func submitAnswer(_ answer:[String:AnyObject]?, realm:String) {
+    internal func submitAnswer(_ answer:[String:Any]?, realm:String) {
         guard let unwrappedAnswer = answer else {
             AuthorizationRequestManager.logger.error(message: "Cannot submit nil answer for realm \(realm)")
             return
         }
         
         if answers == nil {
-            answers = [String:AnyObject]()
+            answers = [String:Any]()
         }
         
         answers![realm] = unwrappedAnswer as AnyObject?
@@ -367,11 +376,11 @@ public class AuthorizationRequestManager {
                 // process failures if any
                 
                 if let jsonFailures = jsonResult[caseInsensitive : BMSSecurityConstants.AUTH_FAILURE_VALUE_NAME] {
-                    processFailures(jsonFailures as? [String : AnyObject])
+                    processFailures(jsonFailures as? [String : Any])
                 }
                 
                 if let jsonSuccesses = jsonResult[caseInsensitive : BMSSecurityConstants.AUTH_SUCCESS_VALUE_NAME] {
-                    processSuccesses(jsonSuccesses as? [String: AnyObject])
+                    processSuccesses(jsonSuccesses as? [String:Any])
                 }
             }
         }

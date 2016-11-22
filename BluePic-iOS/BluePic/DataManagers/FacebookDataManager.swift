@@ -114,6 +114,7 @@ class FacebookDataManager: NSObject {
         authManager.obtainAuthorization { response, error in
 
             //error
+            print("T: \(error?.localizedDescription)")
             if let errorObject = error as? NSError {
 
                 if errorObject.code == -1 {
@@ -158,7 +159,7 @@ class FacebookDataManager: NSObject {
      */
     func logOut(_ completionHandler: BMSCompletionHandler?) {
 
-        FacebookAuthenticationManager.sharedInstance.logout(completionHandler)
+        FacebookAuthenticationManager.sharedInstance.logout(completionHandler: completionHandler)
 
     }
 

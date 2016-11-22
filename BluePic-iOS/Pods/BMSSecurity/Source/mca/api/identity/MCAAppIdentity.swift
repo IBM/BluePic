@@ -14,11 +14,33 @@ import Foundation
 import BMSCore
 
 /// This class represents the base app identity class, with default methods and keys
-
+#if swift (>=3.0)
 public class MCAAppIdentity : BaseAppIdentity{
     
     public override init() {
         
+        let appInfo = Utils.getApplicationDetails()
+        let dict:[String : String] = [
+            BaseAppIdentity.Key.ID : appInfo.name,
+            BaseAppIdentity.Key.version : appInfo.version
+        ]
+        super.init(map: dict as [String : Any]?)
+    }
+    
+    public convenience init(map: [String:AnyObject]?) {
+        self.init(map: map as [String:Any]?)
+    }
+    
+    public override init(map: [String : Any]?) {
+        super.init(map: map)
+    }
+    
+}
+#else
+    public class MCAAppIdentity : BaseAppIdentity{
+    
+    public override init() {
+    
         let appInfo = Utils.getApplicationDetails()
         let dict:[String : String] = [
             BaseAppIdentity.Key.ID : appInfo.name,
@@ -32,3 +54,5 @@ public class MCAAppIdentity : BaseAppIdentity{
     }
     
 }
+
+#endif

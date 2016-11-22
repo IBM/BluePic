@@ -20,7 +20,7 @@
 
 
 /**
-    A singleton that serves as an entry point to Bluemix client-server communication.
+    A singleton that serves as the entry point to Bluemix client-server communication.
 */
 public class BMSClient {
     
@@ -32,16 +32,26 @@ public class BMSClient {
     */
     public struct Region {
         
-        /// The southern United States Bluemix region.
-        /// - Note: Use this in the `initialize` method.
+        
+        /**
+            The southern United States Bluemix region.
+ 
+            - note: Use this in the `BMSClient.initialize(bluemixAppRoute:bluemixAppGUID:bluemixRegion:)` method.
+         */
         public static let usSouth = ".ng.bluemix.net"
         
-        /// The United Kingdom Bluemix region.
-        /// - Note: Use this in the `initialize` method.
+        /** 
+            The United Kingdom Bluemix region.
+         
+            - note: Use this in the `BMSClient.initialize(bluemixAppRoute:bluemixAppGUID:bluemixRegion:)` method.
+         */
         public static let unitedKingdom = ".eu-gb.bluemix.net"
         
-        /// The Sydney Bluemix region.
-        /// - Note: Use this in the `initialize` method.
+        /**
+            The Sydney Bluemix region.
+ 
+            - note: Use this in the `BMSClient.initialize(bluemixAppRoute:bluemixAppGUID:bluemixRegion:)` method.
+         */
         public static let sydney = ".au-syd.bluemix.net"
     }
     
@@ -61,7 +71,7 @@ public class BMSClient {
     /// Specifies the Bluemix application backend identifier.
     public private(set) var bluemixAppGUID: String?
         
-    /// Specifies the allowed timeout (in seconds) for all `BMSClient` network requests.
+    /// Specifies the allowed timeout (in seconds) for all `Request` network requests.
     public var requestTimeout: Double = 20.0
     
     // Handles the authentication process for network requests.
@@ -114,7 +124,7 @@ public class BMSClient {
 
 
 /**
-    A singleton that serves as an entry point to Bluemix client-server communication.
+    A singleton that serves as the entry point to Bluemix client-server communication.
 */
 public class BMSClient {
     
@@ -125,17 +135,27 @@ public class BMSClient {
         The region where your Bluemix service is hosted.
     */
     public struct Region {
-        
-        /// The southern United States Bluemix region.
-        /// - Note: Use this in the `initialize` method.
+    
+    
+        /**
+             The southern United States Bluemix region.
+             
+             - note: Use this in the `BMSClient.initialize(bluemixAppRoute:bluemixAppGUID:bluemixRegion:)` method.
+         */
         public static let usSouth = ".ng.bluemix.net"
         
-        /// The United Kingdom Bluemix region.
-        /// - Note: Use this in the `initialize` method.
+        /**
+             The United Kingdom Bluemix region.
+             
+             - note: Use this in the `BMSClient.initialize(bluemixAppRoute:bluemixAppGUID:bluemixRegion:)` method.
+         */
         public static let unitedKingdom = ".eu-gb.bluemix.net"
-        
-        /// The Sydney Bluemix region.
-        /// - Note: Use this in the `initialize` method.
+    
+        /**
+             The Sydney Bluemix region.
+             
+             - note: Use this in the `BMSClient.initialize(bluemixAppRoute:bluemixAppGUID:bluemixRegion:)` method.
+         */
         public static let sydney = ".au-syd.bluemix.net"
     }
     
@@ -155,7 +175,7 @@ public class BMSClient {
     /// Specifies the Bluemix application backend identifier.
     public private(set) var bluemixAppGUID: String?
     
-    /// Specifies the allowed timeout (in seconds) for all `BMSClient` network requests.
+    /// Specifies the allowed timeout (in seconds) for all `Request` network requests.
     public var requestTimeout: Double = 20.0
     
     // Handles the authentication process for network requests.
