@@ -75,7 +75,7 @@ import BMSAnalyticsAPI
                 }
 
                 if (result?.isCancelled)! {
-                    authContext.submitAuthenticationFailure(["Error":"The user canceled the operation" as AnyObject])
+                    authContext.submitAuthenticationFailure(["Error": FacebookAuthenticationError.userCanceledLogin.rawValue])
                 } else {
                     let accessToken = FBSDKAccessToken.current().tokenString
                     authContext.submitAuthenticationChallengeAnswer([FacebookAuthenticationManager.ACCESS_TOKEN_KEY:accessToken! as AnyObject])
