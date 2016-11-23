@@ -110,10 +110,10 @@ public class MCAAuthorizationManager : AuthorizationManager {
         challengeHandlers = [String:ChallengeHandler]()
         
         if preferences.deviceIdentity.get() == nil {
-            preferences.deviceIdentity.set(MCADeviceIdentity().jsonData as [String: AnyObject])
+            preferences.deviceIdentity.set(MCADeviceIdentity().jsonData as [String:Any])
         }
         if preferences.appIdentity.get() == nil {
-            preferences.appIdentity.set(MCAAppIdentity().jsonData as [String: AnyObject])
+            preferences.appIdentity.set(MCAAppIdentity().jsonData as [String:Any])
         }
         self.tenantId = BMSClient.sharedInstance.bluemixAppGUID
         self.bluemixRegion = BMSClient.sharedInstance.bluemixRegion
@@ -162,11 +162,11 @@ public class MCAAuthorizationManager : AuthorizationManager {
         return false
     }
     
-    private func clearSessionCookie() {
+    private func clearCookie(cookieName name : String) {
         let cookiesStorage = HTTPCookieStorage.shared
         if let cookies = cookiesStorage.cookies {
-            let jSessionCookies = cookies.filter() {$0.name == "JSESSIONID"}
-            for cookie in jSessionCookies {
+            let filteredCookies = cookies.filter() {$0.name == name}
+            for cookie in filteredCookies {
                 cookiesStorage.deleteCookie(cookie)
             }
         }
@@ -181,7 +181,8 @@ public class MCAAuthorizationManager : AuthorizationManager {
         preferences.idToken.clear()
         preferences.accessToken.clear()
         processManager.authorizationFailureCount = 0
-        clearSessionCookie()
+        clearCookie(cookieName: "JSESSIONID")
+        clearCookie(cookieName: "LtpaToken2")
     }
     
     /**
@@ -431,11 +432,14 @@ public class MCAAuthorizationManager : AuthorizationManager {
         return false
     }
     
-    private func clearSessionCookie() {
+    
+    
+    
+    private func clearCookie(cookieName name : String) {
         let cookiesStorage = NSHTTPCookieStorage.sharedHTTPCookieStorage()
         if let cookies = cookiesStorage.cookies {
-            let jSessionCookies = cookies.filter() {$0.name == "JSESSIONID"}
-            for cookie in jSessionCookies {
+            let filteredCookies = cookies.filter() {$0.name == name}
+            for cookie in filteredCookies {
                 cookiesStorage.deleteCookie(cookie)
             }
         }
@@ -450,7 +454,8 @@ public class MCAAuthorizationManager : AuthorizationManager {
         preferences.idToken.clear()
         preferences.accessToken.clear()
         processManager.authorizationFailureCount = 0
-        clearSessionCookie()
+        clearCookie(cookieName: "JSESSIONID")
+        clearCookie(cookieName: "LtpaToken2")
     }
     
     /**

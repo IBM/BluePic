@@ -2,7 +2,8 @@ IBM Bluemix Mobile Services - Client SDK Swift Push
 ===================================================
 
 [![Build Status](https://travis-ci.org/ibm-bluemix-mobile-services/bms-clientsdk-swift-push.svg?branch=master)](https://travis-ci.org/ibm-bluemix-mobile-services/bms-clientsdk-swift-push)
-[![Build Status](https://travis-ci.org/ibm-bluemix-mobile-services/bms-clientsdk-swift-push.svg?branch=development)](https://travis-ci.org/ibm-bluemix-mobile-services/bms-clientsdk-swift-push)
+[![CocoaPods Compatible](https://img.shields.io/cocoapods/v/BMSPush.svg)](https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-swift-push.git)
+[![](https://img.shields.io/badge/bluemix-powered-blue.svg)](https://bluemix.net)
 
 
 This is the Push component of the Swift SDK for [IBM Bluemix Mobile Services](https://console.ng.bluemix.net/docs/mobile/index.html).
@@ -19,6 +20,7 @@ This package contains the Push components of the Swift SDK.
 * iOS 8.0+
 * Xcode 7.3, 8.0
 * Swift 2.3 - 3.0
+* Cocoapods or Carthage
 
 ##Installation
 
@@ -158,7 +160,7 @@ After the token is received from APNS, pass the token to Push Notifications as p
  func application (_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data){
 
    let push =  BMSPushClient.sharedInstance
-   push.initializeWithAppGUID(appGUID: "your push App GUID")
+   push.initializeWithAppGUID(appGUID: "your push appGUID", clientSecret:"your push client secret")
    push.registerWithDeviceToken(deviceToken: deviceToken) { (response, statusCode, error) -> Void in
     if error.isEmpty {
       print( "Response during device registration : \(response)")
@@ -175,7 +177,7 @@ After the token is received from APNS, pass the token to Push Notifications as p
  func application (application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData){
 
    let push =  BMSPushClient.sharedInstance
-   push.initializeWithAppGUID("your push App GUID")
+   push.initializeWithAppGUID(appGUID: "your push appGUID", clientSecret:"your push client secret")
    push.registerWithDeviceToken(deviceToken) { (response, statusCode, error) -> Void in
         if error.isEmpty {
             print( "Response during device registration : \(response)")

@@ -20,11 +20,9 @@
 
 
 /**
-    Sends HTTP network requests.
+    Sends HTTP network requests. It is recommended to use this class instead of `BaseRequest`.
 
-    Analytics data is automatically gathered for all requests initiated by this class.
-
-    When building a Request object, all components of the HTTP request must be provided in the initializer, except for the `requestBody`, which can be supplied as Data when sending the request via the `send()` method.
+    For more information on `Request`, see the documentation for `BaseRequest`.
 */
 open class Request: BaseRequest {
     
@@ -39,6 +37,16 @@ open class Request: BaseRequest {
     
     // MARK: Method override
     
+    /**
+        Send the request asynchronously with an optional request body.
+
+        The response received from the server is packaged into a `Response` object which is passed back via the supplied completion handler.
+
+        If the `resourceUrl` string is a malformed url or if the `queryParameters` cannot be appended to it, the completion handler will be called back with an error and a nil `Response`.
+
+        - parameter requestBody: The HTTP request body.
+        - parameter completionHandler: The block that will be called when this request finishes.
+     */
     public override func send(requestBody: Data? = nil, completionHandler: BMSCompletionHandler?) {
         
         let authManager: AuthorizationManager = BMSClient.sharedInstance.authorizationManager
@@ -111,11 +119,11 @@ open class Request: BaseRequest {
     
     
 /**
-    Sends HTTP network requests.
+    Sends HTTP network requests. It is recommended to use this class instead of `BaseRequest`.
 
-    Analytics data is automatically gathered for all requests initiated by this class.
+    When building a Request object, all components of the HTTP request must be provided in the initializer, except for the `requestBody`, which can be supplied as Data when sending the request via `send(requestBody:completionHandler:)`.
 
-    When building a Request object, all components of the HTTP request must be provided in the initializer, except for the `requestBody`, which can be supplied as Data when sending the request via the `send()` method.
+    For more information on `Request`, see the documentation for `BaseRequest`.
 */
 public class Request: BaseRequest {
     
@@ -130,6 +138,16 @@ public class Request: BaseRequest {
     
     // MARK: Method overrides
     
+    /**
+        Send the request asynchronously with an optional request body.
+
+        The response received from the server is packaged into a `Response` object which is passed back via the supplied completion handler.
+
+        If the `resourceUrl` string is a malformed url or if the `queryParameters` cannot be appended to it, the completion handler will be called back with an error and a nil `Response`.
+
+        - parameter requestBody: The HTTP request body.
+        - parameter completionHandler: The block that will be called when this request finishes.
+     */
     public override func send(requestBody requestBody: NSData? = nil, completionHandler: BMSCompletionHandler?) {
     
         let authManager: AuthorizationManager = BMSClient.sharedInstance.authorizationManager

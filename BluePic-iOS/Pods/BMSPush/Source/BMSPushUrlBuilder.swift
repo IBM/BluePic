@@ -27,6 +27,7 @@ import BMSCore
         internal  let SUBZONE = "subzone";
         internal  let EQUALTO = "=";
         internal  let SUBSCRIPTIONS = "subscriptions";
+        internal  let MESSAGES = "messages";
         internal  let TAGS = "tags";
         internal  let DEVICES = "devices";
         internal  let TAGNAME = "tagName";
@@ -147,6 +148,15 @@ import BMSCore
             return deviceUnregisterUrl
         }
         
+        func getSendMessageDeliveryStatus (messageId : String) -> String {
+            
+            var sendMessageDeliveryStatusUrl:String = getCollectionUrl(collectionName: MESSAGES)
+            sendMessageDeliveryStatusUrl += FORWARDSLASH
+            sendMessageDeliveryStatusUrl += messageId
+            return sendMessageDeliveryStatusUrl
+        }
+        
+        
         internal func getCollectionUrl (collectionName:String) -> String {
             
             var collectionUrl:String = pwUrl_
@@ -170,6 +180,7 @@ import BMSCore
     internal  let SUBZONE = "subzone";
     internal  let EQUALTO = "=";
     internal  let SUBSCRIPTIONS = "subscriptions";
+    internal  let MESSAGES = "messages";
     internal  let TAGS = "tags";
     internal  let DEVICES = "devices";
     internal  let TAGNAME = "tagName";
@@ -287,7 +298,16 @@ import BMSCore
             
             return deviceUnregisterUrl
         }
-        
+    
+        func getSendMessageDeliveryStatus (messageId : String) -> String {
+            
+            var sendMessageDeliveryStatusUrl:String = getCollectionUrl(MESSAGES)
+            sendMessageDeliveryStatusUrl += FORWARDSLASH
+            sendMessageDeliveryStatusUrl += messageId
+            return sendMessageDeliveryStatusUrl
+        }
+
+    
         internal func getCollectionUrl (collectionName:String) -> String {
             
             var collectionUrl:String = pwUrl_

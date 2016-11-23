@@ -25,7 +25,7 @@ import FBSDKLoginKit
 import BMSAnalyticsAPI
 
 #if swift(>=3.0)
-public class FacebookAuthenticationManager :NSObject,AuthenticationDelegate{
+@objc public class FacebookAuthenticationManager :NSObject,AuthenticationDelegate{
     
     private static let FACEBOOK_REALM="wl_facebookRealm";
     private static let ACCESS_TOKEN_KEY="accessToken";
@@ -100,20 +100,29 @@ public class FacebookAuthenticationManager :NSObject,AuthenticationDelegate{
     //MARK: App Delegate code handler
     /******    needed by facebook you need to call those methods from your app delegate *******/
     
-    
     public func onOpenURL(application: UIApplication, url: URL,
-        sourceApplication: String?,annotation: Any) -> Bool {
-            return FBSDKApplicationDelegate.sharedInstance().application(application,open: url,sourceApplication: sourceApplication,annotation: annotation)
+                          sourceApplication: String?,annotation: Any) -> Bool {
+        return FBSDKApplicationDelegate.sharedInstance().application(application,open: url,sourceApplication: sourceApplication,annotation: annotation)
     }
     
-    public func onFinishLaunching(application: UIApplication, withOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+    public func onOpenURL(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+        
+        return FBSDKApplicationDelegate.sharedInstance().application(
+            app,
+            open: url as URL!,
+            sourceApplication: options[UIApplicationOpenURLOptionsKey.sourceApplication] as! String,
+            annotation: options[UIApplicationOpenURLOptionsKey.annotation]
+        )
+    }
+    
+    public func onFinishLaunching(application: UIApplication, withOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         return FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
         
     }
     
 }
 #else
-public class FacebookAuthenticationManager :NSObject,AuthenticationDelegate{
+@objc public class FacebookAuthenticationManager :NSObject,AuthenticationDelegate{
     
     private static let FACEBOOK_REALM="wl_facebookRealm";
     private static let ACCESS_TOKEN_KEY="accessToken";

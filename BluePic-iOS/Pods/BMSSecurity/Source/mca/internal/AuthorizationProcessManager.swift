@@ -102,7 +102,7 @@ internal class AuthorizationProcessManager {
         var headers = [String:String]()
         payload[BMSSecurityConstants.JSON_CODE_KEY] = grantCode
         do {
-            let jws:String = try SecurityUtils.signCsr(payload as [String : AnyObject], keyIds: (BMSSecurityConstants.publicKeyIdentifier, BMSSecurityConstants.privateKeyIdentifier), keySize: 512)
+            let jws:String = try SecurityUtils.signCsr(payload as [String:Any], keyIds: (BMSSecurityConstants.publicKeyIdentifier, BMSSecurityConstants.privateKeyIdentifier), keySize: 512)
             headers = [String:String]()
             headers[BMSSecurityConstants.X_WL_AUTHENTICATE_HEADER_NAME] =  jws
             return headers
@@ -224,7 +224,7 @@ internal class AuthorizationProcessManager {
     
     private func saveTokenFromResponse(_ response:Response) throws {
         do {
-            if let data = response.responseData, let responseJson =  try JSONSerialization.jsonObject(with: data as Data, options: []) as? [String:AnyObject]{
+            if let data = response.responseData, let responseJson =  try JSONSerialization.jsonObject(with: data as Data, options: []) as? [String:Any]{
                 if let accessTokenFromResponse = responseJson[caseInsensitive : BMSSecurityConstants.JSON_ACCESS_TOKEN_KEY] as? String, let idTokenFromResponse =
                     responseJson[caseInsensitive : BMSSecurityConstants.JSON_ID_TOKEN_KEY] as? String {
                     //save the tokens
@@ -241,10 +241,10 @@ internal class AuthorizationProcessManager {
             throw AuthorizationProcessManagerError.could_NOT_SAVE_TOKEN(("\(error)"))
         }
     }
-    private func getUserIdentityFromToken(_ idToken:String) -> [String:AnyObject]?
+    private func getUserIdentityFromToken(_ idToken:String) -> [String:Any]?
     {
         do {
-            if let decodedIdTokenData = Utils.decodeBase64WithString(idToken.components(separatedBy: ".")[1]), let _ = String(data: decodedIdTokenData, encoding: String.Encoding.utf8), let decodedIdTokenString = String(data: decodedIdTokenData, encoding: String.Encoding.utf8), let userIdentity = try Utils.parseJsonStringtoDictionary(decodedIdTokenString)[caseInsensitive : BMSSecurityConstants.JSON_IMF_USER_KEY] as? [String:AnyObject] {
+            if let decodedIdTokenData = Utils.decodeBase64WithString(idToken.components(separatedBy: ".")[1]), let _ = String(data: decodedIdTokenData, encoding: String.Encoding.utf8), let decodedIdTokenString = String(data: decodedIdTokenData, encoding: String.Encoding.utf8), let userIdentity = try Utils.parseJsonStringtoDictionary(decodedIdTokenString)[caseInsensitive : BMSSecurityConstants.JSON_IMF_USER_KEY] as? [String:Any] {
                 return userIdentity
             }
         } catch {
@@ -297,7 +297,7 @@ internal class AuthorizationProcessManager {
             throw JsonUtilsErrors.jsonIsMalformed
         }
         do {
-            if let jsonResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String : AnyObject], let certificateString = jsonResponse[caseInsensitive : BMSSecurityConstants.JSON_CERTIFICATE_KEY] as? String {
+            if let jsonResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String:Any], let certificateString = jsonResponse[caseInsensitive : BMSSecurityConstants.JSON_CERTIFICATE_KEY] as? String {
                 //handle certificate
                 let certificate =  try SecurityUtils.getCertificateFromString(certificateString)
                 try  SecurityUtils.checkCertificatePublicKeyValidity(certificate, publicKeyTag: BMSSecurityConstants.publicKeyIdentifier)

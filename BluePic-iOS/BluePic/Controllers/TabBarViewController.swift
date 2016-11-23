@@ -31,6 +31,9 @@ class TabBarViewController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        SVProgressHUD.setDefaultStyle(SVProgressHUDStyle.custom)
+        SVProgressHUD.setBackgroundColor(UIColor.white)
+
         viewModel = TabBarViewModel(notifyTabBarVC: handleTabBarViewModelNotifications)
 
         self.tabBar.tintColor = UIColor.white

@@ -18,7 +18,7 @@ import BMSCore
 public protocol AuthenticationDelegate{
    
     /**
-        Called when authentication challenge was received. The implementor should handle the challenge and call AuthenticationContext:submitAuthenticationChallengeAnswer(answer:[String:AnyObject]?)}
+        Called when authentication challenge was received. The implementor should handle the challenge and call AuthenticationContext:submitAuthenticationChallengeAnswer(answer:[String:Any]?)}
              with authentication challenge answer.
      
         - Parameter authContext  - Authentication context the answer should be sent to.

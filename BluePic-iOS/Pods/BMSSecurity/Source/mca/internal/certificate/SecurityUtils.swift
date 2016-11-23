@@ -147,7 +147,7 @@ internal class SecurityUtils {
         return nil
     }
     
-    internal static func signCsr(_ payloadJSON:[String : AnyObject], keyIds ids:(publicKey: String, privateKey: String), keySize: Int) throws -> String {
+    internal static func signCsr(_ payloadJSON:[String : Any], keyIds ids:(publicKey: String, privateKey: String), keySize: Int) throws -> String {
         do {
             let strPayloadJSON = try Utils.JSONStringify(payloadJSON as AnyObject)
             let keys = try getKeyPairBitsFromKeyChain(ids.publicKey, privateTag: ids.privateKey)
@@ -174,7 +174,7 @@ internal class SecurityUtils {
         }
     }
     
-    private static func getJWSHeaderForPublicKey(_ publicKey: Data) throws ->[String:AnyObject]
+    private static func getJWSHeaderForPublicKey(_ publicKey: Data) throws ->[String:Any]
     {
         let base64Options = NSData.Base64EncodingOptions(rawValue:0)
         
@@ -186,12 +186,12 @@ internal class SecurityUtils {
         
         let exp:String = pkExponent.base64EncodedString(options: base64Options)
         
-        let publicKeyJSON : [String:AnyObject] = [
+        let publicKeyJSON : [String:Any] = [
             BMSSecurityConstants.JSON_ALG_KEY : BMSSecurityConstants.JSON_RSA_VALUE as AnyObject,
             BMSSecurityConstants.JSON_MOD_KEY : mod as AnyObject,
             BMSSecurityConstants.JSON_EXP_KEY : exp as AnyObject
         ]
-        let jwsHeaderJSON :[String:AnyObject] = [
+        let jwsHeaderJSON :[String:Any] = [
             BMSSecurityConstants.JSON_ALG_KEY : BMSSecurityConstants.JSON_RS256_VALUE as AnyObject,
             BMSSecurityConstants.JSON_JPK_KEY : publicKeyJSON as AnyObject
         ]

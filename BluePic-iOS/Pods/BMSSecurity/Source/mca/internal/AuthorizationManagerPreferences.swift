@@ -16,7 +16,7 @@ import BMSCore
 
 
 internal class AuthorizationManagerPreferences {
-
+    
     #if swift (>=3.0)
     internal static var sharedPreferences:UserDefaults = UserDefaults.standard
     #else
@@ -45,7 +45,7 @@ internal class AuthorizationManagerPreferences {
         appIdentity  = JSONPreference(prefName: BMSSecurityConstants.APP_IDENTITY_LABEL)
     }
 }
-    
+
 
 /**
  * Holds single string preference value
@@ -82,7 +82,7 @@ internal class StringPreference {
     internal func get() ->String?{
         return value
     }
- 
+    
 #if swift (>=3.0)
     internal func set(_ value:String?) {
         self.value = value
@@ -114,7 +114,7 @@ internal class JSONPreference:StringPreference {
         super.init(prefName: prefName, defaultValue: nil)
     }
 #if swift(>=3.0)
-    internal func set(_ json:[String:AnyObject]) {
+    internal func set(_ json:[String:Any]) {
         set(try? Utils.JSONStringify(json as AnyObject))
     }
 #else
@@ -122,6 +122,21 @@ internal class JSONPreference:StringPreference {
         set(try? Utils.JSONStringify(json))
     }
 #endif
+    
+#if swift(>=3.0)
+    internal func getAsMap() -> [String:Any]?{
+        do {
+            if let json = get() {
+                return try Utils.parseJsonStringtoDictionary(json)
+            } else {
+                return nil
+            }
+        } catch {
+            print(error)
+            return nil
+        }
+    }
+#else
     internal func getAsMap() -> [String:AnyObject]?{
         do {
             if let json = get() {
@@ -134,6 +149,8 @@ internal class JSONPreference:StringPreference {
             return nil
         }
     }
+    
+    #endif
 }
 
 

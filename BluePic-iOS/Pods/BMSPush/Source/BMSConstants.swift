@@ -89,3 +89,5 @@ internal let KEY_METADATA_CATEGORY = "$category";
 
 internal let KEY_METADATA_USER_METADATA = "$userMetadata";
 
+internal let IMFPUSH_STATUS  = "status"
+

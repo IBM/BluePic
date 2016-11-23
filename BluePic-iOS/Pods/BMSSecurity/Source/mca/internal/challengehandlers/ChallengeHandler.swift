@@ -32,7 +32,14 @@ public class ChallengeHandler : AuthenticationContext{
         self.waitingRequests = [AuthorizationRequestManager]()
     }
     
+    
     public func submitAuthenticationChallengeAnswer(_ answer:[String:AnyObject]?) {
+        self.submitAuthenticationChallengeAnswer(answer as [String:Any]?)
+    }
+
+    
+    
+    public func submitAuthenticationChallengeAnswer(_ answer:[String:Any]?) {
         lockQueue.async(flags: .barrier, execute: {
             guard let aRequest = self.activeRequest else {
                 return
@@ -59,6 +66,11 @@ public class ChallengeHandler : AuthenticationContext{
     }
     
     public func submitAuthenticationFailure (_ info:[String:AnyObject]?) {
+        self.submitAuthenticationFailure(info as [String:Any]?)
+    }
+
+    
+    public func submitAuthenticationFailure (_ info:[String:Any]?) {
         lockQueue.async(flags: .barrier, execute: {
             if self.activeRequest != nil {
                 self.activeRequest!.requestFailed(info)
@@ -68,7 +80,7 @@ public class ChallengeHandler : AuthenticationContext{
         })
     }
     
-    internal func handleChallenge(_ request:AuthorizationRequestManager, challenge:[String:AnyObject]) {
+    internal func handleChallenge(_ request:AuthorizationRequestManager, challenge:[String:Any]) {
         lockQueue.async(flags: .barrier, execute: {
             if self.activeRequest == nil {
                 self.activeRequest = request
@@ -81,7 +93,7 @@ public class ChallengeHandler : AuthenticationContext{
         })
     }
     
-    internal func handleSuccess(_ success:[String:AnyObject]) {
+    internal func handleSuccess(_ success:[String:Any]) {
         lockQueue.async(flags: .barrier, execute: {
             if let unWrappedListener = self.authenticationDelegate{
                 unWrappedListener.onAuthenticationSuccess(success as AnyObject?)
@@ -90,7 +102,7 @@ public class ChallengeHandler : AuthenticationContext{
             self.activeRequest = nil
         })
     }
-    internal func handleFailure(_ failure:[String:AnyObject]) {
+    internal func handleFailure(_ failure:[String:Any]) {
         lockQueue.async(flags: .barrier, execute: {
             if let unWrappedListener = self.authenticationDelegate{
                 unWrappedListener.onAuthenticationFailure(failure as AnyObject?)

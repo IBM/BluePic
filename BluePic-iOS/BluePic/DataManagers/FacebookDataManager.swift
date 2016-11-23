@@ -17,7 +17,7 @@
 import UIKit
 import BMSCore
 
-enum FacebookAuthenticationError {
+enum FacebookAuthenticationError: String {
 
     //Error when the Authentiction header is not found
     case authenticationHeaderNotFound
@@ -113,14 +113,12 @@ class FacebookDataManager: NSObject {
 
         authManager.obtainAuthorization { response, error in
 
-            //error
-            if let errorObject = error as? NSError {
-
-                if errorObject.code == -1 {
-                    print(NSLocalizedString("Authenticate Facebook User Error: User Canceled login:", comment: "") + " \(errorObject.localizedDescription)")
+            if let error = error, let dictionary = Utils.convertStringToDictionary(error.localizedDescription), let errorMessage = dictionary["Error"] as? String {
+                if errorMessage == FacebookAuthenticationError.userCanceledLogin.rawValue {
+                    print(NSLocalizedString("Authenticate Facebook User Error: User Canceled login", comment: ""))
                     callback(nil, nil, FacebookAuthenticationError.userCanceledLogin)
                 } else {
-                    print(NSLocalizedString("Authenticate Facebook User Error: Error obtaining Authentication Header.", comment: "") + " \(errorObject.localizedDescription)")
+                    print(NSLocalizedString("Authenticate Facebook User Error: Error obtaining Authentication Header.", comment: "") + " \(error.localizedDescription)")
                     callback(nil, nil, FacebookAuthenticationError.authenticationHeaderNotFound)
                 }
             }
@@ -158,7 +156,7 @@ class FacebookDataManager: NSObject {
      */
     func logOut(_ completionHandler: BMSCompletionHandler?) {
 
-        FacebookAuthenticationManager.sharedInstance.logout(completionHandler)
+        FacebookAuthenticationManager.sharedInstance.logout(completionHandler: completionHandler)
 
     }
 

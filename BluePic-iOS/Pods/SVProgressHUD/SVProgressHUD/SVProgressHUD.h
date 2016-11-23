@@ -42,6 +42,9 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDAnimationType) {
     SVProgressHUDAnimationTypeNative    // iOS native UIActivityIndicatorView
 };
 
+typedef void (^SVProgressHUDShowCompletion)(void);
+typedef void (^SVProgressHUDDismissCompletion)(void);
+
 @interface SVProgressHUD : UIView
 
 #pragma mark - Customization
@@ -69,6 +72,7 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDAnimationType) {
 @property (assign, nonatomic) NSTimeInterval fadeInAnimationDuration;  // default is 0.15
 @property (assign, nonatomic) NSTimeInterval fadeOutAnimationDuration; // default is 0.15
 
+@property (assign, nonatomic) UIWindowLevel maxSupportedWindowLevel; // default is UIWindowLevelNormal
 
 + (void)setDefaultStyle:(SVProgressHUDStyle)style;                  // default is SVProgressHUDStyleLight
 + (void)setDefaultMaskType:(SVProgressHUDMaskType)maskType;         // default is SVProgressHUDMaskTypeNone
@@ -89,6 +93,7 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDAnimationType) {
 + (void)setMinimumDismissTimeInterval:(NSTimeInterval)interval;     // default is 5.0 seconds
 + (void)setFadeInAnimationDuration:(NSTimeInterval)duration;        // default is 0.15 seconds
 + (void)setFadeOutAnimationDuration:(NSTimeInterval)duration;       // default is 0.15 seconds
++ (void)setMaxSupportedWindowLevel:(UIWindowLevel)windowLevel;      // default is UIWindowLevelNormal
 
 #pragma mark - Show Methods
 
@@ -121,7 +126,9 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDAnimationType) {
 
 + (void)popActivity; // decrease activity count, if activity count == 0 the HUD is dismissed
 + (void)dismiss;
++ (void)dismissWithCompletion:(SVProgressHUDDismissCompletion)completion;
 + (void)dismissWithDelay:(NSTimeInterval)delay;
++ (void)dismissWithDelay:(NSTimeInterval)delay completion:(SVProgressHUDDismissCompletion)completion;
 
 + (BOOL)isVisible;
 

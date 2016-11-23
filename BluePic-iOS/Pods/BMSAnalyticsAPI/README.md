@@ -2,7 +2,6 @@ IBM Bluemix Mobile Services - Client SDK Swift Analytics API
 ===================================================
 
 [![Build Status](https://travis-ci.org/ibm-bluemix-mobile-services/bms-clientsdk-swift-analytics-api.svg?branch=master)](https://travis-ci.org/ibm-bluemix-mobile-services/bms-clientsdk-swift-analytics-api)
-[![Build Status](https://travis-ci.org/ibm-bluemix-mobile-services/bms-clientsdk-swift-analytics-api.svg?branch=development)](https://travis-ci.org/ibm-bluemix-mobile-services/bms-clientsdk-swift-analytics-api)
 
 
 BMSAnalyticsAPI provides interfaces and basic implementation of Logger and Analytics for [BMSCore](https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-swift-core). 

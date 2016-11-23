@@ -41,7 +41,7 @@ public class Response {
     /// Returns nil if there is no body or if the response is not valid `Data`.
     public let responseData: Data?
 
-    /// Does the response contain a status code in the [200, 300) range.
+    /// The response is considered successful if the returned status code is in the 2xx range.
     public let isSuccessful: Bool
     
     
@@ -57,10 +57,10 @@ public class Response {
     // MARK: Initializer
     
     /**
-        Convert an HTTPURLResponse to a more accessible response object.
+        Converts an `HTTPURLResponse` to a more accessible response object.
 
         - parameter responseData: Data returned from the server.
-        - parameter httpResponse: Response object returned from the NSURLSession request.
+        - parameter httpResponse: Response object returned from the `URLSession` request.
         - parameter isRedirect:   True if the response requires a redirect.
     */
     public init(responseData: Data?, httpResponse: HTTPURLResponse?, isRedirect: Bool) {
@@ -126,7 +126,7 @@ public class Response {
     /// Returns nil if there is no body or if the response is not valid `NSData`.
     public let responseData: NSData?
     
-    /// Does the response contain a status code in the [200, 300) range.
+    /// The response is considered successful if the returned status code is in the 2xx range.
     public let isSuccessful: Bool
     
     
@@ -142,10 +142,10 @@ public class Response {
     // MARK: Initializer
     
     /**
-        Convert an HTTPURLResponse to a more accessible response object.
+        Converts an `NSHTTPURLResponse` to a more accessible `Response` object.
 
         - parameter responseData: Data returned from the server.
-        - parameter httpResponse: Response object returned from the NSURLSession request.
+        - parameter httpResponse: Response object returned from the `NSURLSession` request.
         - parameter isRedirect:   True if the response requires a redirect.
     */
     public init(responseData: NSData?, httpResponse: NSHTTPURLResponse?, isRedirect: Bool) {

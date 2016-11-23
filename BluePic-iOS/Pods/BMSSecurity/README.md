@@ -33,21 +33,13 @@ import BMSSecurity
 
 Connectivity and interaction between your mobile app and the Bluemix services depends on the application ID and application route that are associated with Bluemix application.
 
-The BMSClient API is the entry point for interacting with the SDK. You must invoke the following method before any other API calls:
+The BMSClient and MCAAuthorizationManager API are the entry points for interacting with the SDK. You must invoke the following API before any other API calls:
 
 ```Swift
-initializeWithBluemixAppRoute(bluemixAppRoute: String?, bluemixAppGUID: String?, bluemixRegion: String)
+MCAAuthorizationManager.sharedInstance.initialize(tenantId: tenantId, bluemixRegion: regionName)
 ```
 
- The BMSClient API provides information about the current SDK level and access to service SDKs. This method is usually in the application delegate of your mobile app.
-
-An example of initializing the Bluemix Mobile Services Swift SDK follows:
-
-Initialize SDK with IBM Bluemix application route, ID and the region where your Bluemix application is hosted.
-
-```Swift
-BMSClient.sharedInstance.initializeWithBluemixAppRoute(<app route>, bluemixAppGUID: <app guid>, bluemixRegion: BMSClient.<region>)
-```
+ This method is usually called in the application delegate of your mobile app.
 
 You also need to define MCAAuthorizationManager as your authorization manager:
 ```Swift
