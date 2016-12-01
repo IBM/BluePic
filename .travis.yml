@@ -13,7 +13,7 @@ matrix:
       osx_image: xcode8
 
 before_install:
-  - git submodule update --init --remote --merge --recursive
+  - git clone https://github.com/IBM-Swift/Package-Builder.git BluePic-Server/Package-Builder
   - git clone -b master https://$GITHUB_USER:$GITHUB_PWD@github.com/IBM-Swift/Testing-Credentials.git
 
 script:
