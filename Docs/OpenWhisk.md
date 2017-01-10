@@ -7,12 +7,13 @@
 
 1. In step 2 on the "OpenWhisk - Configure CLI" page, you will see a command that looks similar to:
 
-    `wsk property set --apihost <hostName> --auth <authKey> --namespace "<namespace>"`
+    `wsk property set --apihost <hostName> --auth <authKey>`
 
 2. Take the value after `--apihost` and put it as the `hostName` value in `properties.json`.
 
-3. Next, insert the value after `--namespace`, within the existing `urlPath` value in `properties.json`. In the `<namespace>` spot to be exact:
+3. Next, insert a namespace value within the existing `urlPath` value in `properties.json`. In the `<namespace>` spot to be exact:
 `"/api/v1/namespaces/<namespace>/actions/bluepic/processImage?blocking=false"`
+You can find this value at the top of the Bluemix UI, it will be a combination of the org and the space name, for example: `swiftdo%40us.ibm.com_dev`. Where our email is the org name, and `dev` is the space name.
 
 4. Lastly, take the value after `--auth` and put it as the `authToken` value in `properties.json`. That value will later be converted to a base64 encoded string that OpenWhisk needs for authentication.
 
@@ -69,7 +70,7 @@ To invoke the action, you just need to pass in an `imageId` parameter (i.e. ID o
 From the CLI, this can be invoked as (you'll need to use your own image id):
 
 ```
-wsk action invoke processImage -p imageId <image id>  
+wsk action invoke bluepic/processImage -p imageId <image id>  
 ```
 
 This delegates to the following actions and updates data accordingly:
@@ -89,9 +90,11 @@ You can monitor OpenWhisk activity using the [IBM Bluemix OpenWhisk Dashboard](h
 
 There are two very important things to know when developing OpenWhisk actions:
 * Swift compiler error messages are in both the `wsk activation poll` output, and also in the stderr result of the `wsk action invoke` command.  Pay attention to both.
-* Swift `print()` or Node.js `console.log()` commands invoked from inside of OpenWhisk actions will also be visible in the `wsk activation poll` output.
+* Swift `print()` or Node.js `console.log()` commands invoked from inside of OpenWhisk actions will also be visible in the `wsk activation poll` output. In Swift, if your print statements aren't working, try adding this `setbuf(stdout, nil)` before logging anything.
 
 These can be extremely helpful for debugging OpenWhisk actions.  Since you cannot connect a debugger with breakpoints to an OpenWhisk action, excessive use of print() statements and using early `return` values at interim steps are your best routes for debugging values during OpenWhisk development - just be sure to remove or comment-out your debug `return` statements before making the actions live for production use.
+
+Fortunatly, the [OpenWhisk editor](https://console.ng.bluemix.net/openwhisk/editor) allows for running debugging tests quickly on a specific action.
 
 ## Debugging Actions & Flow
 
