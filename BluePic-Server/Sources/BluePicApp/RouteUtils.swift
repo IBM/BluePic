@@ -93,7 +93,7 @@ extension ServerController {
     let req = HTTP.request(requestOptions) { resp in
       if let resp = resp, resp.statusCode == HTTPStatusCode.OK || resp.statusCode == HTTPStatusCode.accepted {
         do {
-          var body = Data() //NSMutableData()
+          var body = Data()
           try resp.readAllData(into: &body)
           let jsonResponse = JSON(data: body)
           print("OpenWhisk response: \(jsonResponse)")
