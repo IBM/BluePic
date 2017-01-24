@@ -1,7 +1,7 @@
 # Setup OpenWhisk
 1) Create an OpenWhisk account on the [Welcome to Bluemix OpenWhisk](https://new-console.ng.bluemix.net/openwhisk/) page.
 
-2) Download and install the [OpenWhisk CLI](https://new-console.ng.bluemix.net/openwhisk/cli) zip with an executable inside. Once downloaded, unzip the file and either start using the `wsk` command right there or add the wsk executable to your `PATH`. Then set your OpenWhisk namespace and auth key as mentioned in step 2 of the "Configure CLI" page.
+2) Download and install the [OpenWhisk CLI](https://new-console.ng.bluemix.net/openwhisk/cli) zip with an executable inside. Once downloaded, unzip the file and either start using the `wsk` command right there or add the wsk executable to your `PATH`. Then set your OpenWhisk API host and auth key as mentioned in step 2 of the "Configure CLI" page.
 
 3) On that same [OpenWhisk CLI](https://new-console.ng.bluemix.net/openwhisk/cli) page, you can find the values needed to populate the [properties.json](../BluePic-Server/properties.json) file under the `Bluepic-Server` directory.
 
@@ -15,7 +15,10 @@
 `"/api/v1/namespaces/<namespace>/actions/bluepic/processImage?blocking=false"`
 You can find this value at the top of the Bluemix UI, it will be a combination of the org and the space name, for example: `swiftdo%40us.ibm.com_dev`. Where our email is the org name, and `dev` is the space name.
 
-4. Lastly, take the value after `--auth` and put it as the `authToken` value in `properties.json`. That value will later be converted to a base64 encoded string that OpenWhisk needs for authentication.
+4. Then take the value after `--auth` and put it as the `authToken` value in `properties.json`. That value will later be converted to a base64 encoded string that OpenWhisk needs for authentication.
+5. Lastly, we need to set the local namespace so our `bluepic.sh` script will work later. To do this, type the following command in your terminal, substituting your org and space name:
+
+    `wsk property set --namespace "<org>_<space>"`
 
 # Installing OpenWhisk Actions for BluePic
 ## Service Credentials
