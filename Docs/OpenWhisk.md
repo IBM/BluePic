@@ -15,10 +15,7 @@
 `"/api/v1/namespaces/<namespace>/actions/bluepic/processImage?blocking=false"`
 You can find this value at the top of the Bluemix UI, it will be a combination of the org and the space name, for example: `swiftdo%40us.ibm.com_dev`. Where our email is the org name, and `dev` is the space name.
 
-4. Then take the value after `--auth` and put it as the `authToken` value in `properties.json`. That value will later be converted to a base64 encoded string that OpenWhisk needs for authentication.
-5. Lastly, we need to set the local namespace so our `bluepic.sh` script will work later. To do this, type the following command in your terminal, substituting your org and space name:
-
-    `wsk property set --namespace "<org>_<space>"`
+4. Lastly, take the value after `--auth` and put it as the `authToken` value in `properties.json`. That value will later be converted to a base64 encoded string that OpenWhisk needs for authentication.
 
 # Installing OpenWhisk Actions for BluePic
 ## Service Credentials
