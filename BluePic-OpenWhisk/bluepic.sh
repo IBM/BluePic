@@ -25,7 +25,12 @@ source local.env
 
 # capture the namespace where actions will be created
 # as we need to pass it to our change listener
-CURRENT_NAMESPACE=`wsk property get --namespace | awk '{print $3}'`
+AUTH_TOKEN=`wsk property get --auth | awk '{print $3}' | base64 -b=0`
+CURRENT_NAMESPACE=$(curl -X GET -H "Authorization: Basic $AUTH_TOKEN"\
+ -H "Content-Type: application/json" "https://openwhisk.ng.bluemix.net/api/v1/namespaces/_/"\
+ | grep 'namespace'\
+ | tail -1\
+ | awk '{print $2}')
 echo "Current namespace is $CURRENT_NAMESPACE."
 
 function usage() {

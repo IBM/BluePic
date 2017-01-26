@@ -12,7 +12,7 @@ declared-services:
   BluePic-IBM-Push:
     label: imfpush
     plan: Basic
-  BluePic-Insights-for-Weather:
+  BluePic-Weather-Company-Data:
     label: weatherinsights
     plan: Free-v2
   BluePic-Alchemy:
@@ -31,5 +31,5 @@ applications:
   - BluePic-Object-Storage
   - BluePic-Mobile-Client-Access
   - BluePic-IBM-Push
-  - BluePic-Insights-for-Weather
+  - BluePic-Weather-Company-Data
   - BluePic-Alchemy
