@@ -50,9 +50,11 @@
           "label": "imfpush",
           "plan": "Basic",
           "credentials": {
+            "appGuid": "<appGuid>",
             "url": "<url>",
             "admin_url": "<admin_url>",
-            "appSecret": "<appSecret>"
+            "appSecret": "<appSecret>",
+            "clientSecret": "<clientSecret>"
           }
         }
       ],
