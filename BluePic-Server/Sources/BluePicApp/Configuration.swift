@@ -1,5 +1,5 @@
 /**
-* Copyright IBM Corporation 2016
+* Copyright IBM Corporation 2016, 2017
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -18,7 +18,8 @@ import Foundation
 import CouchDB
 import SwiftyJSON
 import LoggerAPI
-import CloudFoundryEnv
+import Configuration
+import CloudFoundryConfig
 import BluemixObjectStorage
 
 public struct Configuration {
@@ -33,21 +34,18 @@ public struct Configuration {
 
     // Instance constants
     let configurationFile = "cloud_config.json"
-    let appEnv: AppEnv
-    
+    let configMgr = ConfigurationManager()
+
     init() throws {
         let path = Configuration.getAbsolutePath(relativePath: "/\(configurationFile)", useFallback: false)
 
         guard let finalPath = path else {
             Log.warning("Could not find '\(configurationFile)'.")
-            appEnv = try CloudFoundryEnv.getAppEnv()
+            configMgr.load(.environmentVariables)
             return
         }
 
-        let url = URL(fileURLWithPath: finalPath)
-        let configData = try Data(contentsOf: url)
-        let configJson = JSON(data: configData)
-        appEnv = try CloudFoundryEnv.getAppEnv(options: configJson)
+        configMgr.load(file: finalPath).load(.environmentVariables)
         Log.info("Using configuration values from '\(configurationFile)'.")
     }
 
@@ -59,16 +57,9 @@ public struct Configuration {
    - returns: Encapsulated ConnectionProperties object with the necessary info
    */
   func getCouchDBConnProps() throws -> ConnectionProperties {
-    if let couchDBCredentials = appEnv.getService(spec: "BluePic-Cloudant")?.credentials {
-      if let host = couchDBCredentials["host"].string,
-      let user = couchDBCredentials["username"].string,
-      let password = couchDBCredentials["password"].string,
-      let port = couchDBCredentials["port"].int {
-        let connProperties = ConnectionProperties(host: host, port: Int16(port), secured: true, username: user, password: password)
-        return connProperties
-      }
-    }
-    throw BluePicError.IO("Failed to obtain database service and/or its credentials.")
+    let couchDBCredentials = try configMgr.getCloudantService(name: "BluePic-Cloudant")
+    let connProperties = ConnectionProperties(host: couchDBCredentials.host, port: Int16(couchDBCredentials.port), secured: true, username: couchDBCredentials.username, password: couchDBCredentials.password)
+    return connProperties
   }
 
   /**
@@ -79,17 +70,8 @@ public struct Configuration {
    - returns: Encapsulated ObjectStorageConnProps object with the necessary info
    */
   func getObjectStorageConnProps() throws -> ObjectStorageConnProps {
-    guard let objStoreCredentials = appEnv.getService(spec: "BluePic-Object-Storage")?.credentials else {
-      throw BluePicError.IO("Failed to obtain object storage service and/or its credentials.")
-    }
-
-    guard let projectId = objStoreCredentials["projectId"].string,
-    let userId = objStoreCredentials["userId"].string,
-    let password = objStoreCredentials["password"].string else {
-      throw BluePicError.IO("Failed to obtain object storage credentials.")
-    }
-
-    let connProperties = ObjectStorageConnProps(projectId: projectId, userId: userId, password: password)
+    let objStoreCredentials = try configMgr.getObjectStorageService(name: "BluePic-Object-Storage")
+    let connProperties = ObjectStorageConnProps(projectId: objStoreCredentials.project, userId: objStoreCredentials.userID, password: objStoreCredentials.password)
     return connProperties
   }
 
@@ -101,13 +83,13 @@ public struct Configuration {
    - returns: Encapsulated MobileClientAccessProps object with the necessary info
    */
   func getMobileClientAccessProps() throws -> MobileClientAccessProps {
-    guard let mcaCredentials = appEnv.getService(spec: "BluePic-Mobile-Client-Access")?.credentials else {
+    guard let mcaCredentials = configMgr.getService(spec: "BluePic-Mobile-Client-Access")?.credentials else {
       throw BluePicError.IO("Failed to obtain MCA service and/or its credentials.")
     }
 
-    guard let secret = mcaCredentials["secret"].string,
-    let serverUrl = mcaCredentials["serverUrl"].string,
-    let clientId = mcaCredentials["clientId"].string else {
+    guard let secret = mcaCredentials["secret"] as?String,
+    let serverUrl = mcaCredentials["serverUrl"] as?String,
+    let clientId = mcaCredentials["clientId"] as?String else {
       throw BluePicError.IO("Failed to obtain MCA credentials.")
     }
 
@@ -123,14 +105,14 @@ public struct Configuration {
    - returns: Encapsulated IbmPushProps object with the necessary info
    */
   func getIbmPushProps() throws -> IbmPushProps {
-    guard let pushCredentials = appEnv.getService(spec: "BluePic-IBM-Push")?.credentials else {
+    guard let pushCredentials = configMgr.getService(spec: "BluePic-IBM-Push")?.credentials else {
       throw BluePicError.IO("Failed to obtain IBM Push service and/or its credentials.")
     }
 
-    guard let appGuid = pushCredentials["appGuid"].string,
-      let url = pushCredentials["url"].string,
-      let adminUrl = pushCredentials["admin_url"].string,
-      let secret = pushCredentials["appSecret"].string else {
+    guard let appGuid = pushCredentials["appGuid"] as?String,
+      let url = pushCredentials["url"] as?String,
+      let adminUrl = pushCredentials["admin_url"] as?String,
+      let secret = pushCredentials["appSecret"] as?String else {
         throw BluePicError.IO("Failed to obtain IBM Push credentials.")
     }
 
@@ -157,7 +139,7 @@ public struct Configuration {
             }
         return OpenWhiskProps(hostName: hostName, urlPath: urlPath, authToken: computedAuthToken)
     }
-    
+
     throw BluePicError.IO("Failed to obtain OpenWhisk credentials.")
     }
 

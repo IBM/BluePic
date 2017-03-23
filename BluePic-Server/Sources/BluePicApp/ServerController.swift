@@ -24,7 +24,8 @@ import BluemixPushNotifications
 import MobileClientAccessKituraCredentialsPlugin
 import MobileClientAccess
 import Credentials
-import CloudFoundryEnv
+import Configuration
+import CloudFoundryConfig
 import CredentialsFacebook
 
 ///
@@ -48,17 +49,16 @@ public class ServerController {
   let database: Database
   var objectStorageConn: ObjectStorageConn
   let pushNotificationsClient: PushNotifications
-    
+
   public let router = Router()
-  let appEnv: AppEnv
+  let configMgr = ConfigurationManager()
   public var port: Int {
-    return appEnv.port
+    return configMgr.port
   }
-    
+
   public init() throws {
     // Create configuration objects
     let config = try Configuration()
-    appEnv = config.appEnv
     couchDBConnProps = try config.getCouchDBConnProps()
     objStorageConnProps = try config.getObjectStorageConnProps()
     mobileClientAccessProps = try config.getMobileClientAccessProps()
@@ -71,18 +71,18 @@ public class ServerController {
 
     // Create object storage connection object
     objectStorageConn = ObjectStorageConn(objStorageConnProps: objStorageConnProps)
-    
+
     let credentials = Credentials() // middleware for securing endpoints
-    
+
     // Facebook credentials
     let fbCredentialsPlugin = CredentialsFacebookToken()
     credentials.register(plugin: fbCredentialsPlugin)
-    
+
     // MCA credentials
     credentials.register(plugin: MobileClientAccessKituraCredentialsPlugin())
 
     pushNotificationsClient = PushNotifications(bluemixRegion: PushNotifications.Region.US_SOUTH, bluemixAppGuid: ibmPushProps.appGuid, bluemixAppSecret: ibmPushProps.secret)
-    
+
     // Serve static content from "public"
     //router.all("/", middleware: StaticFileServer())
     router.all("/", middleware: StaticFileServer(path: "./BluePic-Web"))
@@ -94,7 +94,7 @@ public class ServerController {
     router.get("/ping", middleware: credentials)
     router.post("/images",  middleware: credentials)
     router.all("/images", middleware: BodyParser())
-    
+
     Log.verbose("Defining routes for server...")
     router.get("/ping", handler: ping)
     router.get("/token", handler: token)
@@ -117,31 +117,31 @@ extension ServerController: ServerProtocol {
     response.status(HTTPStatusCode.OK).send("Hello World, from BluePic-Server! Original URL: \(request.originalURL)")
     next()
   }
-  
+
   /// This route is only for testing purposes
   public func token(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
 
     // Define error response just in case...
     var errorResponse = JSON([:])
     errorResponse["error"].stringValue = "Failed to retrieve MCA token."
-    
+
     let baseStr = "\(mobileClientAccessProps.clientId):\(mobileClientAccessProps.secret)"
-    
+
     var tempAuthHeader: String?
     let utf8BaseStr = baseStr.data(using: String.Encoding.utf8)
     tempAuthHeader = utf8BaseStr?.base64EncodedString(options: Data.Base64EncodingOptions(rawValue: 0))
-    
+
     guard let authHeader = tempAuthHeader else {
       print("Could not generate authHeader...")
       response.status(HTTPStatusCode.internalServerError).send(json: errorResponse)
       next()
       return
     }
-    
+
     let appGuid = mobileClientAccessProps.clientId
     print("authHeader: \(authHeader)")
     print("appGuid: \(appGuid)")
-    
+
     // Request options
     var requestOptions: [ClientRequest.Options] = []
     requestOptions.append(.method("POST"))
@@ -154,10 +154,10 @@ extension ServerController: ServerProtocol {
     headers["Content-Type"] = "application/x-www-form-urlencoded; charset=utf-8"
     headers["Authorization"] = "Basic \(authHeader)"
     requestOptions.append(.headers(headers))
-    
+
     // Body required for getting MCA token
     let requestBody = "grant_type=client_credentials"
-    
+
     // Make REST call against MCA server
     let req = HTTP.request(requestOptions) { resp in
       if let resp = resp, resp.statusCode == HTTPStatusCode.OK {
@@ -181,7 +181,7 @@ extension ServerController: ServerProtocol {
             let _ = try resp.read(into: &body)
             let str = String(data: body, encoding: String.Encoding(rawValue: String.Encoding.utf8.rawValue))
             print("Response from MCA server: \(str)")
-            
+
           }catch {
             Log.error("Failed to read response body.")
           }
@@ -192,7 +192,7 @@ extension ServerController: ServerProtocol {
     }
     req.end(requestBody)
   }
-  
+
   /**
    * Route for getting the top 10 most popular tags. The following URLs are kept
    * here as reference:
@@ -223,7 +223,7 @@ extension ServerController: ServerProtocol {
           if tags.count > 10 {
             tags = Array(tags[0...9])
           }
-          
+
           // Send sorted tags to client
           var tagsDocument = JSON([:])
           tagsDocument["records"] = JSON(tags)
@@ -240,8 +240,8 @@ extension ServerController: ServerProtocol {
       next()
     }
   }
-  
-  
+
+
   /// Route for getting all user documents.
   func getUsers(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
     database.queryByView("users", ofDesign: "main_design", usingParameters: [.descending(true), .includeDocs(false)]) { document, error in
@@ -260,7 +260,7 @@ extension ServerController: ServerProtocol {
       next()
     }
   }
-  
+
   /// Route for getting a specific user document.
   func getUser(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
     guard let userId = request.parameters["userId"] else {
@@ -269,7 +269,7 @@ extension ServerController: ServerProtocol {
       next()
       return
     }
-    
+
     // Retrieve JSON document for user
     database.queryByView("users", ofDesign: "main_design", usingParameters: [ .descending(true), .includeDocs(false), .keys([userId as Database.KeyType]) ]) { document, error in
       if let document = document, error == nil {
@@ -294,7 +294,7 @@ extension ServerController: ServerProtocol {
       next()
     }
   }
-  
+
   /// Route for creating a new user document in the database.
   func createUser(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
     let rawUserData = try BodyParser.readBodyData(with: request)
@@ -375,7 +375,7 @@ extension ServerController: ServerProtocol {
     // Create container for user before adding record to database
     createContainer(withName: userId, completionHandler: completionHandler)
   }
-  
+
   /**
    * Route for getting all image documents or all images that match a given tag.
    * As of now, searching on multiple tags is not supported in this app.
@@ -431,7 +431,7 @@ extension ServerController: ServerProtocol {
       }
     }
   }
-  
+
   /// Route for getting a specific image document.
   func getImage(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
     guard let imageId = request.parameters["imageId"] else {
@@ -439,7 +439,7 @@ extension ServerController: ServerProtocol {
       next()
       return
     }
-    
+
     readImage(database: database, imageId: imageId, callback: { jsonData in
       if let jsonData = jsonData {
         response.status(HTTPStatusCode.OK).send(json: jsonData)
@@ -449,7 +449,7 @@ extension ServerController: ServerProtocol {
       next()
     })
   }
-  
+
   /// Route for getting all image documents for a given user.
   func getImagesForUser(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
     guard let userId = request.parameters["userId"] else {
@@ -457,7 +457,7 @@ extension ServerController: ServerProtocol {
       next()
       return
     }
-    
+
     let anyUserId = userId as Database.KeyType
     let queryParams: [Database.QueryParameters] =
       [.descending(true),
@@ -479,7 +479,7 @@ extension ServerController: ServerProtocol {
       next()
     }
   }
-  
+
   /**
    * Route for uploading a new picture for a given user.
    * Uses a multi-part form data request to send data in the body.
@@ -491,7 +491,7 @@ extension ServerController: ServerProtocol {
     // get multipart data for image metadata and imgage binary data
     var (imageJSON, image) = try parseMultipart(fromRequest: request)
     imageJSON = try updateImageJSON(json: imageJSON, withRequest: request)
-    
+
     // Create closure
     let completionHandler = { (success: Bool) -> Void in
       if success {
@@ -524,13 +524,13 @@ extension ServerController: ServerProtocol {
     // Create container for user before creating image record in database
     store(image: image, withName: imageJSON["fileName"].stringValue, inContainer: imageJSON["userId"].stringValue, completionHandler: completionHandler)
   }
-  
+
   /// Route for sending push notification (this uses the Push server SDK).
   func sendPushNotification(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
     // Define response body
     var responseBody = JSON([:])
     responseBody["status"].boolValue = false
-    
+
     guard let imageId = request.parameters["imageId"] else {
       response.status(HTTPStatusCode.badRequest)
       response.send(json: responseBody)
@@ -562,5 +562,5 @@ extension ServerController: ServerProtocol {
       }
     }
   }
-	
+
 }
