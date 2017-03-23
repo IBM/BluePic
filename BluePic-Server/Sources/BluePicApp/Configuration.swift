@@ -71,7 +71,7 @@ public struct Configuration {
    */
   func getObjectStorageConnProps() throws -> ObjectStorageConnProps {
     let objStoreCredentials = try configMgr.getObjectStorageService(name: "BluePic-Object-Storage")
-    let connProperties = ObjectStorageConnProps(projectId: objStoreCredentials.project, userId: objStoreCredentials.userID, password: objStoreCredentials.password)
+    let connProperties = ObjectStorageConnProps(projectId: objStoreCredentials.projectID, userId: objStoreCredentials.userID, password: objStoreCredentials.password)
     return connProperties
   }
 
