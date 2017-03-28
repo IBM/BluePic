@@ -26,22 +26,34 @@
       "version": "0.3.0"
     },
     {
+      "package": "CloudConfiguration",
+      "reason": null,
+      "repositoryURL": "https://github.com/IBM-Swift/CloudConfiguration.git",
+      "version": "1.1.4"
+    },
+    {
       "package": "CloudFoundryDeploymentTracker",
       "reason": null,
       "repositoryURL": "https://github.com/IBM-Bluemix/cf-deployment-tracker-client-swift.git",
-      "version": "0.5.1"
+      "version": "2.0.0"
     },
     {
       "package": "CloudFoundryEnv",
       "reason": null,
       "repositoryURL": "https://github.com/IBM-Swift/Swift-cfenv.git",
-      "version": "1.8.1"
+      "version": "3.0.2"
     },
     {
       "package": "CommonCrypto",
       "reason": null,
       "repositoryURL": "https://github.com/IBM-Swift/CommonCrypto.git",
       "version": "0.1.4"
+    },
+    {
+      "package": "Configuration",
+      "reason": null,
+      "repositoryURL": "https://github.com/IBM-Swift/Configuration.git",
+      "version": "0.2.3"
     },
     {
       "package": "Cryptor",
