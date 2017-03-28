@@ -108,7 +108,7 @@ extension ServerController {
               do {
                   let _ = try resp.read(into: &rawUserData)
                   let str = String(data: rawUserData, encoding: String.Encoding(rawValue: String.Encoding.utf8.rawValue))
-                  print("Error response from OpenWhisk: \(str)")
+                  print("Error response from OpenWhisk: \(String(describing: str))")
               }
               catch {
                 Log.warning("Failed to read response data in processImage error state.")
