@@ -14,7 +14,7 @@ The back-end components (i.e. Kitura-based server and OpenWhisk actions) and the
 | --- | --- |
 | Kitura-based server | `3.1` |
 | OpenWhisk actions | `3.0` |
-| iOS App | Xcode 8.2 default (`Swift 3.1`)
+| iOS App | Xcode 8.3 default (`Swift 3.1`)
 
 You can download the development snapshots of the Swift binaries by following this [link](https://swift.org/download/). Compatibility with other Swift versions is not guaranteed.
 
