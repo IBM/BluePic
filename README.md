@@ -111,9 +111,9 @@ Go to the `BluePic-iOS` directory and open the BluePic workspace with Xcode usin
 
 1. Lastly, we need to get the value for `bluemixAppRegion`, which can be one of three options currently:
 
-		REGION US SOUTH | REGION UK | REGION SYDNEY
-		--- | --- | ---
-		`.ng.bluemix.net` | `.eu-gb.bluemix.net` | `.au-syd.bluemix.net`
+REGION US SOUTH | REGION UK | REGION SYDNEY
+--- | --- | ---
+`.ng.bluemix.net` | `.eu-gb.bluemix.net` | `.au-syd.bluemix.net`
 
 You can find your region in multiple ways. For instance, by just looking at the URL you use to access your application's page (or the Bluemix dashboard). Another way is to look at the `cloud_config.json` file you modified earlier. If you look at the credentials under your `AdvancedMobileAccess` service, there is a value called `serverUrl` which should contain one of the regions mentioned above. Once you insert your `bluemixAppRegion` value into the `bluemix.plist`, your app should be configured.
 
