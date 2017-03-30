@@ -63,12 +63,8 @@ class RouteTests: XCTestCase {
   }
 
   func resetDatabase() {
-    #if os(Linux)
-    let task = Task()
-    #else
+    
     let task = Process()
-    #endif
-
     let directoryPath = fileURL(directoriesUp: 4, path: "Cloud-Scripts").relativePath
     
     task.currentDirectoryPath = directoryPath
