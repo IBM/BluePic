@@ -15,8 +15,8 @@ declared-services:
   BluePic-Weather-Company-Data:
     label: weatherinsights
     plan: Free-v2
-  BluePic-Alchemy:
-    label: alchemy_api
+  BluePic-Visual-Recognition:
+    label: watson_vision_combined
     plan: free
 applications:
 - name: BluePic
@@ -33,4 +33,4 @@ applications:
   - BluePic-Mobile-Client-Access
   - BluePic-IBM-Push
   - BluePic-Weather-Company-Data
-  - BluePic-Alchemy
+  - BluePic-Visual-Recognition
