@@ -99,7 +99,7 @@ class RouteTests: XCTestCase {
     HeliumLogger.use()
 
     XCTAssertNotNil(serverController, "ServerController object is nil and is not getting created properly.")
-    Kitura.addHTTPServer(onPort: 8090, with: serverController!.router)
+    Kitura.addHTTPServer(onPort: 8080, with: serverController!.router)
 
     queue.async {
       Kitura.start()
@@ -224,7 +224,7 @@ class RouteTests: XCTestCase {
     do {
       let imageData = try Data(contentsOf: imageURL)
       let jsonData = try JSONSerialization.data(withJSONObject: imageDictionary, options: JSONSerialization.WritingOptions(rawValue: 0))
-      let url = URL(string: "http://127.0.0.1:8090/images")
+      let url = URL(string: "http://127.0.0.1:8080/images")
       XCTAssertNotNil(url, "Post image URL is nil.")
       var request = URLRequest(url: url!, cachePolicy: .reloadIgnoringCacheData, timeoutInterval: 10.0)
       request.httpMethod = "POST"
@@ -256,7 +256,7 @@ class RouteTests: XCTestCase {
         XCTFail("Invalid request params")
         return
       }
-      let requestOptions: [ClientRequest.Options] = [.method("POST"), .hostname("localhost"), .port(8090), .path("/images"), .headers(headers)]
+      let requestOptions: [ClientRequest.Options] = [.method("POST"), .hostname("localhost"), .port(8080), .path("/images"), .headers(headers)]
       
       let req = HTTP.request(requestOptions) { resp in
         XCTAssertNotNil(resp, "Response came back nil.")
@@ -379,7 +379,7 @@ class RouteTests: XCTestCase {
     let pushExpectation = expectation(description: "Sends a push notification to a User.")
 
     // Use when URLSession is more reliable on Linux
-    /*let url = URL(string: "http://127.0.0.1:8090/push/images/2010")
+    /*let url = URL(string: "http://127.0.0.1:8080/push/images/2010")
     XCTAssertNotNil(url, "Push notification URL for image 2010 is nil.")
     var request = URLRequest(url: url!)
     request.httpMethod = "POST"
@@ -396,7 +396,7 @@ class RouteTests: XCTestCase {
       pushExpectation.fulfill()
     }.resume()*/
     
-    var requestOptions: [ClientRequest.Options] = [.method("POST"), .hostname("localhost"), .port(8090), .path("/push/images/2010")]
+    var requestOptions: [ClientRequest.Options] = [.method("POST"), .hostname("localhost"), .port(8080), .path("/push/images/2010")]
     var headers = [String:String]()
     headers["Content-Type"] = "application/json"
     headers["Authorization"] = "Bearer \(self.accessToken)"
@@ -494,7 +494,7 @@ extension RouteTests {
 private extension URLRequest {
 
   init(forTestWithMethod method: String, route: String = "", message: String? = nil, authToken: String? = nil, body: Data? = nil) {
-    let url = URL(string: "http://127.0.0.1:8090/" + route)
+    let url = URL(string: "http://127.0.0.1:8080/" + route)
     XCTAssertNotNil(url, "URL is nil, the following route may be invalid: \(route)")
     self.init(url: url!)
     addValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -534,7 +534,7 @@ private extension URLRequest {
       path += "?" + query
     }
     
-    let requestOptions: [ClientRequest.Options] = [.method(method), .hostname("localhost"), .port(8090), .path(path), .headers(headers)]
+    let requestOptions: [ClientRequest.Options] = [.method(method), .hostname("localhost"), .port(8080), .path(path), .headers(headers)]
     
     let req = HTTP.request(requestOptions) { resp in
 
@@ -553,7 +553,7 @@ private extension URLRequest {
           do {
             let _ = try resp.read(into: &rawUserData)
             let str = String(data: rawUserData, encoding: String.Encoding(rawValue: String.Encoding.utf8.rawValue))
-            print("Error response from BluePic-Server: \(str)")
+            print("Error response from BluePic-Server: \(String(describing: str))")
           } catch {
             print("Failed to read response data.")
           }
