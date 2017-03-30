@@ -180,7 +180,7 @@ extension ServerController: ServerProtocol {
             var body = Data()
             let _ = try resp.read(into: &body)
             let str = String(data: body, encoding: String.Encoding(rawValue: String.Encoding.utf8.rawValue))
-            print("Response from MCA server: \(str)")
+            print("Response from MCA server: \(String(describing: str))")
 
           }catch {
             Log.error("Failed to read response body.")

@@ -40,4 +40,4 @@ jsonFolder=`cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd`/json
 #authHeader="Bearer <valid auth token>"
 authHeader="Bearer $token"
 # Upload image via Kitura-based server (localhost)
-curl -v -F "imageJson=@$jsonFolder/bridge.json;type=application/json" -F "imageBinary=@$imagesFolder/bridge.png;type=image/png" -X POST http://localhost:8090/images -H "Content-Type:multipart/form-data" -H "Authorization: $authHeader"
+curl -v -F "imageJson=@$jsonFolder/bridge.json;type=application/json" -F "imageBinary=@$imagesFolder/bridge.png;type=image/png" -X POST http://localhost:8080/images -H "Content-Type:multipart/form-data" -H "Authorization: $authHeader"

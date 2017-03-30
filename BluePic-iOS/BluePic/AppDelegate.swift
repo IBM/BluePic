@@ -57,11 +57,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             push.initializeWithAppGUID(appGUID: BluemixDataManager.SharedInstance.bluemixConfig.pushAppGUID, clientSecret: BluemixDataManager.SharedInstance.bluemixConfig.pushClientSecret)
             push.registerWithDeviceToken(deviceToken: deviceToken) { response, statusCode, error in
                 if error.isEmpty {
-                    print( "Response during device registration : \(response)")
-                    print( "status code during device registration : \(statusCode)")
+                    print( "Response during device registration : \(String(describing: response))")
+                    print( "status code during device registration : \(String(describing: statusCode))")
                 } else {
                     print( "Error during device registration \(error) ")
-                    print( "Error during device registration \n  - status code: \(statusCode) \n Error :\(error) \n")
+                    print( "Error during device registration \n  - status code: \(String(describing: statusCode)) \n Error :\(error) \n")
                 }
             }
         }
