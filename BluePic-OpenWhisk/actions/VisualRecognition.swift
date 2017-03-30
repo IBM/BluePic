@@ -5,6 +5,7 @@
 import KituraNet
 import Dispatch
 import Foundation
+import SwiftyJSON
 
 func main(args: [String:Any]) -> [String:Any] {
 
@@ -27,9 +28,22 @@ func main(args: [String:Any]) -> [String:Any] {
 
     let req = HTTP.request(requestOptions) { response in
         do {
-            if let response = response, let responseStr = try response.readString() {
-                print("resp: \(responseStr)")
-                str = responseStr
+            if let response = response, let responseStr = try response.readString(),
+            let dataResponse = responseStr.data(using: String.Encoding.utf8, allowLossyConversion: true) {
+
+                let jsonObj = JSON(data: dataResponse)
+
+                if let imageClasses = jsonObj["images"][0]["classifiers"][0]["classes"].array {
+                	for imageClass in imageClasses {
+                		
+                		if let label = imageClass["class"].string, let confidence = imageClass["score"].double {
+                			if (str.characters.count > 0) {
+   		                    	str = str + ","
+                            }
+                			str += "{\"label\":\"\(label)\",\"confidence\":\(confidence)}"
+                		}
+                	}
+                }
             }
         } catch {
             print("Error: \(error)")
