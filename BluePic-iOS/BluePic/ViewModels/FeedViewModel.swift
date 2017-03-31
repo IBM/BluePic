@@ -38,7 +38,7 @@ class FeedViewModel: NSObject {
     var imageDataArray = [Image]()
 
     //callback used to inform the Feed VC of notifications from its view model
-    var notifyFeedVC : ((_ feedViewModelNotification: FeedViewModelNotification)->())!
+    var notifyFeedVC : ((_ feedViewModelNotification: FeedViewModelNotification) -> Void)!
 
     //string that holds the search query if it is present, meaning we are looking at search results
     var searchQuery: String?
@@ -49,7 +49,6 @@ class FeedViewModel: NSObject {
     //constant that defines the number of sections there are in the table view
     let kNumberOfSectionsInTableView = 2
 
-
     /**
       Method called upon init. It sets a callback to inform the VC of new notification
 
@@ -58,7 +57,7 @@ class FeedViewModel: NSObject {
 
      - returns: FeedViewModel
      */
-    init(notifyFeedVC : @escaping ((_ feedViewModelNotification: FeedViewModelNotification)->()), searchQuery: String?) {
+    init(notifyFeedVC : @escaping ((_ feedViewModelNotification: FeedViewModelNotification) -> Void), searchQuery: String?) {
         super.init()
 
         //save callback to notify Feed View Controller of events
@@ -173,7 +172,6 @@ extension FeedViewModel {
 
 //ViewController -> ViewModel Communication
 extension FeedViewModel {
-
 
     func shouldStartLoadingAnimation() -> Bool {
 

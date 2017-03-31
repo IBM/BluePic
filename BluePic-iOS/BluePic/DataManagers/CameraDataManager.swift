@@ -19,11 +19,6 @@ import ImageIO
 import CoreLocation
 import SVProgressHUD
 
-enum CameraDataManagerNotification: String {
-    case UserPressedPostPhoto = "UserPressedPostPhoto"
-
-}
-
 /// Singleton to hold any state with showing the camera picker. Allows user to upload a photo to BluePic
 class CameraDataManager: NSObject {
 
@@ -69,7 +64,6 @@ class CameraDataManager: NSObject {
      */
     fileprivate override init() {}
 
-
     /**
      Method to show the image picker action sheet so user can choose from Photo Library or Camera
 
@@ -79,17 +73,13 @@ class CameraDataManager: NSObject {
         self.tabVC = presentingVC
         self.picker = UIImagePickerController()
         let alert: UIAlertController=UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
-        let cameraAction = UIAlertAction(title: NSLocalizedString("Photo Library", comment: ""), style: UIAlertActionStyle.default) {
-                UIAlertAction in
+        let cameraAction = UIAlertAction(title: NSLocalizedString("Photo Library", comment: ""), style: UIAlertActionStyle.default) { _ in
                 self.openGallery()
         }
-        let galleryAction = UIAlertAction(title: NSLocalizedString("Take Photo", comment: ""), style: UIAlertActionStyle.default) {
-                UIAlertAction in
+        let galleryAction = UIAlertAction(title: NSLocalizedString("Take Photo", comment: ""), style: UIAlertActionStyle.default) { _ in
                 self.openCamera()
         }
-        let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: UIAlertActionStyle.cancel) {
-                UIAlertAction in
-        }
+        let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: UIAlertActionStyle.cancel)
 
         // Add the actions
         picker?.delegate = self
@@ -100,7 +90,6 @@ class CameraDataManager: NSObject {
         // on iPad, this will be a Popover
         // on iPhone, this will be an action sheet
         alert.modalPresentationStyle = .popover
-
 
         // Present the controller
         self.tabVC.present(alert, animated: true, completion: nil)
@@ -146,7 +135,6 @@ class CameraDataManager: NSObject {
         //show view
         self.tabVC.view.addSubview(self.confirmationView)
     }
-
 
     /**
      Method resets the state variables
@@ -231,7 +219,7 @@ class CameraDataManager: NSObject {
     func showPhotoCouldntBeChosenAlert() {
         let alert = UIAlertController(title: nil, message: NSLocalizedString("This photo couldn't be loaded. Please use a different one!", comment: ""), preferredStyle: UIAlertControllerStyle.alert)
 
-        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default, handler: { (action: UIAlertAction) in
+        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default, handler: { (_: UIAlertAction) in
             self.openGallery()
         }))
 
@@ -401,11 +389,11 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
 
         let alert = UIAlertController(title: NSLocalizedString("Location Not Found", comment: ""), message: NSLocalizedString("Location is required to post a photo", comment: ""), preferredStyle: UIAlertControllerStyle.alert)
 
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .default, handler: { (action: UIAlertAction) in
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .default, handler: { (_: UIAlertAction) in
 
         }))
 
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Try Again", comment: ""), style: .default, handler: { (action: UIAlertAction) in
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Try Again", comment: ""), style: .default, handler: { (_: UIAlertAction) in
 
             self.prepareImageToPost()
 
@@ -422,9 +410,9 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
 
      - parameter callback: ((location : Location?)->())
      */
-    fileprivate func setLatLongAndLocationNameForImage(_ callback : @escaping (_ location: Location?)->()) {
+    fileprivate func setLatLongAndLocationNameForImage(_ callback : @escaping (_ location: Location?) -> Void) {
 
-        LocationDataManager.SharedInstance.getCurrentLatLongCityAndState() { (latitude: CLLocationDegrees?, longitude: CLLocationDegrees?, city: String?, state: String?, error: LocationDataManagerError?) in
+        LocationDataManager.SharedInstance.getCurrentLatLongCityAndState { (latitude: CLLocationDegrees?, longitude: CLLocationDegrees?, city: String?, state: String?, error: LocationDataManagerError?) in
 
             //failure
             if error != nil {

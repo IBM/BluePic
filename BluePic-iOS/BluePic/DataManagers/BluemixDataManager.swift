@@ -64,13 +64,11 @@ class BluemixDataManager: NSObject {
 
     //filters images variable to only images taken by the user
     var currentUserImages: [Image] {
-        get {
-            return images.filter({ $0.user.facebookID == CurrentUser.facebookUserId})
-        }
+        return images.filter({ $0.user.facebookID == CurrentUser.facebookUserId})
     }
 
     /// images that were taken during this app session (used to help make images appear faster in the image feed as we wait for the image to download from the url
-    var imagesTakenDuringAppSessionById = [String : UIImage]()
+    var imagesTakenDuringAppSessionById = [String: UIImage]()
 
     //array that stores all the images currently being uploaded. This is used to show the images currently posting on the feed
     var imagesCurrentlyUploading: [ImagePayload] = []
@@ -131,7 +129,7 @@ extension BluemixDataManager {
      - parameter userId: String
      - parameter result: (user : User?, error : BlueMixDataManagerError?) -> ()
      */
-    func getUserById(_ userId: String, result: @escaping (_ user: User?, _ error: BlueMixDataManagerError?) -> ()) {
+    func getUserById(_ userId: String, result: @escaping (_ user: User?, _ error: BlueMixDataManagerError?) -> Void) {
 
         let requestURL = getBluemixBaseRequestURL() + "/" + kUsersEndPoint + "/" + userId
 
@@ -178,7 +176,6 @@ extension BluemixDataManager {
         }
     }
 
-
     /**
      Method creates a new user and returns the parsed response in the result callback
 
@@ -186,7 +183,7 @@ extension BluemixDataManager {
      - parameter name:   String
      - parameter result: ((user : User?) -> ())
      */
-    func createNewUser(_ userId: String, name: String, result : @escaping (_ user: User?) -> ()) {
+    func createNewUser(_ userId: String, name: String, result : @escaping (_ user: User?) -> Void) {
 
         let requestURL = getBluemixBaseRequestURL() + "/" + kUsersEndPoint
 
@@ -220,7 +217,6 @@ extension BluemixDataManager {
 
     }
 
-
     /**
      Method checks to see if a user already exists, if the user doesn't exist then it creates a new user. It will return the parsed response in the callback parameter
 
@@ -228,7 +224,7 @@ extension BluemixDataManager {
      - parameter name:     String
      - parameter callback: ((success : Bool) -> ())
      */
-    func checkIfUserAlreadyExistsIfNotCreateNewUser(_ userId: String, name: String, callback : @escaping ((_ success: Bool) -> ())) {
+    func checkIfUserAlreadyExistsIfNotCreateNewUser(_ userId: String, name: String, callback : @escaping ((_ success: Bool) -> Void)) {
 
         getUserById(userId, result: { (user, error) in
 
@@ -291,7 +287,7 @@ extension BluemixDataManager {
      - parameter tags:     [String]
      - parameter callback: (images : [Image]?)->()
      */
-    func getImagesByTags(_ tags: [String], callback : @escaping (_ images: [Image]?)->()) {
+    func getImagesByTags(_ tags: [String], callback : @escaping (_ images: [Image]?) -> Void) {
 
         var requestURL = getBluemixBaseRequestURL() + "/" + kImagesEndPoint + "?tag="
         for (index, tag) in tags.enumerated() {
@@ -321,7 +317,7 @@ extension BluemixDataManager {
      - parameter request: Request
      - parameter result:  (images : [Image]?)-> ()
      */
-    func getImages(_ request: Request, result : @escaping (_ images: [Image]?) -> ()) {
+    func getImages(_ request: Request, result : @escaping (_ images: [Image]?) -> Void) {
 
         request.timeout = kDefaultTimeOut
 
@@ -336,7 +332,6 @@ extension BluemixDataManager {
         }
 
     }
-
 
     /**
      Method parses the getImages response and returns an array of images
@@ -376,7 +371,6 @@ extension BluemixDataManager {
 // MARK: - Methods related to image uploading
 extension BluemixDataManager {
 
-
     /**
      Method pings service and will be challanged if the app has MCA configured but the user hasn't signed in yet.
 
@@ -396,7 +390,6 @@ extension BluemixDataManager {
 
     }
 
-
     /**
      Method will first call the ping method, to force the user to login with Facebook (if MCA is configured). When we get a reponse, if we have the Facebook userIdentity, then this means the user succuessfully logged into Facebook (and MCA is configured). We will then try to create a new user and when this is succuessful we finally call the postNewImage method. If we don't have the Facebook user Identity, then this means MCA isn't configured and we will continue by calling the postNewImage method.
 
@@ -408,10 +401,10 @@ extension BluemixDataManager {
         NotificationCenter.default.post(name: .imageUploadBegan, object: nil)
 
         //ping backend to trigger Facebook login if MCA is configured
-        ping({ (response, error) -> Void in
+        ping({ (_, error) -> Void in
 
             //either there was a network failure, user authentication with facebook failed, or user authentication with facebook was canceled by the user
-            if let _ = error {
+            if error != nil {
                 print(NSLocalizedString("Try To Post New Image Error: Ping failed", comment: ""))
                 self.handleImageUploadFailure(image)
 
@@ -424,7 +417,7 @@ extension BluemixDataManager {
                     //User is authenticated with Facebook, create new user record
                     self.createNewUser(facebookUserId, name: facebookUserFullName, result: { user in
 
-                        if let _ = user {
+                        if user != nil {
 
                             CurrentUser.facebookUserId = facebookUserId
                             CurrentUser.fullName = facebookUserFullName
@@ -449,7 +442,6 @@ extension BluemixDataManager {
 
     }
 
-
     /**
      Method posts a new image. It will send the ImageUploadBegan notification when the image upload begins. It will send the ImageUploadSuccess notification when the image uploads successfully. For all other errors it will send out the ImageUploadFailure notification.
 
@@ -464,14 +456,14 @@ extension BluemixDataManager {
         }
 
         let requestURL = getBluemixBaseRequestURL() + "/" + kImagesEndPoint
-        let imageDictionary = ["fileName": image.fileName, "caption" : image.caption, "width" : image.width, "height" : image.height, "location" : ["name" : image.location.name, "latitude" : image.location.latitude, "longitude" : image.location.longitude]] as [String : Any]
+        let imageDictionary = ["fileName": image.fileName, "caption": image.caption, "width": image.width, "height": image.height, "location": ["name": image.location.name, "latitude": image.location.latitude, "longitude": image.location.longitude]] as [String : Any]
 
         do {
             let jsonData = try JSONSerialization.data(withJSONObject: imageDictionary, options: JSONSerialization.WritingOptions(rawValue: 0))
             let boundary = generateBoundaryString()
             let mimeType = ("application/json", "image/png")
             let request = Request(url: requestURL, method: HttpMethod.POST)
-            request.headers = ["Content-Type" : "multipart/form-data; boundary=\(boundary)"]
+            request.headers = ["Content-Type": "multipart/form-data; boundary=\(boundary)"]
 
             var body = Data()
             guard let boundaryStart = "--\(boundary)\r\n".data(using: String.Encoding.utf8),
@@ -498,7 +490,7 @@ extension BluemixDataManager {
 
             request.timeout = kDefaultTimeOut
 
-            request.send(requestBody: body) { response, error in
+            request.send(requestBody: body) { _, error in
 
                 //failure
                 if let error = error {
@@ -523,7 +515,6 @@ extension BluemixDataManager {
     func generateBoundaryString() -> String {
         return "Boundary-\(UUID().uuidString)"
     }
-
 
     /**
      Method handles when there is an image upload failure. It will remove the image that was uploading from the imagesCurrentlyUploading array, and then will add the image to the imagesThatFailedToUpload array. Finally it will notify the rest of the app with the BluemixDataManagerNotification.ImageUploadFailure notification

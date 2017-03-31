@@ -8,9 +8,7 @@
 
 import Foundation
 
-
 extension UIViewController {
-
 
     /**
      Method returns whether the view controller is visible or not

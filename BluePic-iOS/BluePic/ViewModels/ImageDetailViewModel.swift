@@ -74,7 +74,6 @@ extension ImageDetailViewModel {
         return kNumberOfSectionsInCollectionView
     }
 
-
     /**
      Method returns the number of items in a section
 

@@ -40,7 +40,6 @@ class CameraConfirmationView: UIView, UITextFieldDelegate {
     /// Placeholder text for the titleTextField
     fileprivate let kTextFieldPlaceholderText = NSLocalizedString("GIVE IT A TITLE", comment: "")
 
-
     /**
      Return an instance of this view
 

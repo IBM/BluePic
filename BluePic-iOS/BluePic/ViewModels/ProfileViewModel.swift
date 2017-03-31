@@ -22,7 +22,7 @@ class ProfileViewModel: NSObject {
     var imageDataArray = [Image]()
 
     //callback used to tell the ProfileViewController when to refresh its table view
-    fileprivate var refreshVCCallback : (()->())!
+    fileprivate var refreshVCCallback : (() -> Void)!
 
     //constant that represents the number of sections in the table view
     fileprivate let kNumberOfSectionsInTableView = 1
@@ -37,7 +37,7 @@ class ProfileViewModel: NSObject {
 
      - returns:
      */
-    init(refreshVCCallback : @escaping (()->())) {
+    init(refreshVCCallback : @escaping (() -> Void)) {
        super.init()
 
         self.refreshVCCallback  = refreshVCCallback

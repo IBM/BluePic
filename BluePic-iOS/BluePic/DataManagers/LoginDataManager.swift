@@ -46,7 +46,7 @@ class LoginDataManager: NSObject {
 
      - parameter callback: ((error : LoginDataManagerError?)->())
      */
-    func login(_ callback : @escaping ((_ error: LoginDataManagerError?)->())) {
+    func login(_ callback : @escaping ((_ error: LoginDataManagerError?) -> Void)) {
 
         ///Check if user is already authenticated from previous sesssions, aka check nsuserdefaults for user info
         if isUserAlreadyAuthenticated() {
@@ -140,11 +140,11 @@ class LoginDataManager: NSObject {
 
      - parameter callback: ((success: Bool)->())
      */
-    func logOut(_ callback : @escaping (_ success: Bool)->()) {
+    func logOut(_ callback : @escaping (_ success: Bool) -> Void) {
 
-        FacebookDataManager.SharedInstance.logOut { respone, error in
+        FacebookDataManager.SharedInstance.logOut { _, error in
 
-            if let _ = error {
+            if error != nil {
                 callback(false)
             } else {
                 CurrentUser.logOut()
@@ -154,6 +154,5 @@ class LoginDataManager: NSObject {
         }
 
     }
-
 
 }
