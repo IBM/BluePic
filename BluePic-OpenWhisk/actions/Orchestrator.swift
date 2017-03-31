@@ -30,7 +30,7 @@ func main(args: [String:Any]) -> [String:Any] {
     // then there is an error message being returned from cloudant
     if (document.exists() && !document["error"].exists()) {
         
-        // request data from weather & alchemy services
+        // request data from weather & visual recognition services
         let location = document["location"]
         
         var weatherInvocation:[String:Any] = [:]
@@ -41,11 +41,11 @@ func main(args: [String:Any]) -> [String:Any] {
                 "longitude": String(describing: longitude)
                 ])
         }
-        var alchemyInvocation:[String:Any] = [:]
+        var visualInvocation:[String:Any] = [:]
         let imageURL = document["url"].string
         var imageURLUnwrapped:String = ""
         if let imageURLUnwrapped = imageURL {
-            alchemyInvocation = Whisk.invoke(actionNamed: "/\(targetNamespace)/bluepic/alchemy", withParameters: [
+            visualInvocation = Whisk.invoke(actionNamed: "/\(targetNamespace)/bluepic/visualRecognition", withParameters: [
                 "imageURL": "\(imageURLUnwrapped)"
                 ])
         }
@@ -70,17 +70,17 @@ func main(args: [String:Any]) -> [String:Any] {
             document["location"]["weather"] = newWeather
         }
         
-        // parse alchemy data and update cloudant document
-        var alchemy: JSON = [:]
-        if let alchemyResponse = alchemyInvocation["response"] as? [String:Any],
-            let alchemyPayload = alchemyResponse["result"] as? [String:Any],
-            let alchemyString:String = alchemyPayload["alchemy"] as? String,
-            let alchemyData = alchemyString.data(using: String.Encoding.utf8, allowLossyConversion: true) {
+        // parse visual recognition data and update cloudant document
+        var visualRecognition: JSON = [:]
+        if let visualResponse = visualInvocation["response"] as? [String:Any],
+            let visualPayload = visualResponse["result"] as? [String:Any],
+            let visualString:String = visualPayload["visualRecognition"] as? String,
+            let visualData = visualString.data(using: String.Encoding.utf8, allowLossyConversion: true) {
             
-            alchemy = JSON(data: alchemyData)
+            visualRecognition = JSON(data: visualData)
         }
         
-        document["tags"] = alchemy
+        document["tags"] = visualRecognition
         
         var writeJSON: JSON = [:]
         if var documentUnwrapped = document.rawString() {

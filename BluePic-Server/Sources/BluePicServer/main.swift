@@ -31,6 +31,6 @@ do {
   Kitura.run()
 
 } catch let error {
-  Log.error("Oops, something went wrong... Server did not start! Failed with error: \(error.localizedDescription)")
+  Log.error("Oops, something went wrong... Server did not start! Failed with error: \(error)")
   exit(1)
 }

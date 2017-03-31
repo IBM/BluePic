@@ -89,7 +89,7 @@ import BMSAnalyticsAPI
     // MARK: Protocol implemantion
 
     public func onAuthenticationSuccess(_ info: AnyObject?) {
-        FacebookAuthenticationManager.logger.debug(message: "onAuthenticationSuccess info = \(info)")
+        FacebookAuthenticationManager.logger.debug(message: "onAuthenticationSuccess info = \(String(describing: info))")
     }
 
     public func onAuthenticationFailure(_ info: AnyObject?) {
