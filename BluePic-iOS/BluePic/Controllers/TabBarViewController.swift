@@ -95,7 +95,7 @@ class TabBarViewController: UITabBarController {
      - parameter animated: Bool to determine if VC should be animated on presentation
      - parameter callback: callback for actions once presentation is done
      */
-    func presentLoginVC(_ animated: Bool, callback: (()->())?) {
+    func presentLoginVC(_ animated: Bool, callback: (() -> Void)?) {
 
         if let loginVC = Utils.vcWithNameFromStoryboardWithName("loginVC", storyboardName: "Main") as? LoginViewController {
 
@@ -138,10 +138,10 @@ extension TabBarViewController: UITabBarControllerDelegate {
      - returns: Bool
      */
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
-        if let _ = viewController as? CameraViewController { //if camera tab is selected, show camera picker
+        if viewController as? CameraViewController != nil { //if camera tab is selected, show camera picker
             handleCameraTabBeingSelected()
             return false
-        } else if let _ = viewController as? ProfileNavigationController {
+        } else if viewController as? ProfileNavigationController != nil {
             return shouldShowProfileViewControllerAndHandleIfShouldnt()
         } else { //if feed selected, actually show it everytime
             return true
@@ -186,7 +186,7 @@ extension TabBarViewController: UITabBarControllerDelegate {
         let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil)
         alertController.addAction(cancelAction)
 
-        let OKAction = UIAlertAction(title: NSLocalizedString("Settings", comment: ""), style: .default) { (action) in
+        let OKAction = UIAlertAction(title: NSLocalizedString("Settings", comment: ""), style: .default) { (_) in
 
             if let settingsUrl = URL(string: UIApplicationOpenSettingsURLString) {
                 UIApplication.shared.openURL(settingsUrl)
@@ -206,13 +206,13 @@ extension TabBarViewController: UITabBarControllerDelegate {
 
         let alert = UIAlertController(title: NSLocalizedString("Failed To Upload Image", comment: ""), message: "", preferredStyle: UIAlertControllerStyle.alert)
 
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .default, handler: { (action: UIAlertAction) in
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .default, handler: { (_: UIAlertAction) in
 
             self.viewModel.tellBluemixDataManagerToCancelUploadingImagesThatFailedToUpload()
 
         }))
 
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Try Again", comment: ""), style: .default, handler: { (action: UIAlertAction) in
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Try Again", comment: ""), style: .default, handler: { (_: UIAlertAction) in
 
             self.viewModel.tellBluemixDataManagerToRetryUploadingImagesThatFailedToUpload()
 
@@ -223,7 +223,6 @@ extension TabBarViewController: UITabBarControllerDelegate {
         }
 
     }
-
 
 }
 
@@ -260,15 +259,13 @@ extension TabBarViewController {
     func showSettingsActionSheet() {
 
         let alert: UIAlertController=UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
-        let cameraAction = UIAlertAction(title: NSLocalizedString("Log Out", comment: ""), style: UIAlertActionStyle.default) {
-            UIAlertAction in
+        let cameraAction = UIAlertAction(title: NSLocalizedString("Log Out", comment: ""), style: UIAlertActionStyle.default) { _ in
 
             SVProgressHUD.show()
             self.viewModel.logOutUser()
         }
 
-        let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: UIAlertActionStyle.cancel) {
-            UIAlertAction in
+        let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: UIAlertActionStyle.cancel) { _ in
         }
 
         // Add the actions
@@ -278,7 +275,6 @@ extension TabBarViewController {
         // on iPad, this will be a Popover
         // on iPhone, this will be an action sheet
         alert.modalPresentationStyle = .popover
-
 
         // Present the controller
         self.present(alert, animated: true, completion: nil)
@@ -302,7 +298,7 @@ extension TabBarViewController {
     func handleLogOutFailure() {
         let alert = UIAlertController(title: NSLocalizedString("Log Out Failure", comment: ""), message: NSLocalizedString("Please Try Again", comment: ""), preferredStyle: UIAlertControllerStyle.alert)
 
-        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default, handler: { (action: UIAlertAction) in
+        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default, handler: { (_: UIAlertAction) in
 
         }))
 

@@ -93,7 +93,6 @@ class LoginViewController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
 
-
     /**
      Method to authenticate with facebook when login is tapped
 
@@ -116,7 +115,6 @@ class LoginViewController: UIViewController {
         loadingIndicator.isHidden = false
         connectingLabel.isHidden = false
     }
-
 
     /**
      Method is called when the app receives a memory warning from the OS

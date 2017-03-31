@@ -36,7 +36,6 @@ class SearchViewController: UIViewController {
     //padding used for the width of the collection view cell in sizeForItemAtIndexPath method
     let kCellPadding: CGFloat = 60
 
-
     /**
      Method called upon view did load. It sets up the popular tags collection view, observes when the keyboard is shown, and begins the fetch of popular tags
      */
@@ -104,7 +103,7 @@ class SearchViewController: UIViewController {
      */
     @IBAction func popVC(_ sender: Any) {
         searchField.resignFirstResponder()
-        let _ = self.navigationController?.popViewController(animated: true)
+        _ = self.navigationController?.popViewController(animated: true)
     }
 
 }

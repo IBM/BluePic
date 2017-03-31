@@ -6,9 +6,9 @@ branches:
 
 matrix:
   include:
-    # - os: linux
-    #   dist: trusty
-    #   sudo: required
+    - os: linux
+      dist: trusty
+      sudo: required
     - os: osx
       osx_image: xcode8.3
 

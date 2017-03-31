@@ -20,7 +20,6 @@ import UIKit
 
 extension UIImage {
 
-
     /**
      Method resizes the image to an appropriate size to be uploaded to the server
 
@@ -147,7 +146,6 @@ extension UIImage {
         return newImage
     }
 
-
     /**
      Method resizes and rotates the image to prepare it for image upload
 
@@ -164,6 +162,5 @@ extension UIImage {
         }
 
     }
-
 
 }

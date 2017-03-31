@@ -144,7 +144,6 @@ class ImageInfoHeaderCollectionReusableView: UICollectionReusableView {
         cityStateLabel.text = locationName ?? ""
     }
 
-
     /**
      Method sets up the date label with data
 
