@@ -24,7 +24,7 @@ enum LoginViewModelNotification {
 
 class LoginViewModel: NSObject {
 
-    var notifyLoginVC : ((_ loginViewModelNotification: LoginViewModelNotification) -> ())!
+    var notifyLoginVC : ((_ loginViewModelNotification: LoginViewModelNotification) -> Void)!
 
     /**
      Method sets up the callback method to notify the login vc of login view model notifications
@@ -33,7 +33,7 @@ class LoginViewModel: NSObject {
 
      - returns: LoginViewModel
      */
-    init(notifyLoginVC: @escaping (_ loginViewModelNotification: LoginViewModelNotification) -> ()) {
+    init(notifyLoginVC: @escaping (_ loginViewModelNotification: LoginViewModelNotification) -> Void) {
         super.init()
 
         self.notifyLoginVC = notifyLoginVC

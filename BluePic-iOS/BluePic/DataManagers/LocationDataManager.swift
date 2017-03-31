@@ -30,7 +30,6 @@ let kImperialUnitOfMeasurement = "e"
 //string that represents metric unit of measurement
 let kMetricUnitOfMeasurement = "m"
 
-
 class LocationDataManager: NSObject {
 
     /// Shared instance of data manager
@@ -46,11 +45,10 @@ class LocationDataManager: NSObject {
     fileprivate var locationManager: CLLocationManager!
 
     //callback to inform that location services has been enabled or denied
-    fileprivate var isLocationServicesEnabledAndIfNotHandleItCallback : ((_ isEnabled: Bool)->())?
+    fileprivate var isLocationServicesEnabledAndIfNotHandleItCallback : ((_ isEnabled: Bool) -> Void)?
 
     //callback to return the user's current location
-    fileprivate var getUsersCurrentLocationCallback : ((_ location: CLLocation?)->())?
-
+    fileprivate var getUsersCurrentLocationCallback : ((_ location: CLLocation?) -> Void)?
 
     /**
      Upon init, we call the setupLocationManager method
@@ -61,7 +59,6 @@ class LocationDataManager: NSObject {
         super.init()
         self.setupLocationManager()
     }
-
 
     /**
      Method returns the user's unit of measurement
@@ -117,7 +114,7 @@ class LocationDataManager: NSObject {
 
      - parameter callback: ((isEnabled : Bool) -> ())
      */
-    func isLocationServicesEnabledAndIfNotHandleIt(_ callback : @escaping ((_ isEnabled: Bool) -> ())) {
+    func isLocationServicesEnabledAndIfNotHandleIt(_ callback : @escaping ((_ isEnabled: Bool) -> Void)) {
 
         isLocationServicesEnabledAndIfNotHandleItCallback = callback
 
@@ -147,7 +144,7 @@ class LocationDataManager: NSObject {
 
      - parameter callback: (location : CLLocation?)-> ()
      */
-    fileprivate func getUsersCurrentLocation(_ callback : @escaping (_ location: CLLocation?)-> ()) {
+    fileprivate func getUsersCurrentLocation(_ callback : @escaping (_ location: CLLocation?) -> Void) {
 
         getUsersCurrentLocationCallback = callback
         locationManager.requestLocation()
@@ -160,7 +157,7 @@ class LocationDataManager: NSObject {
      - parameter location: CLLocation
      - parameter callback: ((placemark : CLPlacemark?)->())
      */
-    fileprivate func getPlaceMarkFromLocation(_ location: CLLocation, callback : @escaping ((_ placemark: CLPlacemark?)->())) {
+    fileprivate func getPlaceMarkFromLocation(_ location: CLLocation, callback : @escaping ((_ placemark: CLPlacemark?) -> Void)) {
 
         CLGeocoder().reverseGeocodeLocation(location, completionHandler: {(placemarks, error) -> Void in
             print(location)
@@ -187,20 +184,18 @@ class LocationDataManager: NSObject {
                 callback(nil)
             }
 
-
         })
 
     }
-
 
     /**
      Method gets the latitude, longitude, city and state from the user's current location. It will return the result in the callback parameter
 
      - parameter callback: ((latitude : CLLocationDegrees?, longitude : CLLocationDegrees?, city : String?, state : String?, error : LocationDataManagerError?)->())
      */
-    func getCurrentLatLongCityAndState(_ callback : @escaping ((_ latitude: CLLocationDegrees?, _ longitude: CLLocationDegrees?, _ city: String?, _ state: String?, _ error: LocationDataManagerError?)->())) {
+    func getCurrentLatLongCityAndState(_ callback : @escaping ((_ latitude: CLLocationDegrees?, _ longitude: CLLocationDegrees?, _ city: String?, _ state: String?, _ error: LocationDataManagerError?) -> Void)) {
 
-        getUsersCurrentLocation() { location in
+        getUsersCurrentLocation { location in
 
             if let location = location {
 
@@ -225,7 +220,6 @@ class LocationDataManager: NSObject {
             }
         }
     }
-
 
     func invalidateGetUsersCurrentLocationCallback() {
 

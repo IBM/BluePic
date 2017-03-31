@@ -126,7 +126,6 @@ class ProfileTableViewCell: UITableViewCell {
         }
     }
 
-
     /**
      Method sets up the image view with the url provided or a locally cached verion of the image
 
@@ -211,7 +210,7 @@ class ProfileTableViewCell: UITableViewCell {
      */
     fileprivate func setImageViewWithURLAndPlaceHolderImage(_ url: URL, placeHolderImage: UIImage) {
 
-        self.userImageView.sd_setImage(with: url, placeholderImage: placeHolderImage, options: [.delayPlaceholder]) { image, error, cacheType, url in
+        self.userImageView.sd_setImage(with: url, placeholderImage: placeHolderImage, options: [.delayPlaceholder]) { image, error, _, _ in
 
             self.loadingView.isHidden = image != nil && error == nil
 
@@ -224,7 +223,7 @@ class ProfileTableViewCell: UITableViewCell {
      - parameter url: URL
      */
     fileprivate func setImageViewWithURL(_ url: URL) {
-        self.userImageView.sd_setImage(with: url) { (image, error, cacheType, url) in
+        self.userImageView.sd_setImage(with: url) { (image, error, _, _) in
 
             self.loadingView.isHidden = image != nil && error == nil
 

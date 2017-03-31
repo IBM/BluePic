@@ -18,4 +18,4 @@ before_install:
 
 script:
   - cd BluePic-Server && ./Package-Builder/build-package.sh -projectDir $TRAVIS_BUILD_DIR -credentialsDir $TRAVIS_BUILD_DIR/Testing-Credentials/BluePic/ci
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cd $TRAVIS_BUILD_DIR/BluePic-iOS; xcodebuild -workspace BluePic.xcworkspace/ -scheme BluePic -sdk iphonesimulator10.3 ONLY_ACTIVE_ARCH=NO; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cd $TRAVIS_BUILD_DIR/BluePic-iOS; xcodebuild -workspace BluePic.xcworkspace/ -scheme BluePic -sdk iphonesimulator10.3 ONLY_ACTIVE_ARCH=NO -quiet; fi

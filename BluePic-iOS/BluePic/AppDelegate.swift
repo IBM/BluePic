@@ -94,7 +94,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                               preferredStyle: UIAlertControllerStyle.alert)
 
                 alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: UIAlertActionStyle.cancel, handler: nil))
-                alert.addAction(UIAlertAction(title: NSLocalizedString("Yes", comment: ""), style: UIAlertActionStyle.default, handler: { (action) in
+                alert.addAction(UIAlertAction(title: NSLocalizedString("Yes", comment: ""), style: UIAlertActionStyle.default, handler: { (_) in
                     self.loadImageDetail(userInfo, tabBarController: tabBarController, feedNav: feedNav)
                 }))
                 feedNav.present(alert, animated: true, completion: nil)

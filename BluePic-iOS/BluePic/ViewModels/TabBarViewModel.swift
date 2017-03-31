@@ -29,8 +29,7 @@ enum TabBarViewModelNotification {
 class TabBarViewModel: NSObject {
 
     //callback that allows the tab bar view model to send event notifications to the tabbar vc
-    fileprivate var notifyTabBarVC: ((_ tabBarViewModelNotification: TabBarViewModelNotification)->())!
-
+    fileprivate var notifyTabBarVC: ((_ tabBarViewModelNotification: TabBarViewModelNotification) -> Void)!
 
     /**
      Method called upon init, it sets up the callback method to send notifications ot the tabbar vc
@@ -39,14 +38,13 @@ class TabBarViewModel: NSObject {
 
      - returns:
      */
-    init(notifyTabBarVC : @escaping (_ tabBarViewModelNotification: TabBarViewModelNotification)->()) {
+    init(notifyTabBarVC : @escaping (_ tabBarViewModelNotification: TabBarViewModelNotification) -> Void) {
         super.init()
 
         self.notifyTabBarVC = notifyTabBarVC
 
         suscribeToBluemixDataManagerNotifications()
     }
-
 
     /**
      Method suscribes to event notifications sent from the BluemixDataManager
@@ -154,6 +152,5 @@ class TabBarViewModel: NSObject {
         })
 
     }
-
 
 }

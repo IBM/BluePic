@@ -233,7 +233,6 @@ class FeedViewController: UIViewController {
 
     }
 
-
     /**
      Method will only allow the loading animation of the eye to stop if the imagesCurrentlyUploading property of the BluemixDataManager is empty. This is because if the imagesCurrentlyUploading has picture in it, then we want to ensure the eye continues to spin until all the images in the imagesCurrentlyUploading property have finished uploading
      */
@@ -271,7 +270,6 @@ class FeedViewController: UIViewController {
             })
         }
     }
-
 
     /**
      Method will be called in viewDidAppear if we were unable to present this alert because the FeedViewController wasn't visible

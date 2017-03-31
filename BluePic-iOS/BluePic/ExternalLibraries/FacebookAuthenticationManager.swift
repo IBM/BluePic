@@ -55,13 +55,13 @@ import BMSAnalyticsAPI
     public func onAuthenticationChallengeReceived(_ authContext: AuthenticationContext, challenge: AnyObject) {
         //Make sure the user put Facebook appid in the plist
         guard Bundle.main.infoDictionary?["FacebookAppID"] != nil else {
-            authContext.submitAuthenticationFailure(["Error":"Please Put your facebook appid in your info.plist" as AnyObject])
+            authContext.submitAuthenticationFailure(["Error": "Please Put your facebook appid in your info.plist" as AnyObject])
             return
         }
         //make sure the challange appId is the same as plist appId
         guard let appID = challenge[FacebookAuthenticationManager.FACEBOOK_APP_ID_KEY] as? String, appID == FBSDKLoginKit.FBSDKSettings.appID()
             else {
-                authContext.submitAuthenticationFailure(["Error":"App Id from MCA server doesn't match the one defined in the .plist file" as AnyObject])
+                authContext.submitAuthenticationFailure(["Error": "App Id from MCA server doesn't match the one defined in the .plist file" as AnyObject])
                 return
         }
 
@@ -70,7 +70,7 @@ import BMSAnalyticsAPI
 
             let handler: FBSDKLoginManagerRequestTokenHandler = {(result: FBSDKLoginManagerLoginResult?, error: Error?) -> Void in
                 guard error == nil else {
-                    authContext.submitAuthenticationFailure(["Error":error as AnyObject])
+                    authContext.submitAuthenticationFailure(["Error": error as AnyObject])
                     return
                 }
 
@@ -78,7 +78,7 @@ import BMSAnalyticsAPI
                     authContext.submitAuthenticationFailure(["Error": FacebookAuthenticationError.userCanceledLogin.rawValue])
                 } else {
                     let accessToken = FBSDKAccessToken.current().tokenString
-                    authContext.submitAuthenticationChallengeAnswer([FacebookAuthenticationManager.ACCESS_TOKEN_KEY:accessToken! as AnyObject])
+                    authContext.submitAuthenticationChallengeAnswer([FacebookAuthenticationManager.ACCESS_TOKEN_KEY: accessToken! as AnyObject])
                 }
 
             }

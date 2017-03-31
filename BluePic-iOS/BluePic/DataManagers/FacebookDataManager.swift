@@ -52,13 +52,12 @@ class FacebookDataManager: NSObject {
      */
     fileprivate override init() {}
 
-
     /**
      Method will authenticate used with Facebook if the app has Facebook configured in the plist. It will return the facebook user id and facebook user full name if authentication was a success, else it will return a FacebookAuthenticationError.
 
      - parameter callback: ((facebookUserId : String?, facebookUserFullName : String?, error : FacebookAuthenticationError?) -> ())
      */
-    func loginWithFacebook(_ callback : @escaping ((_ facebookUserId: String?, _ facebookUserFullName: String?, _ error: FacebookAuthenticationError?) -> ())) {
+    func loginWithFacebook(_ callback : @escaping ((_ facebookUserId: String?, _ facebookUserFullName: String?, _ error: FacebookAuthenticationError?) -> Void)) {
 
         if isFacebookConfigured() {
             authenticateFacebookUser(callback)
@@ -107,11 +106,11 @@ class FacebookDataManager: NSObject {
 
      - parameter callback: (facebookUserId : String?, facebookUserFullName : String?, error : FacebookAuthenticationError?) -> ()
      */
-    fileprivate func authenticateFacebookUser(_ callback : @escaping (_ facebookUserId: String?, _ facebookUserFullName: String?, _ error: FacebookAuthenticationError?) -> ()) {
+    fileprivate func authenticateFacebookUser(_ callback : @escaping (_ facebookUserId: String?, _ facebookUserFullName: String?, _ error: FacebookAuthenticationError?) -> Void) {
 
         let authManager = BMSClient.sharedInstance.authorizationManager
 
-        authManager.obtainAuthorization { response, error in
+        authManager.obtainAuthorization { _, error in
 
             if let error = error, let dictionary = Utils.convertStringToDictionary(error.localizedDescription), let errorMessage = dictionary["Error"] as? String {
                 if errorMessage == FacebookAuthenticationError.userCanceledLogin.rawValue {
@@ -148,7 +147,6 @@ class FacebookDataManager: NSObject {
         }
     }
 
-
     /**
      Method logs out the user by calling the FacebookAuthenticationManager's logout method
 
@@ -172,6 +170,5 @@ class FacebookDataManager: NSObject {
         return authManager.userIdentity
 
     }
-
 
 }

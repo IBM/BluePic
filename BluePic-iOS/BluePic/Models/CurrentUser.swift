@@ -50,17 +50,12 @@ class CurrentUser: NSObject {
         }
     }
 
-
     /// generate string for the users facebook profile picture url
     class var facebookProfilePictureURL: String {
-        get {
-
-            if CurrentUser.facebookUserId != "anonymous" {
-                return kFacebookProfilePictureURLPrefix + facebookUserId + kFacebookProfilePictureURLPostfix
-            } else {
-                return ""
-            }
-
+        if CurrentUser.facebookUserId != "anonymous" {
+            return kFacebookProfilePictureURLPrefix + facebookUserId + kFacebookProfilePictureURLPostfix
+        } else {
+            return ""
         }
     }
 
@@ -80,13 +75,11 @@ class CurrentUser: NSObject {
 
     }
 
-
     /// Prefix for url needed to get user profile picture given their unique id (id goes after this)
     fileprivate static let kFacebookProfilePictureURLPrefix = "http://graph.facebook.com/"
 
     /// Postfix for url needed to get user profile picture given their unique id (id goes before this)
     fileprivate static let kFacebookProfilePictureURLPostfix = "/picture?type=large"
-
 
     /**
      Method resets the CurrentUser to log out

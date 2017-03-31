@@ -130,7 +130,6 @@ class Utils: NSObject {
         collectionView.register(nib, forSupplementaryViewOfKind: kind, withReuseIdentifier: nibName)
     }
 
-
     /**
      Method converts a string to a dictionary
 
@@ -149,8 +148,6 @@ class Utils: NSObject {
         }
         return nil
     }
-
-
 
     /**
      Method converts a response to a dictionary
@@ -214,6 +211,5 @@ class Utils: NSObject {
                       longMinutes,
                       longSeconds, {return longDegrees >= 0 ? NSLocalizedString("E", comment: "first letter of the word East") : NSLocalizedString("W", comment: "first letter of the word West")}() )
     }
-
 
 }

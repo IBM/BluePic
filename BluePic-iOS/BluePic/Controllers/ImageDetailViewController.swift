@@ -33,7 +33,6 @@ class ImageDetailViewController: UIViewController {
     //view model that will keep all state and data handling for the image detail vc
     var viewModel: ImageDetailViewModel!
 
-
     /**
      Method called upon view did load. It sets up the subviews and the tag collection view
      */
@@ -60,8 +59,6 @@ class ImageDetailViewController: UIViewController {
         super.didReceiveMemoryWarning()
     }
 
-
-
     /**
      Method is called when the back button is pressed
 
@@ -69,12 +66,11 @@ class ImageDetailViewController: UIViewController {
      */
     @IBAction func backButtonAction(_ sender: Any) {
 
-        let _ = self.navigationController?.popViewController(animated: true)
+        _ = self.navigationController?.popViewController(animated: true)
 
     }
 
 }
-
 
 //UI Setup Methods
 extension ImageDetailViewController {
@@ -107,7 +103,6 @@ extension ImageDetailViewController {
         setupBlurView()
 
     }
-
 
     /**
      Method sets up the image view
@@ -146,7 +141,6 @@ extension ImageDetailViewController {
 }
 
 extension ImageDetailViewController : UICollectionViewDataSource {
-
 
     /**
      Method asks the view model for the number of items in the section

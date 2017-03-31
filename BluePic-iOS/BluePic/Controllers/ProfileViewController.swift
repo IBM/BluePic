@@ -67,7 +67,6 @@ class ProfileViewController: UIViewController {
         UIApplication.shared.statusBarStyle = UIStatusBarStyle.default
     }
 
-
     /**
      Method called when the app receives a memory warning from the OS
      */
