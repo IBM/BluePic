@@ -29,7 +29,7 @@ The feed (first tab) shows all the latest photos posted to the BluePic community
 
 ### View Image Details
 
-You get here by simply tapping on an image. You will be shown a collection of information, including caption, author, location of photo, time taken, weather at location, and associated tags. Both, weather and tag info are determined server-side on Bluemix with Insights for Weather and Alchemy Vision.
+You get here by simply tapping on an image. You will be shown a collection of information, including caption, author, location of photo, time taken, weather at location, and associated tags. Both, weather and tag info are determined server-side on Bluemix with Weather Company Data and Watson Visual Recognition.
 
 <p align="center">
 <img src="../Imgs/image-detail.png"  alt="detail" height=550 border=0 /></p>

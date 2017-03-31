@@ -45,7 +45,7 @@ function install() {
   
   echo "Adding VCAP_SERVICES as parameter"
   wsk package update bluepic\
-    -p alchemyKey $ALCHEMY_key\
+    -p visualRecognitionKey $VISUAL_key\
     -p weatherUsername $WEATHER_username\
     -p weatherPassword $WEATHER_password\
     -p cloudantHost $CLOUDANT_host\
@@ -61,7 +61,7 @@ function install() {
 
   echo "Creating actions"
   wsk action create --kind swift:3 bluepic/weather actions/Weather.swift -t 300000
-  wsk action create --kind swift:3 bluepic/alchemy actions/Alchemy.swift -t 300000
+  wsk action create --kind swift:3 bluepic/visualRecognition actions/VisualRecognition.swift -t 300000
   wsk action create --kind swift:3 bluepic/cloudantRead actions/CloudantRead.swift -t 300000
   wsk action create --kind swift:3 bluepic/cloudantWrite actions/CloudantWrite.swift -t 300000
   wsk action create --kind swift:3 bluepic/kituraRequestAuth actions/KituraRequestAuth.swift -t 300000
@@ -93,11 +93,12 @@ function uninstall() {
   wsk action delete bluepic/processRequestThroughReadUser
   wsk action delete bluepic/processFinalWrite
   wsk action delete bluepic/processCallback
+  wsk action delete bluepic/alchemy
 
 
   echo "Removing current actions..."
   wsk action delete bluepic/weather
-  wsk action delete bluepic/alchemy
+  wsk action delete bluepic/visualRecognition
   wsk action delete bluepic/cloudantRead
   wsk action delete bluepic/cloudantWrite
   wsk action delete bluepic/processImage
@@ -116,7 +117,7 @@ function showenv() {
   echo CLOUDANT_password=$CLOUDANT_password
   echo CLOUDANT_host=$CLOUDANT_host
   echo CLOUDANT_db=$CLOUDANT_db
-  echo ALCHEMY_key=$ALCHEMY_key
+  echo VISUAL_key=$VISUAL_key
   echo WEATHER_username=$WEATHER_username
   echo WEATHER_password=$WEATHER_password
   echo -e "${NC}"

@@ -27,12 +27,10 @@ For `Cloudant` you will need:
 * host (hostname for your cloudant instance, such as `d60741e4-629e-48e4-aa5d-da6e7557d5b5-bluemix.cloudant.com`)
 * cloudant database name (default `bluepic_db`)
 
-For `Alchemy` you will need:
-* api key - this is from your Alchemy service instance
+For `Visual Recognition` you will need:
+* api key - this is from your Visual Recognition service instance
 
-    *Note:* If you get an error message that says `Only one free key is allowed per account in a 24-hour period` when creating your Alchemy service instance, then be sure to check if you already have an Alchemy service created for your Bluemix account.  Only one Alchemy service instance is allowed per Bluemix account. You can reuse your Alchemy key from an existing app without having to create a new Alchemy instance. This error message is misleading because you won't be able to create a new Alchemy instance in 24 hours.
-
-For `Weather Insights` you will need:
+For `Weather Company Data` you will need:
 * username
 * password
 
@@ -77,7 +75,7 @@ This delegates to the following actions and updates data accordingly:
 
 * `bluepic/cloudantRead` - read image document from cloudant
 * `bluepic/weather` - request weather data for location
-* `bluepic/alchemy` - request alchemy tagging for image
+* `bluepic/visualRecognition` - request Visual Recognition tagging for image
 * `bluepic/cloudantWrite` - save data back to Cloudant
 * `bluepic/kituraRequestAuth` - request auth crednetials for Kitura from MCA
 * `bluepic/kituraCallback` - make request back to Kitura server to invoke push notification service
@@ -144,7 +142,7 @@ parameters:
 ---
 
 #### bluepic/weather
-Retrieve weather data from Insights for Weather service
+Retrieve weather data from Weather Company Data service
 
 ```
 wsk action invoke bluepic/weather -p latitude <latitude>  -p longitude <longitude>
@@ -157,11 +155,11 @@ parameters:
 
 ---
 
-#### bluepic/alchmey
-Fetch Alchemy image tagging results
+#### bluepic/visualRecognition
+Fetch Watson Visual Recognition image tagging results
 
 ```
-wsk action invoke bluepic/alchmey -p imageURL <imageURL>
+wsk action invoke bluepic/visualRecognition -p imageURL <imageURL>
 ```
 
 parameters:
