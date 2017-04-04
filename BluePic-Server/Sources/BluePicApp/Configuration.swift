@@ -40,7 +40,7 @@ public struct Configuration {
         let path = Configuration.getAbsolutePath(relativePath: "/\(configurationFile)", useFallback: false)
 
         guard let finalPath = path else {
-            Log.warning("Could not find '\(configurationFile)'.")
+            Log.warning("Could not find '\(configurationFile)'. Loading configuration from environment variables.")
             configMgr.load(.environmentVariables)
             return
         }
@@ -89,11 +89,12 @@ public struct Configuration {
 
     guard let secret = appIdCredentials["secret"] as? String,
     let serverUrl = appIdCredentials["oauthServerUrl"] as? String,
-    let clientId = appIdCredentials["clientId"] as? String else {
+    let clientId = appIdCredentials["clientId"] as? String,
+    let tenantId = appIdCredentials["tenantId"] as? String else {
       throw BluePicError.IO("Failed to obtain App ID credentials.")
     }
 
-    let appIdProperties = AppIdProps(secret: secret, serverUrl: serverUrl, clientId: clientId)
+    let appIdProperties = AppIdProps(secret: secret, serverUrl: serverUrl, clientId: clientId, tenantId: tenantId)
     return appIdProperties
   }
 

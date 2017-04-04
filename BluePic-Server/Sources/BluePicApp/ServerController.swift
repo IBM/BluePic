@@ -135,7 +135,7 @@ extension ServerController: ServerProtocol {
       next()
       return
     }
-    // TODO: update with App ID
+
     let appGuid = appIdProps.clientId
     print("authHeader: \(authHeader)")
     print("appGuid: \(appGuid)")

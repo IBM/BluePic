@@ -36,12 +36,14 @@ public struct AppIdProps {
   public let secret: String
   public let serverUrl: String
   public let clientId: String
+    public let tenantId: String
 
   // Constructor
-  public init(secret: String, serverUrl: String, clientId: String) {
+    public init(secret: String, serverUrl: String, clientId: String, tenantId: String) {
     self.secret = secret
     self.serverUrl = serverUrl
     self.clientId = clientId
+    self.tenantId = tenantId
   }
 }
 
