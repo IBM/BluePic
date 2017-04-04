@@ -6,9 +6,9 @@ declared-services:
   BluePic-Object-Storage:
     label: Object-Storage
     plan: Free
-  BluePic-Mobile-Client-Access:
+  BluePic-App-ID:
     label: AdvancedMobileAccess
-    plan: Gold
+    plan: "Graduated tier"
   BluePic-IBM-Push:
     label: imfpush
     plan: Basic
@@ -30,7 +30,7 @@ applications:
   services:
   - BluePic-Cloudant
   - BluePic-Object-Storage
-  - BluePic-Mobile-Client-Access
+  - BluePic-App-ID
   - BluePic-IBM-Push
   - BluePic-Weather-Company-Data
   - BluePic-Visual-Recognition
