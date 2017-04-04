@@ -84,8 +84,7 @@ class RouteTests: XCTestCase {
       let tokenFileURL = fileURL(directoriesUp: 1, path: tokenFileName)
 
       do {
-        // contentsOf not yet supported on Linux for String type
-        let fileContents = try NSString(contentsOf: tokenFileURL, encoding: String.Encoding.utf8.rawValue)
+        let fileContents = try String(contentsOf: tokenFileURL, encoding: .utf8)
         self.accessToken = String(describing: fileContents)
       } catch {
         XCTFail("Could not get authToken from file.")
