@@ -17,16 +17,18 @@
 import Foundation
 import Kitura
 import KituraNet
+import KituraSession
 import CouchDB
 import LoggerAPI
 import SwiftyJSON
 import BluemixPushNotifications
-import MobileClientAccessKituraCredentialsPlugin
-import MobileClientAccess
+//import MobileClientAccessKituraCredentialsPlugin
+//import MobileClientAccess
 import Credentials
 import Configuration
 import CloudFoundryConfig
 import CredentialsFacebook
+import BluemixAppID
 
 ///
 /// Because bridging is not complete in Linux, we must use Any objects for dictionaries
@@ -43,7 +45,7 @@ public class ServerController {
 
   let couchDBConnProps: ConnectionProperties
   let objStorageConnProps: ObjectStorageConnProps
-  let mobileClientAccessProps: MobileClientAccessProps
+  let appIdProps: AppIdProps
   let ibmPushProps: IbmPushProps
   let openWhiskProps: OpenWhiskProps
   let database: Database
@@ -61,7 +63,7 @@ public class ServerController {
     let config = try Configuration()
     couchDBConnProps = try config.getCouchDBConnProps()
     objStorageConnProps = try config.getObjectStorageConnProps()
-    mobileClientAccessProps = try config.getMobileClientAccessProps()
+    appIdProps = try config.getAppIdProps()
     ibmPushProps = try config.getIbmPushProps()
     openWhiskProps = try config.getOpenWhiskProps()
 
@@ -75,19 +77,15 @@ public class ServerController {
     let credentials = Credentials() // middleware for securing endpoints
 
     // Facebook credentials
-    let fbCredentialsPlugin = CredentialsFacebookToken()
-    credentials.register(plugin: fbCredentialsPlugin)
-
-    // MCA credentials
-    credentials.register(plugin: MobileClientAccessKituraCredentialsPlugin())
+//    let fbCredentialsPlugin = CredentialsFacebookToken()
+//    credentials.register(plugin: fbCredentialsPlugin)
 
     pushNotificationsClient = PushNotifications(bluemixRegion: PushNotifications.Region.US_SOUTH, bluemixAppGuid: ibmPushProps.appGuid, bluemixAppSecret: ibmPushProps.secret)
 
     // Serve static content from "public"
-    //router.all("/", middleware: StaticFileServer())
     router.all("/", middleware: StaticFileServer(path: "./BluePic-Web"))
 
-    // Assign middleware instance
+    // Assign middleware instance, endpoint securing temporarily disabled
     router.get("/users", middleware: credentials)
     router.post("/users", middleware: credentials)
     router.post("/push", middleware: credentials)
@@ -125,7 +123,7 @@ extension ServerController: ServerProtocol {
     var errorResponse = JSON([:])
     errorResponse["error"].stringValue = "Failed to retrieve MCA token."
 
-    let baseStr = "\(mobileClientAccessProps.clientId):\(mobileClientAccessProps.secret)"
+    let baseStr = "\(appIdProps.clientId):\(appIdProps.secret)"
 
     var tempAuthHeader: String?
     let utf8BaseStr = baseStr.data(using: String.Encoding.utf8)
@@ -137,8 +135,8 @@ extension ServerController: ServerProtocol {
       next()
       return
     }
-
-    let appGuid = mobileClientAccessProps.clientId
+    // TODO: update with App ID
+    let appGuid = appIdProps.clientId
     print("authHeader: \(authHeader)")
     print("appGuid: \(appGuid)")
 

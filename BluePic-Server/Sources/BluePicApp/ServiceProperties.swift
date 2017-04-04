@@ -31,19 +31,17 @@ public struct ObjectStorageConnProps {
   }
 }
 
-public struct MobileClientAccessProps {
+public struct AppIdProps {
   // Instace variables
   public let secret: String
   public let serverUrl: String
   public let clientId: String
-  public let adminUrl: String
 
   // Constructor
   public init(secret: String, serverUrl: String, clientId: String) {
     self.secret = secret
     self.serverUrl = serverUrl
     self.clientId = clientId
-    self.adminUrl = "https://mobile.ng.bluemix.net/imfmobileplatformdashboard/?appGuid=\(clientId)"
   }
 }
 

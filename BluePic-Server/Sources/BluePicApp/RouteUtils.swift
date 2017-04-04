@@ -21,7 +21,6 @@ import KituraNet
 import LoggerAPI
 import SwiftyJSON
 import BluemixObjectStorage
-import MobileClientAccess
 import Dispatch
 
 enum BluePicLocalizedError : LocalizedError {
@@ -285,21 +284,22 @@ extension ServerController {
    */
   func updateImageJSON(json: JSON, withRequest request: RouterRequest) throws -> JSON {
     var updatedJson = json
-    guard let authContext = request.userInfo["mcaAuthContext"] as? AuthorizationContext,
+    guard
+//        let authContext = request.userInfo["mcaAuthContext"] as? AuthorizationContext,
               let contentType = ContentType.sharedInstance.getContentType(forFileName: updatedJson["fileName"].stringValue) else {
       throw ProcessingError.Image("Invalid image document!")
     }
 
-    let userId = authContext.userIdentity?.id ?? "anonymous"
+    let userId = "anonymous"
     Log.verbose("Image will be uploaded under the following userId: '\(userId)'.")
     let uploadedTs = StringUtils.currentTimestamp()
     let imageURL = generateUrl(forContainer: userId, forImage: updatedJson["fileName"].stringValue)
-    let deviceId = authContext.deviceIdentity.id
+//    let deviceId = authContext.deviceIdentity.id
 
     updatedJson["contentType"].stringValue = contentType
     updatedJson["url"].stringValue = imageURL
     updatedJson["userId"].stringValue = userId
-    updatedJson["deviceId"].stringValue = deviceId
+//    updatedJson["deviceId"].stringValue = deviceId
     updatedJson["uploadedTs"].stringValue = uploadedTs
     updatedJson["type"].stringValue = "image"
 
