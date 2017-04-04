@@ -101,7 +101,6 @@ class LoginViewController: UIViewController {
     @IBAction func loginTapped(_ sender: Any) {
         startLoading()
         viewModel.authenticateWithFacebook()
-
     }
 
     /**

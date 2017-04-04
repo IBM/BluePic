@@ -20,11 +20,11 @@
 
 import Foundation
 import BMSCore
-import BMSSecurity
-import FBSDKLoginKit
+//import BMSSecurity
+//import FBSDKLoginKit
 import BMSAnalyticsAPI
 
-@objc public class FacebookAuthenticationManager: NSObject, AuthenticationDelegate {
+/*@objc public class FacebookAuthenticationManager: NSObject, AuthenticationDelegate {
 
     private static let FACEBOOK_REALM="wl_facebookRealm"
     private static let ACCESS_TOKEN_KEY="accessToken"
@@ -116,4 +116,4 @@ import BMSAnalyticsAPI
         return FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
     }
 
-}
+}*/

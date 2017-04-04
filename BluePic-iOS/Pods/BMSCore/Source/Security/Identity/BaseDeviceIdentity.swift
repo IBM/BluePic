@@ -36,30 +36,31 @@ open class BaseDeviceIdentity: DeviceIdentity {
     
     
     public internal(set) var jsonData: [String:String] = ([:])
+    public private(set) var extendedJsonData : [String:Any] = [String:Any]()
 	
 	public var ID: String? {
 		get {
-			return jsonData[BaseDeviceIdentity.Key.ID]
+            return jsonData[BaseDeviceIdentity.Key.ID] != nil ? jsonData[BaseDeviceIdentity.Key.ID] : (extendedJsonData[BaseDeviceIdentity.Key.ID] as? String)
 		}
 	}
 	
 	public var OS: String? {
 		get {
-			return jsonData[BaseDeviceIdentity.Key.OS]
+			return jsonData[BaseDeviceIdentity.Key.OS] != nil ? jsonData[BaseDeviceIdentity.Key.OS] : (extendedJsonData[BaseDeviceIdentity.Key.OS] as? String)
 		}
 	}
 
 	
 	public var OSVersion: String? {
 		get {
-			return jsonData[BaseDeviceIdentity.Key.OSVersion]
+			return jsonData[BaseDeviceIdentity.Key.OSVersion] != nil ? jsonData[BaseDeviceIdentity.Key.OSVersion] : (extendedJsonData[BaseDeviceIdentity.Key.OSVersion] as? String)
 		}
 	}
 
 	
 	public var model: String? {
 		get {
-			return jsonData[BaseDeviceIdentity.Key.model]
+			return jsonData[BaseDeviceIdentity.Key.model] != nil ? jsonData[BaseDeviceIdentity.Key.model] : (extendedJsonData[BaseDeviceIdentity.Key.model] as? String)
 		}
 	}
 
@@ -83,6 +84,7 @@ open class BaseDeviceIdentity: DeviceIdentity {
     }
     
     public init(map: [String:Any]?) {
+        extendedJsonData = map != nil ? map! : [String:Any]()
         guard let json = map as? [String:String] else {
             jsonData = ([:])
             return

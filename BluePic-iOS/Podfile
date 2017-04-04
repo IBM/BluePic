@@ -4,7 +4,9 @@ use_frameworks!
 
 target 'BluePic' do
 
-	pod 'BMSFacebookAuthentication'
+	# pod 'BMSFacebookAuthentication'
+
+	pod 'BluemixAppID'
 
 	pod 'BMSPush'
 

@@ -16,7 +16,8 @@
 
 import UIKit
 import BMSCore
-import BMSSecurity
+//import BMSSecurity
+import BluemixAppID
 import BMSPush
 
 @UIApplicationMain
@@ -41,8 +42,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //pre load the keyboard on the camera confirmayion screen to prevent laggy behavior
         preLoadKeyboardToPreventLaggyKeyboardInCameraConfirmationScreen()
 
-        //inialialize Bluemix Mobile Client Access to allow for facebook Authentication
-        return self.initializeBackendForFacebookAuth(application, launchOptions: launchOptions)
+
+        self.initializeBackendForAuth()
+        return true
     }
 
     /**
@@ -138,19 +140,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /**
      Method to initialize Bluemix Mobile Client Access with Facebook
      */
-    func initializeBackendForFacebookAuth(_ application: UIApplication, launchOptions: [AnyHashable: Any]?) -> Bool {
+    func initializeBackendForAuth() {
         //Initialize backend
         BluemixDataManager.SharedInstance.initilizeBluemixAppRoute()
-
-        //Initialize Facebook
-        MCAAuthorizationManager.sharedInstance.setAuthorizationPersistencePolicy(PersistencePolicy.always)
+        
         if BluemixDataManager.SharedInstance.bluemixConfig.mcaTenantId != "" {
-            MCAAuthorizationManager.sharedInstance.initialize(tenantId: BluemixDataManager.SharedInstance.bluemixConfig.mcaTenantId, bluemixRegion: BluemixDataManager.SharedInstance.bluemixConfig.appRegion)
+            
+            let bmsclient = BMSClient.sharedInstance
+            bmsclient.initialize(bluemixRegion: BluemixDataManager.SharedInstance.bluemixConfig.appRegion)
+            let appid = AppID.sharedInstance
+            appid.initialize(tenantId: BluemixDataManager.SharedInstance.bluemixConfig.mcaTenantId,
+                             bluemixRegion: BluemixDataManager.SharedInstance.bluemixConfig.appRegion)
+            let appIdAuthorizationManager = AppIDAuthorizationManager(appid: appid)
+            bmsclient.authorizationManager = appIdAuthorizationManager
+            
+            AppID.sharedInstance.initialize(tenantId: BluemixDataManager.SharedInstance.bluemixConfig.mcaTenantId,
+                                            bluemixRegion: BluemixDataManager.SharedInstance.bluemixConfig.appRegion)
+        } else {
+            print("No tenantId, failed to initialize authentication flow.")
         }
-        BMSClient.sharedInstance.authorizationManager = MCAAuthorizationManager.sharedInstance
-        FacebookAuthenticationManager.sharedInstance.register()
-
-        return FacebookAuthenticationManager.sharedInstance.onFinishLaunching(application: application, withOptions:  launchOptions as? [UIApplicationLaunchOptionsKey : Any])
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -172,6 +180,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //FBAppEvents.activateApp()
         UIApplication.shared.applicationIconBadgeNumber = 0
     }
+    
+    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any]) -> Bool {
+        return AppID.sharedInstance.application(app, open: url, options: options)
+    }
 
     /// Method handles opening a facebook url for facebook login
     ///
@@ -180,14 +192,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// - parameter options: options dictionary containing UIApplicationOpenURLOptions
     ///
     /// - returns: Bool
-    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
-
-        if let sourceApp = options[UIApplicationOpenURLOptionsKey.sourceApplication] as? String {
-            return FacebookAuthenticationManager.sharedInstance.onOpenURL(application: app, url: url, sourceApplication: sourceApp, annotation: "")
-        } else {
-            return false
-        }
-    }
+//    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+//
+//        if let sourceApp = options[UIApplicationOpenURLOptionsKey.sourceApplication] as? String {
+//            return FacebookAuthenticationManager.sharedInstance.onOpenURL(application: app, url: url, sourceApplication: sourceApp, annotation: "")
+//        } else {
+//            return false
+//        }
+//    }
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
