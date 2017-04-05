@@ -284,6 +284,7 @@ extension ServerController {
    */
   func updateImageJSON(json: JSON, withRequest request: RouterRequest) throws -> JSON {
     var updatedJson = json
+    // TODO: may have to alter to work without MCA
     guard
 //        let authContext = request.userInfo["mcaAuthContext"] as? AuthorizationContext,
               let contentType = ContentType.sharedInstance.getContentType(forFileName: updatedJson["fileName"].stringValue) else {

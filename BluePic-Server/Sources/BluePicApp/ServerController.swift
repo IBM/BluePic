@@ -22,13 +22,10 @@ import CouchDB
 import LoggerAPI
 import SwiftyJSON
 import BluemixPushNotifications
-//import MobileClientAccessKituraCredentialsPlugin
-//import MobileClientAccess
 import Credentials
 import Configuration
 import CloudFoundryConfig
 import CredentialsFacebook
-import BluemixAppID
 
 ///
 /// Because bridging is not complete in Linux, we must use Any objects for dictionaries
@@ -79,6 +76,10 @@ public class ServerController {
     // Facebook credentials
 //    let fbCredentialsPlugin = CredentialsFacebookToken()
 //    credentials.register(plugin: fbCredentialsPlugin)
+    
+    // NOTE: Needed to protect endpoints, not working currently
+    // let apiKituraCredentialsPlugin = APIKituraCredentialsPlugin(options: ["oauthServerUrl": appIdProps.serverUrl])
+    // credentials.register(plugin: apiKituraCredentialsPlugin)
 
     pushNotificationsClient = PushNotifications(bluemixRegion: PushNotifications.Region.US_SOUTH, bluemixAppGuid: ibmPushProps.appGuid, bluemixAppSecret: ibmPushProps.secret)
 
@@ -118,7 +119,7 @@ extension ServerController: ServerProtocol {
 
   /// This route is only for testing purposes
   public func token(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
-
+    // TODO: may have to alter for App ID service
     // Define error response just in case...
     var errorResponse = JSON([:])
     errorResponse["error"].stringValue = "Failed to retrieve MCA token."
