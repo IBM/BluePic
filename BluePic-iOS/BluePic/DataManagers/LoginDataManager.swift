@@ -46,7 +46,7 @@ class LoginDataManager: NSObject {
 
      - parameter callback: ((error : LoginDataManagerError?)->())
      */
-    func login(_ callback : @escaping ((_ error: LoginDataManagerError?) -> Void)) {
+    /*func login(_ callback : @escaping ((_ error: LoginDataManagerError?) -> Void)) {
 
         ///Check if user is already authenticated from previous sesssions, aka check nsuserdefaults for user info
         if isUserAlreadyAuthenticated() {
@@ -99,7 +99,7 @@ class LoginDataManager: NSObject {
                 }
             })
         }
-    }
+    }*/
 
     /**
      Method is called when the user presses the sign in later button. It will sets the CurrentUser object's willLoginLater property to true
@@ -140,18 +140,10 @@ class LoginDataManager: NSObject {
 
      - parameter callback: ((success: Bool)->())
      */
-    func logOut(_ callback : @escaping (_ success: Bool) -> Void) {
+    func logOut() {
 
-//        FacebookDataManager.SharedInstance.logOut { _, error in
-//
-//            if error != nil {
-//                callback(false)
-//            } else {
-//                CurrentUser.logOut()
-//                callback(true)
-//            }
-//
-//        }
+        BMSClient.sharedInstance.authorizationManager.clearAuthorizationData()
+        CurrentUser.logOut()
 
     }
 

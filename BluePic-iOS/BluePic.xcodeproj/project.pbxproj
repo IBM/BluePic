@@ -29,7 +29,6 @@
 		1B4305991CD3EA4400474AB5 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B4305981CD3EA4400474AB5 /* Image.swift */; };
 		1B4357011CD15CF4008262A1 /* BluemixDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B4357001CD15CF4008262A1 /* BluemixDataManager.swift */; };
 		1B5555BE1C1616B000B3086E /* TabBarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B5555BD1C1616B000B3086E /* TabBarViewModel.swift */; };
-		1B9199231CC6EB1B005CC4AC /* FacebookAuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9199221CC6EB1B005CC4AC /* FacebookAuthenticationManager.swift */; };
 		1BC7AF5C1C0E39F100DDFD02 /* FeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC7AF5B1C0E39F100DDFD02 /* FeedViewModel.swift */; };
 		1BF00D0A1CEACF68009472B5 /* ProfileNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BF00D091CEACF68009472B5 /* ProfileNavigationController.swift */; };
 		1BF00D0C1CEAD27E009472B5 /* FeedNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BF00D0B1CEAD27E009472B5 /* FeedNavigationController.swift */; };
@@ -121,7 +120,6 @@
 		1B4305981CD3EA4400474AB5 /* Image.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		1B4357001CD15CF4008262A1 /* BluemixDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluemixDataManager.swift; sourceTree = "<group>"; };
 		1B5555BD1C1616B000B3086E /* TabBarViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarViewModel.swift; sourceTree = "<group>"; };
-		1B9199221CC6EB1B005CC4AC /* FacebookAuthenticationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookAuthenticationManager.swift; sourceTree = "<group>"; };
 		1BC7AF5B1C0E39F100DDFD02 /* FeedViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedViewModel.swift; sourceTree = "<group>"; };
 		1BF00D091CEACF68009472B5 /* ProfileNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileNavigationController.swift; sourceTree = "<group>"; };
 		1BF00D0B1CEAD27E009472B5 /* FeedNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedNavigationController.swift; sourceTree = "<group>"; };
@@ -337,7 +335,6 @@
 			children = (
 				2EAAC0E61CE39C13006A0B41 /* KTCenterFlowLayout.h */,
 				2EAAC0E71CE39C13006A0B41 /* KTCenterFlowLayout.m */,
-				1B9199221CC6EB1B005CC4AC /* FacebookAuthenticationManager.swift */,
 			);
 			path = ExternalLibraries;
 			sourceTree = "<group>";
@@ -624,7 +621,6 @@
 				1BF00D121CEF7939009472B5 /* ImageDetailViewModel.swift in Sources */,
 				1BF00D0C1CEAD27E009472B5 /* FeedNavigationController.swift in Sources */,
 				347472E71BFA8DEF0018B7F6 /* UIImageExtension.swift in Sources */,
-				1B9199231CC6EB1B005CC4AC /* FacebookAuthenticationManager.swift in Sources */,
 				1B40BF7E1CDA83F10097F435 /* LoginDataManager.swift in Sources */,
 				3435C7D91C04111F004923BD /* ProfileViewController.swift in Sources */,
 				347472E11BFA8DEF0018B7F6 /* NSDateExtension.swift in Sources */,

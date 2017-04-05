@@ -141,15 +141,18 @@ class TabBarViewModel: NSObject {
      Method logs out the user by calling the LoginDataManager's LogOut method
      */
     func logOutUser() {
-
-        LoginDataManager.SharedInstance.logOut({ success in
-
-            if success {
-                self.notifyTabBarVCLogOutSuccess()
-            } else {
-                self.notifyTabBarVCLogOutFailure()
-            }
-        })
+        
+        LoginDataManager.SharedInstance.logOut()
+        self.notifyTabBarVCLogOutSuccess()
+        
+//        LoginDataManager.SharedInstance.logOut({ success in
+//
+//            if success {
+//                self.notifyTabBarVCLogOutSuccess()
+//            } else {
+//                self.notifyTabBarVCLogOutFailure()
+//            }
+//        })
 
     }
 

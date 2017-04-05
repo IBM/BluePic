@@ -60,7 +60,7 @@ class FacebookDataManager: NSObject {
     func loginWithFacebook(_ callback : @escaping ((_ facebookUserId: String?, _ facebookUserFullName: String?, _ error: FacebookAuthenticationError?) -> Void)) {
 
         if isFacebookConfigured() {
-            authenticateFacebookUser(callback)
+            //authenticateFacebookUser(callback)
 
         }
     }
@@ -106,7 +106,7 @@ class FacebookDataManager: NSObject {
 
      - parameter callback: (facebookUserId : String?, facebookUserFullName : String?, error : FacebookAuthenticationError?) -> ()
      */
-    fileprivate func authenticateFacebookUser(_ callback : @escaping (_ facebookUserId: String?, _ facebookUserFullName: String?, _ error: FacebookAuthenticationError?) -> Void) {
+    /*fileprivate func authenticateFacebookUser(_ callback : @escaping (_ facebookUserId: String?, _ facebookUserFullName: String?, _ error: FacebookAuthenticationError?) -> Void) {
 
         let authManager = BMSClient.sharedInstance.authorizationManager
 
@@ -145,18 +145,7 @@ class FacebookDataManager: NSObject {
             }
 
         }
-    }
-
-    /**
-     Method logs out the user by calling the FacebookAuthenticationManager's logout method
-
-     - parameter completionHandler: BMSCompletionHandler?
-     */
-//    func logOut(_ completionHandler: BMSCompletionHandler?) {
-//
-//        FacebookAuthenticationManager.sharedInstance.logout(completionHandler: completionHandler)
-//
-//    }
+    }*/
 
     /**
      Method returns the Facebook user identity
