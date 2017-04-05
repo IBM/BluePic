@@ -1,21 +1,42 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="8AK-xM-BIZ">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="FD0-Q4-hDR">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--Navigation Controller-->
+        <scene sceneID="p84-BA-QYu">
+            <objects>
+                <navigationController navigationBarHidden="YES" id="FD0-Q4-hDR" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="945-hK-JEL">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="8AK-xM-BIZ" kind="relationship" relationship="rootViewController" id="fCn-Do-qyT"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mg5-gg-Xtr" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1598" y="915"/>
+        </scene>
         <!--Tab Bar View Controller-->
         <scene sceneID="buh-Yt-C7i">
             <objects>
                 <tabBarController id="8AK-xM-BIZ" customClass="TabBarViewController" customModule="BluePic" customModuleProvider="target" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="isH-qS-lx9"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" translucent="NO" id="163-n0-olj">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <color key="barTintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <color key="selectedImageTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="barTintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="selectedImageTintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </tabBar>
                     <connections>
                         <segue destination="4hD-bY-mnH" kind="relationship" relationship="viewControllers" id="dv1-pl-ERC"/>
@@ -25,7 +46,7 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DzM-kT-lkR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-790" y="918"/>
+            <point key="canvasLocation" x="-930" y="916"/>
         </scene>
         <!--Login View Controller-->
         <scene sceneID="tne-QT-ifu">
@@ -44,7 +65,7 @@
                             </imageView>
                             <view alpha="0.14999999999999999" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y1W-Vw-pKb">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="667"/>
-                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="g2J-LJ-jge">
                                 <rect key="frame" x="291" y="614" width="20" height="20"/>
@@ -52,7 +73,7 @@
                                     <constraint firstAttribute="width" constant="20" id="IUl-ZY-3Wd"/>
                                     <constraint firstAttribute="height" constant="20" id="pL6-YK-0em"/>
                                 </constraints>
-                                <color key="color" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="color" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </activityIndicatorView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JA3-DV-7dk">
                                 <rect key="frame" x="168" y="185" width="266" height="170"/>
@@ -64,7 +85,7 @@
                                     <fragment>
                                         <string key="content">BluePic's back-end component is written entirely in the Swift programming language and runs on a Kitura-based server that leverages several IBM Bluemix services and OpenWhisk actions.</string>
                                         <attributes>
-                                            <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <font key="NSFont" size="15" name="HelveticaNeue"/>
                                             <integer key="NSLigature" value="0"/>
                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="4" defaultTabInterval="26.449999999999999" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO">
@@ -86,19 +107,19 @@
                                     <constraint firstAttribute="height" constant="35" id="g3J-Gq-moa"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wjw-Zr-PRg">
                                 <rect key="frame" x="15" y="603" width="570" height="44"/>
-                                <color key="backgroundColor" red="0.0" green="0.56862745098039214" blue="0.91764705882352937" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.0" green="0.56862745098039214" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="eKN-Rv-bz3"/>
                                     <constraint firstAttribute="width" constant="345" id="ngh-7T-lfh"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <state key="normal" title="SIGN IN WITH FACEBOOK">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -123,7 +144,7 @@
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hia-oq-hEM">
                                 <rect key="frame" x="290" y="365" width="20" height="2"/>
-                                <color key="backgroundColor" red="0.0" green="0.56862745098039214" blue="0.91764705882352937" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.0" green="0.56862745098039214" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="2" id="Cc5-SZ-uZB"/>
                                     <constraint firstAttribute="width" constant="20" id="Ft2-aN-JbV"/>
@@ -136,7 +157,7 @@
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <state key="normal" title="I’ll sign in later">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
                                     <action selector="signInLaterTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gPb-DO-Xyg"/>
@@ -149,7 +170,7 @@
                                     <constraint firstAttribute="width" constant="267" id="dfU-Ye-2i0"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Connecting to Facebook" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LMk-mW-Kmu">
@@ -159,11 +180,11 @@
                                     <constraint firstAttribute="width" constant="267" id="fdV-cJ-dxd"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="Wjw-Zr-PRg" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="0R1-rU-8sk"/>
                             <constraint firstAttribute="bottomMargin" secondItem="LMk-mW-Kmu" secondAttribute="bottom" constant="78" id="1D8-BC-AUx"/>
@@ -217,7 +238,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1544" y="917.5"/>
+            <point key="canvasLocation" x="-2432" y="925"/>
         </scene>
         <!--Feed-->
         <scene sceneID="kfC-tD-Yra">
@@ -252,6 +273,6 @@
     </scenes>
     <resources>
         <image name="login_background" width="375" height="667"/>
-        <image name="loginlogo" width="77" height="73"/>
+        <image name="loginlogo" width="76" height="73"/>
     </resources>
 </document>

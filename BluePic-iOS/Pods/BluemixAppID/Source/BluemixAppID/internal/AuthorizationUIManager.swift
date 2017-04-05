@@ -13,6 +13,7 @@
 
 import Foundation
 import BMSCore
+import UIKit
 
 public class AuthorizationUIManager {
     var oAuthManager:OAuthManager
@@ -32,7 +33,9 @@ public class AuthorizationUIManager {
         AuthorizationUIManager.logger.debug(message: "Launching safari view")
         loginView =  safariView(url: URL(string: authorizationUrl )!)
         loginView?.authorizationDelegate = authorizationDelegate
+        
         let mainView  = UIApplication.shared.keyWindow?.rootViewController
+//            let currentView = mainView?.presentedViewController
         DispatchQueue.main.async {
             mainView?.present(self.loginView!, animated: true, completion:  nil)
         }

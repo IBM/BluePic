@@ -16,8 +16,6 @@
 
 import UIKit
 import SVProgressHUD
-import BluemixAppID
-import BMSCore
 
 class TabBarViewController: UITabBarController {
 
@@ -99,35 +97,19 @@ class TabBarViewController: UITabBarController {
      */
     func presentLoginVC(_ animated: Bool, callback: (() -> Void)?) {
 
-        class LoginDelegate: AuthorizationDelegate {
-            public func onAuthorizationSuccess(accessToken: AccessToken, identityToken: IdentityToken, response: Response?) {
-                //User authenticated
-                print("success: \(accessToken)")
+        if let loginVC = Utils.vcWithNameFromStoryboardWithName("loginVC", storyboardName: "Main") as? LoginViewController {
 
-            }
+            // If appID SDK is updated, re-implement modal presentations, remove nav controller.
+            //            self.present(loginVC, animated: animated, completion: { _ in
+            //            })
 
-            public func onAuthorizationCanceled() {
-                print("Login cancelled")
-            }
+            self.navigationController?.pushViewController(loginVC, animated: true)
 
-            public func onAuthorizationFailure(error: AuthorizationError) {
-                print("Auth Error: \(error)")
+            if let callback = callback {
+                callback()
             }
+            self.hideBackgroundImage()
         }
-
-        AppID.sharedInstance.loginWidget?.launch(delegate: LoginDelegate())
-
-//        if let loginVC = Utils.vcWithNameFromStoryboardWithName("loginVC", storyboardName: "Main") as? LoginViewController {
-//
-//            self.present(loginVC, animated: animated, completion: { _ in
-//
-//                self.hideBackgroundImage()
-//                print(NSLocalizedString("If MCA is configured, user needs to sign in with Facebook.", comment: ""))
-//                if let callback = callback {
-//                    callback()
-//                }
-//            })
-//        }
     }
 
     /**

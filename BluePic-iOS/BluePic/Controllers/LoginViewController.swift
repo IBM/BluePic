@@ -15,6 +15,8 @@
  **/
 
 import UIKit
+import BluemixAppID
+import BMSCore
 
 class LoginViewController: UIViewController {
 
@@ -89,8 +91,8 @@ class LoginViewController: UIViewController {
      */
     @IBAction func signInLaterTapped(_ sender: Any) {
         viewModel.loginLater()
-
-        dismiss(animated: true, completion: nil)
+        self.navigationController?.popViewController(animated: true)
+//        dismiss(animated: true, completion: nil)
     }
 
     /**
@@ -100,7 +102,7 @@ class LoginViewController: UIViewController {
      */
     @IBAction func loginTapped(_ sender: Any) {
         startLoading()
-        viewModel.authenticateWithFacebook()
+        AppID.sharedInstance.loginWidget?.launch(delegate: self.viewModel)
     }
 
     /**
@@ -149,7 +151,8 @@ extension LoginViewController {
      */
     func handleLoginSuccess() {
         DispatchQueue.main.async {
-            self.dismiss(animated: true, completion: nil)
+//            self.dismiss(animated: true, completion: nil)
+            self.navigationController?.popViewController(animated: true)
         }
     }
 

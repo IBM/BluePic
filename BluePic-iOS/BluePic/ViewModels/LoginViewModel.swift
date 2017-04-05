@@ -15,6 +15,8 @@
  **/
 
 import UIKit
+import BluemixAppID
+import BMSCore
 
 enum LoginViewModelNotification {
     case loginSuccess
@@ -22,7 +24,7 @@ enum LoginViewModelNotification {
     case userCanceledLogin
 }
 
-class LoginViewModel: NSObject {
+class LoginViewModel: NSObject, AuthorizationDelegate {
 
     var notifyLoginVC : ((_ loginViewModelNotification: LoginViewModelNotification) -> Void)!
 
@@ -47,22 +49,46 @@ class LoginViewModel: NSObject {
         LoginDataManager.SharedInstance.loginLater()
     }
 
-    /**
-     Method tells the LoginDataManager to begin the login process. We will eventually receieve the result of the login and we we handle errors or success by notifying the login vc appropriately.
-     */
-    func authenticateWithFacebook() {
+    // MARK: AuthorizationDelegate methods
 
-        LoginDataManager.SharedInstance.login({ error in
+    public func onAuthorizationSuccess(accessToken: AccessToken, identityToken: IdentityToken, response: Response?) {
+        if let identities = identityToken.identities, let fullName = identityToken.name {
 
-            if error == nil {
-                self.notifyLoginVC(LoginViewModelNotification.loginSuccess)
-            } else if error == LoginDataManagerError.userCanceledLogin {
-                self.notifyLoginVC(LoginViewModelNotification.userCanceledLogin)
-            } else {
-                self.notifyLoginVC(LoginViewModelNotification.loginFailure)
+            // Determine if we have facebook identity information
+            var facebookUserId: String?
+            _ = identities.filter { dictionary in
+                if let provider = dictionary["provider"] as? String, provider == "facebook" {
+                    facebookUserId = dictionary["id"] as? String
+                    return true
+                }
+                return false
             }
 
-        })
+            guard let userId = facebookUserId else {
+                print("Failed to attain user's Facebook information.")
+                self.notifyLoginVC(LoginViewModelNotification.loginFailure)
+                return
+            }
+
+            print("Success: \(accessToken)")
+            CurrentUser.willLoginLater = false
+            CurrentUser.facebookUserId = userId
+            CurrentUser.fullName = fullName
+            self.notifyLoginVC(LoginViewModelNotification.loginSuccess)
+        } else {
+            print("Failed to attain user's Facebook information.")
+            self.notifyLoginVC(LoginViewModelNotification.loginFailure)
+        }
+    }
+
+    public func onAuthorizationCanceled() {
+        print("Login cancelled")
+        self.notifyLoginVC(LoginViewModelNotification.userCanceledLogin)
+    }
+
+    public func onAuthorizationFailure(error: AuthorizationError) {
+        print("Auth Error: \(error)")
+        self.notifyLoginVC(LoginViewModelNotification.loginFailure)
     }
 
 }
