@@ -70,11 +70,18 @@ class LoginViewModel: NSObject, AuthorizationDelegate {
                 return
             }
 
-            print("Success: \(accessToken)")
-            CurrentUser.willLoginLater = false
-            CurrentUser.facebookUserId = userId
-            CurrentUser.fullName = fullName
-            self.notifyLoginVC(LoginViewModelNotification.loginSuccess)
+            BluemixDataManager.SharedInstance.checkIfUserAlreadyExistsIfNotCreateNewUser(userId, name: fullName, callback: { success in
+                if success {
+                    print("Success: \(accessToken)")
+                    CurrentUser.willLoginLater = false
+                    CurrentUser.facebookUserId = userId
+                    CurrentUser.fullName = fullName
+                    self.notifyLoginVC(LoginViewModelNotification.loginSuccess)
+                } else {
+                    print("Failed to check/create user.")
+                    self.notifyLoginVC(LoginViewModelNotification.loginFailure)
+                }
+            })
         } else {
             print("Failed to attain user's Facebook information.")
             self.notifyLoginVC(LoginViewModelNotification.loginFailure)

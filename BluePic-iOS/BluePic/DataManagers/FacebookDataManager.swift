@@ -53,19 +53,6 @@ class FacebookDataManager: NSObject {
     fileprivate override init() {}
 
     /**
-     Method will authenticate used with Facebook if the app has Facebook configured in the plist. It will return the facebook user id and facebook user full name if authentication was a success, else it will return a FacebookAuthenticationError.
-
-     - parameter callback: ((facebookUserId : String?, facebookUserFullName : String?, error : FacebookAuthenticationError?) -> ())
-     */
-    func loginWithFacebook(_ callback : @escaping ((_ facebookUserId: String?, _ facebookUserFullName: String?, _ error: FacebookAuthenticationError?) -> Void)) {
-
-        if isFacebookConfigured() {
-            //authenticateFacebookUser(callback)
-
-        }
-    }
-
-    /**
      Method to check if Facebook SDK is setup on native iOS side and that all required keys have been added to the plist
 
      - returns: true if configured, false if not
@@ -102,62 +89,16 @@ class FacebookDataManager: NSObject {
     }
 
     /**
-     Method authenticates user with facebook and returns the facebook user id and facebook user full name if authentication was a success, else it will return a FacebookAuthenticationError.
-
-     - parameter callback: (facebookUserId : String?, facebookUserFullName : String?, error : FacebookAuthenticationError?) -> ()
-     */
-    /*fileprivate func authenticateFacebookUser(_ callback : @escaping (_ facebookUserId: String?, _ facebookUserFullName: String?, _ error: FacebookAuthenticationError?) -> Void) {
-
-        let authManager = BMSClient.sharedInstance.authorizationManager
-
-        authManager.obtainAuthorization { _, error in
-
-            if let error = error, let dictionary = Utils.convertStringToDictionary(error.localizedDescription), let errorMessage = dictionary["Error"] as? String {
-                if errorMessage == FacebookAuthenticationError.userCanceledLogin.rawValue {
-                    print(NSLocalizedString("Authenticate Facebook User Error: User Canceled login", comment: ""))
-                    callback(nil, nil, FacebookAuthenticationError.userCanceledLogin)
-                } else {
-                    print(NSLocalizedString("Authenticate Facebook User Error: Error obtaining Authentication Header.", comment: "") + " \(error.localizedDescription)")
-                    callback(nil, nil, FacebookAuthenticationError.authenticationHeaderNotFound)
-                }
-            }
-            //error is nil
-            else {
-                if let identity = authManager.userIdentity {
-                    if let userId = identity.ID {
-                        if let fullName = identity.displayName {
-                            //success!
-                            callback(userId, fullName, nil)
-                        }
-                    }
-                    //error
-                    else {
-                        print(NSLocalizedString("Authenticate Facebook User Error: Valid Authentication Header and userIdentity, but id not found", comment: ""))
-                        callback(nil, nil, FacebookAuthenticationError.facebookUserIdNotFound)
-                    }
-
-                }
-                //error
-                else {
-                    print(NSLocalizedString("Authenticate Facebook User Error: Valid Authentication Header, but userIdentity not found. You have to configure the Facebook Mobile Client Access service available on Bluemix", comment: ""))
-                    callback(nil, nil, FacebookAuthenticationError.facebookuserIdentifyNotFound)
-                }
-            }
-
-        }
-    }*/
-
-    /**
      Method returns the Facebook user identity
 
      - returns: UserIdentity?
      */
-//    func getFacebookUserIdentity() -> UserIdentity? {
-//
-//        let authManager = BMSClient.sharedInstance.authorizationManager
-//
-//        return authManager.userIdentity
-//
-//    }
+    func getFacebookUserIdentity() -> UserIdentity? {
+
+        let authManager = BMSClient.sharedInstance.authorizationManager
+
+        return authManager.userIdentity
+
+    }
 
 }

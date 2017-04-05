@@ -400,7 +400,7 @@ extension BluemixDataManager {
         addImageToImagesCurrentlyUploading(image)
         NotificationCenter.default.post(name: .imageUploadBegan, object: nil)
 
-        //ping backend to trigger Facebook login if MCA is configured
+        //ping backend to trigger Facebook login if App ID is configured
         ping({ (_, error) -> Void in
 
             //either there was a network failure, user authentication with facebook failed, or user authentication with facebook was canceled by the user
@@ -411,32 +411,32 @@ extension BluemixDataManager {
             }
             //successfully pinged service
             else {
-                //Check if User Authenticated with Facebook (aka is MCA configured)
-//                if let userIdentity = FacebookDataManager.SharedInstance.getFacebookUserIdentity(), let facebookUserId = userIdentity.ID, let facebookUserFullName = userIdentity.displayName {
-//
-//                    //User is authenticated with Facebook, create new user record
-//                    self.createNewUser(facebookUserId, name: facebookUserFullName, result: { user in
-//
-//                        if user != nil {
-//
+                //Check if User Authenticated with Facebook (aka is App ID configured)
+                if CurrentUser.fullName != "Anonymous" && CurrentUser.facebookUserId != "anonymous" {
+
+                    //User is authenticated with Facebook, create new user record
+                    self.createNewUser(CurrentUser.facebookUserId, name: CurrentUser.fullName, result: { user in
+
+                        if user != nil {
+
 //                            CurrentUser.facebookUserId = facebookUserId
 //                            CurrentUser.fullName = facebookUserFullName
-//                            //User Authentication complete, ready to post image
-//                            self.postNewImage(image)
-//
-//                        }
-//                        //Something went wrong creating new user
-//                        else {
-//                            print(NSLocalizedString("Try To Post New Image Error: Something went wrong calling create a new user", comment: ""))
-//                            self.handleImageUploadFailure(image)
-//                        }
-//                    })
-//
-//                }
-//                //MCA is not configured
-//                else {
-//                    self.postNewImage(image)
-//                }
+                            //User Authentication complete, ready to post image
+                            self.postNewImage(image)
+
+                        }
+                        //Something went wrong creating new user
+                        else {
+                            print(NSLocalizedString("Try To Post New Image Error: Something went wrong calling create a new user", comment: ""))
+                            self.handleImageUploadFailure(image)
+                        }
+                    })
+
+                }
+                // App ID is not configured
+                else {
+                    self.postNewImage(image)
+                }
             }
         })
 
