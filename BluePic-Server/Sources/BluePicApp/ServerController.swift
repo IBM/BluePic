@@ -96,7 +96,6 @@ public class ServerController {
 
     Log.verbose("Defining routes for server...")
     router.get("/ping", handler: ping)
-    router.get("/token", handler: token)
     router.get("/tags", handler: getPopularTags)
     router.get("/users", handler: getUsers)
     router.get("/users/:userId", handler: getUser)
@@ -115,81 +114,6 @@ extension ServerController: ServerProtocol {
     response.headers.append("Content-Type", value: "text/plain; charset=utf-8")
     response.status(HTTPStatusCode.OK).send("Hello World, from BluePic-Server! Original URL: \(request.originalURL)")
     next()
-  }
-
-  /// This route is only for testing purposes
-  public func token(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
-    // TODO: may have to alter for App ID service
-    // Define error response just in case...
-    var errorResponse = JSON([:])
-    errorResponse["error"].stringValue = "Failed to retrieve MCA token."
-
-    let baseStr = "\(appIdProps.clientId):\(appIdProps.secret)"
-
-    var tempAuthHeader: String?
-    let utf8BaseStr = baseStr.data(using: String.Encoding.utf8)
-    tempAuthHeader = utf8BaseStr?.base64EncodedString(options: Data.Base64EncodingOptions(rawValue: 0))
-
-    guard let authHeader = tempAuthHeader else {
-      print("Could not generate authHeader...")
-      response.status(HTTPStatusCode.internalServerError).send(json: errorResponse)
-      next()
-      return
-    }
-
-    let appGuid = appIdProps.clientId
-    print("authHeader: \(authHeader)")
-    print("appGuid: \(appGuid)")
-
-    // Request options
-    var requestOptions: [ClientRequest.Options] = []
-    requestOptions.append(.method("POST"))
-    requestOptions.append(.schema("http://"))
-    requestOptions.append(.hostname("imf-authserver.ng.bluemix.net"))
-    requestOptions.append(.port(80))
-    requestOptions.append(.path("/imf-authserver/authorization/v1/apps/\(appGuid)/token"))
-    var headers = [String:String]()
-    headers["Accept"] = "application/json"
-    headers["Content-Type"] = "application/x-www-form-urlencoded; charset=utf-8"
-    headers["Authorization"] = "Basic \(authHeader)"
-    requestOptions.append(.headers(headers))
-
-    // Body required for getting MCA token
-    let requestBody = "grant_type=client_credentials"
-
-    // Make REST call against MCA server
-    let req = HTTP.request(requestOptions) { resp in
-      if let resp = resp, resp.statusCode == HTTPStatusCode.OK {
-        do {
-          var body = Data()
-          try resp.readAllData(into: &body)
-          let jsonResponse = JSON(data: body)
-          //let accessToken = json["accessToken"].stringValue
-          print("MCA response: \(jsonResponse)")
-          response.status(HTTPStatusCode.OK).send(json: jsonResponse)
-        } catch {
-          Log.error("Bad JSON document received from MCA server.")
-          response.status(resp.statusCode).send(json: errorResponse)
-        }
-      } else {
-        Log.error("Status error code or nil reponse received from MCA server.")
-        if let resp = resp {
-          Log.error("Status code: \(resp.statusCode)")
-          do {
-            var body = Data()
-            let _ = try resp.read(into: &body)
-            let str = String(data: body, encoding: String.Encoding(rawValue: String.Encoding.utf8.rawValue))
-            print("Response from MCA server: \(String(describing: str))")
-
-          }catch {
-            Log.error("Failed to read response body.")
-          }
-        }
-        response.status(HTTPStatusCode.internalServerError).send(json: errorResponse)
-      }
-      next()
-    }
-    req.end(requestBody)
   }
 
   /**
