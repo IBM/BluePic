@@ -418,7 +418,7 @@ extension BluemixDataManager {
                     self.createNewUser(CurrentUser.facebookUserId, name: CurrentUser.fullName, result: { user in
 
                         if user != nil {
-                            
+
                             //User Authentication complete, ready to post image
                             self.postNewImage(image)
 

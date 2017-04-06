@@ -72,7 +72,7 @@ class LoginViewModel: NSObject, AuthorizationDelegate {
 
             BluemixDataManager.SharedInstance.checkIfUserAlreadyExistsIfNotCreateNewUser(userId, name: fullName, callback: { success in
                 if success {
-                    print("Success: \(accessToken)")
+                    print("Login Success")
                     CurrentUser.willLoginLater = false
                     CurrentUser.facebookUserId = userId
                     CurrentUser.fullName = fullName

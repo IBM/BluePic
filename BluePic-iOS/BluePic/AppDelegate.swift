@@ -16,7 +16,6 @@
 
 import UIKit
 import BMSCore
-//import BMSSecurity
 import BluemixAppID
 import BMSPush
 
@@ -25,7 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-    /// Method called when app finishes up launching. In this case we initialize Bluemix Mobile Client Access with Facebook
+    /// Method called when app finishes up launching. In this case we initialize Bluemix App ID SDK for Facebook login and initialize Push
     ///
     /// - parameter application:   UIApplication
     /// - parameter launchOptions: [UIApplicationLaunchOptionsKey: Any]?
@@ -33,17 +32,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// - returns: Bool
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 
-        //register for remote notifications aka prompt user to give permission for notifications
-        let notificationTypes: UIUserNotificationType = [UIUserNotificationType.badge, UIUserNotificationType.alert, UIUserNotificationType.sound]
-        let notificationSettings: UIUserNotificationSettings = UIUserNotificationSettings(types: notificationTypes, categories: nil)
-        application.registerUserNotificationSettings(notificationSettings)
-        application.registerForRemoteNotifications()
+        // Kick off push notification registration
+        BMSPushClient.sharedInstance.initializeWithAppGUID(appGUID: BluemixDataManager.SharedInstance.bluemixConfig.pushAppGUID, clientSecret: BluemixDataManager.SharedInstance.bluemixConfig.pushClientSecret)
 
         //pre load the keyboard on the camera confirmayion screen to prevent laggy behavior
         preLoadKeyboardToPreventLaggyKeyboardInCameraConfirmationScreen()
 
-
-        self.initializeBackendForAuth()
+        self.initializeAppIdForAuth()
         return true
     }
 
@@ -56,7 +51,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application (_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         if BluemixDataManager.SharedInstance.bluemixConfig.isPushConfigured {
             let push =  BMSPushClient.sharedInstance
-            push.initializeWithAppGUID(appGUID: BluemixDataManager.SharedInstance.bluemixConfig.pushAppGUID, clientSecret: BluemixDataManager.SharedInstance.bluemixConfig.pushClientSecret)
             push.registerWithDeviceToken(deviceToken: deviceToken) { response, statusCode, error in
                 if error.isEmpty {
                     print( "Response during device registration : \(String(describing: response))")
@@ -67,6 +61,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 }
             }
         }
+    }
+
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        print("Failed to register for push notifications with error: \(error)")
     }
 
     /**
@@ -138,26 +136,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     /**
-     Method to initialize Bluemix Mobile Client Access with Facebook
+     Method to initialize Bluemix App ID SDK for Facebook login
      */
-    func initializeBackendForAuth() {
+    func initializeAppIdForAuth() {
+
         //Initialize backend
         BluemixDataManager.SharedInstance.initilizeBluemixAppRoute()
-        
-        if BluemixDataManager.SharedInstance.bluemixConfig.mcaTenantId != "" {
-            
+
+        if BluemixDataManager.SharedInstance.bluemixConfig.appIdTenantId != "" {
+
             let bmsclient = BMSClient.sharedInstance
             bmsclient.initialize(bluemixRegion: BluemixDataManager.SharedInstance.bluemixConfig.appRegion)
             let appid = AppID.sharedInstance
-            appid.initialize(tenantId: BluemixDataManager.SharedInstance.bluemixConfig.mcaTenantId,
+            appid.initialize(tenantId: BluemixDataManager.SharedInstance.bluemixConfig.appIdTenantId,
                              bluemixRegion: BluemixDataManager.SharedInstance.bluemixConfig.appRegion)
             let appIdAuthorizationManager = AppIDAuthorizationManager(appid: appid)
             bmsclient.authorizationManager = appIdAuthorizationManager
-            
-            AppID.sharedInstance.initialize(tenantId: BluemixDataManager.SharedInstance.bluemixConfig.mcaTenantId,
+
+            AppID.sharedInstance.initialize(tenantId: BluemixDataManager.SharedInstance.bluemixConfig.appIdTenantId,
                                             bluemixRegion: BluemixDataManager.SharedInstance.bluemixConfig.appRegion)
         } else {
-            print("No tenantId, failed to initialize authentication flow.")
+            print("Error: No App ID tenantId, failed to initialize authentication flow.")
         }
     }
 
@@ -180,26 +179,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //FBAppEvents.activateApp()
         UIApplication.shared.applicationIconBadgeNumber = 0
     }
-    
+
+    /// Method helps finish the login process after Facebook login
+    ///
+    /// - Parameters:
+    ///   - app: UIApplication
+    ///   - url: URL
+    ///   - options: options for opening the app
+    /// - Returns: Bool
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any]) -> Bool {
         return AppID.sharedInstance.application(app, open: url, options: options)
     }
-
-    /// Method handles opening a facebook url for facebook login
-    ///
-    /// - parameter app:     UIApplication
-    /// - parameter url:     URL
-    /// - parameter options: options dictionary containing UIApplicationOpenURLOptions
-    ///
-    /// - returns: Bool
-//    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
-//
-//        if let sourceApp = options[UIApplicationOpenURLOptionsKey.sourceApplication] as? String {
-//            return FacebookAuthenticationManager.sharedInstance.onOpenURL(application: app, url: url, sourceApplication: sourceApp, annotation: "")
-//        } else {
-//            return false
-//        }
-//    }
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
