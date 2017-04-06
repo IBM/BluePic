@@ -250,8 +250,6 @@ extension TabBarViewController {
             showSettingsActionSheet()
         } else if tabBarNotification == TabBarViewModelNotification.logOutSuccess {
             handleLogOutSuccess()
-        } else if tabBarNotification == TabBarViewModelNotification.logOutFailure {
-            handleLogOutFailure()
         }
     }
 
@@ -292,23 +290,6 @@ extension TabBarViewController {
                 self.selectedIndex = 0
             })
         }
-    }
-
-    /**
-     Method hanldes when logout was a failure. It presents an alert, alerting the user that there was a log out failure
-     */
-    func handleLogOutFailure() {
-        let alert = UIAlertController(title: NSLocalizedString("Log Out Failure", comment: ""), message: NSLocalizedString("Please Try Again", comment: ""), preferredStyle: UIAlertControllerStyle.alert)
-
-        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default, handler: { (_: UIAlertAction) in
-
-        }))
-
-        SVProgressHUD.dismiss()
-        DispatchQueue.main.async {
-            self.present(alert, animated: true, completion: nil)
-        }
-
     }
 
 }
