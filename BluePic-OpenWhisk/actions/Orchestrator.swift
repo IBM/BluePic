@@ -106,17 +106,17 @@ func main(args: [String:Any]) -> [String:Any] {
             }
             else {
                 // obtain auth credentials for callback to kitura
-                let kituraAuthInvocation = Whisk.invoke(actionNamed: "/\(targetNamespace)/bluepic/kituraRequestAuth", withParameters: [:])
+//                let kituraAuthInvocation = Whisk.invoke(actionNamed: "/\(targetNamespace)/bluepic/kituraRequestAuth", withParameters: [:])
                 
-                if let authResponse: [String:Any] = kituraAuthInvocation["response"] as? [String:Any],
-                    let authPayload: [String:Any] = authResponse["result"] as? [String:Any],
-                    let authHeaderPayload = authPayload["authHeader"],
-                    let authHeader = authHeaderPayload as? String {
-                    if (authHeader.isEmpty) {
-                        error = "Unable to obtain auth header from Kitura"
-                    }
+//                if let authResponse: [String:Any] = kituraAuthInvocation["response"] as? [String:Any],
+//                    let authPayload: [String:Any] = authResponse["result"] as? [String:Any],
+//                    let authHeaderPayload = authPayload["authHeader"],
+//                    let authHeader = authHeaderPayload as? String {
+//                    if (authHeader.isEmpty) {
+//                        error = "Unable to obtain auth header from Kitura"
+//                    }
                     let kituraCallbackInvocation = Whisk.invoke(actionNamed: "/\(targetNamespace)/bluepic/kituraCallback", withParameters: [
-                        "authHeader": authHeader,
+                        "authHeader": "",
                         "cloudantId": imageId
                         ])
                     
@@ -126,7 +126,7 @@ func main(args: [String:Any]) -> [String:Any] {
                         
                         returnValue = "Processed request through callback to kitura with server response: \(callbackResponseString)"
                     }
-                }
+//                }
             }
         }
         
