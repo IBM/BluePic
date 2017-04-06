@@ -284,23 +284,19 @@ extension ServerController {
    */
   func updateImageJSON(json: JSON, withRequest request: RouterRequest) throws -> JSON {
     var updatedJson = json
-    // TODO: may have to alter to work without MCA
-    guard
-//        let authContext = request.userInfo["mcaAuthContext"] as? AuthorizationContext,
-              let contentType = ContentType.sharedInstance.getContentType(forFileName: updatedJson["fileName"].stringValue) else {
+
+    guard let contentType = ContentType.sharedInstance.getContentType(forFileName: updatedJson["fileName"].stringValue) else {
       throw ProcessingError.Image("Invalid image document!")
     }
 
-    let userId = "anonymous"
+    let userId = updatedJson["userId"].string ?? "anonymous"
     Log.verbose("Image will be uploaded under the following userId: '\(userId)'.")
     let uploadedTs = StringUtils.currentTimestamp()
     let imageURL = generateUrl(forContainer: userId, forImage: updatedJson["fileName"].stringValue)
-//    let deviceId = authContext.deviceIdentity.id
 
     updatedJson["contentType"].stringValue = contentType
     updatedJson["url"].stringValue = imageURL
     updatedJson["userId"].stringValue = userId
-//    updatedJson["deviceId"].stringValue = deviceId
     updatedJson["uploadedTs"].stringValue = uploadedTs
     updatedJson["type"].stringValue = "image"
 

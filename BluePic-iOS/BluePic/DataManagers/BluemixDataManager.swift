@@ -418,9 +418,7 @@ extension BluemixDataManager {
                     self.createNewUser(CurrentUser.facebookUserId, name: CurrentUser.fullName, result: { user in
 
                         if user != nil {
-
-//                            CurrentUser.facebookUserId = facebookUserId
-//                            CurrentUser.fullName = facebookUserFullName
+                            
                             //User Authentication complete, ready to post image
                             self.postNewImage(image)
 
@@ -455,8 +453,15 @@ extension BluemixDataManager {
             return
         }
 
+        // Sending deviceId and userId through image request body due to server App ID SDK limitations.
+        guard let deviceId = BMSClient.sharedInstance.authorizationManager.deviceIdentity.ID else {
+            print(NSLocalizedString("Error: Could not get device ID from BMSClient", comment: ""))
+            NotificationCenter.default.post(name: .imageUploadFailure, object: nil)
+            return
+        }
+
         let requestURL = getBluemixBaseRequestURL() + "/" + kImagesEndPoint
-        let imageDictionary = ["fileName": image.fileName, "caption": image.caption, "width": image.width, "height": image.height, "location": ["name": image.location.name, "latitude": image.location.latitude, "longitude": image.location.longitude]] as [String : Any]
+        let imageDictionary = ["fileName": image.fileName, "caption": image.caption, "width": image.width, "height": image.height, "location": ["name": image.location.name, "latitude": image.location.latitude, "longitude": image.location.longitude], "deviceId": deviceId, "userId": CurrentUser.facebookUserId] as [String : Any]
 
         do {
             let jsonData = try JSONSerialization.data(withJSONObject: imageDictionary, options: JSONSerialization.WritingOptions(rawValue: 0))
