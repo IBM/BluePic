@@ -32,9 +32,9 @@
     "services": {
       "AdvancedMobileAccess": [
         {
-          "name": "BluePic-Mobile-Client-Access",
+          "name": "BluePic-App-ID",
           "label": "AdvancedMobileAccess",
-          "plan": "Gold",
+          "plan": "Graduated tier",
           "credentials": {
             "version": 3,
             "clientId": "<clientId>",
