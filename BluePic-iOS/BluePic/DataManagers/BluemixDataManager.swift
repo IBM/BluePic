@@ -372,7 +372,7 @@ extension BluemixDataManager {
 extension BluemixDataManager {
 
     /**
-     Method pings service and will be challanged if the app has MCA configured but the user hasn't signed in yet.
+     Method pings service and will be challanged if the app has App ID auth configured but the user hasn't signed in yet.
 
      - parameter callback: (response: Response?, error: Error?) -> Void
      */
@@ -391,9 +391,9 @@ extension BluemixDataManager {
     }
 
     /**
-     Method will first call the ping method, to force the user to login with Facebook (if MCA is configured). When we get a reponse, if we have the Facebook userIdentity, then this means the user succuessfully logged into Facebook (and MCA is configured). We will then try to create a new user and when this is succuessful we finally call the postNewImage method. If we don't have the Facebook user Identity, then this means MCA isn't configured and we will continue by calling the postNewImage method.
+     Method will first call the ping method, to force the user to login with Facebook (if App ID is configured). When we get a reponse, if we have the Facebook userIdentity, then this means the user succuessfully logged into Facebook (and App ID is configured). We will then try to create a new user and when this is succuessful we finally call the postNewImage method. If we don't have the Facebook name and ID, then this means App ID isn't configured and we will continue by calling the postNewImage method as an anonymous user.
 
-     - parameter image: Image
+     - parameter image: ImagePayload
      */
     func tryToPostNewImage(_ image: ImagePayload) {
 

@@ -101,8 +101,16 @@ class LoginViewController: UIViewController {
      - parameter sender: button tapped
      */
     @IBAction func loginTapped(_ sender: Any) {
-        startLoading()
-        AppID.sharedInstance.loginWidget?.launch(delegate: self.viewModel)
+        if FacebookDataManager.SharedInstance.isFacebookConfigured() {
+            startLoading()
+            AppID.sharedInstance.loginWidget?.launch(delegate: self.viewModel)
+        } else {
+            let alert = UIAlertController(title: "Error",
+                                          message: NSLocalizedString("Couldn't log in, Facebook is not configured correctly.", comment: ""),
+                                          preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
     }
 
     /**

@@ -17,22 +17,6 @@
 import UIKit
 import BMSCore
 
-enum FacebookAuthenticationError: String {
-
-    //Error when the Authentiction header is not found
-    case authenticationHeaderNotFound
-
-    //Error when the facebook user id is not found
-    case facebookUserIdNotFound
-
-    //Error when the facebook user identity is not found
-    case facebookuserIdentifyNotFound
-
-    //Error when user canceled login
-    case userCanceledLogin
-
-}
-
 /// Manages all facebook authentication state and calls
 class FacebookDataManager: NSObject {
 
@@ -47,17 +31,15 @@ class FacebookDataManager: NSObject {
 
     /**
      Method prevents others from using the default '()' initializer for this class.
-
-     - returns:
      */
     fileprivate override init() {}
 
     /**
-     Method to check if Facebook SDK is setup on native iOS side and that all required keys have been added to the plist
+     Method to check if Facebook credentials are setup on native iOS side and that all required keys have been added to the plist
 
      - returns: true if configured, false if not
      */
-    fileprivate func isFacebookConfigured() -> Bool {
+    internal func isFacebookConfigured() -> Bool {
 
         guard let facebookAppID = Bundle.main.object(forInfoDictionaryKey: "FacebookAppID") as? String,
             let facebookDisplayName = Bundle.main.object(forInfoDictionaryKey: "FacebookDisplayName") as? String,
