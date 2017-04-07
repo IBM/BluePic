@@ -25,7 +25,7 @@ class ImageDetailViewModel: NSObject {
     fileprivate let kNumberOfSectionsInCollectionView = 1
 
     //constant used for padded the width of the collection view cell
-    fileprivate let kCellPadding: CGFloat = 60
+    fileprivate let kCellPadding: CGFloat = 30
 
     //constant used to define the minimum height the image info header view must be
     fileprivate let kImageInfoHeaderViewMinimumHeight: CGFloat = 380
@@ -140,7 +140,7 @@ extension ImageDetailViewModel {
     func sizeForItemAtIndexPath(_ indexPath: IndexPath, collectionView: UICollectionView) -> CGSize {
 
         if let tags = image.tags {
-            let size = NSString(string: tags[indexPath.item].label).size(attributes: nil)
+            let size = NSString(string: tags[indexPath.item].label.uppercased()).size(attributes: [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 13.0)])
             return CGSize(width: size.width + kCellPadding, height: 30.0)
         }
         return CGSize.zero
