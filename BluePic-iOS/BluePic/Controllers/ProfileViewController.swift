@@ -160,6 +160,11 @@ class ProfileViewController: UIViewController {
      Method reloads the data in the table view
      */
     func reloadDataInTableView() {
+        if viewModel.imageDataArray.count == 0 {
+            tableView.isScrollEnabled = false
+        } else {
+            tableView.isScrollEnabled = true
+        }
         tableView.reloadData()
     }
 
