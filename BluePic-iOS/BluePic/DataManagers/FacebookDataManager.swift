@@ -66,6 +66,11 @@ class FacebookDataManager: NSObject {
             return false
         }
 
+        if BluemixDataManager.SharedInstance.bluemixConfig.appIdTenantId == "" {
+            print(NSLocalizedString("Is Facebook Congigured Error: No App ID tenantId, failed to initialize authentication flow.", comment: ""))
+            return false
+        }
+
         //success if made it past this point
         return true
     }
