@@ -34,7 +34,7 @@ class SearchViewController: UIViewController {
     @IBOutlet weak var bottomCollectionViewConstraint: NSLayoutConstraint!
 
     //padding used for the width of the collection view cell in sizeForItemAtIndexPath method
-    let kCellPadding: CGFloat = 60
+    let kCellPadding: CGFloat = 30
 
     /**
      Method called upon view did load. It sets up the popular tags collection view, observes when the keyboard is shown, and begins the fetch of popular tags
@@ -178,7 +178,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
      - returns: CGSize
      */
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let size = NSString(string: popularTags[indexPath.item]).size(attributes: nil)
+        let size = NSString(string: popularTags[indexPath.item].uppercased()).size(attributes: [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 13.0)])
         return CGSize(width: size.width + kCellPadding, height: 30.0)
     }
 
