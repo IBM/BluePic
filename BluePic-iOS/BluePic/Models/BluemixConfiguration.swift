@@ -26,14 +26,14 @@ class BluemixConfiguration: NSObject {
     fileprivate let kBluemixAppRegionKey = "bluemixAppRegion"
     fileprivate let kBluemixPushAppGUIDKey = "pushAppGUID"
     fileprivate let kBluemixPushAppClientSecret = "pushClientSecret"
-    fileprivate let kBluemixMCATenantIdKey = "mcaTenantId"
+    fileprivate let kBluemixAppIdTenantIdKey = "appIdTenantId"
 
     let localBaseRequestURL: String
     let remoteBaseRequestURL: String
     let appRegion: String
     var pushAppGUID: String = ""
     var pushClientSecret: String = ""
-    var mcaTenantId: String = ""
+    var appIdTenantId: String = ""
     var isLocal: Bool = true
 
     var isPushConfigured: Bool {
@@ -66,8 +66,8 @@ class BluemixConfiguration: NSObject {
                 self.pushClientSecret = pushClientSecret
             }
 
-            if let mcaTenantId = Utils.getStringValueWithKeyFromPlist(kBluemixKeysPlistName, key: kBluemixMCATenantIdKey) {
-                self.mcaTenantId = mcaTenantId
+            if let appIdTenantId = Utils.getStringValueWithKeyFromPlist(kBluemixKeysPlistName, key: kBluemixAppIdTenantIdKey) {
+                self.appIdTenantId = appIdTenantId
             }
 
             super.init()

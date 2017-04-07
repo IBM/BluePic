@@ -1,6 +1,0 @@
-framework module BMSSecurity {
-  umbrella header "BMSSecurity-umbrella.h"
-
-  export *
-  module * { export * }
-}

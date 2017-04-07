@@ -34,9 +34,9 @@ For `Weather Company Data` you will need:
 * username
 * password
 
-For `Mobile Client Access` you will need:
+For `App ID` you will need:
 * client id - this is the unique GUID for your app instance
-* secret - secret key from configuring the MCA service
+* secret - secret key for configuring the App ID service
 
 For the `Kitura` callback you will need to obtain the route for your Bluemix application. You can find the route by clicking on the `View App` button near the top right of your application's dashboard page on Bluemix. This will open the welcome page for the BluePic app; the route is the URL value shown on the browser, which consists of the schema, host, and port (please note that port values 80 and 443 maybe not be shown in the URL in the browser since these are the default port values for http and https respectively):
 * schema (http:// or https://)
@@ -77,7 +77,7 @@ This delegates to the following actions and updates data accordingly:
 * `bluepic/weather` - request weather data for location
 * `bluepic/visualRecognition` - request Visual Recognition tagging for image
 * `bluepic/cloudantWrite` - save data back to Cloudant
-* `bluepic/kituraRequestAuth` - request auth crednetials for Kitura from MCA
+* `bluepic/kituraRequestAuth` - request auth crednetials for Kitura from App ID
 * `bluepic/kituraCallback` - make request back to Kitura server to invoke push notification service
 
 # Debugging/Monitoring
@@ -169,7 +169,7 @@ parameters:
 ---
 
 #### bluepic/kituraRequestAuth
-Fetch MCA authorization headers for calling back to kitura server
+Fetch App ID authorization headers for calling back to kitura server
 
 ```
 wsk action invoke bluepic/kituraRequestAuth

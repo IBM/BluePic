@@ -59,7 +59,7 @@ class CurrentUser: NSObject {
         }
     }
 
-    /// Grab bool value representing if the user has chosen to login later or not from USerDefaults
+    /// Grab bool value representing if the user has chosen to login later or not from UserDefaults
     class var willLoginLater: Bool {
         get {
             if let log_in_later = UserDefaults.standard.object(forKey: "log_in_later") as? Bool {

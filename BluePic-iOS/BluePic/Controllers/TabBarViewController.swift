@@ -99,14 +99,16 @@ class TabBarViewController: UITabBarController {
 
         if let loginVC = Utils.vcWithNameFromStoryboardWithName("loginVC", storyboardName: "Main") as? LoginViewController {
 
-            self.present(loginVC, animated: animated, completion: { _ in
+            // If appID SDK is updated, re-implement modal presentations, remove nav controller.
+            //            self.present(loginVC, animated: animated, completion: { _ in
+            //            })
 
-                self.hideBackgroundImage()
-                print(NSLocalizedString("If MCA is configured, user needs to sign in with Facebook.", comment: ""))
-                if let callback = callback {
-                    callback()
-                }
-            })
+            self.navigationController?.pushViewController(loginVC, animated: true)
+
+            if let callback = callback {
+                callback()
+            }
+            self.hideBackgroundImage()
         }
     }
 
@@ -248,8 +250,6 @@ extension TabBarViewController {
             showSettingsActionSheet()
         } else if tabBarNotification == TabBarViewModelNotification.logOutSuccess {
             handleLogOutSuccess()
-        } else if tabBarNotification == TabBarViewModelNotification.logOutFailure {
-            handleLogOutFailure()
         }
     }
 
@@ -290,23 +290,6 @@ extension TabBarViewController {
                 self.selectedIndex = 0
             })
         }
-    }
-
-    /**
-     Method hanldes when logout was a failure. It presents an alert, alerting the user that there was a log out failure
-     */
-    func handleLogOutFailure() {
-        let alert = UIAlertController(title: NSLocalizedString("Log Out Failure", comment: ""), message: NSLocalizedString("Please Try Again", comment: ""), preferredStyle: UIAlertControllerStyle.alert)
-
-        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default, handler: { (_: UIAlertAction) in
-
-        }))
-
-        SVProgressHUD.dismiss()
-        DispatchQueue.main.async {
-            self.present(alert, animated: true, completion: nil)
-        }
-
     }
 
 }

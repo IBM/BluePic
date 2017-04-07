@@ -34,9 +34,9 @@ let package = Package(
     .Package(url: "https://github.com/IBM-Bluemix/cf-deployment-tracker-client-swift.git", majorVersion: 3),
     .Package(url: "https://github.com/ibm-bluemix-mobile-services/bluemix-simple-http-client-swift.git", majorVersion: 0, minor: 6),
     .Package(url: "https://github.com/ibm-bluemix-mobile-services/bluemix-objectstorage-serversdk-swift.git", majorVersion: 0, minor: 7),
-    .Package(url: "https://github.com/ibm-bluemix-mobile-services/bms-mca-kitura-credentials-plugin.git", majorVersion: 0, minor: 5),
     .Package(url: "https://github.com/ibm-bluemix-mobile-services/bms-pushnotifications-serversdk-swift.git", majorVersion: 0, minor: 5),
+    .Package(url: "https://github.com/ibm-cloud-security/appid-serversdk-swift.git", majorVersion: 1),
     .Package(url: "https://github.com/IBM-Swift/Kitura-CredentialsFacebook.git", majorVersion: 1, minor: 6)
   ],
-  exclude: ["Makefile", "Package-Builder"]
+  exclude: []
 )

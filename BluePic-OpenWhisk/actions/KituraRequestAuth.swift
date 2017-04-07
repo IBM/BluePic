@@ -1,5 +1,5 @@
 /**
- * Get auth credentials from MCA service for calling to Kitura
+ * Get auth credentials from App ID service for calling to Kitura
  */
 
 import KituraNet
@@ -16,15 +16,15 @@ func main(args:[String:Any]) -> [String:Any] {
         "authHeader": headerValue
     ]
     
-    guard let mcaClientId: String = args["mcaClientId"] as? String,
-        let mcaSecret: String = args["mcaSecret"] as? String else {
+    guard let appIdClientId: String = args["appIdClientId"] as? String,
+        let appIdSecret: String = args["appIdSecret"] as? String else {
             
             print("Error: missing a required parameter for the KituraRequestAuth action.")
             return result
     }
     
-    //first get MCA auth token
-    let baseStr = "\(mcaClientId):\(mcaSecret)"
+    //first get App ID auth token
+    let baseStr = "\(appIdClientId):\(appIdSecret)"
     
     let utf8BaseStr = baseStr.data(using: String.Encoding.utf8)
     guard let authHeader = utf8BaseStr?.base64EncodedString(options: Data.Base64EncodingOptions(rawValue: 0)) else {
@@ -32,7 +32,7 @@ func main(args:[String:Any]) -> [String:Any] {
         return result
     }
     
-    let appGuid = mcaClientId
+    let appGuid = appIdClientId
     
     var requestOptions: [ClientRequest.Options] = [ .method("POST"),
                                                     .schema("http://"),
@@ -47,7 +47,7 @@ func main(args:[String:Any]) -> [String:Any] {
     headers["Authorization"] = "Basic \(authHeader)"
     requestOptions.append(.headers(headers))
     
-    // Body required for getting MCA token
+    // Body required for getting App ID token
     let requestBody = "grant_type=client_credentials"
     
     // Make REST call
@@ -70,7 +70,7 @@ func main(args:[String:Any]) -> [String:Any] {
                 str = "Error \(error)"
             }
         } else {
-            str = "Status error code or nil reponse received from MCA server."
+            str = "Status error code or nil reponse received from App ID server."
         }
     }
     req.end(requestBody)

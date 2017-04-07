@@ -87,11 +87,13 @@ For apps built with Swift 2.3, use the command `carthage update --toolchain com.
 
 * [Import the module](#import-the-module)
 * [Initialize the client](#initialize-the-client)
+* [Monitor the network connection](#monitor-the-network-connection)
 * [Make a network request](#make-a-network-request)
 	* [Data task](#data-task)
 	* [Upload task](#upload-task)
+	* [Automatically resend requests](#automatically-resend-requests)
 
-> View the complete API reference [here](https://ibm-bluemix-mobile-services.github.io/API docs/Client SDK/BMSCore/Swift/index.html).
+> View the complete API reference [here](https://ibm-bluemix-mobile-services.github.io/API-docs/client-SDK/BMSCore/Swift/index.html).
 
 --
 
@@ -114,13 +116,51 @@ BMSClient.sharedInstance.initialize(bluemixRegion: BMSClient.Region.usSouth)
 
 --
 
+### Monitor the network connection
+
+With the `NetworkMonitor` API, you can monitor the status of the iOS device's connection to the internet. You can use this information to decide when to send network requests and to handle offline or slow network conditions.
+
+First, create a new instance of the `NetworkMonitor`. Only one instance is needed per app. **Note**: The initializer is failable, so you will need to unwrap the result later.
+
+```Swift
+let networkMonitor = NetworkMonitor()
+```
+
+To get the current type of network connection (WiFi, WWAN, or no connection), use `networkMonitor.currentNetworkConnection`. If the device has a data plan enabled, you can see whether they have access to 4G, 3G, or 2G with `networkMonitor.cellularNetworkType`.
+
+You can also create an observer to detect changes in the network connection.
+
+##### Swift 3
+
+```Swift
+networkMonitor.startMonitoringNetworkChanges()
+NotificationCenter.default.addObserver(self, selector: #selector(networkConnectionChanged), name: NetworkMonitor.networkChangedNotificationName, object: nil)
+
+func networkConnectionChanged() {    
+    print("Changed network connection to: \(networkMonitor.currentNetworkConnection)")
+}
+```
+
+##### Swift 2
+
+```Swift
+networkMonitor.startMonitoringNetworkChanges()
+NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(networkConnectionChanged), name: NetworkMonitor.networkChangedNotificationName, object: nil)
+
+func networkConnectionChanged() {    
+    print("Changed network connection to: \(networkMonitor.currentNetworkConnection)")
+}
+```
+
+--
+
 ### Make a network request
 
 #### Data task
 
 With `BMSURLSession`, you can create data tasks to send and receive data.
 
-The example belows show how to create and send a data task, using a completion handler to parse the response.
+The example belows show how to create and send a data task, using a completion handler to parse the response. 
 
 **Note**: If you are also using the [BMSAnalytics](https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-swift-analytics) framework to gather data on these network requests, be sure to call `.resume()` immediately after creating the data task as shown in the examples below.
 
@@ -131,7 +171,7 @@ var request = URLRequest(url: URL(string: "http://httpbin.org/get")!)
 request.httpMethod = "GET"
 request.setValue("value", forHTTPHeaderField: "key")
 
-let urlSession = BMSURLSession(configuration: .default, delegate: nil, delegateQueue: nil)
+let urlSession = BMSURLSession(configuration: .default, delegate: nil, delegateQueue: nil, autoRetries: 2)
 urlSession.dataTask(with: request) { (data: Data?, response: URLResponse?, error: Error?) in
 
     if let httpResponse = response as? HTTPURLResponse {
@@ -154,7 +194,7 @@ let request = NSMutableURLRequest(URL: NSURL(string: "http://httpbin.org/get")!)
 request.HTTPMethod = "GET"
 request.setValue("value", forHTTPHeaderField: "key")
 
-let urlSession = BMSURLSession(configuration: .defaultSessionConfiguration(), delegate: nil, delegateQueue: nil)
+let urlSession = BMSURLSession(configuration: .defaultSessionConfiguration(), delegate: nil, delegateQueue: nil, autoRetries: 2)
 urlSession.dataTaskWithRequest(request) { (data: NSData?, response: NSURLResponse?, error: NSError?) in
 
     if let httpResponse = response as? NSHTTPURLResponse {
@@ -180,7 +220,7 @@ var request = URLRequest(url: URL(string: "http://httpbin.org/get")!)
 request.httpMethod = "GET"
 request.setValue("value", forHTTPHeaderField: "key")
 
-let urlSession = BMSURLSession(configuration: .default, delegate: URLSessionDelegateExample(), delegateQueue: nil)
+let urlSession = BMSURLSession(configuration: .default, delegate: URLSessionDelegateExample(), delegateQueue: nil, autoRetries: 2)
 urlSession.dataTask(with: request).resume()
 ```
 
@@ -220,7 +260,7 @@ let request = NSMutableURLRequest(URL: NSURL(string: "http://httpbin.org/get")!)
 request.HTTPMethod = "GET"
 request.setValue("value", forHTTPHeaderField: "key")
 
-let urlSession = BMSURLSession(configuration: .defaultSessionConfiguration(), delegate: NSURLSessionDelegateExample(), delegateQueue: nil)
+let urlSession = BMSURLSession(configuration: .defaultSessionConfiguration(), delegate: NSURLSessionDelegateExample(), delegateQueue: nil, autoRetries: 2)
 urlSession.dataTaskWithRequest(request).resume()
 ```
 
@@ -271,7 +311,7 @@ var request = URLRequest(url: URL(string: "https://httpbin.org/post")!)
 request.httpMethod = "POST"
 request.setValue("value", forHTTPHeaderField: "key")
 
-let urlSession = BMSURLSession(configuration: .default, delegate: nil, delegateQueue: nil)
+let urlSession = BMSURLSession(configuration: .default, delegate: nil, delegateQueue: nil, autoRetries: 2)
 urlSession.uploadTask(with: request, fromFile: file, completionHandler: { (data: Data?, response: URLResponse?, error: Error?) in
 
     if let httpResponse = response as? HTTPURLResponse {
@@ -292,7 +332,7 @@ let request = NSMutableURLRequest(URL: NSURL(string: "https://httpbin.org/post")
 request.HTTPMethod = "POST"
 request.setValue("value", forHTTPHeaderField: "key")
 
-let urlSession = BMSURLSession(configuration: .defaultSessionConfiguration(), delegate: nil, delegateQueue: nil)
+let urlSession = BMSURLSession(configuration: .defaultSessionConfiguration(), delegate: nil, delegateQueue: nil, autoRetries: 2)
 urlSession.uploadTaskWithRequest(request, fromFile: file, completionHandler: { (data: NSData?, response: NSURLResponse?, error: NSError?) in
 
     if let httpResponse = response as? NSHTTPURLResponse {
@@ -317,7 +357,7 @@ var request = URLRequest(url: URL(string: "https://httpbin.org/post")!)
 request.httpMethod = "POST"
 request.setValue("value", forHTTPHeaderField: "key")
 
-let urlSession = BMSURLSession(configuration: .default, delegate: URLSessionDelegateExample(), delegateQueue: nil)
+let urlSession = BMSURLSession(configuration: .default, delegate: URLSessionDelegateExample(), delegateQueue: nil, autoRetries: 2)
 urlSession.uploadTask(with: request, fromFile: file).resume()
 ```
 
@@ -367,7 +407,7 @@ let request = NSMutableURLRequest(URL: NSURL(string: "https://httpbin.org/post")
 request.HTTPMethod = "POST"
 request.setValue("value", forHTTPHeaderField: "key")
 
-let urlSession = BMSURLSession(configuration: .defaultSessionConfiguration(), delegate: NSURLSessionDelegateExample(), delegateQueue: nil)
+let urlSession = BMSURLSession(configuration: .defaultSessionConfiguration(), delegate: NSURLSessionDelegateExample(), delegateQueue: nil, autoRetries: 2)
 urlSession.uploadTaskWithRequest(request, fromFile: file).resume()
 ```
 
@@ -407,6 +447,21 @@ class NSURLSessionDelegateExample: NSObject, NSURLSessionDataDelegate {
     }
 }
 ```
+
+--
+
+#### Automatically resend requests
+
+In the data task and upload task examples above, there is an optional parameter `autoRetries` in the `BMSURLSession` initializers. This is the number of times that `BMSURLSession` will automatically resend the task if it fails due to network issues. These automatic retries occur under the following conditions:
+
+1. Request timeout
+2. Loss of network connection (such as WiFi disconnect or lost cellular service)
+3. Failure to connect to the host
+4. 504 response
+
+If this parameter is excluded from the initializer, no automatic retries will occur.
+
+--------
 
 
 

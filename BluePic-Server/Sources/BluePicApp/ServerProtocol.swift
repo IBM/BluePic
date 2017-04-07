@@ -23,7 +23,6 @@ protocol ServerProtocol {
   var port: Int { get }
 
   func ping(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws
-  func token(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws
   func getPopularTags(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws
   func getUsers(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws
   func getUser(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws

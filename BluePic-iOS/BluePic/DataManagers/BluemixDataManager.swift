@@ -372,7 +372,7 @@ extension BluemixDataManager {
 extension BluemixDataManager {
 
     /**
-     Method pings service and will be challanged if the app has MCA configured but the user hasn't signed in yet.
+     Method pings service and will be challanged if the app has App ID auth configured but the user hasn't signed in yet.
 
      - parameter callback: (response: Response?, error: Error?) -> Void
      */
@@ -391,16 +391,16 @@ extension BluemixDataManager {
     }
 
     /**
-     Method will first call the ping method, to force the user to login with Facebook (if MCA is configured). When we get a reponse, if we have the Facebook userIdentity, then this means the user succuessfully logged into Facebook (and MCA is configured). We will then try to create a new user and when this is succuessful we finally call the postNewImage method. If we don't have the Facebook user Identity, then this means MCA isn't configured and we will continue by calling the postNewImage method.
+     Method will first call the ping method, to force the user to login with Facebook (if App ID is configured). When we get a reponse, if we have the Facebook userIdentity, then this means the user succuessfully logged into Facebook (and App ID is configured). We will then try to create a new user and when this is succuessful we finally call the postNewImage method. If we don't have the Facebook name and ID, then this means App ID isn't configured and we will continue by calling the postNewImage method as an anonymous user.
 
-     - parameter image: Image
+     - parameter image: ImagePayload
      */
     func tryToPostNewImage(_ image: ImagePayload) {
 
         addImageToImagesCurrentlyUploading(image)
         NotificationCenter.default.post(name: .imageUploadBegan, object: nil)
 
-        //ping backend to trigger Facebook login if MCA is configured
+        //ping backend to trigger Facebook login if App ID is configured
         ping({ (_, error) -> Void in
 
             //either there was a network failure, user authentication with facebook failed, or user authentication with facebook was canceled by the user
@@ -411,16 +411,14 @@ extension BluemixDataManager {
             }
             //successfully pinged service
             else {
-                //Check if User Authenticated with Facebook (aka is MCA configured)
-                if let userIdentity = FacebookDataManager.SharedInstance.getFacebookUserIdentity(), let facebookUserId = userIdentity.ID, let facebookUserFullName = userIdentity.displayName {
+                //Check if User Authenticated with Facebook (aka is App ID configured)
+                if CurrentUser.fullName != "Anonymous" && CurrentUser.facebookUserId != "anonymous" {
 
                     //User is authenticated with Facebook, create new user record
-                    self.createNewUser(facebookUserId, name: facebookUserFullName, result: { user in
+                    self.createNewUser(CurrentUser.facebookUserId, name: CurrentUser.fullName, result: { user in
 
                         if user != nil {
 
-                            CurrentUser.facebookUserId = facebookUserId
-                            CurrentUser.fullName = facebookUserFullName
                             //User Authentication complete, ready to post image
                             self.postNewImage(image)
 
@@ -433,7 +431,7 @@ extension BluemixDataManager {
                     })
 
                 }
-                //MCA is not configured
+                // App ID is not configured
                 else {
                     self.postNewImage(image)
                 }
@@ -455,8 +453,15 @@ extension BluemixDataManager {
             return
         }
 
+        // Sending deviceId and userId through image request body due to server App ID SDK limitations.
+        guard let deviceId = BMSClient.sharedInstance.authorizationManager.deviceIdentity.ID else {
+            print(NSLocalizedString("Error: Could not get device ID from BMSClient", comment: ""))
+            NotificationCenter.default.post(name: .imageUploadFailure, object: nil)
+            return
+        }
+
         let requestURL = getBluemixBaseRequestURL() + "/" + kImagesEndPoint
-        let imageDictionary = ["fileName": image.fileName, "caption": image.caption, "width": image.width, "height": image.height, "location": ["name": image.location.name, "latitude": image.location.latitude, "longitude": image.location.longitude]] as [String : Any]
+        let imageDictionary = ["fileName": image.fileName, "caption": image.caption, "width": image.width, "height": image.height, "location": ["name": image.location.name, "latitude": image.location.latitude, "longitude": image.location.longitude], "deviceId": deviceId, "userId": CurrentUser.facebookUserId] as [String : Any]
 
         do {
             let jsonData = try JSONSerialization.data(withJSONObject: imageDictionary, options: JSONSerialization.WritingOptions(rawValue: 0))

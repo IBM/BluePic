@@ -118,7 +118,7 @@ REGION US SOUTH | REGION UK | REGION SYDNEY
 You can find your region in multiple ways. For instance, by just looking at the URL you use to access your application's page (or the Bluemix dashboard). Another way is to look at the `cloud_config.json` file you modified earlier. If you look at the credentials under your `AdvancedMobileAccess` service, there is a value called `serverUrl` which should contain one of the regions mentioned above. Once you insert your `bluemixAppRegion` value into the `bluemix.plist`, your app should be configured.
 
 ## Optional features to configure
-This section describes the steps to take in order to leverage Facebook authentication with Mobile Client Access, Push Notifications, and OpenWhisk.
+This section describes the steps to take in order to leverage Facebook authentication with App ID, Push Notifications, and OpenWhisk.
 
 ### 1. Create an application instance on Facebook
 In order to have the app authenticate with Facebook, you must create an application instance on Facebook's website.
@@ -129,26 +129,28 @@ In order to have the app authenticate with Facebook, you must create an applicat
 
 1. Go to [Facebook's Quick Start for iOS](https://developers.facebook.com/quickstarts/?platform=ios) page to create an application instance. Type `BluePic` as the name of your new Facebook app and click the `Create New Facebook App ID` button. Choose any Category for the application, and click the `Create App ID` button.
 
-1. On the screen that follows, note that you **do not** need to download the Facebook SDK. The Mobile Client Access framework (already included in the iOS project) has all the code needed to support Facebook authentication. In the `Configure your info.plist` section, copy the `FacebookAppID` value and insert into the `URL Schemes` and `FacebookAppID` fields in your `info.plist` so that your plist looks similar to the image below. The `info.plist` file is found in the `Configuration` folder of the Xcode project.
+1. On the screen that follows, note that you **do not** need to download the Facebook SDK. The App ID SDK (already included in the iOS project) has all the code needed to support Facebook authentication. In the `Configure your info.plist` section, copy the `FacebookAppID` value and insert into the `URL Schemes` and `FacebookAppID` fields in your `info.plist` so that your plist looks similar to the image below. The `info.plist` file is found in the `Configuration` folder of the Xcode project.
 <p align="center"><img src="Imgs/infoplist.png"  alt="Drawing" height=150 border=0 /></p>
 
 1. Next, scroll to the bottom of the Facebook quick start page where it says `Supply us with your Bundle Identifier` and enter the app's bundle identifier you chose earlier in step 2.
 
-1. That's it for setting up the BluePic application instance on the Facebook Developer website. In the following section, we will link this Facebook application instance to your Bluemix Mobile Client Access service.
+1. That's it for setting up the BluePic application instance on the Facebook Developer website. In the following section, we will link this Facebook application instance to your Bluemix App ID service.
 
-### 2. Configure Bluemix Mobile Client Access
-1. Go to your application's page on Bluemix and open your `Mobile Client Access` service instance:
-<p align="center"><img src="Imgs/mobile-client-access-service.png"  alt="Drawing" height=125 border=0 /></p>
+### 2. Configure Bluemix App ID
+1. Go to your application's page on Bluemix and open your `App ID` service instance:
+<p align="center"><img src="Imgs/app-id-service.png"  alt="Drawing" height=125 border=0 /></p>
 
-1. On the page that follows, click the `configure` button under the Facebook section.
-<p align="center"><img src="Imgs/configure-facebook-button.png"  alt="Drawing" height=125 border=0 /></p>
+1. On the page that follows, click the `Identity Providers` button on the side and you should see something like this:
+<p align="center"><img src="Imgs/configure-facebook.png"  alt="Drawing" height=125 border=0 /></p>
 
-1. On the next page, enter your Facebook application ID (see [Create an application instance on Facebook](#1-create-an-application-instance-on-facebook) section for further details). Click on the Save button.
-<p align="center"><img src="Imgs/facebook-mca-setup.png"  alt="Drawing" height=250 border=0 /></p>
+1. Flip the toggle switch to On for Facebook and click the edit button. Here, enter your Facebook application ID and secret from your Facebook app's page (see [Create an application instance on Facebook](#1-create-an-application-instance-on-facebook) section for further details).
+<p align="center"><img src="Imgs/facebook-appid-setup.png"  alt="Drawing" height=250 border=0 /></p>
 
-1. One more thing that needs to be done for MCA to work properly is that you need add the `tenantId` for MCA into the `bluemix.plist` for BluePic-iOS. We get the `tenantId ` by viewing our credentials for the Mobile-Client-Access service in Bluemix, all your services should be under the "Connections" of your app. Once there, click on the "View Credentials" or "Show Credentials" button for your MCA service and you should see the `tenantId ` pop up, among other values. Now, simply put that value into your `bluemix.plist` corresponding with the `mcaTenantId` key.
+1. On this page, you will also see a "Redirect URL for Facebook for Developers", copy it because we need it in a minute. On your Facebook Developer app page, navigate to the Facebook login product. That URL is `https://developers.facebook.com/apps/<facebookAppId>/fb-login/`. Here, paste that link into the "Valid OAuth redirect URIs" field and clieck Save changes. Back on Bluemix, you can also click the Save button.
 
-1. Facebook authentication with Bluemix Mobile Client Access is now completely set up!
+1. One more thing that needs to be done for App ID to work properly is that you need add the `tenantId` for App ID into the `bluemix.plist` for BluePic-iOS. We get the `tenantId ` by viewing our credentials for the App ID service in Bluemix, all your services should be under the "Connections" tab of your app on Bluemix. Once there, click on the "View Credentials" or "Show Credentials" button for your App ID service and you should see the `tenantId ` pop up, among other values. Now, simply put that value into your `bluemix.plist` corresponding with the `appIdTenantId` key.
+
+1. Facebook authentication with Bluemix App ID is now completely set up!
 
 ### 3. Configure Bluemix Push service
 To utilize push notification capabilities on Bluemix, you need to configure a notification provider. For BluePic, you should configure credentials for the Apple Push Notification Service (APNS). As part of this configuration step, you will need to use the **bundle identifier** you chose in the [Create an application instance on Facebook](#1-create-an-application-instance-on-facebook) section.

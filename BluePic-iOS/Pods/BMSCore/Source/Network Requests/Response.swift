@@ -25,7 +25,7 @@
 public class Response {
 	
     
-    // MARK: Properties (API)
+    // MARK: - Properties
     
     /// The HTTP status of the response.
     public let statusCode: Int?
@@ -46,7 +46,7 @@ public class Response {
     
     
     
-    // MARK: Properties (internal)
+    // MARK: - Properties (internal)
     
     internal let httpResponse: HTTPURLResponse?
     
@@ -54,7 +54,7 @@ public class Response {
     
     
     
-    // MARK: Initializer
+    // MARK: - Initializer
     
     /**
         Converts an `HTTPURLResponse` to a more accessible response object.
@@ -110,7 +110,7 @@ public class Response {
 public class Response {
     
     
-    // MARK: Properties (API)
+    // MARK: - Properties
     
     /// The HTTP status of the response.
     public let statusCode: Int?
@@ -131,7 +131,7 @@ public class Response {
     
     
     
-    // MARK: Properties (internal)
+    // MARK: - Properties (internal)
     
     internal let httpResponse: NSHTTPURLResponse?
     
@@ -139,7 +139,7 @@ public class Response {
     
     
     
-    // MARK: Initializer
+    // MARK: - Initializer
     
     /**
         Converts an `NSHTTPURLResponse` to a more accessible `Response` object.

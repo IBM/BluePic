@@ -21,7 +21,6 @@ enum TabBarViewModelNotification {
     case switchToFeedTab
     case showImageUploadFailureAlert
     case logOutSuccess
-    case logOutFailure
     case showSettingsActionSheet
 
 }
@@ -88,13 +87,6 @@ class TabBarViewModel: NSObject {
     }
 
     /**
-     Method notifies the tab bar vc that log in was a failure
-     */
-    func notifyTabBarVCLogOutFailure() {
-        notifyTabBarVC(TabBarViewModelNotification.logOutFailure)
-    }
-
-    /**
      Method tries to show the login when the tab bar vc view did appear. It will show the login if the user isn't authenticated or hasn't pressed sign in later
      */
     func tryToShowLogin() {
@@ -142,14 +134,8 @@ class TabBarViewModel: NSObject {
      */
     func logOutUser() {
 
-        LoginDataManager.SharedInstance.logOut({ success in
-
-            if success {
-                self.notifyTabBarVCLogOutSuccess()
-            } else {
-                self.notifyTabBarVCLogOutFailure()
-            }
-        })
+        LoginDataManager.SharedInstance.logOut()
+        self.notifyTabBarVCLogOutSuccess()
 
     }
 

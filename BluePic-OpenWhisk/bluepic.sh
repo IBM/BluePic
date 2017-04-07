@@ -52,8 +52,8 @@ function install() {
     -p cloudantUsername $CLOUDANT_username\
     -p cloudantPassword $CLOUDANT_password\
     -p cloudantDbName $CLOUDANT_db\
-    -p mcaClientId $MCA_client\
-    -p mcaSecret $MCA_secret\
+    -p appIdClientId $AppID_client\
+    -p appIdSecret $AppID_secret\
     -p kituraHost $KITURA_host\
     -p kituraPort $KITURA_port\
     -p kituraSchema $KITURA_schema\
