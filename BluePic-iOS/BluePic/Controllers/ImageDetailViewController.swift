@@ -213,7 +213,7 @@ extension ImageDetailViewController: UICollectionViewDelegateFlowLayout {
     }
 
     /**
-     Method asks the viewMOdel for the reference size for header in section
+     Method asks the viewModel for the reference size for header in section
 
      - parameter collectionView:       UICollectionView
      - parameter collectionViewLayout: UICollectionViewLayout

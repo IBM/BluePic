@@ -32,15 +32,16 @@
     "services": {
       "AdvancedMobileAccess": [
         {
-          "name": "BluePic-Mobile-Client-Access",
+          "name": "BluePic-App-ID",
           "label": "AdvancedMobileAccess",
-          "plan": "Gold",
+          "plan": "Graduated tier",
           "credentials": {
-            "serverUrl": "<serverUrl>",
+            "version": 3,
             "clientId": "<clientId>",
             "secret": "<secret>",
             "tenantId": "<tenantId>",
-            "admin_url": "<admin_url>"
+            "oauthServerUrl": "<oauthServerUrl>",
+            "profilesUrl": "<profilesUrl>"
           }
         }
       ],

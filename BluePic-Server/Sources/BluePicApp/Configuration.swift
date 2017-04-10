@@ -40,7 +40,7 @@ public struct Configuration {
         let path = Configuration.getAbsolutePath(relativePath: "/\(configurationFile)", useFallback: false)
 
         guard let finalPath = path else {
-            Log.warning("Could not find '\(configurationFile)'.")
+            Log.warning("Could not find '\(configurationFile)'. Loading configuration from environment variables.")
             configMgr.load(.environmentVariables)
             return
         }
@@ -76,25 +76,26 @@ public struct Configuration {
   }
 
   /**
-   Method to get MCA credentials in a consumable form
+   Method to get App ID credentials in a consumable form
 
    - throws: error when method can't get credentials
 
-   - returns: Encapsulated MobileClientAccessProps object with the necessary info
+   - returns: Encapsulated AppIdProps object with the necessary info
    */
-  func getMobileClientAccessProps() throws -> MobileClientAccessProps {
-    guard let mcaCredentials = configMgr.getService(spec: "BluePic-Mobile-Client-Access")?.credentials else {
-      throw BluePicError.IO("Failed to obtain MCA service and/or its credentials.")
+  func getAppIdProps() throws -> AppIdProps {
+    guard let appIdCredentials = configMgr.getService(spec: "BluePic-App-ID")?.credentials else {
+      throw BluePicError.IO("Failed to obtain App ID service and/or its credentials.")
     }
 
-    guard let secret = mcaCredentials["secret"] as?String,
-    let serverUrl = mcaCredentials["serverUrl"] as?String,
-    let clientId = mcaCredentials["clientId"] as?String else {
-      throw BluePicError.IO("Failed to obtain MCA credentials.")
+    guard let secret = appIdCredentials["secret"] as? String,
+    let serverUrl = appIdCredentials["oauthServerUrl"] as? String,
+    let clientId = appIdCredentials["clientId"] as? String,
+    let tenantId = appIdCredentials["tenantId"] as? String else {
+      throw BluePicError.IO("Failed to obtain App ID credentials.")
     }
 
-    let mcaProperties = MobileClientAccessProps(secret: secret, serverUrl: serverUrl, clientId: clientId)
-    return mcaProperties
+    let appIdProperties = AppIdProps(secret: secret, serverUrl: serverUrl, clientId: clientId, tenantId: tenantId)
+    return appIdProperties
   }
 
   /**

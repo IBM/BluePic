@@ -2,6 +2,12 @@
   "autoPin": true,
   "pins": [
     {
+      "package": "BluemixAppID",
+      "reason": null,
+      "repositoryURL": "https://github.com/ibm-cloud-security/appid-serversdk-swift.git",
+      "version": "1.0.0"
+    },
+    {
       "package": "BluemixObjectStorage",
       "reason": null,
       "repositoryURL": "https://github.com/ibm-bluemix-mobile-services/bluemix-objectstorage-serversdk-swift.git",
@@ -35,7 +41,7 @@
       "package": "CloudFoundryEnv",
       "reason": null,
       "repositoryURL": "https://github.com/IBM-Swift/Swift-cfenv.git",
-      "version": "4.0.0"
+      "version": "4.0.1"
     },
     {
       "package": "CommonCrypto",
@@ -104,22 +110,16 @@
       "version": "1.6.2"
     },
     {
+      "package": "KituraRequest",
+      "reason": null,
+      "repositoryURL": "https://github.com/IBM-Swift/Kitura-Request.git",
+      "version": "0.7.0"
+    },
+    {
       "package": "LoggerAPI",
       "reason": null,
       "repositoryURL": "https://github.com/IBM-Swift/LoggerAPI.git",
       "version": "1.6.0"
-    },
-    {
-      "package": "MobileClientAccess",
-      "reason": null,
-      "repositoryURL": "https://github.com/ibm-bluemix-mobile-services/bms-mca-serversdk-swift.git",
-      "version": "0.6.0"
-    },
-    {
-      "package": "MobileClientAccessKituraCredentialsPlugin",
-      "reason": null,
-      "repositoryURL": "https://github.com/ibm-bluemix-mobile-services/bms-mca-kitura-credentials-plugin.git",
-      "version": "0.5.0"
     },
     {
       "package": "SSLService",
@@ -143,7 +143,7 @@
       "package": "Socket",
       "reason": null,
       "repositoryURL": "https://github.com/IBM-Swift/BlueSocket.git",
-      "version": "0.12.42"
+      "version": "0.12.43"
     },
     {
       "package": "SwiftyJSON",

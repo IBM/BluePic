@@ -2,9 +2,9 @@
 
 ### Introduction
 
-Before you start using BluePic, you should understand which capabilities are available in the iOS app if you have not configured any of the [optional features](../README.md#optional-features-to-configure) such as Mobile Client Access, Push, and OpenWhisk.
+Before you start using BluePic, you should understand which capabilities are available in the iOS app if you have not configured any of the [optional features](../README.md#optional-features-to-configure) such as App ID, Push, and OpenWhisk.
 
-- If Mobile Client Access is not configured on Bluemix for your app, you won't be able to log in using the `SIGN IN WITH FACEBOOK` button. This implies you won't be able to post photos under your own name and profile. Having said that, you will be able to post photos under the `anonymous` user we have in place. You also can view the image feed without being authenticated.
+- If App ID is not configured on Bluemix for your app, you won't be able to log in using the `SIGN IN WITH FACEBOOK` button. This implies you won't be able to post photos under your own name and profile. Having said that, you will be able to post photos under the `anonymous` user we have in place. You also can view the image feed without being authenticated.
 - If Bluemix Push is not configured, you won't be able to receive push notifications on your physical iOS device.
 - If OpenWhisk is not configured, your posted images will not be enhanced with any weather or tag data.
 

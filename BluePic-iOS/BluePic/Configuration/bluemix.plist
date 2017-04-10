@@ -14,7 +14,7 @@
     <string></string>
     <key>pushClientSecret</key>
     <string></string>
-    <key>mcaTenantId</key>
+    <key>appIdTenantId</key>
     <string></string>
 </dict>
 </plist>

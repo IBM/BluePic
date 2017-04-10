@@ -17,19 +17,6 @@
 import UIKit
 import BMSCore
 
-enum LoginDataManagerError {
-
-    //Error when there is a Facebook Authentication Error
-    case facebookAuthenticationError
-
-    //Error when user canceled Facebook Login
-    case userCanceledLogin
-
-    //Error when there is a connection failure
-    case connectionFailure
-
-}
-
 class LoginDataManager: NSObject {
 
     /// Shared instance of data manager
@@ -40,66 +27,6 @@ class LoginDataManager: NSObject {
         return manager
 
     }()
-
-    /**
-     Method will login the user into BluePic. It will first check if the user is already authenticated by checking if there is a user saved in UserDefaults by calling the isUserAlreadyAuthenticated method. If the user isn't already authenticated then it will call the FacebookDataManager's loginWithFacebook method
-
-     - parameter callback: ((error : LoginDataManagerError?)->())
-     */
-    func login(_ callback : @escaping ((_ error: LoginDataManagerError?) -> Void)) {
-
-        ///Check if user is already authenticated from previous sesssions, aka check nsuserdefaults for user info
-        if isUserAlreadyAuthenticated() {
-            callback(nil)
-        }
-            //user not already authenticated from previous sessions
-        else {
-
-            //login with facebook
-            FacebookDataManager.SharedInstance.loginWithFacebook({ (facebookUserId: String?, facebookUserFullName: String?, error: FacebookAuthenticationError?) in
-
-                //facebook authentication failure
-                if let error = error {
-
-                    if error == FacebookAuthenticationError.userCanceledLogin {
-                        print(NSLocalizedString("Login Error: User Canceled Login", comment: ""))
-                        callback(LoginDataManagerError.userCanceledLogin)
-                    } else {
-                        print(NSLocalizedString("Login Error: Facebook Authentication Error", comment: ""))
-                        callback(LoginDataManagerError.facebookAuthenticationError)
-                    }
-
-                }
-                //facebook authentication success
-                else {
-
-                    //Check to make sure facebook id and name aren't nil
-                    if let facebookUserId = facebookUserId, let facebookUserFullName = facebookUserFullName {
-
-                        //try to register user with backend if the user doesn't already exist
-                        BluemixDataManager.SharedInstance.checkIfUserAlreadyExistsIfNotCreateNewUser(facebookUserId, name: facebookUserFullName, callback: { success in
-
-                            if success {
-                                CurrentUser.willLoginLater = false
-                                CurrentUser.facebookUserId = facebookUserId
-                                CurrentUser.fullName = facebookUserFullName
-                                callback(nil)
-                            } else {
-                                print(NSLocalizedString("Login Error: Connection Failure", comment: ""))
-                                callback(LoginDataManagerError.connectionFailure )
-                            }
-
-                        })
-                    }
-                    //Facebook id and name were nil
-                    else {
-                        print(NSLocalizedString("Login Error: Facebook Authentication Error", comment: ""))
-                        callback(LoginDataManagerError.facebookAuthenticationError)
-                    }
-                }
-            })
-        }
-    }
 
     /**
      Method is called when the user presses the sign in later button. It will sets the CurrentUser object's willLoginLater property to true
@@ -140,18 +67,10 @@ class LoginDataManager: NSObject {
 
      - parameter callback: ((success: Bool)->())
      */
-    func logOut(_ callback : @escaping (_ success: Bool) -> Void) {
+    func logOut() {
 
-        FacebookDataManager.SharedInstance.logOut { _, error in
-
-            if error != nil {
-                callback(false)
-            } else {
-                CurrentUser.logOut()
-                callback(true)
-            }
-
-        }
+        BMSClient.sharedInstance.authorizationManager.clearAuthorizationData()
+        CurrentUser.logOut()
 
     }
 

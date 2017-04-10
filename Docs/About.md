@@ -18,9 +18,9 @@ The following Swift packages are used in BluePic:
 
 - [Kitura-CouchDB](https://github.com/IBM-Swift/Kitura-CouchDB)
 - [Kitura](https://github.com/IBM-Swift/Kitura.git)
-- [Swift-cfenv](https://github.com/IBM-Swift/Swift-cfenv.git)
+- [Cloud Configuration](https://github.com/IBM-Swift/CloudConfiguration.git)
 - [Swift SDK for Bluemix Object Storage Service](https://github.com/ibm-bluemix-mobile-services/bluemix-objectstorage-swift-sdk.git)
-- [Kitura Credentials plugin for the Mobile Client Access service](https://github.com/ibm-bluemix-mobile-services/bms-mca-kitura-credentials-plugin.git)
+- [Kitura Credentials plugin for the App ID service](https://github.com/ibm-cloud-security/appid-serversdk-swift)
 - [Swift SDK for Bluemix Push Notifications Service](https://github.com/ibm-bluemix-mobile-services/bms-pushnotifications-serversdk-swift.git)
 
 ## Architecture

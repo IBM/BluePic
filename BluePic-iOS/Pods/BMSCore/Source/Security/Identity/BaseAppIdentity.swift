@@ -31,15 +31,16 @@ open class BaseAppIdentity: AppIdentity {
     
     
     public internal(set) var jsonData: [String:String] = ([:])
+    public private(set) var extendedJsonData : [String:Any] = [String:Any]()
     
     public var ID: String? {
         get {
-            return jsonData[BaseAppIdentity.Key.ID]
+            return jsonData[BaseAppIdentity.Key.ID] != nil ? jsonData[BaseAppIdentity.Key.ID] : (extendedJsonData[BaseAppIdentity.Key.ID] as? String)
         }
     }
     public var version: String? {
         get {
-            return jsonData[BaseAppIdentity.Key.version]
+            return jsonData[BaseAppIdentity.Key.version] != nil ? jsonData[BaseAppIdentity.Key.version] : (extendedJsonData[BaseAppIdentity.Key.version] as? String)
         }
     }
     
@@ -54,11 +55,11 @@ open class BaseAppIdentity: AppIdentity {
     }
     
     public init(map: [String:Any]?) {
+        extendedJsonData = map != nil ? map! : [String:Any]()
         guard let json = map as? [String:String] else {
             jsonData = ([:])
             return
         }
-        
         jsonData = json
     }
     

@@ -1,0 +1,6 @@
+framework module BluemixAppID {
+  umbrella header "BluemixAppID-umbrella.h"
+
+  export *
+  module * { export * }
+}
