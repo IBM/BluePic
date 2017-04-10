@@ -2,32 +2,34 @@ IBM Bluemix Mobile Services - Client SDK Swift Push
 ===================================================
 
 [![Build Status](https://travis-ci.org/ibm-bluemix-mobile-services/bms-clientsdk-swift-push.svg?branch=master)](https://travis-ci.org/ibm-bluemix-mobile-services/bms-clientsdk-swift-push)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/08bd0c46c0ae4485a3abc0fd8dffa4cf)](https://www.codacy.com/app/ibm-bluemix-mobile-services/bms-clientsdk-swift-push?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ibm-bluemix-mobile-services/bms-clientsdk-swift-push&amp;utm_campaign=Badge_Grade)
+[![Coverage Status](https://coveralls.io/repos/github/ibm-bluemix-mobile-services/bms-clientsdk-swift-push/badge.svg?branch=development)](https://coveralls.io/github/ibm-bluemix-mobile-services/bms-clientsdk-swift-push?branch=development)
 [![CocoaPods Compatible](https://img.shields.io/cocoapods/v/BMSPush.svg)](https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-swift-push.git)
 [![](https://img.shields.io/badge/bluemix-powered-blue.svg)](https://bluemix.net)
-[![CocoaPods](https://img.shields.io/cocoapods/dt/BMSPush.svg)]()
+[![CocoaPods](https://img.shields.io/cocoapods/dt/BMSPush.svg)](https://cocoapods.org/pods/BMSPush)
 
 
 This is the Push component of the Swift SDK for [IBM Bluemix Mobile Services](https://console.ng.bluemix.net/docs/mobile/index.html).
 
 
-##Contents
+## Contents
 
 This package contains the Push components of the Swift SDK.
 * Push Registration and Unregister
 * Subscribing and Unsubscribing for Tags
 
-##Requirements
+## Requirements
 
 * iOS 8.0+
 * Xcode 7.3, 8.0
 * Swift 2.3 - 3.0
 * Cocoapods or Carthage
 
-##Installation
+## Installation
 
 The Bluemix Mobile Services Swift SDKs are available via [Cocoapods](http://cocoapods.org/) and [Carthage](https://github.com/Carthage/Carthage).
 
-###Cocoapods
+### Cocoapods
 To install BMSPush using Cocoapods, add it to your Podfile:
 
 ```ruby
@@ -36,7 +38,7 @@ use_frameworks!
 target 'MyApp' do
     platform :ios, '8.0'
     pod 'BMSCore', '~> 2.0'
-    pod 'BMSPush', '~> 2.0'
+    pod 'BMSPush', '~> 3.0'
 end
 ```
 From the Terminal, go to your project folder and install the dependencies with the following command:
@@ -45,11 +47,11 @@ From the Terminal, go to your project folder and install the dependencies with t
 pod install
 ```
 
-####Swift 2.3
+#### Swift 2.3
 
 Before running the `pod install` command, make sure to use Cocoapods version [1.1.0.beta.1](https://github.com/CocoaPods/CocoaPods/releases/tag/1.1.0.beta.1).
 
-####Swift 3.0
+#### Swift 3.0
 
 Before running the `pod install` command, make sure to use Cocoapods version [1.1.0.beta.1](https://github.com/CocoaPods/CocoaPods/releases/tag/1.1.0.beta.1).
 
@@ -62,7 +64,7 @@ This will installs your dependencies and creates a new Xcode workspace.
 MyApp.xcworkspace
 ```
 
-###Carthage
+### Carthage
 To install BMSPush using Carthage, add it to your Cartfile:
 
 ```
@@ -73,19 +75,19 @@ Then run the `carthage update` command. Once the build is finished, drag `BMSPus
 
 To complete the integration, follow the instructions [here](https://github.com/Carthage/Carthage#getting-started).
 
-####Xcode 8
+#### Xcode 8
 
 For apps built with Swift 2.3, use the command `carthage update --toolchain com.apple.dt.toolchain.Swift_2_3.` Otherwise, use `carthage update`
 
-##Enabling iOS applications to receive push notifications
+## Enabling iOS applications to receive push notifications
 
-###Reference the SDK in your code.
+### Reference the SDK in your code.
 
 ```
 import BMSPush
 import BMSCore
 ```
-###Initializing the Core SDK
+### Initializing the Core SDK
 
 ```
 let myBMSClient = BMSClient.sharedInstance
@@ -98,15 +100,13 @@ myBMSClient.initialize(bluemixRegion: "Location where your app Hosted")
 
 myBMSClient.initialize(bluemixRegion: "Location where your app Hosted")
 
-myBMSClient.defaultRequestTimeout = 10.0 // Timeout in seconds
-
 ```
 
-#####bluemixRegion
+##### bluemixRegion
 
 - Specifies the location where the app hosted. You can use one of three values - `BMSClient.Region.usSouth`, `BMSClient.Region.unitedKingdom` and `BMSClient.Region.sydney`.
 
-###Initializing the Push SDK
+### Initializing the Push SDK
 
  initialize the `BMSPushClient`  using the following code.
 ```
@@ -122,21 +122,13 @@ push.initializeWithAppGUID(appGUID:"your push appGUID", clientSecret:"your push 
 
 ```
 
-#####appGUID
+##### appGUID
 
 - The Push app GUID value.
 
-#####clientSecret
+##### clientSecret
 
 - The Push client secret value.
-
-###Registering iOS applications and devices
-
-Add this code to initialize and register the app for push notification in APNS.
-
-```
-BMSPushClient.sharedInstance.initializeWithAppGUID(appGUID: "APP-GUID-HERE", clientSecret:"CLIENT-SECRET-HERE")
-```    
 
 >**Note**: If you are using Xcode8 beta, add `yourApp.entitlements`. To do this, go to Targets -> Capabilities and enable Push Notifications capability.
 
@@ -177,7 +169,7 @@ After the token is received from APNS, pass the token to Push Notifications as p
 }
 ```
 
-###Registering iOS applications and devices with userId
+### Registering iOS applications and devices with userId
 
 For `userId` based notification, the register method will accept one more parameter - `userId`
 
@@ -215,16 +207,16 @@ func application (application: UIApplication, didRegisterForRemoteNotificationsW
 }
 ```
 
-#####WithUserId
+##### WithUserId
 
 - The User Id value you want to register in the push service
 
 >**Note**: If userId is provided the client secret value must be provided.
 
 
-###Retrieve Available Tags and subscribe for Tags based Notifications
+### Retrieve Available Tags and subscribe for Tags based Notifications
 
-#####Retrieve Available tags
+##### Retrieve Available tags
 
 The `retrieveAvailableTagsWithCompletionHandler` API returns the list of available tags to which the device
 can subscribe. After the device is subscribed to a particular tag, the device can receive any push notifications
@@ -261,7 +253,7 @@ push.retrieveAvailableTagsWithCompletionHandler({ (response, statusCode, error) 
     }
 }
 ```
-#####Subscribe to Available tags
+##### Subscribe to Available tags
 
 ```
 
@@ -292,7 +284,7 @@ push.subscribeToTags(response, completionHandler: { (response, statusCode, error
 }
 ```
 
-#####Retrieve Subscribed tags
+##### Retrieve Subscribed tags
 
 ```
 
@@ -320,7 +312,7 @@ push.retrieveSubscriptionsWithCompletionHandler { (response, statusCode, error) 
     }
 }
 ```
-###Unsubscribing from tags based notifications
+### Unsubscribing from tags based notifications
 
 Use the following code snippets to allow your devices to get unsubscribe
 from a tag.
@@ -355,7 +347,7 @@ push.unsubscribeFromTags(response, completionHandler: { (response, statusCode, e
     }
 }
 ```
-###Unregistering the Device from Bluemix Push Notification
+### Unregistering the Device from Bluemix Push Notification
 
 Use the following code snippets to Unregister the device from Bluemix Push Notification
 
@@ -387,26 +379,27 @@ push.unregisterDevice({ (response, statusCode, error) -> Void in
 }
 ```
 
-###Enabling interactive push notifications
+### Enabling interactive push notifications
 
 To enable interactive push notifications, the notification action parameters must be passed in as part of the notification object.  The following is a sample code to enable interactive notifications.
 
 ```
 let actionOne = BMSPushNotificationAction(identifierName: "FIRST", buttonTitle: "Accept", isAuthenticationRequired: false, defineActivationMode: UIUserNotificationActivationMode.background)
-            
+
 let actionTwo = BMSPushNotificationAction(identifierName: "SECOND", buttonTitle: "Reject", isAuthenticationRequired: false, defineActivationMode: UIUserNotificationActivationMode.background)
-            
+
 let category = BMSPushNotificationActionCategory(identifierName: "category", buttonActions: [actionOne, actionTwo])
-            
-let notificationOptions = BMSPushClientOptions(categoryName: [category])
-            
+
+let notificationOptions = BMSPushClientOptions()
+notifOptions.setInteractiveNotificationCategories(categoryName: [category])
+
 let push = BMSPushClient.sharedInstance.initializeWithAppGUID(appGUID: "APP-GUID-HERE", clientSecret:"CLIENT-SECRET-HERE", options: notificationOptions)
-           
+
 ```
 
-###Enabling Rich Push notification support in iOS 10 (Audio, Video, GIF and Images)
+### Enabling Rich Push notification support in iOS 10 (Audio, Video, GIF and Images)
 
-To receive rich push notifications with iOS10, implement ```UNNotificationServiceExtension```.  The extension will intercept the rich push notification and it needs to be handled here.  While sending the notification from the server, all the four fields, alert, title, subtitle, attachmentURL must be specified. 
+To receive rich push notifications with iOS10, implement ```UNNotificationServiceExtension```.  The extension will intercept the rich push notification and it needs to be handled here.  While sending the notification from the server, all the four fields, alert, title, subtitle, attachmentURL must be specified.
 
 In the didReceive() method of your service extension, add the following code to retrieve the rich notification content.
 
@@ -414,12 +407,12 @@ In the didReceive() method of your service extension, add the following code to 
 override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
        self.contentHandler = contentHandler
         bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
-        
+
         BMSPushRichPushNotificationOptions.didReceive(request, withContentHandler: contentHandler)
         }
 ```
 
-##Enable Monitoring.
+## Enable Monitoring.
 <p>To see the push notification monitoring status for iOS you have add the following code snippets. </p>
 
 <strong>Swift 3</strong>
@@ -513,7 +506,7 @@ func application(application: UIApplication, didReceiveRemoteNotification userIn
 ```
 >**Note**: To get the message status when the app is in background you have to send either <strong>MIXED</strong> or <strong>SILENT</strong> push notifications. If the app is force quite you will not get any message delivery status.
 
-###Open Url by clicking push notifications.
+### Open Url by clicking push notifications.
 
 To open a url by clicking the push notification you can send a `url` firld inside the payload.
 ```
@@ -529,19 +522,36 @@ In your applications, go to `AppDelegate` file and inside `didFinishLaunchingWit
 
 ```
 let remoteNotif = launchOptions?[UIApplicationLaunchOptionsKey.remoteNotification] as? NSDictionary
-        
+
 if remoteNotif != nil {
     let urlField = (remoteNotif?.value(forKey: "url") as! String)
     application.open(URL(string: urlField)!, options: [:], completionHandler: nil)
 }
 ```
 
-###Learning More
+### Adding custom DeviceId for registration
+
+To send `DeviceId` please use `BMSPushClientOptions` class method,
+
+```
+let notifOptions = BMSPushClientOptions()
+notifOptions.setDeviceId(deviceId: "YOUR_DEVICE_ID")
+```
+>**Note**: Remember to keep custom DeviceId <strong>unique</strong> for each device.
+
+### Samples & videos
+
+* Please visit for samples - [Github Sample](https://github.com/ibm-bluemix-mobile-services/bms-samples-swift-hellopush)
+
+* Video Tutorials Available here - [Bluemix Push Notifications](https://www.youtube.com/channel/UCRr2Wou-z91fD6QOYtZiHGA)
+
+### Learning More
+
 * Visit the **[Bluemix Developers Community](https://developer.ibm.com/bluemix/)**.
 
 * [Getting started with IBM MobileFirst Platform for iOS](https://www.ng.bluemix.net/docs/mobile/index.html)
 
-###Connect with Bluemix
+### Connect with Bluemix
 
 [Twitter](https://twitter.com/ibmbluemix) |
 [YouTube](https://www.youtube.com/playlist?list=PLzpeuWUENMK2d3L5qCITo2GQEt-7r0oqm) |

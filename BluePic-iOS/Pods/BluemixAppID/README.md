@@ -1,5 +1,5 @@
-# Bluemix AppID
-Swift SDK for the Bluemix AppID service
+# Bluemix App ID
+Swift SDK for the Bluemix App ID service
 
 [![Bluemix powered][img-bluemix-powered]][url-bluemix]
 [![Travis][img-travis-master]][url-travis-master]
@@ -31,7 +31,7 @@ Xcode 8.1 or above, CocoaPods 1.1.0 or higher, MacOS 10.11.5 or higher, iOS 9 or
 
 ## Using the SDK:
 
-### Initializing the AppId client SDK
+### Initializing the App ID client SDK
 1. Open your Xcode project and enable Keychain Sharing (Under project settings --> Capabilities --> Keychain sharing)
 2. Under project setting --> info --> Url Types, Add $(PRODUCT_BUNDLE_IDENTIFIER) as a URL Scheme
 3. Add the following import to your AppDelegate.swift file:
@@ -40,20 +40,17 @@ import BluemixAppID
 ```
 4. Initialize the client SDK by passing the tenantId and region parameters to the initialize method. A common, though not mandatory, place to put the initialization code is in the application:didFinishLaunchingWithOptions: method of the AppDelegate in your Swift application.
     ```swift
-    AppID.sharedInstance.initialize(tenantId: <tenantId>, bluemixRegion: AppID.<region>)
+    AppID.sharedInstance.initialize(tenantId: <tenantId>, bluemixRegion: AppID.REGION_UK)
     ```
+    * Replace "tenantId" with the App ID service tenantId.
+    * Replace the AppID.REGION_UK with the your App ID region (AppID.REGION_US_SOUTH, AppID.REGION_SYDNEY).
+    
 5. Add the following code to you AppDelegate file
     ```swift
     func application(_ application: UIApplication, open url: URL, options :[UIApplicationOpenURLOptionsKey : Any]) -> Bool {
         return AppID.sharedInstance.application(application, open: url, options: options)
     }
     ```
-
-
-* Replace ״tenantId״ with the App ID service tenantId. <br />
-* Replace ״region״ with the App ID region.
-
-For more information on obtaining these values see Before you begin.
 
 ### Using Login Widget
 After the App ID client SDK is initialized, you can start authenticate users by launching the Login Widget.
@@ -90,7 +87,7 @@ import BluemixAppID
 ```
 Then add the following code:
 ```swift
-BMSClient.sharedInstance.initialize(bluemixRegion: AppID.<region>)
+BMSClient.sharedInstance.initialize(bluemixRegion: AppID.REGION_UK)
 BMSClient.sharedInstance.authorizationManager = AppIDAuthorizationManager(appid:AppID.sharedInstance)
 var request:Request =  Request(url: "<your protected resource url>")
 request.send(completionHandler: {(response:Response?, error:Error?) in

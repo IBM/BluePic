@@ -25,7 +25,7 @@ public class Utils {
         if JSONSerialization.isValidJSONObject(value) {
             do {
                 let data = try JSONSerialization.data(withJSONObject: value, options: options)
-                guard let string = NSString(data: data, encoding: String.Encoding.utf8.rawValue) as? String else {
+                guard let string = String(data: data, encoding: String.Encoding.utf8) else {
                     throw AppIDError.jsonUtilsError(msg: "Json is malformed")
                 }
                 return string
