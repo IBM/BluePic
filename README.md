@@ -174,8 +174,8 @@ After configuring the optional features, you should redeploy the BluePic app to 
 
 <p align="center"><img src="Imgs/cloud-tools-deploy.png"  alt="Deploy to server" height=250 border=0 /></p>
 
-#### Using the Cloud Foundry command line
-After configuring the optional features, you should redeploy the BluePic app to Bluemix. You can use the Cloud Foundry [command line](https://docs.cloudfoundry.org/devguide/cf-cli/install-go-cli.html) to do so. Once you have logged in to Bluemix using the command line, you can execute `cf push` from the root folder of this repo on your local file system. This will push the application code and configuration to Bluemix.
+#### Using the Bluemix command line interface
+After configuring the optional features, you should redeploy the BluePic app to Bluemix. You can use the Bluemix CLI to do that, download it [here](http://clis.ng.bluemix.net/ui/home.html). Once you have logged in to Bluemix using the command line, you can execute `bx app push` from the root folder of this repo on your local file system. This will push the application code and configuration to Bluemix.
 
 ## Running the iOS app
 If you don't have the iOS project already open, go to the `BluePic-iOS` directory and open the BluePic workspace using `open BluePic.xcworkspace`.

@@ -100,15 +100,13 @@ class TabBarViewController: UITabBarController {
         if let loginVC = Utils.vcWithNameFromStoryboardWithName("loginVC", storyboardName: "Main") as? LoginViewController {
 
             // If appID SDK is updated, re-implement modal presentations, remove nav controller.
-            //            self.present(loginVC, animated: animated, completion: { _ in
-            //            })
+            self.present(loginVC, animated: animated, completion: { _ in
+                self.hideBackgroundImage()
+                if let callback = callback {
+                    callback()
+                }
+            })
 
-            self.navigationController?.pushViewController(loginVC, animated: true)
-
-            if let callback = callback {
-                callback()
-            }
-            self.hideBackgroundImage()
         }
     }
 

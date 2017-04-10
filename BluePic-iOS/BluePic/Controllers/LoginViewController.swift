@@ -91,8 +91,7 @@ class LoginViewController: UIViewController {
      */
     @IBAction func signInLaterTapped(_ sender: Any) {
         viewModel.loginLater()
-        self.navigationController?.popViewController(animated: true)
-//        dismiss(animated: true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
 
     /**
@@ -159,8 +158,7 @@ extension LoginViewController {
      */
     func handleLoginSuccess() {
         DispatchQueue.main.async {
-//            self.dismiss(animated: true, completion: nil)
-            self.navigationController?.popViewController(animated: true)
+            self.dismiss(animated: true, completion: nil)
         }
     }
 

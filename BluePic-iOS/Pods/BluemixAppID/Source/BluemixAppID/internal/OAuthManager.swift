@@ -17,7 +17,7 @@ import Foundation
 public class OAuthManager {
     private(set) var appId:AppID
     private(set) var preferenceManager:PreferenceManager
-    private(set) var registrationManager:RegistrationManager?
+    internal var registrationManager:RegistrationManager?
     internal var authorizationManager:AuthorizationManager?
     internal var tokenManager:TokenManager?
 
