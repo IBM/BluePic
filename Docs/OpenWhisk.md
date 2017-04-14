@@ -1,17 +1,15 @@
 # Setup OpenWhisk
-1) Create an OpenWhisk account on the [Welcome to Bluemix OpenWhisk](https://new-console.ng.bluemix.net/openwhisk/) page.
+1. Download and install the [OpenWhisk CLI](https://new-console.ng.bluemix.net/openwhisk/cli) zip with an executable inside. Once downloaded, unzip the file and either start using the `wsk` command right there or add the wsk executable to your `PATH`. Then set your OpenWhisk API host and auth key as mentioned in step 2 of the "Configure CLI" page.
 
-2) Download and install the [OpenWhisk CLI](https://new-console.ng.bluemix.net/openwhisk/cli) zip with an executable inside. Once downloaded, unzip the file and either start using the `wsk` command right there or add the wsk executable to your `PATH`. Then set your OpenWhisk API host and auth key as mentioned in step 2 of the "Configure CLI" page.
+2. On that same [OpenWhisk CLI](https://new-console.ng.bluemix.net/openwhisk/cli) page, you can find the values needed to populate the [properties.json](../BluePic-Server/properties.json) file under the `Bluepic-Server` directory.
 
-3) On that same [OpenWhisk CLI](https://new-console.ng.bluemix.net/openwhisk/cli) page, you can find the values needed to populate the [properties.json](../BluePic-Server/properties.json) file under the `Bluepic-Server` directory.
-
-1. In step 2 on the "OpenWhisk - Configure CLI" page, you will see a command that looks similar to:
+3. In step 2 on the "OpenWhisk - Configure CLI" page, you will see a command that looks similar to:
 
     `wsk property set --apihost <hostName> --auth <authKey>`
 
-2. Take the value after `--apihost` and put it as the `hostName` value in `properties.json`.
+4. Take the value after `--apihost` and put it as the `hostName` value in `properties.json`.
 
-3. Next, insert a namespace value within the existing `urlPath` value in `properties.json`. In the `<namespace>` spot to be exact:
+5. Next, insert a namespace value within the existing `urlPath` value in `properties.json`. In the `<namespace>` spot to be exact:
 `"/api/v1/namespaces/<namespace>/actions/bluepic/processImage?blocking=false"`
 You can find this value at the top of the Bluemix UI, it will be a combination of the org and the space name, for example: `swiftdo%40us.ibm.com_dev`. Where our email is the org name, and `dev` is the space name.
 

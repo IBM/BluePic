@@ -61,7 +61,7 @@ If you'd like to, you can spend a few minutes to get familiar with the folder st
 ### 3. Create BluePic application on Bluemix
 Clicking on the button below deploys the BluePic application to Bluemix. The [`manifest.yml`](manifest.yml) file [included in the repo] is parsed to obtain the name of the application and to determine the Cloud Foundry services that should be instantiated. For further details on the structure of the `manifest.yml` file, see the [Cloud Foundry documentation](https://docs.cloudfoundry.org/devguide/deploy-apps/manifest.html#minimal-manifest). After clicking the button below, you will be able to name your application, keep in mind that your Bluemix application name needs to match the name value in your `manifest.yml`. Therefore, you may have to change the name value in your `manifest.yml` if there is a naming conflict in your Bluemix account.
 
-[![Deploy to Bluemix](https://deployment-tracker.mybluemix.net/stats/c45eeb765e77bf2bffd747e8d910e37d/button.svg)](https://bluemix.net/deploy?repository=https://github.com/IBM-Swift/BluePic.git)
+[![Deploy to Bluemix](https://deployment-tracker.mybluemix.net/stats/c45eeb765e77bf2bffd747e8d910e37d/button.svg)](https://bluemix.net/deploy?repository=https://github.com/IBM-Swift/BluePic.git&cm_mmc=github-code-_-native-_-bluepic-_-deploy2bluemix)
 
 Once deployment to Bluemix is completed, you should access the route assigned to your application using the web browser of your choice. You should see the Kitura welcome page!
 
@@ -119,6 +119,8 @@ You can find your region in multiple ways. For instance, by just looking at the 
 
 ## Optional features to configure
 This section describes the steps to take in order to leverage Facebook authentication with App ID, Push Notifications, and OpenWhisk.
+
+*API endpoints in BluePic-Server are currently not protected due to dependency limitations, but they will be as soon as that functionality is availalbe with the Kitura and App ID SDKs*
 
 ### 1. Create an application instance on Facebook
 In order to have the app authenticate with Facebook, you must create an application instance on Facebook's website.
