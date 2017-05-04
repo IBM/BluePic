@@ -20,7 +20,7 @@ You can download the development snapshots of the Swift binaries by following th
 
 Optionally, if you'd like to run the BluePic Kitura-based server using Xcode, you should use Xcode 8 and configure it to use the default toolchain. For details on how to set up Xcode, see [Building your Kitura application on XCode](https://github.com/IBM-Swift/Kitura/wiki/Building-your-Kitura-application-on-XCode/d43b796976bfb533d3d209948de17716fce859b0). Please note that any other versions of Xcode are not guaranteed to work with the back-end code.
 
-As shown in the table above, the iOS component of the BluePic app uses the default toolchain (Swift 3.1) prepackaged with Xcode 8.3. At the moment, any other versions of Xcode are not guaranteed to work, but you may view previous [releases](https://github.com/IBM-Swift/BluePic/releases) for possibly compatability with older versions of Xcode (i.e. Xcode 7.3.1). You may get unexpected behavior and/or errors if attempting to use other versions of Xcode or Swift.
+As shown in the table above, the iOS component of the BluePic app uses the default toolchain (Swift 3.1) prepackaged with Xcode 8.3. At the moment, any other versions of Xcode are not guaranteed to work, but you may view previous [releases](https://github.com/IBM/BluePic/releases) for possibly compatability with older versions of Xcode (i.e. Xcode 7.3.1). You may get unexpected behavior and/or errors if attempting to use other versions of Xcode or Swift.
 
 ## Getting started
 There are *two ways* you can compile and provision BluePic on Bluemix. Method 1 uses the [IBM Cloud Tools for Swift](https://ibm-cloud-tools.mybluemix.net/) application. Using IBM Cloud Tools for Swift is the easiest and quickest path to get BluePic up and running. Method 2 is manual, does not leverage this tool, and, therefore, takes longer but you get to understand exactly the steps that are happening behind the scenes. Regardless of what path you choose, there are a few optional steps you can complete for additional functionality.
@@ -53,7 +53,7 @@ If you are using Linux as your development platform, you can find full details o
 Execute the following command to clone the Git repository:
 
 ```bash
-git clone https://github.com/IBM-Swift/BluePic.git
+git clone https://github.com/IBM/BluePic.git
 ```
 
 If you'd like to, you can spend a few minutes to get familiar with the folder structure of the repo as described in the [About](Docs/About.md) page.
@@ -186,7 +186,7 @@ You can now build and run the iOS app in the simulator using the Xcode capabilit
 
 ### Running the iOS app on a physical device
 
-For IBM developers, see our [Wiki](https://github.com/IBM-Swift/BluePic/wiki/Code-Signing-Configuration-for-Internal-Developers) for details on the steps to follow.
+For IBM developers, see our [Wiki](https://github.com/IBM/BluePic/wiki/Code-Signing-Configuration-for-Internal-Developers) for details on the steps to follow.
 
 The easiest method for running the iOS app on a physical device is to change the bundle ID for BluePic to a unique value (if you haven't already). Afterwards, check the box for `Automatically manage signing` located under the `General` tab for the BluePic app target (in Xcode). After checking that box, you need to ensure the team for your personal Apple Developer account is selected from the dropdown. Assuming you have the Apple Developer Program team role of `Agent` or `Admin`, either a provisioning profile will be created for the BluePic app or a wildcard profile will be used (if exists), allowing you to run on a device.
 
