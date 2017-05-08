@@ -38,9 +38,9 @@ public extension Response {
         
         let subscription = NSMutableArray()
         
-        if  let  subscriptionDictionary = convertStringToDictionary(text: self.responseText!)! as NSDictionary? {
+        if  let  subscriptionDictionary = convertStringToDictionary(text: self.responseText!) as NSDictionary? {
             
-            if let subscriptionArray:NSArray = subscriptionDictionary.object(forKey: IMFPUSH_SUBSCRIPTIONS) as? NSArray{
+            if let subscriptionArray:NSArray = subscriptionDictionary.object(forKey: IMFPUSH_SUBSCRIPTIONS) as? NSArray {
                 
                 
                 var subscriptionResponsDic:NSDictionary?
@@ -73,24 +73,24 @@ public extension Response {
         
         let finalDict = NSMutableDictionary()
         
-        let  subscriptions = convertStringToDictionary(text: self.responseText!)! as NSDictionary
-        
-        if let arraySub:NSArray = subscriptions.object(forKey: IMFPUSH_SUBSCRIPTIONEXISTS) as? NSArray {
+        if let subscriptions:NSDictionary = convertStringToDictionary(text: self.responseText!) as NSDictionary? {
             
-            finalDict.setObject(arraySub, forKey:IMFPUSH_SUBSCRIPTIONEXISTS as NSCopying)
-            
+            if let arraySub:NSArray = subscriptions.object(forKey: IMFPUSH_SUBSCRIPTIONEXISTS) as? NSArray {
+                
+                finalDict.setObject(arraySub, forKey:IMFPUSH_SUBSCRIPTIONEXISTS as NSCopying)
+                
+            }
+            if let dictionarySub:NSDictionary = subscriptions.object(forKey: IMFPUSH_TAGSNOTFOUND) as? NSDictionary {
+                
+                
+                finalDict.setObject(dictionarySub, forKey:IMFPUSH_TAGSNOTFOUND as NSCopying)
+                
+            }
+            if let arraySub:NSArray = subscriptions.object(forKey: IMFPUSH_SUBSCRIBED) as? NSArray {
+                
+                finalDict.setObject(arraySub, forKey:IMFPUSH_SUBSCRIPTIONS as NSCopying)
+            }
         }
-        if let dictionarySub:NSDictionary = subscriptions.object(forKey: IMFPUSH_TAGSNOTFOUND) as? NSDictionary {
-            
-            
-            finalDict.setObject(dictionarySub, forKey:IMFPUSH_TAGSNOTFOUND as NSCopying)
-            
-        }
-        if let arraySub:NSArray = subscriptions.object(forKey: IMFPUSH_SUBSCRIBED) as? NSArray {
-            
-            finalDict.setObject(arraySub, forKey:IMFPUSH_SUBSCRIPTIONS as NSCopying)
-        }
-        
         return finalDict;
     }
     
@@ -104,25 +104,26 @@ public extension Response {
         
         let finalDict = NSMutableDictionary()
         
-        let  subscriptions = convertStringToDictionary(text: self.responseText!)! as NSDictionary
-        
-        if let arraySub:NSArray = subscriptions.object(forKey: IMFPUSH_SUBSCRIPTIONEXISTS) as? NSArray {
+        if let subscriptions:NSDictionary = convertStringToDictionary(text: self.responseText!) as NSDictionary? {
             
             
-            finalDict.setObject(arraySub, forKey:IMFPUSH_SUBSCRIPTIONEXISTS as NSCopying)
-            
+            if let arraySub:NSArray = subscriptions.object(forKey: IMFPUSH_SUBSCRIPTIONEXISTS) as? NSArray {
+                
+                
+                finalDict.setObject(arraySub, forKey:IMFPUSH_SUBSCRIPTIONEXISTS as NSCopying)
+                
+            }
+            if let dictionarySub:NSDictionary = subscriptions.object(forKey: IMFPUSH_TAGSNOTFOUND) as? NSDictionary {
+                
+                
+                finalDict.setObject(dictionarySub, forKey:IMFPUSH_TAGSNOTFOUND as NSCopying)
+                
+            }
+            if let arraySub:NSArray = subscriptions.object(forKey: IMFPUSH_SUBSCRIBED) as? NSArray {
+                
+                finalDict.setObject(arraySub, forKey:IMFPUSH_SUBSCRIPTIONS as NSCopying)
+            }
         }
-        if let dictionarySub:NSDictionary = subscriptions.object(forKey: IMFPUSH_TAGSNOTFOUND) as? NSDictionary {
-            
-            
-            finalDict.setObject(dictionarySub, forKey:IMFPUSH_TAGSNOTFOUND as NSCopying)
-            
-        }
-        if let arraySub:NSArray = subscriptions.object(forKey: IMFPUSH_SUBSCRIBED) as? NSArray {
-            
-            finalDict.setObject(arraySub, forKey:IMFPUSH_SUBSCRIPTIONS as NSCopying)
-        }
-        
         return finalDict;
     }
     
@@ -135,21 +136,21 @@ public extension Response {
         
         let tags = NSMutableArray()
         
-        let  tagsDictionary = convertStringToDictionary(text: self.responseText!)! as NSDictionary
-        
-        if let tag:NSArray = tagsDictionary.object(forKey: IMFPUSH_TAGS) as? NSArray {
+        if let tagsDictionary:NSDictionary = convertStringToDictionary(text: self.responseText!) as NSDictionary? {
             
-            var tagResponseDic:NSDictionary?
-            
-            for  i in 0..<tag.count {
+            if let tag:NSArray = tagsDictionary.object(forKey: IMFPUSH_TAGS) as? NSArray {
                 
-                tagResponseDic = tag.object(at: i) as? NSDictionary
+                var tagResponseDic:NSDictionary?
                 
-                tags.add((tagResponseDic?.object(forKey: IMFPUSH_NAME))!)
-                
+                for  i in 0..<tag.count {
+                    
+                    tagResponseDic = tag.object(at: i) as? NSDictionary
+                    
+                    tags.add((tagResponseDic?.object(forKey: IMFPUSH_NAME))!)
+                    
+                }
             }
         }
-        
         return tags;
     }
     
@@ -158,11 +159,11 @@ public extension Response {
         if let data = text.data(using: String.Encoding.utf8) {
             
             guard let result = try? JSONSerialization.jsonObject(with: data, options: []) as? [String:AnyObject] else {
-                return nil
+                return [:]
             }
             return result
         }
-        return nil
+        return [:]
     }
 }
 
@@ -203,7 +204,7 @@ public extension Response {
         
         if  let  subscriptionDictionary:NSDictionary = convertStringToDictionary(self.responseText!)! as NSDictionary {
             
-            if let subscriptionArray:NSArray = subscriptionDictionary.objectForKey(IMFPUSH_SUBSCRIPTIONS) as? NSArray{
+            if let subscriptionArray:NSArray = subscriptionDictionary.objectForKey(IMFPUSH_SUBSCRIPTIONS) as? NSArray {
                 
                 
                 var subscriptionResponsDic:NSDictionary?
@@ -236,22 +237,23 @@ public extension Response {
         
         let finalDict = NSMutableDictionary()
         
-        let  subscriptions = convertStringToDictionary(self.responseText!)! as NSDictionary
-        
-        if let arraySub:NSArray = subscriptions.objectForKey(IMFPUSH_SUBSCRIPTIONEXISTS) as? NSArray {
+        if let subscriptions:NSDictionary = convertStringToDictionary(self.responseText!)! as NSDictionary {
             
-            finalDict.setObject(arraySub, forKey:IMFPUSH_SUBSCRIPTIONEXISTS)
-            
-        }
-        if let dictionarySub:NSDictionary = subscriptions.objectForKey(IMFPUSH_TAGSNOTFOUND) as? NSDictionary {
-            
-            
-            finalDict.setObject(dictionarySub, forKey:IMFPUSH_TAGSNOTFOUND)
-            
-        }
-        if let arraySub:NSArray = subscriptions.objectForKey(IMFPUSH_SUBSCRIBED) as? NSArray {
-            
-            finalDict.setObject(arraySub, forKey:IMFPUSH_SUBSCRIPTIONS)
+            if let arraySub:NSArray = subscriptions.objectForKey(IMFPUSH_SUBSCRIPTIONEXISTS) as? NSArray {
+                
+                finalDict.setObject(arraySub, forKey:IMFPUSH_SUBSCRIPTIONEXISTS)
+                
+            }
+            if let dictionarySub:NSDictionary = subscriptions.objectForKey(IMFPUSH_TAGSNOTFOUND) as? NSDictionary {
+                
+                
+                finalDict.setObject(dictionarySub, forKey:IMFPUSH_TAGSNOTFOUND)
+                
+            }
+            if let arraySub:NSArray = subscriptions.objectForKey(IMFPUSH_SUBSCRIBED) as? NSArray {
+                
+                finalDict.setObject(arraySub, forKey:IMFPUSH_SUBSCRIPTIONS)
+            }
         }
         
         return finalDict;
@@ -267,25 +269,25 @@ public extension Response {
         
         let finalDict = NSMutableDictionary()
         
-        let  subscriptions = convertStringToDictionary(self.responseText!)! as NSDictionary
-        
-        if let arraySub:NSArray = subscriptions.objectForKey(IMFPUSH_SUBSCRIPTIONEXISTS) as? NSArray {
+        if let subscriptions:NSDictionary = convertStringToDictionary(self.responseText!)! as NSDictionary {
             
-            
-            finalDict.setObject(arraySub, forKey:IMFPUSH_SUBSCRIPTIONEXISTS)
-            
+            if let arraySub:NSArray = subscriptions.objectForKey(IMFPUSH_SUBSCRIPTIONEXISTS) as? NSArray {
+                
+                
+                finalDict.setObject(arraySub, forKey:IMFPUSH_SUBSCRIPTIONEXISTS)
+                
+            }
+            if let dictionarySub:NSDictionary = subscriptions.objectForKey(IMFPUSH_TAGSNOTFOUND) as? NSDictionary {
+                
+                
+                finalDict.setObject(dictionarySub, forKey:IMFPUSH_TAGSNOTFOUND)
+                
+            }
+            if let arraySub:NSArray = subscriptions.objectForKey(IMFPUSH_SUBSCRIBED) as? NSArray {
+                
+                finalDict.setObject(arraySub, forKey:IMFPUSH_SUBSCRIPTIONS)
+            }
         }
-        if let dictionarySub:NSDictionary = subscriptions.objectForKey(IMFPUSH_TAGSNOTFOUND) as? NSDictionary {
-            
-            
-            finalDict.setObject(dictionarySub, forKey:IMFPUSH_TAGSNOTFOUND)
-            
-        }
-        if let arraySub:NSArray = subscriptions.objectForKey(IMFPUSH_SUBSCRIBED) as? NSArray {
-            
-            finalDict.setObject(arraySub, forKey:IMFPUSH_SUBSCRIPTIONS)
-        }
-        
         return finalDict;
     }
     
@@ -298,18 +300,19 @@ public extension Response {
         
         let tags = NSMutableArray()
         
-        let  tagsDictionary = convertStringToDictionary(self.responseText!)! as NSDictionary
-        
-        if let tag:NSArray = tagsDictionary.objectForKey(IMFPUSH_TAGS) as? NSArray {
+        if let tagsDictionary:NSDictionary = convertStringToDictionary(self.responseText!)! as NSDictionary {
             
-            var tagResponseDic:NSDictionary?
-            
-            for  i in 0..<tag.count {
+            if let tag:NSArray = tagsDictionary.objectForKey(IMFPUSH_TAGS) as? NSArray {
                 
-                tagResponseDic = tag.objectAtIndex(i) as? NSDictionary
+                var tagResponseDic:NSDictionary?
                 
-                tags.addObject((tagResponseDic?.objectForKey(IMFPUSH_NAME))!)
-                
+                for  i in 0..<tag.count {
+                    
+                    tagResponseDic = tag.objectAtIndex(i) as? NSDictionary
+                    
+                    tags.addObject((tagResponseDic?.objectForKey(IMFPUSH_NAME))!)
+                    
+                }
             }
         }
         
@@ -321,11 +324,11 @@ public extension Response {
         if let data = text.dataUsingEncoding(NSUTF8StringEncoding) {
             
             guard let result = try? NSJSONSerialization.JSONObjectWithData(data, options: []) as? [String:AnyObject] else {
-                return nil
+                return [:]
             }
-            return result
+            return result!
         }
-        return nil
+        return [:]
     }
 }
 

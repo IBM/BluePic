@@ -26,14 +26,8 @@ internal class BMSPushUtils: NSObject {
     static var loggerMessage:String = ""
     
     class func saveValueToNSUserDefaults (value:String, key:String){
-        
-        let standardUserDefaults : UserDefaults = UserDefaults.standard
-        if standardUserDefaults.object(forKey: key) != nil  {
-            
-            UserDefaults.standard.set(value, forKey: key)
-            UserDefaults.standard.synchronize()
-            
-        }
+        UserDefaults.standard.set(value, forKey: key)
+        UserDefaults.standard.synchronize()
         loggerMessage = ("Saving value to NSUserDefaults with Key: \(key) and Value: \(value)")
         self.sendLoggerData()
     }
@@ -102,13 +96,8 @@ internal class BMSPushUtils: NSObject {
     
     class func saveValueToNSUserDefaults (value:String, key:String){
         
-        let standardUserDefaults : NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        if standardUserDefaults.objectForKey(key) != nil  {
-            
-            NSUserDefaults.standardUserDefaults().setObject(value, forKey: key)
-            NSUserDefaults.standardUserDefaults().synchronize()
-            
-        }
+        NSUserDefaults.standardUserDefaults().setObject(value, forKey: key)
+        NSUserDefaults.standardUserDefaults().synchronize()
         loggerMessage = ("Saving value to NSUserDefaults with Key: \(key) and Value: \(value)")
         self.sendLoggerData()
     }
