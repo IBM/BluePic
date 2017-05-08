@@ -52,10 +52,10 @@ public struct RequestMetadata {
     // Combines all of the metadata into a single JSON object
     public var combinedMetadata: [String: Any] {
         
-        var roundTripTime = 0
+        var roundTripTime: Int64 = 0
         // If this is not true, that means some BMSCore developer forgot to set the endTime somewhere
         if endTime > startTime {
-            roundTripTime = endTime - startTime
+            (roundTripTime, _) = Int64.subtractWithOverflow(endTime, startTime)
         }
         
         // Data for analytics logging

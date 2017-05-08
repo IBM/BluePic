@@ -108,7 +108,7 @@ internal struct BMSURLSessionUtility {
         
         // Client-side issues eligible for retries
         let errorCodesForRetries: [Int] = [NSURLErrorTimedOut, NSURLErrorCannotConnectToHost, NSURLErrorNetworkConnectionLost]
-        if let error = error as? NSError,
+        if let error = error as NSError?,
             errorCodesForRetries.contains(error.code) {
             
             // If the device is running iOS, we should make sure that it has a network connection before resending the request
@@ -182,7 +182,7 @@ internal struct BMSURLSessionUtility {
                 originalTask.prepareForResending(urlSession: urlSession, request: request, requestMetadata: requestMetadata).resume()
             }
             else {
-                BMSURLSession.logger.error(message: "Authorization process failed. \nError: \(error). \nResponse: \(response).")
+                BMSURLSession.logger.error(message: "Authorization process failed. \nError: \(String(describing: error)). \nResponse: \(response?.responseText ?? "No response").")
                 handleFailure()
             }
         }
