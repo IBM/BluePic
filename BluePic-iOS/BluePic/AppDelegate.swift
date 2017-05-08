@@ -76,11 +76,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
      */
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         //could not grab instance of tab bar fail silently
-        guard let rootViewController = self.window?.rootViewController,
-              let tabBarController = rootViewController.childViewControllers.first as? TabBarViewController,
-              let feedNav = tabBarController.viewControllers?.first as? FeedNavigationController else {
-            completionHandler(UIBackgroundFetchResult.failed)
-            return
+        guard let tabBarController = self.window?.rootViewController as? TabBarViewController,
+            let feedNav = tabBarController.childViewControllers.first as? FeedNavigationController else {
+                completionHandler(UIBackgroundFetchResult.failed)
+                return
         }
 
         //handle a push notification by showing an alert that says your image was processed

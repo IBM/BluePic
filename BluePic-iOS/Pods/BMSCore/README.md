@@ -2,6 +2,8 @@ BMSCore
 ===================================================
 
 [![Build Status](https://travis-ci.org/ibm-bluemix-mobile-services/bms-clientsdk-swift-core.svg?branch=master)](https://travis-ci.org/ibm-bluemix-mobile-services/bms-clientsdk-swift-core)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/a6f0b9a4961048cea4dec00ceabc6bfa)](https://www.codacy.com/app/ibm-bluemix-mobile-services/bms-clientsdk-swift-core?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ibm-bluemix-mobile-services/bms-clientsdk-swift-core&amp;utm_campaign=Badge_Grade)
+[![Coverage Status](https://coveralls.io/repos/github/ibm-bluemix-mobile-services/bms-clientsdk-swift-core/badge.svg?branch=development)](https://coveralls.io/github/ibm-bluemix-mobile-services/bms-clientsdk-swift-core?branch=development)
 [![Platform](https://img.shields.io/cocoapods/p/BMSCore.svg?style=flat)](http://cocoadocs.org/docsets/BMSCore)
 [![CocoaPods Compatible](https://img.shields.io/cocoapods/v/BMSCore.svg)](https://img.shields.io/cocoapods/v/BMSCore.svg)
 [![](https://img.shields.io/badge/bluemix-powered-blue.svg)](https://bluemix.net)
