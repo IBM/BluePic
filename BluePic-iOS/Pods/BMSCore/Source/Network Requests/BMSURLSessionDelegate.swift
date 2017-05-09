@@ -179,7 +179,7 @@ extension BMSURLSessionDelegate: URLSessionDataDelegate {
     
     func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
         
-        requestMetadata.bytesReceived += data.count
+        requestMetadata.bytesReceived += Int64(data.count)
         
         (parentDelegate as? URLSessionDataDelegate)?.urlSession?(session, dataTask: dataTask, didReceive: data)
     }
