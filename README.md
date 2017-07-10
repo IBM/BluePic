@@ -12,7 +12,7 @@ The back-end components (i.e. Kitura-based server and OpenWhisk actions) and the
 
 | Component | Swift Version |
 | --- | --- |
-| Kitura-based server | `3.1` |
+| Kitura-based server | `3.1.1` |
 | OpenWhisk actions | `3.0` |
 | iOS App | Xcode 8.3 default (`Swift 3.1`)
 
