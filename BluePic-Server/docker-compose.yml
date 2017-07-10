@@ -1,9 +1,9 @@
 # To use this file, simply execute: docker-compose up
 # make sure you have filled out the credentials in the cloud.json file before running this
 app:
-  image: ibmcom/swift-ubuntu:3.1
+  image: ibmcom/swift-ubuntu:3.1.1
   ports:
     - "8080:8080"
   volumes:
-    - ..:/root/BluePic
-  command: bash -c "cd /root/BluePic/BluePic-Server && swift package clean && swift test && swift build && ./.build/debug/BluePicServer"
+    - ..:/BluePic
+  command: bash -c "cd /BluePic/BluePic-Server && swift package clean && swift build && ./.build/debug/BluePicServer"
