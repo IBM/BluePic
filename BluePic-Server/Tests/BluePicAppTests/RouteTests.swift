@@ -37,6 +37,8 @@ class RouteTests: XCTestCase {
   private let serverController = try? ServerController()
 
   private var accessToken: String = ""
+    
+  private let timeout: TimeInterval = 25.0
 
   static var allTests : [(String, (RouteTests) -> () throws -> Void)] {
       return [
@@ -121,7 +123,7 @@ class RouteTests: XCTestCase {
         XCTAssertTrue(pingResult!.contains("Hello World"))
         pingExpectation.fulfill()
     }
-    waitForExpectations(timeout: 20.0, handler: nil)
+    waitForExpectations(timeout: timeout, handler: nil)
   }
 
   func testGetTags() {
@@ -137,7 +139,7 @@ class RouteTests: XCTestCase {
         }
         tagExpectation.fulfill()
     }
-    waitForExpectations(timeout: 10.0, handler: nil)
+    waitForExpectations(timeout: timeout, handler: nil)
   }
 
   // MARK: Image related tests
@@ -161,7 +163,7 @@ class RouteTests: XCTestCase {
         imageExpectation.fulfill()
 
     }
-    waitForExpectations(timeout: 10.0, handler: nil)
+    waitForExpectations(timeout: timeout, handler: nil)
   }
 
   func testGettingSingleImage() {
@@ -176,7 +178,7 @@ class RouteTests: XCTestCase {
         imageExpectation.fulfill()
     }
 
-    waitForExpectations(timeout: 10.0, handler: nil)
+    waitForExpectations(timeout: timeout, handler: nil)
   }
 
   func testGettingImagesByTag() {
@@ -201,7 +203,7 @@ class RouteTests: XCTestCase {
         imageExpectation.fulfill()
 
     }
-    waitForExpectations(timeout: 10.0, handler: nil)
+    waitForExpectations(timeout: timeout, handler: nil)
   }
 
   func testPostingImage() {
@@ -284,7 +286,7 @@ class RouteTests: XCTestCase {
       XCTFail("Failed to convert image dictionary to binary data.")
     }
 
-    waitForExpectations(timeout: 20.0, handler: nil)
+    waitForExpectations(timeout: timeout, handler: nil)
   }
 
   func testGettingImagesForUser() {
@@ -303,7 +305,7 @@ class RouteTests: XCTestCase {
         }
         imageExpectation.fulfill()
     }
-    waitForExpectations(timeout: 10.0, handler: nil)
+    waitForExpectations(timeout: timeout, handler: nil)
   }
 
   // MARK: User related tests
@@ -326,7 +328,7 @@ class RouteTests: XCTestCase {
         }
         userExpectation.fulfill()
     }
-    waitForExpectations(timeout: 10.0, handler: nil)
+    waitForExpectations(timeout: timeout, handler: nil)
   }
 
   func testGettingSingleUser() {
@@ -343,7 +345,7 @@ class RouteTests: XCTestCase {
         XCTAssertNotNil(user["_rev"].string)
         userExpectation.fulfill()
     }
-    waitForExpectations(timeout: 10.0, handler: nil)
+    waitForExpectations(timeout: timeout, handler: nil)
   }
 
   func testCreatingUser() {
@@ -366,7 +368,7 @@ class RouteTests: XCTestCase {
     } catch {
       XCTFail("Faild to convert dictionary to JSON")
     }
-    waitForExpectations(timeout: 20.0, handler: nil)
+    waitForExpectations(timeout: timeout, handler: nil)
   }
 
   func testPushNotification() {
@@ -405,7 +407,7 @@ class RouteTests: XCTestCase {
     }
     req.end(close: true)
     
-    waitForExpectations(timeout: 15.0, handler: nil)
+    waitForExpectations(timeout: timeout, handler: nil)
   }
 
 }
