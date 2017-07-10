@@ -5,7 +5,7 @@
       "package": "BluemixAppID",
       "reason": null,
       "repositoryURL": "https://github.com/ibm-cloud-security/appid-serversdk-swift.git",
-      "version": "1.0.4"
+      "version": "1.0.0"
     },
     {
       "package": "BluemixObjectStorage",
@@ -23,43 +23,43 @@
       "package": "CCurl",
       "reason": null,
       "repositoryURL": "https://github.com/IBM-Swift/CCurl.git",
-      "version": "0.2.5"
-    },
-    {
-      "package": "CEpoll",
-      "reason": null,
-      "repositoryURL": "https://github.com/IBM-Swift/CEpoll.git",
-      "version": "0.1.0"
+      "version": "0.2.3"
     },
     {
       "package": "CloudConfiguration",
       "reason": null,
       "repositoryURL": "https://github.com/IBM-Swift/CloudConfiguration.git",
-      "version": "2.0.6"
+      "version": "2.0.0"
     },
     {
       "package": "CloudFoundryDeploymentTracker",
       "reason": null,
       "repositoryURL": "https://github.com/IBM-Bluemix/cf-deployment-tracker-client-swift.git",
-      "version": "3.0.3"
+      "version": "3.0.0"
     },
     {
       "package": "CloudFoundryEnv",
       "reason": null,
       "repositoryURL": "https://github.com/IBM-Swift/Swift-cfenv.git",
-      "version": "4.0.2"
+      "version": "4.0.1"
+    },
+    {
+      "package": "CommonCrypto",
+      "reason": null,
+      "repositoryURL": "https://github.com/IBM-Swift/CommonCrypto.git",
+      "version": "0.1.4"
     },
     {
       "package": "Configuration",
       "reason": null,
       "repositoryURL": "https://github.com/IBM-Swift/Configuration.git",
-      "version": "1.0.0"
+      "version": "0.2.4"
     },
     {
       "package": "Cryptor",
       "reason": null,
       "repositoryURL": "https://github.com/IBM-Swift/BlueCryptor.git",
-      "version": "0.8.15"
+      "version": "0.8.9"
     },
     {
       "package": "HeliumLogger",
@@ -92,12 +92,6 @@
       "version": "1.6.0"
     },
     {
-      "package": "Kitura-net",
-      "reason": null,
-      "repositoryURL": "https://github.com/IBM-Swift/Kitura-net.git",
-      "version": "1.6.2"
-    },
-    {
       "package": "Kitura-Session",
       "reason": null,
       "repositoryURL": "https://github.com/IBM-Swift/Kitura-Session.git",
@@ -108,6 +102,12 @@
       "reason": null,
       "repositoryURL": "https://github.com/IBM-Swift/Kitura-TemplateEngine.git",
       "version": "1.6.0"
+    },
+    {
+      "package": "Kitura-net",
+      "reason": null,
+      "repositoryURL": "https://github.com/IBM-Swift/Kitura-net.git",
+      "version": "1.6.2"
     },
     {
       "package": "KituraRequest",
@@ -122,10 +122,10 @@
       "version": "1.6.0"
     },
     {
-      "package": "OpenSSL",
+      "package": "SSLService",
       "reason": null,
-      "repositoryURL": "https://github.com/IBM-Swift/OpenSSL.git",
-      "version": "0.3.5"
+      "repositoryURL": "https://github.com/IBM-Swift/BlueSSLService.git",
+      "version": "0.12.31"
     },
     {
       "package": "SimpleHttpClient",
@@ -143,13 +143,7 @@
       "package": "Socket",
       "reason": null,
       "repositoryURL": "https://github.com/IBM-Swift/BlueSocket.git",
-      "version": "0.12.56"
-    },
-    {
-      "package": "SSLService",
-      "reason": null,
-      "repositoryURL": "https://github.com/IBM-Swift/BlueSSLService.git",
-      "version": "0.12.45"
+      "version": "0.12.43"
     },
     {
       "package": "SwiftyJSON",
