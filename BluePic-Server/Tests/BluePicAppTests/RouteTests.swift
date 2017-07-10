@@ -42,8 +42,8 @@ class RouteTests: XCTestCase {
 
   static var allTests : [(String, (RouteTests) -> () throws -> Void)] {
       return [
-          ("testGetTags", testGetTags),
           ("testPing", testPing),
+          ("testGetTags", testGetTags),
           ("testGettingImages", testGettingImages),
           ("testGettingSingleImage", testGettingSingleImage),
           ("testGettingImagesByTag", testGettingImagesByTag),
@@ -526,9 +526,6 @@ private extension URLRequest {
       XCTFail("Invalid request params")
       return
     }
-    print("method: \(method)")
-    print("path: \(path)")
-    print("headers: \(headers)")
     
     if let query = url?.query {
       path += "?" + query
@@ -537,7 +534,6 @@ private extension URLRequest {
     let requestOptions: [ClientRequest.Options] = [.method(method), .hostname("localhost"), .port(8080), .path(path), .headers(headers)]
     
     let req = HTTP.request(requestOptions) { resp in
-        print("in RESPONSE: \(resp)")
         if let resp = resp, resp.statusCode == HTTPStatusCode.OK || resp.statusCode == HTTPStatusCode.accepted {
         do {
           var body = Data()
