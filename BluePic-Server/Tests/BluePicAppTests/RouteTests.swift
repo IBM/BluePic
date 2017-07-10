@@ -121,7 +121,7 @@ class RouteTests: XCTestCase {
         XCTAssertTrue(pingResult!.contains("Hello World"))
         pingExpectation.fulfill()
     }
-    waitForExpectations(timeout: 10.0, handler: nil)
+    waitForExpectations(timeout: 20.0, handler: nil)
   }
 
   func testGetTags() {
@@ -524,6 +524,9 @@ private extension URLRequest {
       XCTFail("Invalid request params")
       return
     }
+    print("method: \(method)")
+    print("path: \(path)")
+    print("headers: \(headers)")
     
     if let query = url?.query {
       path += "?" + query
@@ -532,7 +535,7 @@ private extension URLRequest {
     let requestOptions: [ClientRequest.Options] = [.method(method), .hostname("localhost"), .port(8080), .path(path), .headers(headers)]
     
     let req = HTTP.request(requestOptions) { resp in
-
+        print("in RESPONSE: \(resp)")
         if let resp = resp, resp.statusCode == HTTPStatusCode.OK || resp.statusCode == HTTPStatusCode.accepted {
         do {
           var body = Data()
