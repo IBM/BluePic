@@ -5,5 +5,5 @@ app:
   ports:
     - "8080:8080"
   volumes:
-    - .:/root/BluePic
-  command: bash -c "cd /root/BluePic && swift package clean && swift build && ./.build/debug/BluePicServer"
+    - ..:/root/BluePic
+  command: bash -c "cd /root/BluePic/BluePic-Server && swift package clean && swift test && swift build && ./.build/debug/BluePicServer"
