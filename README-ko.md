@@ -1,5 +1,7 @@
 # BluePic
 
+*다른 언어로 보기: [English](README.md).*
+
 [![Build Status - Master](https://travis-ci.org/IBM/BluePic.svg?branch=master)](https://travis-ci.org/IBM/BluePic)
 ![Bluemix Deployments](https://deployment-tracker.mybluemix.net/stats/c45eeb765e77bf2bffd747e8d910e37d/badge.svg)
 
