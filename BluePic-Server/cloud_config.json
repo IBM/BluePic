@@ -30,10 +30,10 @@
       "state_timestamp": 1457059387
     },
     "services": {
-      "AdvancedMobileAccess": [
+      "AppID": [
         {
           "name": "BluePic-App-ID",
-          "label": "AdvancedMobileAccess",
+          "label": "AppID",
           "plan": "Graduated tier",
           "credentials": {
             "version": 3,
