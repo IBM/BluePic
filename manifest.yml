@@ -7,7 +7,7 @@ declared-services:
     label: Object-Storage
     plan: Free
   BluePic-App-ID:
-    label: AdvancedMobileAccess
+    label: AppID
     plan: "Graduated tier"
   BluePic-IBM-Push:
     label: imfpush
