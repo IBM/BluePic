@@ -23,7 +23,7 @@ applications:
   path: ./BluePic-Server
   command: BluePicServer
   random-route: true
-  memory: 512M
+  memory: 256M
   disk_quota: 1024M
   instances: 1
   buildpack: swift_buildpack
