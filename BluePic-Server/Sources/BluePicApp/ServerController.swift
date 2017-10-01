@@ -463,7 +463,7 @@ extension ServerController: ServerProtocol {
 
     readImage(database: database, imageId: imageId) { jsonImage in
       if let jsonImage = jsonImage {
-        let apnsSettings = Notification.Settings.Apns(badge: nil, category: "imageProcessed", iosActionKey: nil, sound: nil, type: ApnsType.DEFAULT, payload: jsonImage.dictionaryObject)
+        let apnsSettings = Notification.Settings.Apns(badge: nil, interactiveCategory: "imageProcessed", iosActionKey: nil, sound: nil, type: ApnsType.DEFAULT, payload: jsonImage.dictionaryObject)
         let target = Notification.Target(deviceIds: [jsonImage["deviceId"].stringValue], userIds: nil, platforms: nil, tagNames: nil)
         let message = Notification.Message(alert: "Your image was processed; check it out!", url: nil)
         let notification = Notification(message: message, target: target, apnsSettings: apnsSettings, gcmSettings: nil)
