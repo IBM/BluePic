@@ -23,7 +23,7 @@ import SwiftyJSON
 import BluemixObjectStorage
 import Dispatch
 
-enum BluePicLocalizedError : LocalizedError {
+enum BluePicLocalizedError: LocalizedError {
 
     case getTagsFailed
     case noImagesByTag(String)
@@ -78,7 +78,7 @@ extension ServerController {
     requestOptions.append(.hostname(openWhiskProps.hostName))
     requestOptions.append(.port(443))
     requestOptions.append(.path(openWhiskProps.urlPath))
-    var headers = [String:String]()
+    var headers = [String: String]()
     headers["Content-Type"] = "application/json"
     headers["Authorization"] = "Basic \(openWhiskProps.authToken)"
     requestOptions.append(.headers(headers))
@@ -105,8 +105,8 @@ extension ServerController {
               Log.error("Status code: \(resp.statusCode)")
               var rawUserData = Data()
               do {
-                  let _ = try resp.read(into: &rawUserData)
-                  let str = String(data: rawUserData, encoding: String.Encoding(rawValue: String.Encoding.utf8.rawValue))
+                  _ = try resp.read(into: &rawUserData)
+                  let str = String(data: rawUserData, encoding: .utf8)
                   print("Error response from OpenWhisk: \(String(describing: str))")
               }
               catch {
@@ -145,7 +145,7 @@ extension ServerController {
           if images.count == 1 {
             callback(images[0])
           } else {
-            throw ProcessingError.Image("Image not found!")
+            throw ProcessingError.image("Image not found!")
           }
         } catch {
           Log.error("Failed to get specific image document.")
@@ -169,7 +169,7 @@ extension ServerController {
    */
   func parseImages(document: JSON) throws -> JSON {
     guard let rows = document["rows"].array else {
-      throw ProcessingError.Image("Invalid images document returned from Cloudant!")
+      throw ProcessingError.image("Invalid images document returned from Cloudant!")
     }
 
     var images: [JSON] = []
@@ -197,7 +197,7 @@ extension ServerController {
    */
   func parseImages(forUserId userId: String, usingDocument document: JSON) throws -> JSON {
     guard let rows = document["rows"].array else {
-      throw ProcessingError.Image("Invalid images document returned from Cloudant!")
+      throw ProcessingError.image("Invalid images document returned from Cloudant!")
     }
 
     let images: [JSON] = rows.map { row in
@@ -234,11 +234,11 @@ extension ServerController {
    */
   func parseMultipart(fromRequest request: RouterRequest) throws -> (JSON, Data) {
     guard let requestBody: ParsedBody = request.body else {
-      throw ProcessingError.Image("No request body present.")
+      throw ProcessingError.image("No request body present.")
     }
     var imageJson: JSON?
     var imageData: Data?
-    switch (requestBody) {
+    switch requestBody {
     case .multipart(let parts):
       for part in parts {
         if part.name == "imageJson" {
@@ -254,7 +254,7 @@ extension ServerController {
             Log.warning("Couldn't process image Json from multi-part form.")
           }
         } else if part.name == "imageBinary" {
-          switch (part.body) {
+          switch part.body {
           case .raw(let data):
             imageData = data
           default:
@@ -263,11 +263,11 @@ extension ServerController {
         }
       }
     default:
-      throw ProcessingError.Image("Failed to parse request body: \(requestBody)")
+      throw ProcessingError.image("Failed to parse request body: \(requestBody)")
     }
 
     guard let json = imageJson, let data = imageData else {
-      throw ProcessingError.Image("Failed to parse multipart form data in request body.")
+      throw ProcessingError.image("Failed to parse multipart form data in request body.")
     }
     return (json, data)
   }
@@ -286,7 +286,7 @@ extension ServerController {
     var updatedJson = json
 
     guard let contentType = ContentType.sharedInstance.getContentType(forFileName: updatedJson["fileName"].stringValue) else {
-      throw ProcessingError.Image("Invalid image document!")
+      throw ProcessingError.image("Invalid image document!")
     }
 
     let userId = updatedJson["userId"].string ?? "anonymous"
@@ -327,9 +327,12 @@ extension ServerController {
    func createContainer(withName name: String, completionHandler: @escaping (_ success: Bool) -> Void) {
      // Cofigure container for public access and web hosting
      let configureContainer = { (container: ObjectStorageContainer) -> Void in
-       let metadata:Dictionary<String, String> = ["X-Container-Meta-Web-Listings" : "true", "X-Container-Read" : ".r:*,.rlistings"]
+       let metadata: Dictionary = [
+                                  "X-Container-Meta-Web-Listings": "true",
+                                  "X-Container-Read": ".r:*,.rlistings"
+                                  ]
        container.updateMetadata(metadata: metadata) { error in
-         if let _ = error {
+         if error != nil {
            Log.error("Could not configure container named '\(name)' for public access and web hosting.")
            completionHandler(false)
          } else {
@@ -368,7 +371,10 @@ extension ServerController {
    - parameter containerName:     name of container to use
    - parameter completionHandler: callback to use on success or failure
    */
-   func store(image: Data, withName name: String, inContainer containerName: String, completionHandler: @escaping (_ success: Bool) -> Void) {
+   func store(image: Data,
+              withName name: String,
+              inContainer containerName: String,
+              completionHandler: @escaping (_ success: Bool) -> Void) {
      // Store image in container
      let storeImage = { (container: ObjectStorageContainer) -> Void in
        container.storeObject(name: name, data: image) { error, object in
@@ -413,8 +419,8 @@ extension ServerController {
     //record["length"].int = record["_attachments"][fileName]["length"].int
     let fileName = record["fileName"].stringValue
     record["url"].stringValue = generateUrl(forContainer: containerName, forImage: fileName)
-    let _ = record.dictionaryObject?.removeValue(forKey: "userId")
-    let _ = record.dictionaryObject?.removeValue(forKey: "_attachments")
+    _ = record.dictionaryObject?.removeValue(forKey: "userId")
+    _ = record.dictionaryObject?.removeValue(forKey: "_attachments")
   }
 
   /**
@@ -428,7 +434,7 @@ extension ServerController {
    */
   private func parseRecords(document: JSON) throws -> [JSON] {
     guard let rows = document["rows"].array else {
-      throw ProcessingError.User("Invalid document returned from Cloudant!")
+      throw ProcessingError.user("Invalid document returned from Cloudant!")
     }
 
     let records: [JSON] = rows.map({row in

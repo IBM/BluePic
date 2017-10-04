@@ -21,6 +21,6 @@
  - User:  Used when User data isn't what was expected
  */
 enum ProcessingError: Error {
-  case Image(String)
-  case User(String)
+  case image(String)
+  case user(String)
 }

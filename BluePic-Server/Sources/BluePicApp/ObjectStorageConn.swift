@@ -74,10 +74,10 @@ public struct ObjectStorageConn {
       }
       Log.verbose("Signaling semaphore...")
       semaphore.signal()
-      
+
     }
-    
-    let _ = semaphore.wait(timeout: DispatchTime.distantFuture)
+
+    _ = semaphore.wait(timeout: DispatchTime.distantFuture)
     self = copy
     Log.verbose("Continuing execution after synchronous network call...")
   }

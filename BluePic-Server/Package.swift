@@ -30,7 +30,7 @@ let package = Package(
     dependencies: [
       .package(url: "https://github.com/IBM-Swift/Kitura.git", .upToNextMinor(from: "1.7.0")),
       .package(url: "https://github.com/IBM-Swift/Kitura-CouchDB.git", .upToNextMinor(from: "1.7.0")),
-      .package(url: "https://github.com/IBM-Swift/CloudEnvironment.git", .upToNextMajor(from: "2.0.0")),
+      .package(url: "https://github.com/IBM-Swift/CloudEnvironment.git", .upToNextMajor(from: "4.0.0")),
       .package(url: "https://github.com/IBM-Bluemix/cf-deployment-tracker-client-swift.git", .upToNextMajor(from: "4.0.0")),
       .package(url: "https://github.com/ibm-bluemix-mobile-services/bluemix-simple-http-client-swift.git", .upToNextMinor(from: "0.7.0")),
       .package(url: "https://github.com/ibm-bluemix-mobile-services/bluemix-objectstorage-serversdk-swift.git", .upToNextMinor(from: "0.8.0")),
@@ -43,7 +43,7 @@ let package = Package(
             name: "BluePicApp",
             dependencies: [ "Kitura", 
                             "CouchDB", 
-                            "CloudConfiguration", 
+                            "CloudEnvironment", 
                             "BluemixObjectStorage", 
                             "CloudFoundryDeploymentTracker", 
                             "Kitura-CredentialsFacebook", 

@@ -24,7 +24,6 @@ import SwiftyJSON
 import BluemixPushNotifications
 import Credentials
 import Configuration
-import CloudFoundryConfig
 import CredentialsFacebook
 
 ///
@@ -57,7 +56,8 @@ public class ServerController {
 
   public init() throws {
     // Create configuration objects
-    let config = try Configuration()
+    let config = Configuration()
+
     couchDBConnProps = try config.getCouchDBConnProps()
     objStorageConnProps = try config.getObjectStorageConnProps()
     appIdProps = try config.getAppIdProps()
@@ -76,12 +76,14 @@ public class ServerController {
     // Facebook credentials
 //    let fbCredentialsPlugin = CredentialsFacebookToken()
 //    credentials.register(plugin: fbCredentialsPlugin)
-    
+
     // NOTE: Needed to protect endpoints, not working currently
     // let apiKituraCredentialsPlugin = APIKituraCredentialsPlugin(options: ["oauthServerUrl": appIdProps.serverUrl])
     // credentials.register(plugin: apiKituraCredentialsPlugin)
 
-    pushNotificationsClient = PushNotifications(bluemixRegion: PushNotifications.Region.US_SOUTH, bluemixAppGuid: ibmPushProps.appGuid, bluemixAppSecret: ibmPushProps.secret)
+    pushNotificationsClient = PushNotifications(bluemixRegion: PushNotifications.Region.US_SOUTH,
+                                                bluemixAppGuid: ibmPushProps.appGuid,
+                                                bluemixAppSecret: ibmPushProps.secret)
 
     // Serve static content from "public"
     router.all("/", middleware: StaticFileServer(path: "./BluePic-Web"))
@@ -134,7 +136,7 @@ extension ServerController: ServerProtocol {
         do {
           // Get tags (rows from JSON result document)
           guard var tags: [JSON] = document["rows"].array else {
-            throw ProcessingError.Image("Tags could not be retrieved from database!")
+            throw ProcessingError.image("Tags could not be retrieved from database!")
           }
           // Sort tags in descending order
           tags.sort {
@@ -163,7 +165,6 @@ extension ServerController: ServerProtocol {
       next()
     }
   }
-
 
   /// Route for getting all user documents.
   func getUsers(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
@@ -202,7 +203,7 @@ extension ServerController: ServerProtocol {
           if users.count == 1 {
             response.status(HTTPStatusCode.OK).send(json: users[0])
           } else {
-            throw ProcessingError.User("User not found!")
+            throw ProcessingError.user("User not found!")
           }
         } catch {
           response.status(HTTPStatusCode.notFound)
@@ -225,7 +226,7 @@ extension ServerController: ServerProtocol {
     // Verify JSON has required fields
     guard let _ = userJson["name"].string,
       let userId = userJson["_id"].string else {
-        throw ProcessingError.User("Invalid user document!")
+        throw ProcessingError.user("Invalid user document!")
     }
     // Add type field
     userJson["type"] = "user"
@@ -233,7 +234,7 @@ extension ServerController: ServerProtocol {
     let validKeys = ["_id", "name", "type"]
     for (key, _) in userJson {
       if validKeys.index(of: key) == nil {
-        let _ = userJson.dictionaryObject?.removeValue(forKey: key)
+        _ = userJson.dictionaryObject?.removeValue(forKey: key)
       }
     }
     // Closure for adding new user document to the database

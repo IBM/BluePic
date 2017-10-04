@@ -18,7 +18,7 @@ import Foundation
 import Kitura
 
 protocol ServerProtocol {
-    
+
   var router: Router { get }
   var port: Int { get }
 
@@ -32,5 +32,5 @@ protocol ServerProtocol {
   func getImagesForUser(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws
   func postImage(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws
   func sendPushNotification(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws
-    
+
 }

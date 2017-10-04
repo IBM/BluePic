@@ -1,0 +1,65 @@
+{
+  "VCAP_SERVICES": {
+    "AppID": [
+      {
+        "name": "BluePic-App-ID",
+        "label": "AppID",
+        "plan": "Graduated tier",
+        "credentials": {
+          "version": 3,
+          "clientId": "<clientId>",
+          "secret": "<secret>",
+          "tenantId": "<tenantId>",
+          "oauthServerUrl": "<oauthServerUrl>",
+          "profilesUrl": "<profilesUrl>"
+        }
+      }
+    ],
+    "imfpush": [
+      {
+        "name": "BluePic-IBM-Push",
+        "label": "imfpush",
+        "plan": "Basic",
+        "credentials": {
+          "appGuid": "<appGuid>",
+          "url": "<url>",
+          "admin_url": "<admin_url>",
+          "appSecret": "<appSecret>",
+          "clientSecret": "<clientSecret>"
+        }
+      }
+    ],
+    "cloudantNoSQLDB": [
+      {
+        "name": "BluePic-Cloudant",
+        "label": "cloudantNoSQLDB",
+        "plan": "Shared",
+        "credentials": {
+          "username": "<username>",
+          "password": "<password>",
+          "host": "<host>",
+          "port": 443,
+          "url": "<url>"
+        }
+      }
+    ],
+    "Object-Storage": [
+      {
+        "name": "BluePic-Object-Storage",
+        "label": "Object-Storage",
+        "plan": "standard",
+        "credentials": {
+          "auth_url": "https://identity.open.softlayer.com",
+          "project": "<project>",
+          "projectId": "<projectId>",
+          "region": "<region>",
+          "userId": "<userId>",
+          "username": "<username>",
+          "password": "<password>",
+          "domainId": "<domainId>",
+          "domainName": "<domainName>"
+        }
+      }
+    ]
+  }
+}

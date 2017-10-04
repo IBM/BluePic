@@ -1,0 +1,22 @@
+{
+    "cloudant-credentials": {
+        "searchPatterns": [
+            "cloudfoundry:BluePic-Cloudant"
+        ]
+    },
+    "object-storage-credentials": {
+        "searchPatterns": [
+            "cloudfoundry:BluePic-Object-Storage"
+        ]
+    },
+    "app-id-credentials": {
+        "searchPatterns": [
+            "cloudfoundry:BluePic-App-ID"
+        ]
+    },
+    "app-push-credentials": {
+        "searchPatterns": [
+            "cloudfoundry:BluePic-IBM-Push"
+        ]
+    }
+}

@@ -37,10 +37,10 @@ class RouteTests: XCTestCase {
   private let serverController = try? ServerController()
 
   private var accessToken: String = ""
-    
+
   private let timeout: TimeInterval = 25.0
 
-  static var allTests : [(String, (RouteTests) -> () throws -> Void)] {
+  static var allTests: [(String, (RouteTests) -> () throws -> Void)] {
       return [
           ("testPing", testPing),
           ("testGetTags", testGetTags),
@@ -51,7 +51,7 @@ class RouteTests: XCTestCase {
           ("testGettingImagesForUser", testGettingImagesForUser),
           ("testGettingUsers", testGettingUsers),
           ("testGettingSingleUser", testGettingSingleUser),
-          ("testCreatingUser", testCreatingUser),
+          ("testNewUser", testNewUser),
           ("testPushNotification", testPushNotification)
       ]
   }
@@ -65,7 +65,7 @@ class RouteTests: XCTestCase {
   }
 
   func resetDatabase() {
-    
+
     let task = Process()
     let directoryPath = fileURL(directoriesUp: 4, path: "Cloud-Scripts").relativePath
     
@@ -112,9 +112,9 @@ class RouteTests: XCTestCase {
   }
 
   func testPing() {
-    
+
     let pingExpectation = expectation(description: "Hit ping endpoint and get simple text response.")
-    
+
     URLRequest(forTestWithMethod: "GET", route: "ping", authToken: self.accessToken)
       .sendForTestingWithKitura { data in
 
@@ -127,9 +127,10 @@ class RouteTests: XCTestCase {
   }
 
   func testGetTags() {
-    
+
     let tagExpectation = expectation(description: "Get the top 10 image tags.")
-    let expectedResult = ["mountain", "flower", "nature", "bridge", "building", "city", "cloudy sky", "garden", "lake", "person"]
+    let expectedResult = ["mountain", "flower", "nature", "bridge", "building",
+                          "city", "cloudy sky", "garden", "lake", "person"]
 
     URLRequest(forTestWithMethod: "GET", route: "tags")
       .sendForTestingWithKitura { data in
@@ -214,7 +215,13 @@ class RouteTests: XCTestCase {
     let imageFileName = "city.png"
     let imageURL = fileURL(directoriesUp: 4, path: "Cloud-Scripts/Object-Storage/images/city.png")
 
-    let imageDictionary = ["fileName": imageFileName, "caption" : "my caption", "width" : 250, "height" : 300, "location" : ["name" : "Austin, TX", "latitude" : 30.2, "longitude" : -97.7]] as [String : Any]
+    let imageDictionary = [
+                          "fileName": imageFileName,
+                          "caption": "my caption",
+                          "width": 250,
+                          "height": 300,
+                          "location": ["name": "Austin, TX", "latitude": 30.2, "longitude": -97.7]
+                          ] as [String : Any]
     let boundary = "Boundary-\(UUID().uuidString)"
     let mimeType = "image/png"
 
@@ -248,13 +255,19 @@ class RouteTests: XCTestCase {
       body.append(imageEndEncoding)
       body.append(boundaryEnd)
       request.httpBody = body
-      
+
       guard let headers = request.allHTTPHeaderFields else {
         XCTFail("Invalid request params")
         return
       }
-      let requestOptions: [ClientRequest.Options] = [.method("POST"), .hostname("localhost"), .port(8080), .path("/images"), .headers(headers)]
-      
+      let requestOptions: [ClientRequest.Options] = [
+                                                     .method("POST"),
+                                                     .hostname("localhost"),
+                                                     .port(8080),
+                                                     .path("/images"),
+                                                     .headers(headers)
+                                                     ]
+
       let req = HTTP.request(requestOptions) { resp in
         XCTAssertNotNil(resp, "Response came back nil.")
         if let resp = resp {
@@ -320,7 +333,13 @@ class RouteTests: XCTestCase {
         let users = JSON(data: data)
         let records = users["records"].arrayValue
         XCTAssertEqual(records.count, 5)
-        let userValues: [(String, String)] = [("anonymous", "Anonymous"), ("1003", "Kevin White"), ("1002", "Sharon den Adel"), ("1001", "Peter Adams"), ("1000", "John Smith")]
+        let userValues: [(String, String)] = [
+                                              ("anonymous", "Anonymous"),
+                                              ("1003", "Kevin White"),
+                                              ("1002", "Sharon den Adel"),
+                                              ("1001", "Peter Adams"),
+                                              ("1000", "John Smith")
+                                            ]
         for (index, user) in records.enumerated() {
           XCTAssertEqual(userValues[index].0, user["_id"].stringValue)
           XCTAssertEqual(userValues[index].1, user["name"].stringValue)
@@ -348,7 +367,7 @@ class RouteTests: XCTestCase {
     waitForExpectations(timeout: timeout, handler: nil)
   }
 
-  func testCreatingUser() {
+  func testNewUser() {
 
     let userExpectation = expectation(description: "Creates a new User.")
 
@@ -392,13 +411,13 @@ class RouteTests: XCTestCase {
       }
       pushExpectation.fulfill()
     }.resume()*/
-    
+
     var requestOptions: [ClientRequest.Options] = [.method("POST"), .hostname("localhost"), .port(8080), .path("/push/images/2010")]
     var headers = [String:String]()
     headers["Content-Type"] = "application/json"
     headers["Authorization"] = "Bearer \(self.accessToken)"
     requestOptions.append(.headers(headers))
-    
+
     let req = HTTP.request(requestOptions) { resp in
       if let resp = resp {
         XCTAssertEqual(resp.statusCode.rawValue, 200)
@@ -406,7 +425,7 @@ class RouteTests: XCTestCase {
       pushExpectation.fulfill()
     }
     req.end(close: true)
-    
+
     waitForExpectations(timeout: timeout, handler: nil)
   }
 
@@ -519,20 +538,26 @@ private extension URLRequest {
     }
     dataTask.resume()
   }
-  
+
   func sendForTestingWithKitura(fn: @escaping (Data) -> Void) {
-    
+
     guard let method = httpMethod, var path = url?.path, let headers = allHTTPHeaderFields else {
       XCTFail("Invalid request params")
       return
     }
-    
+
     if let query = url?.query {
       path += "?" + query
     }
-    
-    let requestOptions: [ClientRequest.Options] = [.method(method), .hostname("localhost"), .port(8080), .path(path), .headers(headers)]
-    
+
+    let requestOptions: [ClientRequest.Options] = [
+                                                  .method(method),
+                                                  .hostname("localhost"),
+                                                  .port(8080),
+                                                  .path(path),
+                                                  .headers(headers)
+                                                  ]
+
     let req = HTTP.request(requestOptions) { resp in
         if let resp = resp, resp.statusCode == HTTPStatusCode.OK || resp.statusCode == HTTPStatusCode.accepted {
         do {
@@ -547,7 +572,7 @@ private extension URLRequest {
           print("Status code: \(resp.statusCode)")
           var rawUserData = Data()
           do {
-            let _ = try resp.read(into: &rawUserData)
+            _ = try resp.read(into: &rawUserData)
             let str = String(data: rawUserData, encoding: String.Encoding(rawValue: String.Encoding.utf8.rawValue))
             print("Error response from BluePic-Server: \(String(describing: str))")
           } catch {
@@ -561,6 +586,5 @@ private extension URLRequest {
     } else {
       req.end()
     }
-    
   }
 }
