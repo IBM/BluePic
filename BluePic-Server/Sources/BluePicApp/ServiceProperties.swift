@@ -50,15 +50,11 @@ public struct AppIdProps {
 public struct IbmPushProps {
   // Instace variables
   public let appGuid: String
-  public let url: String
-  public let adminUrl: String
   public let secret: String
 
   // Constructor
-  public init(appGuid: String, url: String, adminUrl: String, secret: String) {
+  public init(appGuid: String, secret: String) {
     self.appGuid = appGuid
-    self.url = url
-    self.adminUrl = adminUrl
     self.secret = secret
   }
 }

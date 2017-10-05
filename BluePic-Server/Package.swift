@@ -41,12 +41,12 @@ let package = Package(
     targets: [
         .target(
             name: "BluePicApp",
-            dependencies: [ "Kitura", 
-                            "CouchDB", 
-                            "CloudEnvironment", 
-                            "BluemixObjectStorage", 
-                            "CloudFoundryDeploymentTracker", 
-                            "Kitura-CredentialsFacebook", 
+            dependencies: [ "Kitura",
+                            "CouchDB",
+                            "CloudEnvironment",
+                            "BluemixObjectStorage",
+                            "CloudFoundryDeploymentTracker",
+                            "Kitura-CredentialsFacebook",
                             "BluemixPushNotifications"
                           ]
         ),

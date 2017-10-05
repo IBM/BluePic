@@ -26,6 +26,7 @@ import Credentials
 import Configuration
 import CredentialsFacebook
 
+import CloudEnvironment
 ///
 /// Because bridging is not complete in Linux, we must use Any objects for dictionaries
 /// instead of AnyObject. The main branch SwiftyJSON takes as input AnyObject, however
@@ -39,6 +40,8 @@ typealias JSONDictionary = [String: Any]
 
 public class ServerController {
 
+  public let router = Router()
+
   let couchDBConnProps: ConnectionProperties
   let objStorageConnProps: ObjectStorageConnProps
   let appIdProps: AppIdProps
@@ -48,21 +51,19 @@ public class ServerController {
   var objectStorageConn: ObjectStorageConn
   let pushNotificationsClient: PushNotifications
 
-  public let router = Router()
-  let configMgr = ConfigurationManager()
+  private let cloudEnv = Configuration()
+  
   public var port: Int {
-    return configMgr.port
+    return cloudEnv.port
   }
 
   public init() throws {
-    // Create configuration objects
-    let config = Configuration()
 
-    couchDBConnProps = try config.getCouchDBConnProps()
-    objStorageConnProps = try config.getObjectStorageConnProps()
-    appIdProps = try config.getAppIdProps()
-    ibmPushProps = try config.getIbmPushProps()
-    openWhiskProps = try config.getOpenWhiskProps()
+    couchDBConnProps = try cloudEnv.getCouchDBConnProps()
+    objStorageConnProps = try cloudEnv.getObjectStorageConnProps()
+    appIdProps = try cloudEnv.getAppIdProps()
+    ibmPushProps = try cloudEnv.getIbmPushProps()
+    openWhiskProps = try cloudEnv.getOpenWhiskProps()
 
     // Create cloudant access database object
     let dbClient = CouchDBClient(connectionProperties: couchDBConnProps)

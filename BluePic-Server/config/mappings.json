@@ -18,5 +18,10 @@
         "searchPatterns": [
             "cloudfoundry:BluePic-IBM-Push"
         ]
+    },
+    "open-whisk-credentials": {
+        "searchPatterns": [
+            "file:config/properties.json:openWhisk"
+        ]
     }
 }

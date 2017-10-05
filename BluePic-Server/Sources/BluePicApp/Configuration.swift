@@ -15,12 +15,8 @@
 */
 
 import Foundation
-import CouchDB
-import SwiftyJSON
-import LoggerAPI
-import Configuration
 import CloudEnvironment
-import BluemixObjectStorage
+import CouchDB
 
 public struct Configuration {
 
@@ -31,9 +27,13 @@ public struct Configuration {
   public enum BluePicError: Error {
     case IO(String)
   }
-
+    
   // Instance constants
-  let cloudEnv = CloudEnv(mappingsFilePath: "config", cloudFoundryFile: "config/config.json")
+  let cloudEnv = CloudEnv(cloudFoundryFile: "config/config.json")
+    
+  public var port: Int {
+    return cloudEnv.port
+  }
 
   /**
    Method to get CouchDB credentials in a consumable form
@@ -69,11 +69,9 @@ public struct Configuration {
         throw BluePicError.IO("Failed to obtain Cloudant Credentials.")
     }
 
-    let connProperties = ObjectStorageConnProps(projectId: objStoreCredentials.projectID, 
-                                                userId: objStoreCredentials.userID, 
-                                                password: objStoreCredentials.password)
-
-    return connProperties
+    return ObjectStorageConnProps(projectId: objStoreCredentials.projectID,
+                                  userId: objStoreCredentials.userID,
+                                  password: objStoreCredentials.password)
   }
 
   /**
@@ -88,13 +86,10 @@ public struct Configuration {
       throw BluePicError.IO("Failed to obtain App ID service and/or its credentials.")
     }
 
-    let secret = appIdCredentials.secret
-    let serverUrl = appIdCredentials.oauthServerUrl
-    let clientId = appIdCredentials.clientId
-    let tenantId = appIdCredentials.tenantId
-
-    let appIdProperties = AppIdProps(secret: secret, serverUrl: serverUrl, clientId: clientId, tenantId: tenantId)
-    return appIdProperties
+    return AppIdProps(secret: appIdCredentials.secret,
+                     serverUrl: appIdCredentials.oauthServerUrl,
+                     clientId: appIdCredentials.clientId,
+                     tenantId: appIdCredentials.tenantId)
   }
 
   /**
@@ -109,60 +104,28 @@ public struct Configuration {
       throw BluePicError.IO("Failed to obtain IBM Push service and/or its credentials.")
     }
 
-    let appGuid = pushCredentials.appGuid
-    let url = "" //pushCredentials.url
-    let adminUrl = "" //pushCredentials.admin_url
-    let secret = pushCredentials.appSecret
-
-    let ibmPushProperties = IbmPushProps(appGuid: appGuid, url: url, adminUrl: adminUrl, secret: secret)
-    return ibmPushProperties
+    return IbmPushProps(appGuid: pushCredentials.appGuid, secret: pushCredentials.appSecret)
   }
-
+  
+  /**
+   Method to get OpenWhisk properties in a consumable form
+     
+   - throws: error when method can't get credentials
+     
+   - returns: Encapsulated OpenWhiskProps object with the necessary info
+  */
   func getOpenWhiskProps() throws -> OpenWhiskProps {
-    let relativePath = "/properties.json"
-    guard let workingPath = Configuration.getAbsolutePath(relativePath: relativePath, useFallback: true) else {
-      throw BluePicError.IO("Could not find file at relative path \(relativePath).")
+    guard let openWhiskJson = cloudEnv.getDictionary(name: "open-whisk-credentials") as? [String: String],
+          let hostName = openWhiskJson["hostName"],
+          let urlPath = openWhiskJson["urlPath"],
+          let authToken = openWhiskJson["authToken"],
+          let utf8BaseStr = authToken.data(using: String.Encoding.utf8) else {
+
+        throw BluePicError.IO("Failed to obtain IBM Open Whisk credentials.")
     }
+    
+    let computedAuthToken = utf8BaseStr.base64EncodedString(options: Data.Base64EncodingOptions(rawValue: 0))
 
-    let url = URL(fileURLWithPath: workingPath)
-    let propertiesData = try Data(contentsOf: url)
-    let propertiesJson = JSON(data: propertiesData)
-    if let openWhiskJson = propertiesJson.dictionary?["openWhisk"],
-        let hostName = openWhiskJson["hostName"].string,
-        let urlPath = openWhiskJson["urlPath"].string,
-        let authToken = openWhiskJson["authToken"].string {
-            let utf8BaseStr = authToken.data(using: String.Encoding.utf8)
-            guard let computedAuthToken = utf8BaseStr?.base64EncodedString(options: Data.Base64EncodingOptions(rawValue: 0)) else {
-                throw BluePicError.IO("Could not perform base64 encoding on authToken")
-            }
-        return OpenWhiskProps(hostName: hostName, urlPath: urlPath, authToken: computedAuthToken)
-    }
-
-    throw BluePicError.IO("Failed to obtain OpenWhisk credentials.")
-    }
-
-  private static func getAbsolutePath(relativePath: String, useFallback: Bool) -> String? {
-    let initialPath = #file
-    let components = initialPath.characters.split(separator: "/").map(String.init)
-    let notLastThree = components[0..<components.count - 3]
-    var filePath = "/" + notLastThree.joined(separator: "/") + relativePath
-
-    let fileManager = FileManager.default
-
-    if fileManager.fileExists(atPath: filePath) {
-      return filePath
-    } else if useFallback {
-      // Get path in alternate way, if first way fails
-      let currentPath = fileManager.currentDirectoryPath
-      filePath = currentPath + relativePath
-      if fileManager.fileExists(atPath: filePath) {
-        return filePath
-      } else {
-        return nil
-      }
-    } else {
-      return nil
-    }
+    return OpenWhiskProps(hostName: hostName, urlPath: urlPath, authToken: computedAuthToken)
   }
-
 }
