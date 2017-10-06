@@ -314,7 +314,8 @@ extension ServerController {
   func generateUrl(forContainer containerName: String, forImage imageName: String) -> String {
     //let url = "http://\(database.connProperties.host):\(database.connProperties.port)/\(database.name)/\(imageId)/\(attachmentName)"
     //let url = "\(config.appEnv.url)/images/\(imageId)/\(attachmentName)"
-    let url = "\(objStorageConnProps.publicURL)/\(containerName)/\(imageName)"
+    let baseURL = "https://dal.objectstorage.open.softlayer.com/v1/AUTH_\(objStorageConnProps.projectID)"
+    let url = "\(baseURL)/\(containerName)/\(imageName)"
     return url
   }
 

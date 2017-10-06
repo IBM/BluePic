@@ -24,3 +24,7 @@ enum ProcessingError: Error {
   case image(String)
   case user(String)
 }
+
+enum BluePicError: Error {
+    case IO(String)
+}

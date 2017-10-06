@@ -43,72 +43,95 @@ public class ServerController {
   public let router = Router()
 
   let couchDBConnProps: ConnectionProperties
-  let objStorageConnProps: ObjectStorageConnProps
-  let appIdProps: AppIdProps
-  let ibmPushProps: IbmPushProps
+  let objStorageConnProps: ObjectStorageCredentials
+  let appIdProps: AppIDCredentials
+  let ibmPushProps: PushSDKCredentials
   let openWhiskProps: OpenWhiskProps
   let database: Database
   var objectStorageConn: ObjectStorageConn
   let pushNotificationsClient: PushNotifications
 
-  private let cloudEnv = Configuration()
+  // Instance constants
+  let cloudEnv: CloudEnv = CloudEnv()
   
   public var port: Int {
     return cloudEnv.port
   }
 
   public init() throws {
+    
+    guard let couchDBCredentials = cloudEnv.getCloudantCredentials(name: "cloudant-credentials"),
+          let objStoreCredentials = cloudEnv.getObjectStorageCredentials(name: "object-storage-credentials"),
+          let appIdCredentials = cloudEnv.getAppIDCredentials(name: "app-id-credentials"),
+          let pushCredentials = cloudEnv.getPushSDKCredentials(name: "app-push-credentials"),
+          let openWhiskJson = cloudEnv.getDictionary(name: "open-whisk-credentials"),
+          let openWhiskCredentials = OpenWhiskProps(dict: openWhiskJson) else {
+        
+            throw BluePicError.IO("Failed to obtain appropriate credentials.")
+    }
+    
+    // Create Props
 
-    couchDBConnProps = try cloudEnv.getCouchDBConnProps()
-    objStorageConnProps = try cloudEnv.getObjectStorageConnProps()
-    appIdProps = try cloudEnv.getAppIdProps()
-    ibmPushProps = try cloudEnv.getIbmPushProps()
-    openWhiskProps = try cloudEnv.getOpenWhiskProps()
+    couchDBConnProps = ConnectionProperties(host: couchDBCredentials.host,
+                                            port: Int16(couchDBCredentials.port),
+                                            secured: true,
+                                            username: couchDBCredentials.username,
+                                            password: couchDBCredentials.password)
+    appIdProps = appIdCredentials
+    ibmPushProps = pushCredentials
+    objStorageConnProps = objStoreCredentials
+    openWhiskProps = openWhiskCredentials
 
-    // Create cloudant access database object
+    
+    // Instantiate Objects
+
     let dbClient = CouchDBClient(connectionProperties: couchDBConnProps)
     database = dbClient.database("bluepic_db")
 
-    // Create object storage connection object
-    objectStorageConn = ObjectStorageConn(objStorageConnProps: objStorageConnProps)
+    objectStorageConn = ObjectStorageConn(credentials: objStorageConnProps)
 
-    let credentials = Credentials() // middleware for securing endpoints
-
-    // Facebook credentials
-//    let fbCredentialsPlugin = CredentialsFacebookToken()
-//    credentials.register(plugin: fbCredentialsPlugin)
-
-    // NOTE: Needed to protect endpoints, not working currently
-    // let apiKituraCredentialsPlugin = APIKituraCredentialsPlugin(options: ["oauthServerUrl": appIdProps.serverUrl])
-    // credentials.register(plugin: apiKituraCredentialsPlugin)
 
     pushNotificationsClient = PushNotifications(bluemixRegion: PushNotifications.Region.US_SOUTH,
                                                 bluemixAppGuid: ibmPushProps.appGuid,
-                                                bluemixAppSecret: ibmPushProps.secret)
+                                                bluemixAppSecret: ibmPushProps.appSecret)
 
-    // Serve static content from "public"
-    router.all("/", middleware: StaticFileServer(path: "./BluePic-Web"))
-
-    // Assign middleware instance, endpoint securing temporarily disabled
-    router.get("/users", middleware: credentials)
-    router.post("/users", middleware: credentials)
-    router.post("/push", middleware: credentials)
-    router.get("/ping", middleware: credentials)
-    router.post("/images",  middleware: credentials)
-    router.all("/images", middleware: BodyParser())
-
-    Log.verbose("Defining routes for server...")
-    router.get("/ping", handler: ping)
-    router.get("/tags", handler: getPopularTags)
-    router.get("/users", handler: getUsers)
-    router.get("/users/:userId", handler: getUser)
-    router.post("/users", handler: createUser)
-    router.get("/images", handler: getImages)
-    router.get("/images/:imageId", handler: getImage)
-    router.post("/images", handler: postImage)
-    router.get("/users/:userId/images", handler: getImagesForUser)
-    router.post("/push/images/:imageId", handler: sendPushNotification)
+    setupRoutes()
   }
+    
+    private func setupRoutes() {
+        let credentials = Credentials() // middleware for securing endpoints
+        
+        // Facebook credentials
+        //    let fbCredentialsPlugin = CredentialsFacebookToken()
+        //    credentials.register(plugin: fbCredentialsPlugin)
+        
+        // NOTE: Needed to protect endpoints, not working currently
+        //let apiKituraCredentialsPlugin = APIKituraCredentialsPlugin(options: ["oauthServerUrl": appIdProps.oathServerUrl])
+        // credentials.register(plugin: apiKituraCredentialsPlugin)
+
+        // Serve static content from "public"
+        router.all("/", middleware: StaticFileServer(path: "./BluePic-Web"))
+        
+        // Assign middleware instance, endpoint securing temporarily disabled
+        router.get("/users", middleware: credentials)
+        router.post("/users", middleware: credentials)
+        router.post("/push", middleware: credentials)
+        router.get("/ping", middleware: credentials)
+        router.post("/images",  middleware: credentials)
+        router.all("/images", middleware: BodyParser())
+        
+        Log.verbose("Defining routes for server...")
+        router.get("/ping", handler: ping)
+        router.get("/tags", handler: getPopularTags)
+        router.get("/users", handler: getUsers)
+        router.get("/users/:userId", handler: getUser)
+        router.post("/users", handler: createUser)
+        router.get("/images", handler: getImages)
+        router.get("/images/:imageId", handler: getImage)
+        router.post("/images", handler: postImage)
+        router.get("/users/:userId/images", handler: getImagesForUser)
+        router.post("/push/images/:imageId", handler: sendPushNotification)
+    }
 }
 
 extension ServerController: ServerProtocol {
