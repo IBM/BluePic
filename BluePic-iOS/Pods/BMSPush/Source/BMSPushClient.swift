@@ -15,12 +15,16 @@
 import UIKit
 import BMSCore
 
+public protocol BMSPushObserver{
+    func onChangePermission(status:Bool);
+}
 // MARK: - Swift 3
 
 #if swift(>=3.0)
 
 import UserNotifications
 import UserNotificationsUI
+
 
 public enum IMFPushErrorvalues: Int {
     
@@ -95,6 +99,8 @@ public class BMSPushClient: NSObject {
     
     private var isInitialized = false;
     
+    public var delegate:BMSPushObserver?
+    
     // MARK: Initializers
     
     /**
@@ -111,6 +117,8 @@ public class BMSPushClient: NSObject {
 
             self.clientSecret = clientSecret
             self.applicationId = appGUID
+            BMSPushUtils.saveValueToNSUserDefaults(value: appGUID, key: BMSPUSH_APP_GUID)
+            BMSPushUtils.saveValueToNSUserDefaults(value: clientSecret, key: BMSPUSH_CLIENT_SECRET)
             isInitialized = true;
             self.bluemixDeviceId = ""
 
@@ -120,20 +128,23 @@ public class BMSPushClient: NSObject {
                 UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound], completionHandler: { (granted, error) in
                     if(granted) {
                         UIApplication.shared.registerForRemoteNotifications()
+                        self.delegate?.onChangePermission(status: true)
                     } else {
                         print("Error while registering with APNS server :  \(error?.localizedDescription)")
+                        self.delegate?.onChangePermission(status: false)
                     }
                 })
             } else {
                 // Fallback on earlier versions
                 let settings = UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
                 UIApplication.shared.registerUserNotificationSettings(settings)
-                UIApplication.shared.registerForRemoteNotifications()
+                self.checkStatusChange()
             }
         }
         else{
             self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error while registration - Client secret is not valid")
             print("Error while registration - Client secret is not valid")
+            self.delegate?.onChangePermission(status: false)
         }
     }
     
@@ -152,6 +163,8 @@ public class BMSPushClient: NSObject {
 
             self.clientSecret = clientSecret
             self.applicationId = appGUID
+            BMSPushUtils.saveValueToNSUserDefaults(value: appGUID, key: BMSPUSH_APP_GUID)
+            BMSPushUtils.saveValueToNSUserDefaults(value: clientSecret, key: BMSPUSH_CLIENT_SECRET)
             isInitialized = true;
             let category : [BMSPushNotificationActionCategory] = options.category
             self.bluemixDeviceId = options.deviceId
@@ -187,8 +200,10 @@ public class BMSPushClient: NSObject {
                 center.requestAuthorization(options: [.alert, .badge, .sound], completionHandler: { (granted, error) in
                     if(granted) {
                         UIApplication.shared.registerForRemoteNotifications()
+                        self.delegate?.onChangePermission(status: true)
                     } else {
                         print("Error while registering with APNS server :  \(error?.localizedDescription)")
+                        self.delegate?.onChangePermission(status: false)
                     }
                 })
             } else {
@@ -230,13 +245,15 @@ public class BMSPushClient: NSObject {
                     let settings = UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: notifCategory)
                     UIApplication.shared.registerUserNotificationSettings(settings)
                 }
-                UIApplication.shared.registerForRemoteNotifications()
+                self.checkStatusChange()
+                
             }
             
         }
         else{
             self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error while registration - Client secret is not valid")
             print("Error while registration - Client secret is not valid")
+            self.delegate?.onChangePermission(status: false)
         }
     }
     
@@ -265,7 +282,17 @@ public class BMSPushClient: NSObject {
                 for i in 0..<deviceToken.count {
                     token = token + String(format: "%02.2hhx", arguments: [deviceToken[i]])
                 }
-                let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!,clientSecret:clientSecret!)
+                self.applicationId = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_APP_GUID)
+                self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_CLIENT_SECRET)
+                
+                if(self.applicationId == "" || self.clientSecret == ""){
+                    
+                    self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error while registration - Error is: push is not initialized")
+                    completionHandler("", IMFPushErrorvalues.IMFPushRegistrationError.rawValue , "Error while registration - Error is: push is not initialized")
+                    return
+                    
+                }
+                let urlBuilder = BMSPushUrlBuilder(applicationID: self.applicationId!,clientSecret:self.clientSecret!)
                 
                 let resourceURL:String = urlBuilder.getSubscribedDevicesUrl(devID: devId)
                 let headers = urlBuilder.addHeader()
@@ -424,8 +451,18 @@ public class BMSPushClient: NSObject {
             for i in 0..<deviceToken.count {
                 token = token + String(format: "%02.2hhx", arguments: [deviceToken[i]])
             }
+            self.applicationId = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_APP_GUID)
+            self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_CLIENT_SECRET)
+            
+            if(self.applicationId == "" || self.clientSecret == ""){
+                
+                self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error while  registration - Error is: push is not initialized")
+                completionHandler("", IMFPushErrorvalues.IMFPushRegistrationError.rawValue , "Error while registration - Error is: push is not initialized")
+                return
+                
+            }
 
-            let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!,clientSecret:clientSecret!)
+            let urlBuilder = BMSPushUrlBuilder(applicationID: self.applicationId!,clientSecret:self.clientSecret!)
             
             let resourceURL:String = urlBuilder.getSubscribedDevicesUrl(devID: devId)
             let headers = urlBuilder.addHeader()
@@ -565,7 +602,18 @@ public class BMSPushClient: NSObject {
     public func retrieveAvailableTagsWithCompletionHandler (completionHandler: @escaping(_ response:NSMutableArray?, _ statusCode:Int?, _ error:String) -> Void){
 
         self.sendAnalyticsData(logType: LogLevel.debug, logStringData: "Entering retrieveAvailableTagsWithCompletitionHandler.")
-        let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!,clientSecret:clientSecret!)
+        
+        self.applicationId = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_APP_GUID)
+        self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_CLIENT_SECRET)
+        
+        if(self.applicationId == "" || self.clientSecret == ""){
+            
+            self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error while retrieving available tags - Error is: push is not initialized")
+            completionHandler([], IMFPushErrorvalues.IMFPushRetrieveTagsError.rawValue , "Error while retrieving available tags - Error is: push is not initialized")
+            return
+            
+        }
+        let urlBuilder = BMSPushUrlBuilder(applicationID: self.applicationId!,clientSecret:self.clientSecret!)
         
         let resourceURL:String = urlBuilder.getTagsUrl()
         
@@ -616,7 +664,19 @@ public class BMSPushClient: NSObject {
         if tagsArray.count != 0 {
             
             let devId = self.getDeviceID()
-            let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!,clientSecret:clientSecret!)
+            
+            self.applicationId = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_APP_GUID)
+            self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_CLIENT_SECRET)
+            
+            if(self.applicationId == "" || self.clientSecret == ""){
+                
+                self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error while subscribing to tags - Error is: push is not initialized")
+                completionHandler([:], IMFPushErrorvalues.IMFPushTagSubscriptionError.rawValue , "Error while subscribing to tags - Error is: push is not initialized")
+                return
+                
+            }
+            
+            let urlBuilder = BMSPushUrlBuilder(applicationID: self.applicationId!,clientSecret:self.clientSecret!)
             let resourceURL:String = urlBuilder.getSubscriptionsUrl()
             
             let headers = urlBuilder.addHeader()
@@ -679,7 +739,18 @@ public class BMSPushClient: NSObject {
         
         let devId = self.getDeviceID()
         
-        let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!,clientSecret:clientSecret!)
+        self.applicationId = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_APP_GUID)
+        self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_CLIENT_SECRET)
+        
+        if(self.applicationId == "" || self.clientSecret == ""){
+            
+            self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error while retrieving subscriptions - Error is: push is not initialized")
+            completionHandler([], IMFPushErrorvalues.IMFPushTagSubscriptionError.rawValue , "Error while retrieving subscriptions - Error is: push is not initialized")
+            return
+            
+        }
+        
+        let urlBuilder = BMSPushUrlBuilder(applicationID: self.applicationId!,clientSecret:self.clientSecret!)
         let resourceURL:String = urlBuilder.getAvailableSubscriptionsUrl(deviceId: devId)
         
         let headers = urlBuilder.addHeader()
@@ -731,7 +802,18 @@ public class BMSPushClient: NSObject {
 
             let devId = self.getDeviceID()
             
-            let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!,clientSecret:clientSecret!)
+            self.applicationId = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_APP_GUID)
+            self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_CLIENT_SECRET)
+            
+            if(self.applicationId == "" || self.clientSecret == ""){
+                
+                self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error while unsubscribing from tags - Error is: push is not initialized")
+                completionHandler([:], IMFPushErrorvalues.IMFPushTagUnsubscriptionError.rawValue , "Error while unsubscribing from tags - Error is: push is not initialized")
+                return
+                
+            }
+            
+            let urlBuilder = BMSPushUrlBuilder(applicationID: self.applicationId!,clientSecret:self.clientSecret!)
             let resourceURL:String = urlBuilder.getUnSubscribetagsUrl()
             
             let headers = urlBuilder.addHeader()
@@ -784,7 +866,18 @@ public class BMSPushClient: NSObject {
         self.sendAnalyticsData(logType: LogLevel.debug, logStringData: "Entering unregisterDevice.")
         let devId = self.getDeviceID()
         
-        let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!,clientSecret:clientSecret!)
+        self.applicationId = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_APP_GUID)
+        self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_CLIENT_SECRET)
+        
+        if(self.applicationId == "" || self.clientSecret == ""){
+            
+            self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error while unregistering device - Error is: push is not initialized")
+            completionHandler("", IMFPushErrorvalues.IMFPushTagUnsubscriptionError.rawValue , "Error while unregistering device - Error is: push is not initialized")
+            return
+            
+        }
+        
+        let urlBuilder = BMSPushUrlBuilder(applicationID: self.applicationId!,clientSecret:self.clientSecret!)
         let resourceURL:String = urlBuilder.getUnregisterUrl(deviceId: devId)
         
         let headers = urlBuilder.addHeader()
@@ -822,7 +915,18 @@ public class BMSPushClient: NSObject {
         self.sendAnalyticsData(logType: LogLevel.debug, logStringData: "Entering sendMessageDeliveryStatus.")
         let devId = self.getDeviceID()
         
-        let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!,clientSecret:clientSecret!)
+        self.applicationId = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_APP_GUID)
+        self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_CLIENT_SECRET)
+        
+        if(self.applicationId == "" || self.clientSecret == ""){
+            
+            self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Failed to update the message status - Error is: push is not initialized")
+            completionHandler("", IMFPushErrorvalues.IMFPushTagUnsubscriptionError.rawValue , "Failed to update the message status - Error is: push is not initialized")
+            return
+            
+        }
+        
+        let urlBuilder = BMSPushUrlBuilder(applicationID: self.applicationId!,clientSecret:self.clientSecret!)
         let resourceURL:String = urlBuilder.getSendMessageDeliveryStatus(messageId: messageId)
         
         let headers = urlBuilder.addHeader()
@@ -922,6 +1026,40 @@ public class BMSPushClient: NSObject {
         
         return devId
     }
+    internal func checkStatusChange(){
+        
+        if(UserDefaults.standard.object(forKey: BMSPUSH_APP_INSTALL) != nil) {
+            let notificationType = UIApplication.shared.currentUserNotificationSettings?.types
+            if notificationType?.rawValue == 0 {
+                print("Push Disabled")
+                self.delegate?.onChangePermission(status: false)
+            } else {
+                print("Push Enabled")
+                self.delegate?.onChangePermission(status: true)
+                UIApplication.shared.registerForRemoteNotifications()
+            }
+        } else {
+            UserDefaults.standard.set(true, forKey: BMSPUSH_APP_INSTALL)
+            UserDefaults.standard.synchronize()
+            NotificationCenter.default.addObserver(forName: NSNotification.Name.UIApplicationDidBecomeActive, object: nil, queue: OperationQueue.main) { (notifiction) in
+                
+                let when = DispatchTime.now() + 1
+                DispatchQueue.main.asyncAfter(deadline: when) {
+                    let notificationType = UIApplication.shared.currentUserNotificationSettings?.types
+                    if notificationType?.rawValue == 0 {
+                        print("Push Disabled")
+                        self.delegate?.onChangePermission(status: false)
+                    } else {
+                        print("Push Enabled")
+                        self.delegate?.onChangePermission(status: true)
+                        UIApplication.shared.registerForRemoteNotifications()
+                    }
+                }
+                
+            }
+            
+        }
+    }
     
 }
 
@@ -1013,6 +1151,8 @@ public class BMSPushClient: NSObject {
     
     private var isInitialized = false;
     
+    public var delegate:BMSPushObserver?
+    
     // MARK: Initializers
     
     /**
@@ -1028,12 +1168,14 @@ public class BMSPushClient: NSObject {
         if validateString(clientSecret) {
             self.clientSecret = clientSecret
             self.applicationId = appGUID
+            BMSPushUtils.saveValueToNSUserDefaults(appGUID, key: BMSPUSH_APP_GUID)
+            BMSPushUtils.saveValueToNSUserDefaults(clientSecret, key: BMSPUSH_CLIENT_SECRET)
             isInitialized = true;
             
             let settings = UIUserNotificationSettings(forTypes: [.Alert,.Badge,.Sound], categories: nil)
             
             UIApplication.sharedApplication().registerUserNotificationSettings(settings)
-            UIApplication.sharedApplication().registerForRemoteNotifications()
+            self.checkStatusChange()
         }
         else{
             self.sendAnalyticsData(LogLevel.error, logStringData: "Error while registration - Client secret is not valid")
@@ -1055,6 +1197,8 @@ public class BMSPushClient: NSObject {
         if validateString(clientSecret) {
             self.clientSecret = clientSecret
             self.applicationId = appGUID
+            BMSPushUtils.saveValueToNSUserDefaults(appGUID, key: BMSPUSH_APP_GUID)
+            BMSPushUtils.saveValueToNSUserDefaults(clientSecret, key: BMSPUSH_CLIENT_SECRET)
             isInitialized = true;
             let category : [BMSPushNotificationActionCategory] = options.category
             self.bluemixDeviceId = options.deviceId
@@ -1094,8 +1238,7 @@ public class BMSPushClient: NSObject {
                 let settings = UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: notifCategory)
                 UIApplication.sharedApplication().registerUserNotificationSettings(settings)
             }
-            UIApplication.sharedApplication().registerForRemoteNotifications()
-            
+            self.checkStatusChange()
             
         }
         else{
@@ -1125,13 +1268,24 @@ public class BMSPushClient: NSObject {
                 let devId = self.getDeviceID()
                 BMSPushUtils.saveValueToNSUserDefaults(devId, key: "deviceId")
                 
+                self.applicationId = BMSPushUtils.getValueToNSUserDefaults(BMSPUSH_APP_GUID)
+                self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(BMSPUSH_CLIENT_SECRET)
+                
+                if (self.applicationId == "" || self.clientSecret == "") {
+                    
+                    self.sendAnalyticsData(LogLevel.error, logStringData: "Error during device registration - Error is: push is not initialized")
+                    completionHandler(response: "", statusCode: IMFPushErrorvalues.IMFPushRegistrationError.rawValue, error: "Error during device registration - Error is: push is not initialized")
+    
+                }
+                
+                
                 var token:String = deviceToken.description
                 token = token.stringByReplacingOccurrencesOfString("<", withString: "")
                 token = token.stringByReplacingOccurrencesOfString(">", withString: "")
                 token = token.stringByReplacingOccurrencesOfString(" ", withString: "").stringByTrimmingCharactersInSet(NSCharacterSet.symbolCharacterSet())
                 
                 
-                let urlBuilder = BMSPushUrlBuilder(applicationID: self.applicationId!, clientSecret: clientSecret!)
+                let urlBuilder = BMSPushUrlBuilder(applicationID: self.applicationId!, clientSecret: self.clientSecret!)
                 
                 let resourceURL:String = urlBuilder.getSubscribedDevicesUrl(devId)
                 let headers = urlBuilder.addHeader()
@@ -1289,12 +1443,21 @@ public class BMSPushClient: NSObject {
             let devId = self.getDeviceID()
             BMSPushUtils.saveValueToNSUserDefaults(devId, key: "deviceId")
             
+            self.applicationId = BMSPushUtils.getValueToNSUserDefaults(BMSPUSH_APP_GUID)
+            self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(BMSPUSH_CLIENT_SECRET)
+            
+            if (self.applicationId == "" || self.clientSecret == "") {
+                
+                self.sendAnalyticsData(LogLevel.error, logStringData: "Error during device registration - Error is: push is not initialized")
+                completionHandler(response: "", statusCode: IMFPushErrorvalues.IMFPushRegistrationError.rawValue, error: "Error during device registration - Error is: push is not initialized")
+            }
+            
             var token:String = deviceToken.description
             token = token.stringByReplacingOccurrencesOfString("<", withString: "")
             token = token.stringByReplacingOccurrencesOfString(">", withString: "")
             token = token.stringByReplacingOccurrencesOfString(" ", withString: "").stringByTrimmingCharactersInSet(NSCharacterSet.symbolCharacterSet())
             
-            let urlBuilder = BMSPushUrlBuilder(applicationID: self.applicationId!, clientSecret: clientSecret!)
+            let urlBuilder = BMSPushUrlBuilder(applicationID: self.applicationId!, clientSecret: self.clientSecret!)
             
             let resourceURL:String = urlBuilder.getSubscribedDevicesUrl(devId)
             let headers = urlBuilder.addHeader()
@@ -1440,7 +1603,16 @@ public class BMSPushClient: NSObject {
         
         
         self.sendAnalyticsData(LogLevel.debug, logStringData: "Entering retrieveAvailableTagsWithCompletitionHandler.")
-        let urlBuilder = BMSPushUrlBuilder(applicationID: self.applicationId!, clientSecret: clientSecret!)
+        
+        self.applicationId = BMSPushUtils.getValueToNSUserDefaults(BMSPUSH_APP_GUID)
+        self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(BMSPUSH_CLIENT_SECRET)
+        
+        if (self.applicationId == "" || self.clientSecret == "") {
+            
+            self.sendAnalyticsData(LogLevel.error, logStringData: "Error while retrieving available tags  - Error is: push is not initialized")
+            completionHandler(response:[], statusCode: IMFPushErrorvalues.IMFPushRetrieveTagsError.rawValue, error: "Error while retrieving available tags  - Error is: push is not initialized")
+        }
+        let urlBuilder = BMSPushUrlBuilder(applicationID: self.applicationId!, clientSecret: self.clientSecret!)
         
         let resourceURL:String = urlBuilder.getTagsUrl()
         
@@ -1492,7 +1664,16 @@ public class BMSPushClient: NSObject {
             
             let devId = self.getDeviceID()
             
-            let urlBuilder = BMSPushUrlBuilder(applicationID: self.applicationId!, clientSecret: clientSecret!)
+            self.applicationId = BMSPushUtils.getValueToNSUserDefaults(BMSPUSH_APP_GUID)
+            self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(BMSPUSH_CLIENT_SECRET)
+            
+            if (self.applicationId == "" || self.clientSecret == "") {
+                
+                self.sendAnalyticsData(LogLevel.error, logStringData: "Error while subscribing to tags  - Error is: push is not initialized")
+                completionHandler(response:[:], statusCode: IMFPushErrorvalues.IMFPushErrorEmptyTagArray.rawValue, error: "Error while subscribing to tags  - Error is: push is not initialized")
+            }
+            
+            let urlBuilder = BMSPushUrlBuilder(applicationID: self.applicationId!, clientSecret: self.clientSecret!)
             let resourceURL:String = urlBuilder.getSubscriptionsUrl()
             
             let headers = urlBuilder.addHeader()
@@ -1552,7 +1733,16 @@ public class BMSPushClient: NSObject {
         
         let devId = self.getDeviceID()
         
-        let urlBuilder = BMSPushUrlBuilder(applicationID: self.applicationId!, clientSecret: clientSecret!)
+        self.applicationId = BMSPushUtils.getValueToNSUserDefaults(BMSPUSH_APP_GUID)
+        self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(BMSPUSH_CLIENT_SECRET)
+        
+        if (self.applicationId == "" || self.clientSecret == "") {
+            
+            self.sendAnalyticsData(LogLevel.error, logStringData: "Error while retrieving subscriptions  - Error is: push is not initialized")
+            completionHandler(response:[], statusCode: IMFPushErrorvalues.IMFPushRetrieveSubscriptionError.rawValue, error: "Error while retrieving subscriptions  - Error is: push is not initialized")
+        }
+        
+        let urlBuilder = BMSPushUrlBuilder(applicationID: self.applicationId!, clientSecret: self.clientSecret!)
         let resourceURL:String = urlBuilder.getAvailableSubscriptionsUrl(devId)
         
         let headers = urlBuilder.addHeader()
@@ -1606,7 +1796,16 @@ public class BMSPushClient: NSObject {
             
             let devId = self.getDeviceID()
             
-            let urlBuilder = BMSPushUrlBuilder(applicationID: self.applicationId!, clientSecret: clientSecret!)
+            self.applicationId = BMSPushUtils.getValueToNSUserDefaults(BMSPUSH_APP_GUID)
+            self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(BMSPUSH_CLIENT_SECRET)
+            
+            if (self.applicationId == "" || self.clientSecret == "") {
+                
+                self.sendAnalyticsData(LogLevel.error, logStringData: "Error while unsubscribing from tags  - Error is: push is not initialized")
+                completionHandler(response:[:], statusCode: IMFPushErrorvalues.IMFPushTagUnsubscriptionError.rawValue, error: "Error while unsubscribing from tags  - Error is: push is not initialized")
+            }
+            
+            let urlBuilder = BMSPushUrlBuilder(applicationID: self.applicationId!, clientSecret: self.clientSecret!)
             let resourceURL:String = urlBuilder.getUnSubscribetagsUrl()
             
             let headers = urlBuilder.addHeader()
@@ -1659,7 +1858,16 @@ public class BMSPushClient: NSObject {
         self.sendAnalyticsData(LogLevel.debug, logStringData: "Entering unregisterDevice.")
         let devId = self.getDeviceID()
         
-        let urlBuilder = BMSPushUrlBuilder(applicationID: self.applicationId!, clientSecret: clientSecret!)
+        self.applicationId = BMSPushUtils.getValueToNSUserDefaults(BMSPUSH_APP_GUID)
+        self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(BMSPUSH_CLIENT_SECRET)
+        
+        if (self.applicationId == "" || self.clientSecret == "") {
+            
+            self.sendAnalyticsData(LogLevel.error, logStringData: "Error while unregistering device  - Error is: push is not initialized")
+            completionHandler(response:"", statusCode: IMFPushErrorvalues.BMSPushUnregitrationError.rawValue, error: "Error while unregistering device  - Error is: push is not initialized")
+        }
+        
+        let urlBuilder = BMSPushUrlBuilder(applicationID: self.applicationId!, clientSecret: self.clientSecret!)
         let resourceURL:String = urlBuilder.getUnregisterUrl(devId)
         
         let headers = urlBuilder.addHeader()
@@ -1696,7 +1904,16 @@ public class BMSPushClient: NSObject {
         self.sendAnalyticsData(LogLevel.debug, logStringData: "Entering sendMessageDeliveryStatus.")
         let devId = self.getDeviceID()
         
-        let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!,clientSecret:clientSecret!)
+        self.applicationId = BMSPushUtils.getValueToNSUserDefaults(BMSPUSH_APP_GUID)
+        self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(BMSPUSH_CLIENT_SECRET)
+        
+        if (self.applicationId == "" || self.clientSecret == "") {
+            
+            self.sendAnalyticsData(LogLevel.error, logStringData: "Failed to update the message status  - Error is: push is not initialized")
+            completionHandler(response:"", statusCode: 502, error: "Failed to update the message status  - Error is: push is not initialized")
+        }
+        
+        let urlBuilder = BMSPushUrlBuilder(applicationID: self.applicationId!,clientSecret:self.clientSecret!)
         let resourceURL:String = urlBuilder.getSendMessageDeliveryStatus(messageId)
         
         let headers = urlBuilder.addHeader()
@@ -1809,6 +2026,42 @@ public class BMSPushClient: NSObject {
         }
         
         return devId
+    }
+    
+    internal func checkStatusChange(){
+        
+        if(NSUserDefaults.standardUserDefaults().objectForKey(BMSPUSH_APP_INSTALL) != nil) {
+            
+            let notificationType = UIApplication.sharedApplication().currentUserNotificationSettings()?.types
+            if notificationType?.rawValue == 0 {
+                print("Disabled")
+                self.delegate?.onChangePermission(false)
+            } else {
+                print("Enabled")
+                self.delegate?.onChangePermission( true)
+                UIApplication.sharedApplication().registerForRemoteNotifications()
+            }
+        } else {
+            
+            NSUserDefaults.standardUserDefaults().setBool(true, forKey: BMSPUSH_APP_INSTALL)
+            NSUserDefaults.standardUserDefaults().synchronize()
+            
+            NSNotificationCenter.defaultCenter().addObserverForName(UIApplicationDidBecomeActiveNotification, object: nil, queue: NSOperationQueue.mainQueue(), usingBlock: { (notification) in
+                
+                sleep(1)
+                let notificationType = UIApplication.sharedApplication().currentUserNotificationSettings()?.types
+                if notificationType?.rawValue == 0 {
+                    print("Disabled")
+                    self.delegate?.onChangePermission(false)
+                } else {
+                    print("Enabled")
+                    self.delegate?.onChangePermission( true)
+                    UIApplication.sharedApplication().registerForRemoteNotifications()
+                }
+                
+            })
+            
+        }
     }
     
 }

@@ -193,7 +193,7 @@ extension ProfileViewController: UITableViewDataSource {
     /// Method responsible for expanding text view if more content is present
     ///
     /// - parameter sender: tapgesture calling method
-    func textViewTapped(sender: UITapGestureRecognizer) {
+    @objc func textViewTapped(sender: UITapGestureRecognizer) {
 
         let tapLocation = sender.location(in: self.tableView)
         if let indexPath = self.tableView.indexPathForRow(at: tapLocation), let cell = self.tableView.cellForRow(at: indexPath) as? ProfileTableViewCell {

@@ -105,7 +105,7 @@ class FeedViewController: UIViewController {
     /**
      Method is called when the application did become active. It trys to restart the loading animation
      */
-    func didBecomeActive() {
+    @objc func didBecomeActive() {
         tryToStartLoadingAnimation()
     }
 
@@ -203,7 +203,7 @@ class FeedViewController: UIViewController {
     /**
      Method is called when the user triggers a pull to refresh
      */
-    func userTriggeredRefresh() {
+    @objc func userTriggeredRefresh() {
 
         dismissImageFeedErrorAlert()
         logoImageView.startRotating(1)
@@ -327,7 +327,7 @@ extension FeedViewController: UITableViewDataSource {
     /// Method responsible for expanding text view if more content is present
     ///
     /// - parameter sender: tapgesture calling method
-    func textViewTapped(sender: UITapGestureRecognizer) {
+    @objc func textViewTapped(sender: UITapGestureRecognizer) {
 
         let tapLocation = sender.location(in: self.tableView)
         if let indexPath = self.tableView.indexPathForRow(at: tapLocation), let cell = self.tableView.cellForRow(at: indexPath) as? ImageFeedTableViewCell {

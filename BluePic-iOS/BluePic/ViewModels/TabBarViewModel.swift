@@ -61,21 +61,21 @@ class TabBarViewModel: NSObject {
     /**
      Method notifies the tab bar vc to swift to the feed tab when image upload begins
      */
-    func notifyTabBarVCToSwitchToFeedTab() {
+    @objc func notifyTabBarVCToSwitchToFeedTab() {
         notifyTabBarVC(TabBarViewModelNotification.switchToFeedTab)
     }
 
     /**
      Method notifies the tab bar vc to show the image upload failure alert when an image fails to upload
      */
-    func notifyTabbarVCToShowImageUploadFailureAlert() {
+    @objc func notifyTabbarVCToShowImageUploadFailureAlert() {
         notifyTabBarVC(TabBarViewModelNotification.showImageUploadFailureAlert)
     }
 
     /**
      Method notifies the tab bar vc to show the settings action sheet
      */
-    func notifyTabBarVcToShowSettingsActionSheet() {
+    @objc func notifyTabBarVcToShowSettingsActionSheet() {
         notifyTabBarVC(TabBarViewModelNotification.showSettingsActionSheet)
     }
 

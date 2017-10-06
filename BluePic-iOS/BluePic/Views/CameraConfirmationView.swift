@@ -73,7 +73,7 @@ class CameraConfirmationView: UIView, UITextFieldDelegate {
 
         let localizedString = kTextFieldPlaceholderText
         self.titleTextField.attributedPlaceholder = NSAttributedString(string:localizedString,
-            attributes:[NSForegroundColorAttributeName: UIColor.gray])
+            attributes:[NSAttributedStringKey.foregroundColor: UIColor.gray])
         self.translatesAutoresizingMaskIntoConstraints = true
         self.titleTextField.tintColor = UIColor.white
 
@@ -84,7 +84,7 @@ class CameraConfirmationView: UIView, UITextFieldDelegate {
 
      - parameter notification: show notification
      */
-    func keyboardWillShow(_ notification: Notification) {
+    @objc func keyboardWillShow(_ notification: Notification) {
         UIApplication.shared.isStatusBarHidden = true
         adjustingHeight(true, notification: notification)
     }
@@ -94,7 +94,7 @@ class CameraConfirmationView: UIView, UITextFieldDelegate {
 
      - parameter notification: hide notification
      */
-    func keyboardWillHide(_ notification: Notification) {
+    @objc func keyboardWillHide(_ notification: Notification) {
         adjustingHeight(false, notification: notification)
     }
 

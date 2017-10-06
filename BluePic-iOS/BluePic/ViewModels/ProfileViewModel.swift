@@ -60,7 +60,7 @@ class ProfileViewModel: NSObject {
     /**
      Method updates the imageDataArray to the latest currentUserImages from the BluemixDataManager and then tells the profile vc to reload its table view
      */
-    func updateImageArrayAndNotifyViewControllerToReloadTableView() {
+    @objc func updateImageArrayAndNotifyViewControllerToReloadTableView() {
 
         self.imageDataArray = BluemixDataManager.SharedInstance.currentUserImages
 

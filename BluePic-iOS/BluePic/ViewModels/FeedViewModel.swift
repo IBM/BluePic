@@ -109,7 +109,7 @@ class FeedViewModel: NSObject {
     /**
      Method will update the image data array and notify the feed vc to refresh if this vc is setup like a normal feed vc and doesn't show search results
      */
-    func updateImageDataArrayAndNotifyViewControllerToReloadTableView() {
+    @objc func updateImageDataArrayAndNotifyViewControllerToReloadTableView() {
 
         if !isShowingSearchResults() {
             self.imageDataArray = BluemixDataManager.SharedInstance.images
@@ -120,7 +120,7 @@ class FeedViewModel: NSObject {
     /**
      Method handles if there is an image upload failure if this vc is set up like a normal feed vc and doesn't show search results
      */
-    func handleImageUploadFailure() {
+    @objc func handleImageUploadFailure() {
 
         if !isShowingSearchResults() {
             self.notifyViewControllerToTriggerReloadTableView()
@@ -205,7 +205,7 @@ extension FeedViewModel {
     /**
      Method will either research for images by tag or get all images depending on if the feed vc is setup like a normal feed vc or to show search results
      */
-    func repullForNewData() {
+    @objc func repullForNewData() {
         if let query = self.searchQuery {
             BluemixDataManager.SharedInstance.getImagesByTags([query], callback: handleSearchResultsResponse)
         } else {
@@ -345,7 +345,7 @@ extension FeedViewModel {
     /**
      Method notifies the feed vc to trigger the loading aniamtion when an image has began uploading
      */
-    func notifyViewControllerToTriggerLoadingAnimation() {
+    @objc func notifyViewControllerToTriggerLoadingAnimation() {
 
         if !isShowingSearchResults() {
             DispatchQueue.main.async {
@@ -366,7 +366,7 @@ extension FeedViewModel {
     /**
      Method notifies the feed vc that app failed to get images from server, handle appropriately
      */
-    func notifyViewControllerGetImagesServerError() {
+    @objc func notifyViewControllerGetImagesServerError() {
         DispatchQueue.main.async {
             self.notifyFeedVC(FeedViewModelNotification.getImagesServerFailure)
         }

@@ -87,7 +87,7 @@ class SearchViewController: UIViewController {
 
      - parameter n: Notification
      */
-    func keyboardWillShow(_ n: Notification) {
+    @objc func keyboardWillShow(_ n: Notification) {
         let userInfo = n.userInfo
 
         if let info = userInfo, let keyboardRect = info[UIKeyboardFrameEndUserInfoKey] as? NSValue {
@@ -126,7 +126,7 @@ extension SearchViewController {
     /**
      Method is called when the BluemixDataManager has successfully received tags. It updates the tag collection view with this new data
      */
-    func updateWithTagData() {
+    @objc func updateWithTagData() {
         DispatchQueue.main.async(execute: {
             self.popularTags = BluemixDataManager.SharedInstance.tags
             self.tagCollectionView.performBatchUpdates({
@@ -178,7 +178,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
      - returns: CGSize
      */
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let size = NSString(string: popularTags[indexPath.item].uppercased()).size(attributes: [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 13.0)])
+        let size = NSString(string: popularTags[indexPath.item].uppercased()).size(withAttributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 13.0)])
         return CGSize(width: size.width + kCellPadding, height: 30.0)
     }
 

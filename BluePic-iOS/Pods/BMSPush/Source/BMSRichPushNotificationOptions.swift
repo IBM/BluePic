@@ -36,25 +36,31 @@ open class BMSPushRichPushNotificationOptions:UNNotificationServiceExtension {
         var bestAttemptContent: UNMutableNotificationContent?
         bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
         
-        let urlString = request.content.userInfo["attachment-url"] as? String
-        if let fileUrl = URL(string: urlString! ) {
-            // Download the attachment
-            URLSession.shared.downloadTask(with: fileUrl) { (location, response, error) in
-                if let location = location {
-                    // Move temporary file to remove .tmp extension
-                    let tmpDirectory = NSTemporaryDirectory()
-                    let tmpFile = "file://".appending(tmpDirectory).appending(fileUrl.lastPathComponent)
-                    let tmpUrl = URL(string: tmpFile)!
-                    try! FileManager.default.moveItem(at: location, to: tmpUrl)
-                    
-                    // Add the attachment to the notification content
-                    if let attachment = try? UNNotificationAttachment(identifier: "video", url: tmpUrl, options:nil) {
-                        bestAttemptContent?.attachments = [attachment]
+       if let urlString = request.content.userInfo["attachment-url"] as? String, urlString != "" {
+            
+            if let fileUrl = URL(string: urlString ) {
+                // Download the attachment
+                URLSession.shared.downloadTask(with: fileUrl) { (location, response, error) in
+                    if let location = location {
+                        // Move temporary file to remove .tmp extension
+                        let tmpDirectory = NSTemporaryDirectory()
+                        let tmpFile = "file://".appending(tmpDirectory).appending(fileUrl.lastPathComponent)
+                        let tmpUrl = URL(string: tmpFile)!
+                        try! FileManager.default.moveItem(at: location, to: tmpUrl)
+                        
+                        // Add the attachment to the notification content
+                        if let attachment = try? UNNotificationAttachment(identifier: "", url: tmpUrl, options:nil) {
+
+                            bestAttemptContent?.attachments = [attachment]
+                        }
                     }
-                }
-                // Serve the notification content
-                contentHandler(bestAttemptContent!)
-                }.resume()
+                    // Serve the notification content
+                    contentHandler(bestAttemptContent!)
+                    }.resume()
+            }
+            
+        } else {
+             contentHandler(bestAttemptContent!)
         }
     }
 }

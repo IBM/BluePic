@@ -28,11 +28,44 @@ internal class TokenManager {
     
     public func obtainTokens(code:String, authorizationDelegate:AuthorizationDelegate) {
         TokenManager.logger.debug(message: "obtainTokens")
-        let tokenUrl = Config.getServerUrl(appId: self.appid) + "/token"
         
         guard let clientId = self.registrationManager.getRegistrationDataString(name: AppIDConstants.client_id_String), let redirectUri = self.registrationManager.getRegistrationDataString(arrayName: AppIDConstants.JSON_REDIRECT_URIS_KEY, arrayIndex: 0) else {
             TokenManager.logger.error(message: "Client not registered")
             authorizationDelegate.onAuthorizationFailure(error: AuthorizationError.authorizationFailure("Client not registered"))
+            return
+        }
+        
+        let bodyParams = [
+            AppIDConstants.JSON_CODE_KEY : code,
+            AppIDConstants.client_id_String :  clientId,
+            AppIDConstants.JSON_GRANT_TYPE_KEY : AppIDConstants.authorization_code_String,
+            AppIDConstants.JSON_REDIRECT_URI_KEY : redirectUri
+        ]
+        retrieveTokens(bodyParams: bodyParams, tokenResponseDelegate: authorizationDelegate)
+    }
+    
+    public func obtainTokens(accessTokenString: String? = nil, username: String, password: String, tokenResponseDelegate: TokenResponseDelegate) {
+        TokenManager.logger.debug(message: "obtainTokens - with resource owner password")
+        
+        var bodyParams = [
+            AppIDConstants.JSON_USERNAME : username,
+            AppIDConstants.JSON_PASSWORD :  password,
+            AppIDConstants.JSON_GRANT_TYPE_KEY : AppIDConstants.resource_owner_password_String
+        ]
+        if accessTokenString != nil {
+            bodyParams[AppIDConstants.APPID_ACCESS_TOKEN] = accessTokenString
+        }
+        
+        retrieveTokens(bodyParams: bodyParams, tokenResponseDelegate: tokenResponseDelegate)
+        
+    }
+    
+    internal func retrieveTokens(bodyParams: [String:String],  tokenResponseDelegate: TokenResponseDelegate) {
+        let tokenUrl = Config.getServerUrl(appId: self.appid) + "/token"
+        
+        guard let clientId = self.registrationManager.getRegistrationDataString(name: AppIDConstants.client_id_String) else {
+            TokenManager.logger.error(message: "Client not registered")
+            tokenResponseDelegate.onAuthorizationFailure(error: AuthorizationError.authorizationFailure("Client not registered"))
             return
         }
         
@@ -43,26 +76,37 @@ internal class TokenManager {
                        Request.contentType : "application/x-www-form-urlencoded"]
         } catch (_) {
             TokenManager.logger.error(message: "Failed to create authentication header")
-            authorizationDelegate.onAuthorizationFailure(error: AuthorizationError.authorizationFailure("Failed to create authentication header"))
+            tokenResponseDelegate.onAuthorizationFailure(error: AuthorizationError.authorizationFailure("Failed to create authentication header"))
             return
         }
-        let bodyParams = [
-            AppIDConstants.JSON_CODE_KEY : code,
-            AppIDConstants.client_id_String :  clientId,
-            AppIDConstants.JSON_GRANT_TYPE_KEY : AppIDConstants.authorization_code_String,
-            AppIDConstants.JSON_REDIRECT_URI_KEY : redirectUri
-        ]
         
         let internalCallback:BMSCompletionHandler = {(response: Response?, error: Error?) in
             if error == nil {
                 if let unWrappedResponse = response, unWrappedResponse.isSuccessful {
-                    self.extractTokens(response: unWrappedResponse, authorizationDelegate: authorizationDelegate)
+                    self.extractTokens(response: unWrappedResponse, tokenResponseDelegate: tokenResponseDelegate)
                 }
                 else {
-                    authorizationDelegate.onAuthorizationFailure(error: AuthorizationError.authorizationFailure("Failed to extract tokens"))
+                    tokenResponseDelegate.onAuthorizationFailure(error: AuthorizationError.authorizationFailure("Failed to extract tokens"))
                 }
             } else {
-                authorizationDelegate.onAuthorizationFailure(error: AuthorizationError.authorizationFailure("Failed to retrieve tokens"))
+                do {
+                    if response?.statusCode == 400 {
+                        let errorText = response?.responseText
+                        if  errorText != nil {
+                            if let errorJson:[String:String] = try Utils.parseJsonStringtoDictionary(errorText!) as? [String:String] {
+                                if errorJson["error"] == "invalid_grant" {
+                                    if let errorDescreption = errorJson["error_description"] {
+                                        tokenResponseDelegate.onAuthorizationFailure(error: AuthorizationError.authorizationFailure("Failed to retrieve tokens: " + errorDescreption))
+                                        return
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    tokenResponseDelegate.onAuthorizationFailure(error: AuthorizationError.authorizationFailure("Failed to retrieve tokens"))
+                } catch _ {
+                    tokenResponseDelegate.onAuthorizationFailure(error: AuthorizationError.authorizationFailure("Failed to retrieve tokens"))
+                }
             }
         }
         
@@ -78,22 +122,21 @@ internal class TokenManager {
             i += 1
         }
         sendRequest(request: request, body: body.data(using: .utf8), internalCallBack: internalCallback)
+
     }
     
     internal func sendRequest(request:Request, body:Data?, internalCallBack: @escaping BMSCompletionHandler) {
-        
         request.urlSession.isBMSAuthorizationRequest = true
-
         request.send(requestBody: body, completionHandler: internalCallBack)
     }
     
     
-    public func extractTokens(response:Response, authorizationDelegate:AuthorizationDelegate) {
+    public func extractTokens(response:Response, tokenResponseDelegate:TokenResponseDelegate) {
         TokenManager.logger.debug(message: "Extracting tokens from server response")
         
         guard let responseText = response.responseText else {
             TokenManager.logger.error(message: "Failed to parse server response - no response text")
-            authorizationDelegate.onAuthorizationFailure(error: AuthorizationError.authorizationFailure("Failed to parse server response - no response text"))
+            tokenResponseDelegate.onAuthorizationFailure(error: AuthorizationError.authorizationFailure("Failed to parse server response - no response text"))
             return
         }
         do {
@@ -101,23 +144,22 @@ internal class TokenManager {
             
             guard let accessTokenString = (responseJson["access_token"] as? String), let idTokenString = (responseJson["id_token"] as? String) else {
                 TokenManager.logger.error(message: "Failed to parse server response - no access or identity token")
-                authorizationDelegate.onAuthorizationFailure(error: AuthorizationError.authorizationFailure("Failed to parse server response - no access or identity token"))
+                tokenResponseDelegate.onAuthorizationFailure(error: AuthorizationError.authorizationFailure("Failed to parse server response - no access or identity token"))
                 return
             }
             guard let accessToken = AccessTokenImpl(with: accessTokenString), let identityToken:IdentityTokenImpl = IdentityTokenImpl(with: idTokenString) else {
                 TokenManager.logger.error(message: "Failed to parse tokens")
-                authorizationDelegate.onAuthorizationFailure(error: AuthorizationError.authorizationFailure("Failed to parse tokens"))
+                tokenResponseDelegate.onAuthorizationFailure(error: AuthorizationError.authorizationFailure("Failed to parse tokens"))
                 return
             }
             self.latestAccessToken = accessToken
             self.latestIdentityToken = identityToken
-            authorizationDelegate.onAuthorizationSuccess(accessToken: accessToken, identityToken: identityToken, response:response)
+            tokenResponseDelegate.onAuthorizationSuccess(accessToken: accessToken, identityToken: identityToken, response:response)
         } catch (_) {
             TokenManager.logger.error(message: "Failed to parse server response - failed to parse json")
-            authorizationDelegate.onAuthorizationFailure(error: AuthorizationError.authorizationFailure("Failed to parse server response - failed to parse json"))
+            tokenResponseDelegate.onAuthorizationFailure(error: AuthorizationError.authorizationFailure("Failed to parse server response - failed to parse json"))
             return
         }
-        
         
     }
     

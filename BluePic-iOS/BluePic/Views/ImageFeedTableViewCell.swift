@@ -57,7 +57,7 @@ class ProfileTableViewCell: UITableViewCell {
     //String that is added to the numberOfTagsLabel at the end if there is one tag
     fileprivate let kNumberOfTagsPostFix_OneTag = NSLocalizedString("Tag", comment: "")
 
-    var defaultAttributes = [NSForegroundColorAttributeName: UIColor.black, NSFontAttributeName: UIFont.boldSystemFont(ofSize: 13.0)]
+    var defaultAttributes = [NSAttributedStringKey.foregroundColor: UIColor.black, NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 13.0)]
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -65,7 +65,7 @@ class ProfileTableViewCell: UITableViewCell {
 
         let style = NSMutableParagraphStyle()
         style.alignment = .center
-        defaultAttributes[NSParagraphStyleAttributeName] = style
+        defaultAttributes[NSAttributedStringKey.paragraphStyle] = style
     }
 
     /// Method sets up the data for the profile collection view cell
@@ -112,7 +112,7 @@ class ProfileTableViewCell: UITableViewCell {
 
                 let abc: String = (image.caption as NSString).substring(with: NSRange(location: 0, length: cutoffLength)) + moreText
                 let attributedString = NSMutableAttributedString(string: abc, attributes: defaultAttributes)
-                attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor.gray, range: NSRange(location: cutoffLength, length: 7))
+                attributedString.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.gray, range: NSRange(location: cutoffLength, length: 7))
                 self.captionTextView.attributedText = attributedString
             } else {
                 self.captionTextView.attributedText = NSMutableAttributedString(string: image.caption, attributes: defaultAttributes)

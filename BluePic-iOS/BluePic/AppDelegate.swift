@@ -33,6 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 
         // Kick off push notification registration
+
         BMSPushClient.sharedInstance.initializeWithAppGUID(appGUID: BluemixDataManager.SharedInstance.bluemixConfig.pushAppGUID, clientSecret: BluemixDataManager.SharedInstance.bluemixConfig.pushClientSecret)
 
         //pre load the keyboard on the camera confirmayion screen to prevent laggy behavior

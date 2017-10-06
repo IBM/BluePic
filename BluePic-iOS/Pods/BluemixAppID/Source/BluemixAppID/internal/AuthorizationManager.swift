@@ -27,8 +27,8 @@ public class AuthorizationManager {
         self.registrationManager = oAuthManager.registrationManager!
     }
 
-    internal func getAuthorizationUrl(idpName:String?, accessToken : String?) -> String {
-        var url = Config.getServerUrl(appId: self.appid) + AppIDConstants.OAUTH_AUTHORIZATION_PATH + "?" + AppIDConstants.JSON_RESPONSE_TYPE_KEY + "=" + AppIDConstants.JSON_CODE_KEY
+    internal func getAuthorizationUrl(idpName:String?, accessToken : String?, responseType : String) -> String {
+        var url = Config.getServerUrl(appId: self.appid) + AppIDConstants.OAUTH_AUTHORIZATION_PATH + "?" + AppIDConstants.JSON_RESPONSE_TYPE_KEY + "=" + responseType
         if let clientId = self.registrationManager.getRegistrationDataString(name: AppIDConstants.client_id_String) {
             url += "&" + AppIDConstants.client_id_String + "=" + clientId
         }
@@ -46,21 +46,33 @@ public class AuthorizationManager {
     }
 
     internal func launchAuthorizationUI(accessTokenString:String? = nil, authorizationDelegate:AuthorizationDelegate) {
-
         self.registrationManager.ensureRegistered(callback: {(error:AppIDError?) in
             guard error == nil else {
                 AuthorizationManager.logger.error(message: error!.description)
                 authorizationDelegate.onAuthorizationFailure(error: AuthorizationError.authorizationFailure(error!.description))
                 return
             }
-            let authorizationUrl = self.getAuthorizationUrl(idpName: nil, accessToken:accessTokenString)
+            let authorizationUrl = self.getAuthorizationUrl(idpName: nil, accessToken:accessTokenString, responseType: AppIDConstants.JSON_CODE_KEY)
             let redirectUri = self.registrationManager.getRegistrationDataString(arrayName: AppIDConstants.JSON_REDIRECT_URIS_KEY, arrayIndex: 0)
             self.authorizationUIManager = AuthorizationUIManager(oAuthManager: self.oAuthManager, authorizationDelegate: authorizationDelegate, authorizationUrl: authorizationUrl, redirectUri: redirectUri!)
             self.authorizationUIManager?.launch()
-
         })
     }
-
+    
+    internal func launchSignUpAuthorizationUI(authorizationDelegate:AuthorizationDelegate) {
+        self.registrationManager.ensureRegistered(callback: {(error:AppIDError?) in
+            guard error == nil else {
+                AuthorizationManager.logger.error(message: error!.description)
+                authorizationDelegate.onAuthorizationFailure(error: AuthorizationError.authorizationFailure(error!.description))
+                return
+            }
+            let signUpAuthorizationUrl = self.getAuthorizationUrl(idpName: nil, accessToken:nil, responseType: AppIDConstants.JSON_SIGN_UP_KEY)
+            let redirectUri = self.registrationManager.getRegistrationDataString(arrayName: AppIDConstants.JSON_REDIRECT_URIS_KEY, arrayIndex: 0)
+            self.authorizationUIManager = AuthorizationUIManager(oAuthManager: self.oAuthManager, authorizationDelegate: authorizationDelegate, authorizationUrl: signUpAuthorizationUrl, redirectUri: redirectUri!)
+            self.authorizationUIManager?.launch()
+        })
+        
+    }
 
     internal func loginAnonymously(accessTokenString:String?, allowCreateNewAnonymousUsers: Bool, authorizationDelegate:AuthorizationDelegate) {
         self.registrationManager.ensureRegistered(callback: {(error:AppIDError?) in
@@ -77,7 +89,7 @@ public class AuthorizationManager {
                 return
             }
 
-            let authorizationUrl = self.getAuthorizationUrl(idpName: AppIDConstants.AnonymousIdpName, accessToken:accessTokenToUse)
+            let authorizationUrl = self.getAuthorizationUrl(idpName: AppIDConstants.AnonymousIdpName, accessToken:accessTokenToUse, responseType: AppIDConstants.JSON_CODE_KEY)
 
             let internalCallback:BMSCompletionHandler = {(response: Response?, error: Error?) in
                 if error == nil {
@@ -148,6 +160,24 @@ public class AuthorizationManager {
         request.send(completionHandler: internalCallBack)
     }
 
+    internal func obtainTokensWithROP(accessTokenString:String? = nil, username: String, password: String, tokenResponseDelegate:TokenResponseDelegate) {
+        var accessTokenToUse = accessTokenString
+        if accessTokenToUse == nil {
+            let latestAccessToken = self.oAuthManager.tokenManager?.latestAccessToken
+            if latestAccessToken != nil && (latestAccessToken?.isAnonymous)! {
+                accessTokenToUse = latestAccessToken?.raw
+            }
+        }
+        self.registrationManager.ensureRegistered(callback: {(error:AppIDError?) in
+            guard error == nil else {
+                AuthorizationManager.logger.error(message: error!.description)
+                tokenResponseDelegate.onAuthorizationFailure(error: AuthorizationError.authorizationFailure(error!.description))
+                return
+            }
+            self.oAuthManager.tokenManager?.obtainTokens(accessTokenString: accessTokenToUse, username: username, password: password, tokenResponseDelegate: tokenResponseDelegate)
+            return
+        })
+    }
 
     public func application(_ application: UIApplication, open url: URL, options :[UIApplicationOpenURLOptionsKey : Any]) -> Bool {
         return (self.authorizationUIManager?.application(application, open: url, options: options))!

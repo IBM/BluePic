@@ -179,7 +179,7 @@ class Utils: NSObject {
     class func kernLabelString(_ label: UILabel, spacingValue: CGFloat) {
         if let text = label.text {
             let attributedString = NSMutableAttributedString(string: text)
-            attributedString.addAttribute(NSKernAttributeName, value: spacingValue, range: NSRange(location: 0, length: attributedString.length))
+            attributedString.addAttribute(NSAttributedStringKey.kern, value: spacingValue, range: NSRange(location: 0, length: attributedString.length))
             label.attributedText = attributedString
         }
     }

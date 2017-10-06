@@ -29,6 +29,7 @@ public class AppID {
     static public let REGION_US_SOUTH = ".ng.bluemix.net"
     static public let REGION_UK = ".eu-gb.bluemix.net"
     static public let REGION_SYDNEY = ".au-syd.bluemix.net"
+    static public let REGION_GERMANY = ".eu-de.bluemix.net"
     
     internal init() {}
     
@@ -47,6 +48,10 @@ public class AppID {
     
     public func loginAnonymously(accessTokenString:String? = nil, allowCreateNewAnonymousUsers: Bool = true, authorizationDelegate:AuthorizationDelegate) {
         oauthManager?.authorizationManager?.loginAnonymously(accessTokenString: accessTokenString, allowCreateNewAnonymousUsers: allowCreateNewAnonymousUsers, authorizationDelegate: authorizationDelegate)
+    }
+    
+    public func obtainTokensWithROP(_ accessTokenString:String? = nil, username: String, password: String, tokenResponseDelegate:TokenResponseDelegate) {
+        oauthManager?.authorizationManager?.obtainTokensWithROP(accessTokenString: accessTokenString, username: username, password: password, tokenResponseDelegate: tokenResponseDelegate)
     }
     
 	public func application(_ application: UIApplication, open url: URL, options :[UIApplicationOpenURLOptionsKey: Any]) -> Bool {

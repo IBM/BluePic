@@ -140,7 +140,7 @@ extension ImageDetailViewModel {
     func sizeForItemAtIndexPath(_ indexPath: IndexPath, collectionView: UICollectionView) -> CGSize {
 
         if let tags = image.tags {
-            let size = NSString(string: tags[indexPath.item].label.uppercased()).size(attributes: [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 13.0)])
+            let size = NSString(string: tags[indexPath.item].label.uppercased()).size(withAttributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 13.0)])
             return CGSize(width: size.width + kCellPadding, height: 30.0)
         }
         return CGSize.zero

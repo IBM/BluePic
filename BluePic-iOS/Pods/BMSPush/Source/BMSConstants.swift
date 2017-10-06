@@ -87,3 +87,9 @@ internal let KEY_METADATA_USER_METADATA = "$userMetadata";
 
 internal let IMFPUSH_STATUS  = "status"
 
+internal let BMSPUSH_CLIENT_SECRET  = "clientSecret"
+
+internal let BMSPUSH_APP_GUID  = "appGUID"
+
+internal let BMSPUSH_APP_INSTALL  = "isFirstTry"
+
