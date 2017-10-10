@@ -21,11 +21,11 @@ import KituraSession
 import CouchDB
 import LoggerAPI
 import SwiftyJSON
+import BluemixAppID
 import BluemixPushNotifications
 import Credentials
 import Configuration
 import CredentialsFacebook
-
 import CloudEnvironment
 ///
 /// Because bridging is not complete in Linux, we must use Any objects for dictionaries
@@ -97,40 +97,67 @@ public class ServerController {
 
     setupRoutes()
   }
-    
-    private func setupRoutes() {
-        let credentials = Credentials() // middleware for securing endpoints
-        
-        // Facebook credentials
-        //    let fbCredentialsPlugin = CredentialsFacebookToken()
-        //    credentials.register(plugin: fbCredentialsPlugin)
-        
-        // NOTE: Needed to protect endpoints, not working currently
-        //let apiKituraCredentialsPlugin = APIKituraCredentialsPlugin(options: ["oauthServerUrl": appIdProps.oathServerUrl])
-        // credentials.register(plugin: apiKituraCredentialsPlugin)
 
-        // Serve static content from "public"
-        router.all("/", middleware: StaticFileServer(path: "./BluePic-Web"))
-        
-        // Assign middleware instance, endpoint securing temporarily disabled
-        router.get("/users", middleware: credentials)
-        router.post("/users", middleware: credentials)
-        router.post("/push", middleware: credentials)
-        router.get("/ping", middleware: credentials)
-        router.post("/images",  middleware: credentials)
-        router.all("/images", middleware: BodyParser())
-        
-        Log.verbose("Defining routes for server...")
-        router.get("/ping", handler: ping)
-        router.get("/tags", handler: getPopularTags)
-        router.get("/users", handler: getUsers)
-        router.get("/users/:userId", handler: getUser)
-        router.post("/users", handler: createUser)
-        router.get("/images", handler: getImages)
-        router.get("/images/:imageId", handler: getImage)
-        router.post("/images", handler: postImage)
-        router.get("/users/:userId/images", handler: getImagesForUser)
-        router.post("/push/images/:imageId", handler: sendPushNotification)
+    private func setupRoutes() {
+
+      let credentials = Credentials() // middleware for securing endpoints
+      
+      let options = [
+        "clientId": appIdProps.clientId,
+        "secret": appIdProps.secret,
+        "tenantId": appIdProps.tenantId,
+        "oauthServerUrl": appIdProps.oauthServerUrl,
+        "redirectUri": "http://localhost:8080/ibm/bluemix/appid/callback"
+      ]
+
+      let webCredentialsPlugin = WebAppKituraCredentialsPlugin(options: options)
+
+      credentials.register(plugin: webCredentialsPlugin)
+      
+      router.all(middleware: Session(secret: "Very very secret..."))
+
+      // Serve static content from "public"
+      router.all("/", middleware: StaticFileServer(path: "./BluePic-Web"))
+
+      // Assign middleware instance, endpoint securing temporarily disabled
+      router.get("/users", middleware: credentials)
+      router.post("/users", middleware: credentials)
+      router.post("/push", middleware: credentials)
+      router.get("/ping", middleware: credentials)
+      router.post("/images",  middleware: credentials)
+      router.all("/images", middleware: BodyParser())
+
+      Log.verbose("Defining routes for server...")
+      router.get("/ping", handler: ping)
+      router.get("/tags", handler: getPopularTags)
+      router.get("/users", handler: getUsers)
+      router.get("/users/:userId", handler: getUser)
+      router.post("/users", handler: createUser)
+      router.get("/images", handler: getImages)
+      router.get("/images/:imageId", handler: getImage)
+      router.post("/images", handler: postImage)
+      router.get("/users/:userId/images", handler: getImagesForUser)
+      router.post("/push/images/:imageId", handler: sendPushNotification)
+
+      let LANDING_PAGE_URL = "/#/homepage"
+
+      router.get("/ibm/bluemix/appid/login",
+                 handler: credentials.authenticate(credentialsType: webCredentialsPlugin.name,
+                                                   successRedirect: LANDING_PAGE_URL,
+                                                   failureRedirect: LANDING_PAGE_URL
+      ))
+
+      router.get("/ibm/bluemix/appid/callback",
+                 handler: credentials.authenticate(credentialsType: webCredentialsPlugin.name,
+                                                   successRedirect: LANDING_PAGE_URL,
+                                                   failureRedirect: LANDING_PAGE_URL
+      ))
+
+      router.get("/ibm/bluemix/appid/logout", handler:  { (request, response, next) in
+          credentials.logOut(request: request)
+          webCredentialsPlugin.logout(request: request)
+          _ = try? response.redirect(LANDING_PAGE_URL)
+      })
     }
 }
 
