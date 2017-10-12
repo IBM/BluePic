@@ -1,7 +1,7 @@
 # BluePic
 
 [![Build Status - Master](https://travis-ci.org/IBM/BluePic.svg?branch=master)](https://travis-ci.org/IBM/BluePic)
-![Bluemix Deployments](https://deployment-tracker.mybluemix.net/stats/c45eeb765e77bf2bffd747e8d910e37d/badge.svg)
+![Bluemix Deployments](https://metrics-tracker.mybluemix.net/stats/0dfaa8c837a37730987b474b783c73f8/badge.svg)
 
 BluePic is a photo and image sharing sample application that allows you to take photos and share them with other BluePic users. This sample application demonstrates how to leverage, in a mobile iOS 10 application, a Kitura-based server application written in Swift.
 
@@ -61,7 +61,7 @@ If you'd like to, you can spend a few minutes to get familiar with the folder st
 ### 3. Create BluePic application on Bluemix
 Clicking on the button below deploys the BluePic application to Bluemix. The [`manifest.yml`](manifest.yml) file [included in the repo] is parsed to obtain the name of the application and to determine the Cloud Foundry services that should be instantiated. For further details on the structure of the `manifest.yml` file, see the [Cloud Foundry documentation](https://docs.cloudfoundry.org/devguide/deploy-apps/manifest.html#minimal-manifest). After clicking the button below, you will be able to name your application, keep in mind that your Bluemix application name needs to match the name value in your `manifest.yml`. Therefore, you may have to change the name value in your `manifest.yml` if there is a naming conflict in your Bluemix account.
 
-[![Deploy to Bluemix](https://deployment-tracker.mybluemix.net/stats/c45eeb765e77bf2bffd747e8d910e37d/button.svg)](https://bluemix.net/deploy?repository=https://github.com/IBM/BluePic.git&cm_mmc=github-code-_-native-_-bluepic-_-deploy2bluemix)
+[![Deploy to Bluemix](https://metrics-tracker.mybluemix.net/stats/0dfaa8c837a37730987b474b783c73f8/button.svg)](https://bluemix.net/deploy?repository=https://github.com/IBM/BluePic.git&cm_mmc=github-code-_-native-_-bluepic-_-deploy2bluemix)
 
 Once deployment to Bluemix is completed, you should access the route assigned to your application using the web browser of your choice. You should see the Kitura welcome page!
 
