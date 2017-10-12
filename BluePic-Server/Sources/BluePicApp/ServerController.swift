@@ -27,15 +27,16 @@ import Credentials
 import Configuration
 import CredentialsFacebook
 import CloudEnvironment
+import SafetyContracts
 ///
 /// Because bridging is not complete in Linux, we must use Any objects for dictionaries
 /// instead of AnyObject. The main branch SwiftyJSON takes as input AnyObject, however
 /// our patched version for Linux accepts Any.
 ///
 #if os(OSX)
-typealias JSONDictionary = [String: AnyObject]
+  typealias JSONDictionary = [String: AnyObject]
 #else
-typealias JSONDictionary = [String: Any]
+  typealias JSONDictionary = [String: Any]
 #endif
 
 public class ServerController {
@@ -53,23 +54,30 @@ public class ServerController {
 
   // Instance constants
   let cloudEnv: CloudEnv = CloudEnv()
-  
+
+  let encoder = JSONEncoder()
+  let decoder = JSONDecoder()
+
+  let credentials = Credentials()
+  let webCredentialsPlugin: WebAppKituraCredentialsPlugin
+  let landing_url = "/#/homepage"
+
   public var port: Int {
     return cloudEnv.port
   }
 
   public init() throws {
-    
+
     guard let couchDBCredentials = cloudEnv.getCloudantCredentials(name: "cloudant-credentials"),
-          let objStoreCredentials = cloudEnv.getObjectStorageCredentials(name: "object-storage-credentials"),
-          let appIdCredentials = cloudEnv.getAppIDCredentials(name: "app-id-credentials"),
-          let pushCredentials = cloudEnv.getPushSDKCredentials(name: "app-push-credentials"),
-          let openWhiskJson = cloudEnv.getDictionary(name: "open-whisk-credentials"),
-          let openWhiskCredentials = OpenWhiskProps(dict: openWhiskJson) else {
-        
-            throw BluePicError.IO("Failed to obtain appropriate credentials.")
+      let objStoreCredentials = cloudEnv.getObjectStorageCredentials(name: "object-storage-credentials"),
+      let appIdCredentials = cloudEnv.getAppIDCredentials(name: "app-id-credentials"),
+      let pushCredentials = cloudEnv.getPushSDKCredentials(name: "app-push-credentials"),
+      let openWhiskJson = cloudEnv.getDictionary(name: "open-whisk-credentials"),
+      let openWhiskCredentials = OpenWhiskProps(dict: openWhiskJson) else {
+
+        throw BluePicError.IO("Failed to obtain appropriate credentials.")
     }
-    
+
     // Create Props
 
     couchDBConnProps = ConnectionProperties(host: couchDBCredentials.host,
@@ -82,7 +90,6 @@ public class ServerController {
     objStorageConnProps = objStoreCredentials
     openWhiskProps = openWhiskCredentials
 
-    
     // Instantiate Objects
 
     let dbClient = CouchDBClient(connectionProperties: couchDBConnProps)
@@ -90,339 +97,88 @@ public class ServerController {
 
     objectStorageConn = ObjectStorageConn(credentials: objStorageConnProps)
 
-
     pushNotificationsClient = PushNotifications(bluemixRegion: PushNotifications.Region.US_SOUTH,
                                                 bluemixAppGuid: ibmPushProps.appGuid,
                                                 bluemixAppSecret: ibmPushProps.appSecret)
 
+    let options = [
+      "clientId": appIdProps.clientId,
+      "secret": appIdProps.secret,
+      "tenantId": appIdProps.tenantId,
+      "oauthServerUrl": appIdProps.oauthServerUrl,
+      "redirectUri": "http://localhost:8080/ibm/bluemix/appid/callback"
+    ]
+
+    webCredentialsPlugin = WebAppKituraCredentialsPlugin(options: options)
+
     setupRoutes()
   }
 
-    private func setupRoutes() {
+  private func setupRoutes() {
 
-      let credentials = Credentials() // middleware for securing endpoints
-      
-      let options = [
-        "clientId": appIdProps.clientId,
-        "secret": appIdProps.secret,
-        "tenantId": appIdProps.tenantId,
-        "oauthServerUrl": appIdProps.oauthServerUrl,
-        "redirectUri": "http://localhost:8080/ibm/bluemix/appid/callback"
-      ]
+    Log.verbose("Defining middleware for server...")
 
-      let webCredentialsPlugin = WebAppKituraCredentialsPlugin(options: options)
+    credentials.register(plugin: webCredentialsPlugin)
 
-      credentials.register(plugin: webCredentialsPlugin)
-      
-      router.all(middleware: Session(secret: "Very very secret..."))
+    router.all(middleware: Session(secret: "Very very secret..."))
+    router.all("/", middleware: StaticFileServer(path: "./BluePic-Web"))
 
-      // Serve static content from "public"
-      router.all("/", middleware: StaticFileServer(path: "./BluePic-Web"))
+    router.all(handler: credentials.authenticate(credentialsType: webCredentialsPlugin.name), { (request, response, next) in
+      let appIdAuthContext: JSON? = request.session?[WebAppKituraCredentialsPlugin.AuthContext]
+      let identityTokenPayload: JSON? = appIdAuthContext?["identityTokenPayload"]
 
-      // Assign middleware instance, endpoint securing temporarily disabled
-      router.get("/users", middleware: credentials)
-      router.post("/users", middleware: credentials)
-      router.post("/push", middleware: credentials)
-      router.get("/ping", middleware: credentials)
-      router.post("/images",  middleware: credentials)
-      router.all("/images", middleware: BodyParser())
+      guard appIdAuthContext?.dictionary != nil, identityTokenPayload?.dictionary != nil else {
+        response.status(.unauthorized)
+        return next()
+      }
 
-      Log.verbose("Defining routes for server...")
-      router.get("/ping", handler: ping)
-      router.get("/tags", handler: getPopularTags)
-      router.get("/users", handler: getUsers)
-      router.get("/users/:userId", handler: getUser)
-      router.post("/users", handler: createUser)
-      router.get("/images", handler: getImages)
-      router.get("/images/:imageId", handler: getImage)
-      router.post("/images", handler: postImage)
-      router.get("/users/:userId/images", handler: getImagesForUser)
-      router.post("/push/images/:imageId", handler: sendPushNotification)
+      next()
+    })
 
-      let LANDING_PAGE_URL = "/#/homepage"
+    // Assign middleware instance, endpoint securing temporarily disabled
+    router.get("/users", middleware: credentials)
+    router.post("/users", middleware: credentials)
+    router.post("/push", middleware: credentials)
+    router.get("/ping", middleware: credentials)
+    router.post("/images", middleware: credentials)
+    router.all("/images", middleware: BodyParser())
 
-      router.get("/ibm/bluemix/appid/login",
-                 handler: credentials.authenticate(credentialsType: webCredentialsPlugin.name,
-                                                   successRedirect: LANDING_PAGE_URL,
-                                                   failureRedirect: LANDING_PAGE_URL
-      ))
+    Log.verbose("Defining routes for server...")
+    router.get("/ping", handler: ping)
+    router.get("/users/:userId/images", handler: getImagesForUser)
+    router.get("/images", codableHandler: getImage)
+    router.get("/images", codableHandler: getImages)
+    router.get("/images/tag", codableHandler: getImagesByTag)
+    router.post("/images", codableHandler: postImage)
+    router.get("/tags", codableHandler: getTags)
+    router.get("/users", codableHandler: getUsers)
+    router.get("/users", codableHandler: getUser)
+    router.post("/users", codableHandler: postUser)
+    router.post("/push/images", codableHandler: sendPushNotification)
 
-      router.get("/ibm/bluemix/appid/callback",
-                 handler: credentials.authenticate(credentialsType: webCredentialsPlugin.name,
-                                                   successRedirect: LANDING_PAGE_URL,
-                                                   failureRedirect: LANDING_PAGE_URL
-      ))
+    // Authentication Redirects
+    let handler = credentials.authenticate(credentialsType: webCredentialsPlugin.name,
+                                          successRedirect: landing_url,
+                                          failureRedirect: landing_url)
 
-      router.get("/ibm/bluemix/appid/logout", handler:  { (request, response, next) in
-          credentials.logOut(request: request)
-          webCredentialsPlugin.logout(request: request)
-          _ = try? response.redirect(LANDING_PAGE_URL)
-      })
-    }
+    router.get("/ibm/bluemix/appid/login", handler: handler)
+    router.get("/ibm/bluemix/appid/callback", handler: handler)
+    router.get("/ibm/bluemix/appid/logout", handler: logout)
+  }
 }
 
 extension ServerController: ServerProtocol {
+
+  public func logout(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
+    self.credentials.logOut(request: request)
+    webCredentialsPlugin.logout(request: request)
+    _ = try? response.redirect(landing_url)
+  }
 
   public func ping(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
     response.headers.append("Content-Type", value: "text/plain; charset=utf-8")
     response.status(HTTPStatusCode.OK).send("Hello World, from BluePic-Server! Original URL: \(request.originalURL)")
     next()
-  }
-
-  /**
-   * Route for getting the top 10 most popular tags. The following URLs are kept
-   * here as reference:
-   * http://www.ramblingincode.com/building-a-couchdb-reduce-function/
-   * http://docs.couchdb.org/en/1.6.1/couchapp/ddocs.html#reduce-and-rereduce-functions
-   * http://guide.couchdb.org/draft/cookbook.html#aggregate
-   * http://www.slideshare.net/okurow/couchdb-mapreduce-13321353
-   * https://qnalist.com/questions/2434952/sorting-by-reduce-value
-   * https://gist.github.com/doppler/807315
-   * http://guide.couchdb.org/draft/transforming.html
-   */
-  func getPopularTags(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
-    let queryParams: [Database.QueryParameters] = [.group(true), .groupLevel(1)]
-    database.queryByView("tags", ofDesign: "main_design", usingParameters: queryParams) { document, error in
-      if let document = document, error == nil {
-        do {
-          // Get tags (rows from JSON result document)
-          guard var tags: [JSON] = document["rows"].array else {
-            throw ProcessingError.image("Tags could not be retrieved from database!")
-          }
-          // Sort tags in descending order
-          tags.sort {
-            let tag1: JSON = $0
-            let tag2: JSON = $1
-            return tag1["value"].intValue > tag2["value"].intValue
-          }
-          // Slice tags array (max number of items is 10)
-          if tags.count > 10 {
-            tags = Array(tags[0...9])
-          }
-
-          // Send sorted tags to client
-          var tagsDocument = JSON([:])
-          tagsDocument["records"] = JSON(tags)
-          tagsDocument["number_of_records"].int = tags.count
-          response.status(HTTPStatusCode.OK).send(json: tagsDocument)
-        } catch {
-          Log.error("Failed to obtain tags from database.")
-          response.error = BluePicLocalizedError.getTagsFailed
-        }
-      } else {
-        Log.error("Failed to obtain tags from database.")
-        response.error = BluePicLocalizedError.getTagsFailed
-      }
-      next()
-    }
-  }
-
-  /// Route for getting all user documents.
-  func getUsers(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
-    database.queryByView("users", ofDesign: "main_design", usingParameters: [.descending(true), .includeDocs(false)]) { document, error in
-      if let document = document, error == nil {
-        do {
-          let users = try self.parseUsers(document: document)
-          response.status(HTTPStatusCode.OK).send(json: users)
-        } catch {
-          Log.error("Failed to read users from database.")
-          response.error = BluePicLocalizedError.getUsersFailed
-        }
-      } else {
-        Log.error("Failed to read users from database.")
-        response.error = BluePicLocalizedError.getUsersFailed
-      }
-      next()
-    }
-  }
-
-  /// Route for getting a specific user document.
-  func getUser(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
-    guard let userId = request.parameters["userId"] else {
-      response.status(HTTPStatusCode.badRequest)
-      response.error = BluePicLocalizedError.missingUserId
-      next()
-      return
-    }
-
-    // Retrieve JSON document for user
-    database.queryByView("users", ofDesign: "main_design", usingParameters: [ .descending(true), .includeDocs(false), .keys([userId as Database.KeyType]) ]) { document, error in
-      if let document = document, error == nil {
-        do {
-          let json = try self.parseUsers(document: document)
-          let users = json["records"].arrayValue
-          if users.count == 1 {
-            response.status(HTTPStatusCode.OK).send(json: users[0])
-          } else {
-            throw ProcessingError.user("User not found!")
-          }
-        } catch {
-          response.status(HTTPStatusCode.notFound)
-          Log.error("User with id \(userId) was not found.")
-          response.error = BluePicLocalizedError.noUserId(userId)
-        }
-      } else {
-        response.status(HTTPStatusCode.internalServerError)
-        Log.error("Failed to read requested user document.")
-        response.error = BluePicLocalizedError.readDocumentFailed
-      }
-      next()
-    }
-  }
-
-  /// Route for creating a new user document in the database.
-  func createUser(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
-    let rawUserData = try BodyParser.readBodyData(with: request)
-    var userJson = JSON(data: rawUserData)
-    // Verify JSON has required fields
-    guard let _ = userJson["name"].string,
-      let userId = userJson["_id"].string else {
-        throw ProcessingError.user("Invalid user document!")
-    }
-    // Add type field
-    userJson["type"] = "user"
-    // Keep only those keys that are valid for the user document
-    let validKeys = ["_id", "name", "type"]
-    for (key, _) in userJson {
-      if validKeys.index(of: key) == nil {
-        _ = userJson.dictionaryObject?.removeValue(forKey: key)
-      }
-    }
-    // Closure for adding new user document to the database
-    let createRecord = {
-      // Persist user document to database
-      Log.verbose("About to add new user record '\(userId)' to the database.")
-      self.database.create(userJson) { id, revision, document, error in
-        do {
-          if let document = document, error == nil {
-            // Add revision number response document
-            userJson["_rev"] = document["rev"]
-            // Return user document back to caller
-            try response.status(HTTPStatusCode.OK).send(json: userJson).end()
-            next()
-          } else {
-            Log.error("Failed to add user to the system of records.")
-            response.error = error ?? BluePicLocalizedError.addUserRecordFailed(userId)
-            next()
-          }
-        } catch {
-          Log.error("Failed to add user to the system of records.")
-          response.error = BluePicLocalizedError.addUserRecordFailed(userId)
-          next()
-        }
-      }
-    }
-    // Closure for verifying if user exists and creating new record
-    let addUser = {
-      // Verify if user already exists
-      self.database.queryByView("users", ofDesign: "main_design", usingParameters: [ .descending(true), .includeDocs(false), .keys([userId as Database.KeyType]) ]) { document, error in
-        if let document = document, error == nil {
-          do {
-            let json = try self.parseUsers(document: document)
-            let users = json["records"].arrayValue
-            if users.count == 1 {
-              response.status(HTTPStatusCode.OK).send(json: users[0])
-              next()
-            } else {
-              createRecord()
-            }
-          } catch {
-            createRecord()
-          }
-        } else {
-          response.status(HTTPStatusCode.internalServerError)
-          Log.error("Failed to process user request.")
-          response.error = BluePicLocalizedError.requestFailed
-          next()
-        }
-      }
-    }
-    // Create completion handler closure
-    let completionHandler = { (success: Bool) -> Void in
-      if success {
-        addUser()
-      } else {
-        Log.error("Failed to add user to the system of records.")
-        response.error = BluePicLocalizedError.addUserRecordFailed(userId)
-        next()
-      }
-    }
-    // Create container for user before adding record to database
-    createContainer(withName: userId, completionHandler: completionHandler)
-  }
-
-  /**
-   * Route for getting all image documents or all images that match a given tag.
-   * As of now, searching on multiple tags is not supported in this app.
-   * To search using multiple tags, additional logic is required.
-   * See following URLs for further details:
-   * https://issues.apache.org/jira/browse/COUCHDB-523
-   * http://stackoverflow.com/questions/1468684/multiple-key-ranges-as-parameters-to-a-couchdb-view
-   */
-  func getImages(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
-    if var tag = request.queryParameters["tag"] {
-      // Get images by tag
-      // let _ = tag.characters.split(separator: ",").map(String.init)
-      tag = StringUtils.decodeWhiteSpace(inString: tag)
-      let anyTag = tag as Database.KeyType
-      let zeroKey = "0" as Database.KeyType
-      let queryParams: [Database.QueryParameters] =
-        [.descending(true),
-         .includeDocs(true),
-         .reduce(false),
-         .endKey([anyTag, zeroKey, zeroKey, NSNumber(integerLiteral: 0)]),
-         .startKey([anyTag, NSObject()])]
-      database.queryByView("images_by_tags", ofDesign: "main_design", usingParameters: queryParams) { document, error in
-        if let document = document, error == nil {
-          do {
-            let images = try self.parseImages(document: document)
-            response.status(HTTPStatusCode.OK).send(json: images)
-          } catch {
-            Log.error("Failed to find images by tag.")
-            response.error = BluePicLocalizedError.noImagesByTag(tag)
-          }
-        } else {
-          Log.error("Failed to find images by tag.")
-          response.error = BluePicLocalizedError.noImagesByTag(tag)
-        }
-        next()
-      }
-    } else {
-      // Get all images
-      database.queryByView("images", ofDesign: "main_design", usingParameters: [.descending(true), .includeDocs(true)]) { document, error in
-        if let document = document, error == nil {
-          do {
-            let images = try self.parseImages(document: document)
-            response.status(HTTPStatusCode.OK).send(json: images)
-          } catch {
-            Log.error("Failed to retrieve all images.")
-            response.error = BluePicLocalizedError.getAllImagesFailed
-          }
-        } else {
-          Log.error("Failed to retrieve all images.")
-          response.error = BluePicLocalizedError.getAllImagesFailed
-        }
-        next()
-      }
-    }
-  }
-
-  /// Route for getting a specific image document.
-  func getImage(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
-    guard let imageId = request.parameters["imageId"] else {
-      response.error = BluePicLocalizedError.noImageId
-      next()
-      return
-    }
-
-    readImage(database: database, imageId: imageId, callback: { jsonData in
-      if let jsonData = jsonData {
-        response.status(HTTPStatusCode.OK).send(json: jsonData)
-      } else {
-        response.error = BluePicLocalizedError.noJsonData(imageId)
-      }
-      next()
-    })
   }
 
   /// Route for getting all image documents for a given user.
@@ -434,10 +190,12 @@ extension ServerController: ServerProtocol {
     }
 
     let anyUserId = userId as Database.KeyType
-    let queryParams: [Database.QueryParameters] =
-      [.descending(true),
-       .endKey([anyUserId, "0" as Database.KeyType]),
-       .startKey([anyUserId, NSObject()])]
+    let queryParams: [Database.QueryParameters] = [
+                                                    .descending(true),
+                                                    .endKey([anyUserId, "0" as Database.KeyType]),
+                                                    .startKey([anyUserId, NSObject()])
+                                                  ]
+
     database.queryByView("images_per_user", ofDesign: "main_design", usingParameters: queryParams) { document, error in
       if let document = document, error == nil {
         do {
@@ -455,87 +213,271 @@ extension ServerController: ServerProtocol {
     }
   }
 
-  /**
-   * Route for uploading a new picture for a given user.
-   * Uses a multi-part form data request to send data in the body.
-   * The two items sent in the data is a Json string with image metadata
-   * and the second piece is the actual image binary.
-   * This route deals with processing and recording the data.
-   */
-  func postImage(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
-    // get multipart data for image metadata and imgage binary data
-    var (imageJSON, image) = try parseMultipart(fromRequest: request)
-    imageJSON = try updateImageJSON(json: imageJSON, withRequest: request)
+  ///                ///
+  /// Codable Routes ///
+  ///                ///
 
-    // Create closure
-    let completionHandler = { (success: Bool) -> Void in
-      if success {
+  /// Route for getting the most popular tags
+  func getTags(respondWith: @escaping ([TagCount]?, Swift.Error?) -> Void) {
+
+    let params: [Database.QueryParameters] = [.group(true), .groupLevel(1)]
+
+    database.queryByView("tags", ofDesign: "main_design", usingParameters: params) { document, error in
+
+      do {
+        guard error == nil, let document = document else {
+          throw BluePicLocalizedError.readDocumentFailed
+        }
+
+        let rows = try document["rows"].rawData()
+        var tags = try self.decoder.decode([TagCount].self, from: rows)
+
+        // Sort tags in descending order
+        tags = tags.sorted { $0.value > $1.value }
+
+        // Slice tags array (max number of items is 10)
+        if tags.count > 10 { tags = Array(tags[0...9]) }
+
+        respondWith(tags, nil)
+
+      } catch {
+        Log.error("\(error)")
+        respondWith(nil, error)
+      }
+    }
+  }
+
+  /// Route for getting a specific image
+  func getImage(id: String, respondWith: @escaping (Image?, Swift.Error?) -> Void) {
+    readImage(database: database, imageId: id, callback: respondWith)
+  }
+
+  /// Route for getting all images
+  func getImages(respondWith: @escaping ([Image]?, Swift.Error?) -> Void) {
+    readImagesByView("images", database: database, callback: respondWith)
+  }
+
+  /// Route for getting images with a specific tag
+  func getImagesByTag(tag: String, respondWith: @escaping ([Image]?, Swift.Error?) -> Void) {
+    let tag = StringUtils.decodeWhiteSpace(inString: tag)
+    let anyTag = tag as Database.KeyType
+    let zeroKey = "0" as Database.KeyType
+    let queryParams: [Database.QueryParameters] = [
+                                                  .reduce(false),
+                                                  .endKey([anyTag, zeroKey, zeroKey, NSNumber(integerLiteral: 0)]),
+                                                  .startKey([anyTag, NSObject()])
+                                                  ]
+    readImagesByView("images_by_tags", params: queryParams, database: database, callback: respondWith)
+  }
+
+  /// Route for creating a new image
+  func postImage(image: Image, respondWith: @escaping (Image?, Swift.Error?) -> Void) {
+
+    do {
+      let imageData = try self.encoder.encode(image)
+      let imageJson = JSON(data: imageData)
+
+      let completionHandler = { (success: Bool) -> Void in
+
+        guard success else {
+          Log.error("Failed to create image record in Cloudant database.")
+          respondWith(nil, BluePicLocalizedError.addImageRecordFailed)
+          return
+        }
+
         // Add image record to database
-        self.database.create(imageJSON) { id, revision, doc, error in
-          guard let id = id, let revision = revision, error == nil else {
-            Log.error("Failed to create image record in Cloudant database.")
-            if let error = error {
-              Log.error("Error domain: \(error._domain); error code: \(error._code).")
-            }
-            response.error = BluePicLocalizedError.addImageRecordFailed
-            next()
+        self.database.create(imageJson) { id, revision, _, error in
+
+          guard error == nil, let id = id, let revision = revision else {
+            Log.error("Failed to add user to the system of records.")
+            respondWith(nil, BluePicLocalizedError.addImageRecordFailed)
             return
           }
-          // Contine processing of image (async request for OpenWhisk)
-          self.processImage(withId: id)
-          // Return image document to caller
-          // Update JSON image document with _id, and _rev
-          imageJSON["_id"].stringValue = id
-          imageJSON["_rev"].stringValue = revision
-          response.status(HTTPStatusCode.OK).send(json: imageJSON)
-          next()
+
+          var image = image
+          image.rev = revision
+
+          respondWith(image, nil)
+
+          self.processImage(withId: id)  // Contine processing of image (async request for OpenWhisk)
+
         }
-      } else {
-        Log.error("Failed to create image record in Cloudant database.")
-        response.error = BluePicLocalizedError.addImageRecordFailed
       }
-      next()
+      // Create container for user before creating image record in database
+      store(image: imageData, withName: image.fileName, inContainer: image.userId, completionHandler: completionHandler)
+    } catch {
+      Log.error("\(error)")
+      respondWith(nil, error)
     }
-    // Create container for user before creating image record in database
-    store(image: image, withName: imageJSON["fileName"].stringValue, inContainer: imageJSON["userId"].stringValue, completionHandler: completionHandler)
   }
 
-  /// Route for sending push notification (this uses the Push server SDK).
-  func sendPushNotification(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
-    // Define response body
-    var responseBody = JSON([:])
-    responseBody["status"].boolValue = false
+  /// Route for getting a specific user document.
+  func getUser(id: String, respondWith: @escaping (User?, Swift.Error?) -> Void) {
 
-    guard let imageId = request.parameters["imageId"] else {
-      response.status(HTTPStatusCode.badRequest)
-      response.send(json: responseBody)
-      next()
-      return
+    let params: [Database.QueryParameters] = [
+      .descending(true),
+      .includeDocs(false),
+      .keys([id as Database.KeyType])
+    ]
+
+    database.queryByView("users", ofDesign: "main_design", usingParameters: params) { document, error in
+
+      do {
+        guard error == nil, let document = document  else {
+          throw BluePicLocalizedError.readDocumentFailed
+        }
+
+        guard let first = try document.toData().first else {
+          throw BluePicLocalizedError.noUserId(id)
+        }
+
+        let user = try self.decoder.decode(User.self, from: first)
+        respondWith(user, nil)
+
+      } catch {
+        Log.error("\(error)")
+        respondWith(nil, error)
+      }
+    }
+  }
+
+  /// Route for getting all user documents.
+  func getUsers(respondWith: @escaping ([User]?, Swift.Error?) -> Void) {
+
+    let params: [Database.QueryParameters] = [.descending(true), .includeDocs(false)]
+
+    database.queryByView("users", ofDesign: "main_design", usingParameters: params) { document, error in
+
+      do {
+        guard error == nil, let document = document else {
+          throw BluePicLocalizedError.readDocumentFailed
+        }
+
+        let rows = try document.toData()
+        let users = try rows.map { try self.decoder.decode(User.self, from: $0) }
+
+        respondWith(users, nil)
+
+      } catch {
+        Log.error("\(error)")
+        respondWith(nil, error)
+      }
+    }
+  }
+
+  /// Route for creating a new user
+  func postUser(user: User, respondWith: @escaping (User?, Swift.Error?) -> Void) {
+
+    // Closure for adding new user document to the database
+    let createRecord = {
+      Log.verbose("Creating new user record '\(user.id)'.")
+
+      do {
+        let userData = try self.encoder.encode(user)
+        let userJson = JSON(data: userData)
+
+        self.database.create(userJson) { _, _, document, error in
+          guard error == nil, let document = document else {
+            Log.error("Failed to add user to the system of records.")
+            respondWith(nil, BluePicLocalizedError.readDocumentFailed)
+            return
+          }
+
+          var user = user
+          user.rev = document["rev"].string
+
+          respondWith(user, nil)
+        }
+      } catch {
+        Log.error("\(error)")
+        respondWith(nil, error)
+      }
     }
 
-    readImage(database: database, imageId: imageId) { jsonImage in
-      if let jsonImage = jsonImage {
-        let apnsSettings = Notification.Settings.Apns(badge: nil, interactiveCategory: "imageProcessed", iosActionKey: nil, sound: nil, type: ApnsType.DEFAULT, payload: jsonImage.dictionaryObject)
-        let target = Notification.Target(deviceIds: [jsonImage["deviceId"].stringValue], userIds: nil, platforms: nil, tagNames: nil)
+    // Closure for verifying if user exists and creating new record
+    let addUser = {
+
+      let params: [Database.QueryParameters] = [
+        .descending(true),
+        .includeDocs(false),
+        .keys([user.id as Database.KeyType])
+      ]
+
+      self.database.queryByView("users", ofDesign: "main_design", usingParameters: params) { document, error in
+
+        do {
+          guard error == nil, let document = document else {
+            Log.error("Failed to read requested user document.")
+            respondWith(user, BluePicLocalizedError.readDocumentFailed)
+            return
+          }
+
+          guard let first = try document.toData().first else {
+            throw BluePicLocalizedError.missingUserId
+          }
+
+          let user = try self.decoder.decode(User.self, from: first)
+          respondWith(user, nil)
+
+        } catch {
+          Log.error("User with id \(user.id) was not found.")
+          createRecord()
+        }
+      }
+    }
+
+    // Create completion handler closure
+    let completionHandler = { (success: Bool) -> Void in
+      guard success else {
+        Log.error("Failed to add user to the system of records.")
+        respondWith(user, BluePicLocalizedError.addUserRecordFailed("User with id: \(user.id)"))
+        return
+      }
+      addUser()
+    }
+
+    // Create container for user before adding record to database
+    createContainer(withName: user.id, completionHandler: completionHandler)
+  }
+
+  /// Route for sending a push notification
+  func sendPushNotification(imageId: String, respondWith: @escaping (NotificationStatus?, Swift.Error?) -> Void) {
+
+    readImage(database: database, imageId: imageId) { image, error in
+      do {
+        guard let image = image, let deviceId = image.deviceId, error == nil else {
+          throw error ?? BluePicLocalizedError.getImagesFailed(imageId)
+        }
+
+        let data = try self.encoder.encode(image)
+        let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers)
+
+        guard let dict = json as? [String: Any] else {
+          throw BluePicLocalizedError.getImagesFailed(imageId)
+        }
+
+        let apnsSettings = Notification.Settings.Apns(
+                                                      badge: nil,
+                                                      interactiveCategory: "imageProcessed",
+                                                      iosActionKey: nil,
+                                                      sound: nil,
+                                                      type: ApnsType.DEFAULT,
+                                                      payload: dict
+                                                      )
+
+        let target = Notification.Target(deviceIds: [deviceId], userIds: nil, platforms: nil, tagNames: nil)
         let message = Notification.Message(alert: "Your image was processed; check it out!", url: nil)
         let notification = Notification(message: message, target: target, apnsSettings: apnsSettings, gcmSettings: nil)
+
         self.pushNotificationsClient.send(notification: notification) { error in
-          if let error = error {
-            Log.error("Failed to send push notification: \(error)")
-            response.status(HTTPStatusCode.internalServerError)
-          } else {
-            response.status(HTTPStatusCode.OK)
-            responseBody["status"].boolValue = true
+          guard error == nil else {
+            respondWith(nil, BluePicLocalizedError.requestFailed)
+            return
           }
-          response.send(json: responseBody)
-          next()
         }
-      } else {
-        response.status(HTTPStatusCode.internalServerError)
-        response.send(json: responseBody)
-        next()
+      } catch {
+        respondWith(NotificationStatus(status: false), error)
       }
     }
   }
-
 }

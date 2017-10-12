@@ -27,7 +27,7 @@ public struct OpenWhiskProps {
     self.urlPath = urlPath
     self.authToken = authToken
   }
-    
+
   public init?(dict: [String: Any]) {
     guard let openWhiskJson = dict as? [String: String] else {
       return nil
@@ -37,10 +37,10 @@ public struct OpenWhiskProps {
           let urlPath = openWhiskJson["urlPath"],
           let authToken = openWhiskJson["authToken"],
           let computedAuthToken = authToken.data(using: String.Encoding.utf8)?.base64EncodedString(options: Data.Base64EncodingOptions(rawValue: 0)) else {
-            
+
             return nil
     }
-    
+
     self.hostName = hostName
     self.urlPath = urlPath
     self.authToken = computedAuthToken

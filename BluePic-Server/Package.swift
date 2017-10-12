@@ -28,7 +28,7 @@ let package = Package(
         )
     ],
     dependencies: [
-      .package(url: "https://github.com/IBM-Swift/Kitura.git", .upToNextMinor(from: "1.7.0")),
+      .package(url: "https://github.com/IBM-Swift/Kitura.git", .branch("issue.swift4")),
       .package(url: "https://github.com/IBM-Swift/Kitura-CouchDB.git", .upToNextMinor(from: "1.7.0")),
       .package(url: "https://github.com/IBM-Swift/CloudEnvironment.git", .upToNextMajor(from: "4.0.0")),
       .package(url: "https://github.com/IBM-Bluemix/cf-deployment-tracker-client-swift.git", .upToNextMajor(from: "4.0.0")),
@@ -45,6 +45,7 @@ let package = Package(
                             "CouchDB",
                             "CloudEnvironment",
                             "BluemixObjectStorage",
+                            "BluemixAppID",
                             "CloudFoundryDeploymentTracker",
                             "Kitura-CredentialsFacebook",
                             "BluemixPushNotifications"

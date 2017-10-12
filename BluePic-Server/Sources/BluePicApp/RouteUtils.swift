@@ -72,49 +72,56 @@ extension ServerController {
    */
   func processImage(withId imageId: String) {
     Log.verbose("imageId: \(imageId)")
-    var requestOptions: [ClientRequest.Options] = []
-    requestOptions.append(.method("POST"))
-    requestOptions.append(.schema("https://"))
-    requestOptions.append(.hostname(openWhiskProps.hostName))
-    requestOptions.append(.port(443))
-    requestOptions.append(.path(openWhiskProps.urlPath))
-    var headers = [String: String]()
-    headers["Content-Type"] = "application/json"
-    headers["Authorization"] = "Basic \(openWhiskProps.authToken)"
-    requestOptions.append(.headers(headers))
 
-    guard let requestBody = JSON(["imageId":imageId]).rawString() else {
+    let headers = [
+                    "Content-Type": "application/json",
+                    "Authorization": "Basic \(openWhiskProps.authToken)"
+                  ]
+
+    let requestOptions: [ClientRequest.Options] = [
+                                                    .method("POST"),
+                                                    .schema("https://"),
+                                                    .hostname(openWhiskProps.hostName),
+                                                    .port(443),
+                                                    .path(openWhiskProps.urlPath),
+                                                    .headers(headers)
+                                                   ]
+
+    guard let requestBody = JSON(["imageId": imageId]).rawString() else {
       Log.error("Failed to create JSON string with imageId.")
       return
     }
 
     // Make REST call
     let req = HTTP.request(requestOptions) { resp in
-      if let resp = resp, resp.statusCode == HTTPStatusCode.OK || resp.statusCode == HTTPStatusCode.accepted {
-        do {
-          var body = Data()
-          try resp.readAllData(into: &body)
-          let jsonResponse = JSON(data: body)
-          print("OpenWhisk response: \(jsonResponse)")
-        } catch {
-          Log.error("Bad JSON document received from OpenWhisk.")
-        }
-      } else {
-          Log.error("Status error code or nil reponse received from OpenWhisk.")
-          if let resp = resp {
-              Log.error("Status code: \(resp.statusCode)")
-              var rawUserData = Data()
-              do {
-                  _ = try resp.read(into: &rawUserData)
-                  let str = String(data: rawUserData, encoding: .utf8)
-                  print("Error response from OpenWhisk: \(String(describing: str))")
-              }
-              catch {
-                Log.warning("Failed to read response data in processImage error state.")
-              }
-          }
-        }
+      guard let resp = resp else {
+        Log.error("Did not receive a response")
+        return
       }
+
+      guard resp.statusCode == HTTPStatusCode.OK || resp.statusCode == HTTPStatusCode.accepted else {
+        Log.error("Status error code or nil reponse received from OpenWhisk.")
+        Log.error("Status code: \(resp.statusCode)")
+        var rawUserData = Data()
+        do {
+          _ = try resp.read(into: &rawUserData)
+          let str = String(data: rawUserData, encoding: .utf8)
+          print("Error response from OpenWhisk: \(String(describing: str))")
+        } catch {
+          Log.warning("Failed to read response data in processImage error state.")
+        }
+        return
+      }
+
+      do {
+        var body = Data()
+        try resp.readAllData(into: &body)
+        let jsonResponse = JSON(data: body)
+        print("OpenWhisk response: \(jsonResponse)")
+      } catch {
+        Log.error("Bad JSON document received from OpenWhisk.")
+      }
+    }
 
     // Kitura does not yet execute certain functionality asynchronously,
     // hence the need for this block.
@@ -130,30 +137,44 @@ extension ServerController {
   * - parameter imageId:  String id of the image document to retrieve.
   * - parameter callback: Callback to use within async method.
   */
-  func readImage(database: Database, imageId: String, callback: @escaping (_ jsonData: JSON?) -> ()) {
+  func readImage(database: Database, imageId: String, callback: @escaping (Image?, Swift.Error?) -> Void) {
     let anyImageId = imageId as Database.KeyType
-    let queryParams: [Database.QueryParameters] =
-    [.descending(true),
-     .includeDocs(true),
-     .endKey([anyImageId, NSNumber(integerLiteral: 0)]),
-     .startKey([anyImageId, NSObject()])]
-    database.queryByView("images_by_id", ofDesign: "main_design", usingParameters: queryParams) { document, error in
-      if let document = document, error == nil {
-        do {
-          let json = try self.parseImages(document: document)
-          let images = json["records"].arrayValue
-          if images.count == 1 {
-            callback(images[0])
-          } else {
-            throw ProcessingError.image("Image not found!")
-          }
-        } catch {
-          Log.error("Failed to get specific image document.")
-          callback(nil)
+    let queryParams: [Database.QueryParameters] = [
+                                                   .endKey([anyImageId, NSNumber(integerLiteral: 0)]),
+                                                   .startKey([anyImageId, NSObject()])
+                                                  ]
+    readImagesByView("images_by_id", params: queryParams, database: database) { images, error in
+      guard let images = images, let image = images.first, error == nil else {
+        callback(nil, BluePicLocalizedError.getImagesFailed(imageId))
+        return
+      }
+      callback(image, nil)
+    }
+  }
+
+  func readImagesByView(_ view: String,
+                        params: [Database.QueryParameters] = [],
+                        database: Database,
+                        callback: @escaping ([Image]?, Swift.Error?) -> Void) {
+
+    var queryParams: [Database.QueryParameters] = [.descending(true), .includeDocs(true)]
+    queryParams.append(contentsOf: params)
+
+    database.queryByView(view, ofDesign: "main_design", usingParameters: queryParams) { document, error in
+      do {
+        guard error == nil, let document = document else {
+          throw BluePicLocalizedError.getAllImagesFailed
         }
-      } else {
-        Log.error("Failed to get specific image document.")
-        callback(nil)
+
+        let data: [Data] = try document.imagesToData()
+
+        let images = try data.map { try self.decoder.decode(Image.self, from: $0) }
+
+        callback(images, nil)
+
+      } catch {
+        Log.error("\(error)")
+        callback(nil, error)
       }
     }
   }
@@ -207,69 +228,6 @@ extension ServerController {
     }
 
     return constructDocument(records: images)
-  }
-
-  /**
-   Method to parse a document to get all user data.
-
-   - parameter document: json document with raw data
-
-   - throws: parsing error if necessary
-
-   - returns: valid json with all users data
-   */
-  func parseUsers(document: JSON) throws -> JSON {
-    let users = try parseRecords(document: document)
-    return constructDocument(records: users)
-  }
-
-  /**
-   Method to parse out multipart data. We expect json about an image and image data binary
-
-   - parameter request: router request with all the data
-
-   - throws: parsing error if necessary
-
-   - returns: valid json image data and image binary in an NSData object
-   */
-  func parseMultipart(fromRequest request: RouterRequest) throws -> (JSON, Data) {
-    guard let requestBody: ParsedBody = request.body else {
-      throw ProcessingError.image("No request body present.")
-    }
-    var imageJson: JSON?
-    var imageData: Data?
-    switch requestBody {
-    case .multipart(let parts):
-      for part in parts {
-        if part.name == "imageJson" {
-          switch (part.body) {
-          case .json(let jsonDoc):
-            imageJson  = jsonDoc
-          case .text(let stringJson):
-            let encoding = String.Encoding.utf8
-            if let dataJson = stringJson.data(using: encoding, allowLossyConversion: false) {
-              imageJson = JSON(data: dataJson)
-            }
-          default:
-            Log.warning("Couldn't process image Json from multi-part form.")
-          }
-        } else if part.name == "imageBinary" {
-          switch part.body {
-          case .raw(let data):
-            imageData = data
-          default:
-            Log.warning("Couldn't process image binary from multi-part form.")
-          }
-        }
-      }
-    default:
-      throw ProcessingError.image("Failed to parse request body: \(requestBody)")
-    }
-
-    guard let json = imageJson, let data = imageData else {
-      throw ProcessingError.image("Failed to parse multipart form data in request body.")
-    }
-    return (json, data)
   }
 
   /**
@@ -378,7 +336,7 @@ extension ServerController {
               completionHandler: @escaping (_ success: Bool) -> Void) {
      // Store image in container
      let storeImage = { (container: ObjectStorageContainer) -> Void in
-       container.storeObject(name: name, data: image) { error, object in
+       container.storeObject(name: name, data: image) { error, _ in
          if let _ = error {
            Log.error("Could not save image named '\(name)' in container.")
            completionHandler(false)
