@@ -10,7 +10,7 @@ angular.module('bluepicWebApp')
             $scope.caption = photo.data.caption;
             $scope.timestamp = PropertiesService.getFormattedTimestamp(photo.data.uploadedTs);
 
-            var temp = photo.data.location.weather.temperature;
+            var temp = photo.data.location.weather != null ? photo.data.location.weather.temperature : "";
             $scope.temp = temp ? (temp + "\xB0") : "";
             $scope.mapUrl = "https://maps.googleapis.com/maps/api/staticmap?center=" +
                 photo.data.location.latitude + "," +
@@ -30,12 +30,11 @@ angular.module('bluepicWebApp')
                 if(direction === "left" && index > 0) {
                     index--;
                 }
-                else if (direction === "right" && index < numPhotos) {
+                else if (direction === "right" && index < numPhotos - 1) {
                     index++;
                 }
 
                 var newPhoto = $scope.photos[index];
-
                 PropertiesService.setPhotoIndex(index);
                 PropertiesService.setPhotoId(newPhoto._id);
                 $state.go("singlePhoto", {photoId:newPhoto._id});
