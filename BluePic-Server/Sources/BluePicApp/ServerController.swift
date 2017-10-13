@@ -120,10 +120,10 @@ public class ServerController {
 
     credentials.register(plugin: webCredentialsPlugin)
 
-    //router.all(middleware: Session(secret: "Very very secret..."))
+    router.all(middleware: Session(secret: "Very very secret..."))
     router.all("/", middleware: StaticFileServer(path: "./BluePic-Web"))
 
-    /*router.all(handler: credentials.authenticate(credentialsType: webCredentialsPlugin.name), { (request, response, next) in
+    router.all(handler: credentials.authenticate(credentialsType: webCredentialsPlugin.name), { (request, response, next) in
       let appIdAuthContext: JSON? = request.session?[WebAppKituraCredentialsPlugin.AuthContext]
       let identityTokenPayload: JSON? = appIdAuthContext?["identityTokenPayload"]
 
@@ -133,14 +133,14 @@ public class ServerController {
       }
 
       next()
-    })*/
+    })
 
-    /*router.get("/users", middleware: credentials)
+    router.get("/users", middleware: credentials)
     router.post("/users", middleware: credentials)
     router.post("/push", middleware: credentials)
     router.get("/ping", middleware: credentials)
     router.post("/images", middleware: credentials)
-    router.all("/images", middleware: BodyParser())*/
+    router.all("/images", middleware: BodyParser())
 
     Log.verbose("Defining routes for server...")
     router.get("/ping", handler: ping)
