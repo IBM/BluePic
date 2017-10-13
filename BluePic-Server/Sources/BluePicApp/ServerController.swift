@@ -120,10 +120,10 @@ public class ServerController {
 
     credentials.register(plugin: webCredentialsPlugin)
 
-    router.all(middleware: Session(secret: "Very very secret..."))
+    //router.all(middleware: Session(secret: "Very very secret..."))
     router.all("/", middleware: StaticFileServer(path: "./BluePic-Web"))
 
-    router.all(handler: credentials.authenticate(credentialsType: webCredentialsPlugin.name), { (request, response, next) in
+    /*router.all(handler: credentials.authenticate(credentialsType: webCredentialsPlugin.name), { (request, response, next) in
       let appIdAuthContext: JSON? = request.session?[WebAppKituraCredentialsPlugin.AuthContext]
       let identityTokenPayload: JSON? = appIdAuthContext?["identityTokenPayload"]
 
@@ -133,15 +133,14 @@ public class ServerController {
       }
 
       next()
-    })
+    })*/
 
-    // Assign middleware instance, endpoint securing temporarily disabled
-    router.get("/users", middleware: credentials)
+    /*router.get("/users", middleware: credentials)
     router.post("/users", middleware: credentials)
     router.post("/push", middleware: credentials)
     router.get("/ping", middleware: credentials)
     router.post("/images", middleware: credentials)
-    router.all("/images", middleware: BodyParser())
+    router.all("/images", middleware: BodyParser())*/
 
     Log.verbose("Defining routes for server...")
     router.get("/ping", handler: ping)
@@ -197,17 +196,17 @@ extension ServerController: ServerProtocol {
                                                   ]
 
     database.queryByView("images_per_user", ofDesign: "main_design", usingParameters: queryParams) { document, error in
-      if let document = document, error == nil {
-        do {
-          let images = try self.parseImages(forUserId: userId, usingDocument: document)
-          response.status(HTTPStatusCode.OK).send(json: images)
-        } catch {
-          Log.error("Failed to get images for \(userId).")
-          response.error = BluePicLocalizedError.getImagesFailed(userId)
+      do {
+        guard let document = document, error == nil else {
+          throw BluePicLocalizedError.getImagesFailed(userId)
         }
-      } else {
+
+        let images = try self.parseImages(forUserId: userId, usingDocument: document)
+        response.status(HTTPStatusCode.OK).send(json: images)
+
+      } catch {
         Log.error("Failed to get images for \(userId).")
-        response.error = BluePicLocalizedError.getImagesFailed(userId)
+        response.error = error
       }
       next()
     }
@@ -222,28 +221,19 @@ extension ServerController: ServerProtocol {
 
     let params: [Database.QueryParameters] = [.group(true), .groupLevel(1)]
 
-    database.queryByView("tags", ofDesign: "main_design", usingParameters: params) { document, error in
-
-      do {
-        guard error == nil, let document = document else {
-          throw BluePicLocalizedError.readDocumentFailed
-        }
-
-        let rows = try document["rows"].rawData()
-        var tags = try self.decoder.decode([TagCount].self, from: rows)
-
-        // Sort tags in descending order
-        tags = tags.sorted { $0.value > $1.value }
-
-        // Slice tags array (max number of items is 10)
-        if tags.count > 10 { tags = Array(tags[0...9]) }
-
-        respondWith(tags, nil)
-
-      } catch {
-        Log.error("\(error)")
-        respondWith(nil, error)
+    readByView("tags", params: params, type: TagCount.self, database: database) { tags, error in
+      guard error == nil, var tags = tags else {
+        respondWith(nil, error ?? BluePicLocalizedError.getTagsFailed)
+        return
       }
+
+      // Sort tags in descending order
+      tags = tags.sorted { $0.value > $1.value }
+
+      // Slice tags array (max number of items is 10)
+      if tags.count > 10 { tags = Array(tags[0...9]) }
+
+      respondWith(tags, nil)
     }
   }
 
@@ -254,7 +244,8 @@ extension ServerController: ServerProtocol {
 
   /// Route for getting all images
   func getImages(respondWith: @escaping ([Image]?, Swift.Error?) -> Void) {
-    readImagesByView("images", database: database, callback: respondWith)
+    let params: [Database.QueryParameters] = [.includeDocs(true)]
+    readByView("images", params: params, type: Image.self, database: database, callback: respondWith)
   }
 
   /// Route for getting images with a specific tag
@@ -263,20 +254,18 @@ extension ServerController: ServerProtocol {
     let anyTag = tag as Database.KeyType
     let zeroKey = "0" as Database.KeyType
     let queryParams: [Database.QueryParameters] = [
+                                                  .includeDocs(true),
                                                   .reduce(false),
                                                   .endKey([anyTag, zeroKey, zeroKey, NSNumber(integerLiteral: 0)]),
                                                   .startKey([anyTag, NSObject()])
                                                   ]
-    readImagesByView("images_by_tags", params: queryParams, database: database, callback: respondWith)
+    readByView("images_by_tags", params: queryParams, type: Image.self, database: database, callback: respondWith)
   }
 
   /// Route for creating a new image
   func postImage(image: Image, respondWith: @escaping (Image?, Swift.Error?) -> Void) {
 
     do {
-      let imageData = try self.encoder.encode(image)
-      let imageJson = JSON(data: imageData)
-
       let completionHandler = { (success: Bool) -> Void in
 
         guard success else {
@@ -284,27 +273,15 @@ extension ServerController: ServerProtocol {
           respondWith(nil, BluePicLocalizedError.addImageRecordFailed)
           return
         }
-
-        // Add image record to database
-        self.database.create(imageJson) { id, revision, _, error in
-
-          guard error == nil, let id = id, let revision = revision else {
-            Log.error("Failed to add user to the system of records.")
-            respondWith(nil, BluePicLocalizedError.addImageRecordFailed)
+        self.createObject(object: image, database: self.database) { image, error in
+          guard let image = image else {
             return
           }
-
-          var image = image
-          image.rev = revision
-
-          respondWith(image, nil)
-
-          self.processImage(withId: id)  // Contine processing of image (async request for OpenWhisk)
-
+          self.processImage(withId: image.id)  // Contine processing of image (async request for OpenWhisk)
         }
       }
       // Create container for user before creating image record in database
-      store(image: imageData, withName: image.fileName, inContainer: image.userId, completionHandler: completionHandler)
+      try store(image: image, completionHandler: completionHandler)
     } catch {
       Log.error("\(error)")
       respondWith(nil, error)
@@ -314,55 +291,22 @@ extension ServerController: ServerProtocol {
   /// Route for getting a specific user document.
   func getUser(id: String, respondWith: @escaping (User?, Swift.Error?) -> Void) {
 
-    let params: [Database.QueryParameters] = [
-      .descending(true),
-      .includeDocs(false),
-      .keys([id as Database.KeyType])
-    ]
+    let params: [Database.QueryParameters] = [ .keys([id as Database.KeyType]) ]
 
-    database.queryByView("users", ofDesign: "main_design", usingParameters: params) { document, error in
-
-      do {
-        guard error == nil, let document = document  else {
-          throw BluePicLocalizedError.readDocumentFailed
-        }
-
-        guard let first = try document.toData().first else {
-          throw BluePicLocalizedError.noUserId(id)
-        }
-
-        let user = try self.decoder.decode(User.self, from: first)
-        respondWith(user, nil)
-
-      } catch {
-        Log.error("\(error)")
-        respondWith(nil, error)
+    readByView("users", params: params, type: User.self, database: database) { users, error in
+      guard error == nil, let user = users?.first else {
+        respondWith(nil, error ?? BluePicLocalizedError.noUserId(id))
+        return
       }
+      
+      respondWith(user, nil)
     }
   }
 
   /// Route for getting all user documents.
   func getUsers(respondWith: @escaping ([User]?, Swift.Error?) -> Void) {
-
-    let params: [Database.QueryParameters] = [.descending(true), .includeDocs(false)]
-
-    database.queryByView("users", ofDesign: "main_design", usingParameters: params) { document, error in
-
-      do {
-        guard error == nil, let document = document else {
-          throw BluePicLocalizedError.readDocumentFailed
-        }
-
-        let rows = try document.toData()
-        let users = try rows.map { try self.decoder.decode(User.self, from: $0) }
-
-        respondWith(users, nil)
-
-      } catch {
-        Log.error("\(error)")
-        respondWith(nil, error)
-      }
-    }
+    let params: [Database.QueryParameters] = [ .includeDocs(false) ]
+    readByView("users", params: params, type: User.self, database: database, callback: respondWith)
   }
 
   /// Route for creating a new user
@@ -371,58 +315,19 @@ extension ServerController: ServerProtocol {
     // Closure for adding new user document to the database
     let createRecord = {
       Log.verbose("Creating new user record '\(user.id)'.")
-
-      do {
-        let userData = try self.encoder.encode(user)
-        let userJson = JSON(data: userData)
-
-        self.database.create(userJson) { _, _, document, error in
-          guard error == nil, let document = document else {
-            Log.error("Failed to add user to the system of records.")
-            respondWith(nil, BluePicLocalizedError.readDocumentFailed)
-            return
-          }
-
-          var user = user
-          user.rev = document["rev"].string
-
-          respondWith(user, nil)
-        }
-      } catch {
-        Log.error("\(error)")
-        respondWith(nil, error)
-      }
+      self.createObject(object: user, database: self.database, callback: respondWith)
     }
 
     // Closure for verifying if user exists and creating new record
     let addUser = {
-
-      let params: [Database.QueryParameters] = [
-        .descending(true),
-        .includeDocs(false),
-        .keys([user.id as Database.KeyType])
-      ]
-
-      self.database.queryByView("users", ofDesign: "main_design", usingParameters: params) { document, error in
-
-        do {
-          guard error == nil, let document = document else {
-            Log.error("Failed to read requested user document.")
-            respondWith(user, BluePicLocalizedError.readDocumentFailed)
-            return
-          }
-
-          guard let first = try document.toData().first else {
-            throw BluePicLocalizedError.missingUserId
-          }
-
-          let user = try self.decoder.decode(User.self, from: first)
-          respondWith(user, nil)
-
-        } catch {
-          Log.error("User with id \(user.id) was not found.")
+      self.getUser(id: user.id) { user, error in
+        guard error == nil, let usr = user else {
+          Log.error("User with id \(user?.id ?? "") was not found.")
           createRecord()
+          return
         }
+
+        respondWith(usr, nil)
       }
     }
 

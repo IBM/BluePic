@@ -28,7 +28,7 @@ extension JSON {
     return try rows.map { row in try row["value"].rawData() }
   }
 
-  public func imagesToData() throws -> [Data] {
+  public func imagesToData() throws -> [(Data, Data)] {
 
     guard let doc = self["rows"].array else {
       throw BluePicLocalizedError.noJsonData("")
@@ -39,12 +39,15 @@ extension JSON {
         return acc
       }
 
-      guard let dict = current.element.dictionaryObject?["doc"] else {
+      guard let usrDict = doc[current.offset - 1].dictionaryObject?["doc"],
+            let imgDict = current.element.dictionaryObject?["doc"] else {
         return acc
       }
 
       var acc = acc
-      acc.append(try JSONSerialization.data(withJSONObject: dict as Any, options: .prettyPrinted))
+      let user = try JSONSerialization.data(withJSONObject: usrDict as Any, options: .prettyPrinted)
+      let image = try JSONSerialization.data(withJSONObject: imgDict as Any, options: .prettyPrinted)
+      acc.append((user, image))
 
       return acc
     }

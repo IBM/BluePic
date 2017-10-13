@@ -15,8 +15,9 @@
  **/
 
 import Foundation
+import SwiftyJSON
 
-struct Image: Codable {
+struct Image {
   let id: String
   var rev: String?
   let fileName: String
@@ -30,6 +31,10 @@ struct Image: Codable {
   let userId: String
   let deviceId: String?
   let location: Location?
+  var user: User?
+}
+
+extension Image: Codable {
 
   enum CodingKeys: String, CodingKey {
     case id = "_id"
@@ -46,10 +51,9 @@ struct Image: Codable {
     case deviceId
     case type
     case location
+    case user
   }
-}
 
-extension Image {
   func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
     try container.encode(id, forKey: .id)
@@ -65,6 +69,7 @@ extension Image {
     try container.encode(userId, forKey: .userId)
     try container.encodeIfPresent(deviceId, forKey: .deviceId)
     try container.encodeIfPresent(location, forKey: .location)
+    try container.encodeIfPresent(user, forKey: .user)
     try container.encode("image", forKey: .type)
   }
 
@@ -84,12 +89,33 @@ extension Image {
     userId = try values.decode(String.self, forKey: .userId)
     deviceId = try values.decodeIfPresent(String.self, forKey: .deviceId)
     location = try values.decodeIfPresent(Location.self, forKey: .location)
+    user = try values.decodeIfPresent(User.self, forKey: .user)
+  }
+}
+
+extension Image: JSONConvertible {
+  static func convert(document: JSON, decoder: JSONDecoder) throws -> [Image] {
+    return try document.imagesToData().reduce([]) { acc, current in
+      var acc = acc
+      let user = try decoder.decode(User.self, from: current.0)
+      var image = try decoder.decode(Image.self, from: current.1)
+      image.user = user
+      acc.append(image)
+      return acc
+    }
   }
 }
 
 struct TagCount: Codable {
   let key: String
   let value: Int
+  var rev: String?
+}
+
+extension TagCount: JSONConvertible {
+  static func convert(document: JSON, decoder: JSONDecoder) throws -> [TagCount] {
+    return try decoder.decode([TagCount].self, from: document["rows"].rawData())
+  }
 }
 
 struct Tag: Codable {

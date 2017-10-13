@@ -38,6 +38,7 @@ enum BluePicLocalizedError: LocalizedError {
     case getImagesFailed(String)
     case addUserRecordFailed(String)
     case requestFailed
+    case createDatabaseObjectFailed(String)
 
     var errorDescription: String? {
         switch self {
@@ -54,6 +55,7 @@ enum BluePicLocalizedError: LocalizedError {
         case .getImagesFailed(let userId): return "Failed to get images for \(userId)."
         case .addUserRecordFailed(let userId): return "Failed to add user: \(userId) to the system of records."
         case .requestFailed: return "Failed to process user request."
+        case .createDatabaseObjectFailed(let type): return "Failed to add object of type \(type) to database"
         }
     }
 }
@@ -140,10 +142,11 @@ extension ServerController {
   func readImage(database: Database, imageId: String, callback: @escaping (Image?, Swift.Error?) -> Void) {
     let anyImageId = imageId as Database.KeyType
     let queryParams: [Database.QueryParameters] = [
+                                                   .includeDocs(true),
                                                    .endKey([anyImageId, NSNumber(integerLiteral: 0)]),
                                                    .startKey([anyImageId, NSObject()])
                                                   ]
-    readImagesByView("images_by_id", params: queryParams, database: database) { images, error in
+    readByView("images_by_id", params: queryParams, type: Image.self, database: database) { images, error in
       guard let images = images, let image = images.first, error == nil else {
         callback(nil, BluePicLocalizedError.getImagesFailed(imageId))
         return
@@ -152,25 +155,32 @@ extension ServerController {
     }
   }
 
-  func readImagesByView(_ view: String,
+  /**
+   * Database Query Builder
+   *
+   * - parameter params: Database.QueryParameters
+   * - parameter types: Type of the object being returned
+   * - parameter database: Database instance
+   * - parameter callback: Callback to use within async method.
+   */
+  func readByView<T: JSONConvertible>(_ view: String,
                         params: [Database.QueryParameters] = [],
+                        type: T.Type,
                         database: Database,
-                        callback: @escaping ([Image]?, Swift.Error?) -> Void) {
+                        callback: @escaping ([T]?, Swift.Error?) -> Void) {
 
-    var queryParams: [Database.QueryParameters] = [.descending(true), .includeDocs(true)]
+    var queryParams: [Database.QueryParameters] = [.descending(true)]
     queryParams.append(contentsOf: params)
 
     database.queryByView(view, ofDesign: "main_design", usingParameters: queryParams) { document, error in
       do {
         guard error == nil, let document = document else {
-          throw BluePicLocalizedError.getAllImagesFailed
+          throw BluePicLocalizedError.readDocumentFailed
         }
+        
+        let objects: [T] = try T.convert(document: document, decoder: self.decoder)
 
-        let data: [Data] = try document.imagesToData()
-
-        let images = try data.map { try self.decoder.decode(Image.self, from: $0) }
-
-        callback(images, nil)
+        callback(objects, nil)
 
       } catch {
         Log.error("\(error)")
@@ -178,7 +188,36 @@ extension ServerController {
       }
     }
   }
+  
+  /**
+   * Database Create Query Builder. Adds the object to the db and updates in revision number
+   *
+   * - parameter object: JSONConvertible/Codable object
+   * - parameter database: Database instance
+   * - parameter callback: Callback to use within async method.
+   */
+  func createObject<T: JSONConvertible>(object: T, database: Database, callback: @escaping (T?, Swift.Error?) -> Void) {
+    do {
+      let data = try self.encoder.encode(object)
+      let json = JSON(data: data)
 
+      database.create(json) { _, revision, _, error in
+        
+        guard error == nil, let revision = revision else {
+          Log.error("Failed to add user to the system of records.")
+          callback(nil, BluePicLocalizedError.createDatabaseObjectFailed(String(describing: Swift.type(of: object))))
+          return
+        }
+        
+        var object = object
+        object.rev = revision
+        
+        callback(object, nil)
+      }
+    } catch {
+        
+    }
+  }
   /**
    Method to parse a document to get image data out of it.
 
@@ -228,37 +267,6 @@ extension ServerController {
     }
 
     return constructDocument(records: images)
-  }
-
-  /**
-   Converts a RouterRequest object to a more consumable JSON object.
-
-   - parameter json: json object containing details about an image
-   - parameter request: router request with all the data
-
-   - throws: parsing error if request has invalid info
-
-   - returns: valid Json with image data
-   */
-  func updateImageJSON(json: JSON, withRequest request: RouterRequest) throws -> JSON {
-    var updatedJson = json
-
-    guard let contentType = ContentType.sharedInstance.getContentType(forFileName: updatedJson["fileName"].stringValue) else {
-      throw ProcessingError.image("Invalid image document!")
-    }
-
-    let userId = updatedJson["userId"].string ?? "anonymous"
-    Log.verbose("Image will be uploaded under the following userId: '\(userId)'.")
-    let uploadedTs = StringUtils.currentTimestamp()
-    let imageURL = generateUrl(forContainer: userId, forImage: updatedJson["fileName"].stringValue)
-
-    updatedJson["contentType"].stringValue = contentType
-    updatedJson["url"].stringValue = imageURL
-    updatedJson["userId"].stringValue = userId
-    updatedJson["uploadedTs"].stringValue = uploadedTs
-    updatedJson["type"].stringValue = "image"
-
-    return updatedJson
   }
 
   /**
@@ -330,18 +338,17 @@ extension ServerController {
    - parameter containerName:     name of container to use
    - parameter completionHandler: callback to use on success or failure
    */
-   func store(image: Data,
-              withName name: String,
-              inContainer containerName: String,
-              completionHandler: @escaping (_ success: Bool) -> Void) {
+   func store(image: Image, completionHandler: @escaping (_ success: Bool) -> Void) throws {
      // Store image in container
+     let imageData = try self.encoder.encode(image)
+    
      let storeImage = { (container: ObjectStorageContainer) -> Void in
-       container.storeObject(name: name, data: image) { error, _ in
+       container.storeObject(name: image.fileName, data: imageData) { error, _ in
          if let _ = error {
-           Log.error("Could not save image named '\(name)' in container.")
+           Log.error("Could not save image named '\(image.fileName)' in container.")
            completionHandler(false)
          } else {
-           Log.verbose("Stored successfully image '\(name)' in container.")
+           Log.verbose("Stored successfully image '\(image.fileName)' in container.")
            completionHandler(true)
          }
        }
@@ -350,11 +357,11 @@ extension ServerController {
      // Get reference to container
      let retrieveContainer = { (objStorage: ObjectStorage?) -> Void in
        if let objStorage = objStorage {
-         objStorage.retrieveContainer(name: containerName) { error, container in
+         objStorage.retrieveContainer(name: image.fileName) { error, container in
            if let container = container, error == nil {
              storeImage(container)
            } else {
-             Log.error("Could not find container named '\(containerName)'.")
+             Log.error("Could not find container named '\(image.fileName)'.")
              completionHandler(false)
            }
          }
@@ -380,26 +387,6 @@ extension ServerController {
     record["url"].stringValue = generateUrl(forContainer: containerName, forImage: fileName)
     _ = record.dictionaryObject?.removeValue(forKey: "userId")
     _ = record.dictionaryObject?.removeValue(forKey: "_attachments")
-  }
-
-  /**
-   Method to simply get cleanly formatted values from a JSON document.
-
-   - parameter document: JSON document with raw data
-
-   - throws: parsing error if user JSON is invalid
-
-   - returns: array of Json value objects
-   */
-  private func parseRecords(document: JSON) throws -> [JSON] {
-    guard let rows = document["rows"].array else {
-      throw ProcessingError.user("Invalid document returned from Cloudant!")
-    }
-
-    let records: [JSON] = rows.map({row in
-      row["value"]
-    })
-    return records
   }
 
   /**

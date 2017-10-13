@@ -15,8 +15,9 @@
  **/
 
 import Foundation
+import SwiftyJSON
 
-struct User: Codable {
+struct User {
   let id: String
   let name: String
   var rev: String?
@@ -26,6 +27,9 @@ struct User: Codable {
     self.name = name
     self.rev = nil
   }
+}
+
+extension User: Codable {
 
   enum CodingKeys: String, CodingKey {
     case id = "_id"
@@ -33,9 +37,7 @@ struct User: Codable {
     case name
     case type
   }
-}
 
-extension User {
   func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
     try container.encode(id, forKey: .id)
@@ -49,5 +51,11 @@ extension User {
     id = try values.decode(String.self, forKey: .id)
     name = try values.decode(String.self, forKey: .name)
     rev = try values.decode(String.self, forKey: .rev)
+  }
+}
+
+extension User: JSONConvertible {
+  static func convert(document: JSON, decoder: JSONDecoder) throws -> [User] {
+    return try document.toData().map { try decoder.decode(User.self, from: $0) }
   }
 }
