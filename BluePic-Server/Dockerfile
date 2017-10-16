@@ -25,12 +25,12 @@ EXPOSE 8080
 
 RUN mkdir /BluePic-Server
 
-ADD Sources /BluePic-Server/Sources
+
+ADD config /BluePic-Server/config
 ADD Tests /BluePic-Server/Tests
 ADD public /BluePic-Server/public
 ADD Package.swift /BluePic-Server
 ADD Package.resolved /BluePic-Server
-ADD LICENSE /BluePic-Server
 ADD .swift-version /BluePic-Server
 RUN cd /BluePic-Server && swift build
 

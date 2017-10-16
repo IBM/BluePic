@@ -79,7 +79,7 @@ class RouteTests: XCTestCase {
   override func setUp() {
     super.setUp()
 
-    resetDatabase()
+    //resetDatabase()
 
     if self.accessToken == "" {
       let tokenFileName = "authToken"
@@ -153,7 +153,7 @@ class RouteTests: XCTestCase {
       .sendForTestingWithKitura { data in
 
         let images = JSON(data: data)
-        let records = images["records"].arrayValue
+        let records = images.arrayValue
         XCTAssertEqual(records.count, 9)
         let firstImage = records.first
         XCTAssertNotNil(firstImage, "firstImage is nil within collection of all images.")
@@ -186,11 +186,11 @@ class RouteTests: XCTestCase {
 
     let imageExpectation = expectation(description: "Get all images with a specific tag.")
 
-    URLRequest(forTestWithMethod: "GET", route: "images?tag=mountain")
+    URLRequest(forTestWithMethod: "GET", route: "images/tag/mountain")
       .sendForTestingWithKitura { data in
 
         let images = JSON(data: data)
-        let records = images["records"].arrayValue
+        let records = images.arrayValue
         XCTAssertEqual(records.count, 3)
         let image = records.first
         XCTAssertNotNil(image, "First image with tag, mountain, is nil.")
@@ -309,7 +309,7 @@ class RouteTests: XCTestCase {
     URLRequest(forTestWithMethod: "GET", route: "users/1001/images", authToken: self.accessToken)
       .sendForTestingWithKitura { data in
         let images = JSON(data: data)
-        let records = images["records"].arrayValue
+        let records = images.arrayValue
         XCTAssertEqual(records.count, 4)
 
         let imageIds = [2010, 2007, 2004, 2001]
@@ -331,7 +331,7 @@ class RouteTests: XCTestCase {
       .sendForTestingWithKitura { data in
 
         let users = JSON(data: data)
-        let records = users["records"].arrayValue
+        let records = users.arrayValue
         XCTAssertEqual(records.count, 5)
         let userValues: [(String, String)] = [
                                               ("anonymous", "Anonymous"),
@@ -559,7 +559,7 @@ private extension URLRequest {
                                                   ]
 
     let req = HTTP.request(requestOptions) { resp in
-        if let resp = resp, resp.statusCode == HTTPStatusCode.OK || resp.statusCode == HTTPStatusCode.accepted {
+        if let resp = resp, resp.statusCode == HTTPStatusCode.OK || resp.statusCode == HTTPStatusCode.created {
         do {
           var body = Data()
           try resp.readAllData(into: &body)
