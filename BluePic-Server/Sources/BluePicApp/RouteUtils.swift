@@ -108,7 +108,7 @@ extension ServerController {
         do {
           _ = try resp.read(into: &rawUserData)
           let str = String(data: rawUserData, encoding: .utf8)
-          print("Error response from OpenWhisk: \(String(describing: str))")
+          Log.error("Error response from OpenWhisk: \(String(describing: str))")
         } catch {
           Log.warning("Failed to read response data in processImage error state.")
         }
@@ -119,7 +119,7 @@ extension ServerController {
         var body = Data()
         try resp.readAllData(into: &body)
         let jsonResponse = JSON(data: body)
-        print("OpenWhisk response: \(jsonResponse)")
+        Log.debug("OpenWhisk response: \(jsonResponse)")
       } catch {
         Log.error("Bad JSON document received from OpenWhisk.")
       }
@@ -201,7 +201,7 @@ extension ServerController {
       let data = try self.encoder.encode(object)
       let json = JSON(data: data)
 
-      database.create(json) { _, revision, _, error in
+        database.create(json) { id, revision, _, error in
         
         guard error == nil, let revision = revision else {
           Log.error("Failed to add user to the system of records.")
@@ -211,7 +211,7 @@ extension ServerController {
         
         var object = object
         object.rev = revision
-        
+
         callback(object, nil)
       }
     } catch {
@@ -339,12 +339,14 @@ extension ServerController {
    - parameter completionHandler: callback to use on success or failure
    */
    func store(image: Image, completionHandler: @escaping (_ success: Bool) -> Void) throws {
-     // Store image in container
-     let imageData = try self.encoder.encode(image)
-    
+    guard let imageData = image.image else {
+        Log.error("No image found")
+        return
+    }
      let storeImage = { (container: ObjectStorageContainer) -> Void in
        container.storeObject(name: image.fileName, data: imageData) { error, _ in
-         if let _ = error {
+         if let error = error {
+            Log.error("\(error)")
            Log.error("Could not save image named '\(image.fileName)' in container.")
            completionHandler(false)
          } else {
@@ -357,7 +359,8 @@ extension ServerController {
      // Get reference to container
      let retrieveContainer = { (objStorage: ObjectStorage?) -> Void in
        if let objStorage = objStorage {
-         objStorage.retrieveContainer(name: image.fileName) { error, container in
+        Log.debug("retrieving container: \(image.userId)")
+         objStorage.retrieveContainer(name: image.userId) { error, container in
            if let container = container, error == nil {
              storeImage(container)
            } else {

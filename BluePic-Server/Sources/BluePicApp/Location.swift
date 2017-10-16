@@ -15,11 +15,16 @@
  **/
 
 import Foundation
-import SwiftyJSON
 
-protocol JSONConvertible: Codable {
-  
-  var rev: String? { get set }
-  
-  static func convert(document: JSON, decoder: JSONDecoder) throws -> [Self]
+struct Weather: Codable {
+    let description: String
+    let temperature: Int
+    let iconId: Int
+}
+
+struct Location: Codable {
+    let name: String
+    let latitude: Double
+    let longitude: Double
+    let weather: Weather?
 }

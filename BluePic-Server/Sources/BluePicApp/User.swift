@@ -18,7 +18,7 @@ import Foundation
 import SwiftyJSON
 
 struct User {
-  let id: String
+  var id: String
   let name: String
   var rev: String?
 
@@ -42,15 +42,16 @@ extension User: Codable {
     var container = encoder.container(keyedBy: CodingKeys.self)
     try container.encode(id, forKey: .id)
     try container.encode(name, forKey: .name)
-    try container.encode(rev, forKey: .rev)
+    try container.encodeIfPresent(rev, forKey: .rev)
     try container.encode("user", forKey: .type)
   }
 
   init(from decoder: Decoder) throws {
     let values = try decoder.container(keyedBy: CodingKeys.self)
+
     id = try values.decode(String.self, forKey: .id)
     name = try values.decode(String.self, forKey: .name)
-    rev = try values.decode(String.self, forKey: .rev)
+    rev = try values.decodeIfPresent(String.self, forKey: .rev)
   }
 }
 

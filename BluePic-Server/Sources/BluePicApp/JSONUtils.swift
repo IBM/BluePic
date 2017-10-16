@@ -19,6 +19,11 @@ import SwiftyJSON
 
 extension JSON {
 
+  /**
+     Converts a JSON response to a Data Array
+  
+     - returns: decoded Data Array
+  */
   public func toData() throws -> [Data] {
 
     guard let rows = self["rows"].array else {
@@ -27,7 +32,12 @@ extension JSON {
 
     return try rows.map { row in try row["value"].rawData() }
   }
-
+  
+  /**
+     Converts a JSON response to a Data Array of (User data, image data) pairs
+     
+     - returns: decoded Data Array
+  */
   public func imagesToData() throws -> [(Data, Data)] {
 
     guard let doc = self["rows"].array else {

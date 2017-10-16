@@ -18,20 +18,21 @@ import Foundation
 import SwiftyJSON
 
 struct Image {
-  let id: String
-  var rev: String?
-  let fileName: String
-  let caption: String
-  let contentType: String
-  let url: String
-  let width: Int
-  let height: Int
-  let tags: [Tag]
-  let uploadedTs: String
-  let userId: String
-  let deviceId: String?
-  let location: Location?
-  var user: User?
+    var id: String
+    var rev: String?
+    let fileName: String
+    let caption: String
+    let contentType: String
+    var url: String?
+    let width: Double
+    let height: Double
+    let tags: [Tag]
+    let uploadedTs: String
+    let userId: String
+    let deviceId: String?
+    let location: Location?
+    var user: User?
+    var image: Data?
 }
 
 extension Image: Codable {
@@ -52,16 +53,17 @@ extension Image: Codable {
     case type
     case location
     case user
+    case image
   }
 
   func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
-    try container.encode(id, forKey: .id)
+    try container.encodeIfPresent(id, forKey: .id)
+    try container.encodeIfPresent(rev, forKey: .rev)
+    try container.encodeIfPresent(url, forKey: .url)
     try container.encode(fileName, forKey: .fileName)
-    try container.encode(rev, forKey: .rev)
     try container.encode(caption, forKey: .caption)
     try container.encode(contentType, forKey: .contentType)
-    try container.encode(url, forKey: .url)
     try container.encode(height, forKey: .height)
     try container.encode(width, forKey: .width)
     try container.encode(tags, forKey: .tags)
@@ -76,20 +78,26 @@ extension Image: Codable {
   init(from decoder: Decoder) throws {
     let values = try decoder.container(keyedBy: CodingKeys.self)
 
-    id = try values.decode(String.self, forKey: .id)
-    rev = try values.decode(String.self, forKey: .rev)
+    // Must Exist
     fileName = try values.decode(String.self, forKey: .fileName)
     caption = try values.decode(String.self, forKey: .caption)
-    contentType = try values.decode(String.self, forKey: .contentType)
-    url = try values.decode(String.self, forKey: .url)
-    width = try values.decode(Int.self, forKey: .width)
-    height = try values.decode(Int.self, forKey: .height)
-    tags = try values.decodeIfPresent([Tag].self, forKey: .tags) ?? []
-    uploadedTs = try values.decode(String.self, forKey: .uploadedTs)
+    width = try values.decode(Double.self, forKey: .width)
+    height = try values.decode(Double.self, forKey: .height)
     userId = try values.decode(String.self, forKey: .userId)
+
+    // Server Created -- Optional coming from Client
+    id = try values.decodeIfPresent(String.self, forKey: .id) ?? UUID().uuidString
+    rev = try values.decodeIfPresent(String.self, forKey: .rev)
+    contentType = try values.decodeIfPresent(String.self, forKey: .contentType) ?? "image"
+    url = try values.decodeIfPresent(String.self, forKey: .url)
+
+    // Optional
+    tags = try values.decodeIfPresent([Tag].self, forKey: .tags) ?? []
+    uploadedTs = try values.decodeIfPresent(String.self, forKey: .uploadedTs) ?? StringUtils.currentTimestamp()
     deviceId = try values.decodeIfPresent(String.self, forKey: .deviceId)
     location = try values.decodeIfPresent(Location.self, forKey: .location)
     user = try values.decodeIfPresent(User.self, forKey: .user)
+    image = try values.decodeIfPresent(Data.self, forKey: .image)
   }
 }
 
@@ -104,35 +112,4 @@ extension Image: JSONConvertible {
       return acc
     }
   }
-}
-
-struct TagCount: Codable {
-  let key: String
-  let value: Int
-  var rev: String?
-}
-
-extension TagCount: JSONConvertible {
-  static func convert(document: JSON, decoder: JSONDecoder) throws -> [TagCount] {
-    return try decoder.decode([TagCount].self, from: document["rows"].rawData())
-  }
-}
-
-struct Tag: Codable {
-  let label: String
-  let confidence: Int
-}
-
-struct Weather: Codable {
-  let description: String
-  let temperature: Int
-  let iconId: Int
-}
-
-struct Location: Codable {
-  let name: String
-  let latitude: Double
-  let longitude: Double
-  let weather: Weather?
-
 }

@@ -118,12 +118,13 @@ public class ServerController {
 
     Log.verbose("Defining middleware for server...")
 
-    credentials.register(plugin: webCredentialsPlugin)
+    //credentials.register(plugin: webCredentialsPlugin)
 
-    router.all(middleware: Session(secret: "Very very secret..."))
+    //router.all(middleware: Session(secret: "Very very secret..."))
     router.all("/", middleware: StaticFileServer(path: "./BluePic-Web"))
 
-    router.all(handler: credentials.authenticate(credentialsType: webCredentialsPlugin.name), { (request, response, next) in
+    /*router.all(handler: credentials.authenticate(credentialsType: webCredentialsPlugin.name), { (request, response, next) in
+      Log.debug("Checking authorization ---------")
       let appIdAuthContext: JSON? = request.session?[WebAppKituraCredentialsPlugin.AuthContext]
       let identityTokenPayload: JSON? = appIdAuthContext?["identityTokenPayload"]
 
@@ -140,7 +141,7 @@ public class ServerController {
     router.post("/push", middleware: credentials)
     router.get("/ping", middleware: credentials)
     router.post("/images", middleware: credentials)
-    router.all("/images", middleware: BodyParser())
+    router.all("/images", middleware: BodyParser())*/
 
     Log.verbose("Defining routes for server...")
     router.get("/ping", handler: ping)
@@ -217,11 +218,11 @@ extension ServerController: ServerProtocol {
   ///                ///
 
   /// Route for getting the most popular tags
-  func getTags(respondWith: @escaping ([TagCount]?, Swift.Error?) -> Void) {
+  func getTags(respondWith: @escaping ([PopularTag]?, Swift.Error?) -> Void) {
 
     let params: [Database.QueryParameters] = [.group(true), .groupLevel(1)]
 
-    readByView("tags", params: params, type: TagCount.self, database: database) { tags, error in
+    readByView("tags", params: params, type: PopularTag.self, database: database) { tags, error in
       guard error == nil, var tags = tags else {
         respondWith(nil, error ?? BluePicLocalizedError.getTagsFailed)
         return
@@ -273,11 +274,18 @@ extension ServerController: ServerProtocol {
           respondWith(nil, BluePicLocalizedError.addImageRecordFailed)
           return
         }
+        
+        var image = image
+        image.url = self.generateUrl(forContainer: image.userId, forImage: image.fileName)
+
         self.createObject(object: image, database: self.database) { image, error in
-          guard let image = image else {
+          guard let image = image, error == nil else {
+            respondWith(nil, BluePicLocalizedError.addImageRecordFailed)
             return
           }
+
           self.processImage(withId: image.id)  // Contine processing of image (async request for OpenWhisk)
+          respondWith(image, nil)
         }
       }
       // Create container for user before creating image record in database

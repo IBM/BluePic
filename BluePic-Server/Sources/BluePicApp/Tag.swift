@@ -17,9 +17,19 @@
 import Foundation
 import SwiftyJSON
 
-protocol JSONConvertible: Codable {
-  
-  var rev: String? { get set }
-  
-  static func convert(document: JSON, decoder: JSONDecoder) throws -> [Self]
+struct Tag: Codable {
+    let label: String
+    let confidence: Int
+}
+
+struct PopularTag: Codable {
+    let key: String
+    let value: Int
+    var rev: String?
+}
+
+extension PopularTag: JSONConvertible {
+    static func convert(document: JSON, decoder: JSONDecoder) throws -> [PopularTag] {
+        return try decoder.decode([PopularTag].self, from: document["rows"].rawData())
+    }
 }
