@@ -94,7 +94,7 @@ class BluemixDataManager: NSObject {
 
     //used to help the feed view model decide to show the loading animaiton on the feed vc
     var hasReceievedInitialImages = false
-    
+
     //used to make type safe requests to our kitura backend
     var client: KituraBuddy {
         return KituraBuddy(baseURL: getBluemixBaseRequestURL() + "/")

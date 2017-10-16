@@ -27,6 +27,7 @@ RUN mkdir /BluePic-Server
 
 
 ADD config /BluePic-Server/config
+ADD Sources /BluePic-Server/Sources
 ADD Tests /BluePic-Server/Tests
 ADD public /BluePic-Server/public
 ADD Package.swift /BluePic-Server

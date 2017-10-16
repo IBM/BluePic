@@ -1,0 +1,10 @@
+name: BluePicServer
+version: 2.3
+description: IBM BluePic Backend
+home: http://www.wordpress.com/
+sources:
+- https://github.com/ibmcom/swift-ubuntu:4.0
+- https://github.com/IBM/BluePic
+maintainers:
+- name: IBM Swift Engineering at IBM Cloud
+engine: gotpl

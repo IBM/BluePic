@@ -17,7 +17,7 @@
 import Foundation
 import SwiftyJSON
 
-struct Image {
+struct Image: Encodable {
     var id: String
     var rev: String?
     let fileName: String
@@ -35,7 +35,7 @@ struct Image {
     var image: Data?
 }
 
-extension Image: Codable {
+extension Image: Decodable {
 
   enum CodingKeys: String, CodingKey {
     case id = "_id"
@@ -50,29 +50,9 @@ extension Image: Codable {
     case uploadedTs
     case userId
     case deviceId
-    case type
     case location
     case user
     case image
-  }
-
-  func encode(to encoder: Encoder) throws {
-    var container = encoder.container(keyedBy: CodingKeys.self)
-    try container.encodeIfPresent(id, forKey: .id)
-    try container.encodeIfPresent(rev, forKey: .rev)
-    try container.encodeIfPresent(url, forKey: .url)
-    try container.encode(fileName, forKey: .fileName)
-    try container.encode(caption, forKey: .caption)
-    try container.encode(contentType, forKey: .contentType)
-    try container.encode(height, forKey: .height)
-    try container.encode(width, forKey: .width)
-    try container.encode(tags, forKey: .tags)
-    try container.encode(uploadedTs, forKey: .uploadedTs)
-    try container.encode(userId, forKey: .userId)
-    try container.encodeIfPresent(deviceId, forKey: .deviceId)
-    try container.encodeIfPresent(location, forKey: .location)
-    try container.encodeIfPresent(user, forKey: .user)
-    try container.encode("image", forKey: .type)
   }
 
   init(from decoder: Decoder) throws {
@@ -103,15 +83,15 @@ extension Image: Codable {
 
 extension Image: JSONConvertible {
   static func convert(document: JSON, hasDocs: Bool = true, decoder: JSONDecoder) throws -> [Image] {
-    return !hasDocs ? try document.toData().map { try decoder.decode(Image.self, from: $0) }
-                      :
-                      try document.toDataWithDocs().reduce([]) { acc, current in
-                        var acc = acc
-                        let user = try decoder.decode(User.self, from: current.0)
-                        var image = try decoder.decode(Image.self, from: current.1)
-                        image.user = user
-                        acc.append(image)
-                        return acc
-                      }
+    return try !hasDocs ? document.toData().map { try decoder.decode(Image.self, from: $0) }
+                          :
+                          document.toDataWithDocs().reduce([]) { acc, current in
+                            var acc = acc
+                            let user = try decoder.decode(User.self, from: current.0)
+                            var image = try decoder.decode(Image.self, from: current.1)
+                            image.user = user
+                            acc.append(image)
+                            return acc
+                        }
   }
 }

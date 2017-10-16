@@ -71,6 +71,18 @@
 		347AD2221C18F98600C3B473 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347AD2211C18F98600C3B473 /* LoginViewModel.swift */; };
 		34C8094D1BFCEA0400C48004 /* bluemix.plist in Resources */ = {isa = PBXBuildFile; fileRef = 34C8094C1BFCEA0400C48004 /* bluemix.plist */; };
 		34C809551BFD0F2400C48004 /* FacebookDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C809541BFD0F2400C48004 /* FacebookDataManager.swift */; };
+		46B120FC1F914CAE00EF75FE /* LoggerAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46B120F71F914CAD00EF75FE /* LoggerAPI.framework */; };
+		46B120FD1F914CAE00EF75FE /* LoggerAPI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 46B120F71F914CAD00EF75FE /* LoggerAPI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		46B120FE1F914CAE00EF75FE /* CircuitBreaker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46B120F81F914CAD00EF75FE /* CircuitBreaker.framework */; };
+		46B120FF1F914CAE00EF75FE /* CircuitBreaker.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 46B120F81F914CAD00EF75FE /* CircuitBreaker.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		46B121021F914CAE00EF75FE /* SafetyContracts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46B120FA1F914CAD00EF75FE /* SafetyContracts.framework */; };
+		46B121031F914CAE00EF75FE /* SafetyContracts.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 46B120FA1F914CAD00EF75FE /* SafetyContracts.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		46B121041F914CAE00EF75FE /* SwiftyRequest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46B120FB1F914CAE00EF75FE /* SwiftyRequest.framework */; };
+		46B121051F914CAE00EF75FE /* SwiftyRequest.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 46B120FB1F914CAE00EF75FE /* SwiftyRequest.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		46C831251F92E013005D3921 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C831241F92E013005D3921 /* Location.swift */; };
+		46C831271F92E0E8005D3921 /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C831261F92E0E8005D3921 /* Tag.swift */; };
+		46C831281F92E49E005D3921 /* KituraBuddy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46B120F91F914CAD00EF75FE /* KituraBuddy.framework */; };
+		46CC51EF1F92E5580076EA19 /* KituraBuddy.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 46B120F91F914CAD00EF75FE /* KituraBuddy.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -90,8 +102,22 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				46CC51EF1F92E5580076EA19 /* KituraBuddy.framework in Embed Frameworks */,
+				46B120FD1F914CAE00EF75FE /* LoggerAPI.framework in Embed Frameworks */,
+				46B120FF1F914CAE00EF75FE /* CircuitBreaker.framework in Embed Frameworks */,
+				46B121051F914CAE00EF75FE /* SwiftyRequest.framework in Embed Frameworks */,
+				46B121031F914CAE00EF75FE /* SafetyContracts.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		46B120F61F91486A00EF75FE /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 16;
+			files = (
+			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -172,6 +198,13 @@
 		34C8094A1BFCD9A300C48004 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		34C8094C1BFCEA0400C48004 /* bluemix.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = bluemix.plist; sourceTree = "<group>"; };
 		34C809541BFD0F2400C48004 /* FacebookDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookDataManager.swift; sourceTree = "<group>"; };
+		46B120F71F914CAD00EF75FE /* LoggerAPI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LoggerAPI.framework; path = Carthage/Build/iOS/LoggerAPI.framework; sourceTree = "<group>"; };
+		46B120F81F914CAD00EF75FE /* CircuitBreaker.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CircuitBreaker.framework; path = Carthage/Build/iOS/CircuitBreaker.framework; sourceTree = "<group>"; };
+		46B120F91F914CAD00EF75FE /* KituraBuddy.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = KituraBuddy.framework; path = Carthage/Build/iOS/KituraBuddy.framework; sourceTree = "<group>"; };
+		46B120FA1F914CAD00EF75FE /* SafetyContracts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafetyContracts.framework; path = Carthage/Build/iOS/SafetyContracts.framework; sourceTree = "<group>"; };
+		46B120FB1F914CAE00EF75FE /* SwiftyRequest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyRequest.framework; path = Carthage/Build/iOS/SwiftyRequest.framework; sourceTree = "<group>"; };
+		46C831241F92E013005D3921 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
+		46C831261F92E0E8005D3921 /* Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
 		6B961243483EA182951704B4 /* Pods-BluePic.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BluePic.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BluePic/Pods-BluePic.debug.xcconfig"; sourceTree = "<group>"; };
 		BDC4B5F21BFBC77200CC1648 /* BluePic-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BluePic-Bridging-Header.h"; sourceTree = "<group>"; };
 		D4256EC7B8C927E2AAE77625 /* Pods-BluePic.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BluePic.release.xcconfig"; path = "Pods/Target Support Files/Pods-BluePic/Pods-BluePic.release.xcconfig"; sourceTree = "<group>"; };
@@ -182,8 +215,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				46B121041F914CAE00EF75FE /* SwiftyRequest.framework in Frameworks */,
+				46B120FC1F914CAE00EF75FE /* LoggerAPI.framework in Frameworks */,
+				46B121021F914CAE00EF75FE /* SafetyContracts.framework in Frameworks */,
+				46C831281F92E49E005D3921 /* KituraBuddy.framework in Frameworks */,
 				346F94841C10AA32004999A8 /* ImageIO.framework in Frameworks */,
 				1734D862F48A44F01B057089 /* Pods_BluePic.framework in Frameworks */,
+				46B120FE1F914CAE00EF75FE /* CircuitBreaker.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -229,6 +267,8 @@
 				1B4305981CD3EA4400474AB5 /* Image.swift */,
 				1B40BF7B1CDA79080097F435 /* CurrentUser.swift */,
 				2EFFCE091CF4F74E00820BCE /* BluemixConfiguration.swift */,
+				46C831241F92E013005D3921 /* Location.swift */,
+				46C831261F92E0E8005D3921 /* Tag.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -236,6 +276,11 @@
 		347472811BFA8C6A0018B7F6 = {
 			isa = PBXGroup;
 			children = (
+				46B120F81F914CAD00EF75FE /* CircuitBreaker.framework */,
+				46B120F91F914CAD00EF75FE /* KituraBuddy.framework */,
+				46B120F71F914CAD00EF75FE /* LoggerAPI.framework */,
+				46B120FA1F914CAD00EF75FE /* SafetyContracts.framework */,
+				46B120FB1F914CAE00EF75FE /* SwiftyRequest.framework */,
 				3474728C1BFA8C6A0018B7F6 /* BluePic */,
 				347472A11BFA8C6A0018B7F6 /* BluePicTests */,
 				3474728B1BFA8C6A0018B7F6 /* Products */,
@@ -420,6 +465,7 @@
 				2E4D19AE1CF791E700D14D9A /* Swift Lint */,
 				13C15CA20DC2EF6687E144C0 /* [CP] Embed Pods Frameworks */,
 				60CB8EDDE5ECF4068142B45E /* [CP] Copy Pods Resources */,
+				46B120F61F91486A00EF75FE /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -653,8 +699,10 @@
 				3435C7D51C04110C004923BD /* FeedViewController.swift in Sources */,
 				1B5555BE1C1616B000B3086E /* TabBarViewModel.swift in Sources */,
 				2E1D66001DB6AC760004E2C9 /* ImageFeedTableViewCell.swift in Sources */,
+				46C831271F92E0E8005D3921 /* Tag.swift in Sources */,
 				1B40BF7C1CDA79080097F435 /* CurrentUser.swift in Sources */,
 				2EEE1C111DB91CF500608359 /* ProfileHeaderView.swift in Sources */,
+				46C831251F92E013005D3921 /* Location.swift in Sources */,
 				2EFFCE0A1CF4F74E00820BCE /* BluemixConfiguration.swift in Sources */,
 				34C809551BFD0F2400C48004 /* FacebookDataManager.swift in Sources */,
 				347AD2221C18F98600C3B473 /* LoginViewModel.swift in Sources */,
@@ -844,6 +892,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "";
@@ -892,6 +941,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "";
@@ -903,7 +953,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 6B961243483EA182951704B4 /* Pods-BluePic.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = BluePic/BluePic.entitlements;
@@ -914,17 +963,18 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/BluePic/ExternalLibraries",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/BluePic/Configuration/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.ibm.test1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ibm.aaronliberatore;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "11518d98-27f4-4d82-8a06-9aa90bb1badb";
 				PROVISIONING_PROFILE_SPECIFIER = "@IBM MobileFirst Wildcard App ID Dev Profile";
 				SWIFT_OBJC_BRIDGING_HEADER = "BluePic/SupportingFiles/BluePic-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -934,7 +984,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D4256EC7B8C927E2AAE77625 /* Pods-BluePic.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = BluePic/BluePic.entitlements;
@@ -945,16 +994,17 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/BluePic/ExternalLibraries",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/BluePic/Configuration/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.ibm.test1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ibm.aaronliberatore;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "BluePic/SupportingFiles/BluePic-Bridging-Header.h";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -968,7 +1018,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bundle.id.BluePicTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BluePic.app/BluePic";
 			};
@@ -982,7 +1032,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bundle.id.ibm.BluePicTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BluePic.app/BluePic";
 			};

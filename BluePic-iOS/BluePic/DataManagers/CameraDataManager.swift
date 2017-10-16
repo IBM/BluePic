@@ -413,25 +413,17 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
     fileprivate func setLatLongAndLocationNameForImage(_ callback : @escaping (_ location: Location?) -> Void) {
 
         LocationDataManager.SharedInstance.getCurrentLatLongCityAndState { (latitude: CLLocationDegrees?, longitude: CLLocationDegrees?, city: String?, state: String?, error: LocationDataManagerError?) in
-
-            //failure
-            if error != nil {
-                callback(nil)
-            }
-            //success
-            else if let latitude = latitude,
+            guard error == nil,
+                let latitude = latitude,
                 let longitude = longitude,
                 let city = city,
-                let state = state {
-
-                let location = Location(name: "\(city), \(state)", latitude: latitude, longitude: longitude, weather: nil)
-
-                callback(location)
+                let state = state else {
+                    callback(nil)
+                    return
             }
-            //failure
-            else {
-                callback(nil)
-            }
+
+            let location = Location(name: "\(city), \(state)", latitude: latitude, longitude: longitude, weather: nil)
+            callback(location)
 
         }
     }
