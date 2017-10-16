@@ -29,7 +29,7 @@ struct PopularTag: Codable {
 }
 
 extension PopularTag: JSONConvertible {
-    static func convert(document: JSON, decoder: JSONDecoder) throws -> [PopularTag] {
+    static func convert(document: JSON, hasDocs: Bool = false, decoder: JSONDecoder) throws -> [PopularTag] {
         return try decoder.decode([PopularTag].self, from: document["rows"].rawData())
     }
 }

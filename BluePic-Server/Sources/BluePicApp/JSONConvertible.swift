@@ -21,5 +21,5 @@ protocol JSONConvertible: Codable {
   
   var rev: String? { get set }
   
-  static func convert(document: JSON, decoder: JSONDecoder) throws -> [Self]
+  static func convert(document: JSON, hasDocs: Bool, decoder: JSONDecoder) throws -> [Self]
 }

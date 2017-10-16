@@ -172,13 +172,20 @@ extension ServerController {
     var queryParams: [Database.QueryParameters] = [.descending(true)]
     queryParams.append(contentsOf: params)
 
+    let exists = params.contains {
+        switch $0 {
+        case .includeDocs(let x): return x == true
+        default: return false
+        }
+    }
+
     database.queryByView(view, ofDesign: "main_design", usingParameters: queryParams) { document, error in
       do {
         guard error == nil, let document = document else {
           throw BluePicLocalizedError.readDocumentFailed
         }
         
-        let objects: [T] = try T.convert(document: document, decoder: self.decoder)
+        let objects: [T] = try T.convert(document: document, hasDocs: exists, decoder: self.decoder)
 
         callback(objects, nil)
 
@@ -218,56 +225,7 @@ extension ServerController {
         
     }
   }
-  /**
-   Method to parse a document to get image data out of it.
 
-   - parameter document: json document with raw data
-
-   - throws: processing error if can't parse document properly
-
-   - returns: valid Json with just image data
-   */
-  func parseImages(document: JSON) throws -> JSON {
-    guard let rows = document["rows"].array else {
-      throw ProcessingError.image("Invalid images document returned from Cloudant!")
-    }
-
-    var images: [JSON] = []
-    var index = 1
-    while index <= (rows.count) {
-      var imageRecord = rows[index]["doc"]
-      imageRecord["user"] = rows[index-1]["doc"]
-      massageImageRecord(containerName: imageRecord["user"]["_id"].stringValue, record: &imageRecord)
-      images.append(imageRecord)
-      index = index + 2
-    }
-
-    return constructDocument(records: images)
-  }
-
-  /**
-   Method to parse a document to get image data for a specific user out of it.
-
-   - parameter userId:   ID of user to get images for
-   - parameter document: json document with raw data
-
-   - throws: processing error if can't parse document properly
-
-   - returns: valid Json with just image data
-   */
-  func parseImages(forUserId userId: String, usingDocument document: JSON) throws -> JSON {
-    guard let rows = document["rows"].array else {
-      throw ProcessingError.image("Invalid images document returned from Cloudant!")
-    }
-
-    let images: [JSON] = rows.map { row in
-      var record = row["value"]
-      massageImageRecord(containerName: userId, record: &record)
-      return record
-    }
-
-    return constructDocument(records: images)
-  }
 
   /**
    Convenience method to create a URL for a container.
@@ -376,33 +334,4 @@ extension ServerController {
      // Create, and configure container
      objectStorageConn.getObjectStorage(completionHandler: retrieveContainer)
    }
-
-  /**
-   Method to convert JSON data to a more usable format, adding and removing values as necessary.
-
-   - parameter containerName: container to use
-   - parameter record:        Json data to massage/modify
-   */
-  private func massageImageRecord(containerName: String, record: inout JSON) {
-    //let id = record["_id"].stringValue
-    //record["length"].int = record["_attachments"][fileName]["length"].int
-    let fileName = record["fileName"].stringValue
-    record["url"].stringValue = generateUrl(forContainer: containerName, forImage: fileName)
-    _ = record.dictionaryObject?.removeValue(forKey: "userId")
-    _ = record.dictionaryObject?.removeValue(forKey: "_attachments")
-  }
-
-  /**
-   Helper method to wrap parsed data up nicely in a JSON object.
-
-   - parameter records: array of JSON data to wrap up
-
-   - returns: JSON object containg data and number of items
-   */
-  private func constructDocument(records: [JSON]) -> JSON {
-    var jsonDocument = JSON([:])
-    jsonDocument["number_of_records"].int = records.count
-    jsonDocument["records"] = JSON(records)
-    return jsonDocument
-  }
 }

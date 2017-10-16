@@ -27,21 +27,21 @@ extension JSON {
   public func toData() throws -> [Data] {
 
     guard let rows = self["rows"].array else {
-      throw BluePicLocalizedError.noJsonData("")
+      throw BluePicLocalizedError.noJsonData("No JSON array for User request")
     }
 
     return try rows.map { row in try row["value"].rawData() }
   }
   
   /**
-     Converts a JSON response to a Data Array of (User data, image data) pairs
+     Converts a JSON response to a Data Array of (data, data) pairs for responses with Docs
      
      - returns: decoded Data Array
   */
-  public func imagesToData() throws -> [(Data, Data)] {
+  public func toDataWithDocs() throws -> [(Data, Data)] {
 
     guard let doc = self["rows"].array else {
-      throw BluePicLocalizedError.noJsonData("")
+      throw BluePicLocalizedError.noJsonData("No JSON array for Image request")
     }
 
     return try doc.enumerated().reduce([]) { (acc, current) in

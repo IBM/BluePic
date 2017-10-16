@@ -102,14 +102,16 @@ extension Image: Codable {
 }
 
 extension Image: JSONConvertible {
-  static func convert(document: JSON, decoder: JSONDecoder) throws -> [Image] {
-    return try document.imagesToData().reduce([]) { acc, current in
-      var acc = acc
-      let user = try decoder.decode(User.self, from: current.0)
-      var image = try decoder.decode(Image.self, from: current.1)
-      image.user = user
-      acc.append(image)
-      return acc
-    }
+  static func convert(document: JSON, hasDocs: Bool = true, decoder: JSONDecoder) throws -> [Image] {
+    return !hasDocs ? try document.toData().map { try decoder.decode(Image.self, from: $0) }
+                      :
+                      try document.toDataWithDocs().reduce([]) { acc, current in
+                        var acc = acc
+                        let user = try decoder.decode(User.self, from: current.0)
+                        var image = try decoder.decode(Image.self, from: current.1)
+                        image.user = user
+                        acc.append(image)
+                        return acc
+                      }
   }
 }

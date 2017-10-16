@@ -191,25 +191,16 @@ extension ServerController: ServerProtocol {
 
     let anyUserId = userId as Database.KeyType
     let queryParams: [Database.QueryParameters] = [
-                                                    .descending(true),
                                                     .endKey([anyUserId, "0" as Database.KeyType]),
                                                     .startKey([anyUserId, NSObject()])
                                                   ]
-
-    database.queryByView("images_per_user", ofDesign: "main_design", usingParameters: queryParams) { document, error in
-      do {
-        guard let document = document, error == nil else {
-          throw BluePicLocalizedError.getImagesFailed(userId)
+    self.readByView("images_per_user", params: queryParams, type: Image.self, database: database) { images, error in
+        guard let images = images, error == nil else {
+          Log.error("\(error ?? BluePicLocalizedError.getImagesFailed(userId))")
+          return
         }
 
-        let images = try self.parseImages(forUserId: userId, usingDocument: document)
         response.status(HTTPStatusCode.OK).send(json: images)
-
-      } catch {
-        Log.error("Failed to get images for \(userId).")
-        response.error = error
-      }
-      next()
     }
   }
 

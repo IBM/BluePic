@@ -56,7 +56,7 @@ extension User: Codable {
 }
 
 extension User: JSONConvertible {
-  static func convert(document: JSON, decoder: JSONDecoder) throws -> [User] {
+    static func convert(document: JSON, hasDocs: Bool = false, decoder: JSONDecoder) throws -> [User] {
     return try document.toData().map { try decoder.decode(User.self, from: $0) }
   }
 }
