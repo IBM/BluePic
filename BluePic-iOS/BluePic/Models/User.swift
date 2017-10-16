@@ -16,32 +16,32 @@
 
 import UIKit
 import BMSCore
+import Foundation
 
-class User: NSObject {
+struct User {
+  let id: String
+  let name: String
+}
 
-    let facebookID: String
-    let name: String
+extension User: Codable {
 
-    init(facebookID: String, name: String) {
-        self.facebookID = facebookID
-        self.name = name
-    }
+  enum CodingKeys: String, CodingKey {
+    case id = "_id"
+    case name
+    case type
+  }
 
-    init?(_ response: Response?) {
+  func encode(to encoder: Encoder) throws {
+    var container = encoder.container(keyedBy: CodingKeys.self)
+    try container.encode(id, forKey: .id)
+    try container.encode(name, forKey: .name)
+    try container.encode("user", forKey: .type)
+  }
 
-        if let dict = Utils.convertResponseToDictionary(response),
-            let facebookID = dict["_id"] as? String,
-            let name = dict["name"] as? String {
+  init(from decoder: Decoder) throws {
+    let values = try decoder.container(keyedBy: CodingKeys.self)
 
-            self.facebookID = facebookID
-            self.name = name
-
-            super.init()
-        } else {
-            print(NSLocalizedString("Invalid User JSON", comment: ""))
-            return nil
-        }
-
-    }
-
+    id = try values.decode(String.self, forKey: .id)
+    name = try values.decode(String.self, forKey: .name)
+  }
 }

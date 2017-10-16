@@ -44,7 +44,7 @@ class CameraDataManager: NSObject {
     var pickedImage: UIImage?
 
     //instance of the image the user decided to post
-    var imageUserDecidedToPost: ImagePayload?
+    var imageUserDecidedToPost: Image?
 
     //state variables
     var failureGettingUserLocation = false
@@ -305,7 +305,7 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
                     captionText = text
                 }
 
-                self.imageUserDecidedToPost = ImagePayload(caption: captionText, fileName: fileName, width: pickedImage.size.width, height: pickedImage.size.height, location: location, image: pickedImage)
+                self.imageUserDecidedToPost = Image(caption: captionText, fileName: fileName, width: pickedImage.size.width, height: pickedImage.size.height, location: location, image: pickedImage)
 
             } else {
                 self.failureGettingUserLocation = true

@@ -2,19 +2,19 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <key>isLocal</key>
-    <true/>
-    <key>appRouteLocal</key>
-    <string>http://localhost:8080</string>
-    <key>appRouteRemote</key>
-    <string>&lt;routeURL&gt;</string>
-    <key>bluemixAppRegion</key>
-    <string>&lt;appRegion&gt;</string>
-    <key>pushAppGUID</key>
-    <string></string>
-    <key>pushClientSecret</key>
-    <string></string>
-    <key>appIdTenantId</key>
-    <string></string>
+	<key>isLocal</key>
+	<true/>
+	<key>appRouteLocal</key>
+	<string>http://localhost:8080</string>
+	<key>appRouteRemote</key>
+	<string>&lt;routeURL&gt;</string>
+	<key>bluemixAppRegion</key>
+	<string>.ng.bluemix.net</string>
+	<key>pushAppGUID</key>
+	<string></string>
+	<key>pushClientSecret</key>
+	<string></string>
+	<key>appIdTenantId</key>
+	<string>a7fd0d6a-9d04-4bfb-9b18-9b1e2a60b36e</string>
 </dict>
 </plist>

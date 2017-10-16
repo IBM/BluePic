@@ -189,7 +189,7 @@ extension TabBarViewController: UITabBarControllerDelegate {
         let OKAction = UIAlertAction(title: NSLocalizedString("Settings", comment: ""), style: .default) { (_) in
 
             if let settingsUrl = URL(string: UIApplicationOpenSettingsURLString) {
-                UIApplication.shared.openURL(settingsUrl)
+                UIApplication.shared.open(settingsUrl, options: [:])
             }
 
         }

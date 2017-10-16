@@ -73,20 +73,16 @@ class ProfileTableViewCell: UITableViewCell {
     /// - parameter image: Image object to use for populating UI
     func setupDataWith(_ image: Image) {
 
-        if let numOfTags = image.tags?.count {
+        let numOfTags = image.tags.count
 
-            if numOfTags == 0 {
-                self.numberOfTagsLabel.isHidden = true
-            } else if numOfTags == 1 {
-                self.numberOfTagsLabel.isHidden = false
-                self.numberOfTagsLabel.text = "\(numOfTags)" + " " + self.kNumberOfTagsPostFix_OneTag
-            } else {
-                self.numberOfTagsLabel.isHidden = false
-                self.numberOfTagsLabel.text = "\(numOfTags)" + " " + self.kNumberOfTagsPostFix_MultipleTags
-            }
-
-        } else {
+        if numOfTags == 0 {
             self.numberOfTagsLabel.isHidden = true
+        } else if numOfTags == 1 {
+            self.numberOfTagsLabel.isHidden = false
+            self.numberOfTagsLabel.text = "\(numOfTags)" + " " + self.kNumberOfTagsPostFix_OneTag
+        } else {
+            self.numberOfTagsLabel.isHidden = false
+            self.numberOfTagsLabel.text = "\(numOfTags)" + " " + self.kNumberOfTagsPostFix_MultipleTags
         }
 
         //set the image view's image
@@ -96,7 +92,11 @@ class ProfileTableViewCell: UITableViewCell {
         _ = self.setCaptionText(image: image)
 
         //set the time since posted label's text
-        self.timeSincePostedLabel.text = Date.timeSinceDateString(image.timeStamp)
+        if let ts = image.timeStamp {
+             self.timeSincePostedLabel.text = Date.timeSinceDateString(ts)
+        } else {
+            self.timeSincePostedLabel.text = ""
+        }
     }
 
     func setCaptionText(image: Image) -> Bool {

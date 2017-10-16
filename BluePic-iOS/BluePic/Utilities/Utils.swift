@@ -150,27 +150,6 @@ class Utils: NSObject {
     }
 
     /**
-     Method converts a response to a dictionary
-
-     - parameter response: Response?
-
-     - returns: [String : Any]
-     */
-    class func convertResponseToDictionary(_ response: Response?) -> [String : Any]? {
-
-        if let resp = response {
-            if let responseText = resp.responseText {
-                return convertStringToDictionary(responseText)
-            } else {
-                return nil
-            }
-        } else {
-            return nil
-        }
-
-    }
-
-    /**
      Method takes in a label and a spacing value and kerns the labels text to this value
 
      - parameter label:        UILabel
@@ -212,4 +191,14 @@ class Utils: NSObject {
                       longSeconds, {return longDegrees >= 0 ? NSLocalizedString("E", comment: "first letter of the word East") : NSLocalizedString("W", comment: "first letter of the word West")}() )
     }
 
+    class func dataFormatter(timestamp: String) -> Date {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+        dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
+        guard let date = dateFormatter.date(from: timestamp) else {
+            print(NSLocalizedString("Couldn't process timestamp", comment: ""))
+            return Date()
+        }
+        return date
+    }
 }

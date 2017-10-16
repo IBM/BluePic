@@ -47,10 +47,8 @@ class ImageDetailViewModel: NSObject {
      */
     fileprivate func getTagForIndexPath(_ indexPath: IndexPath) -> String? {
 
-        if let tags = image.tags {
-            if (tags.count - 1) >= indexPath.row {
-                return tags[indexPath.row].label
-            }
+        if (image.tags.count - 1) >= indexPath.row {
+            return image.tags[indexPath.row].label
         }
 
         return nil
@@ -82,13 +80,7 @@ extension ImageDetailViewModel {
      - returns: Int
      */
     func numberOfItemsInSection(_ section: Int) -> Int {
-
-        if let tags = image.tags {
-            return tags.count
-        } else {
-            return 0
-        }
-
+        return image.tags.count
     }
 
     /**
@@ -120,11 +112,11 @@ extension ImageDetailViewModel {
      */
     func setUpCollectionViewCell(_ indexPath: IndexPath, collectionView: UICollectionView) -> UICollectionViewCell {
 
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TagCollectionViewCell", for: indexPath) as? TagCollectionViewCell, let tags = image.tags else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TagCollectionViewCell", for: indexPath) as? TagCollectionViewCell else {
             return UICollectionViewCell()
         }
 
-        cell.tagLabel.text = tags[indexPath.item].label.uppercased()
+        cell.tagLabel.text = image.tags[indexPath.item].label.uppercased()
         return cell
 
     }
@@ -139,11 +131,10 @@ extension ImageDetailViewModel {
      */
     func sizeForItemAtIndexPath(_ indexPath: IndexPath, collectionView: UICollectionView) -> CGSize {
 
-        if let tags = image.tags {
-            let size = NSString(string: tags[indexPath.item].label.uppercased()).size(withAttributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 13.0)])
-            return CGSize(width: size.width + kCellPadding, height: 30.0)
-        }
-        return CGSize.zero
+        let tags = image.tags
+        let size = NSString(string: tags[indexPath.item].label.uppercased()).size(withAttributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 13.0)])
+        return CGSize(width: size.width + kCellPadding, height: 30.0)
+
     }
 
     /**

@@ -91,7 +91,7 @@ class LoginViewController: UIViewController {
      */
     @IBAction func signInLaterTapped(_ sender: Any) {
         viewModel.loginLater()
-        dismiss(animated: true, completion: nil)
+        self.performSegue(withIdentifier: "authorizedSegue", sender: nil)
     }
 
     /**
@@ -158,7 +158,7 @@ extension LoginViewController {
      */
     func handleLoginSuccess() {
         DispatchQueue.main.async {
-            self.dismiss(animated: true, completion: nil)
+            self.performSegue(withIdentifier: "authorizedSegue", sender: nil)
         }
     }
 

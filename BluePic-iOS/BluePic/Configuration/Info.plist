@@ -33,7 +33,7 @@
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>FacebookAppID</key>
-	<string>1545401759089721</string>
+	<string>123553164993542</string>
 	<key>FacebookDisplayName</key>
 	<string>IBM BluePic</string>
 	<key>LSApplicationQueriesSchemes</key>
@@ -54,6 +54,15 @@
 				<true/>
 				<key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
 				<false/>
+			</dict>
+			<key>appid-oauth.ng.bluemix.net</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+				<key>NSTemporaryExceptionMinimumTLSVersion</key>
+				<string>TLSv1.1</string>
 			</dict>
 			<key>cloudant.com</key>
 			<dict>
@@ -85,24 +94,15 @@
 				<key>NSTemporaryExceptionMinimumTLSVersion</key>
 				<string>TLSv1.1</string>
 			</dict>
-            <key>appid-oauth.ng.bluemix.net</key>
-            <dict>
-                <key>NSExceptionAllowsInsecureHTTPLoads</key>
-                <true/>
-                <key>NSIncludesSubdomains</key>
-                <true/>
-                <key>NSTemporaryExceptionMinimumTLSVersion</key>
-                <string>TLSv1.1</string>
-            </dict>
 		</dict>
 	</dict>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Location Services required to upload photos with BluePic to tag photos with a Location</string>
-	<key>NSPhotoLibraryUsageDescription</key>
+	<key>NSAppleMusicUsageDescription</key>
 	<string>We access your photos so you can pick the right one to upload.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Used for taking pictures to share with others.</string>
-	<key>NSAppleMusicUsageDescription</key>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Location Services required to upload photos with BluePic to tag photos with a Location</string>
+	<key>NSPhotoLibraryUsageDescription</key>
 	<string>We access your photos so you can pick the right one to upload.</string>
 	<key>UIBackgroundModes</key>
 	<array>

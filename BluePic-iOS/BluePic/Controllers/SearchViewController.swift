@@ -19,7 +19,7 @@ import UIKit
 class SearchViewController: UIViewController {
 
     //string property that holds the popular tags of BluePic
-    var popularTags = [String]()
+    var popularTags = [PopularTag]()
 
     //search text field that the user can type searches in
     @IBOutlet weak var searchField: UITextField!
@@ -164,7 +164,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
             return UICollectionViewCell()
         }
 
-        cell.tagLabel.text = popularTags[indexPath.item]
+        cell.tagLabel.text = popularTags[indexPath.item].key
         return cell
     }
 
@@ -178,7 +178,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
      - returns: CGSize
      */
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let size = NSString(string: popularTags[indexPath.item].uppercased()).size(withAttributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 13.0)])
+        let size = NSString(string: popularTags[indexPath.item].key.uppercased()).size(withAttributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 13.0)])
         return CGSize(width: size.width + kCellPadding, height: 30.0)
     }
 
@@ -192,7 +192,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
         collectionView.deselectItem(at: indexPath, animated: true)
         // open feed of items with selected tag
         if let vc = Utils.vcWithNameFromStoryboardWithName("FeedViewController", storyboardName: "Feed") as? FeedViewController {
-            vc.searchQuery = popularTags[indexPath.item]
+            vc.searchQuery = popularTags[indexPath.item].key
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }
