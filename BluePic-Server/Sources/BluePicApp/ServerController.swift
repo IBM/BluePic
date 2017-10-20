@@ -43,14 +43,12 @@ public class ServerController {
 
   public let router = Router()
 
-  let couchDBConnProps: ConnectionProperties
-  let objStorageConnProps: ObjectStorageCredentials
-  let appIdProps: AppIDCredentials
-  let ibmPushProps: PushSDKCredentials
-  let openWhiskProps: OpenWhiskProps
   let database: Database
+
+  let openWhiskProps: OpenWhiskProps
   var objectStorageConn: ObjectStorageConn
   let pushNotificationsClient: PushNotifications
+  let objStorageConnProps: ObjectStorageCredentials
 
   // Instance constants
   let cloudEnv: CloudEnv = CloudEnv()
@@ -78,34 +76,30 @@ public class ServerController {
         throw BluePicError.IO("Failed to obtain appropriate credentials.")
     }
 
-    // Create Props
-
-    couchDBConnProps = ConnectionProperties(host: couchDBCredentials.host,
-                                            port: Int16(couchDBCredentials.port),
-                                            secured: true,
-                                            username: couchDBCredentials.username,
-                                            password: couchDBCredentials.password)
-    appIdProps = appIdCredentials
-    ibmPushProps = pushCredentials
-    objStorageConnProps = objStoreCredentials
     openWhiskProps = openWhiskCredentials
+    objStorageConnProps = objStoreCredentials
 
     // Instantiate Objects
+    let couchDBConnProps = ConnectionProperties(host: couchDBCredentials.host,
+                                                port: Int16(couchDBCredentials.port),
+                                                secured: true,
+                                                username: couchDBCredentials.username,
+                                                password: couchDBCredentials.password)
 
     let dbClient = CouchDBClient(connectionProperties: couchDBConnProps)
     database = dbClient.database("bluepic_db")
 
-    objectStorageConn = ObjectStorageConn(credentials: objStorageConnProps)
+    objectStorageConn = ObjectStorageConn(credentials: objStoreCredentials)
 
     pushNotificationsClient = PushNotifications(bluemixRegion: PushNotifications.Region.US_SOUTH,
-                                                bluemixAppGuid: ibmPushProps.appGuid,
-                                                bluemixAppSecret: ibmPushProps.appSecret)
+                                                bluemixAppGuid: pushCredentials.appGuid,
+                                                bluemixAppSecret: pushCredentials.appSecret)
 
     let options = [
-      "clientId": appIdProps.clientId,
-      "secret": appIdProps.secret,
-      "tenantId": appIdProps.tenantId,
-      "oauthServerUrl": appIdProps.oauthServerUrl,
+      "clientId": appIdCredentials.clientId,
+      "secret": appIdCredentials.secret,
+      "tenantId": appIdCredentials.tenantId,
+      "oauthServerUrl": appIdCredentials.oauthServerUrl,
       "redirectUri": "http://localhost:8080/ibm/bluemix/appid/callback"
     ]
 

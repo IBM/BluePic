@@ -1,0 +1,8 @@
+# docker-compose up
+app:
+  image: ibmcom/swift-ubuntu:4.0
+  ports:
+    - "8080:8080"
+  volumes:
+    - .:/SafetyContracts
+  command: bash -c "cd /SafetyContracts && swift package --build-path .build-ubuntu clean && swift build --build-path .build-ubuntu && swift test --build-path .build-ubuntu"

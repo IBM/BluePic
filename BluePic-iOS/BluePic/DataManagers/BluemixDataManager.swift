@@ -312,14 +312,14 @@ extension BluemixDataManager {
     fileprivate func postNewImage(_ image: Image) {
         client.post(kImagesEndPoint, data: image) { (resImage: Image?, error: Error?) -> Void in
 
-            guard let resImage = resImage, error == nil else {
+            guard resImage != nil, error == nil else {
                 print(NSLocalizedString("Post New Image Error:", comment: "") + " \(error?.localizedDescription ?? "No image")")
                 self.handleImageUploadFailure(image)
                 return
             }
 
-            self.addImageToImageTakenDuringAppSessionByIdDictionary(resImage)
-            self.removeImageFromImagesCurrentlyUploading(resImage)
+            self.addImageToImageTakenDuringAppSessionByIdDictionary(image)
+            self.removeImageFromImagesCurrentlyUploading(image)
 
             NotificationCenter.default.post(name: .imageUploadSuccess, object: nil)
         }

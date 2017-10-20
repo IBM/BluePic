@@ -1,0 +1,32 @@
+# Travis CI build file for SwiftyRequest.
+# SwiftyRequest runs on macOS and Linux (Ubuntu).
+
+# whitelist (branches that should be built)
+branches:
+  only:
+    - master
+    - develop
+    - /^issue.*$/
+
+matrix:
+  include:
+    - os: linux
+      dist: trusty
+      sudo: required
+    - os: linux
+      dist: trusty
+      sudo: required
+      env: SWIFT_SNAPSHOT=4.0
+    - os: osx
+      osx_image: xcode8.3
+      sudo: required
+    - os: osx
+      osx_image: xcode9
+      sudo: required
+      env: SWIFT_SNAPSHOT=4.0
+
+before_install:
+  - git clone https://github.com/IBM-Swift/Package-Builder.git
+
+script:
+  - ./Package-Builder/build-package.sh -projectDir $TRAVIS_BUILD_DIR

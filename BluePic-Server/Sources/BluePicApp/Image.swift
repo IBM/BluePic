@@ -17,7 +17,7 @@
 import Foundation
 import SwiftyJSON
 
-struct Image: Encodable {
+struct Image {
     var id: String
     var rev: String?
     let fileName: String
@@ -33,6 +33,27 @@ struct Image: Encodable {
     let location: Location?
     var user: User?
     var image: Data?
+}
+
+extension Image: Encodable {
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(id, forKey: .id)
+        try container.encodeIfPresent(rev, forKey: .rev)
+        try container.encodeIfPresent(url, forKey: .url)
+        try container.encode(fileName, forKey: .fileName)
+        try container.encode(caption, forKey: .caption)
+        try container.encode(contentType, forKey: .contentType)
+        try container.encode(height, forKey: .height)
+        try container.encode(width, forKey: .width)
+        try container.encode(tags, forKey: .tags)
+        try container.encode(uploadedTs, forKey: .uploadedTs)
+        try container.encode(userId, forKey: .userId)
+        try container.encodeIfPresent(deviceId, forKey: .deviceId)
+        try container.encodeIfPresent(location, forKey: .location)
+        try container.encodeIfPresent(user, forKey: .user)
+        try container.encode("image", forKey: .type)
+    }
 }
 
 extension Image: Decodable {
@@ -53,6 +74,7 @@ extension Image: Decodable {
     case location
     case user
     case image
+    case type
   }
 
   init(from decoder: Decoder) throws {
@@ -68,7 +90,7 @@ extension Image: Decodable {
     // Server Created -- Optional coming from Client
     id = try values.decodeIfPresent(String.self, forKey: .id) ?? UUID().uuidString
     rev = try values.decodeIfPresent(String.self, forKey: .rev)
-    contentType = try values.decodeIfPresent(String.self, forKey: .contentType) ?? "image"
+    contentType = try values.decodeIfPresent(String.self, forKey: .contentType) ?? "image/png"
     url = try values.decodeIfPresent(String.self, forKey: .url)
 
     // Optional
