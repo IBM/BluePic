@@ -183,9 +183,16 @@ public class BMSPushClient: NSObject {
                     var pushActionsArray = [UNNotificationAction]()
 
                     for actionButton in pushNotificationAction {
-
+                        
                         let newActionButton : BMSPushNotificationAction = actionButton
-                        let addButton = UNNotificationAction(identifier: newActionButton.identifier, title: newActionButton.title, options: [])
+                        var options:UNNotificationActionOptions = .foreground
+                        switch actionButton.activationMode {
+                        case UIUserNotificationActivationMode.background:
+                             options = .destructive
+                        case UIUserNotificationActivationMode.foreground:
+                             options = .foreground
+                        }
+                        let addButton = UNNotificationAction(identifier: newActionButton.identifier, title: newActionButton.title, options: [options])
                         pushActionsArray.append(addButton)
                     }
                     

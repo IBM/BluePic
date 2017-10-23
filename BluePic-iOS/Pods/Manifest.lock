@@ -4,12 +4,12 @@ PODS:
   - BMSAnalyticsAPI (2.2.1)
   - BMSCore (2.3.2):
     - BMSAnalyticsAPI (~> 2.2)
-  - BMSPush (3.2.4):
+  - BMSPush (3.2.5):
     - BMSCore (~> 2.0)
   - SDWebImage (3.8.2):
     - SDWebImage/Core (= 3.8.2)
   - SDWebImage/Core (3.8.2)
-  - SVProgressHUD (2.2.1)
+  - SVProgressHUD (2.2.2)
 
 DEPENDENCIES:
   - BluemixAppID
@@ -21,9 +21,9 @@ SPEC CHECKSUMS:
   BluemixAppID: 55544a3fad87e3d94c22cbf65ed87dfb3c85508d
   BMSAnalyticsAPI: 2e07dee6452e3cdbdc5fd0ee7362b66a281e3963
   BMSCore: 30674d30566134125e9bee043ccbea652445ca92
-  BMSPush: 8436b2d9bec00d1ace95aa6b0bec320a2d95b822
+  BMSPush: e35ab14117769d7c82c4372879e73351f9cb7e50
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
-  SVProgressHUD: db27c54e6e18bc903341661fc9feb55e04905cc4
+  SVProgressHUD: 59b2d3dabacbd051576d21d32293ca7228dc18b0
 
 PODFILE CHECKSUM: a10361e8590a687aa676ca817b7b28a0d96af5df
 
