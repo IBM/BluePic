@@ -1,0 +1,48 @@
+stages:
+- name: Build Stage
+  inputs:
+  - type: git
+    branch: master
+    service: ${REPO}
+  triggers:
+  - type: commit
+  jobs:
+  - name: Build
+    type: builder
+    artifact_dir: ''
+  - name: Post Build
+    type: builder
+    artifact_dir: ''
+    build_type: shell
+    script: |-
+      #!/bin/bash
+      if  [[ -f post_build.sh ]]; then
+        chmod +x post_build.sh;
+        echo "executing the post_build script";
+        sh post_build.sh;
+      else
+        echo "the post_build script does not exist";
+      fi
+- name: Deploy Stage
+  inputs:
+  - type: job
+    stage: Build Stage
+    job: Build
+  triggers:
+  - type: stage
+  jobs:
+  - name: Deploy
+    type: deployer
+    target:
+      region_id: ${REGION_ID}
+      organization: ${CF_ORGANIZATION}
+      space: ${CF_SPACE}
+      application: ${CF_APP}
+    script: |-
+      #!/bin/bash
+      cf create-service "cloudantNoSQLDB" "Lite" "BluePic-Cloudant"
+      cf create-service "Object-Storage" "Free" "BluePic-Object-Storage"
+      cf create-service "AppID" "Graduated tier" "BluePic-App-ID"
+      cf create-service "imfpush" "lite" "BluePic-IBM-Push"
+      cf push "${CF_APP}"
+      # cf logs "${CF_APP}" --recent

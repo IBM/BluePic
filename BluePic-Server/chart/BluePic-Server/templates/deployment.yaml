@@ -6,6 +6,11 @@ metadata:
     chart: '{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}'
 spec:
   replicas: {{ .Values.replicaCount }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
   revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
   template:
     metadata:
