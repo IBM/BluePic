@@ -1,7 +1,7 @@
 # BluePic
 
 [![Build Status - Master](https://travis-ci.org/IBM/BluePic.svg?branch=master)](https://travis-ci.org/IBM/BluePic)
-![Bluemix Deployments](https://deployment-tracker.mybluemix.net/stats/c45eeb765e77bf2bffd747e8d910e37d/badge.svg)
+![Bluemix Deployments](https://metrics-tracker.mybluemix.net/stats/0dfaa8c837a37730987b474b783c73f8/badge.svg)
 
 BluePic is a photo and image sharing sample application that allows you to take photos and share them with other BluePic users. This sample application demonstrates how to leverage, in a mobile iOS 10 application, a Kitura-based server application written in Swift.
 
@@ -61,7 +61,7 @@ If you'd like to, you can spend a few minutes to get familiar with the folder st
 ### 3. Create BluePic application on Bluemix
 Clicking on the button below deploys the BluePic application to Bluemix. The [`manifest.yml`](manifest.yml) file [included in the repo] is parsed to obtain the name of the application and to determine the Cloud Foundry services that should be instantiated. For further details on the structure of the `manifest.yml` file, see the [Cloud Foundry documentation](https://docs.cloudfoundry.org/devguide/deploy-apps/manifest.html#minimal-manifest). After clicking the button below, you will be able to name your application, keep in mind that your Bluemix application name needs to match the name value in your `manifest.yml`. Therefore, you may have to change the name value in your `manifest.yml` if there is a naming conflict in your Bluemix account.
 
-[![Deploy to Bluemix](https://deployment-tracker.mybluemix.net/stats/c45eeb765e77bf2bffd747e8d910e37d/button.svg)](https://bluemix.net/deploy?repository=https://github.com/IBM/BluePic.git&cm_mmc=github-code-_-native-_-bluepic-_-deploy2bluemix)
+[![Deploy to Bluemix](https://metrics-tracker.mybluemix.net/stats/0dfaa8c837a37730987b474b783c73f8/button.svg)](https://bluemix.net/deploy?repository=https://github.com/IBM/BluePic.git&cm_mmc=github-code-_-native-_-bluepic-_-deploy2bluemix)
 
 Once deployment to Bluemix is completed, you should access the route assigned to your application using the web browser of your choice. You should see the Kitura welcome page!
 
@@ -205,7 +205,7 @@ To learn more about BluePic's folder structure, its architecture, and the Swift 
 You can use the [dW Answers](https://developer.ibm.com/answers/topics/cloud-tools-for-swift.html) web site to ask a question and/or report any issues you encounter while using the IBM Cloud Tools for Swift. Just make sure you use the tag `cloud-tools-for-swift` for the questions you post on dW Answers.
 
 ## Privacy Notice
-The BluePic-Server application includes code to track deployments to [IBM Bluemix](https://www.bluemix.net/) and other Cloud Foundry platforms. The following information is sent to a [Deployment Tracker](https://github.com/IBM-Bluemix/cf-deployment-tracker-service) service on each deployment:
+The BluePic-Server application includes code to track deployments to [IBM Bluemix](https://www.bluemix.net/) and other Cloud Foundry platforms. The following information is sent to [Deployment Tracker](https://github.com/IBM-Bluemix/cf-deployment-tracker-service) and [Metrics collector](https://github.com/IBM/metrics-collector-service) service on each deployment:
 
 * Swift project code version (if provided)
 * Swift project repository URL
@@ -216,12 +216,13 @@ The BluePic-Server application includes code to track deployments to [IBM Bluemi
 * Labels of bound services
 * Number of instances for each bound service and associated plan information
 
-This data is collected from the parameters of the `CloudFoundryDeploymentTracker`, the `VCAP_APPLICATION` and `VCAP_SERVICES` environment variables in IBM Bluemix and other Cloud Foundry platforms. This data is used by IBM to track metrics around deployments of sample applications to IBM Bluemix to measure the usefulness of our examples, so that we can continuously improve the content we offer to you. Only deployments of sample applications that include code to ping the Deployment Tracker service will be tracked.
+This data is collected from the parameters of the `CloudFoundryDeploymentTracker` and `MetricsTrackerClient`, the `VCAP_APPLICATION` and `VCAP_SERVICES` environment variables in IBM Bluemix and other Cloud Foundry platforms. This data is used by IBM to track metrics around deployments of sample applications to IBM Bluemix to measure the usefulness of our examples, so that we can continuously improve the content we offer to you. Only deployments of sample applications that include code to ping the Deployment Tracker service will be tracked.
 
 ### Disabling Deployment Tracking
-Deployment tracking can be disabled by removing the following line from `main.swift`:
+Deployment tracking can be disabled by removing the following lines from `main.swift`:
 
-    CloudFoundryDeploymentTracker(repositoryURL: "https://github.com/IBM-Swift/Kitura-Starter-Bluemix.git", codeVersion: nil).track()
+    CloudFoundryDeploymentTracker(repositoryURL: "https://github.com/IBM-Swift/BluePic.git", codeVersion: nil).track()
+    MetricsTrackerClient(repository: "BluePic", organization: "IBM").track()
 
 ## License
 This application is licensed under Apache 2.0. Full license text is available in [LICENSE](LICENSE).
