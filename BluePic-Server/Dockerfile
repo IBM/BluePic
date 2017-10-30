@@ -14,7 +14,7 @@
 # limitations under the License.
 ##
 
-# Builds a Docker image with all the dependencies for compiling and running the Kitura-Starter sample application.
+# Builds a Docker image with all the dependencies for compiling and running the BluePic-iOS sample application.
 
 FROM ibmcom/swift-ubuntu:4.0
 MAINTAINER IBM Swift Engineering at IBM Cloud
@@ -24,7 +24,6 @@ LABEL Description="Docker image for building and running the BluePic sample appl
 EXPOSE 8080
 
 RUN mkdir /BluePic-Server
-
 
 ADD config /BluePic-Server/config
 ADD Sources /BluePic-Server/Sources
