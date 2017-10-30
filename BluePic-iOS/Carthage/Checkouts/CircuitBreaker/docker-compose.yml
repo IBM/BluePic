@@ -1,6 +1,0 @@
-# docker-compose up
-app:
-  image: ibmcom/swift-ubuntu:3.1.1
-  volumes:
-    - .:/CircuitBreaker
-  command: bash -c "cd /CircuitBreaker && swift package clean && swift build && swift test && swift package clean"

@@ -71,18 +71,30 @@
 		347AD2221C18F98600C3B473 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347AD2211C18F98600C3B473 /* LoginViewModel.swift */; };
 		34C8094D1BFCEA0400C48004 /* bluemix.plist in Resources */ = {isa = PBXBuildFile; fileRef = 34C8094C1BFCEA0400C48004 /* bluemix.plist */; };
 		34C809551BFD0F2400C48004 /* FacebookDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C809541BFD0F2400C48004 /* FacebookDataManager.swift */; };
-		46B120FC1F914CAE00EF75FE /* LoggerAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46B120F71F914CAD00EF75FE /* LoggerAPI.framework */; };
-		46B120FD1F914CAE00EF75FE /* LoggerAPI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 46B120F71F914CAD00EF75FE /* LoggerAPI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		46B120FE1F914CAE00EF75FE /* CircuitBreaker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46B120F81F914CAD00EF75FE /* CircuitBreaker.framework */; };
-		46B120FF1F914CAE00EF75FE /* CircuitBreaker.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 46B120F81F914CAD00EF75FE /* CircuitBreaker.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		46B121021F914CAE00EF75FE /* SafetyContracts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46B120FA1F914CAD00EF75FE /* SafetyContracts.framework */; };
-		46B121031F914CAE00EF75FE /* SafetyContracts.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 46B120FA1F914CAD00EF75FE /* SafetyContracts.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		46B121041F914CAE00EF75FE /* SwiftyRequest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46B120FB1F914CAE00EF75FE /* SwiftyRequest.framework */; };
-		46B121051F914CAE00EF75FE /* SwiftyRequest.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 46B120FB1F914CAE00EF75FE /* SwiftyRequest.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		46C831251F92E013005D3921 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C831241F92E013005D3921 /* Location.swift */; };
 		46C831271F92E0E8005D3921 /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C831261F92E0E8005D3921 /* Tag.swift */; };
-		46C831281F92E49E005D3921 /* KituraBuddy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46B120F91F914CAD00EF75FE /* KituraBuddy.framework */; };
-		46CC51EF1F92E5580076EA19 /* KituraBuddy.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 46B120F91F914CAD00EF75FE /* KituraBuddy.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		E325B57B1FA7841E00F14035 /* KituraKit.h in Headers */ = {isa = PBXBuildFile; fileRef = E325B5791FA7841D00F14035 /* KituraKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E325B57E1FA7841E00F14035 /* KituraKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E325B5771FA7841D00F14035 /* KituraKit.framework */; };
+		E325B57F1FA7841E00F14035 /* KituraKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E325B5771FA7841D00F14035 /* KituraKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		E325B59B1FA7844500F14035 /* CircuitBreaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E325B5851FA7844500F14035 /* CircuitBreaker.swift */; };
+		E325B59C1FA7844500F14035 /* Stats.swift in Sources */ = {isa = PBXBuildFile; fileRef = E325B5861FA7844500F14035 /* Stats.swift */; };
+		E325B59D1FA7844500F14035 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = E325B5871FA7844500F14035 /* Utils.swift */; };
+		E325B59E1FA7844500F14035 /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = E325B5881FA7844500F14035 /* Client.swift */; };
+		E325B59F1FA7844500F14035 /* ClousureAliases.swift in Sources */ = {isa = PBXBuildFile; fileRef = E325B58A1FA7844500F14035 /* ClousureAliases.swift */; };
+		E325B5A01FA7844500F14035 /* Contracts.swift in Sources */ = {isa = PBXBuildFile; fileRef = E325B58B1FA7844500F14035 /* Contracts.swift */; };
+		E325B5A11FA7844500F14035 /* KituraKit.podspec in Resources */ = {isa = PBXBuildFile; fileRef = E325B58C1FA7844500F14035 /* KituraKit.podspec */; };
+		E325B5A21FA7844500F14035 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = E325B58D1FA7844500F14035 /* LICENSE */; };
+		E325B5A31FA7844500F14035 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E325B58F1FA7844500F14035 /* Logger.swift */; };
+		E325B5A41FA7844500F14035 /* PersistableExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E325B5901FA7844500F14035 /* PersistableExtension.swift */; };
+		E325B5A51FA7844500F14035 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = E325B5911FA7844500F14035 /* README.md */; };
+		E325B5A61FA7844500F14035 /* RequestErrorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E325B5921FA7844500F14035 /* RequestErrorExtension.swift */; };
+		E325B5A71FA7844500F14035 /* HTTPMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = E325B5941FA7844500F14035 /* HTTPMethod.swift */; };
+		E325B5A81FA7844500F14035 /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = E325B5951FA7844500F14035 /* JSON.swift */; };
+		E325B5A91FA7844500F14035 /* MultipartFormData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E325B5961FA7844500F14035 /* MultipartFormData.swift */; };
+		E325B5AA1FA7844500F14035 /* RestRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E325B5971FA7844500F14035 /* RestRequest.swift */; };
+		E325B5AB1FA7844500F14035 /* RestToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = E325B5981FA7844500F14035 /* RestToken.swift */; };
+		E325B5AC1FA7844500F14035 /* RestUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E325B5991FA7844500F14035 /* RestUtilities.swift */; };
+		E325B5AD1FA7844500F14035 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E325B59A1FA7844500F14035 /* StringExtensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -93,6 +105,13 @@
 			remoteGlobalIDString = 347472891BFA8C6A0018B7F6;
 			remoteInfo = BluePic;
 		};
+		E325B57C1FA7841E00F14035 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 347472821BFA8C6A0018B7F6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E325B5761FA7841D00F14035;
+			remoteInfo = KituraKit;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -102,11 +121,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				46CC51EF1F92E5580076EA19 /* KituraBuddy.framework in Embed Frameworks */,
-				46B120FD1F914CAE00EF75FE /* LoggerAPI.framework in Embed Frameworks */,
-				46B120FF1F914CAE00EF75FE /* CircuitBreaker.framework in Embed Frameworks */,
-				46B121051F914CAE00EF75FE /* SwiftyRequest.framework in Embed Frameworks */,
-				46B121031F914CAE00EF75FE /* SafetyContracts.framework in Embed Frameworks */,
+				E325B57F1FA7841E00F14035 /* KituraKit.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -198,16 +213,33 @@
 		34C8094A1BFCD9A300C48004 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		34C8094C1BFCEA0400C48004 /* bluemix.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = bluemix.plist; sourceTree = "<group>"; };
 		34C809541BFD0F2400C48004 /* FacebookDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookDataManager.swift; sourceTree = "<group>"; };
-		46B120F71F914CAD00EF75FE /* LoggerAPI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LoggerAPI.framework; path = Carthage/Build/iOS/LoggerAPI.framework; sourceTree = "<group>"; };
-		46B120F81F914CAD00EF75FE /* CircuitBreaker.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CircuitBreaker.framework; path = Carthage/Build/iOS/CircuitBreaker.framework; sourceTree = "<group>"; };
-		46B120F91F914CAD00EF75FE /* KituraBuddy.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = KituraBuddy.framework; path = Carthage/Build/iOS/KituraBuddy.framework; sourceTree = "<group>"; };
-		46B120FA1F914CAD00EF75FE /* SafetyContracts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafetyContracts.framework; path = Carthage/Build/iOS/SafetyContracts.framework; sourceTree = "<group>"; };
-		46B120FB1F914CAE00EF75FE /* SwiftyRequest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyRequest.framework; path = Carthage/Build/iOS/SwiftyRequest.framework; sourceTree = "<group>"; };
 		46C831241F92E013005D3921 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		46C831261F92E0E8005D3921 /* Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
 		6B961243483EA182951704B4 /* Pods-BluePic.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BluePic.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BluePic/Pods-BluePic.debug.xcconfig"; sourceTree = "<group>"; };
 		BDC4B5F21BFBC77200CC1648 /* BluePic-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BluePic-Bridging-Header.h"; sourceTree = "<group>"; };
 		D4256EC7B8C927E2AAE77625 /* Pods-BluePic.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BluePic.release.xcconfig"; path = "Pods/Target Support Files/Pods-BluePic/Pods-BluePic.release.xcconfig"; sourceTree = "<group>"; };
+		E325B5771FA7841D00F14035 /* KituraKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = KituraKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E325B5791FA7841D00F14035 /* KituraKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KituraKit.h; sourceTree = "<group>"; };
+		E325B57A1FA7841D00F14035 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E325B5851FA7844500F14035 /* CircuitBreaker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircuitBreaker.swift; sourceTree = "<group>"; };
+		E325B5861FA7844500F14035 /* Stats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stats.swift; sourceTree = "<group>"; };
+		E325B5871FA7844500F14035 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		E325B5881FA7844500F14035 /* Client.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Client.swift; sourceTree = "<group>"; };
+		E325B58A1FA7844500F14035 /* ClousureAliases.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClousureAliases.swift; sourceTree = "<group>"; };
+		E325B58B1FA7844500F14035 /* Contracts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Contracts.swift; sourceTree = "<group>"; };
+		E325B58C1FA7844500F14035 /* KituraKit.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = KituraKit.podspec; sourceTree = "<group>"; };
+		E325B58D1FA7844500F14035 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		E325B58F1FA7844500F14035 /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		E325B5901FA7844500F14035 /* PersistableExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistableExtension.swift; sourceTree = "<group>"; };
+		E325B5911FA7844500F14035 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		E325B5921FA7844500F14035 /* RequestErrorExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestErrorExtension.swift; sourceTree = "<group>"; };
+		E325B5941FA7844500F14035 /* HTTPMethod.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPMethod.swift; sourceTree = "<group>"; };
+		E325B5951FA7844500F14035 /* JSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSON.swift; sourceTree = "<group>"; };
+		E325B5961FA7844500F14035 /* MultipartFormData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultipartFormData.swift; sourceTree = "<group>"; };
+		E325B5971FA7844500F14035 /* RestRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestRequest.swift; sourceTree = "<group>"; };
+		E325B5981FA7844500F14035 /* RestToken.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestToken.swift; sourceTree = "<group>"; };
+		E325B5991FA7844500F14035 /* RestUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestUtilities.swift; sourceTree = "<group>"; };
+		E325B59A1FA7844500F14035 /* StringExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -215,17 +247,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				46B121041F914CAE00EF75FE /* SwiftyRequest.framework in Frameworks */,
-				46B120FC1F914CAE00EF75FE /* LoggerAPI.framework in Frameworks */,
-				46B121021F914CAE00EF75FE /* SafetyContracts.framework in Frameworks */,
-				46C831281F92E49E005D3921 /* KituraBuddy.framework in Frameworks */,
 				346F94841C10AA32004999A8 /* ImageIO.framework in Frameworks */,
+				E325B57E1FA7841E00F14035 /* KituraKit.framework in Frameworks */,
 				1734D862F48A44F01B057089 /* Pods_BluePic.framework in Frameworks */,
-				46B120FE1F914CAE00EF75FE /* CircuitBreaker.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		3474729B1BFA8C6A0018B7F6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E325B5731FA7841D00F14035 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -276,13 +311,10 @@
 		347472811BFA8C6A0018B7F6 = {
 			isa = PBXGroup;
 			children = (
-				46B120F81F914CAD00EF75FE /* CircuitBreaker.framework */,
-				46B120F91F914CAD00EF75FE /* KituraBuddy.framework */,
-				46B120F71F914CAD00EF75FE /* LoggerAPI.framework */,
-				46B120FA1F914CAD00EF75FE /* SafetyContracts.framework */,
-				46B120FB1F914CAE00EF75FE /* SwiftyRequest.framework */,
+				E325B5831FA7844500F14035 /* KituraKit */,
 				3474728C1BFA8C6A0018B7F6 /* BluePic */,
 				347472A11BFA8C6A0018B7F6 /* BluePicTests */,
+				E325B5781FA7841D00F14035 /* KituraKit */,
 				3474728B1BFA8C6A0018B7F6 /* Products */,
 				C93A0D59BDE755BE5A1209FC /* Frameworks */,
 				0394F58FD5877398D21B1A47 /* Pods */,
@@ -294,6 +326,7 @@
 			children = (
 				3474728A1BFA8C6A0018B7F6 /* BluePic.app */,
 				3474729E1BFA8C6A0018B7F6 /* BluePicTests.xctest */,
+				E325B5771FA7841D00F14035 /* KituraKit.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -450,7 +483,86 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		E325B5781FA7841D00F14035 /* KituraKit */ = {
+			isa = PBXGroup;
+			children = (
+				E325B5791FA7841D00F14035 /* KituraKit.h */,
+				E325B57A1FA7841D00F14035 /* Info.plist */,
+			);
+			path = KituraKit;
+			sourceTree = "<group>";
+		};
+		E325B5831FA7844500F14035 /* KituraKit */ = {
+			isa = PBXGroup;
+			children = (
+				E325B5841FA7844500F14035 /* CircuitBreaker */,
+				E325B5881FA7844500F14035 /* Client.swift */,
+				E325B5891FA7844500F14035 /* KituraContracts */,
+				E325B58C1FA7844500F14035 /* KituraKit.podspec */,
+				E325B58D1FA7844500F14035 /* LICENSE */,
+				E325B58E1FA7844500F14035 /* LoggerAPI */,
+				E325B5901FA7844500F14035 /* PersistableExtension.swift */,
+				E325B5911FA7844500F14035 /* README.md */,
+				E325B5921FA7844500F14035 /* RequestErrorExtension.swift */,
+				E325B5931FA7844500F14035 /* SwiftyRequest */,
+			);
+			name = KituraKit;
+			path = ../../../Downloads/KituraKit;
+			sourceTree = "<group>";
+		};
+		E325B5841FA7844500F14035 /* CircuitBreaker */ = {
+			isa = PBXGroup;
+			children = (
+				E325B5851FA7844500F14035 /* CircuitBreaker.swift */,
+				E325B5861FA7844500F14035 /* Stats.swift */,
+				E325B5871FA7844500F14035 /* Utils.swift */,
+			);
+			path = CircuitBreaker;
+			sourceTree = "<group>";
+		};
+		E325B5891FA7844500F14035 /* KituraContracts */ = {
+			isa = PBXGroup;
+			children = (
+				E325B58A1FA7844500F14035 /* ClousureAliases.swift */,
+				E325B58B1FA7844500F14035 /* Contracts.swift */,
+			);
+			path = KituraContracts;
+			sourceTree = "<group>";
+		};
+		E325B58E1FA7844500F14035 /* LoggerAPI */ = {
+			isa = PBXGroup;
+			children = (
+				E325B58F1FA7844500F14035 /* Logger.swift */,
+			);
+			path = LoggerAPI;
+			sourceTree = "<group>";
+		};
+		E325B5931FA7844500F14035 /* SwiftyRequest */ = {
+			isa = PBXGroup;
+			children = (
+				E325B5941FA7844500F14035 /* HTTPMethod.swift */,
+				E325B5951FA7844500F14035 /* JSON.swift */,
+				E325B5961FA7844500F14035 /* MultipartFormData.swift */,
+				E325B5971FA7844500F14035 /* RestRequest.swift */,
+				E325B5981FA7844500F14035 /* RestToken.swift */,
+				E325B5991FA7844500F14035 /* RestUtilities.swift */,
+				E325B59A1FA7844500F14035 /* StringExtensions.swift */,
+			);
+			path = SwiftyRequest;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		E325B5741FA7841D00F14035 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E325B57B1FA7841E00F14035 /* KituraKit.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
 		347472891BFA8C6A0018B7F6 /* BluePic */ = {
@@ -470,6 +582,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				E325B57D1FA7841E00F14035 /* PBXTargetDependency */,
 			);
 			name = BluePic;
 			productName = BluePic;
@@ -493,6 +606,24 @@
 			productName = BluePicTests;
 			productReference = 3474729E1BFA8C6A0018B7F6 /* BluePicTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		E325B5761FA7841D00F14035 /* KituraKit */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E325B5801FA7841E00F14035 /* Build configuration list for PBXNativeTarget "KituraKit" */;
+			buildPhases = (
+				E325B5721FA7841D00F14035 /* Sources */,
+				E325B5731FA7841D00F14035 /* Frameworks */,
+				E325B5741FA7841D00F14035 /* Headers */,
+				E325B5751FA7841D00F14035 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = KituraKit;
+			productName = KituraKit;
+			productReference = E325B5771FA7841D00F14035 /* KituraKit.framework */;
+			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
 
@@ -526,6 +657,11 @@
 						LastSwiftMigration = 0900;
 						TestTargetID = 347472891BFA8C6A0018B7F6;
 					};
+					E325B5761FA7841D00F14035 = {
+						CreatedOnToolsVersion = 9.0;
+						DevelopmentTeam = PP64RT7P8Z;
+						ProvisioningStyle = Automatic;
+					};
 				};
 			};
 			buildConfigurationList = 347472851BFA8C6A0018B7F6 /* Build configuration list for PBXProject "BluePic" */;
@@ -543,6 +679,7 @@
 			targets = (
 				347472891BFA8C6A0018B7F6 /* BluePic */,
 				3474729D1BFA8C6A0018B7F6 /* BluePicTests */,
+				E325B5761FA7841D00F14035 /* KituraKit */,
 			);
 		};
 /* End PBXProject section */
@@ -581,6 +718,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E325B5751FA7841D00F14035 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E325B5A51FA7844500F14035 /* README.md in Resources */,
+				E325B5A21FA7844500F14035 /* LICENSE in Resources */,
+				E325B5A11FA7844500F14035 /* KituraKit.podspec in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -721,6 +868,29 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E325B5721FA7841D00F14035 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E325B5A41FA7844500F14035 /* PersistableExtension.swift in Sources */,
+				E325B5A81FA7844500F14035 /* JSON.swift in Sources */,
+				E325B59B1FA7844500F14035 /* CircuitBreaker.swift in Sources */,
+				E325B5AC1FA7844500F14035 /* RestUtilities.swift in Sources */,
+				E325B5A61FA7844500F14035 /* RequestErrorExtension.swift in Sources */,
+				E325B59F1FA7844500F14035 /* ClousureAliases.swift in Sources */,
+				E325B5AA1FA7844500F14035 /* RestRequest.swift in Sources */,
+				E325B59C1FA7844500F14035 /* Stats.swift in Sources */,
+				E325B5AD1FA7844500F14035 /* StringExtensions.swift in Sources */,
+				E325B5A91FA7844500F14035 /* MultipartFormData.swift in Sources */,
+				E325B59E1FA7844500F14035 /* Client.swift in Sources */,
+				E325B5A31FA7844500F14035 /* Logger.swift in Sources */,
+				E325B59D1FA7844500F14035 /* Utils.swift in Sources */,
+				E325B5AB1FA7844500F14035 /* RestToken.swift in Sources */,
+				E325B5A71FA7844500F14035 /* HTTPMethod.swift in Sources */,
+				E325B5A01FA7844500F14035 /* Contracts.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -728,6 +898,11 @@
 			isa = PBXTargetDependency;
 			target = 347472891BFA8C6A0018B7F6 /* BluePic */;
 			targetProxy = 3474729F1BFA8C6A0018B7F6 /* PBXContainerItemProxy */;
+		};
+		E325B57D1FA7841E00F14035 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E325B5761FA7841D00F14035 /* KituraKit */;
+			targetProxy = E325B57C1FA7841E00F14035 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -953,6 +1128,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 6B961243483EA182951704B4 /* Pods-BluePic.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = BluePic/BluePic.entitlements;
@@ -984,6 +1160,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D4256EC7B8C927E2AAE77625 /* Pods-BluePic.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = BluePic/BluePic.entitlements;
@@ -1038,6 +1215,71 @@
 			};
 			name = Release;
 		};
+		E325B5811FA7841E00F14035 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = PP64RT7P8Z;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = KituraKit/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ibm.BluePic-iOS.KituraKit";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		E325B5821FA7841E00F14035 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = "";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = KituraKit/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ibm.BluePic-iOS.KituraKit";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1064,6 +1306,15 @@
 			buildConfigurations = (
 				347472B61BFA8C6A0018B7F6 /* Debug */,
 				347472B71BFA8C6A0018B7F6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E325B5801FA7841E00F14035 /* Build configuration list for PBXNativeTarget "KituraKit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E325B5811FA7841E00F14035 /* Debug */,
+				E325B5821FA7841E00F14035 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

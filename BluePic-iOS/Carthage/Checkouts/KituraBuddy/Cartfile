@@ -1,4 +1,0 @@
-github "IBM-Swift/LoggerAPI" ~> 1.7.1
-github "IBM-Swift/CircuitBreaker" ~> 2.0.1
-github "IBM-Swift/SafetyContracts" ~> 0.0.7
-github "IBM-Swift/SwiftyRequest" ~> 0.0.1

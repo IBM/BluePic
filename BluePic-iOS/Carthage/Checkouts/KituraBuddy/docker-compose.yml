@@ -1,6 +1,0 @@
-# docker-compose up
-app:
-  image: ibmcom/swift-ubuntu:4.0
-  volumes:
-    - .:/KituraBuddy
-  command: bash -c "cd /KituraBuddy && swift package --build-path .build-ubuntu clean && swift build --build-path .build-ubuntu && swift test --build-path .build-ubuntu"

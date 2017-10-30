@@ -16,7 +16,7 @@
 
 import UIKit
 import BMSCore
-import KituraBuddy
+import KituraKit
 
 enum BlueMixDataManagerError: Error {
     //error when the user does not exist when we attempt to get the user by id
@@ -96,9 +96,8 @@ class BluemixDataManager: NSObject {
     var hasReceievedInitialImages = false
 
     //used to make type safe requests to our kitura backend
-    var client: KituraBuddy {
-        return KituraBuddy(baseURL: getBluemixBaseRequestURL() + "/")
-    }
+    var client = KituraKit.default
+
     /**
      Method initilizes the BMSClient
      */
