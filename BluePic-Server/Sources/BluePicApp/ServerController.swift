@@ -39,22 +39,22 @@ import KituraContracts
 #endif
 
 public class ServerController {
-  
+
   public let router = Router()
-  
+
   let database: Database
-  
+
   let cloudFunctionsProps: CloudFunctionsProps
   var objectStorageConn: ObjectStorageConn
   let pushNotificationsClient: PushNotifications
   let objStorageConnProps: ObjectStorageCredentials
-  
+
   // Instance constants
   let cloudEnv: CloudEnv = CloudEnv()
-  
+
   let encoder = JSONEncoder()
   let decoder = JSONDecoder()
-  
+
   let credentials = Credentials(options: [
     WebAppKituraCredentialsPlugin.AllowAnonymousLogin: true,
     WebAppKituraCredentialsPlugin.AllowCreateNewAnonymousUser: true
@@ -62,42 +62,42 @@ public class ServerController {
 
   let webCredentialsPlugin: WebAppKituraCredentialsPlugin
   let landing_url = "/#/homepage"
-  
+
   public var port: Int {
     return cloudEnv.port
   }
-  
+
   public init() throws {
-    
+
     guard let couchDBCredentials = cloudEnv.getCloudantCredentials(name: "cloudant-credentials"),
       let objStoreCredentials = cloudEnv.getObjectStorageCredentials(name: "object-storage-credentials"),
       let appIdCredentials = cloudEnv.getAppIDCredentials(name: "app-id-credentials"),
       let pushCredentials = cloudEnv.getPushSDKCredentials(name: "app-push-credentials"),
-      let CloudFunctionsJson = cloudEnv.getDictionary(name: "open-whisk-credentials"),
+      let CloudFunctionsJson = cloudEnv.getDictionary(name: "cloud-functions-credentials"),
       let CloudFunctionsCredentials = CloudFunctionsProps(dict: CloudFunctionsJson) else {
-        
+
         throw BluePicError.IO("Failed to obtain appropriate credentials.")
     }
-    
+
     cloudFunctionsProps = CloudFunctionsCredentials
     objStorageConnProps = objStoreCredentials
-    
+
     // Instantiate Objects
     let couchDBConnProps = ConnectionProperties(host: couchDBCredentials.host,
                                                 port: Int16(couchDBCredentials.port),
                                                 secured: true,
                                                 username: couchDBCredentials.username,
                                                 password: couchDBCredentials.password)
-    
+
     let dbClient = CouchDBClient(connectionProperties: couchDBConnProps)
     database = dbClient.database("bluepic_db")
-    
+
     objectStorageConn = ObjectStorageConn(credentials: objStoreCredentials)
-    
+
     pushNotificationsClient = PushNotifications(bluemixRegion: PushNotifications.Region.US_SOUTH,
                                                 bluemixAppGuid: pushCredentials.appGuid,
                                                 bluemixAppSecret: pushCredentials.appSecret)
-    
+
     let options = [
       "clientId": appIdCredentials.clientId,
       "secret": appIdCredentials.secret,
@@ -105,14 +105,14 @@ public class ServerController {
       "oauthServerUrl": appIdCredentials.oauthServerUrl,
       "redirectUri": "http://localhost:8080/ibm/bluemix/appid/callback"
     ]
-    
+
     webCredentialsPlugin = WebAppKituraCredentialsPlugin(options: options)
-    
+
     setupRoutes()
   }
-  
+
   private func setupRoutes() {
-    
+
     Log.verbose("Defining middleware for server...")
 
     credentials.register(plugin: webCredentialsPlugin)
@@ -151,7 +151,7 @@ public class ServerController {
     router.get("/users", handler: getUser)
     router.post("/users", handler: postUser)
     router.post("/push/images", handler: sendPushNotification)
-    
+
     // Authentication Redirects
     let handler = credentials.authenticate(credentialsType: webCredentialsPlugin.name,
                                            successRedirect: landing_url,
@@ -172,13 +172,13 @@ extension ServerController: ServerProtocol {
     webCredentialsPlugin.logout(request: request)
     _ = try? response.redirect(landing_url)
   }
-  
+
   public func ping(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
     response.headers.append("Content-Type", value: "text/plain; charset=utf-8")
     response.status(.OK).send("Hello World, from BluePic-Server! Original URL: \(request.originalURL)")
     next()
   }
-  
+
   /// Route for getting all image documents for a given user.
   func getImagesForUser(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
     guard let userId = request.parameters["userId"] else {
@@ -186,7 +186,7 @@ extension ServerController: ServerProtocol {
       next()
       return
     }
-    
+
     let anyUserId = userId as Database.KeyType
     let queryParams: [Database.QueryParameters] = [
       .endKey([anyUserId, "0" as Database.KeyType]),
@@ -197,48 +197,48 @@ extension ServerController: ServerProtocol {
         Log.error("\(error ?? .notFound)")
         return
       }
-      
+
       response.status(.OK).send(json: images)
       next()
     }
   }
-  
+
   ///                ///
   /// Codable Routes ///
   ///                ///
-  
+
   /// Route for getting the most popular tags
   func getTags(respondWith: @escaping ([String]?, RequestError?) -> Void) {
-    
+
     let params: [Database.QueryParameters] = [.group(true), .groupLevel(1)]
-    
+
     readByView("tags", params: params, type: PopularTag.self, database: database) { tags, error in
       guard error == nil, var tags = tags else {
         respondWith(nil, error ?? .notFound)
         return
       }
-      
+
       // Sort tags in descending order
       tags = tags.sorted { $0.value > $1.value }
-      
+
       // Slice tags array (max number of items is 10)
       if tags.count > 10 { tags = Array(tags[0...9]) }
-      
+
       respondWith(tags.map { $0.key }, nil)
     }
   }
-  
+
   /// Route for getting a specific image
   func getImage(id: String, respondWith: @escaping (Image?, RequestError?) -> Void) {
     readImage(database: database, imageId: id, callback: respondWith)
   }
-  
+
   /// Route for getting all images
   func getImages(respondWith: @escaping ([Image]?, RequestError?) -> Void) {
     let params: [Database.QueryParameters] = [.includeDocs(true)]
     readByView("images", params: params, type: Image.self, database: database, callback: respondWith)
   }
-  
+
   /// Route for getting images with a specific tag
   func getImagesByTag(tag: String, respondWith: @escaping ([Image]?, RequestError?) -> Void) {
     let tag = StringUtils.decodeWhiteSpace(inString: tag)
@@ -252,28 +252,28 @@ extension ServerController: ServerProtocol {
     ]
     readByView("images_by_tags", params: queryParams, type: Image.self, database: database, callback: respondWith)
   }
-  
+
   /// Route for creating a new image
   func postImage(image: Image, respondWith: @escaping (Image?, RequestError?) -> Void) {
     print("posting")
     do {
       let completionHandler = { (success: Bool) -> Void in
-        
+
         guard success else {
           Log.error("Failed to create image record in Cloudant database.")
           respondWith(nil, .internalServerError)
           return
         }
-        
+
         var image = image
         image.url = self.generateUrl(forContainer: image.userId, forImage: image.fileName)
-        
+
         self.createObject(object: image, database: self.database) { image, error in
           guard let image = image, error == nil else {
             respondWith(nil, .internalServerError)
             return
           }
-          
+
           self.processImage(withId: image.id)  // Contine processing of image (async request for CloudFunctions)
           respondWith(image, nil)
         }
@@ -285,31 +285,31 @@ extension ServerController: ServerProtocol {
       respondWith(nil, .internalServerError)
     }
   }
-  
+
   /// Route for getting a specific user document.
   func getUser(id: String, respondWith: @escaping (User?, RequestError?) -> Void) {
-    
+
     let params: [Database.QueryParameters] = [ .keys([id as Database.KeyType]) ]
-    
+
     readByView("users", params: params, type: User.self, database: database) { users, error in
       guard error == nil, let user = users?.first else {
         respondWith(nil, error ?? .notFound)
         return
       }
-      
+
       respondWith(user, nil)
     }
   }
-  
+
   /// Route for getting all user documents.
   func getUsers(respondWith: @escaping ([User]?, RequestError?) -> Void) {
     let params: [Database.QueryParameters] = [ .includeDocs(false) ]
     readByView("users", params: params, type: User.self, database: database, callback: respondWith)
   }
-  
+
   /// Route for creating a new user
   func postUser(user: User, respondWith: @escaping (User?, RequestError?) -> Void) {
-    
+
     // Closure for adding new user document to the database
     let createRecord = {
       Log.verbose("Creating new user record '\(user.id)'.")
@@ -324,11 +324,11 @@ extension ServerController: ServerProtocol {
           createRecord()
           return
         }
-        
+
         respondWith(usr, nil)
       }
     }
-    
+
     // Create completion handler closure
     let completionHandler = { (success: Bool) -> Void in
       guard success else {
@@ -338,27 +338,27 @@ extension ServerController: ServerProtocol {
       }
       addUser()
     }
-    
+
     // Create container for user before adding record to database
     createContainer(withName: user.id, completionHandler: completionHandler)
   }
-  
+
   /// Route for sending a push notification
   func sendPushNotification(imageId: String, respondWith: @escaping (NotificationStatus?, RequestError?) -> Void) {
-    
+
     readImage(database: database, imageId: imageId) { image, error in
       do {
         guard let image = image, let deviceId = image.deviceId, error == nil else {
           throw error ?? BluePicLocalizedError.getImagesFailed(imageId)
         }
-        
+
         let data = try self.encoder.encode(image)
         let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers)
-        
+
         guard let dict = json as? [String: Any] else {
           throw BluePicLocalizedError.getImagesFailed(imageId)
         }
-        
+
         let apnsSettings = Notification.Settings.Apns(
           badge: nil,
           interactiveCategory: "imageProcessed",
@@ -367,11 +367,11 @@ extension ServerController: ServerProtocol {
           type: ApnsType.DEFAULT,
           payload: dict
         )
-        
+
         let target = Notification.Target(deviceIds: [deviceId], userIds: nil, platforms: nil, tagNames: nil)
         let message = Notification.Message(alert: "Your image was processed; check it out!", url: nil)
         let notification = Notification(message: message, target: target, apnsSettings: apnsSettings, gcmSettings: nil)
-        
+
         self.pushNotificationsClient.send(notification: notification) { error in
           guard error == nil else {
             respondWith(nil, .internalServerError)

@@ -33,8 +33,8 @@
             "clientSecret": "2fa23a19-4b24-4032-bd4b-8737af00a374"
         },
     "CloudFunctions": {
-		"hostName": "<hostName>",
-		"urlPath": "/api/v1/namespaces/<namespace>/actions/bluepic/processImage?blocking=false",
-		"authToken": "<authToken>"
+        		"hostName": "<hostName>",
+        		"urlPath": "/api/v1/namespaces/<namespace>/actions/bluepic/processImage?blocking=false",
+        		"authToken": "<authToken>"
 	}
 }

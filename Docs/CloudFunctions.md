@@ -1,19 +1,24 @@
+# Setup Cloud Functions
+
+### Prerequisites
+1. [Bluemix ClI](https://console-regional.ng.bluemix.net/docs/cli/reference/bluemix_cli/download_cli.html#download_install)
+2. Follow the instructions [here](https://console-regional.ng.bluemix.net/docs/openwhisk/bluemix_cli.html#cloudfunctions_cli) to install the Cloud Functions CLI plugin
+3. Login by following the instructions the header `Bluemix CLI authentication`
+
 # Setup CloudFunctions
-1. Download and install the [Cloud Functions CLI](https://new-console.ng.bluemix.net/openwhisk/cli) zip with an executable inside. Once downloaded, unzip the file and either start using the `wsk` command right there or add the wsk executable to your `PATH`. Then set your Cloud Functions API host and auth key as mentioned in step 2 of the "Configure CLI" page.
 
 2. On that same [Cloud Functions CLI](https://new-console.ng.bluemix.net/openwhisk/cli) page, you can find the values needed to populate the [properties.json](../BluePic-Server/properties.json) file under the `Bluepic-Server` directory.
 
 3. In step 2 on the "Cloud Functions - Configure CLI" page, you will see a command that looks similar to:
 
-    `wsk property set --apihost <hostName> --auth <authKey>`
+    `bx wsk property set --apihost <hostName> --auth <authKey>`
 
-4. Take the value after `--apihost` and put it as the `hostName` value in `properties.json`.
-
-5. Next, insert a namespace value within the existing `urlPath` value in `properties.json`. In the `<namespace>` spot to be exact:
+4. Update the CloudFunctions information in `BluePic-Server/config/configuration.json`.
+  - Take the value after `--apihost` and put it as the `hostName` value in
+  - Next, insert a namespace value within the existing `urlPath` value. In the `<namespace>` spot to be exact:
 `"/api/v1/namespaces/<namespace>/actions/bluepic/processImage?blocking=false"`
 You can find this value at the top of the Bluemix UI, it will be a combination of the org and the space name, for example: `swiftdo%40us.ibm.com_dev`. Where our email is the org name, and `dev` is the space name.
-
-4. Lastly, take the value after `--auth` and put it as the `authToken` value in `properties.json`. That value will later be converted to a base64 encoded string that Cloud Functions needs for authentication.
+  - Lastly, take the value after `--auth` and put it as the `authToken` value. That value will later be converted to a base64 encoded string that Cloud Functions needs for authentication.
 
 # Installing Cloud Functions Actions for BluePic
 ## Service Credentials
@@ -66,7 +71,7 @@ To invoke the action, you just need to pass in an `imageId` parameter (i.e. ID o
 From the CLI, this can be invoked as (you'll need to use your own image id):
 
 ```
-wsk action invoke bluepic/processImage -p imageId <image id>  
+bx wsk action invoke bluepic/processImage -p imageId <image id>  
 ```
 
 This delegates to the following actions and updates data accordingly:
@@ -82,11 +87,11 @@ This delegates to the following actions and updates data accordingly:
 
 For general Cloud Functions details, be sure to review the complete [Cloud Functions documentation](https://new-console.ng.bluemix.net/docs/openwhisk/index.html)
 
-You can monitor Cloud Functions activity using the [IBM Bluemix Cloud Functions Dashboard](https://new-console.ng.bluemix.net/openwhisk/dashboard), or by using the commdand line `wsk activation poll` command.  The dashboard provides a visual experience where you can drill into details for each request.  The CLI command provides you with a sequential output stream.  
+You can monitor Cloud Functions activity using the [IBM Bluemix Cloud Functions Dashboard](https://new-console.ng.bluemix.net/openwhisk/dashboard), or by using the commdand line `bx wsk activation poll` command.  The dashboard provides a visual experience where you can drill into details for each request.  The CLI command provides you with a sequential output stream.  
 
 There are two very important things to know when developing Cloud Functions actions:
-* Swift compiler error messages are in both the `wsk activation poll` output, and also in the stderr result of the `wsk action invoke` command.  Pay attention to both.
-* Swift `print()` or Node.js `console.log()` commands invoked from inside of Cloud Functions actions will also be visible in the `wsk activation poll` output. In Swift, if your print statements aren't working, try adding this `setbuf(stdout, nil)` before logging anything.
+* Swift compiler error messages are in both the `bx wsk activation poll` output, and also in the stderr result of the `bx wsk action invoke` command.  Pay attention to both.
+* Swift `print()` or Node.js `console.log()` commands invoked from inside of Cloud Functions actions will also be visible in the `bx wsk activation poll` output. In Swift, if your print statements aren't working, try adding this `setbuf(stdout, nil)` before logging anything.
 
 These can be extremely helpful for debugging Cloud Functions actions.  Since you cannot connect a debugger with breakpoints to an Cloud Functions action, excessive use of print() statements and using early `return` values at interim steps are your best routes for debugging values during Cloud Functions development - just be sure to remove or comment-out your debug `return` statements before making the actions live for production use.
 
@@ -102,7 +107,7 @@ The following actions are used in development of the Cloud Functions:
 The main orchestrator
 
 ```
-wsk action invoke bluepic/processImage -p imageId <image id>  
+bx wsk action invoke bluepic/processImage -p imageId <image id>  
 ```
 
 parameters:
@@ -116,7 +121,7 @@ parameters:
 Read a document from Cloudant
 
 ```
-wsk action invoke bluepic/cloudantRead -p cloudantId <cloudant id>  
+bx wsk action invoke bluepic/cloudantRead -p cloudantId <cloudant id>  
 ```
 
 parameters:
@@ -129,7 +134,7 @@ parameters:
 Write a document from Cloudant
 
 ```
-wsk action invoke bluepic/cloudantRead -p cloudantId <cloudant id>  -p cloudantBody <document>
+bx wsk action invoke bluepic/cloudantRead -p cloudantId <cloudant id>  -p cloudantBody <document>
 ```
 
 parameters:
@@ -143,7 +148,7 @@ parameters:
 Retrieve weather data from Weather Company Data service
 
 ```
-wsk action invoke bluepic/weather -p latitude <latitude>  -p longitude <longitude>
+bx wsk action invoke bluepic/weather -p latitude <latitude>  -p longitude <longitude>
 ```
 
 parameters:
@@ -157,7 +162,7 @@ parameters:
 Fetch Watson Visual Recognition image tagging results
 
 ```
-wsk action invoke bluepic/visualRecognition -p imageURL <imageURL>
+bx wsk action invoke bluepic/visualRecognition -p imageURL <imageURL>
 ```
 
 parameters:
@@ -170,7 +175,7 @@ parameters:
 Fetch App ID authorization headers for calling back to kitura server
 
 ```
-wsk action invoke bluepic/kituraRequestAuth
+bx wsk action invoke bluepic/kituraRequestAuth
 ```
 
 parameters:
@@ -183,7 +188,7 @@ parameters:
 Callback to Kitura server to notify that asynch processing is complete
 
 ```
-wsk action invoke bluepic/kituraCallback -p cloudantId <cloudant id> -p authHeader <authorization header>
+bx wsk action invoke bluepic/kituraCallback -p cloudantId <cloudant id> -p authHeader <authorization header>
 ```
 
 parameters:

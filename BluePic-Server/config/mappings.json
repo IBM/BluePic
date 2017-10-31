@@ -23,7 +23,7 @@
             "file:config/configuration.json:imfpush"
         ]
     },
-    "open-whisk-credentials": {
+    "cloud-functions-credentials": {
         "searchPatterns": [
             "file:config/configuration.json:CloudFunctions"
         ]

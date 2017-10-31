@@ -9,8 +9,8 @@ import SwiftyJSON
 
 func main(args: [String:Any]) -> [String:Any] {
 
-    var error:String = "";
-    var returnValue:String = "";
+    var error: String = ""
+    var returnValue: String = ""
     let imageId = args["imageId"] as? String ?? ""
     let targetNamespace = args["targetNamespace"] as? String ?? ""
 
@@ -33,7 +33,7 @@ func main(args: [String:Any]) -> [String:Any] {
         // request data from weather & visual recognition services
         let location = document["location"]
 
-        var weatherInvocation:[String:Any] = [:]
+        var weatherInvocation: [String:Any] = [:]
         if let latitude = location["latitude"].number,
             let longitude = location["longitude"].number {
             weatherInvocation = Whisk.invoke(actionNamed: "/\(targetNamespace)/bluepic/weather", withParameters: [
@@ -41,9 +41,9 @@ func main(args: [String:Any]) -> [String:Any] {
                 "longitude": String(describing: longitude)
                 ])
         }
-        var visualInvocation:[String:Any] = [:]
+        var visualInvocation: [String:Any] = [:]
         let imageURL = document["url"].string
-        var imageURLUnwrapped:String = ""
+        var imageURLUnwrapped: String = ""
         if let imageURLUnwrapped = imageURL {
             visualInvocation = Whisk.invoke(actionNamed: "/\(targetNamespace)/bluepic/visualRecognition", withParameters: [
                 "imageURL": "\(imageURLUnwrapped)"
@@ -54,7 +54,7 @@ func main(args: [String:Any]) -> [String:Any] {
         var weather: JSON = [:]
         if let weatherResponse = weatherInvocation["response"] as? [String:Any],
             let weatherPayload = weatherResponse["result"] as? [String:Any],
-            let weatherString:String = weatherPayload["weather"] as? String,
+            let weatherString: String = weatherPayload["weather"] as? String,
             let weatherData = weatherString.data(using: String.Encoding.utf8, allowLossyConversion: true) {
 
             weather = JSON(data: weatherData)
@@ -63,7 +63,7 @@ func main(args: [String:Any]) -> [String:Any] {
         // if the weather data exists without error, add it to the cloudant document, otherwise don't add it
         if (weather.exists() && !weather["error"].exists()) {
             let observation = weather["observation"]
-            var newWeather:JSON = [:]
+            var newWeather: JSON = [:]
             newWeather["iconId"] = observation["icon_code"]
             newWeather["description"] = observation["sky_cover"]
             newWeather["temperature"] = observation["imperial"]["temp"]
@@ -74,7 +74,7 @@ func main(args: [String:Any]) -> [String:Any] {
         var visualRecognition: JSON = [:]
         if let visualResponse = visualInvocation["response"] as? [String:Any],
             let visualPayload = visualResponse["result"] as? [String:Any],
-            let visualString:String = visualPayload["visualRecognition"] as? String,
+            let visualString: String = visualPayload["visualRecognition"] as? String,
             let visualData = visualString.data(using: String.Encoding.utf8, allowLossyConversion: true) {
 
             visualRecognition = JSON(data: visualData)
@@ -92,7 +92,7 @@ func main(args: [String:Any]) -> [String:Any] {
                 ])
             if let writeResponse = cloudantWriteInvocation["response"] as? [String:Any],
                 let writePayload = writeResponse["result"] as? [String:Any],
-                let writeResultString:String = writePayload["cloudantResult"] as? String,
+                let writeResultString: String = writePayload["cloudantResult"] as? String,
                 let writeData = writeResultString.data(using: String.Encoding.utf8, allowLossyConversion: true) {
 
                 writeJSON = JSON(data: writeData)
@@ -103,8 +103,7 @@ func main(args: [String:Any]) -> [String:Any] {
         if (writeJSON.exists() && !writeJSON["error"].exists()) {
             if(writeJSON["ok"] != true) {
                 error = "Error writing to Cloudant"
-            }
-            else {
+            } else {
                 // obtain auth credentials for callback to kitura
 //                let kituraAuthInvocation = Whisk.invoke(actionNamed: "/\(targetNamespace)/bluepic/kituraRequestAuth", withParameters: [:])
 
@@ -134,12 +133,12 @@ func main(args: [String:Any]) -> [String:Any] {
         error = "Unable to fetch document from Cloudant"
     }
 
-    var result:[String:Any] = [
-        "success":(error == ""),
-        "response":returnValue
+    var result: [String:Any] = [
+        "success": (error == ""),
+        "response": returnValue
     ]
     if (error != "") {
-        result["error"] = error;
+        result["error"] = error
     }
 
     return result
