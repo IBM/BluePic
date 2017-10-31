@@ -25,7 +25,7 @@ source local.env
 
 # capture the namespace where actions will be created
 # as we need to pass it to our change listener
-AUTH_TOKEN=`wsk property get --auth | awk '{print $3}' | base64 -b=0`
+AUTH_TOKEN=`bx wsk property get --auth | awk '{print $3}' | base64 -b=0`
 CURRENT_NAMESPACE=$(curl -X GET -H "Authorization: Basic $AUTH_TOKEN"\
  -H "Content-Type: application/json" "https://openwhisk.ng.bluemix.net/api/v1/namespaces/_/"\
  | grep 'namespace'\
@@ -41,10 +41,10 @@ function install() {
   echo -e "${YELLOW}Installing Cloud Functions actions for BluePic..."
 
   echo "Creating package"
-  wsk package create bluepic
+  bx wsk package create bluepic
 
   echo "Adding VCAP_SERVICES as parameter"
-  wsk package update bluepic\
+  bx wsk package update bluepic\
     -p visualRecognitionKey $VISUAL_key\
     -p weatherUsername $WEATHER_username\
     -p weatherPassword $WEATHER_password\
@@ -60,16 +60,16 @@ function install() {
     -p targetNamespace $CURRENT_NAMESPACE
 
   echo "Creating actions"
-  wsk action create --kind swift:3 bluepic/weather actions/Weather.swift -t 300000
-  wsk action create --kind swift:3 bluepic/visualRecognition actions/VisualRecognition.swift -t 300000
-  wsk action create --kind swift:3 bluepic/cloudantRead actions/CloudantRead.swift -t 300000
-  wsk action create --kind swift:3 bluepic/cloudantWrite actions/CloudantWrite.swift -t 300000
-  wsk action create --kind swift:3 bluepic/kituraRequestAuth actions/KituraRequestAuth.swift -t 300000
-  wsk action create --kind swift:3 bluepic/kituraCallback actions/KituraCallback.swift -t 300000
-  wsk action create --kind swift:3 bluepic/processImage actions/Orchestrator.swift -t 300000
+  bx wsk action create --kind swift:3.1.1 bluepic/weather actions/Weather.swift -t 300000
+  bx wsk action create --kind swift:3.1.1 bluepic/visualRecognition actions/VisualRecognition.swift -t 300000
+  bx wsk action create --kind swift:3.1.1 bluepic/cloudantRead actions/CloudantRead.swift -t 300000
+  bx wsk action create --kind swift:3.1.1 bluepic/cloudantWrite actions/CloudantWrite.swift -t 300000
+  bx wsk action create --kind swift:3.1.1 bluepic/kituraRequestAuth actions/KituraRequestAuth.swift -t 300000
+  bx wsk action create --kind swift:3.1.1 bluepic/kituraCallback actions/KituraCallback.swift -t 300000
+  bx wsk action create --kind swift:3.1.1 bluepic/processImage actions/Orchestrator.swift -t 300000
 
   echo -e "${GREEN}Install Complete${NC}"
-  wsk list
+  bx wsk list
 }
 
 function uninstall() {
@@ -77,38 +77,38 @@ function uninstall() {
 
   echo "Removing legacy actions..."
 
-  wsk action delete bluepic/prepareReadImage
-  wsk action delete bluepic/prepareWeatherRequest
-  wsk action delete bluepic/prepareCloudantWrite
-  wsk action delete bluepic/processImageStub
-  wsk action delete bluepic/httpGet
+  bx wsk action delete bluepic/prepareReadImage
+  bx wsk action delete bluepic/prepareWeatherRequest
+  bx wsk action delete bluepic/prepareCloudantWrite
+  bx wsk action delete bluepic/processImageStub
+  bx wsk action delete bluepic/httpGet
 
-  wsk action delete bluepic/processRequestThroughCloudantWrite
-  wsk action delete bluepic/processRequestToCloudantWrite
-  wsk action delete bluepic/processRequestThroughAlchemy
-  wsk action delete bluepic/processRequestThroughWeather
-  wsk action delete bluepic/processRequestToWeather
-  wsk action delete bluepic/processRequestThroughReadImage
-  wsk action delete bluepic/processRequestToReadImage
-  wsk action delete bluepic/processRequestThroughReadUser
-  wsk action delete bluepic/processFinalWrite
-  wsk action delete bluepic/processCallback
-  wsk action delete bluepic/alchemy
+  bx wsk action delete bluepic/processRequestThroughCloudantWrite
+  bx wsk action delete bluepic/processRequestToCloudantWrite
+  bx wsk action delete bluepic/processRequestThroughAlchemy
+  bx wsk action delete bluepic/processRequestThroughWeather
+  bx wsk action delete bluepic/processRequestToWeather
+  bx wsk action delete bluepic/processRequestThroughReadImage
+  bx wsk action delete bluepic/processRequestToReadImage
+  bx wsk action delete bluepic/processRequestThroughReadUser
+  bx wsk action delete bluepic/processFinalWrite
+  bx wsk action delete bluepic/processCallback
+  bx wsk action delete bluepic/alchemy
 
 
   echo "Removing current actions..."
-  wsk action delete bluepic/weather
-  wsk action delete bluepic/visualRecognition
-  wsk action delete bluepic/cloudantRead
-  wsk action delete bluepic/cloudantWrite
-  wsk action delete bluepic/processImage
-  wsk action delete bluepic/kituraRequestAuth
-  wsk action delete bluepic/kituraCallback
+  bx wsk action delete bluepic/weather
+  bx wsk action delete bluepic/visualRecognition
+  bx wsk action delete bluepic/cloudantRead
+  bx wsk action delete bluepic/cloudantWrite
+  bx wsk action delete bluepic/processImage
+  bx wsk action delete bluepic/kituraRequestAuth
+  bx wsk action delete bluepic/kituraCallback
 
-  wsk package delete bluepic
+  bx wsk package delete bluepic
 
   echo -e "${GREEN}Uninstall Complete${NC}"
-  wsk list
+  bx wsk list
 }
 
 function showenv() {
