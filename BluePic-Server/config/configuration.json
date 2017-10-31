@@ -32,7 +32,7 @@
             "appSecret": "0481fe41-3645-44dc-82df-0d71acefd2f1",
             "clientSecret": "2fa23a19-4b24-4032-bd4b-8737af00a374"
         },
-    "openWhisk": {
+    "CloudFunctions": {
 		"hostName": "<hostName>",
 		"urlPath": "/api/v1/namespaces/<namespace>/actions/bluepic/processImage?blocking=false",
 		"authToken": "<authToken>"

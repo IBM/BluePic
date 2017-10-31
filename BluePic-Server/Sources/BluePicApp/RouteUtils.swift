@@ -65,9 +65,9 @@ enum BluePicLocalizedError: LocalizedError {
 extension ServerController {
   
   /**
-   This method kicks off asynchronously an OpenWhisk sequence and returns immediately.
-   This method should not wait for the outcome of the OpenWhisk sequence/actions.
-   Once the OpenWhisk sequence completes execution, the sequence should invoke the
+   This method kicks off asynchronously an CloudFunctions sequence and returns immediately.
+   This method should not wait for the outcome of the CloudFunctions sequence/actions.
+   Once the CloudFunctions sequence completes execution, the sequence should invoke the
    '/push' endpoint to generate a push notification for the iOS client.
    
    - parameter imageId: The image ID of the JSON image document in Cloudant.
@@ -78,7 +78,7 @@ extension ServerController {
     
     let headers = [
       "Content-Type": "application/json",
-      "Authorization": "Basic \(openWhiskProps.authToken)"
+      "Authorization": "Basic \(cloudFunctionsProps.authToken)"
     ]
     
     guard let requestBody = try? JSON(["imageId": imageId]).rawData() else {
@@ -87,7 +87,7 @@ extension ServerController {
     }
     
     // Make REST call
-    let url = "https://" + openWhiskProps.hostName + ":433" + openWhiskProps.urlPath
+    let url = "https://" + cloudFunctionsProps.hostName + ":433" + cloudFunctionsProps.urlPath
     let req = RestRequest(method: .post, url: url)
     req.headerParameters = headers
     req.messageBody = requestBody
@@ -103,9 +103,9 @@ extension ServerController {
               Log.warning("Failed to parse JSON response")
               return
             }
-            Log.debug("OpenWhisk response: \(jsonResponse)")
+            Log.debug("CloudFunctions response: \(jsonResponse)")
           case .failure(let err):
-            Log.error("Error response from OpenWhisk: \(String(describing: err))")
+            Log.error("Error response from CloudFunctions: \(String(describing: err))")
         }
       }
     }

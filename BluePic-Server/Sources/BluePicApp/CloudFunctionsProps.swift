@@ -15,7 +15,7 @@
 **/
 import Foundation
 
-public struct OpenWhiskProps {
+public struct CloudFunctionsProps {
   // Public instance variables
   public let hostName: String
   public let urlPath: String
@@ -29,13 +29,13 @@ public struct OpenWhiskProps {
   }
 
   public init?(dict: [String: Any]) {
-    guard let openWhiskJson = dict as? [String: String] else {
+    guard let CloudFunctionsJson = dict as? [String: String] else {
       return nil
     }
 
-    guard let hostName = openWhiskJson["hostName"],
-          let urlPath = openWhiskJson["urlPath"],
-          let authToken = openWhiskJson["authToken"],
+    guard let hostName = CloudFunctionsJson["hostName"],
+          let urlPath = CloudFunctionsJson["urlPath"],
+          let authToken = CloudFunctionsJson["authToken"],
           let computedAuthToken = authToken.data(using: String.Encoding.utf8)?.base64EncodedString(options: Data.Base64EncodingOptions(rawValue: 0)) else {
 
             return nil

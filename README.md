@@ -5,17 +5,17 @@
 
 BluePic is a photo and image sharing sample application that allows you to take photos and share them with other BluePic users. This sample application demonstrates how to leverage, in a mobile iOS 10 application, a Kitura-based server application written in Swift.
 
-BluePic takes advantage of Swift in a typical iOS client setting, but also on the server-side using the new Swift web framework and HTTP Server, Kitura. An interesting feature of Bluepic, is the way it handles photos on the server. When an image is posted, it's data is recorded in Cloudant and the image binary is stored in Object Storage. From there, an [OpenWhisk](http://www.ibm.com/cloud-computing/bluemix/openwhisk/) sequence is invoked causing weather data like temperature and current condition (e.g. sunny, cloudy, etc.) to be calculated based on the location an image was uploaded from. Watson Visual Recognition is also used in the OpenWhisk sequence to analyze the image and extract text tags based on the content of the image. A push notification is finally sent to the user, informing them their image has been processed and now includes weather and tag data.
+BluePic takes advantage of Swift in a typical iOS client setting, but also on the server-side using the new Swift web framework and HTTP Server, Kitura. An interesting feature of Bluepic, is the way it handles photos on the server. When an image is posted, it's data is recorded in Cloudant and the image binary is stored in Object Storage. From there, an [Cloud Functions](http://www.ibm.com/cloud-computing/bluemix/openwhisk/) sequence is invoked causing weather data like temperature and current condition (e.g. sunny, cloudy, etc.) to be calculated based on the location an image was uploaded from. Watson Visual Recognition is also used in the Cloud Functions sequence to analyze the image and extract text tags based on the content of the image. A push notification is finally sent to the user, informing them their image has been processed and now includes weather and tag data.
 
 *Read this in other languages: [한국어](README-ko.md).*
 
 ## Swift version
-The back-end components (i.e. Kitura-based server and OpenWhisk actions) and the iOS component of the BluePic app work with specific versions of the Swift binaries, see following table:
+The back-end components (i.e. Kitura-based server and Cloud Functions actions) and the iOS component of the BluePic app work with specific versions of the Swift binaries, see following table:
 
 | Component | Swift Version |
 | --- | --- |
 | Kitura-based server | `4.0` |
-| OpenWhisk actions | `4.0` |
+| Cloud Functions actions | `4.0` |
 | iOS App | Xcode 9.0 default (`Swift 4.0`)
 
 You can download the development snapshots of the Swift binaries by following this [link](https://swift.org/download/). Compatibility with other Swift versions is not guaranteed.
@@ -104,7 +104,7 @@ REGION US SOUTH | REGION UK | REGION SYDNEY
 You can find your region in multiple ways. For instance, by just looking at the URL you use to access your application's page (or the Bluemix dashboard). Another way is to look at the `cloud_config.json` file you modified earlier. If you look at the credentials under your `AdvancedMobileAccess` service, there is a value called `serverUrl` which should contain one of the regions mentioned above. Once you insert your `bluemixAppRegion` value into the `bluemix.plist`, your app should be configured.
 
 ## Optional features to configure
-This section describes the steps to take in order to leverage Facebook authentication with App ID, Push Notifications, and OpenWhisk.
+This section describes the steps to take in order to leverage Facebook authentication with App ID, Push Notifications, and Cloud Functions.
 
 *API endpoints in BluePic-Server are currently not protected due to dependency limitations, but they will be as soon as that functionality is availalbe with the Kitura and App ID SDKs*
 
@@ -153,8 +153,8 @@ Lastly, remember that push notifications will only show up on a physical iOS dev
 
 Now, make sure your app is using the push enabled provisioning profile you created earlier in the Bluemix instructions. Then at this point, you can run the app on your device and be able to receive push notifications.
 
-### 4. Configure OpenWhisk
-BluePic leverages OpenWhisk actions written in Swift for accessing the Watson Visual Recognition and Weather APIs. For instructions on how to configure OpenWhisk, see the following [page](Docs/OpenWhisk.md). You will find there details on configuration and invocation of OpenWhisk commands.
+### 4. Configure Cloud Functions
+BluePic leverages Cloud Functions actions written in Swift for accessing the Watson Visual Recognition and Weather APIs. For instructions on how to configure Cloud Functions, see the following [page](Docs/CloudFunctions.md). You will find there details on configuration and invocation of Cloud Functions commands.
 
 ### 5. Redeploy BluePic app to Bluemix
 

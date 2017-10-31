@@ -45,7 +45,7 @@ class LoginViewController: UIViewController {
     fileprivate let kLoginErrorMessage = NSLocalizedString("Oops, an error occurred! Try again.", comment: "")
 
     //string shown in the aboutBluePicLabel
-    fileprivate let kAboutBluePicLabelText = NSLocalizedString("BluePic's back-end component is written entirely in the Swift programming language and runs on a Kitura-based server that leverages several IBM Bluemix services and OpenWhisk actions.", comment: "")
+    fileprivate let kAboutBluePicLabelText = NSLocalizedString("BluePic's back-end component is written entirely in the Swift programming language and runs on a Kitura-based server that leverages several IBM Bluemix services and Cloud Functions actions.", comment: "")
 
     /**
      Method called upon view did load. In this case we set up the view model and the aboutBluePicLabel

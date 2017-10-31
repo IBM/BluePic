@@ -44,7 +44,7 @@ public class ServerController {
   
   let database: Database
   
-  let openWhiskProps: OpenWhiskProps
+  let cloudFunctionsProps: CloudFunctionsProps
   var objectStorageConn: ObjectStorageConn
   let pushNotificationsClient: PushNotifications
   let objStorageConnProps: ObjectStorageCredentials
@@ -73,13 +73,13 @@ public class ServerController {
       let objStoreCredentials = cloudEnv.getObjectStorageCredentials(name: "object-storage-credentials"),
       let appIdCredentials = cloudEnv.getAppIDCredentials(name: "app-id-credentials"),
       let pushCredentials = cloudEnv.getPushSDKCredentials(name: "app-push-credentials"),
-      let openWhiskJson = cloudEnv.getDictionary(name: "open-whisk-credentials"),
-      let openWhiskCredentials = OpenWhiskProps(dict: openWhiskJson) else {
+      let CloudFunctionsJson = cloudEnv.getDictionary(name: "open-whisk-credentials"),
+      let CloudFunctionsCredentials = CloudFunctionsProps(dict: CloudFunctionsJson) else {
         
         throw BluePicError.IO("Failed to obtain appropriate credentials.")
     }
     
-    openWhiskProps = openWhiskCredentials
+    cloudFunctionsProps = CloudFunctionsCredentials
     objStorageConnProps = objStoreCredentials
     
     // Instantiate Objects
@@ -115,12 +115,12 @@ public class ServerController {
     
     Log.verbose("Defining middleware for server...")
 
-    //credentials.register(plugin: webCredentialsPlugin)
+    credentials.register(plugin: webCredentialsPlugin)
 
     router.all(middleware: Session(secret: "Very very secret..."))
     router.all("/", middleware: StaticFileServer(path: "./BluePic-Web"))
 
-    /*router.all(handler: credentials.authenticate(credentialsType: webCredentialsPlugin.name), { (request, response, next) in
+    router.all(handler: credentials.authenticate(credentialsType: webCredentialsPlugin.name), { (request, response, next) in
       Log.debug("Checking authorization ---------")
       let appIdAuthContext: JSON? = request.session?[WebAppKituraCredentialsPlugin.AuthContext]
       let identityTokenPayload: JSON? = appIdAuthContext?["identityTokenPayload"]
@@ -137,7 +137,7 @@ public class ServerController {
     router.post("/users", middleware: credentials)
     router.post("/push", middleware: credentials)
     router.get("/ping", middleware: credentials)
-    router.post("/images", middleware: credentials)*/
+    router.post("/images", middleware: credentials)
 
     Log.verbose("Defining routes for server...")
     router.get("/ping", handler: ping)
@@ -274,7 +274,7 @@ extension ServerController: ServerProtocol {
             return
           }
           
-          self.processImage(withId: image.id)  // Contine processing of image (async request for OpenWhisk)
+          self.processImage(withId: image.id)  // Contine processing of image (async request for CloudFunctions)
           respondWith(image, nil)
         }
       }
