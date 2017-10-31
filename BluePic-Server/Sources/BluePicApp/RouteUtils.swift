@@ -17,12 +17,12 @@
 import Foundation
 import CouchDB
 import Kitura
-import KituraNet
 import LoggerAPI
 import SwiftyJSON
 import BluemixObjectStorage
 import Dispatch
 import KituraContracts
+import SwiftyRequest
 
 enum BluePicLocalizedError: LocalizedError {
   
@@ -81,55 +81,33 @@ extension ServerController {
       "Authorization": "Basic \(openWhiskProps.authToken)"
     ]
     
-    let requestOptions: [ClientRequest.Options] = [
-      .method("POST"),
-      .schema("https://"),
-      .hostname(openWhiskProps.hostName),
-      .port(443),
-      .path(openWhiskProps.urlPath),
-      .headers(headers)
-    ]
-    
-    guard let requestBody = JSON(["imageId": imageId]).rawString() else {
+    guard let requestBody = try? JSON(["imageId": imageId]).rawData() else {
       Log.error("Failed to create JSON string with imageId.")
       return
     }
     
     // Make REST call
-    let req = HTTP.request(requestOptions) { resp in
-      guard let resp = resp else {
-        Log.error("Did not receive a response")
-        return
-      }
-      
-      guard resp.statusCode == HTTPStatusCode.OK || resp.statusCode == HTTPStatusCode.accepted else {
-        Log.error("Status error code or nil reponse received from OpenWhisk.")
-        Log.error("Status code: \(resp.statusCode)")
-        var rawUserData = Data()
-        do {
-          _ = try resp.read(into: &rawUserData)
-          let str = String(data: rawUserData, encoding: .utf8)
-          Log.error("Error response from OpenWhisk: \(String(describing: str))")
-        } catch {
-          Log.warning("Failed to read response data in processImage error state.")
-        }
-        return
-      }
-      
-      do {
-        var body = Data()
-        try resp.readAllData(into: &body)
-        let jsonResponse = JSON(data: body)
-        Log.debug("OpenWhisk response: \(jsonResponse)")
-      } catch {
-        Log.error("Bad JSON document received from OpenWhisk.")
-      }
-    }
+    let url = "https://" + openWhiskProps.hostName + ":433" + openWhiskProps.urlPath
+    let req = RestRequest(method: .post, url: url)
+    req.headerParameters = headers
+    req.messageBody = requestBody
+    
     
     // Kitura does not yet execute certain functionality asynchronously,
     // hence the need for this block.
     DispatchQueue.global().async {
-      req.end(requestBody)
+      req.responseData { response in
+        switch response.result {
+          case .success(let body):
+            guard let jsonResponse = try? JSON(data: body) else {
+              Log.warning("Failed to parse JSON response")
+              return
+            }
+            Log.debug("OpenWhisk response: \(jsonResponse)")
+          case .failure(let err):
+            Log.error("Error response from OpenWhisk: \(String(describing: err))")
+        }
+      }
     }
   }
   
@@ -207,7 +185,7 @@ extension ServerController {
   func createObject<T: JSONConvertible>(object: T, database: Database, callback: @escaping (T?, RequestError?) -> Void) {
     do {
       let data = try self.encoder.encode(object)
-      let json = JSON(data: data)
+      let json = SwiftyJSON.JSON(data: data)
       
       database.create(json) { id, revision, _, error in
         

@@ -49,7 +49,8 @@ let package = Package(
                             "BluemixAppID",
                             "CloudFoundryDeploymentTracker",
                             "CredentialsFacebook",
-                            "BluemixPushNotifications"
+                            "BluemixPushNotifications",
+                            "SwiftyRequest"
                           ]
         ),
         .target(

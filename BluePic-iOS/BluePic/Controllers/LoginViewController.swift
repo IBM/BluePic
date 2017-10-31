@@ -103,6 +103,7 @@ class LoginViewController: UIViewController {
         if FacebookDataManager.SharedInstance.isFacebookConfigured() {
             startLoading()
             AppID.sharedInstance.loginWidget?.launch(delegate: self.viewModel)
+            BMSClient.sharedInstance.authorizationManager = AppIDAuthorizationManager(appid: AppID.sharedInstance)
         } else {
             let alert = UIAlertController(title: "Error",
                                           message: NSLocalizedString("Couldn't log in, Facebook is not configured correctly.", comment: ""),

@@ -26,7 +26,7 @@ protocol ServerProtocol {
   func ping(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws
   func getImagesForUser(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws
   
-  func getTags(respondWith: @escaping ([PopularTag]?, RequestError?) -> Void)
+  func getTags(respondWith: @escaping ([String]?, RequestError?) -> Void)
   func getImage(id: String, respondWith: @escaping (Image?, RequestError?) -> Void)
   func getImages(respondWith: @escaping ([Image]?, RequestError?) -> Void)
   func postImage(image: Image, respondWith: @escaping (Image?, RequestError?) -> Void)

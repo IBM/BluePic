@@ -132,21 +132,37 @@ class Utils: NSObject {
 
     /**
      Method converts a string to a dictionary
-
      - parameter text: String
-
      - returns: [String : Any]?
      */
     class func convertStringToDictionary(_ text: String) -> [String : Any]? {
-        if let data = text.data(using: String.Encoding.utf8) {
-            do {
-                let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String : Any]
-                return json
-            } catch {
-                print(NSLocalizedString("Convert String To Dictionary Error", comment: ""))
-            }
+      if let data = text.data(using: String.Encoding.utf8) {
+        do {
+          let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String : Any]
+          return json
+        } catch {
+          print(NSLocalizedString("Convert String To Dictionary Error", comment: ""))
         }
+      }
+      return nil
+    }
+
+    /**
+     Method converts a response to a dictionary
+     - parameter response: Response?
+     - returns: [String : Any]
+     */
+    class func convertResponseToDictionary(_ response: Response?) -> [String : Any]? {
+
+      if let resp = response {
+        if let responseText = resp.responseText {
+          return convertStringToDictionary(responseText)
+        } else {
+          return nil
+        }
+      } else {
         return nil
+      }
     }
 
     /**

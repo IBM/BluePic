@@ -16,7 +16,6 @@
 
 import Foundation
 import Kitura
-import KituraNet
 import KituraSession
 import CouchDB
 import LoggerAPI
@@ -56,7 +55,11 @@ public class ServerController {
   let encoder = JSONEncoder()
   let decoder = JSONDecoder()
   
-  let credentials = Credentials()
+  let credentials = Credentials(options: [
+    WebAppKituraCredentialsPlugin.AllowAnonymousLogin: true,
+    WebAppKituraCredentialsPlugin.AllowCreateNewAnonymousUser: true
+  ])
+
   let webCredentialsPlugin: WebAppKituraCredentialsPlugin
   let landing_url = "/#/homepage"
   
@@ -111,32 +114,31 @@ public class ServerController {
   private func setupRoutes() {
     
     Log.verbose("Defining middleware for server...")
-    
+
     //credentials.register(plugin: webCredentialsPlugin)
-    
-    //router.all(middleware: Session(secret: "Very very secret..."))
+
+    router.all(middleware: Session(secret: "Very very secret..."))
     router.all("/", middleware: StaticFileServer(path: "./BluePic-Web"))
-    
+
     /*router.all(handler: credentials.authenticate(credentialsType: webCredentialsPlugin.name), { (request, response, next) in
-     Log.debug("Checking authorization ---------")
-     let appIdAuthContext: JSON? = request.session?[WebAppKituraCredentialsPlugin.AuthContext]
-     let identityTokenPayload: JSON? = appIdAuthContext?["identityTokenPayload"]
-     
-     guard appIdAuthContext?.dictionary != nil, identityTokenPayload?.dictionary != nil else {
-     response.status(.unauthorized)
-     return next()
-     }
-     
-     next()
-     })
-     
-     router.get("/users", middleware: credentials)
-     router.post("/users", middleware: credentials)
-     router.post("/push", middleware: credentials)
-     router.get("/ping", middleware: credentials)
-     router.post("/images", middleware: credentials)
-     router.all("/images", middleware: BodyParser())*/
-    
+      Log.debug("Checking authorization ---------")
+      let appIdAuthContext: JSON? = request.session?[WebAppKituraCredentialsPlugin.AuthContext]
+      let identityTokenPayload: JSON? = appIdAuthContext?["identityTokenPayload"]
+
+      guard appIdAuthContext?.dictionary != nil, identityTokenPayload?.dictionary != nil else {
+        response.status(.unauthorized)
+        return next()
+      }
+
+      next()
+    })
+
+    router.get("/users", middleware: credentials)
+    router.post("/users", middleware: credentials)
+    router.post("/push", middleware: credentials)
+    router.get("/ping", middleware: credentials)
+    router.post("/images", middleware: credentials)*/
+
     Log.verbose("Defining routes for server...")
     router.get("/ping", handler: ping)
     router.get("/users/:userId/images", handler: getImagesForUser)
@@ -154,24 +156,26 @@ public class ServerController {
     let handler = credentials.authenticate(credentialsType: webCredentialsPlugin.name,
                                            successRedirect: landing_url,
                                            failureRedirect: landing_url)
-    
+
+    // Login Redirects
     router.get("/ibm/bluemix/appid/login", handler: handler)
     router.get("/ibm/bluemix/appid/callback", handler: handler)
     router.get("/ibm/bluemix/appid/logout", handler: logout)
+
   }
 }
 
 extension ServerController: ServerProtocol {
-  
-  public func logout(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
-    self.credentials.logOut(request: request)
+
+  fileprivate func logout(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
+    credentials.logOut(request: request)
     webCredentialsPlugin.logout(request: request)
     _ = try? response.redirect(landing_url)
   }
   
   public func ping(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
     response.headers.append("Content-Type", value: "text/plain; charset=utf-8")
-    response.status(HTTPStatusCode.OK).send("Hello World, from BluePic-Server! Original URL: \(request.originalURL)")
+    response.status(.OK).send("Hello World, from BluePic-Server! Original URL: \(request.originalURL)")
     next()
   }
   
@@ -194,7 +198,8 @@ extension ServerController: ServerProtocol {
         return
       }
       
-      response.status(HTTPStatusCode.OK).send(json: images)
+      response.status(.OK).send(json: images)
+      next()
     }
   }
   
@@ -203,7 +208,7 @@ extension ServerController: ServerProtocol {
   ///                ///
   
   /// Route for getting the most popular tags
-  func getTags(respondWith: @escaping ([PopularTag]?, RequestError?) -> Void) {
+  func getTags(respondWith: @escaping ([String]?, RequestError?) -> Void) {
     
     let params: [Database.QueryParameters] = [.group(true), .groupLevel(1)]
     
@@ -219,7 +224,7 @@ extension ServerController: ServerProtocol {
       // Slice tags array (max number of items is 10)
       if tags.count > 10 { tags = Array(tags[0...9]) }
       
-      respondWith(tags, nil)
+      respondWith(tags.map { $0.key }, nil)
     }
   }
   
@@ -250,7 +255,7 @@ extension ServerController: ServerProtocol {
   
   /// Route for creating a new image
   func postImage(image: Image, respondWith: @escaping (Image?, RequestError?) -> Void) {
-    
+    print("posting")
     do {
       let completionHandler = { (success: Bool) -> Void in
         
