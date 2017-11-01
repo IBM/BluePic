@@ -16,7 +16,8 @@
 4. Update the CloudFunctions information in `BluePic-Server/config/configuration.json`.
   - Take the value after `--apihost` and put it as the `hostName` value in
   - Next, insert a namespace value within the existing `urlPath` value. In the `<namespace>` spot to be exact:
-`"/api/v1/namespaces/<namespace>/actions/bluepic/processImage?blocking=false"`
+      `"/api/v1/namespaces/<namespace>/actions/bluepic/processImage?blocking=false"`
+      You can find this value at the top of the Bluemix UI, it will be a combination of the org and the space name, for example: `swiftdo%40us.ibm.com_dev`. Where our email is the org name, and `dev` is the space name.
 You can find this value at the top of the Bluemix UI, it will be a combination of the org and the space name, for example: `swiftdo%40us.ibm.com_dev`. Where our email is the org name, and `dev` is the space name.
   - Lastly, take the value after `--auth` and put it as the `authToken` value. That value will later be converted to a base64 encoded string that Cloud Functions needs for authentication.
 

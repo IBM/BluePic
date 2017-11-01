@@ -50,12 +50,11 @@ extension ServerController {
     }
     
     // Make REST call
-    let url = "https://" + cloudFunctionsProps.hostName + ":433" + cloudFunctionsProps.urlPath
+    let url = "https://" + cloudFunctionsProps.hostName + cloudFunctionsProps.urlPath
     let req = RestRequest(method: .post, url: url)
     req.headerParameters = headers
     req.messageBody = requestBody
-    
-    
+
     // Kitura does not yet execute certain functionality asynchronously,
     // hence the need for this block.
     DispatchQueue.global().async {

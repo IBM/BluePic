@@ -34,8 +34,8 @@
             "clientSecret": "2fa23a19-4b24-4032-bd4b-8737af00a374"
         },
     "CloudFunctions": {
-        		"hostName": "<hostName>",
-        		"urlPath": "/api/v1/namespaces/<namespace>/actions/bluepic/processImage?blocking=false",
-        		"authToken": "<authToken>"
+        		"hostName": "openwhisk.ng.bluemix.net",
+        		"urlPath": "/api/v1/namespaces/aaron.m.liberatore_dev/actions/bluepic/processImage?blocking=false",
+        		"authToken": "9b7bb88c-dd79-4310-a4bf-713f9cd445df:Clb1qojlq2jyV95fbBLGi26kCWczpywaC6DaWqPSs2aqKcb05RNb2IWbdDExauEt"
 	}
 }

@@ -19,7 +19,7 @@ import SwiftyJSON
 
 struct Tag: Codable {
     let label: String
-    let confidence: Int
+    let confidence: Double
 }
 
 struct PopularTag: Codable {
