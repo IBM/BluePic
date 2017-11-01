@@ -11,9 +11,9 @@
 	<key>bluemixAppRegion</key>
 	<string>.ng.bluemix.net</string>
 	<key>pushAppGUID</key>
-	<string></string>
+	<string>ea4258ff-6cec-4dc2-b582-9c91b9126699</string>
 	<key>pushClientSecret</key>
-	<string></string>
+	<string>2fa23a19-4b24-4032-bd4b-8737af00a374</string>
 	<key>appIdTenantId</key>
 	<string>a7fd0d6a-9d04-4bfb-9b18-9b1e2a60b36e</string>
 </dict>

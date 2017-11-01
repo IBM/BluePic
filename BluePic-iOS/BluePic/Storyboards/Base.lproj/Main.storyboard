@@ -218,6 +218,7 @@
                         <outlet property="loadingIndicator" destination="g2J-LJ-jge" id="ghq-Sm-EkT"/>
                         <outlet property="signInLaterButton" destination="neQ-m5-2vk" id="gFO-gx-1eF"/>
                         <outlet property="welcomeLabel" destination="gtv-K7-hIk" id="qUd-Ih-I6b"/>
+                        <segue destination="8AK-xM-BIZ" kind="show" identifier="authorizedSegue" id="kI6-Bw-TnJ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

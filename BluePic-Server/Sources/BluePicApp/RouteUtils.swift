@@ -24,43 +24,6 @@ import Dispatch
 import KituraContracts
 import SwiftyRequest
 
-enum BluePicLocalizedError: LocalizedError {
-  
-  case getTagsFailed
-  case noImagesByTag(String)
-  case getAllImagesFailed
-  case noImageId
-  case noJsonData(String)
-  case getUsersFailed
-  case noUserId(String)
-  case missingUserId
-  case readDocumentFailed
-  case addImageRecordFailed
-  case getImagesFailed(String)
-  case addUserRecordFailed(String)
-  case requestFailed
-  case createDatabaseObjectFailed(String)
-  
-  var errorDescription: String? {
-    switch self {
-    case .getTagsFailed: return "Failed to obtain tags from database."
-    case .noImagesByTag(let tag): return "Failed to find images with tag: \(tag)."
-    case .getAllImagesFailed: return "Failed to retrieve all images."
-    case .noImageId: return "Failed to obtain imageId."
-    case .noJsonData(let imageId): return "Failed to obtain JSON data from database for imageId: \(imageId)."
-    case .getUsersFailed: return "Failed to read users from database."
-    case .noUserId(let userId): return "Failed to obtain userId: \(userId)."
-    case .missingUserId: return "Failed to obtain userId."
-    case .readDocumentFailed: return "Failed to read requested user document."
-    case .addImageRecordFailed: return "Failed to create image record in Cloudant database."
-    case .getImagesFailed(let userId): return "Failed to get images for \(userId)."
-    case .addUserRecordFailed(let userId): return "Failed to add user: \(userId) to the system of records."
-    case .requestFailed: return "Failed to process user request."
-    case .createDatabaseObjectFailed(let type): return "Failed to add object of type \(type) to database"
-    }
-  }
-}
-
 // Encapsulates helper functions that the endpoints use
 extension ServerController {
   
@@ -125,7 +88,7 @@ extension ServerController {
       .endKey([anyImageId, NSNumber(integerLiteral: 0)]),
       .startKey([anyImageId, NSObject()])
     ]
-    readByView("images_by_id", params: queryParams, type: Image.self, database: database) { images, error in
+    readByView(View.images_by_id, params: queryParams, type: Image.self, database: database) { images, error in
       guard let images = images, let image = images.first, error == nil else {
         callback(nil, .notFound)
         return
@@ -142,7 +105,7 @@ extension ServerController {
    * - parameter database: Database instance
    * - parameter callback: Callback to use within async method.
    */
-  func readByView<T: JSONConvertible>(_ view: String,
+  func readByView<T: JSONConvertible>(_ view: View,
                                       params: [Database.QueryParameters] = [],
                                       type: T.Type,
                                       database: Database,
@@ -158,7 +121,7 @@ extension ServerController {
       }
     }
     
-    database.queryByView(view, ofDesign: "main_design", usingParameters: queryParams) { document, error in
+    database.queryByView(view.rawValue, ofDesign: "main_design", usingParameters: queryParams) { document, error in
       do {
         guard error == nil, let document = document else {
           throw BluePicLocalizedError.readDocumentFailed
@@ -170,7 +133,7 @@ extension ServerController {
         
       } catch {
         Log.error("\(error)")
-        callback(nil, RequestError.internalServerError)
+        callback(nil, .internalServerError)
       }
     }
   }
@@ -191,7 +154,7 @@ extension ServerController {
         
         guard error == nil, let revision = revision else {
           Log.error("Failed to add user to the system of records.")
-          callback(nil, RequestError.internalServerError)
+          callback(nil, .internalServerError)
           return
         }
         
@@ -248,18 +211,19 @@ extension ServerController {
     
     // Create container
     let createContainer = { (objStorage: ObjectStorage?) -> Void in
-      if let objStorage = objStorage {
-        objStorage.createContainer(name: name) { error, container in
-          if let container = container, error == nil {
-            configureContainer(container)
-          } else {
-            Log.error("Could not create container named '\(name)'.")
-            completionHandler(false)
-          }
-        }
-      } else {
+      guard let objStorage = objStorage  else {
         Log.verbose("Created successfully container named '\(name)'.")
         completionHandler(false)
+        return
+      }
+
+      objStorage.createContainer(name: name) { error, container in
+        if let container = container, error == nil {
+          configureContainer(container)
+        } else {
+          Log.error("Could not create container named '\(name)'.")
+          completionHandler(false)
+        }
       }
     }
     
@@ -278,8 +242,10 @@ extension ServerController {
   func store(image: Image, completionHandler: @escaping (_ success: Bool) -> Void) throws {
     guard let imageData = image.image else {
       Log.error("No image found")
+      completionHandler(false)
       return
     }
+
     let storeImage = { (container: ObjectStorageContainer) -> Void in
       container.storeObject(name: image.fileName, data: imageData) { error, _ in
         if let error = error {
@@ -295,18 +261,19 @@ extension ServerController {
     
     // Get reference to container
     let retrieveContainer = { (objStorage: ObjectStorage?) -> Void in
-      if let objStorage = objStorage {
-        Log.debug("retrieving container: \(image.userId)")
-        objStorage.retrieveContainer(name: image.userId) { error, container in
-          if let container = container, error == nil {
-            storeImage(container)
-          } else {
-            Log.error("Could not find container named '\(image.fileName)'.")
-            completionHandler(false)
-          }
-        }
-      } else {
+      guard let objStorage = objStorage else {
         completionHandler(false)
+        return
+      }
+
+      Log.debug("retrieving container: \(image.userId)")
+      objStorage.retrieveContainer(name: image.userId) { error, container in
+        if let container = container, error == nil {
+          storeImage(container)
+        } else {
+          Log.error("Could not find container named '\(image.fileName)'.")
+          completionHandler(false)
+        }
       }
     }
     

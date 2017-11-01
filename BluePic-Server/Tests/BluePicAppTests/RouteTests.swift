@@ -120,7 +120,7 @@ class RouteTests: XCTestCase {
 
     let pingExpectation = expectation(description: "Hit ping endpoint and get simple text response.")
 
-    let req = RestRequest(route: "ping", authToken: accessToken)
+    let req = RestRequest(route: "/ping", authToken: accessToken)
 
     req.responseString { response in
       switch response.result {
@@ -139,7 +139,7 @@ class RouteTests: XCTestCase {
     let tagExpectation = expectation(description: "Get the top 10 image tags.")
     let expectedResult = ["mountain", "flower", "nature", "bridge", "building",
                           "city", "cloudy sky", "garden", "lake", "person"]
-    let req = RestRequest(method: .get, route: "tags")
+    let req = RestRequest(method: .get, route: "/tags")
 
     req.responseData { res in
       switch res.result {
@@ -161,7 +161,7 @@ class RouteTests: XCTestCase {
   func testGettingImages() {
 
     let imageExpectation = expectation(description: "Get all images.")
-    let req = RestRequest(method: .get, route: "images")
+    let req = RestRequest(method: .get, route: "/images")
     
     req.responseData { res in
       switch res.result {
@@ -187,7 +187,7 @@ class RouteTests: XCTestCase {
 
     let imageExpectation = expectation(description: "Get an image with a specific image.")
 
-    let req = RestRequest(method: .get, route: "images/2010")
+    let req = RestRequest(method: .get, route: "/images/2010")
     
     req.responseData { res in
       switch res.result {
@@ -206,7 +206,7 @@ class RouteTests: XCTestCase {
 
     let imageExpectation = expectation(description: "Get all images with a specific tag.")
 
-    let req = RestRequest(method: .get, route: "images/tag/mountain")
+    let req = RestRequest(method: .get, route: "/images/tag/mountain")
     
     req.responseData { res in
       switch res.result {
@@ -242,8 +242,7 @@ class RouteTests: XCTestCase {
                       userId: "anonymous",
                       image: Data())
     
-    let req = RestRequest(method: .post, url: "http://localhost:8080/images")
-    req.headerParameters = [ "Authorization": "Bearer \(self.accessToken)" ]
+    let req = RestRequest(method: .post, route: "/images", authToken: self.accessToken)
     
     req.messageBody = try? JSONEncoder().encode(image)
 
@@ -261,7 +260,7 @@ class RouteTests: XCTestCase {
 
     let imageExpectation = expectation(description: "Gets all images posted by a specific user.")
 
-    let req = RestRequest(route: "users/1001/images", authToken: self.accessToken)
+    let req = RestRequest(route: "/users/1001/images", authToken: self.accessToken)
 
     req.responseData { resp in
       
@@ -289,7 +288,7 @@ class RouteTests: XCTestCase {
 
     let userExpectation = expectation(description: "Gets all Users.")
 
-    let req = RestRequest(route: "users", authToken: self.accessToken)
+    let req = RestRequest(route: "/users", authToken: self.accessToken)
     
     req.responseData { resp in
       switch resp.result {
@@ -321,7 +320,7 @@ class RouteTests: XCTestCase {
 
     let userExpectation = expectation(description: "Gets a specific User.")
 
-    let req = RestRequest(route: "users/1003", authToken: self.accessToken)
+    let req = RestRequest(route: "/users/1003", authToken: self.accessToken)
     
     req.responseData { resp in
       switch resp.result {
@@ -350,7 +349,7 @@ class RouteTests: XCTestCase {
       return
     }
     
-    let req = RestRequest(method: .post, route: "users", authToken: self.accessToken)
+    let req = RestRequest(method: .post, route: "/users", authToken: self.accessToken)
     req.messageBody = jsonData
 
     req.responseData { resp in
@@ -372,12 +371,8 @@ class RouteTests: XCTestCase {
   func testPushNotification() {
 
     let pushExpectation = expectation(description: "Sends a push notification to a User.")
-
-    let headers =  ["Content-Type": "application/json",
-                    "Authorization": "Bearer \(self.accessToken)"]
     
-    let req = RestRequest(method: .post, url: "http://localhost:8080/push/images/2010")
-    req.headerParameters = headers
+    let req = RestRequest(method: .post, route: "/push/images/2010", authToken: self.accessToken)
 
     req.responseVoid { resp in
       switch resp.result {
@@ -477,7 +472,7 @@ struct Img: Codable {
 
 private extension RestRequest {
   convenience init(method: HTTPMethod = .get, route: String = "", authToken: String? = nil) {
-    self.init(method: method, url: "http://127.0.0.1:8080/" + route)
+    self.init(method: method, url: "http://127.0.0.1:8080" + route)
     var headers = [String: String]()
     if let authToken = authToken {
       headers["Authorization"] = "Bearer \(authToken)"

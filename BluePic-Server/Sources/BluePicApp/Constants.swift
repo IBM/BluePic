@@ -14,17 +14,27 @@
 * limitations under the License.
 */
 
-/**
- Enum error used to inform of an invalid reading/processing error
- 
- - Image: Used when image data isn't what was expected
- - User:  Used when User data isn't what was expected
- */
+
+/** Enum error used to inform of an invalid reading/processing error
+   Used when image data isn't what was expected
+   Used when User data isn't what was expected
+*/
 enum ProcessingError: Error {
   case image(String)
   case user(String)
 }
 
+/// Enum expressing blue pic I/O errors
 enum BluePicError: Error {
-    case IO(String)
+  case IO(String)
+}
+
+/// Enum identifying Cloudant Views
+enum View: String {
+  case images           = "images"
+  case images_by_id     = "images_by_id"
+  case images_by_tag    = "images_by_tags"
+  case images_per_user  = "images_per_user"
+  case tags             = "tags"
+  case users            = "users"
 }

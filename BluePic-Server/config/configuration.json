@@ -19,11 +19,12 @@
             "role": "admin"
         },
     "AppID": {
-            "clientId": "<clientId>",
-            "secret": "<secret>",
-            "tenantId": "<tenantId>",
-            "oauthServerUrl": "<oauthServerUrl>",
-            "profilesUrl": "<profilesUrl>"
+            "version": 3,
+            "clientId": "60ade2aa-9c57-4852-8fc5-417b36c4f408",
+            "secret": "NTI5ZTJiODAtNDVjMC00MDBlLWI0Y2EtNDRlZDU3MTQ1MmJj",
+            "tenantId": "a7fd0d6a-9d04-4bfb-9b18-9b1e2a60b36e",
+            "oauthServerUrl": "https://appid-oauth.ng.bluemix.net/oauth/v3/a7fd0d6a-9d04-4bfb-9b18-9b1e2a60b36e",
+            "profilesUrl": "https://appid-profiles.ng.bluemix.net"
         },
     "imfpush": {
             "appGuid": "ea4258ff-6cec-4dc2-b582-9c91b9126699",

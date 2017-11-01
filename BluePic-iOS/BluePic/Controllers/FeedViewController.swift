@@ -251,7 +251,16 @@ class FeedViewController: UIViewController {
         if self.isVisible() {
 
             noResultsLabel.isHidden = true
-            self.topAlertConstraint.constant = self.alertBannerView.frame.size.height - 20
+
+            if UIDevice.current.userInterfaceIdiom == .phone {
+              switch UIScreen.main.nativeBounds.height {
+              case 2436: // iPhone X
+                self.topAlertConstraint.constant = self.alertBannerView.frame.size.height + 20
+              default:
+                self.topAlertConstraint.constant = self.alertBannerView.frame.size.height
+              }
+            }
+
             UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.4, initialSpringVelocity: 15, options: UIViewAnimationOptions(), animations: {
                 self.view.layoutIfNeeded()
             }, completion: nil)

@@ -60,8 +60,14 @@ public class ServerController {
     WebAppKituraCredentialsPlugin.AllowCreateNewAnonymousUser: true
   ])
 
-  let webCredentialsPlugin: WebAppKituraCredentialsPlugin
+  // let webCredentialsPlugin: WebAppKituraCredentialsPlugin
   let landing_url = "/#/homepage"
+
+  let kTagsPath = "/tags"
+  let kPingPath = "/ping"
+  let kUsersPath = "/users"
+  let kImagesPath = "/images"
+  let kPushPath = "/push/images"
 
   public var port: Int {
     return cloudEnv.port
@@ -71,7 +77,7 @@ public class ServerController {
 
     guard let couchDBCredentials = cloudEnv.getCloudantCredentials(name: "cloudant-credentials"),
       let objStoreCredentials = cloudEnv.getObjectStorageCredentials(name: "object-storage-credentials"),
-      let appIdCredentials = cloudEnv.getAppIDCredentials(name: "app-id-credentials"),
+      // let appIdCredentials = cloudEnv.getAppIDCredentials(name: "app-id-credentials"),
       let pushCredentials = cloudEnv.getPushSDKCredentials(name: "app-push-credentials"),
       let CloudFunctionsJson = cloudEnv.getDictionary(name: "cloud-functions-credentials"),
       let CloudFunctionsCredentials = CloudFunctionsProps(dict: CloudFunctionsJson) else {
@@ -97,7 +103,7 @@ public class ServerController {
     pushNotificationsClient = PushNotifications(bluemixRegion: PushNotifications.Region.US_SOUTH,
                                                 bluemixAppGuid: pushCredentials.appGuid,
                                                 bluemixAppSecret: pushCredentials.appSecret)
-
+    /*
     let options = [
       "clientId": appIdCredentials.clientId,
       "secret": appIdCredentials.secret,
@@ -107,18 +113,20 @@ public class ServerController {
     ]
 
     webCredentialsPlugin = WebAppKituraCredentialsPlugin(options: options)
+     */
+    
+    router.all("/", middleware: StaticFileServer(path: "./BluePic-Web"))
 
+    // setupAuth()
+    // setupMiddleware()
     setupRoutes()
   }
 
-  private func setupRoutes() {
+  private func setupAuth() {
+    /* Credentials temporarily disabled
 
-    Log.verbose("Defining middleware for server...")
-
+    /// Enable Credentials Plugin and Authorizaiton handlers
     credentials.register(plugin: webCredentialsPlugin)
-
-    router.all(middleware: Session(secret: "Very very secret..."))
-    router.all("/", middleware: StaticFileServer(path: "./BluePic-Web"))
 
     router.all(handler: credentials.authenticate(credentialsType: webCredentialsPlugin.name), { (request, response, next) in
       Log.debug("Checking authorization ---------")
@@ -133,46 +141,58 @@ public class ServerController {
       next()
     })
 
+    let handler = credentials.authenticate(credentialsType: webCredentialsPlugin.name,
+                                           successRedirect: landing_url,
+                                           failureRedirect: landing_url)
+
+    router.get("/ibm/bluemix/appid/login", handler: handler)
+    router.get("/ibm/bluemix/appid/callback", handler: handler)
+    router.get("/ibm/bluemix/appid/logout", handler: logout)
+    */
+  }
+
+  private func setupMiddleware() {
+    /*
+    Log.verbose("Defining middleware for server...")
+
+    router.all(middleware: Session(secret: "Very very secret..."))
+    
+    /// Protect Endpoints
     router.get("/users", middleware: credentials)
     router.post("/users", middleware: credentials)
     router.post("/push", middleware: credentials)
     router.get("/ping", middleware: credentials)
     router.post("/images", middleware: credentials)
+    */
+  }
 
+  private func setupRoutes() {
     Log.verbose("Defining routes for server...")
-    router.get("/ping", handler: ping)
-    router.get("/users/:userId/images", handler: getImagesForUser)
-    router.get("/images", handler: getImage)
-    router.get("/images", handler: getImages)
-    router.get("/images/tag", handler: getImagesByTag)
-    router.post("/images", handler: postImage)
-    router.get("/tags", handler: getTags)
-    router.get("/users", handler: getUsers)
-    router.get("/users", handler: getUser)
-    router.post("/users", handler: postUser)
-    router.post("/push/images", handler: sendPushNotification)
 
-    // Authentication Redirects
-    let handler = credentials.authenticate(credentialsType: webCredentialsPlugin.name,
-                                           successRedirect: landing_url,
-                                           failureRedirect: landing_url)
-
-    // Login Redirects
-    router.get("/ibm/bluemix/appid/login", handler: handler)
-    router.get("/ibm/bluemix/appid/callback", handler: handler)
-    router.get("/ibm/bluemix/appid/logout", handler: logout)
-
+    router.get(kPingPath, handler: ping)
+    router.get(kUsersPath + "/:userId/images", handler: getImagesForUser)
+    router.get(kImagesPath, handler: getImage)
+    router.get(kImagesPath, handler: getImages)
+    router.get(kImagesPath + "/tag", handler: getImagesByTag)
+    router.post(kImagesPath, handler: postImage)
+    router.get(kTagsPath, handler: getTags)
+    router.get(kUsersPath, handler: getUsers)
+    router.get(kUsersPath, handler: getUser)
+    router.post(kUsersPath, handler: postUser)
+    router.post(kPushPath, handler: sendPushNotification)
   }
 }
 
 extension ServerController: ServerProtocol {
-
+  /*
   fileprivate func logout(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
     credentials.logOut(request: request)
     webCredentialsPlugin.logout(request: request)
     _ = try? response.redirect(landing_url)
   }
+ */
 
+  /// Route for handling ping request
   public func ping(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
     response.headers.append("Content-Type", value: "text/plain; charset=utf-8")
     response.status(.OK).send("Hello World, from BluePic-Server! Original URL: \(request.originalURL)")
@@ -192,7 +212,7 @@ extension ServerController: ServerProtocol {
       .endKey([anyUserId, "0" as Database.KeyType]),
       .startKey([anyUserId, NSObject()])
     ]
-    self.readByView("images_per_user", params: queryParams, type: Image.self, database: database) { images, error in
+    self.readByView(View.images_per_user, params: queryParams, type: Image.self, database: database) { images, error in
       guard let images = images, error == nil else {
         Log.error("\(error ?? .notFound)")
         return
@@ -212,7 +232,7 @@ extension ServerController: ServerProtocol {
 
     let params: [Database.QueryParameters] = [.group(true), .groupLevel(1)]
 
-    readByView("tags", params: params, type: PopularTag.self, database: database) { tags, error in
+    readByView(View.tags, params: params, type: PopularTag.self, database: database) { tags, error in
       guard error == nil, var tags = tags else {
         respondWith(nil, error ?? .notFound)
         return
@@ -236,7 +256,7 @@ extension ServerController: ServerProtocol {
   /// Route for getting all images
   func getImages(respondWith: @escaping ([Image]?, RequestError?) -> Void) {
     let params: [Database.QueryParameters] = [.includeDocs(true)]
-    readByView("images", params: params, type: Image.self, database: database, callback: respondWith)
+    readByView(View.images, params: params, type: Image.self, database: database, callback: respondWith)
   }
 
   /// Route for getting images with a specific tag
@@ -250,12 +270,11 @@ extension ServerController: ServerProtocol {
       .endKey([anyTag, zeroKey, zeroKey, NSNumber(integerLiteral: 0)]),
       .startKey([anyTag, NSObject()])
     ]
-    readByView("images_by_tags", params: queryParams, type: Image.self, database: database, callback: respondWith)
+    readByView(View.images_by_tag, params: queryParams, type: Image.self, database: database, callback: respondWith)
   }
 
   /// Route for creating a new image
   func postImage(image: Image, respondWith: @escaping (Image?, RequestError?) -> Void) {
-    print("posting")
     do {
       let completionHandler = { (success: Bool) -> Void in
 
@@ -291,7 +310,7 @@ extension ServerController: ServerProtocol {
 
     let params: [Database.QueryParameters] = [ .keys([id as Database.KeyType]) ]
 
-    readByView("users", params: params, type: User.self, database: database) { users, error in
+    readByView(View.users, params: params, type: User.self, database: database) { users, error in
       guard error == nil, let user = users?.first else {
         respondWith(nil, error ?? .notFound)
         return
@@ -304,7 +323,7 @@ extension ServerController: ServerProtocol {
   /// Route for getting all user documents.
   func getUsers(respondWith: @escaping ([User]?, RequestError?) -> Void) {
     let params: [Database.QueryParameters] = [ .includeDocs(false) ]
-    readByView("users", params: params, type: User.self, database: database, callback: respondWith)
+    readByView(View.users, params: params, type: User.self, database: database, callback: respondWith)
   }
 
   /// Route for creating a new user
@@ -333,7 +352,7 @@ extension ServerController: ServerProtocol {
     let completionHandler = { (success: Bool) -> Void in
       guard success else {
         Log.error("Failed to add user to the system of records.")
-        respondWith(user, .internalServerError)//BluePicLocalizedError.addUserRecordFailed("User with id: \(user.id)"))
+        respondWith(user, .internalServerError)
         return
       }
       addUser()
@@ -349,11 +368,11 @@ extension ServerController: ServerProtocol {
     readImage(database: database, imageId: imageId) { image, error in
       do {
         guard let image = image, let deviceId = image.deviceId, error == nil else {
-          throw error ?? BluePicLocalizedError.getImagesFailed(imageId)
+          throw error ?? .internalServerError
         }
 
         let data = try self.encoder.encode(image)
-        let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers)
+        let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers)
 
         guard let dict = json as? [String: Any] else {
           throw BluePicLocalizedError.getImagesFailed(imageId)
@@ -373,12 +392,14 @@ extension ServerController: ServerProtocol {
         let notification = Notification(message: message, target: target, apnsSettings: apnsSettings, gcmSettings: nil)
 
         self.pushNotificationsClient.send(notification: notification) { error in
-          guard error == nil else {
+          if let error = error {
+            Log.error("\(error)")
             respondWith(nil, .internalServerError)
             return
           }
         }
       } catch {
+        Log.error("\(error)")
         respondWith(NotificationStatus(status: false), .internalServerError)
       }
     }
