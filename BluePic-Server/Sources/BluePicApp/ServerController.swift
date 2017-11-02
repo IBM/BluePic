@@ -179,7 +179,7 @@ public class ServerController {
     router.get(kUsersPath, handler: getUsers)
     router.get(kUsersPath, handler: getUser)
     router.post(kUsersPath, handler: postUser)
-    router.post(kPushPath, handler: sendPushNotification)
+    router.post(kPushPath + "/:imageId", handler: sendPushNotification)
   }
 }
 
@@ -363,7 +363,14 @@ extension ServerController: ServerProtocol {
   }
 
   /// Route for sending a push notification
-  func sendPushNotification(imageId: String, respondWith: @escaping (NotificationStatus?, RequestError?) -> Void) {
+  func sendPushNotification(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
+
+    guard let imageId = request.parameters["imageId"] else {
+      response.status(.badRequest)
+      response.send(NotificationStatus(status: false))
+      next()
+      return
+    }
 
     readImage(database: database, imageId: imageId) { image, error in
       do {
@@ -394,13 +401,18 @@ extension ServerController: ServerProtocol {
         self.pushNotificationsClient.send(notification: notification) { error in
           if let error = error {
             Log.error("\(error)")
-            respondWith(nil, .internalServerError)
-            return
+            response.status(.internalServerError)
+            response.send(NotificationStatus(status: false))
+          } else {
+            response.send(NotificationStatus(status: true))
           }
+          next()
         }
       } catch {
         Log.error("\(error)")
-        respondWith(NotificationStatus(status: false), .internalServerError)
+        response.status(.internalServerError)
+        response.send(NotificationStatus(status: false))
+        next()
       }
     }
   }

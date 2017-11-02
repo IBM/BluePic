@@ -79,7 +79,7 @@ class RouteTests: XCTestCase {
   override func setUp() {
     super.setUp()
 
-    resetDatabase()
+    //resetDatabase()
 
     if self.accessToken == "" {
       let tokenFileName = "authToken"
@@ -371,16 +371,22 @@ class RouteTests: XCTestCase {
   func testPushNotification() {
 
     let pushExpectation = expectation(description: "Sends a push notification to a User.")
-    
+  
     let req = RestRequest(method: .post, route: "/push/images/2010", authToken: self.accessToken)
 
-    req.responseVoid { resp in
-      switch resp.result {
-      case .success: pushExpectation.fulfill()
+    req.responseData { response in
+      switch response.result {
+      case .success(let data):
+        guard let status = try? JSONDecoder().decode(NotificationStatus.self, from: data) else {
+          XCTFail()
+          return
+        }
+
+        status.status ? pushExpectation.fulfill() : XCTFail()
+
       case .failure(let err): self.handleError(err)
       }
     }
-
     waitForExpectations(timeout: timeout, handler: nil)
   }
 

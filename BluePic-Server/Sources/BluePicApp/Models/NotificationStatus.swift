@@ -16,6 +16,6 @@
 
 import Foundation
 
-public struct NotificationStatus {
+public struct NotificationStatus: Codable {
   let status: Bool
 }

@@ -25,7 +25,8 @@ protocol ServerProtocol {
   
   func ping(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws
   func getImagesForUser(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws
-  
+  func sendPushNotification(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws
+
   func getTags(respondWith: @escaping ([String]?, RequestError?) -> Void)
   func getImage(id: String, respondWith: @escaping (Image?, RequestError?) -> Void)
   func getImages(respondWith: @escaping ([Image]?, RequestError?) -> Void)
@@ -33,5 +34,4 @@ protocol ServerProtocol {
   func postUser(user: User, respondWith: @escaping (User?, RequestError?) -> Void)
   func getUsers(respondWith: @escaping ([User]?, RequestError?) -> Void)
   func getUser(id: String, respondWith: @escaping (User?, RequestError?) -> Void)
-  func sendPushNotification(imageId: String, respondWith: @escaping (NotificationStatus?, RequestError?) -> Void)
 }
