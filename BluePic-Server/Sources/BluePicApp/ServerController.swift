@@ -114,7 +114,7 @@ public class ServerController {
 
     webCredentialsPlugin = WebAppKituraCredentialsPlugin(options: options)
      */
-    
+
     router.all("/", middleware: StaticFileServer(path: "./BluePic-Web"))
 
     // setupAuth()
@@ -156,7 +156,7 @@ public class ServerController {
     Log.verbose("Defining middleware for server...")
 
     router.all(middleware: Session(secret: "Very very secret..."))
-    
+
     /// Protect Endpoints
     router.get("/users", middleware: credentials)
     router.post("/users", middleware: credentials)
