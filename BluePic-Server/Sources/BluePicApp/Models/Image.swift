@@ -47,6 +47,7 @@ extension Image: Encodable {
         try container.encode(height, forKey: .height)
         try container.encode(width, forKey: .width)
         try container.encode(uploadedTs, forKey: .uploadedTs)
+        try container.encode(tags, forKey: .tags)
         try container.encode(userId, forKey: .userId)
         try container.encodeIfPresent(deviceId, forKey: .deviceId)
         try container.encodeIfPresent(location, forKey: .location)

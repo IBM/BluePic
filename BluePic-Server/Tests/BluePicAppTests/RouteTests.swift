@@ -170,6 +170,7 @@ class RouteTests: XCTestCase {
         let records = images.arrayValue
         XCTAssertEqual(records.count, 9)
         let firstImage = records.first
+        print(images, records, firstImage)
         XCTAssertNotNil(firstImage, "firstImage is nil within collection of all images.")
         self.assertImage2010(image: firstImage!)
         let lastImage = records.last
@@ -430,6 +431,8 @@ extension RouteTests {
   }
 
   func assertImage2001(image: SwiftyJSON.JSON) {
+    print("============")
+    print(image)
     XCTAssertEqual(image["contentType"].stringValue, "image/png")
     XCTAssertEqual(image["fileName"].stringValue, "bridge.png")
     XCTAssertEqual(image["width"].intValue, 600)
