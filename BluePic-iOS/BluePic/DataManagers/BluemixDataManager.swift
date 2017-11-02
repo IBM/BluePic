@@ -184,7 +184,7 @@ extension BluemixDataManager {
     let requestURL = getBluemixBaseRequestURL() + "/" + kUsersEndPoint
 
     let request = Request(url: requestURL, method: HttpMethod.POST)
-
+    request.headers = ["Content-Type": "application/json"]
     request.timeout = kDefaultTimeOut
 
     let json = ["_id": userId, "name": name]

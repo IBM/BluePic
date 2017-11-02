@@ -12,7 +12,7 @@ func main(args: [String:Any]) -> [String:Any] {
     var error: String = ""
     var returnValue: String = ""
     let imageId = args["imageId"] as? String ?? ""
-    let targetNamespace = args["targetNamespace"] as? String ?? ""
+    let targetNamespace = args["namespace"] as? String ?? ""
 
     let cloudantReadInvocation = Whisk.invoke(actionNamed: "/\(targetNamespace)/bluepic/cloudantRead", withParameters: ["cloudantId": imageId])
 

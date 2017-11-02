@@ -35,7 +35,7 @@
         },
     "CloudFunctions": {
         		"hostName": "openwhisk.ng.bluemix.net",
-        		"urlPath": "/api/v1/namespaces/swiftdo@us.ibm.com_applications-production/actions/bluepic/processImage?blocking=false",
-        		"authToken": "3a07595ab8be05b3bfef5dddfcb8eb3bce7c30be"
+        		"urlPath": "/api/v1/namespaces/swiftdo%40us.ibm.com_applications-production/actions/bluepic/processImage?blocking=false",
+        		"authToken": "f4a7ebaf-2b63-465c-86ca-aa648ba05dcc:yPGelInBILHwDnSnTmAMfEJgyYwkIo1HbkizFP8aXYVZoEBeKv3gmlZSrpzQmLtZ"
 	}
 }
