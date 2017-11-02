@@ -279,7 +279,11 @@ extension BluemixDataManager {
    - parameter callback: (images : [Image]?)->()
    */
   func getImagesByTags(_ tags: [String], callback : @escaping (_ images: [Image]?) -> Void) {
-    let requestURL = getBluemixBaseRequestURL() + "/" + kImagesEndPoint + "/tag/" + tags.first!
+    guard let tag = tags.encoded.first else {
+      callback(nil)
+      return
+    }
+    let requestURL = getBluemixBaseRequestURL() + "/" + kImagesEndPoint + "/tag/" + tag
     let request = Request(url: requestURL, method: HttpMethod.GET)
     self.getImages(request, result: callback)
   }

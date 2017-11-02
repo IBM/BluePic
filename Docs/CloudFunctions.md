@@ -1,9 +1,9 @@
 # Setup Cloud Functions
 
 ### Prerequisites
-1. [Bluemix ClI](https://console-regional.ng.bluemix.net/docs/cli/reference/bluemix_cli/download_cli.html#download_install)
+1. [IBM Cloud ClI](https://console-regional.ng.bluemix.net/docs/cli/reference/bluemix_cli/download_cli.html#download_install)
 2. Follow the instructions [here](https://console-regional.ng.bluemix.net/docs/openwhisk/bluemix_cli.html#cloudfunctions_cli) to install the Cloud Functions CLI plugin
-3. Login by following the instructions the header `Bluemix CLI authentication`
+3. Login by following the instructions the header `IBM Cloud CLI authentication`
 
 # Setup CloudFunctions
 
@@ -17,13 +17,12 @@
   - Take the value after `--apihost` and put it as the `hostName` value in
   - Next, insert a namespace value within the existing `urlPath` value. In the `<namespace>` spot to be exact:
       `"/api/v1/namespaces/<namespace>/actions/bluepic/processImage?blocking=false"`
-      You can find this value at the top of the Bluemix UI, it will be a combination of the org and the space name, for example: `swiftdo%40us.ibm.com_dev`. Where our email is the org name, and `dev` is the space name.
-You can find this value at the top of the Bluemix UI, it will be a combination of the org and the space name, for example: `swiftdo%40us.ibm.com_dev`. Where our email is the org name, and `dev` is the space name.
+      You can find this value at the top of the IBM Cloud UI, it will be a combination of the org and the space name, for example: `swift_dev`. Where `swift` is the org name, and `dev` is the space name.
   - Lastly, take the value after `--auth` and put it as the `authToken` value. That value will later be converted to a base64 encoded string that Cloud Functions needs for authentication.
 
 # Installing Cloud Functions Actions for BluePic
 ## Service Credentials
-Before you run the installation script, you will first need to set configuration variables (e.g. cloudant credentials, object storage credentials, etc.) inside of the `local.env` file.  All of these values can be obtained from the `Connections` tab when viewing the Bluemix app with your provisioned services.
+Before you run the installation script, you will first need to set configuration variables (e.g. cloudant credentials, object storage credentials, etc.) inside of the `local.env` file.  All of these values can be obtained from the `Connections` tab when viewing the IBM Cloud app with your provisioned services.
 
 For `Cloudant` you will need:
 * username (with read/write access)
@@ -42,7 +41,7 @@ For `App ID` you will need:
 * client id - this is the unique GUID for your app instance
 * secret - secret key for configuring the App ID service
 
-For the `Kitura` callback you will need to obtain the route for your Bluemix application. You can find the route by clicking on the `View App` button near the top right of your application's dashboard page on Bluemix. This will open the welcome page for the BluePic app; the route is the URL value shown on the browser, which consists of the schema, host, and port (please note that port values 80 and 443 maybe not be shown in the URL in the browser since these are the default port values for http and https respectively):
+For the `Kitura` callback you will need to obtain the route for your IBM Cloud application. You can find the route by clicking on the `View App` button near the top right of your application's dashboard page on IBM Cloud. This will open the welcome page for the BluePic app; the route is the URL value shown on the browser, which consists of the schema, host, and port (please note that port values 80 and 443 maybe not be shown in the URL in the browser since these are the default port values for http and https respectively):
 * schema (http:// or https://)
 * host (e.g. `bluepic-grotty-substantiality.mybluemix.net`)
 * port (80 if http, 443 is https, other if dev)
@@ -81,14 +80,14 @@ This delegates to the following actions and updates data accordingly:
 * `bluepic/weather` - request weather data for location
 * `bluepic/visualRecognition` - request Visual Recognition tagging for image
 * `bluepic/cloudantWrite` - save data back to Cloudant
-* `bluepic/kituraRequestAuth` - request auth crednetials for Kitura from App ID
+* `bluepic/kituraRequestAuth` - request auth credentials for Kitura from App ID
 * `bluepic/kituraCallback` - make request back to Kitura server to invoke push notification service
 
 # Debugging/Monitoring
 
 For general Cloud Functions details, be sure to review the complete [Cloud Functions documentation](https://new-console.ng.bluemix.net/docs/openwhisk/index.html)
 
-You can monitor Cloud Functions activity using the [IBM Bluemix Cloud Functions Dashboard](https://new-console.ng.bluemix.net/openwhisk/dashboard), or by using the commdand line `bx wsk activation poll` command.  The dashboard provides a visual experience where you can drill into details for each request.  The CLI command provides you with a sequential output stream.  
+You can monitor Cloud Functions activity using the [IBM Cloud Cloud Functions Dashboard](https://new-console.ng.bluemix.net/openwhisk/dashboard), or by using the command line `bx wsk activation poll` command.  The dashboard provides a visual experience where you can drill into details for each request.  The CLI command provides you with a sequential output stream.  
 
 There are two very important things to know when developing Cloud Functions actions:
 * Swift compiler error messages are in both the `bx wsk activation poll` output, and also in the stderr result of the `bx wsk action invoke` command.  Pay attention to both.
@@ -96,7 +95,7 @@ There are two very important things to know when developing Cloud Functions acti
 
 These can be extremely helpful for debugging Cloud Functions actions.  Since you cannot connect a debugger with breakpoints to an Cloud Functions action, excessive use of print() statements and using early `return` values at interim steps are your best routes for debugging values during Cloud Functions development - just be sure to remove or comment-out your debug `return` statements before making the actions live for production use.
 
-Fortunatly, the [CloudFunctions editor](https://console.ng.bluemix.net/openwhisk/editor) allows for running debugging tests quickly on a specific action.
+Fortunately, the [CloudFunctions editor](https://console.ng.bluemix.net/openwhisk/editor) allows for running debugging tests quickly on a specific action.
 
 ## Debugging Actions & Flow
 
@@ -186,7 +185,7 @@ parameters:
 ---
 
 #### bluepic/kituraCallback
-Callback to Kitura server to notify that asynch processing is complete
+Callback to Kitura server to notify that async processing is complete
 
 ```
 bx wsk action invoke bluepic/kituraCallback -p cloudantId <cloudant id> -p authHeader <authorization header>

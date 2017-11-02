@@ -76,6 +76,7 @@
 		E325B57B1FA7841E00F14035 /* KituraKit.h in Headers */ = {isa = PBXBuildFile; fileRef = E325B5791FA7841D00F14035 /* KituraKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E325B57E1FA7841E00F14035 /* KituraKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E325B5771FA7841D00F14035 /* KituraKit.framework */; };
 		E325B57F1FA7841E00F14035 /* KituraKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E325B5771FA7841D00F14035 /* KituraKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		E36D3ED71FAABB340019D807 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36D3ED61FAABB340019D807 /* StringExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -202,6 +203,7 @@
 		E325B5771FA7841D00F14035 /* KituraKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = KituraKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E325B5791FA7841D00F14035 /* KituraKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KituraKit.h; sourceTree = "<group>"; };
 		E325B57A1FA7841D00F14035 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E36D3ED61FAABB340019D807 /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -357,6 +359,7 @@
 				1B40BF851CE4DDB10097F435 /* NSAttributedStringExtension.swift */,
 				1BF00D481CF4B60D009472B5 /* UILabelExtension.swift */,
 				1B0535971D089AA80006C6F2 /* UIViewControllerExtension.swift */,
+				E36D3ED61FAABB340019D807 /* StringExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -723,6 +726,7 @@
 				1B40BF801CE0D0140097F435 /* LocationDataManager.swift in Sources */,
 				2EAAC0E81CE39C13006A0B41 /* KTCenterFlowLayout.m in Sources */,
 				1BF00D0A1CEACF68009472B5 /* ProfileNavigationController.swift in Sources */,
+				E36D3ED71FAABB340019D807 /* StringExtension.swift in Sources */,
 				1B40BF841CE3989C0097F435 /* User.swift in Sources */,
 				347472EF1BFA8DEF0018B7F6 /* Utils.swift in Sources */,
 				346F947C1C0F868C004999A8 /* CameraDataManager.swift in Sources */,

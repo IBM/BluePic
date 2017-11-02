@@ -7,14 +7,14 @@
 	<key>appRouteLocal</key>
 	<string>http://localhost:8080</string>
 	<key>appRouteRemote</key>
-	<string>&lt;routeURL&gt;</string>
+	<string>https://bluepic-unshort-apery.mybluemix.net/</string>
 	<key>bluemixAppRegion</key>
 	<string>.ng.bluemix.net</string>
 	<key>pushAppGUID</key>
-	<string>ea4258ff-6cec-4dc2-b582-9c91b9126699</string>
+	<string>f2ae7ad9-84cb-45d8-bfb7-456f492b9ccc</string>
 	<key>pushClientSecret</key>
-	<string>2fa23a19-4b24-4032-bd4b-8737af00a374</string>
+	<string>c44000cf-2ddd-4a1d-9351-e358dd9540cf</string>
 	<key>appIdTenantId</key>
-	<string>a7fd0d6a-9d04-4bfb-9b18-9b1e2a60b36e</string>
+	<string>e4758f77-be0e-4fe8-aca5-9ce8ca4faa7a</string>
 </dict>
 </plist>
