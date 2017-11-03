@@ -23,8 +23,8 @@ extension Sequence where Iterator.Element == String {
         print(NSLocalizedString("Get Images By Tags Error: Failed to encode search tag", comment: ""))
         return acc
       }
-
-      return acc + [encodedTag]
+      
+      return acc + [encodedTag.replacingOccurrences(of: "/", with: "%2F")]
     }
   }
 }
