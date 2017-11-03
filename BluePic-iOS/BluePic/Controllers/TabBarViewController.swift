@@ -98,15 +98,12 @@ class TabBarViewController: UITabBarController {
     func presentLoginVC(_ animated: Bool, callback: (() -> Void)?) {
 
         if let loginVC = Utils.vcWithNameFromStoryboardWithName("loginVC", storyboardName: "Main") as? LoginViewController {
-
-            // If appID SDK is updated, re-implement modal presentations, remove nav controller.
-            self.present(loginVC, animated: animated, completion: {
-                self.hideBackgroundImage()
-                if let callback = callback {
-                    callback()
-                }
-            })
-
+          /// Return to home screen replacing TabBarViewController. ARC will garbage collect.
+          guard let window = UIApplication.shared.delegate?.window else {
+            print("Logout Failed: Could not unwrap root view controller")
+            return
+          }
+          window?.rootViewController = loginVC
         }
     }
 

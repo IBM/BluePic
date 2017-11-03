@@ -339,7 +339,7 @@ extension ServerController: ServerProtocol {
     let addUser = {
       self.getUser(id: user.id) { user, error in
         guard error == nil, let usr = user else {
-          Log.error("User with id \(user?.id ?? "") was not found.")
+          Log.verbose("User with id \(user?.id ?? "") was not found.")
           createRecord()
           return
         }
