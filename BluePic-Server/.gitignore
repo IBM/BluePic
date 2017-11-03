@@ -1,4 +1,4 @@
 .build/*
+.build-ubuntu/*
 Packages/*
 *.xcodeproj/*
-Package.resolved

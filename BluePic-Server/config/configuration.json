@@ -1,41 +1,41 @@
 {
     "cloudantNoSQLDB": {
-          "username": "ddad7a02-bf37-4b6e-8d3d-e5c1971697eb-bluemix",
-          "password": "390dcb82f98254d397deb397d29d202040d3e9249c3ff17aca6b2d469ae80ed7",
-          "host": "ddad7a02-bf37-4b6e-8d3d-e5c1971697eb-bluemix.cloudant.com",
+          "username": "",
+          "password": "",
+          "host": "",
           "port": 443,
-          "url": "https://ddad7a02-bf37-4b6e-8d3d-e5c1971697eb-bluemix:390dcb82f98254d397deb397d29d202040d3e9249c3ff17aca6b2d469ae80ed7@ddad7a02-bf37-4b6e-8d3d-e5c1971697eb-bluemix.cloudant.com"
+          "url": ""
         },
     "Object-Storage": {
-          "auth_url": "https://identity.open.softlayer.com",
-          "project": "object_storage_89a8e80d_0425_4cf3_89d2_016ce885e631",
-          "projectId": "bf24aff817b2420c863b1abe3c877694",
-          "region": "dallas",
-          "userId": "2151033288c1404fa53dc6060b65d28a",
-          "username": "admin_91f1abc84ecb0187f3419da67d9365e13699bee9",
-          "password": "azTr/{.9pC07IYR~",
-          "domainId": "efc4c0b8108a43bd80a9cc8af79a1837",
-          "domainName": "1050765",
-          "role": "admin"
+          "auth_url": "",
+          "project": "",
+          "projectId": "",
+          "region": "",
+          "userId": "",
+          "username": "",
+          "password": "",
+          "domainId": "",
+          "domainName": "",
+          "role": ""
         },
     "AppID": {
           "version": 3,
-          "clientId": "f5ddca6f-9bd9-4084-8467-d07868ef7c9b",
-          "secret": "OWNhNjM3MzgtOTFiOC00NDUyLTg2ZDQtZDExZjQ1MmQzOWU0",
-          "tenantId": "e4758f77-be0e-4fe8-aca5-9ce8ca4faa7a",
-          "oauthServerUrl": "https://appid-oauth.ng.bluemix.net/oauth/v3/e4758f77-be0e-4fe8-aca5-9ce8ca4faa7a",
-          "profilesUrl": "https://appid-profiles.ng.bluemix.net"
+          "clientId": "",
+          "secret": "",
+          "tenantId": "",
+          "oauthServerUrl": "",
+          "profilesUrl": ""
         },
     "imfpush": {
-          "appGuid": "f2ae7ad9-84cb-45d8-bfb7-456f492b9ccc",
-          "url": "http://imfpush.ng.bluemix.net/imfpush/v1/apps/f2ae7ad9-84cb-45d8-bfb7-456f492b9ccc",
-          "admin_url": "//mobile.ng.bluemix.net/imfpushdashboard/?appGuid=f2ae7ad9-84cb-45d8-bfb7-456f492b9ccc",
-          "appSecret": "e3da946d-53ba-446d-9cdb-d4ecaeb38f9f",
-          "clientSecret": "c44000cf-2ddd-4a1d-9351-e358dd9540cf"
+          "appGuid": "",
+          "url": "",
+          "admin_url": "",
+          "appSecret": "",
+          "clientSecret": ""
         },
     "CloudFunctions": {
-        		"hostName": "openwhisk.ng.bluemix.net",
-        		"urlPath": "/api/v1/namespaces/swiftdo%40us.ibm.com_applications-production/actions/bluepic/processImage?blocking=false",
-        		"authToken": "f4a7ebaf-2b63-465c-86ca-aa648ba05dcc:yPGelInBILHwDnSnTmAMfEJgyYwkIo1HbkizFP8aXYVZoEBeKv3gmlZSrpzQmLtZ"
+        		"hostName": "",
+        		"urlPath": "",
+        		"authToken": ""
 	}
 }

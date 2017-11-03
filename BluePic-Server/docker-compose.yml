@@ -6,4 +6,4 @@ app:
     - "8080:8080"
   volumes:
     - ..:/BluePic
-  command: bash -c "sudo apt-get update; sudo apt-get install -y curl; cd /BluePic/BluePic-Server && swift package clean && swift build && swift test"
+  command: bash -c "sudo apt-get update; sudo apt-get install -y curl; cd /BluePic/BluePic-Server && swift package --build-path .build-ubuntu clean && swift build --build-path .build-ubuntu && swift test --build-path .build-ubuntu"
