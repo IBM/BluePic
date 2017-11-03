@@ -205,7 +205,7 @@ To learn more about BluePic's folder structure, its architecture, and the Swift 
 You can use the [dW Answers](https://developer.ibm.com/answers/topics/cloud-tools-for-swift.html) web site to ask a question and/or report any issues you encounter while using the IBM Cloud Tools for Swift. Just make sure you use the tag `cloud-tools-for-swift` for the questions you post on dW Answers.
 
 ## Privacy Notice
-The BluePic-Server application includes code to track deployments to [IBM Bluemix](https://www.bluemix.net/) and other Cloud Foundry platforms. The following information is sent to a [Deployment Tracker](https://github.com/IBM-Bluemix/cf-deployment-tracker-service) service on each deployment:
+The BluePic-Server application includes code to track deployments to [IBM Cloud](https://www.bluemix.net/) and other Cloud Foundry platforms. The following information is sent to [Deployment Tracker](https://github.com/IBM-Bluemix/cf-deployment-tracker-service) and [Metrics collector](https://github.com/IBM/metrics-collector-service) service on each deployment:
 
 * Swift project code version (if provided)
 * Swift project repository URL
@@ -213,15 +213,16 @@ The BluePic-Server application includes code to track deployments to [IBM Bluemi
 * Space ID (`space_id`)
 * Application Version (`application_version`)
 * Application URIs (`application_uris`)
-* Labels of bound services
+* Labels and names of bound services
 * Number of instances for each bound service and associated plan information
 
-This data is collected from the parameters of the `CloudFoundryDeploymentTracker`, the `VCAP_APPLICATION` and `VCAP_SERVICES` environment variables in IBM Bluemix and other Cloud Foundry platforms. This data is used by IBM to track metrics around deployments of sample applications to IBM Bluemix to measure the usefulness of our examples, so that we can continuously improve the content we offer to you. Only deployments of sample applications that include code to ping the Deployment Tracker service will be tracked.
+This data is collected from the parameters of the `CloudFoundryDeploymentTracker` and `MetricsTrackerClient`, the `VCAP_APPLICATION` and `VCAP_SERVICES` environment variables in IBM Cloud and other Cloud Foundry platforms. This data is used by IBM to track metrics around deployments of sample applications to IBM Cloud to measure the usefulness of our examples, so that we can continuously improve the content we offer to you. Only deployments of sample applications that include code to ping the Deployment Tracker service will be tracked.
 
 ### Disabling Deployment Tracking
-Deployment tracking can be disabled by removing the following line from `main.swift`:
+Deployment tracking can be disabled by removing the following lines from `main.swift`:
 
-    CloudFoundryDeploymentTracker(repositoryURL: "https://github.com/IBM-Swift/Kitura-Starter-Bluemix.git", codeVersion: nil).track()
+    CloudFoundryDeploymentTracker(repositoryURL: "https://github.com/IBM-Swift/BluePic.git", codeVersion: nil).track()
+    MetricsTrackerClient(repository: "BluePic", organization: "IBM").track()
 
 ## License
 This application is licensed under Apache 2.0. Full license text is available in [LICENSE](LICENSE).
