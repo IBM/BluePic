@@ -11,3 +11,5 @@ services:
   - Weather Company Data for IBM Bluemix
   - IBM Push Notifications
   - Object Storage (v3)
+language:
+  - swift
