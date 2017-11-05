@@ -1,0 +1,15 @@
+id: BluePic
+event_id: web
+event_organizer: dev-journeys
+runtimes: 
+  - Cloud Foundry
+  - OpenWhisk
+services: 
+  - Cloudant NoSQL DB
+  - Visual Recognition
+  - App ID
+  - Weather Company Data for IBM Bluemix
+  - IBM Push Notifications
+  - Object Storage (v3)
+language:
+  - swift
