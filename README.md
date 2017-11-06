@@ -22,7 +22,6 @@ You can download the development snapshots of the Swift binaries by following th
 
 Optionally, if you'd like to run the BluePic Kitura-based server using Xcode, you should use Xcode 9 and configure it to use the default toolchain. For details on how to set up Xcode, see [Building your Kitura application on XCode](https://github.com/IBM-Swift/Kitura/wiki/Building-your-Kitura-application-on-XCode/d43b796976bfb533d3d209948de17716fce859b0). Please note that any other versions of Xcode are not guaranteed to work with the back-end code.
 
-As shown in the table above, the iOS component of the BluePic app uses the default toolchain (Swift 4.0) prepackaged with Xcode 9.0. At the moment, any other versions of Xcode are not guaranteed to work, but you may view previous [releases](https://github.com/IBM/BluePic/releases) for possibly compatability with older versions of Xcode (i.e. Xcode 8.3 and 7.3.1). You may get unexpected behavior and/or errors if attempting to use other versions of Xcode or Swift.
 
 ## Getting started
 

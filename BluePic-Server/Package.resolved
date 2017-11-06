@@ -155,15 +155,6 @@
         }
       },
       {
-        "package": "Kitura-net",
-        "repositoryURL": "https://github.com/IBM-Swift/Kitura-net.git",
-        "state": {
-          "branch": null,
-          "revision": "e04ee59e93b72ffb19c730d80dac4e15d060a5da",
-          "version": "1.7.18"
-        }
-      },
-      {
         "package": "Kitura-Session",
         "repositoryURL": "https://github.com/IBM-Swift/Kitura-Session.git",
         "state": {
@@ -179,6 +170,15 @@
           "branch": null,
           "revision": "8e75a213bf4dd7b5effd03848335e344535969aa",
           "version": "1.7.2"
+        }
+      },
+      {
+        "package": "Kitura-net",
+        "repositoryURL": "https://github.com/IBM-Swift/Kitura-net.git",
+        "state": {
+          "branch": null,
+          "revision": "e04ee59e93b72ffb19c730d80dac4e15d060a5da",
+          "version": "1.7.18"
         }
       },
       {
@@ -209,12 +209,30 @@
         }
       },
       {
+        "package": "MetricsTrackerClient",
+        "repositoryURL": "https://github.com/IBM/metrics-collector-client-swift",
+        "state": {
+          "branch": null,
+          "revision": "0857770608bd3896954570624335b387a4b7b040",
+          "version": "5.0.2"
+        }
+      },
+      {
         "package": "OpenSSL",
         "repositoryURL": "https://github.com/IBM-Swift/OpenSSL.git",
         "state": {
           "branch": null,
           "revision": "95c405c18a071a1c13616e984ba1b3c6091ca6ca",
           "version": "0.3.7"
+        }
+      },
+      {
+        "package": "SSLService",
+        "repositoryURL": "https://github.com/IBM-Swift/BlueSSLService.git",
+        "state": {
+          "branch": null,
+          "revision": "7adf7cacc447d447df5dcc3058cabd402177c5aa",
+          "version": "0.12.64"
         }
       },
       {
@@ -254,15 +272,6 @@
         }
       },
       {
-        "package": "SSLService",
-        "repositoryURL": "https://github.com/IBM-Swift/BlueSSLService.git",
-        "state": {
-          "branch": null,
-          "revision": "7adf7cacc447d447df5dcc3058cabd402177c5aa",
-          "version": "0.12.64"
-        }
-      },
-      {
         "package": "SwiftyJSON",
         "repositoryURL": "https://github.com/IBM-Swift/SwiftyJSON.git",
         "state": {
@@ -278,6 +287,15 @@
           "branch": null,
           "revision": "0bfab0f6ead80636eb92ada433b10586bdb7faff",
           "version": "0.0.6"
+        }
+      },
+      {
+        "package": "Yaml",
+        "repositoryURL": "https://github.com/behrang/YamlSwift.git",
+        "state": {
+          "branch": null,
+          "revision": "901c4943f3206afb3b965bad2d1338e3c4fdbeba",
+          "version": "3.4.0"
         }
       }
     ]

@@ -77,7 +77,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
      */
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         //could not grab instance of tab bar fail silently
-        guard let tabBarController = self.window?.rootViewController as? TabBarViewController,
+        guard let tabBarController = self.window?.rootViewController?.presentedViewController as? TabBarViewController,
             let feedNav = tabBarController.childViewControllers.first as? FeedNavigationController else {
                 completionHandler(UIBackgroundFetchResult.failed)
                 return

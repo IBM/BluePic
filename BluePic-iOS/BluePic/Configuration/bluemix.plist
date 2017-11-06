@@ -7,9 +7,9 @@
 	<key>appRouteLocal</key>
 	<string>http://localhost:8080</string>
 	<key>appRouteRemote</key>
-	<string></string>
+	<string>&lt;routeURL&gt;</string>
 	<key>bluemixAppRegion</key>
-	<string>.ng.bluemix.net</string>
+	<string>&lt;appRegion&gt;</string>
 	<key>pushAppGUID</key>
 	<string></string>
 	<key>pushClientSecret</key>
