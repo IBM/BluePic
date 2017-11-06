@@ -106,7 +106,7 @@ class ProfileTableViewCell: UITableViewCell {
             self.captionTextView.text = ""
             self.captionTextView.textContainerInset = UIEdgeInsets.zero
             return false
-        } else if image.caption.characters.count >= cutoffLength {
+        } else if image.caption.count >= cutoffLength {
             if !image.isExpanded {
                 let moreText = "...more"
 

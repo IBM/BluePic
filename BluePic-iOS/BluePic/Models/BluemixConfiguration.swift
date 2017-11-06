@@ -48,11 +48,11 @@ class BluemixConfiguration: NSObject {
                 let isLocal = Utils.getBoolValueWithKeyFromPlist(kBluemixKeysPlistName, key: kIsLocalKey) {
             self.appRegion = appRegion
             self.isLocal = isLocal
-            if let lastChar = localBaseRequestURL.characters.last, lastChar == "/" as Character {
-                localBaseRequestURL.remove(at: localBaseRequestURL.characters.index(before: localBaseRequestURL.endIndex))
+            if let lastChar = localBaseRequestURL.last, lastChar == "/" as Character {
+                localBaseRequestURL.remove(at: localBaseRequestURL.index(before: localBaseRequestURL.endIndex))
             }
-            if let lastChar = remoteBaseRequestURL.characters.last, lastChar == "/" as Character {
-                remoteBaseRequestURL.remove(at: remoteBaseRequestURL.characters.index(before: remoteBaseRequestURL.endIndex))
+            if let lastChar = remoteBaseRequestURL.last, lastChar == "/" as Character {
+                remoteBaseRequestURL.remove(at: remoteBaseRequestURL.index(before: remoteBaseRequestURL.endIndex))
             }
             self.localBaseRequestURL = localBaseRequestURL
             self.remoteBaseRequestURL = remoteBaseRequestURL

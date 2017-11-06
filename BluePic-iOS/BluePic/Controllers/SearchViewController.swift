@@ -211,7 +211,7 @@ extension SearchViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
 
-        if let query = textField.text, let vc = Utils.vcWithNameFromStoryboardWithName("FeedViewController", storyboardName: "Feed") as? FeedViewController, query.characters.count > 0 {
+        if let query = textField.text, let vc = Utils.vcWithNameFromStoryboardWithName("FeedViewController", storyboardName: "Feed") as? FeedViewController, query.count > 0 {
 
             vc.searchQuery = query
 
@@ -234,7 +234,7 @@ extension SearchViewController: UITextFieldDelegate {
      - returns: Bool
      */
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if let text = textField.text, text.characters.count + string.characters.count <= 40 {
+        if let text = textField.text, text.count + string.count <= 40 {
             return true
         }
         return false
