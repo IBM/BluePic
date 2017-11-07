@@ -32,8 +32,8 @@ Mac용 IBM Cloud Tools for Swift 애플리케이션 설치가 끝나면 설치�
 - Mac에 Bluepic 저장소 복제
 - Bluemix 런타임(즉, Kitura기반 서버)을 생성하고 BluePic이 활용할 수 있는 Bluemix 서비스 프로비저닝
 - Cloudant와 Object Storage 서비스에 데모 데이터 추가
-- Kitura기반 서버에서 요구하는 모든 서비스 신임정보로  `cloud_config.json` 파일 업데이트
-- iOS 애플리케이션이 Bluemix에서 실행되는 원격 Kitura 기반 서버에 연결되도록 [해당 Xcode 프로젝트 내에 있는]   `bluemix.plist`파일 업데이트
+- Kitura기반 서버에서 요구하는 모든 서비스 신임정보로  `config/configuration.json` 파일 업데이트
+- iOS 애플리케이션이 Bluemix에서 실행되는 원격 Kitura 기반 서버에 연결되도록 [해당 Xcode 프로젝트 내에 있는]   `cloud.plist`파일 업데이트
 
 IBM Cloud Tools for Swift가 위 단계를 완료하면  [iOS 애플리케이션을 실행](#ios-애플리케이션을-실행) 할 수 있습니다. 원하는 경우 BluePic의  [선택적 기능](#optional-features-to-configure) (예: Facebook인증, 푸시 알림)을 사용하기 위해 제공된 Bluemix 서비스를 구성할 수도 있습니다.
 
@@ -95,15 +95,15 @@ Bluemix에서 애플리케이션 페이지에 액세스하여 Object Storage 인
 ./populator.sh --userId=<object storage userId> --password=<object storage password> --projectId=<object storage projectId> --region=<object storage region>
 ```
 
-### 6.`BluePic-Server/cloud_config.json` file 파일 업데이트하기
-이제 `BluePic-Server/cloud_config.json` 파일에 나열된 각 서비스에 대한 신임정보값을 업데이트 해야합니다. 이렇게 하면 개발 및 테스트 목적으로 Kitura기반 서버를 로컬에서 실행할 수 있습니다. `cloud_config.json` 파일의 해당 위치 (예:`<username>`, `<projectId>`) 에 제공해야 하는 각 신임정보 값을 입력합니다.
+### 6.`BluePic-Server/config/configuration.json` file 파일 업데이트하기
+이제 `BluePic-Server/config/configuration.json` 파일에 나열된 각 서비스에 대한 신임정보값을 업데이트 해야합니다. 이렇게 하면 개발 및 테스트 목적으로 Kitura기반 서버를 로컬에서 실행할 수 있습니다. `configuration.json` 파일의 해당 위치 (예:`<username>`, `<projectId>`) 에 제공해야 하는 각 신임정보 값을 입력합니다.
 
-Bluemix에서 애플리케이션 페이지에 액세스하고 BluePic 애플리케이션에 바인딩된 각 서비스 인스턴스의 Show Credentials 버튼을 클릭하면 `cloud_config.json` 파일에 나열된 [여기](BluePic-Server/cloud_config.json) 를 클릭하시면 `cloud_config.json`파일의 내용을 살펴보실 수 있습니다.
+Bluemix에서 애플리케이션 페이지에 액세스하고 BluePic 애플리케이션에 바인딩된 각 서비스 인스턴스의 Show Credentials 버튼을 클릭하면 `configuration.json` 파일에 나열된 [여기](BluePic-Server/config/configuration.json) 를 클릭하시면 `configuration.json`파일의 내용을 살펴보실 수 있습니다.
 
-[여기](BluePic-Server/cloud_config.json)를 클릭하시면 `cloud_config.json` 파일의 내용을 살펴보실 수 있습니다.
+[여기](BluePic-Server/config/configuration.json)를 클릭하시면 `configuration.json` 파일의 내용을 살펴보실 수 있습니다.
 
 ### 7. iOS 애플리케이션 구성 업데이트하기
- `BluePic-iOS` 디렉토리로 이동하여 `open BluePic.xcworkspace`를 이용해 Xcode의 BluePic 워크스페이스를 엽니다. 이제 Xcode 프로젝트의 `bluemix.plist`를 업데이트합니다. (Xcode 프로젝트의 `Configuration` 폴더에 이 파일이 있습니다).
+ `BluePic-iOS` 디렉토리로 이동하여 `open BluePic.xcworkspace`를 이용해 Xcode의 BluePic 워크스페이스를 엽니다. 이제 Xcode 프로젝트의 `cloud.plist`를 업데이트합니다. (Xcode 프로젝트의 `Configuration` 폴더에 이 파일이 있습니다).
 
 1. 로컬에서 실행되는 서버를 사용하려면`isLocal` 값을 `YES` 로 설정해야 합니다. `NO`로 값을 설정하면 Bluemix에서 실행되는 서버 인스턴스에 액세스하게 됩니다.
 
@@ -115,7 +115,7 @@ Bluemix에서 애플리케이션 페이지에 액세스하고 BluePic 애플리�
 --- | --- | ---
 `.ng.bluemix.net` | `.eu-gb.bluemix.net` | `.au-syd.bluemix.net`
 
-리전(지역)은 여러 가지 방법으로 찾을 수 있습니다. 예를 들어URL를 보고 애플리케이션 페이지(또는 Bluemix 대시보드)에 액세스할 수 있습니다. 또 다른 방법은 이전에 수정한  `cloud_config.json` 파일을 보는 것입니다.  `AdvancedMobileAccess` 서비스의 신임정보를 보면 `serverUrl` 이라는 값이 있습니다. 이 값은 위에서 언급된 지역 중 하나를 포함하고 있습니다.  `bluemixAppRegion` 값을  `bluemix.plist`에 넣으면 애플리케이션 설정이 완료됩니다.
+리전(지역)은 여러 가지 방법으로 찾을 수 있습니다. 예를 들어URL를 보고 애플리케이션 페이지(또는 Bluemix 대시보드)에 액세스할 수 있습니다. 또 다른 방법은 이전에 수정한  `configuration.json` 파일을 보는 것입니다.  `AppID` 서비스의 신임정보를 보면 `serverUrl` 이라는 값이 있습니다. 이 값은 위에서 언급된 지역 중 하나를 포함하고 있습니다.  `bluemixAppRegion` 값을  `cloud.plist`에 넣으면 애플리케이션 설정이 완료됩니다.
 
 ## 옵션 기능 구성하기
 이 섹션에서는 App ID, 푸시 알림, Cloud Functions를 이용한 Facebook 인증을 위해 수행해야 할 단계에 대해 설명합니다.
@@ -150,7 +150,7 @@ Facebook으로 애플리케이션 인증을 하려면 Facebook 웹사이트에�
 
 4. 이 페이지에는 “Facebook for Developers의 경로 재지정 URL (Redirect URL for Facebook for Developers)”도 나타나는데 바로 다음에서 필요하므로 복사하도록 합니다. Facebook Developer 앱 페이지에서 Facebook 로그인 프로덕트로 이동합니다. URL은  `https://developers.facebook.com/apps/<facebookAppId>/fb-login/` 입니다. 여기서 "Valid OAuth redirect URIs" 필드에 앞서 복사한 값을 붙여넣고 Save changes를 클릭합니다. Bluemix로 돌아가서 저장 (Save) 버튼을 클릭합니다.
 
-5. App ID 가 적절히 작동하기 위해 해야 하는 또 다른 한 가지는 App ID의  `tenantId` 를 BluePic-iOS의 `bluemix.plist` 에 추가하는 것입니다. BluePic Bluemix 애플리케이션의 “Connections” 탭 아래에 해당 애플리케이션이 사용하는 모든 서비스가 나오는데, 그 중 Bluemix App ID 서비스의 신임정보를 보고 `tenantId ` 값을 알 수 있습니다.  즉, App ID 서비스의 "View Credentials" 또는 "Show Credentials" 버튼을 클릭하면 다른 값들 중에 `tenantId `팝업창이 뜹니다. 해당 값을 `appIdTenantId`키의 값으로 `bluemix.plist` 에 추가합니다.   
+5. App ID 가 적절히 작동하기 위해 해야 하는 또 다른 한 가지는 App ID의  `tenantId` 를 BluePic-iOS의 `cloud.plist` 에 추가하는 것입니다. BluePic Bluemix 애플리케이션의 “Connections” 탭 아래에 해당 애플리케이션이 사용하는 모든 서비스가 나오는데, 그 중 Bluemix App ID 서비스의 신임정보를 보고 `tenantId ` 값을 알 수 있습니다.  즉, App ID 서비스의 "View Credentials" 또는 "Show Credentials" 버튼을 클릭하면 다른 값들 중에 `tenantId `팝업창이 뜹니다. 해당 값을 `appIdTenantId`키의 값으로 `cloud.plist` 에 추가합니다.   
 
 6. 이제Bluemix App ID 를 이용한 Facebook 인증이 끝났습니다!
 
@@ -159,7 +159,7 @@ Bluemix에서 푸시 알림 기능을 활용하려면 알림 제공자를 구성
 
 다행히 Bluemix는 Bluemix Push 서비스로 APNS를 구성하는 프로세스에 관한 [가이드](https://console.ng.bluemix.net/docs/services/mobilepush/t_push_provider_ios.html)를 제공합니다.참고로 해당 Bluemix 가이드에 따라 .p12 인증서를 Bluemix 에 업로드하고 인증서 암호를 입력해야 합니다
 
-뿐만 아니라,Push서비스의 `appGuid`는 BluePic 애플리케이션과 독립적으로 작동하므로 해당 값을`bluemix.plist`에 추가해야 합니다.또한 푸시 서비스에 대한 `clientSecret`값이 필요합니다. Bluemix에서 Push 서비스에 대한 신임정보를 조회하여 `appGuid` 와 `clientSecret` 를 얻을 수 있는데, 애플리케이션의 "Connections" 탭 아래 사용하는 모든 서비스 정보를 참고합니다. 사용하는 서비스 목록에서 Push Notifications 서비스의 "View Credentials" 또는 "Show Credentials" 버튼을 클릭하면 다른 값들 중에`appGuid` 팝업창이 나타납니다. `pushAppGUID`키에 해당되는 값을 `bluemix.plist`에 반영합니다. 마찬가지로 `bluemix.plist`의  `pushClientSecret` 필드를 채울 수 있는 `ClientSecret`값을 확인해야 합니다. 이렇게 하면 Push 서비스에 디바이스가 올바르게 등록됩니다.
+뿐만 아니라,Push서비스의 `appGuid`는 BluePic 애플리케이션과 독립적으로 작동하므로 해당 값을`cloud.plist`에 추가해야 합니다.또한 푸시 서비스에 대한 `clientSecret`값이 필요합니다. Bluemix에서 Push 서비스에 대한 신임정보를 조회하여 `appGuid` 와 `clientSecret` 를 얻을 수 있는데, 애플리케이션의 "Connections" 탭 아래 사용하는 모든 서비스 정보를 참고합니다. 사용하는 서비스 목록에서 Push Notifications 서비스의 "View Credentials" 또는 "Show Credentials" 버튼을 클릭하면 다른 값들 중에`appGuid` 팝업창이 나타납니다. `pushAppGUID`키에 해당되는 값을 `cloud.plist`에 반영합니다. 마찬가지로 `cloud.plist`의  `pushClientSecret` 필드를 채울 수 있는 `ClientSecret`값을 확인해야 합니다. 이렇게 하면 Push 서비스에 디바이스가 올바르게 등록됩니다.
 
 마지막으로 푸시 알림은 실제 iOS 디바이스에만 표시된다는 점을 기억하십시오. 애플리케이션이 디바이스에서 실행되고 푸시 알림을 받도록 하려면 위 [Bluemix 가이드](https://console.ng.bluemix.net/docs/services/mobilepush/t_push_provider_ios.html)를 따라야 합니다. 이 시점에서 Xcode의 `BluePic.xcworkspace`를 열고 애플리케이션 타겟의 `Capabilities`탭으로 이동합니다. 여기서 푸시 알림 스위치를 켜면 다음과 같이 나타납니다.
 <p align="center"><img src="Imgs/enablePush.png"  alt="Drawing" height=145 border=0 /></p>
@@ -192,7 +192,7 @@ IBM 개발자라면 거쳐야 할 단계에 대한 자세한 내용은 [Wiki](ht
 반대로 애플리케이션을 디바이스에서 실행하기 위한 와일드카드 App ID를 이용해 애플리케이션 코드 서명을 수동으로 구성할 수도 있습니다. 이미 생성되어 있는 경우에는 `Signing (Debug)` 섹션에 있는 프로비저닝 프로파일 드롭다운에서 선택만 하면 됩니다. 생성되지 않은 경우 Apple Developer Portal을 통해 생성할 수 있습니다. 이 [링크](https://developer.apple.com/library/content/qa/qa1713/_index.html)에서는 와일드카드 App ID에 대한 추가 정보를 제공합니다.
 
 ## Kitura기반 서버를 로컬에서 실행하기
-복제된 저장소의 `BluePic-Server` 디렉토리로 이동한 후 `swift build`실행하면 `BluePic-Server` 를 빌드할 수 있습니다.로컬 시스템의 BluePic 애플리케이션을 위한 Kitura기반 서버를 시작하시려면 복제된 저장소의 `BluePic-Server` 디렉토리로 이동한 후 `.build/debug/BluePicServer`를 실행합니다.iOS 애플리케이션을 이 로컬 서버에 연결하려면 Xcode 프로젝트의 `bluemix.plist`파일도 업데이트 해야 합니다.[iOS 애플리케이션 구성 업데이트하기](#7-ios-애플리케이션-구성-업데이트하기) 섹션을 참조하십시오.
+복제된 저장소의 `BluePic-Server` 디렉토리로 이동한 후 `swift build`실행하면 `BluePic-Server` 를 빌드할 수 있습니다.로컬 시스템의 BluePic 애플리케이션을 위한 Kitura기반 서버를 시작하시려면 복제된 저장소의 `BluePic-Server` 디렉토리로 이동한 후 `.build/debug/BluePicServer`를 실행합니다.iOS 애플리케이션을 이 로컬 서버에 연결하려면 Xcode 프로젝트의 `cloud.plist`파일도 업데이트 해야 합니다.[iOS 애플리케이션 구성 업데이트하기](#7-ios-애플리케이션-구성-업데이트하기) 섹션을 참조하십시오.
 
 ## BluePic 활용하기
 BluePic은 많은 유용한 기능을 갖도록 설계되었습니다. iOS 애플리케이션을 사용하는 방법에 대한 자세한 정보와 상세 내용 그리고 실제 실행 모습은 [BluePic 활용하기](Docs/Usage.md) 페이지에서 확인하십시오.

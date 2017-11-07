@@ -67,7 +67,7 @@
                                 </constraints>
                                 <attributedString key="attributedText">
                                     <fragment>
-                                        <string key="content">BluePic's back-end component is written entirely in the Swift programming language and runs on a Kitura-based server that leverages several IBM Bluemix services and Cloud Functions actions.</string>
+                                        <string key="content">BluePic's back-end component is written entirely in the Swift programming language and runs on a Kitura-based server that leverages several IBM Cloud services and Cloud Functions actions.</string>
                                         <attributes>
                                             <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <font key="NSFont" size="15" name="HelveticaNeue"/>

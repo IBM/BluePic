@@ -8,7 +8,7 @@
 	<string>http://localhost:8080</string>
 	<key>appRouteRemote</key>
 	<string>&lt;routeURL&gt;</string>
-	<key>bluemixAppRegion</key>
+	<key>cloudAppRegion</key>
 	<string>&lt;appRegion&gt;</string>
 	<key>pushAppGUID</key>
 	<string></string>

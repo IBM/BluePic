@@ -32,8 +32,8 @@ Após instalar o aplicativo IBM Cloud Tools for Swift para Mac, é possível abr
 - Clona o repositório do BluePic no seu Mac.
 - Cria o tempo de execução do Bluemix (ou seja, servidor baseado em Kitura) e fornece os serviços do Bluemix que o BluePic pode utilizar.
 - Preenche os serviços do Cloudant e do Object Storage com dados de demonstração.
-- Atualiza o arquivo `cloud_config.json` com todas as credenciais de serviço exigidas pelo servidor baseado em Kitura.
-- Atualiza o arquivo `bluemix.plist` [no projeto do Xcode] para o aplicativo de iOS se conectar com o servidor remoto baseado em Kitura em execução no Bluemix.
+- Atualiza o arquivo `configuration.json` com todas as credenciais de serviço exigidas pelo servidor baseado em Kitura.
+- Atualiza o arquivo `cloud.plist` [no projeto do Xcode] para o aplicativo de iOS se conectar com o servidor remoto baseado em Kitura em execução no Bluemix.
 
 Depois que o IBM Cloud Tools for Swift concluir as etapas acima, será possível [executar o aplicativo](#running-the-ios-app). Se desejar, você também poderá configurar os serviços do Bluemix que foram fornecidos para ativar [recursos opcionais](#optional-features-to-configure) no BluePic (tais como autenticação pelo Facebook e notificações push).
 
@@ -95,15 +95,15 @@ Para obter as credenciais acima, acesse a página do aplicativo no Bluemix e cli
 ./populator.sh --userId=<object storage userId> --password=<object storage password> --projectId=<object storage projectId> --region=<object storage region>
 ```
 
-### 6. Atualizar o arquivo `BluePic-Server/cloud_config.json`
-Agora, é necessário atualizar as credenciais para cada serviço listado no arquivo `BluePic-Server/cloud_config.json`. Assim, o servidor baseado em Kitura pode ser executado localmente para fins de desenvolvimento e teste. Você encontrará itens temporários no arquivo `cloud_config.json` (por exemplo, `<username>`, `<projectId>`) para cada valor de credencial que deve ser fornecido.
+### 6. Atualizar o arquivo `BluePic-Server/config/configuration.json`
+Agora, é necessário atualizar as credenciais para cada serviço listado no arquivo `BluePic-Server/config/configuration.json`. Assim, o servidor baseado em Kitura pode ser executado localmente para fins de desenvolvimento e teste. Você encontrará itens temporários no arquivo `configuration.json` (por exemplo, `<username>`, `<projectId>`) para cada valor de credencial que deve ser fornecido.
 
-Lembre-se: para obter as credenciais para cada serviço listado no arquivo `cloud_config.json`, você pode acessar a página do aplicativo no Bluemix e clicar na torção `Show Credentials`, disponível em cada instância de serviço associada ao aplicativo BluePic.
+Lembre-se: para obter as credenciais para cada serviço listado no arquivo `configuration.json`, você pode acessar a página do aplicativo no Bluemix e clicar na torção `Show Credentials`, disponível em cada instância de serviço associada ao aplicativo BluePic.
 
-Para ver o conteúdo do arquivo `cloud_config.json`, clique [aqui](BluePic-Server/cloud_config.json).
+Para ver o conteúdo do arquivo `configuration.json`, clique [aqui](BluePic-Server/config/configuration.json).
 
 ### 7. Atualizar a configuração para o aplicativo de iOS
-Acesse o diretório `BluePic-iOS` e abra a área de trabalho do BluePic com o Xcode usando `open BluePic.xcworkspace`. Agora, vamos atualizar o `bluemix.plist` no projeto do Xcode (é possível encontrar esse arquivo na pasta `Configuration` do projeto do Xcode).
+Acesse o diretório `BluePic-iOS` e abra a área de trabalho do BluePic com o Xcode usando `open BluePic.xcworkspace`. Agora, vamos atualizar o `cloud.plist` no projeto do Xcode (é possível encontrar esse arquivo na pasta `Configuration` do projeto do Xcode).
 
 1. Você deverá definir o valor `isLocal` como `YES` se quiser usar um servidor de execução local; se o valor for definido como `NO`, você acessará a instância do servidor em execução no Bluemix.
 
@@ -115,7 +115,7 @@ REGION US SOUTH | REGION UK | REGION SYDNEY
 --- | --- | ---
 `.ng.bluemix.net` | `.eu-gb.bluemix.net` | `.au-syd.bluemix.net`
 
-Existem várias maneiras de localizar sua região. Por exemplo, basta olhar para a URL usada para acessar a página do seu aplicativo (ou o painel do Bluemix). Outra maneira é examinar o arquivo `cloud_config.json` que foi modificado antes. Se você olhar as credenciais no serviço `AdvancedMobileAccess`, verá um valor chamado `serverUrl`, que deve conter uma das regiões mencionadas acima. Depois de inserir o valor `bluemixAppRegion` na `bluemix.plist`, seu aplicativo deve ser configurado.
+Existem várias maneiras de localizar sua região. Por exemplo, basta olhar para a URL usada para acessar a página do seu aplicativo (ou o painel do Bluemix). Outra maneira é examinar o arquivo `configuration.json` que foi modificado antes. Se você olhar as credenciais no serviço `AppID`, verá um valor chamado `serverUrl`, que deve conter uma das regiões mencionadas acima. Depois de inserir o valor `bluemixAppRegion` na `cloud.plist`, seu aplicativo deve ser configurado.
 
 ## Recursos opcionais a serem configurados
 Esta seção descreve as etapas que precisam ser executadas para utilizar a autenticação por Facebook com App ID, Notificações Push e OpenWhisk.
@@ -150,7 +150,7 @@ Para o aplicativo ser autenticado com o Facebook, deve-se criar uma instância d
 
 1. Nesta página, você também verá “Redirect URL for Facebook for Developers”; copie, porque precisaremos em breve. Na página do aplicativo Facebook Developer, navegue até o produto de login do Facebook. Essa URL é `https://developers.facebook.com/apps/<facebookAppId>/fb-login/`. Aqui, cole esse link no campo “Valid OAuth redirect URIs” e clique em Save changes. De volta ao Bluemix, é possível clicar também no botão Save.
 
-1. Outra coisa que precisa ser feita para o App ID funcionar corretamente é incluir o `tenantId` para o App ID no `bluemix.plist` para o BluePic-iOS. O `tenantId` é obtido ao visualizar as credenciais para o serviço de App ID no Bluemix; todos os seus serviços devem estar na guia `Connections` do seu aplicativo no Bluemix. Lá, clique no botão “View Credentials” ou “Show Credentials” para o serviço de App ID. Deve ser exibido o pop-up `tenantId `, entre outros valores. Agora, basta inserir esse valor no `bluemix.plist` correspondente à chave `appIdTenantId`.
+1. Outra coisa que precisa ser feita para o App ID funcionar corretamente é incluir o `tenantId` para o App ID no `cloud.plist` para o BluePic-iOS. O `tenantId` é obtido ao visualizar as credenciais para o serviço de App ID no Bluemix; todos os seus serviços devem estar na guia `Connections` do seu aplicativo no Bluemix. Lá, clique no botão “View Credentials” ou “Show Credentials” para o serviço de App ID. Deve ser exibido o pop-up `tenantId `, entre outros valores. Agora, basta inserir esse valor no `cloud.plist` correspondente à chave `appIdTenantId`.
 
 1. A autenticação por Facebook com o App ID do Bluemix foi completamente configurada!
 
@@ -159,7 +159,7 @@ Para realizar o push dos recursos de notificação push no Bluemix, é necessár
 
 Felizmente, o Bluemix tem [instruções](https://console.ng.bluemix.net/docs/services/mobilepush/t_push_provider_ios.html) que explicam o processo de configurar o APNS com o serviço Bluemix Push. Observe que seria necessário fazer upload de um certificado `.p12` para o Bluemix e inserir a senha para ele, como descrito nas instruções do Bluemix.
 
-Além disso, o `appGuid` para o serviço de push age de forma independente do aplicativo BluePic; portanto, precisaremos incluir esse valor no `bluemix.plist`. Também precisamos do valor `clientSecret` para o serviço de push. O `appGuid` e o `clientSecret` são obtidos ao visualizar as credenciais para o serviço de push no Bluemix; todos os seus serviços devem estar na guia `Connections` do aplicativo. Lá, clique no botão `View Credentials` ou `Show Credentials` para o serviço de Notificações Push. Deve ser exibido o pop-up `appGuid`, entre outros valores. Agora, basta inserir esse valor no `bluemix.plist` correspondente à chave `pushAppGUID`. Em seguida, você deve ver o valor `clientSecret`, que pode ser utilizado para preencher o campo `pushClientSecret` no `bluemix.plist`. Isso deve garantir que seu dispositivo seja registrado de forma adequada com o serviço de push.
+Além disso, o `appGuid` para o serviço de push age de forma independente do aplicativo BluePic; portanto, precisaremos incluir esse valor no `cloud.plist`. Também precisamos do valor `clientSecret` para o serviço de push. O `appGuid` e o `clientSecret` são obtidos ao visualizar as credenciais para o serviço de push no Bluemix; todos os seus serviços devem estar na guia `Connections` do aplicativo. Lá, clique no botão `View Credentials` ou `Show Credentials` para o serviço de Notificações Push. Deve ser exibido o pop-up `appGuid`, entre outros valores. Agora, basta inserir esse valor no `cloud.plist` correspondente à chave `pushAppGUID`. Em seguida, você deve ver o valor `clientSecret`, que pode ser utilizado para preencher o campo `pushClientSecret` no `cloud.plist`. Isso deve garantir que seu dispositivo seja registrado de forma adequada com o serviço de push.
 
 Por fim, lembre-se de que as notificações push serão exibidas apenas em um dispositivo físico com iOS. Para assegurar que seu aplicativo possa ser executado em um dispositivo e receber notificações push, lembre-se de seguir as [instruções do Bluemix](https://console.ng.bluemix.net/docs/services/mobilepush/t_push_provider_ios.html) acima. Nesse ponto, abra o `BluePic.xcworkspace` no Xcode e navegue até a guia `Capabilities` para o destino do aplicativo BluePic. Aqui, acione o interruptor para notificações push, deste modo:
 
@@ -193,7 +193,7 @@ O método mais fácil para executar o aplicativo de iOS em um dispositivo físic
 Como alternativa, é possível configurar manualmente a assinatura do código do aplicativo usando um App ID curinga para executar o aplicativo no seu dispositivo. Caso já tenha sido criado, basta selecioná-lo na lista suspensa do perfil de fornecimento na seção `Signing (Debug)`. Caso contrário, crie um por meio do Apple Developer Portal. Este [link](https://developer.apple.com/library/content/qa/qa1713/_index.html) deve ser útil para fornecer mais informações sobre IDs do Aplicativo curingas.
 
 ## Executando o servidor baseado em Kitura localmente
-Para desenvolver o BluePic-Server, acesse o diretório `BluePic-Server` do repositório clonado e execute `swift build`. Para iniciar o servidor baseado em Kitura para o aplicativo BluePic no seu sistema local, acesse o diretório `BluePic-Server` do repositório clonado e execute `.build/debug/BluePicServer`. Você também deve atualizar o arquivo `bluemix.plist` no projeto do Xcode para o aplicativo de iOS se conectar com o servidor local. Consulte a seção [Atualizar a configuração para o aplicativo de iOS](#7-update-configuration-for-ios-app) para saber mais.
+Para desenvolver o BluePic-Server, acesse o diretório `BluePic-Server` do repositório clonado e execute `swift build`. Para iniciar o servidor baseado em Kitura para o aplicativo BluePic no seu sistema local, acesse o diretório `BluePic-Server` do repositório clonado e execute `.build/debug/BluePicServer`. Você também deve atualizar o arquivo `cloud.plist` no projeto do Xcode para o aplicativo de iOS se conectar com o servidor local. Consulte a seção [Atualizar a configuração para o aplicativo de iOS](#7-update-configuration-for-ios-app) para saber mais.
 
 ## Usando o BluePic
 O BluePic foi criado com muitos recursos úteis. Para obter mais informações e detalhes a respeito do uso do aplicativo de iOS, confira nosso passo a passo na página [Usando o BluePic](Docs/Usage.md).

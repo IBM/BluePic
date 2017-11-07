@@ -19,11 +19,11 @@ import UIKit
 class BluemixConfiguration: NSObject {
 
     //Plist Keys
-    fileprivate let kBluemixKeysPlistName = "bluemix"
+    fileprivate let kBluemixKeysPlistName = "cloud"
     fileprivate let kIsLocalKey = "isLocal"
     fileprivate let kAppRouteLocal = "appRouteLocal"
     fileprivate let kAppRouteRemote = "appRouteRemote"
-    fileprivate let kBluemixAppRegionKey = "bluemixAppRegion"
+    fileprivate let kBluemixAppRegionKey = "cloudAppRegion"
     fileprivate let kBluemixPushAppGUIDKey = "pushAppGUID"
     fileprivate let kBluemixPushAppClientSecret = "pushClientSecret"
     fileprivate let kBluemixAppIdTenantIdKey = "appIdTenantId"

@@ -69,7 +69,7 @@
 		347472EF1BFA8DEF0018B7F6 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347472D71BFA8DEF0018B7F6 /* Utils.swift */; };
 		347472F11BFA8E320018B7F6 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347472F01BFA8E320018B7F6 /* LoginViewController.swift */; };
 		347AD2221C18F98600C3B473 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347AD2211C18F98600C3B473 /* LoginViewModel.swift */; };
-		34C8094D1BFCEA0400C48004 /* bluemix.plist in Resources */ = {isa = PBXBuildFile; fileRef = 34C8094C1BFCEA0400C48004 /* bluemix.plist */; };
+		34C8094D1BFCEA0400C48004 /* cloud.plist in Resources */ = {isa = PBXBuildFile; fileRef = 34C8094C1BFCEA0400C48004 /* cloud.plist */; };
 		34C809551BFD0F2400C48004 /* FacebookDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C809541BFD0F2400C48004 /* FacebookDataManager.swift */; };
 		46C831251F92E013005D3921 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C831241F92E013005D3921 /* Location.swift */; };
 		46C831271F92E0E8005D3921 /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C831261F92E0E8005D3921 /* Tag.swift */; };
@@ -193,7 +193,7 @@
 		347AD2211C18F98600C3B473 /* LoginViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		347E276C1C1F9CD10089EC3D /* BluePic.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = BluePic.entitlements; sourceTree = "<group>"; };
 		34C8094A1BFCD9A300C48004 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		34C8094C1BFCEA0400C48004 /* bluemix.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = bluemix.plist; sourceTree = "<group>"; };
+		34C8094C1BFCEA0400C48004 /* cloud.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = cloud.plist; sourceTree = "<group>"; };
 		34C809541BFD0F2400C48004 /* FacebookDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookDataManager.swift; sourceTree = "<group>"; };
 		46C831241F92E013005D3921 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		46C831261F92E0E8005D3921 /* Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
@@ -328,7 +328,7 @@
 		347472BB1BFA8DEF0018B7F6 /* Configuration */ = {
 			isa = PBXGroup;
 			children = (
-				34C8094C1BFCEA0400C48004 /* bluemix.plist */,
+				34C8094C1BFCEA0400C48004 /* cloud.plist */,
 				34C8094A1BFCD9A300C48004 /* Info.plist */,
 			);
 			path = Configuration;
@@ -598,7 +598,7 @@
 				1BF00D511CF4BEEA009472B5 /* ImageInfoHeaderCollectionReusableView.xib in Resources */,
 				1B0535481CFE86460006C6F2 /* Feed.storyboard in Resources */,
 				2E1D66011DB6AC760004E2C9 /* ImageFeedTableViewCell.xib in Resources */,
-				34C8094D1BFCEA0400C48004 /* bluemix.plist in Resources */,
+				34C8094D1BFCEA0400C48004 /* cloud.plist in Resources */,
 				2EEE1C0F1DB8159300608359 /* EmptyFeedFooterView.xib in Resources */,
 				1B05354D1CFE86460006C6F2 /* Main.strings in Resources */,
 				1B05354C1CFE86460006C6F2 /* Feed.strings in Resources */,

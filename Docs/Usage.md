@@ -4,8 +4,8 @@
 
 Before you start using BluePic, you should understand which capabilities are available in the iOS app if you have not configured any of the [optional features](../README.md#optional-features-to-configure) such as App ID, Push, and Cloud Functions.
 
-- If App ID is not configured on Bluemix for your app, you won't be able to log in using the `SIGN IN WITH FACEBOOK` button. This implies you won't be able to post photos under your own name and profile. Having said that, you will be able to post photos under the `anonymous` user we have in place. You also can view the image feed without being authenticated.
-- If Bluemix Push is not configured, you won't be able to receive push notifications on your physical iOS device.
+- If App ID is not configured on IBM Cloud for your app, you won't be able to log in using the `SIGN IN WITH FACEBOOK` button. This implies you won't be able to post photos under your own name and profile. Having said that, you will be able to post photos under the `anonymous` user we have in place. You also can view the image feed without being authenticated.
+- If IBM Cloud Push is not configured, you won't be able to receive push notifications on your physical iOS device.
 - If Cloud Functions is not configured, your posted images will not be enhanced with any weather or tag data.
 
 ### Welcome View
@@ -29,7 +29,7 @@ The feed (first tab) shows all the latest photos posted to the BluePic community
 
 ### View Image Details
 
-You get here by simply tapping on an image. You will be shown a collection of information, including caption, author, location of photo, time taken, weather at location, and associated tags. Both, weather and tag info are determined server-side on Bluemix with Weather Company Data and Watson Visual Recognition.
+You get here by simply tapping on an image. You will be shown a collection of information, including caption, author, location of photo, time taken, weather at location, and associated tags. Both, weather and tag info are determined server-side on IBM Cloud with Weather Company Data and Watson Visual Recognition.
 
 <p align="center">
 <img src="../Imgs/image-detail.png"  alt="detail" height=550 border=0 /></p>
