@@ -25,6 +25,7 @@ EXPOSE 8080
 
 RUN mkdir /BluePic-Server
 
+ADD BluePic-Web /BluePic-Server/BluePic-Web
 ADD config /BluePic-Server/config
 ADD Sources /BluePic-Server/Sources
 ADD Tests /BluePic-Server/Tests

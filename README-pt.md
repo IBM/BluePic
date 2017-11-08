@@ -109,13 +109,13 @@ Acesse o diretório `BluePic-iOS` e abra a área de trabalho do BluePic com o Xc
 
 1. Para obter o valor `appRouteRemote`, acesse a página do seu aplicativo no Bluemix. Lá, haverá um botão `View App` perto do canto superior direito. Ao clicar nele, seu aplicativo será aberto em uma nova guia. A URL dessa página é a `rota` que leva até a chave `appRouteRemote` na plist. Não se esqueça de incluir o protocolo `http://` na `appRouteRemote` e de excluir uma barra invertida no final da URL.
 
-1. Por fim, precisamos obter o valor para `bluemixAppRegion`, que, no momento, pode ser uma dentre três opções:
+1. Por fim, precisamos obter o valor para `cloudAppRegion`, que, no momento, pode ser uma dentre três opções:
 
 REGION US SOUTH | REGION UK | REGION SYDNEY
 --- | --- | ---
 `.ng.bluemix.net` | `.eu-gb.bluemix.net` | `.au-syd.bluemix.net`
 
-Existem várias maneiras de localizar sua região. Por exemplo, basta olhar para a URL usada para acessar a página do seu aplicativo (ou o painel do Bluemix). Outra maneira é examinar o arquivo `configuration.json` que foi modificado antes. Se você olhar as credenciais no serviço `AppID`, verá um valor chamado `serverUrl`, que deve conter uma das regiões mencionadas acima. Depois de inserir o valor `bluemixAppRegion` na `cloud.plist`, seu aplicativo deve ser configurado.
+Existem várias maneiras de localizar sua região. Por exemplo, basta olhar para a URL usada para acessar a página do seu aplicativo (ou o painel do Bluemix). Outra maneira é examinar o arquivo `configuration.json` que foi modificado antes. Se você olhar as credenciais no serviço `AppID`, verá um valor chamado `oauthServerUrl`, que deve conter uma das regiões mencionadas acima. Depois de inserir o valor `cloudAppRegion` na `cloud.plist`, seu aplicativo deve ser configurado.
 
 ## Recursos opcionais a serem configurados
 Esta seção descreve as etapas que precisam ser executadas para utilizar a autenticação por Facebook com App ID, Notificações Push e OpenWhisk.

@@ -109,13 +109,13 @@ Bluemix에서 애플리케이션 페이지에 액세스하고 BluePic 애플리�
 
 2.  `appRouteRemote` 값을 얻으려면 Bluemix의 애플리케이션 페이지로 이동해야 합니다. 거기 오른편 상단에 `View App` 버튼이 있습니다. 버튼을 클릭하면 새로운 탭에 애플리케이션이 열리고, 이 페이지의 URL은 plist의 `appRouteRemote` 값에 해당됩니다. `appRouteRemote` 에 `http://`프로토콜을 꼭 넣고 url 끝에는 (/)를 빼도록 합니다.
 
-3. 마지막으로 `bluemixAppRegion`값을 구해야 하는데 현재 다음과 같이 세 가지 옵션이 있습니다.  
+3. 마지막으로 `cloudAppRegion`값을 구해야 하는데 현재 다음과 같이 세 가지 옵션이 있습니다.  
 
 미국 남부 리전 | 영국 리전 | 시드니 리전
 --- | --- | ---
 `.ng.bluemix.net` | `.eu-gb.bluemix.net` | `.au-syd.bluemix.net`
 
-리전(지역)은 여러 가지 방법으로 찾을 수 있습니다. 예를 들어URL를 보고 애플리케이션 페이지(또는 Bluemix 대시보드)에 액세스할 수 있습니다. 또 다른 방법은 이전에 수정한  `configuration.json` 파일을 보는 것입니다.  `AppID` 서비스의 신임정보를 보면 `serverUrl` 이라는 값이 있습니다. 이 값은 위에서 언급된 지역 중 하나를 포함하고 있습니다.  `bluemixAppRegion` 값을  `cloud.plist`에 넣으면 애플리케이션 설정이 완료됩니다.
+리전(지역)은 여러 가지 방법으로 찾을 수 있습니다. 예를 들어URL를 보고 애플리케이션 페이지(또는 Bluemix 대시보드)에 액세스할 수 있습니다. 또 다른 방법은 이전에 수정한  `configuration.json` 파일을 보는 것입니다.  `AppID` 서비스의 신임정보를 보면 `oauthServerUrl` 이라는 값이 있습니다. 이 값은 위에서 언급된 지역 중 하나를 포함하고 있습니다.  `cloudAppRegion` 값을  `cloud.plist`에 넣으면 애플리케이션 설정이 완료됩니다.
 
 ## 옵션 기능 구성하기
 이 섹션에서는 App ID, 푸시 알림, Cloud Functions를 이용한 Facebook 인증을 위해 수행해야 할 단계에 대해 설명합니다.

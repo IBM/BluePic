@@ -3,8 +3,8 @@
 replicaCount: 1
 revisionHistoryLimit: 1
 image:
-  repository: registry.ng.bluemix.net/replace-me-namespace/bluepic-server
-  tag: v1.0.0
+  repository: registry.ng.bluemix.net/bluepic/bluepic
+  tag: latest
   pullPolicy: Always
   resources:
     requests:

@@ -105,7 +105,7 @@ You can find your region in multiple ways. For instance, by just looking at the 
 ## Optional features to configure
 This section describes the steps to take in order to leverage Facebook authentication with App ID, Push Notifications, and Cloud Functions.
 
-*API endpoints in BluePic-Server are currently not protected due to dependency limitations, but they will be as soon as that functionality is availalbe with the Kitura and App ID SDKs*
+*API endpoints in BluePic-Server are currently not protected due to dependency limitations, but they will be as soon as that functionality is available with the Kitura and App ID SDKs*
 
 ### 1. Create an application instance on Facebook
 In order to have the app authenticate with Facebook, you must create an application instance on Facebook's website.
@@ -159,6 +159,58 @@ BluePic leverages Cloud Functions actions written in Swift for accessing the Wat
 
 #### Using the IBM Cloud command line interface
 After configuring the optional features, you should redeploy the BluePic app to IBM Cloud. You can use the IBM Cloud CLI to do that, download it [here](http://clis.ng.bluemix.net/ui/home.html). Once you have logged in to IBM Cloud using the command line, you can execute `bx app push` from the root folder of this repo on your local file system. This will push the application code and configuration to IBM Cloud.
+
+### Deploying the app to a Kubernetes cluster with Docker
+You will need to install the following:
+- [IBM Cloud Container Service CLI](https://console.bluemix.net/docs/containers/cs_cli_install.html#cs_cli_install)
+- [IBM Cloud Container Registry](https://console.bluemix.net/docs/services/Registry/registry_setup_cli_namespace.html#registry_setup_cli_namespace)
+- [Docker](https://docs.docker.com/engine/installation/)
+- Optional: [Helm](https://docs.helm.sh/using_helm/#quickstart-guide)
+
+Next: Setup up a [cluster](https://console.bluemix.net/docs/containers/cs_cluster.html#cs_cluster)
+
+Ensure you follow the instructions to setup the `Container Registry` and `Container Service`. Login, set namespace, export KUBECONFIG on macOS.
+
+###### Build Docker Image
+
+Build your docker application image and push it to your container registry. If you decide to change your tag (i.e. 1.0.0 in the example), it must also be changed in your `BluePic-Server/chart/bluepic/values.yaml` to match and in the below commands. You may also choose to replace the tag in the `values.yaml` with `latest`. Using this, the most recent image will be used.
+
+```
+docker build -t "bluepic:1.0.0" ./BluePic-Server
+docker build -t registry.ng.bluemix.net/<namespace>/bluepic:1.0.0 ./BluePic-Server
+docker push registry.ng.bluemix.net/<namespace>/bluepic:1.0.0
+
+```
+###### Using Helm to package and deploy your application
+```
+// 1
+helm package ./BluePic-Server/chart/bluepic
+// 2
+helm install bluepic-1.0.0.tgz
+// 3
+bx cs workers mycluster
+```
+To access the app take the `Public IP` listed in the output of command #3 and the node port listed in the output of command #2 (something like 31xxx) `http://<public ip>:<node port>``
+
+###### Manually Deploy
+```
+// 1
+kubectl run bp --image=registry.ng.bluemix.net/bluepic/bluepic:latest
+// 2
+kubectl expose deployment/bluepic --type=NodePort --port=8080 --name=bluepic --target-port=8080
+// 3
+kubectl expose deployment/bluepic --type=NodePort --port=8080 --name=bluepic-service --target-port=8080
+// 4
+kubectl describe service bluepic-service
+// 5
+bx cs workers mycluster
+```
+To access the app take the `Public IP` listed in the output of command #5 and the node port listed in the output of command #4 (something like 31xxx) `http://<public ip>:<node port>`
+
+
+Here is an in [depth tutorial](https://console.bluemix.net/docs/containers/cs_tutorials_apps.html#cs_apps_tutorial) with more information
+
+You can view your cluster by running `kubectl proxy` and going to the displayed link in the browser
 
 ## Running the iOS app
 If you don't have the iOS project already open, go to the `BluePic-iOS` directory and open the BluePic workspace using `open BluePic.xcworkspace`.
