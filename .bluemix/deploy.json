@@ -29,8 +29,8 @@
   {
     "type": "text",
     "readonly": false,
-    "title": "App Name",
-    "key": "app-name"
+    "title": "BluePic",
+    "key": "BluePic"
   }, {
     "type": "table",
     "columnCount": 3,

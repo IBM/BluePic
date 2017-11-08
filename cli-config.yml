@@ -24,9 +24,9 @@ dockerfile-run : "Dockerfile"
 dockerfile-tools : "Dockerfile-tools"
 
 # The name of image to create from dockerfile-run
-image-name-run : "bluepic-swift-run"
+image-name-run : "bluepic"
 # The name of image to create from dockerfile-tools
-image-name-tools : "bluepic-swift-tools"
+image-name-tools : "bluepic"
 
 # The command to build the code and docker image for RUN
 build-cmd-run : "/swift-utils/tools-utils.sh build release"
@@ -47,3 +47,7 @@ chart-path : "chart/bluepic"
 
 # The IBM version of this configuration
 version : "0.0.3"
+
+deploy-target: "container"
+deploy-image-target: "registry.ng.bluemix.net/<your namespace here>/bluepic"
+ibm-cluster: "<your cluster name>"

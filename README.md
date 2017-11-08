@@ -164,51 +164,31 @@ After configuring the optional features, you should redeploy the BluePic app to 
 You will need to install the following:
 - [IBM Cloud Container Service CLI](https://console.bluemix.net/docs/containers/cs_cli_install.html#cs_cli_install)
 - [IBM Cloud Container Registry](https://console.bluemix.net/docs/services/Registry/registry_setup_cli_namespace.html#registry_setup_cli_namespace)
+- [IBM Cloud Dev Plugin](https://console.bluemix.net/docs/cloudnative/dev_cli.html#developercli)
 - [Docker](https://docs.docker.com/engine/installation/)
-- Optional: [Helm](https://docs.helm.sh/using_helm/#quickstart-guide)
+- [Helm](https://docs.helm.sh/using_helm/#quickstart-guide)
 
-Next: Setup up a [cluster](https://console.bluemix.net/docs/containers/cs_cluster.html#cs_cluster)
+**NOTE** This method assumes the appropriate services have already been created on IBM Cloud
 
-Ensure you follow the instructions to setup the `Container Registry` and `Container Service`. Login, set namespace, export KUBECONFIG on macOS.
+1. Ensure you follow the setup instructions for the `Container Registry` and `Container Service`. Login, create a namespace, export KUBECONFIG on macOS, etc.
 
-###### Build Docker Image
+2. Setup up a [cluster](https://console.bluemix.net/docs/containers/cs_cluster.html#cs_cluster)
 
-Build your docker application image and push it to your container registry. If you decide to change your tag (i.e. 1.0.0 in the example), it must also be changed in your `BluePic-Server/chart/bluepic/values.yaml` to match and in the below commands. You may also choose to replace the tag in the `values.yaml` with `latest`. Using this, the most recent image will be used.
-
+3. Update the config values at the bottom of `./cli-config` with the appropriate values
 ```
-docker build -t "bluepic:1.0.0" ./BluePic-Server
-docker build -t registry.ng.bluemix.net/<namespace>/bluepic:1.0.0 ./BluePic-Server
-docker push registry.ng.bluemix.net/<namespace>/bluepic:1.0.0
+deploy-target: "container"
+deploy-image-target: "registry.ng.bluemix.net/<Your name space>/bluepic"
+ibm-cluster: "<Your cluster name>"
+```
 
-```
-###### Using Helm to package and deploy your application
-```
-// 1
-helm package ./BluePic-Server/chart/bluepic
-// 2
-helm install bluepic-1.0.0.tgz
-// 3
-bx cs workers mycluster
-```
-To access the app take the `Public IP` listed in the output of command #3 and the node port listed in the output of command #2 (something like 31xxx) `http://<public ip>:<node port>``
-
-###### Manually Deploy
+4. Deploy
 ```
 // 1
-kubectl run bp --image=registry.ng.bluemix.net/bluepic/bluepic:latest
+bx dev deploy
 // 2
-kubectl expose deployment/bluepic --type=NodePort --port=8080 --name=bluepic --target-port=8080
-// 3
-kubectl expose deployment/bluepic --type=NodePort --port=8080 --name=bluepic-service --target-port=8080
-// 4
-kubectl describe service bluepic-service
-// 5
 bx cs workers mycluster
 ```
-To access the app take the `Public IP` listed in the output of command #5 and the node port listed in the output of command #4 (something like 31xxx) `http://<public ip>:<node port>`
-
-
-Here is an in [depth tutorial](https://console.bluemix.net/docs/containers/cs_tutorials_apps.html#cs_apps_tutorial) with more information
+To access the app take the `Public IP` listed in the output of command #2  and the node port listed in the output of command #1 (inside under `Services/Ports` take the `3xxxx` value). `http://<public ip>:<node port>`
 
 You can view your cluster by running `kubectl proxy` and going to the displayed link in the browser
 
