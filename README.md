@@ -15,7 +15,7 @@ The back-end components (i.e. Kitura-based server and Cloud Functions actions) a
 | Component | Swift Version |
 | --- | --- |
 | Kitura-based server | `4.0` |
-| Cloud Functions actions | `4.0` |
+| Cloud Functions actions | `3.1.1` |
 | iOS App | Xcode 9.0 default (`Swift 4.0`)
 
 You can download the development snapshots of the Swift binaries by following this [link](https://swift.org/download/). Compatibility with other Swift versions is not guaranteed.

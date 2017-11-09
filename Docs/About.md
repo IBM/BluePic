@@ -21,7 +21,7 @@ The following Swift packages are used in BluePic:
 - [Cloud Configuration](https://github.com/IBM-Swift/CloudConfiguration.git)
 - [Swift SDK for IBM Cloud Object Storage Service](https://github.com/ibm-bluemix-mobile-services/bluemix-objectstorage-swift-sdk.git)
 - [Kitura Credentials plugin for the App ID service](https://github.com/ibm-cloud-security/appid-serversdk-swift)
-- [Swift SDK for IBM Cloud Push Notifications Service](https://github.com/ibm-bluemix-mobile-services/bms-pushnotifications-serversdk-swift.git)
+- [Swift SDK for IBM Cloud Push Notifications Service](https://developer.ibm.com/code/patterns/apply-cognitive-to-mobile-images-on-the-go/)
 
 ## Architecture
 

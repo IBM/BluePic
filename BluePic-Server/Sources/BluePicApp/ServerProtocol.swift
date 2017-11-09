@@ -1,5 +1,5 @@
 /**
- * Copyright IBM Corporation 2016
+ * Copyright IBM Corporation 2016, 2017
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,10 +19,10 @@ import Kitura
 import KituraContracts
 
 protocol ServerProtocol {
-  
+
   var router: Router { get }
   var port: Int { get }
-  
+
   func ping(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws
   func getImagesForUser(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws
   func sendPushNotification(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws

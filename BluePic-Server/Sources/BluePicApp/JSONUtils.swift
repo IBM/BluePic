@@ -1,5 +1,5 @@
 /**
- * Copyright IBM Corporation 2016
+ * Copyright IBM Corporation 2016, 2017
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ extension JSON {
 
   /**
      Converts a JSON response to a Data Array
-  
+
      - returns: decoded Data Array
   */
   public func toData() throws -> [Data] {
@@ -32,10 +32,10 @@ extension JSON {
 
     return try rows.map { row in try row["value"].rawData() }
   }
-  
+
   /**
      Converts a JSON response to a Data Array of (data, data) pairs for responses with Docs
-     
+
      - returns: decoded Data Array
   */
   public func toDataWithDocs() throws -> [(Data, Data)] {

@@ -1,5 +1,5 @@
 /**
- * Copyright IBM Corporation 2016
+ * Copyright IBM Corporation 2016, 2017
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,29 +26,29 @@ import SwiftyRequest
 
 // Encapsulates helper functions that the endpoints use
 extension ServerController {
-  
+
   /**
-   This method kicks off asynchronously an CloudFunctions sequence and returns immediately.
+   This method kicks off asynchronously a Cloud Functions sequence and returns immediately.
    This method should not wait for the outcome of the CloudFunctions sequence/actions.
    Once the CloudFunctions sequence completes execution, the sequence should invoke the
    '/push' endpoint to generate a push notification for the iOS client.
-   
+
    - parameter imageId: The image ID of the JSON image document in Cloudant.
-   
+
    */
   func processImage(withId imageId: String) {
     Log.verbose("imageId: \(imageId)")
-    
+
     let headers = [
       "Content-Type": "application/json",
       "Authorization": "Basic \(cloudFunctionsProps.authToken)"
     ]
-    
+
     guard let requestBody = try? JSON(["imageId": imageId]).rawData() else {
       Log.error("Failed to create JSON string with imageId.")
       return
     }
-    
+
     // Make REST call
     let url = "https://" + cloudFunctionsProps.hostName + cloudFunctionsProps.urlPath
     let req = RestRequest(method: .post, url: url)
@@ -72,7 +72,7 @@ extension ServerController {
       }
     }
   }
-  
+
   /**
    * Gets a specific image document from the Cloudant database.
    *
@@ -95,7 +95,7 @@ extension ServerController {
       callback(image, nil)
     }
   }
-  
+
   /**
    * Database Query Builder
    *
@@ -109,34 +109,34 @@ extension ServerController {
                                       type: T.Type,
                                       database: Database,
                                       callback: @escaping ([T]?, RequestError?) -> Void) {
-    
+
     var queryParams: [Database.QueryParameters] = [.descending(true)]
     queryParams.append(contentsOf: params)
-    
+
     let exists = params.contains {
       switch $0 {
       case .includeDocs(let x): return x == true
       default: return false
       }
     }
-    
+
     database.queryByView(view.rawValue, ofDesign: "main_design", usingParameters: queryParams) { document, error in
       do {
         guard error == nil, let document = document else {
           throw BluePicLocalizedError.readDocumentFailed
         }
-        
+
         let objects: [T] = try T.convert(document: document, hasDocs: exists, decoder: self.decoder)
-        
+
         callback(objects, nil)
-        
+
       } catch {
         Log.error("\(error)")
         callback(nil, .internalServerError)
       }
     }
   }
-  
+
   /**
    * Database Create Query Builder. Adds the object to the db and updates in revision number
    *
@@ -148,32 +148,32 @@ extension ServerController {
     do {
       let data = try self.encoder.encode(object)
       let json = SwiftyJSON.JSON(data: data)
-      
+
       database.create(json) { id, revision, _, error in
-        
+
         guard error == nil, let revision = revision else {
           Log.error("Failed to add user to the system of records.")
           callback(nil, .internalServerError)
           return
         }
-        
+
         var object = object
         object.rev = revision
-        
+
         callback(object, nil)
       }
     } catch {
-      
+
     }
   }
-  
-  
+
+
   /**
    Convenience method to create a URL for a container.
-   
+
    - parameter containerName: name of the container
    - parameter imageName:     name of corresponding image
-   
+
    - returns: URL as a String
    */
   func generateUrl(forContainer containerName: String, forImage imageName: String) -> String {
@@ -183,10 +183,10 @@ extension ServerController {
     let url = "\(baseURL)/\(containerName)/\(imageName)"
     return url
   }
-  
+
   /**
    Method that actually creates a container with the Object Storage service.
-   
+
    - parameter name: name of the container to create
    - parameter completionHandler: callback to use on success or failure
    */
@@ -207,7 +207,7 @@ extension ServerController {
         }
       }
     }
-    
+
     // Create container
     let createContainer = { (objStorage: ObjectStorage?) -> Void in
       guard let objStorage = objStorage  else {
@@ -225,14 +225,14 @@ extension ServerController {
         }
       }
     }
-    
+
     // Create, and configure container
     objectStorageConn.getObjectStorage(completionHandler: createContainer)
   }
-  
+
   /**
    Method to store image binary in a container if it exsists.
-   
+
    - parameter image:             image binary data
    - parameter name:              file name to store image as
    - parameter containerName:     name of container to use
@@ -257,7 +257,7 @@ extension ServerController {
         }
       }
     }
-    
+
     // Get reference to container
     let retrieveContainer = { (objStorage: ObjectStorage?) -> Void in
       guard let objStorage = objStorage else {
@@ -275,7 +275,7 @@ extension ServerController {
         }
       }
     }
-    
+
     // Create, and configure container
     objectStorageConn.getObjectStorage(completionHandler: retrieveContainer)
   }
