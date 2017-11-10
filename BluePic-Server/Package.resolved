@@ -201,11 +201,11 @@
       },
       {
         "package": "MetricsTrackerClient",
-        "repositoryURL": "https://github.com/sandmman/metrics-collector-client-swift",
+        "repositoryURL": "https://github.com/IBM/metrics-collector-client-swift",
         "state": {
-          "branch": "test",
-          "revision": "8cd1af8f1f461514a04ea784c1943bda58e6f97f",
-          "version": null
+          "branch": null,
+          "revision": "89059c0a99f60385f039ced9f0f57a1e928cb443",
+          "version": "5.0.3"
         }
       },
       {
