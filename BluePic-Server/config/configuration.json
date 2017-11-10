@@ -1,53 +1,53 @@
 {
 	"cloudantNoSQLDB": {
-		"username": "ddad7a02-bf37-4b6e-8d3d-e5c1971697eb-bluemix",
-		"password": "390dcb82f98254d397deb397d29d202040d3e9249c3ff17aca6b2d469ae80ed7",
-		"host": "ddad7a02-bf37-4b6e-8d3d-e5c1971697eb-bluemix.cloudant.com",
+		"username": "",
+		"password": "",
+		"host": "",
 		"port": 443,
-		"url": "https://ddad7a02-bf37-4b6e-8d3d-e5c1971697eb-bluemix:390dcb82f98254d397deb397d29d202040d3e9249c3ff17aca6b2d469ae80ed7@ddad7a02-bf37-4b6e-8d3d-e5c1971697eb-bluemix.cloudant.com"
+		"url": ""
 	},
 	"Object-Storage": {
-		"auth_url": "https://identity.open.softlayer.com",
-		"project": "object_storage_89a8e80d_0425_4cf3_89d2_016ce885e631",
-		"projectId": "bf24aff817b2420c863b1abe3c877694",
-		"region": "dallas",
-		"userId": "6f9cca1bdebb49ccb39f2b3753c40f0c",
-		"username": "admin_b5e30b3b32b7a121f3a4771531757236e02e6cde",
-		"password": "DwQLG?p]4T5rl9rr",
-		"domainId": "efc4c0b8108a43bd80a9cc8af79a1837",
-		"domainName": "1050765",
-		"role": "admin"
+		"auth_url": "",
+		"project": "",
+		"projectId": "",
+		"region": "",
+		"userId": "",
+		"username": "",
+		"password": "",
+		"domainId": "",
+		"domainName": "",
+		"role": ""
 	},
 	"AppID": {
 		"version": 3,
-		"clientId": "a44364d5-f103-4c11-aeea-3983139256ff",
-		"secret": "MjhjOWI0Y2ItZjNiMi00YzQ0LTgyZTMtYzI2M2QzZjc1N2Ew",
-		"tenantId": "e4758f77-be0e-4fe8-aca5-9ce8ca4faa7a",
-		"oauthServerUrl": "https://appid-oauth.ng.bluemix.net/oauth/v3/e4758f77-be0e-4fe8-aca5-9ce8ca4faa7a",
-		"profilesUrl": "https://appid-profiles.ng.bluemix.net"
+		"clientId": "",
+		"secret": "",
+		"tenantId": "",
+		"oauthServerUrl": "",
+		"profilesUrl": ""
 	},
 	"weatherinsights": {
-		"username": "67aa4248-7aa7-4f02-8941-e88e71441479",
-		"password": "nF4g2KlNJS",
-		"host": "twcservice.mybluemix.net",
+		"username": "",
+		"password": "",
+		"host": "",
 		"port": 443,
-		"url": "https://67aa4248-7aa7-4f02-8941-e88e71441479:nF4g2KlNJS@twcservice.mybluemix.net"
+		"url": ""
 	},
 	"alchemy_api": {
-		"url": "https://gateway-a.watsonplatform.net/calls",
-		"note": "It may take up to 5 minutes for this key to become active. This is your previously active free apikey. If you want a different one, please wait 24 hours after unbinding the key and try again.",
-		"apikey": "39d725db70f306b2d4561348b2d11d75fc825f28"
+		"url": "",
+		"note": "",
+		"apikey": ""
 	},
 	"imfpush": {
-		"appGuid": "f2ae7ad9-84cb-45d8-bfb7-456f492b9ccc",
-		"url": "http://imfpush.ng.bluemix.net/imfpush/v1/apps/f2ae7ad9-84cb-45d8-bfb7-456f492b9ccc",
-		"admin_url": "//mobile.ng.bluemix.net/imfpushdashboard/?appGuid=f2ae7ad9-84cb-45d8-bfb7-456f492b9ccc",
-		"appSecret": "e3da946d-53ba-446d-9cdb-d4ecaeb38f9f",
-		"clientSecret": "c44000cf-2ddd-4a1d-9351-e358dd9540cf"
+		"appGuid": "",
+		"url": "",
+		"admin_url": "",
+		"appSecret": "",
+		"clientSecret": ""
 	},
 	"CloudFunctions": {
-		"hostName": "openwhisk.ng.bluemix.net",
-		"urlPath": "/api/v1/namespaces/swiftdo%40us.ibm.com_applications-production/actions/bluepic/processImage?blocking=false",
-		"authToken": "f4a7ebaf-2b63-465c-86ca-aa648ba05dcc:yPGelInBILHwDnSnTmAMfEJgyYwkIo1HbkizFP8aXYVZoEBeKv3gmlZSrpzQmLtZ"
+		"hostName": "",
+		"urlPath": "",
+		"authToken": ""
 	}
 }
