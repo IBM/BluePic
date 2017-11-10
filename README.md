@@ -7,6 +7,21 @@ BluePic is a photo and image sharing sample application that allows you to take 
 
 BluePic takes advantage of Swift in a typical iOS client setting, but also on the server-side using the new Swift web framework and HTTP Server, Kitura. An interesting feature of Bluepic, is the way it handles photos on the server. When an image is posted, it's data is recorded in Cloudant and the image binary is stored in Object Storage. From there, an [OpenWhisk](http://www.ibm.com/cloud-computing/IBM Cloud/openwhisk/) sequence is invoked causing weather data like temperature and current condition (e.g. sunny, cloudy, etc.) to be calculated based on the location an image was uploaded from. Watson Visual Recognition is also used in the OpenWhisk sequence to analyze the image and extract text tags based on the content of the image. A push notification is finally sent to the user, informing them their image has been processed and now includes weather and tag data.
 
+## Application Workflow
+![Application Workflow](./imgs/architecture-bluepic.png)
+
+1. A client from an iOS device or web browser connects to the Kitura Mobile Backend
+2. The clients are optionally able to authenticate. On the iOS devices they leverage the AppID service in Bluemix.
+3. At this point a client is able to take a picture (on the iOS client) and upload the image (on both clients).
+4. The Kitura Mobile Backend will first create an entry in a Cloudant NoSQL DB.
+5. The Kitura Mobile Backend will then store the file in the Bluemix Cloud Object Storage.
+6. OpenWhisk actions are triggered with Kitura writes into Cloudant DB and Object Storage then triggered. These actions include invoking the Watson Visual Recognition service to analyze the image.
+7. In parallel, OpenWhisk also gets location data from where the image was taken, from the Bluemix Weather Company Data service.
+8. OpenWhisk will take the returned data from AlchemyAPI and the Weather Company Data services and update the Cloudant NoSQL DB entry.
+9. Finally, OpenWhisk will trigger a Bluemix Push Notification event for the iOS client.
+
+
+
 ## Swift version
 The back-end components (i.e. Kitura-based server and OpenWhisk actions) and the iOS component of the BluePic app work with specific versions of the Swift binaries, see following table:
 
