@@ -44,7 +44,7 @@ public class ServerController {
 
   let database: Database
 
-  let cloudFunctionsProps: CloudFunctionsProps
+  let cloudFunctionsProps: CloudFunctionsCredentials
   var objectStorageConn: ObjectStorageConn
   let pushNotificationsClient: PushNotifications
   let objStorageConnProps: ObjectStorageCredentials
@@ -80,13 +80,12 @@ public class ServerController {
       let objStoreCredentials = cloudEnv.getObjectStorageCredentials(name: "object-storage-credentials"),
       // let appIdCredentials = cloudEnv.getAppIDCredentials(name: "app-id-credentials"),
       let pushCredentials = cloudEnv.getPushSDKCredentials(name: "app-push-credentials"),
-      let CloudFunctionsJson = cloudEnv.getDictionary(name: "cloud-functions-credentials"),
-      let CloudFunctionsCredentials = CloudFunctionsProps(dict: CloudFunctionsJson) else {
+      let cloudFunctionsCredentials = cloudEnv.getCloudFunctionsCredentials(name: "cloud-functions-credentials") else {
 
         throw BluePicError.IO("Failed to obtain appropriate credentials.")
     }
 
-    cloudFunctionsProps = CloudFunctionsCredentials
+    cloudFunctionsProps = cloudFunctionsCredentials
     objStorageConnProps = objStoreCredentials
 
     // Instantiate Objects

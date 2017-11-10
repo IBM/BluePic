@@ -38,15 +38,6 @@
         }
       },
       {
-        "package": "CEpoll",
-        "repositoryURL": "https://github.com/IBM-Swift/CEpoll.git",
-        "state": {
-          "branch": null,
-          "revision": "7b65f0adfe5a1f36fc16b16760f5f99cfd3a4e1a",
-          "version": "0.1.1"
-        }
-      },
-      {
         "package": "CircuitBreaker",
         "repositoryURL": "https://github.com/IBM-Swift/CircuitBreaker.git",
         "state": {
@@ -59,9 +50,9 @@
         "package": "CloudEnvironment",
         "repositoryURL": "https://github.com/IBM-Swift/CloudEnvironment.git",
         "state": {
-          "branch": null,
-          "revision": "1100268ee17670fd320b0d9463a66e13ca24755f",
-          "version": "4.0.5"
+          "branch": "issue.cloudfunctions",
+          "revision": "95dc9997de623c89526e160301387e5ed4964714",
+          "version": null
         }
       },
       {
@@ -69,8 +60,8 @@
         "repositoryURL": "https://github.com/IBM-Bluemix/cf-deployment-tracker-client-swift.git",
         "state": {
           "branch": null,
-          "revision": "4e897a46a050dd959e010ec210e585cdb484d0de",
-          "version": "4.0.1"
+          "revision": "157d8bc9d6a4aaf32f1609361c08bcd9f397eaad",
+          "version": "5.0.0"
         }
       },
       {
@@ -78,8 +69,8 @@
         "repositoryURL": "https://github.com/IBM-Swift/Swift-cfenv.git",
         "state": {
           "branch": null,
-          "revision": "6ded559c54871fd7a94a0c7fabe51e096bb1e392",
-          "version": "4.1.0"
+          "revision": "b58de4a3158dde0c81912e774cb92a38f8d9368a",
+          "version": "5.0.0"
         }
       },
       {
@@ -96,8 +87,8 @@
         "repositoryURL": "https://github.com/IBM-Swift/Configuration.git",
         "state": {
           "branch": null,
-          "revision": "9973bcc64f41c81c9716bf1306079be61f29c998",
-          "version": "1.0.4"
+          "revision": "20e2167fc80a039e3ee75ff3940c19c71084395e",
+          "version": "2.0.0"
         }
       },
       {
@@ -105,8 +96,8 @@
         "repositoryURL": "https://github.com/IBM-Swift/BlueCryptor.git",
         "state": {
           "branch": null,
-          "revision": "8343677ebcce67930404c8863bdecd0030126dfe",
-          "version": "0.8.18"
+          "revision": "16f9c7ddcbe11bbd32106a791ebef2108a4e9183",
+          "version": "0.8.21"
         }
       },
       {
@@ -177,8 +168,8 @@
         "repositoryURL": "https://github.com/IBM-Swift/Kitura-net.git",
         "state": {
           "branch": null,
-          "revision": "e04ee59e93b72ffb19c730d80dac4e15d060a5da",
-          "version": "1.7.18"
+          "revision": "c29812e62855d34d32305e1dc06d2f1df5224df7",
+          "version": "1.7.19"
         }
       },
       {
@@ -210,20 +201,11 @@
       },
       {
         "package": "MetricsTrackerClient",
-        "repositoryURL": "https://github.com/IBM/metrics-collector-client-swift",
+        "repositoryURL": "https://github.com/sandmman/metrics-collector-client-swift",
         "state": {
-          "branch": null,
-          "revision": "0857770608bd3896954570624335b387a4b7b040",
-          "version": "5.0.2"
-        }
-      },
-      {
-        "package": "OpenSSL",
-        "repositoryURL": "https://github.com/IBM-Swift/OpenSSL.git",
-        "state": {
-          "branch": null,
-          "revision": "95c405c18a071a1c13616e984ba1b3c6091ca6ca",
-          "version": "0.3.7"
+          "branch": "test",
+          "revision": "8cd1af8f1f461514a04ea784c1943bda58e6f97f",
+          "version": null
         }
       },
       {
@@ -233,15 +215,6 @@
           "branch": null,
           "revision": "7adf7cacc447d447df5dcc3058cabd402177c5aa",
           "version": "0.12.64"
-        }
-      },
-      {
-        "package": "Signals",
-        "repositoryURL": "https://github.com/IBM-Swift/BlueSignals.git",
-        "state": {
-          "branch": null,
-          "revision": "0fab5a9f166e96f17bb9646dc56cd22a6f3c3757",
-          "version": "0.9.50"
         }
       },
       {

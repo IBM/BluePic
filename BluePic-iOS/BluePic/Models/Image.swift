@@ -152,16 +152,11 @@ extension Image: Codable {
         }
 
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encodeIfPresent(id, forKey: .id)
-        try container.encodeIfPresent(url, forKey: .url)
         try container.encode(fileName, forKey: .fileName)
         try container.encode(caption, forKey: .caption)
-        try container.encode(Double(height), forKey: .height)
-        try container.encode(Double(width), forKey: .width)
-        try container.encode(tags, forKey: .tags)
+        try container.encode(height, forKey: .height)
+        try container.encode(width, forKey: .width)
         try container.encode(deviceId, forKey: .deviceId)
-        try container.encodeIfPresent(location, forKey: .location)
-        try container.encode(user, forKey: .user)
         try container.encode(user.id, forKey: .userId)
         try container.encodeIfPresent(imageData, forKey: .image)
     }
@@ -169,30 +164,24 @@ extension Image: Codable {
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
 
-        id = try values.decode(String.self, forKey: .id)
-        fileName = try values.decode(String.self, forKey: .fileName)
-        caption = try values.decode(String.self, forKey: .caption)
-        url = try values.decodeIfPresent(String.self, forKey: .url)
-        width = CGFloat(integerLiteral: try values.decode(Int.self, forKey: .width))
-        height = CGFloat(integerLiteral: try values.decode(Int.self, forKey: .height))
-        tags = try values.decodeIfPresent([Tag].self, forKey: .tags) ?? []
-        location = try values.decodeIfPresent(Location.self, forKey: .location)
-        user = try values.decodeIfPresent(User.self, forKey: .user) ?? User(id: "Anonymous", name: "anonymous")
-        timeStamp = Utils.dataFormatter(timestamp: try values.decode(String.self, forKey: .uploadedTs))
+        id          = try values.decode(String.self, forKey: .id)
+        fileName    = try values.decode(String.self, forKey: .fileName)
+        caption     = try values.decode(String.self, forKey: .caption)
+        height      = try values.decode(CGFloat.self, forKey: .height)
+        width       = try values.decode(CGFloat.self, forKey: .width)
+        url         = try values.decodeIfPresent(String.self, forKey: .url)
+        tags        = try values.decodeIfPresent([Tag].self, forKey: .tags) ?? []
+        user        = try values.decodeIfPresent(User.self, forKey: .user) ?? User(id: "Anonymous", name: "anonymous")
+        location    = try values.decodeIfPresent(Location.self, forKey: .location)
+        timeStamp   = Utils.dataFormatter(timestamp: try values.decode(String.self, forKey: .uploadedTs))
     }
 }
 
 func ==(lhs: Image, rhs: Image) -> Bool {
-    var sameLocation = false
-    if let ll = lhs.location, let rl = rhs.location {
-        sameLocation = ll == rl
-    } else {
-        sameLocation = lhs.location == nil && rhs.location == nil
-    }
     return lhs.caption == rhs.caption &&
         lhs.fileName == rhs.fileName &&
         lhs.width == rhs.width &&
         lhs.height == rhs.height &&
-        sameLocation &&
+        lhs.location == rhs.location &&
         lhs.image === rhs.image
 }

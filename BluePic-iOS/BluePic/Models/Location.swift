@@ -30,7 +30,10 @@ struct Weather: Codable {
     let description: String
 }
 
-func ==(lhs: Location, rhs: Location) -> Bool {
+func ==(l: Location?, r: Location?) -> Bool {
+    guard let lhs = l, let rhs = r else {
+        return l == nil || r == nil
+    }
     return lhs.name == rhs.name &&
         lhs.latitude == rhs.latitude &&
         lhs.longitude == rhs.longitude
