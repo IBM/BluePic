@@ -5,9 +5,7 @@
 
 BluePic is a photo and image sharing sample application that allows you to take photos and share them with other BluePic users. This sample application demonstrates how to leverage, in a mobile iOS 10 application, a Kitura-based server application written in Swift.
 
-BluePic takes advantage of Swift in a typical iOS client setting, but also on the server-side using the new Swift web framework and HTTP Server, Kitura. An interesting feature of BluePic, is the way it handles photos on the server. When an image is posted, it's data is recorded in Cloudant and the image binary is stored in Object Storage. From there, an [Cloud Functions](http://www.ibm.com/cloud-computing/bluemix/openwhisk/) sequence is invoked causing weather data like temperature and current condition (e.g. sunny, cloudy, etc.) to be calculated based on the location an image was uploaded from. Watson Visual Recognition is also used in the Cloud Functions sequence to analyze the image and extract text tags based on the content of the image. A push notification is finally sent to the user, informing them their image has been processed and now includes weather and tag data.
-
-*Read this in other languages: [한국어](README-ko.md).*
+BluePic takes advantage of Swift in a typical iOS client setting, but also on the server-side using the new Swift web framework and HTTP Server, Kitura. An interesting feature of Bluepic, is the way it handles photos on the server. When an image is posted, it's data is recorded in Cloudant and the image binary is stored in Object Storage. From there, an [OpenWhisk](http://www.ibm.com/cloud-computing/IBM Cloud/openwhisk/) sequence is invoked causing weather data like temperature and current condition (e.g. sunny, cloudy, etc.) to be calculated based on the location an image was uploaded from. Watson Visual Recognition is also used in the OpenWhisk sequence to analyze the image and extract text tags based on the content of the image. A push notification is finally sent to the user, informing them their image has been processed and now includes weather and tag data.
 
 ## Swift version
 The back-end components (i.e. Kitura-based server and Cloud Functions actions) and the iOS component of the BluePic app work with specific versions of the Swift binaries, see following table:
@@ -92,13 +90,13 @@ Go to the `BluePic-iOS` directory and open the BluePic workspace with Xcode usin
 
 1. You should set the `isLocal` value to `YES` if you'd like to use a locally running server; if you set the value to `NO`, then you will be accessing the server instance running on IBM Cloud.
 
-1. To get the `appRouteRemote` value, you should go to your application's page on IBM Cloud. There, you will find a `View App` button near the top right. Clicking on it should open up your app in a new tab, the url for this page is your `route` which maps to the `appRouteRemote` key in the plist. Make sure to include the `http://` protocol in your `appRouteRemote` and to exclude a forward slash at the end of the url.
+2. To get the `appRouteRemote` value, you should go to your application's page on IBM Cloud. There, you will find a `View App` button near the top right. Clicking on it should open up your app in a new tab, the url for this page is your `route` which maps to the `appRouteRemote` key in the plist. Make sure to include the `http://` protocol in your `appRouteRemote` and to exclude a forward slash at the end of the url.
 
-1. Lastly, we need to get the value for `cloudAppRegion`, which can be one of three options currently:
+3. Lastly, we need to get the value for `cloudAppRegion`, which can be one of three options currently:
 
 REGION US SOUTH | REGION UK | REGION SYDNEY
 --- | --- | ---
-`.ng.bluemix.net` | `.eu-gb.bluemix.net` | `.au-syd.bluemix.net`
+`.ng.IBM Cloud.net` | `.eu-gb.IBM Cloud.net` | `.au-syd.IBM Cloud.net`
 
 You can find your region in multiple ways. For instance, by just looking at the URL you use to access your application's page (or the IBM Cloud dashboard). Another way is to look at the `configuration.json` file you modified earlier. If you look at the credentials under your `AppID` service, there is a value called `oauthServerUrl` which should contain one of the regions mentioned above. Once you insert your `cloudAppRegion` value into the `cloud.plist`, your app should be configured.
 
@@ -135,9 +133,9 @@ In order to have the app authenticate with Facebook, you must create an applicat
 
 1. On this page, you will also see a "Redirect URL for Facebook for Developers", copy it because we need it in a minute. On your Facebook Developer app page, navigate to the Facebook login product. That URL is `https://developers.facebook.com/apps/<facebookAppId>/fb-login/`. Here, paste that link into the "Valid OAuth redirect URIs" field and click Save changes. Back on IBM Cloud, you can also click the Save button.
 
-1. One more thing that needs to be done for App ID to work properly is that you need add the `tenantId` for App ID into the `cloud.plist` for BluePic-iOS. We get the `tenantId ` by viewing our credentials for the App ID service in IBM Cloud, all your services should be under the "Connections" tab of your app on IBM Cloud. Once there, click on the "View Credentials" or "Show Credentials" button for your App ID service and you should see the `tenantId ` pop up, among other values. Now, simply put that value into your `cloud.plist` corresponding with the `appIdTenantId` key.
+2. One more thing that needs to be done for App ID to work properly is that you need add the `tenantId` for App ID into the `cloud.plist` for BluePic-iOS. We get the `tenantId ` by viewing our credentials for the App ID service in IBM Cloud, all your services should be under the "Connections" tab of your app on IBM Cloud. Once there, click on the "View Credentials" or "Show Credentials" button for your App ID service and you should see the `tenantId ` pop up, among other values. Now, simply put that value into your `cloud.plist` corresponding with the `appIdTenantId` key.
 
-1. Facebook authentication with IBM Cloud App ID is now completely set up!
+3. Facebook authentication with IBM Cloud App ID is now completely set up!
 
 ### 3. Configure IBM Cloud Push service
 To utilize push notification capabilities on IBM Cloud, you need to configure a notification provider. For BluePic, you should configure credentials for the Apple Push Notification Service (APNS). As part of this configuration step, you will need to use the **bundle identifier** you chose in the [Create an application instance on Facebook](#1-create-an-application-instance-on-facebook) section.
@@ -159,38 +157,6 @@ BluePic leverages Cloud Functions actions written in Swift for accessing the Wat
 
 #### Using the IBM Cloud command line interface
 After configuring the optional features, you should redeploy the BluePic app to IBM Cloud. You can use the IBM Cloud CLI to do that, download it [here](http://clis.ng.bluemix.net/ui/home.html). Once you have logged in to IBM Cloud using the command line, you can execute `bx app push` from the root folder of this repo on your local file system. This will push the application code and configuration to IBM Cloud.
-
-### Deploying the app to a Kubernetes cluster with Docker
-You will need to install the following:
-- [IBM Cloud Container Service CLI](https://console.bluemix.net/docs/containers/cs_cli_install.html#cs_cli_install)
-- [IBM Cloud Container Registry](https://console.bluemix.net/docs/services/Registry/registry_setup_cli_namespace.html#registry_setup_cli_namespace)
-- [IBM Cloud Dev Plugin](https://console.bluemix.net/docs/cloudnative/dev_cli.html#developercli)
-- [Docker](https://docs.docker.com/engine/installation/)
-- [Helm](https://docs.helm.sh/using_helm/#quickstart-guide)
-
-**NOTE** This method assumes the appropriate services have already been created on IBM Cloud
-
-1. Ensure you follow the setup instructions for the `Container Registry` and `Container Service`. Login, create a namespace, export KUBECONFIG on macOS, etc.
-
-2. Setup up a [cluster](https://console.bluemix.net/docs/containers/cs_cluster.html#cs_cluster)
-
-3. Update the config values at the bottom of `./cli-config` with the appropriate values
-```
-deploy-target: "container"
-deploy-image-target: "registry.ng.bluemix.net/<Your name space>/bluepic"
-ibm-cluster: "<Your cluster name>"
-```
-
-4. Deploy
-```
-// 1
-bx dev deploy
-// 2
-bx cs workers mycluster
-```
-To access the app take the `Public IP` listed in the output of command #2  and the node port listed in the output of command #1 (inside under `Services/Ports` take the `3xxxx` value). `http://<public ip>:<node port>`
-
-You can view your cluster by running `kubectl proxy` and going to the displayed link in the browser
 
 ## Running the iOS app
 If you don't have the iOS project already open, go to the `BluePic-iOS` directory and open the BluePic workspace using `open BluePic.xcworkspace`.
@@ -214,8 +180,16 @@ BluePic was designed with a lot of useful features. To see further information a
 ## About BluePic
 To learn more about BluePic's folder structure, its architecture, and the Swift packages it depends on, see the [About](Docs/About.md) page.
 
+## Learn More
+[Transition to Server-Side Swift with BluePic](https://developer.ibm.com/swift/2016/11/15/transition-to-server-side-swift-with-bluepic/)
+[Introducing Kitura 2.0](https://developer.ibm.com/swift/2017/10/30/kitura-20/)
+[Build a server-side Swift application using the Kitura command-line interface](https://developer.ibm.com/swift/2017/10/30/kitura-cli/)
+
+## Reporting issues against the IBM Cloud Tools for Swift
+You can use the [dW Answers](https://developer.ibm.com/answers/topics/cloud-tools-for-swift.html) web site to ask a question and/or report any issues you encounter while using the IBM Cloud Tools for Swift. Just make sure you use the tag `cloud-tools-for-swift` for the questions you post on dW Answers.
+
 ## Privacy Notice
-The BluePic-Server application includes code to track deployments to [IBM Cloud](https://www.bluemix.net/) and other Cloud Foundry platforms. The following information is sent to [Deployment Tracker](https://github.com/IBM-Bluemix/cf-deployment-tracker-service) and [Metrics collector](https://github.com/IBM/metrics-collector-service) service on each deployment:
+The BluePic-Server application includes code to track deployments to [IBM Cloud](https://www.IBM Cloud.net/) and other Cloud Foundry platforms. The following information is sent to [Deployment Tracker](https://github.com/IBM-bluemix/cf-deployment-tracker-service) and [Metrics collector](https://github.com/IBM/metrics-collector-service) service on each deployment:
 
 * Swift project code version (if provided)
 * Swift project repository URL
