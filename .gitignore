@@ -1,13 +1,15 @@
+# gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
+
+## XCode
 BluePic-iOS/BluePic.xcodeproj/xcuserdata/*
 BluePic-iOS/BluePic.xcodeproj/project.xcworkspace/xcuserdata/*
 BluePic.xcworkspace/xcuserdata/*
 BluePic-iOS/Pods/Pods.xcodeproj/xcuserdata/*
 
-# Xcode
-#
-# gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
-
 ## Build generated
+.build
+.build-ubuntu
+BluePic-Server.xcodeproj
 build/
 DerivedData/
 
@@ -21,8 +23,10 @@ DerivedData/
 *.perspectivev3
 !default.perspectivev3
 xcuserdata/
-
-## Other
 *.moved-aside
 *.xccheckout
 *.xcscmblueprint
+
+
+## MacOS
+.DS_Store

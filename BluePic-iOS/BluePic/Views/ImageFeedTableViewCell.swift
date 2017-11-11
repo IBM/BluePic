@@ -1,5 +1,5 @@
 /**
- * Copyright IBM Corporation 2016
+ * Copyright IBM Corporation 2016, 2017
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -57,7 +57,7 @@ class ProfileTableViewCell: UITableViewCell {
     //String that is added to the numberOfTagsLabel at the end if there is one tag
     fileprivate let kNumberOfTagsPostFix_OneTag = NSLocalizedString("Tag", comment: "")
 
-    var defaultAttributes = [NSForegroundColorAttributeName: UIColor.black, NSFontAttributeName: UIFont.boldSystemFont(ofSize: 13.0)]
+    var defaultAttributes = [NSAttributedStringKey.foregroundColor: UIColor.black, NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 13.0)]
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -65,7 +65,7 @@ class ProfileTableViewCell: UITableViewCell {
 
         let style = NSMutableParagraphStyle()
         style.alignment = .center
-        defaultAttributes[NSParagraphStyleAttributeName] = style
+        defaultAttributes[NSAttributedStringKey.paragraphStyle] = style
     }
 
     /// Method sets up the data for the profile collection view cell
@@ -73,20 +73,16 @@ class ProfileTableViewCell: UITableViewCell {
     /// - parameter image: Image object to use for populating UI
     func setupDataWith(_ image: Image) {
 
-        if let numOfTags = image.tags?.count {
+        let numOfTags = image.tags.count
 
-            if numOfTags == 0 {
-                self.numberOfTagsLabel.isHidden = true
-            } else if numOfTags == 1 {
-                self.numberOfTagsLabel.isHidden = false
-                self.numberOfTagsLabel.text = "\(numOfTags)" + " " + self.kNumberOfTagsPostFix_OneTag
-            } else {
-                self.numberOfTagsLabel.isHidden = false
-                self.numberOfTagsLabel.text = "\(numOfTags)" + " " + self.kNumberOfTagsPostFix_MultipleTags
-            }
-
-        } else {
+        if numOfTags == 0 {
             self.numberOfTagsLabel.isHidden = true
+        } else if numOfTags == 1 {
+            self.numberOfTagsLabel.isHidden = false
+            self.numberOfTagsLabel.text = "\(numOfTags)" + " " + self.kNumberOfTagsPostFix_OneTag
+        } else {
+            self.numberOfTagsLabel.isHidden = false
+            self.numberOfTagsLabel.text = "\(numOfTags)" + " " + self.kNumberOfTagsPostFix_MultipleTags
         }
 
         //set the image view's image
@@ -96,7 +92,11 @@ class ProfileTableViewCell: UITableViewCell {
         _ = self.setCaptionText(image: image)
 
         //set the time since posted label's text
-        self.timeSincePostedLabel.text = Date.timeSinceDateString(image.timeStamp)
+        if let ts = image.timeStamp {
+             self.timeSincePostedLabel.text = Date.timeSinceDateString(ts)
+        } else {
+            self.timeSincePostedLabel.text = ""
+        }
     }
 
     func setCaptionText(image: Image) -> Bool {
@@ -106,13 +106,13 @@ class ProfileTableViewCell: UITableViewCell {
             self.captionTextView.text = ""
             self.captionTextView.textContainerInset = UIEdgeInsets.zero
             return false
-        } else if image.caption.characters.count >= cutoffLength {
+        } else if image.caption.count >= cutoffLength {
             if !image.isExpanded {
                 let moreText = "...more"
 
                 let abc: String = (image.caption as NSString).substring(with: NSRange(location: 0, length: cutoffLength)) + moreText
                 let attributedString = NSMutableAttributedString(string: abc, attributes: defaultAttributes)
-                attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor.gray, range: NSRange(location: cutoffLength, length: 7))
+                attributedString.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.gray, range: NSRange(location: cutoffLength, length: 7))
                 self.captionTextView.attributedText = attributedString
             } else {
                 self.captionTextView.attributedText = NSMutableAttributedString(string: image.caption, attributes: defaultAttributes)

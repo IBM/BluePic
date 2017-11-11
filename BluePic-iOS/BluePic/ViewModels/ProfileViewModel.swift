@@ -1,5 +1,5 @@
 /**
- * Copyright IBM Corporation 2016
+ * Copyright IBM Corporation 2016, 2017
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -60,7 +60,7 @@ class ProfileViewModel: NSObject {
     /**
      Method updates the imageDataArray to the latest currentUserImages from the BluemixDataManager and then tells the profile vc to reload its table view
      */
-    func updateImageArrayAndNotifyViewControllerToReloadTableView() {
+    @objc func updateImageArrayAndNotifyViewControllerToReloadTableView() {
 
         self.imageDataArray = BluemixDataManager.SharedInstance.currentUserImages
 

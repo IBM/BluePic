@@ -1,5 +1,5 @@
 /**
- * Copyright IBM Corporation 2016
+ * Copyright IBM Corporation 2016, 2017
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,7 +45,7 @@ class LoginViewController: UIViewController {
     fileprivate let kLoginErrorMessage = NSLocalizedString("Oops, an error occurred! Try again.", comment: "")
 
     //string shown in the aboutBluePicLabel
-    fileprivate let kAboutBluePicLabelText = NSLocalizedString("BluePic's back-end component is written entirely in the Swift programming language and runs on a Kitura-based server that leverages several IBM Bluemix services and OpenWhisk actions.", comment: "")
+    fileprivate let kAboutBluePicLabelText = NSLocalizedString("BluePic's back-end component is written entirely in the Swift programming language and runs on a Kitura-based server that leverages several IBM Bluemix services and Cloud Functions actions.", comment: "")
 
     /**
      Method called upon view did load. In this case we set up the view model and the aboutBluePicLabel
@@ -91,7 +91,7 @@ class LoginViewController: UIViewController {
      */
     @IBAction func signInLaterTapped(_ sender: Any) {
         viewModel.loginLater()
-        dismiss(animated: true, completion: nil)
+        self.performSegue(withIdentifier: "authorizedSegue", sender: nil)
     }
 
     /**
@@ -103,6 +103,7 @@ class LoginViewController: UIViewController {
         if FacebookDataManager.SharedInstance.isFacebookConfigured() {
             startLoading()
             AppID.sharedInstance.loginWidget?.launch(delegate: self.viewModel)
+            BMSClient.sharedInstance.authorizationManager = AppIDAuthorizationManager(appid: AppID.sharedInstance)
         } else {
             let alert = UIAlertController(title: "Error",
                                           message: NSLocalizedString("Couldn't log in, Facebook is not configured correctly.", comment: ""),
@@ -158,7 +159,7 @@ extension LoginViewController {
      */
     func handleLoginSuccess() {
         DispatchQueue.main.async {
-            self.dismiss(animated: true, completion: nil)
+            self.performSegue(withIdentifier: "authorizedSegue", sender: nil)
         }
     }
 

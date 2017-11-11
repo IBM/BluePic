@@ -1,0 +1,53 @@
+{
+	"cloudantNoSQLDB": {
+		"username": "",
+		"password": "",
+		"host": "",
+		"port": 443,
+		"url": ""
+	},
+	"Object-Storage": {
+		"auth_url": "",
+		"project": "",
+		"projectId": "",
+		"region": "",
+		"userId": "",
+		"username": "",
+		"password": "",
+		"domainId": "",
+		"domainName": "",
+		"role": ""
+	},
+	"AppID": {
+		"version": 3,
+		"clientId": "",
+		"secret": "",
+		"tenantId": "",
+		"oauthServerUrl": "",
+		"profilesUrl": ""
+	},
+	"weatherinsights": {
+		"username": "",
+		"password": "",
+		"host": "",
+		"port": 443,
+		"url": ""
+	},
+	"alchemy_api": {
+		"url": "",
+		"note": "",
+		"apikey": ""
+	},
+	"imfpush": {
+		"appGuid": "",
+		"url": "",
+		"admin_url": "",
+		"appSecret": "",
+		"clientSecret": ""
+	},
+	"CloudFunctions": {
+		"hostName": "",
+		"urlPath": "",
+		"authToken": ""
+	}
+}

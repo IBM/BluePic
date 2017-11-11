@@ -104,7 +104,9 @@ myBMSClient.initialize(bluemixRegion: "Location where your app Hosted")
 
 ##### bluemixRegion
 
-- Specifies the location where the app hosted. You can use one of three values - `BMSClient.Region.usSouth`, `BMSClient.Region.unitedKingdom` and `BMSClient.Region.sydney`.
+- Specifies the location where the app hosted. You can either use one of three values - `BMSClient.Region.usSouth`, `BMSClient.Region.unitedKingdom` and `BMSClient.Region.sydney` OR specify the region manually .
+
+>**Note**:  If you are using dedicated service please use `overrideServerHost` and add `bluemixRegion` any value.
 
 ### Initializing the Push SDK
 
@@ -132,42 +134,28 @@ push.initializeWithAppGUID(appGUID:"your push appGUID", clientSecret:"your push 
 
 >**Note**: If you are using Xcode8 beta, add `yourApp.entitlements`. To do this, go to Targets -> Capabilities and enable Push Notifications capability.
 
-After the token is received from APNS, pass the token to Push Notifications as part of the `didRegisterForRemoteNotificationsWithDeviceToken` method.
+### BMSPushObserver for initialize callback
 
-```
+ To get the `initializeWithAppGUID(..)` callback , use the following;
 
-//Swift3
+ 1. Add the `BMSPushObserver` `protocol` in your AppDelegate
 
- func application (_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data){
+    ```
+     class AppDelegate: UIResponder, UIApplicationDelegate, BMSPushObserver
+    ```
+ 2. Set the delegate for  `BMSPushObserver`
 
-   let push =  BMSPushClient.sharedInstance
-   push.registerWithDeviceToken(deviceToken: deviceToken) { (response, statusCode, error) -> Void in
-    if error.isEmpty {
-      print( "Response during device registration : \(response)")
-      print( "status code during device registration : \(statusCode)")
-    } else{
-      print( "Error during device registration \(error) ")
-      Print( "Error during device registration \n  - status code: \(statusCode) \n Error :\(error) \n")
-    }  
- }
+    ```
+    let push =  BMSPushClient.sharedInstance
+    push.delegate = self
+    ```
+ 3. Implement the `BMSPushObserver` function
 
-
- //Swift2.3 and Older
-
- func application (application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData){
-
-   let push =  BMSPushClient.sharedInstance
-   push.registerWithDeviceToken(deviceToken) { (response, statusCode, error) -> Void in
-        if error.isEmpty {
-            print( "Response during device registration : \(response)")
-            print( "status code during device registration : \(statusCode)")
-        }else{
-            print( "Error during device registration \(error) ")
-            Print( "Error during device registration \n  - status code: \(statusCode) \n Error :\(error) \n")
-        }
+   ```
+   func onChangePermission(status: Bool) {
+     print("Push Notification is enabled:  \(status)" as NSString)
     }
-}
-```
+   ```
 
 ### Registering iOS applications and devices with userId
 

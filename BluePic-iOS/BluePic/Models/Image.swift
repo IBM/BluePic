@@ -1,5 +1,5 @@
 /**
- * Copyright IBM Corporation 2016
+ * Copyright IBM Corporation 2017
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,88 +16,20 @@
 
 import UIKit
 import CoreLocation
+import BMSCore
 
-// MARK: Conformance protocols
-
-protocol ImageUpload {
-    var caption: String {get}
-    var fileName: String {get}
-    var width: CGFloat {get}
-    var height: CGFloat {get}
-    var location: Location {get}
-    var image: UIImage? {get}
-}
-
-protocol ImageDownload: ImageUpload {
-    var user: User {get}
-    var id: String {get}
-    var timeStamp: Date {get}
-    var url: String {get}
-    var tags: [Tag]? {get}
-}
-
-// MARK: Data models
-
-struct Tag {
-    let label: String
-    let confidence: CGFloat
-}
-
-struct Location {
-    let name: String
-    let latitude: CLLocationDegrees
-    let longitude: CLLocationDegrees
-    let weather: Weather?
-}
-
-func ==(lhs: Location, rhs: Location) -> Bool {
-    return lhs.name == rhs.name &&
-        lhs.latitude == rhs.latitude &&
-        lhs.longitude == rhs.longitude
-}
-
-struct Weather {
-    let temperature: Int
-    let iconId: Int
-    let description: String
-}
-
-func ==(lhs: Weather, rhs: Weather) -> Bool {
-    return lhs.temperature == rhs.temperature &&
-        lhs.iconId == rhs.iconId &&
-        lhs.description == rhs.description
-}
-
-struct ImagePayload: ImageUpload, Equatable {
-    fileprivate(set) var caption: String
-    fileprivate(set) var fileName: String
-    fileprivate(set) var width: CGFloat
-    fileprivate(set) var height: CGFloat
-    fileprivate(set) var location: Location
-    fileprivate(set) var image: UIImage?
-}
-
-func ==(lhs: ImagePayload, rhs: ImagePayload) -> Bool {
-    return lhs.caption == rhs.caption &&
-        lhs.fileName == rhs.fileName &&
-        lhs.width == rhs.width &&
-        lhs.height == rhs.height &&
-        lhs.location == rhs.location &&
-        lhs.image === rhs.image
-}
-
-struct Image: ImageDownload {
-    fileprivate(set) var caption: String
-    fileprivate(set) var fileName: String
-    fileprivate(set) var width: CGFloat
-    fileprivate(set) var height: CGFloat
-    fileprivate(set) var location: Location
-    fileprivate(set) var user: User
-    fileprivate(set) var id: String
-    fileprivate(set) var timeStamp: Date
-    fileprivate(set) var url: String
-    fileprivate(set) var image: UIImage?
-    fileprivate(set) var tags: [Tag]?
+struct Image: Equatable {
+    var caption: String
+    var fileName: String
+    var width: CGFloat
+    var height: CGFloat
+    var location: Location?
+    var user: User
+    var id: String?
+    var timeStamp: Date?
+    var url: String?
+    var image: UIImage?
+    var tags: [Tag] = []
     internal var isExpanded = false
 
     init?(_ dict: [String : Any]) {
@@ -133,7 +65,7 @@ struct Image: ImageDownload {
             self.fileName = fileName
             self.width = width
             self.height = height
-            self.user = User(facebookID: usersId, name: usersName)
+            self.user = User(id: usersId, name: usersName)
             self.url = url
 
             //Parse location data
@@ -172,4 +104,84 @@ struct Image: ImageDownload {
             return nil
         }
     }
+
+    init(caption: String, fileName: String, width: CGFloat, height: CGFloat, location: Location, image: UIImage) {
+        self.caption = caption
+        self.fileName = fileName
+        self.width = width
+        self.height = height
+        self.location = location
+        self.user = User(id: CurrentUser.facebookUserId, name: CurrentUser.fullName)
+
+        self.timeStamp = Date()
+        self.image = image
+    }
+}
+
+extension Image: Codable {
+
+    enum CodingKeys: String, CodingKey {
+        case id = "_id"
+        case fileName
+        case caption
+        case width
+        case height
+        case tags
+        case uploadedTs
+        case type
+        case location
+        case user
+        case userId
+        case url
+        case image
+        case deviceId
+    }
+
+    func encode(to encoder: Encoder) throws {
+        guard let img = image, let imageData = UIImagePNGRepresentation(img) else {
+            print(NSLocalizedString("Post New Image Error: Could not process image data properly", comment: ""))
+            NotificationCenter.default.post(name: .imageUploadFailure, object: nil)
+            return
+        }
+
+        // Sending deviceId and userId through image request body due to server App ID SDK limitations.
+        guard let deviceId = BMSClient.sharedInstance.authorizationManager.deviceIdentity.ID else {
+            print(NSLocalizedString("Error: Could not get device ID from BMSClient", comment: ""))
+            NotificationCenter.default.post(name: .imageUploadFailure, object: nil)
+            return
+        }
+
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(fileName, forKey: .fileName)
+        try container.encode(caption, forKey: .caption)
+        try container.encode(height, forKey: .height)
+        try container.encode(width, forKey: .width)
+        try container.encode(deviceId, forKey: .deviceId)
+        try container.encode(user.id, forKey: .userId)
+        try container.encodeIfPresent(imageData, forKey: .image)
+    }
+
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+
+        id          = try values.decode(String.self, forKey: .id)
+        fileName    = try values.decode(String.self, forKey: .fileName)
+        caption     = try values.decode(String.self, forKey: .caption)
+        height      = try values.decode(CGFloat.self, forKey: .height)
+        width       = try values.decode(CGFloat.self, forKey: .width)
+        url         = try values.decodeIfPresent(String.self, forKey: .url)
+        tags        = try values.decodeIfPresent([Tag].self, forKey: .tags) ?? []
+        user        = try values.decodeIfPresent(User.self, forKey: .user) ?? User(id: "Anonymous", name: "anonymous")
+        location    = try values.decodeIfPresent(Location.self, forKey: .location)
+        timeStamp   = Utils.dataFormatter(timestamp: try values.decode(String.self, forKey: .uploadedTs))
+    }
+}
+
+func ==(lhs: Image, rhs: Image) -> Bool {
+    return lhs.caption == rhs.caption &&
+        lhs.fileName == rhs.fileName &&
+        lhs.width == rhs.width &&
+        lhs.height == rhs.height &&
+        lhs.location == rhs.location &&
+        lhs.image === rhs.image
 }

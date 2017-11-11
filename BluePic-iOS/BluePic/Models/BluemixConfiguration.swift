@@ -1,5 +1,5 @@
 /**
- * Copyright IBM Corporation 2016
+ * Copyright IBM Corporation 2016, 2017
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,11 +19,11 @@ import UIKit
 class BluemixConfiguration: NSObject {
 
     //Plist Keys
-    fileprivate let kBluemixKeysPlistName = "bluemix"
+    fileprivate let kBluemixKeysPlistName = "cloud"
     fileprivate let kIsLocalKey = "isLocal"
     fileprivate let kAppRouteLocal = "appRouteLocal"
     fileprivate let kAppRouteRemote = "appRouteRemote"
-    fileprivate let kBluemixAppRegionKey = "bluemixAppRegion"
+    fileprivate let kBluemixAppRegionKey = "cloudAppRegion"
     fileprivate let kBluemixPushAppGUIDKey = "pushAppGUID"
     fileprivate let kBluemixPushAppClientSecret = "pushClientSecret"
     fileprivate let kBluemixAppIdTenantIdKey = "appIdTenantId"
@@ -48,11 +48,11 @@ class BluemixConfiguration: NSObject {
                 let isLocal = Utils.getBoolValueWithKeyFromPlist(kBluemixKeysPlistName, key: kIsLocalKey) {
             self.appRegion = appRegion
             self.isLocal = isLocal
-            if let lastChar = localBaseRequestURL.characters.last, lastChar == "/" as Character {
-                localBaseRequestURL.remove(at: localBaseRequestURL.characters.index(before: localBaseRequestURL.endIndex))
+            if let lastChar = localBaseRequestURL.last, lastChar == "/" as Character {
+                localBaseRequestURL.remove(at: localBaseRequestURL.index(before: localBaseRequestURL.endIndex))
             }
-            if let lastChar = remoteBaseRequestURL.characters.last, lastChar == "/" as Character {
-                remoteBaseRequestURL.remove(at: remoteBaseRequestURL.characters.index(before: remoteBaseRequestURL.endIndex))
+            if let lastChar = remoteBaseRequestURL.last, lastChar == "/" as Character {
+                remoteBaseRequestURL.remove(at: remoteBaseRequestURL.index(before: remoteBaseRequestURL.endIndex))
             }
             self.localBaseRequestURL = localBaseRequestURL
             self.remoteBaseRequestURL = remoteBaseRequestURL

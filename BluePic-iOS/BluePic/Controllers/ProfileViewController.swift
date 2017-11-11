@@ -1,5 +1,5 @@
 /**
- * Copyright IBM Corporation 2016
+ * Copyright IBM Corporation 2016, 2017
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -193,7 +193,7 @@ extension ProfileViewController: UITableViewDataSource {
     /// Method responsible for expanding text view if more content is present
     ///
     /// - parameter sender: tapgesture calling method
-    func textViewTapped(sender: UITapGestureRecognizer) {
+    @objc func textViewTapped(sender: UITapGestureRecognizer) {
 
         let tapLocation = sender.location(in: self.tableView)
         if let indexPath = self.tableView.indexPathForRow(at: tapLocation), let cell = self.tableView.cellForRow(at: indexPath) as? ProfileTableViewCell {

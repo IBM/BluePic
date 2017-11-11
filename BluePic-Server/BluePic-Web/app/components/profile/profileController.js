@@ -8,9 +8,9 @@ angular.module('bluepicWebApp')
                                       
             $scope.state = $state;
             
-            $scope.photos = usersPhotos.data.records;
+            $scope.photos = usersPhotos.data;
 
-            $scope.photoCount = usersPhotos.data.number_of_records;
+            $scope.photoCount = usersPhotos.data.length;
                                       
             $scope.userName = PropertiesService.getFbUserName();
                                       

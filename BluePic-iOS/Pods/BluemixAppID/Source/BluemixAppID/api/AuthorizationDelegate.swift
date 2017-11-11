@@ -14,8 +14,6 @@
 import Foundation
 import BMSCore
 
-public protocol AuthorizationDelegate {
-	func onAuthorizationFailure(error: AuthorizationError)
+public protocol AuthorizationDelegate : TokenResponseDelegate {
 	func onAuthorizationCanceled()
-    func onAuthorizationSuccess(accessToken: AccessToken, identityToken: IdentityToken, response:Response?)
 }

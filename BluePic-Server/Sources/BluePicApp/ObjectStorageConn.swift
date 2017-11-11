@@ -1,5 +1,5 @@
 /**
-* Copyright IBM Corporation 2016
+* Copyright IBM Corporation 2016, 2017
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -18,18 +18,19 @@ import Foundation
 import BluemixObjectStorage
 import LoggerAPI
 import Dispatch
+import CloudEnvironment
 
 public struct ObjectStorageConn {
   let connectQueue = DispatchQueue(label: "connectQueue")
   let objStorage: ObjectStorage
-  let connProps: ObjectStorageConnProps
+  let connProps: ObjectStorageCredentials
   private var authenticated: Bool = false
   // FIXME: Accessing Date object more than once will cause seg fault, related to https://bugs.swift.org/browse/SR-2462
   private var lastAuthenticatedTs: Date?
 
-  init(objStorageConnProps: ObjectStorageConnProps) {
-    connProps = objStorageConnProps
-    objStorage = ObjectStorage(projectId: connProps.projectId)
+  init(credentials: ObjectStorageCredentials) {
+    connProps = credentials
+    objStorage = ObjectStorage(projectId: connProps.projectID)
   }
 
   mutating func getObjectStorage(completionHandler: @escaping (_ objStorage: ObjectStorage?) -> Void) {
@@ -62,7 +63,7 @@ public struct ObjectStorageConn {
     let semaphore = DispatchSemaphore(value: 0)
     var copy = self
     Log.verbose("Making network call synchronous...")
-    objStorage.connect(userId: connProps.userId, password: connProps.password, region: ObjectStorage.REGION_DALLAS) { error in
+    objStorage.connect(userId: connProps.userID, password: connProps.password, region: ObjectStorage.REGION_DALLAS) { error in
       if let error = error {
         let errorMsg = "Could not connect to Object Storage."
         Log.error("\(errorMsg) Error was: '\(error)'.")
@@ -74,10 +75,10 @@ public struct ObjectStorageConn {
       }
       Log.verbose("Signaling semaphore...")
       semaphore.signal()
-      
+
     }
-    
-    let _ = semaphore.wait(timeout: DispatchTime.distantFuture)
+
+    _ = semaphore.wait(timeout: DispatchTime.distantFuture)
     self = copy
     Log.verbose("Continuing execution after synchronous network call...")
   }

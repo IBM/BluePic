@@ -69,8 +69,14 @@
 		347472EF1BFA8DEF0018B7F6 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347472D71BFA8DEF0018B7F6 /* Utils.swift */; };
 		347472F11BFA8E320018B7F6 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347472F01BFA8E320018B7F6 /* LoginViewController.swift */; };
 		347AD2221C18F98600C3B473 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347AD2211C18F98600C3B473 /* LoginViewModel.swift */; };
-		34C8094D1BFCEA0400C48004 /* bluemix.plist in Resources */ = {isa = PBXBuildFile; fileRef = 34C8094C1BFCEA0400C48004 /* bluemix.plist */; };
+		34C8094D1BFCEA0400C48004 /* cloud.plist in Resources */ = {isa = PBXBuildFile; fileRef = 34C8094C1BFCEA0400C48004 /* cloud.plist */; };
 		34C809551BFD0F2400C48004 /* FacebookDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C809541BFD0F2400C48004 /* FacebookDataManager.swift */; };
+		46C831251F92E013005D3921 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C831241F92E013005D3921 /* Location.swift */; };
+		46C831271F92E0E8005D3921 /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C831261F92E0E8005D3921 /* Tag.swift */; };
+		E325B57B1FA7841E00F14035 /* KituraKit.h in Headers */ = {isa = PBXBuildFile; fileRef = E325B5791FA7841D00F14035 /* KituraKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E325B57E1FA7841E00F14035 /* KituraKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E325B5771FA7841D00F14035 /* KituraKit.framework */; };
+		E325B57F1FA7841E00F14035 /* KituraKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E325B5771FA7841D00F14035 /* KituraKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		E36D3ED71FAABB340019D807 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36D3ED61FAABB340019D807 /* StringExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -81,6 +87,13 @@
 			remoteGlobalIDString = 347472891BFA8C6A0018B7F6;
 			remoteInfo = BluePic;
 		};
+		E325B57C1FA7841E00F14035 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 347472821BFA8C6A0018B7F6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E325B5761FA7841D00F14035;
+			remoteInfo = KituraKit;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -90,8 +103,18 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				E325B57F1FA7841E00F14035 /* KituraKit.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		46B120F61F91486A00EF75FE /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 16;
+			files = (
+			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -170,11 +193,17 @@
 		347AD2211C18F98600C3B473 /* LoginViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		347E276C1C1F9CD10089EC3D /* BluePic.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = BluePic.entitlements; sourceTree = "<group>"; };
 		34C8094A1BFCD9A300C48004 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		34C8094C1BFCEA0400C48004 /* bluemix.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = bluemix.plist; sourceTree = "<group>"; };
+		34C8094C1BFCEA0400C48004 /* cloud.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = cloud.plist; sourceTree = "<group>"; };
 		34C809541BFD0F2400C48004 /* FacebookDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookDataManager.swift; sourceTree = "<group>"; };
+		46C831241F92E013005D3921 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
+		46C831261F92E0E8005D3921 /* Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
 		6B961243483EA182951704B4 /* Pods-BluePic.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BluePic.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BluePic/Pods-BluePic.debug.xcconfig"; sourceTree = "<group>"; };
 		BDC4B5F21BFBC77200CC1648 /* BluePic-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BluePic-Bridging-Header.h"; sourceTree = "<group>"; };
 		D4256EC7B8C927E2AAE77625 /* Pods-BluePic.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BluePic.release.xcconfig"; path = "Pods/Target Support Files/Pods-BluePic/Pods-BluePic.release.xcconfig"; sourceTree = "<group>"; };
+		E325B5771FA7841D00F14035 /* KituraKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = KituraKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E325B5791FA7841D00F14035 /* KituraKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KituraKit.h; sourceTree = "<group>"; };
+		E325B57A1FA7841D00F14035 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E36D3ED61FAABB340019D807 /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -183,11 +212,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				346F94841C10AA32004999A8 /* ImageIO.framework in Frameworks */,
+				E325B57E1FA7841E00F14035 /* KituraKit.framework in Frameworks */,
 				1734D862F48A44F01B057089 /* Pods_BluePic.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		3474729B1BFA8C6A0018B7F6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E325B5731FA7841D00F14035 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -229,6 +266,8 @@
 				1B4305981CD3EA4400474AB5 /* Image.swift */,
 				1B40BF7B1CDA79080097F435 /* CurrentUser.swift */,
 				2EFFCE091CF4F74E00820BCE /* BluemixConfiguration.swift */,
+				46C831241F92E013005D3921 /* Location.swift */,
+				46C831261F92E0E8005D3921 /* Tag.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -238,6 +277,7 @@
 			children = (
 				3474728C1BFA8C6A0018B7F6 /* BluePic */,
 				347472A11BFA8C6A0018B7F6 /* BluePicTests */,
+				E325B5781FA7841D00F14035 /* KituraKit */,
 				3474728B1BFA8C6A0018B7F6 /* Products */,
 				C93A0D59BDE755BE5A1209FC /* Frameworks */,
 				0394F58FD5877398D21B1A47 /* Pods */,
@@ -249,6 +289,7 @@
 			children = (
 				3474728A1BFA8C6A0018B7F6 /* BluePic.app */,
 				3474729E1BFA8C6A0018B7F6 /* BluePicTests.xctest */,
+				E325B5771FA7841D00F14035 /* KituraKit.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -287,7 +328,7 @@
 		347472BB1BFA8DEF0018B7F6 /* Configuration */ = {
 			isa = PBXGroup;
 			children = (
-				34C8094C1BFCEA0400C48004 /* bluemix.plist */,
+				34C8094C1BFCEA0400C48004 /* cloud.plist */,
 				34C8094A1BFCD9A300C48004 /* Info.plist */,
 			);
 			path = Configuration;
@@ -318,6 +359,7 @@
 				1B40BF851CE4DDB10097F435 /* NSAttributedStringExtension.swift */,
 				1BF00D481CF4B60D009472B5 /* UILabelExtension.swift */,
 				1B0535971D089AA80006C6F2 /* UIViewControllerExtension.swift */,
+				E36D3ED61FAABB340019D807 /* StringExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -405,7 +447,27 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		E325B5781FA7841D00F14035 /* KituraKit */ = {
+			isa = PBXGroup;
+			children = (
+				E325B5791FA7841D00F14035 /* KituraKit.h */,
+				E325B57A1FA7841D00F14035 /* Info.plist */,
+			);
+			path = KituraKit;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		E325B5741FA7841D00F14035 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E325B57B1FA7841E00F14035 /* KituraKit.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
 		347472891BFA8C6A0018B7F6 /* BluePic */ = {
@@ -420,10 +482,12 @@
 				2E4D19AE1CF791E700D14D9A /* Swift Lint */,
 				13C15CA20DC2EF6687E144C0 /* [CP] Embed Pods Frameworks */,
 				60CB8EDDE5ECF4068142B45E /* [CP] Copy Pods Resources */,
+				46B120F61F91486A00EF75FE /* CopyFiles */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				E325B57D1FA7841E00F14035 /* PBXTargetDependency */,
 			);
 			name = BluePic;
 			productName = BluePic;
@@ -448,6 +512,24 @@
 			productReference = 3474729E1BFA8C6A0018B7F6 /* BluePicTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		E325B5761FA7841D00F14035 /* KituraKit */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E325B5801FA7841E00F14035 /* Build configuration list for PBXNativeTarget "KituraKit" */;
+			buildPhases = (
+				E325B5721FA7841D00F14035 /* Sources */,
+				E325B5731FA7841D00F14035 /* Frameworks */,
+				E325B5741FA7841D00F14035 /* Headers */,
+				E325B5751FA7841D00F14035 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = KituraKit;
+			productName = KituraKit;
+			productReference = E325B5771FA7841D00F14035 /* KituraKit.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -455,13 +537,13 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0710;
-				LastUpgradeCheck = 0830;
+				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = MIL;
 				TargetAttributes = {
 					347472891BFA8C6A0018B7F6 = {
 						CreatedOnToolsVersion = 7.1.1;
 						DevelopmentTeam = PP64RT7P8Z;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 0900;
 						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
@@ -477,8 +559,13 @@
 					};
 					3474729D1BFA8C6A0018B7F6 = {
 						CreatedOnToolsVersion = 7.1.1;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 0900;
 						TestTargetID = 347472891BFA8C6A0018B7F6;
+					};
+					E325B5761FA7841D00F14035 = {
+						CreatedOnToolsVersion = 9.0;
+						DevelopmentTeam = PP64RT7P8Z;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -497,6 +584,7 @@
 			targets = (
 				347472891BFA8C6A0018B7F6 /* BluePic */,
 				3474729D1BFA8C6A0018B7F6 /* BluePicTests */,
+				E325B5761FA7841D00F14035 /* KituraKit */,
 			);
 		};
 /* End PBXProject section */
@@ -510,7 +598,7 @@
 				1BF00D511CF4BEEA009472B5 /* ImageInfoHeaderCollectionReusableView.xib in Resources */,
 				1B0535481CFE86460006C6F2 /* Feed.storyboard in Resources */,
 				2E1D66011DB6AC760004E2C9 /* ImageFeedTableViewCell.xib in Resources */,
-				34C8094D1BFCEA0400C48004 /* bluemix.plist in Resources */,
+				34C8094D1BFCEA0400C48004 /* cloud.plist in Resources */,
 				2EEE1C0F1DB8159300608359 /* EmptyFeedFooterView.xib in Resources */,
 				1B05354D1CFE86460006C6F2 /* Main.strings in Resources */,
 				1B05354C1CFE86460006C6F2 /* Feed.strings in Resources */,
@@ -538,6 +626,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E325B5751FA7841D00F14035 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
@@ -547,13 +642,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-BluePic-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		13C15CA20DC2EF6687E144C0 /* [CP] Embed Pods Frameworks */ = {
@@ -562,9 +660,22 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-BluePic/Pods-BluePic-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/BMSAnalyticsAPI/BMSAnalyticsAPI.framework",
+				"${BUILT_PRODUCTS_DIR}/BMSCore/BMSCore.framework",
+				"${BUILT_PRODUCTS_DIR}/BMSPush/BMSPush.framework",
+				"${BUILT_PRODUCTS_DIR}/BluemixAppID/BluemixAppID.framework",
+				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
+				"${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BMSAnalyticsAPI.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BMSCore.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BMSPush.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BluemixAppID.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SVProgressHUD.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -615,6 +726,7 @@
 				1B40BF801CE0D0140097F435 /* LocationDataManager.swift in Sources */,
 				2EAAC0E81CE39C13006A0B41 /* KTCenterFlowLayout.m in Sources */,
 				1BF00D0A1CEACF68009472B5 /* ProfileNavigationController.swift in Sources */,
+				E36D3ED71FAABB340019D807 /* StringExtension.swift in Sources */,
 				1B40BF841CE3989C0097F435 /* User.swift in Sources */,
 				347472EF1BFA8DEF0018B7F6 /* Utils.swift in Sources */,
 				346F947C1C0F868C004999A8 /* CameraDataManager.swift in Sources */,
@@ -637,8 +749,10 @@
 				3435C7D51C04110C004923BD /* FeedViewController.swift in Sources */,
 				1B5555BE1C1616B000B3086E /* TabBarViewModel.swift in Sources */,
 				2E1D66001DB6AC760004E2C9 /* ImageFeedTableViewCell.swift in Sources */,
+				46C831271F92E0E8005D3921 /* Tag.swift in Sources */,
 				1B40BF7C1CDA79080097F435 /* CurrentUser.swift in Sources */,
 				2EEE1C111DB91CF500608359 /* ProfileHeaderView.swift in Sources */,
+				46C831251F92E013005D3921 /* Location.swift in Sources */,
 				2EFFCE0A1CF4F74E00820BCE /* BluemixConfiguration.swift in Sources */,
 				34C809551BFD0F2400C48004 /* FacebookDataManager.swift in Sources */,
 				347AD2221C18F98600C3B473 /* LoginViewModel.swift in Sources */,
@@ -657,6 +771,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E325B5721FA7841D00F14035 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -664,6 +785,11 @@
 			isa = PBXTargetDependency;
 			target = 347472891BFA8C6A0018B7F6 /* BluePic */;
 			targetProxy = 3474729F1BFA8C6A0018B7F6 /* PBXContainerItemProxy */;
+		};
+		E325B57D1FA7841E00F14035 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E325B5761FA7841D00F14035 /* KituraKit */;
+			targetProxy = E325B57C1FA7841E00F14035 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -787,14 +913,20 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -822,6 +954,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "";
@@ -836,14 +969,20 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -864,6 +1003,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "";
@@ -875,7 +1015,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 6B961243483EA182951704B4 /* Pods-BluePic.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = BluePic/BluePic.entitlements;
@@ -888,15 +1027,16 @@
 					"$(PROJECT_DIR)/BluePic/ExternalLibraries",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/BluePic/Configuration/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.ibm.test1;
+				PRODUCT_BUNDLE_IDENTIFIER = group.com.ibm.test1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "11518d98-27f4-4d82-8a06-9aa90bb1badb";
-				PROVISIONING_PROFILE_SPECIFIER = "@IBM MobileFirst Wildcard App ID Dev Profile";
+				PROVISIONING_PROFILE = "276be6d0-8317-46ac-aa30-313819d64f68";
+				PROVISIONING_PROFILE_SPECIFIER = "@IBM MobileFirst Test All Services Dev Profile";
 				SWIFT_OBJC_BRIDGING_HEADER = "BluePic/SupportingFiles/BluePic-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -905,7 +1045,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D4256EC7B8C927E2AAE77625 /* Pods-BluePic.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = BluePic/BluePic.entitlements;
@@ -918,14 +1057,15 @@
 					"$(PROJECT_DIR)/BluePic/ExternalLibraries",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/BluePic/Configuration/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.ibm.test1;
+				PRODUCT_BUNDLE_IDENTIFIER = group.com.ibm.test1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "BluePic/SupportingFiles/BluePic-Bridging-Header.h";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
@@ -938,7 +1078,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bundle.id.BluePicTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BluePic.app/BluePic";
 			};
 			name = Debug;
@@ -951,8 +1092,74 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bundle.id.ibm.BluePicTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BluePic.app/BluePic";
+			};
+			name = Release;
+		};
+		E325B5811FA7841E00F14035 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = PP64RT7P8Z;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = KituraKit/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ibm.BluePic-iOS.KituraKit";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		E325B5821FA7841E00F14035 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = "";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = KituraKit/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ibm.BluePic-iOS.KituraKit";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
 			};
 			name = Release;
 		};
@@ -982,6 +1189,15 @@
 			buildConfigurations = (
 				347472B61BFA8C6A0018B7F6 /* Debug */,
 				347472B71BFA8C6A0018B7F6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E325B5801FA7841E00F14035 /* Build configuration list for PBXNativeTarget "KituraKit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E325B5811FA7841E00F14035 /* Debug */,
+				E325B5821FA7841E00F14035 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

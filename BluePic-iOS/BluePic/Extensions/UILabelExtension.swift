@@ -1,5 +1,5 @@
 /**
- * Copyright IBM Corporation 2016
+ * Copyright IBM Corporation 2016, 2017
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,8 +30,8 @@ extension UILabel {
         paragraphStyle.alignment = self.textAlignment
 
         let attrString = NSMutableAttributedString(string: self.text!)
-        attrString.addAttribute(NSFontAttributeName, value: self.font, range: NSRange(location: 0, length: attrString.length))
-        attrString.addAttribute(NSParagraphStyleAttributeName, value:paragraphStyle, range: NSRange(location: 0, length: attrString.length))
+        attrString.addAttribute(NSAttributedStringKey.font, value: self.font, range: NSRange(location: 0, length: attrString.length))
+        attrString.addAttribute(NSAttributedStringKey.paragraphStyle, value:paragraphStyle, range: NSRange(location: 0, length: attrString.length))
         self.attributedText = attrString
     }
 }

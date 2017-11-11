@@ -1,5 +1,5 @@
 /**
- * Copyright IBM Corporation 2016
+ * Copyright IBM Corporation 2016, 2017
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -98,15 +98,12 @@ class TabBarViewController: UITabBarController {
     func presentLoginVC(_ animated: Bool, callback: (() -> Void)?) {
 
         if let loginVC = Utils.vcWithNameFromStoryboardWithName("loginVC", storyboardName: "Main") as? LoginViewController {
-
-            // If appID SDK is updated, re-implement modal presentations, remove nav controller.
-            self.present(loginVC, animated: animated, completion: { _ in
-                self.hideBackgroundImage()
-                if let callback = callback {
-                    callback()
-                }
-            })
-
+          /// Return to home screen replacing TabBarViewController. ARC will garbage collect.
+          guard let window = UIApplication.shared.delegate?.window else {
+            print("Logout Failed: Could not unwrap root view controller")
+            return
+          }
+          window?.rootViewController = loginVC
         }
     }
 
@@ -189,7 +186,7 @@ extension TabBarViewController: UITabBarControllerDelegate {
         let OKAction = UIAlertAction(title: NSLocalizedString("Settings", comment: ""), style: .default) { (_) in
 
             if let settingsUrl = URL(string: UIApplicationOpenSettingsURLString) {
-                UIApplication.shared.openURL(settingsUrl)
+                UIApplication.shared.open(settingsUrl, options: [:])
             }
 
         }

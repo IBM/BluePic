@@ -1,5 +1,5 @@
 /**
- * Copyright IBM Corporation 2016
+ * Copyright IBM Corporation 2016, 2017
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -105,7 +105,7 @@ class FeedViewController: UIViewController {
     /**
      Method is called when the application did become active. It trys to restart the loading animation
      */
-    func didBecomeActive() {
+    @objc func didBecomeActive() {
         tryToStartLoadingAnimation()
     }
 
@@ -203,7 +203,7 @@ class FeedViewController: UIViewController {
     /**
      Method is called when the user triggers a pull to refresh
      */
-    func userTriggeredRefresh() {
+    @objc func userTriggeredRefresh() {
 
         dismissImageFeedErrorAlert()
         logoImageView.startRotating(1)
@@ -251,7 +251,16 @@ class FeedViewController: UIViewController {
         if self.isVisible() {
 
             noResultsLabel.isHidden = true
-            self.topAlertConstraint.constant = self.alertBannerView.frame.size.height - 20
+
+            if UIDevice.current.userInterfaceIdiom == .phone {
+              switch UIScreen.main.nativeBounds.height {
+              case 2436: // iPhone X
+                self.topAlertConstraint.constant = self.alertBannerView.frame.size.height + 20
+              default:
+                self.topAlertConstraint.constant = self.alertBannerView.frame.size.height
+              }
+            }
+
             UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.4, initialSpringVelocity: 15, options: UIViewAnimationOptions(), animations: {
                 self.view.layoutIfNeeded()
             }, completion: nil)
@@ -327,7 +336,7 @@ extension FeedViewController: UITableViewDataSource {
     /// Method responsible for expanding text view if more content is present
     ///
     /// - parameter sender: tapgesture calling method
-    func textViewTapped(sender: UITapGestureRecognizer) {
+    @objc func textViewTapped(sender: UITapGestureRecognizer) {
 
         let tapLocation = sender.location(in: self.tableView)
         if let indexPath = self.tableView.indexPathForRow(at: tapLocation), let cell = self.tableView.cellForRow(at: indexPath) as? ImageFeedTableViewCell {

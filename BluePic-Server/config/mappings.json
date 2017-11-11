@@ -1,0 +1,31 @@
+{
+    "cloudant-credentials": {
+        "searchPatterns": [
+            "cloudfoundry:BluePic-Cloudant",
+            "file:config/configuration.json:cloudantNoSQLDB"
+        ]
+    },
+    "object-storage-credentials": {
+        "searchPatterns": [
+            "cloudfoundry:BluePic-Object-Storage",
+            "file:config/configuration.json:Object-Storage"
+        ]
+    },
+    "app-id-credentials": {
+        "searchPatterns": [
+            "cloudfoundry:BluePic-App-ID",
+            "file:config/configuration.json:AppID"
+        ]
+    },
+    "app-push-credentials": {
+        "searchPatterns": [
+            "cloudfoundry:BluePic-IBM-Push",
+            "file:config/configuration.json:imfpush"
+        ]
+    },
+    "cloud-functions-credentials": {
+        "searchPatterns": [
+            "file:config/configuration.json:CloudFunctions"
+        ]
+    }
+}

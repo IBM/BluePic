@@ -1,5 +1,5 @@
 /**
- * Copyright IBM Corporation 2016
+ * Copyright IBM Corporation 2016, 2017
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ extension NSAttributedString {
     class func createAttributedStringWithLetterAndLineSpacingWithCentering(_ string: String, letterSpacing: CGFloat, lineSpacing: CGFloat, centered: Bool) -> NSAttributedString {
 
         let attributedString = NSMutableAttributedString(string: string)
-        attributedString.addAttribute(NSKernAttributeName, value:   letterSpacing, range: NSRange(location: 0, length: attributedString.length))
+        attributedString.addAttribute(NSAttributedStringKey.kern, value:   letterSpacing, range: NSRange(location: 0, length: attributedString.length))
 
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = lineSpacing
@@ -38,7 +38,7 @@ extension NSAttributedString {
             paragraphStyle.alignment = NSTextAlignment.center
         }
 
-        attributedString.addAttribute(NSParagraphStyleAttributeName, value:paragraphStyle, range: NSRange(location: 0, length: attributedString.length))
+        attributedString.addAttribute(NSAttributedStringKey.paragraphStyle, value:paragraphStyle, range: NSRange(location: 0, length: attributedString.length))
 
         return attributedString
 

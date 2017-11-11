@@ -1,15 +1,15 @@
 PODS:
-  - BluemixAppID (1.0.4):
+  - BluemixAppID (1.0.6):
     - BMSCore
   - BMSAnalyticsAPI (2.2.1)
   - BMSCore (2.3.2):
     - BMSAnalyticsAPI (~> 2.2)
-  - BMSPush (3.2.2):
+  - BMSPush (3.2.5):
     - BMSCore (~> 2.0)
   - SDWebImage (3.8.2):
     - SDWebImage/Core (= 3.8.2)
   - SDWebImage/Core (3.8.2)
-  - SVProgressHUD (2.1.2)
+  - SVProgressHUD (2.2.2)
 
 DEPENDENCIES:
   - BluemixAppID
@@ -18,13 +18,13 @@ DEPENDENCIES:
   - SVProgressHUD
 
 SPEC CHECKSUMS:
-  BluemixAppID: fecac850dedbb3650b6f619ac8893d44ee2f5291
+  BluemixAppID: 55544a3fad87e3d94c22cbf65ed87dfb3c85508d
   BMSAnalyticsAPI: 2e07dee6452e3cdbdc5fd0ee7362b66a281e3963
   BMSCore: 30674d30566134125e9bee043ccbea652445ca92
-  BMSPush: 491ac7ca80bf9f4e6be8a664f2525d72dd047be3
+  BMSPush: e35ab14117769d7c82c4372879e73351f9cb7e50
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
-  SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
+  SVProgressHUD: 59b2d3dabacbd051576d21d32293ca7228dc18b0
 
-PODFILE CHECKSUM: 08754f7c759bbaaf9902f0c7c89148d997615b0c
+PODFILE CHECKSUM: a10361e8590a687aa676ca817b7b28a0d96af5df
 
-COCOAPODS: 1.2.0
+COCOAPODS: 1.3.1

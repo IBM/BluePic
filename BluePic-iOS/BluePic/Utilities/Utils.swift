@@ -1,5 +1,5 @@
 /**
- * Copyright IBM Corporation 2016
+ * Copyright IBM Corporation 2016, 2017
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -132,42 +132,37 @@ class Utils: NSObject {
 
     /**
      Method converts a string to a dictionary
-
      - parameter text: String
-
      - returns: [String : Any]?
      */
     class func convertStringToDictionary(_ text: String) -> [String : Any]? {
-        if let data = text.data(using: String.Encoding.utf8) {
-            do {
-                let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String : Any]
-                return json
-            } catch {
-                print(NSLocalizedString("Convert String To Dictionary Error", comment: ""))
-            }
+      if let data = text.data(using: String.Encoding.utf8) {
+        do {
+          let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String : Any]
+          return json
+        } catch {
+          print(NSLocalizedString("Convert String To Dictionary Error", comment: ""))
         }
-        return nil
+      }
+      return nil
     }
 
     /**
      Method converts a response to a dictionary
-
      - parameter response: Response?
-
      - returns: [String : Any]
      */
     class func convertResponseToDictionary(_ response: Response?) -> [String : Any]? {
 
-        if let resp = response {
-            if let responseText = resp.responseText {
-                return convertStringToDictionary(responseText)
-            } else {
-                return nil
-            }
+      if let resp = response {
+        if let responseText = resp.responseText {
+          return convertStringToDictionary(responseText)
         } else {
-            return nil
+          return nil
         }
-
+      } else {
+        return nil
+      }
     }
 
     /**
@@ -179,7 +174,7 @@ class Utils: NSObject {
     class func kernLabelString(_ label: UILabel, spacingValue: CGFloat) {
         if let text = label.text {
             let attributedString = NSMutableAttributedString(string: text)
-            attributedString.addAttribute(NSKernAttributeName, value: spacingValue, range: NSRange(location: 0, length: attributedString.length))
+            attributedString.addAttribute(NSAttributedStringKey.kern, value: spacingValue, range: NSRange(location: 0, length: attributedString.length))
             label.attributedText = attributedString
         }
     }
@@ -212,4 +207,14 @@ class Utils: NSObject {
                       longSeconds, {return longDegrees >= 0 ? NSLocalizedString("E", comment: "first letter of the word East") : NSLocalizedString("W", comment: "first letter of the word West")}() )
     }
 
+    class func dataFormatter(timestamp: String) -> Date {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+        dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
+        guard let date = dateFormatter.date(from: timestamp) else {
+            print(NSLocalizedString("Couldn't process timestamp", comment: ""))
+            return Date()
+        }
+        return date
+    }
 }

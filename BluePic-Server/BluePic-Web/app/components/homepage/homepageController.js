@@ -4,7 +4,7 @@ angular.module('bluepicWebApp')
     function($scope, PropertiesService, photos) {
         'use strict';
                             
-        $scope.photos = photos.data.records;
+        $scope.photos = photos.data;
 
         // searchTerm initializes to "" or to a string set by Explore page
         $scope.searchTerm = { value: PropertiesService.getSearchTerm()};

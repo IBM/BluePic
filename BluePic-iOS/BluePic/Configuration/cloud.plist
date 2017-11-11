@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>isLocal</key>
+	<true/>
+	<key>appRouteLocal</key>
+	<string>http://localhost:8080</string>
+	<key>appRouteRemote</key>
+	<string></string>
+	<key>cloudAppRegion</key>
+	<string></string>
+	<key>pushAppGUID</key>
+	<string></string>
+	<key>pushClientSecret</key>
+	<string></string>
+	<key>appIdTenantId</key>
+	<string></string>
+</dict>
+</plist>

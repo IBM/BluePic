@@ -1,5 +1,5 @@
 /**
-* Copyright IBM Corporation 2016
+* Copyright IBM Corporation 2016, 2017
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -21,9 +21,9 @@ public struct StringUtils {
 
   /**
    Strips out any Url encoded whitespace and replaces it with a human readable space
-   
+
    - parameter str: String to parse
-   
+
    - returns: decoded string without whitespace encodings
    */
   static func decodeWhiteSpace(inString str: String) -> String {
@@ -34,7 +34,7 @@ public struct StringUtils {
 
   /**
    Generates timestamp in specific format
-   
+
    - returns: timestamp in String form
    */
   static func currentTimestamp() -> String {

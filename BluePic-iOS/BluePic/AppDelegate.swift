@@ -1,5 +1,5 @@
 /**
- * Copyright IBM Corporation 2016
+ * Copyright IBM Corporation 2016, 2017
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,6 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 
         // Kick off push notification registration
+
         BMSPushClient.sharedInstance.initializeWithAppGUID(appGUID: BluemixDataManager.SharedInstance.bluemixConfig.pushAppGUID, clientSecret: BluemixDataManager.SharedInstance.bluemixConfig.pushClientSecret)
 
         //pre load the keyboard on the camera confirmayion screen to prevent laggy behavior
@@ -76,7 +77,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
      */
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         //could not grab instance of tab bar fail silently
-        guard let tabBarController = self.window?.rootViewController as? TabBarViewController,
+        guard let tabBarController = self.window?.rootViewController?.presentedViewController as? TabBarViewController,
             let feedNav = tabBarController.childViewControllers.first as? FeedNavigationController else {
                 completionHandler(UIBackgroundFetchResult.failed)
                 return

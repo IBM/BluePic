@@ -23,37 +23,20 @@ BluePic takes advantage of Swift in a typical iOS client setting, but also on th
 
 
 ## Swift version
-The back-end components (i.e. Kitura-based server and OpenWhisk actions) and the iOS component of the BluePic app work with specific versions of the Swift binaries, see following table:
+The back-end components (i.e. Kitura-based server and Cloud Functions actions) and the iOS component of the BluePic app work with specific versions of the Swift binaries, see following table:
 
 | Component | Swift Version |
 | --- | --- |
-| Kitura-based server | `3.1.1` |
-| OpenWhisk actions | `3.0` |
-| iOS App | Xcode 8.3 default (`Swift 3.1`)
+| Kitura-based server | `4.0` |
+| Cloud Functions actions | `3.1.1` |
+| iOS App | Xcode 9.0 default (`Swift 4.0`)
 
 You can download the development snapshots of the Swift binaries by following this [link](https://swift.org/download/). Compatibility with other Swift versions is not guaranteed.
 
-Optionally, if you'd like to run the BluePic Kitura-based server using Xcode, you should use Xcode 8 and configure it to use the default toolchain. For details on how to set up Xcode, see [Building your Kitura application on XCode](https://github.com/IBM-Swift/Kitura/wiki/Building-your-Kitura-application-on-XCode/d43b796976bfb533d3d209948de17716fce859b0). Please note that any other versions of Xcode are not guaranteed to work with the back-end code.
+Optionally, if you'd like to run the BluePic Kitura-based server using Xcode, you should use Xcode 9 and configure it to use the default toolchain. For details on how to set up Xcode, see [Building your Kitura application on XCode](https://github.com/IBM-Swift/Kitura/wiki/Building-your-Kitura-application-on-XCode/d43b796976bfb533d3d209948de17716fce859b0). Please note that any other versions of Xcode are not guaranteed to work with the back-end code.
 
-As shown in the table above, the iOS component of the BluePic app uses the default toolchain (Swift 3.1) prepackaged with Xcode 8.3. At the moment, any other versions of Xcode are not guaranteed to work, but you may view previous [releases](https://github.com/IBM/BluePic/releases) for possibly compatability with older versions of Xcode (i.e. Xcode 7.3.1). You may get unexpected behavior and/or errors if attempting to use other versions of Xcode or Swift.
 
 ## Getting started
-There are *two ways* you can compile and provision BluePic on IBM Cloud. Method 1 uses the [IBM Cloud Tools for Swift](https://ibm-cloud-tools.myIBM Cloud.net/) application. Using IBM Cloud Tools for Swift is the easiest and quickest path to get BluePic up and running. Method 2 is manual, does not leverage this tool, and, therefore, takes longer but you get to understand exactly the steps that are happening behind the scenes. Regardless of what path you choose, there are a few optional steps you can complete for additional functionality.
-
-## Method 1: IBM Cloud Tools for Swift
-Once you have the IBM Cloud Tools for Swift application installed for Mac, you can open it to get started. On the screen for creating a new project, you will find the option to create a BluePic Project. Select that option and name your project/runtime. This will kick off a process that automatically does the following:
-
-- Installs curl on your local system (requires Homebrew).
-- Clones the Bluepic repo on your Mac.
-- Creates your IBM Cloud runtime (i.e Kitura-based server) and provisions the IBM Cloud services that BluePic can leverage.
-- Populates the Cloudant and Object Storage services with demo data.
-- Updates the `cloud_config.json` file with all the service credentials needed by the Kitura-based server.
-- Updates the `IBM Cloud.plist` file [in the Xcode project] so that the iOS application connects to the remote Kitura-based server running on IBM Cloud.
-
-After the IBM Cloud Tools for Swift completes the steps above, you can [run the application](#running-the-ios-app). If desired, you can also configured the IBM Cloud services that were provisioned in order to enable [optional features](#optional-features-to-configure) in BluePic (such as Facebook authentication and Push notifications).
-
-## Method 2: Manual configuration and deployment
-Instead of using IBM Cloud Tools for Swift, which gives you a seamless compilation and provisioning experience, you can follow the steps outlined in this section if you'd like to take a peek under the hood!
 
 ### 1. Install system dependencies
 The following system level dependencies should be installed on macOS using [Homebrew](http://brew.sh/):
@@ -76,7 +59,7 @@ If you'd like to, you can spend a few minutes to get familiar with the folder st
 ### 3. Create BluePic application on IBM Cloud
 Clicking on the button below deploys the BluePic application to IBM Cloud. The [`manifest.yml`](manifest.yml) file [included in the repo] is parsed to obtain the name of the application and to determine the Cloud Foundry services that should be instantiated. For further details on the structure of the `manifest.yml` file, see the [Cloud Foundry documentation](https://docs.cloudfoundry.org/devguide/deploy-apps/manifest.html#minimal-manifest). After clicking the button below, you will be able to name your application, keep in mind that your IBM Cloud application name needs to match the name value in your `manifest.yml`. Therefore, you may have to change the name value in your `manifest.yml` if there is a naming conflict in your IBM Cloud account.
 
-[![Deploy to IBM Cloud](https://deployment-tracker.myIBM Cloud.net/stats/c45eeb765e77bf2bffd747e8d910e37d/button.svg)](https://IBM Cloud.net/deploy?repository=https://github.com/IBM/BluePic.git&cm_mmc=github-code-_-native-_-bluepic-_-deploy2IBM Cloud)
+[![Deploy to IBM Cloud](https://deployment-tracker.mybluemix.net/stats/c45eeb765e77bf2bffd747e8d910e37d/button.svg)](https://bluemix.net/deploy?repository=https://github.com/IBM/BluePic.git&cm_mmc=github-code-_-native-_-bluepic-_-deploy2bluemix)
 
 Once deployment to IBM Cloud is completed, you should access the route assigned to your application using the web browser of your choice. You should see the Kitura welcome page!
 
@@ -110,32 +93,32 @@ You can obtain the above credentials by accessing your application's page on IBM
 ./populator.sh --userId=<object storage userId> --password=<object storage password> --projectId=<object storage projectId> --region=<object storage region>
 ```
 
-### 6. Update `BluePic-Server/cloud_config.json` file
-You should now update the credentials for each one of the services listed in the `BluePic-Server/cloud_config.json` file. This will allow you to run the Kitura-based server locally for development and testing purposes. You will find placeholders in the `cloud_config.json` file (e.g. `<username>`, `<projectId>`) for each of the credential values that should be provided.
+### 6. Update `BluePic-Server/config/configuration.json` file
+You should now update the credentials for each one of the services listed in the `BluePic-Server/config/configuration.json` file. This will allow you to run the Kitura-based server locally for development and testing purposes. You will find placeholders in the `configuration.json` file (e.g. `<username>`, `<projectId>`) for each of the credential values that should be provided.
 
-Remember that you can obtain the credentials for each service listed in the `cloud_config.json` file by accessing your application's page on IBM Cloud and clicking on the `Show Credentials` twisty found on each of the service instances bound to the BluePic app.
+Remember that you can obtain the credentials for each service listed in the `configuration.json` file by accessing your application's page on IBM Cloud and clicking on the `Show Credentials` twisty found on each of the service instances bound to the BluePic app.
 
-You can take a look at the contents of the `cloud_config.json` file by clicking [here](BluePic-Server/cloud_config.json).
+You can take a look at the contents of the `configuration.json` file by clicking [here](BluePic-Server/configuration.json).
 
 ### 7. Update configuration for iOS app
-Go to the `BluePic-iOS` directory and open the BluePic workspace with Xcode using `open BluePic.xcworkspace`. Let's now update the `IBM Cloud.plist` in the Xcode project (you can find this file in `Configuration` folder of the Xcode project).
+Go to the `BluePic-iOS` directory and open the BluePic workspace with Xcode using `open BluePic.xcworkspace`. Let's now update the `cloud.plist` in the Xcode project (you can find this file in `Configuration` folder of the Xcode project).
 
 1. You should set the `isLocal` value to `YES` if you'd like to use a locally running server; if you set the value to `NO`, then you will be accessing the server instance running on IBM Cloud.
 
-1. To get the `appRouteRemote` value, you should go to your application's page on IBM Cloud. There, you will find a `View App` button near the top right. Clicking on it should open up your app in a new tab, the url for this page is your `route` which maps to the `appRouteRemote` key in the plist. Make sure to include the `http://` protocol in your `appRouteRemote` and to exclude a forward slash at the end of the url.
+2. To get the `appRouteRemote` value, you should go to your application's page on IBM Cloud. There, you will find a `View App` button near the top right. Clicking on it should open up your app in a new tab, the url for this page is your `route` which maps to the `appRouteRemote` key in the plist. Make sure to include the `http://` protocol in your `appRouteRemote` and to exclude a forward slash at the end of the url.
 
-1. Lastly, we need to get the value for `IBM CloudAppRegion`, which can be one of three options currently:
+3. Lastly, we need to get the value for `cloudAppRegion`, which can be one of three options currently:
 
 REGION US SOUTH | REGION UK | REGION SYDNEY
 --- | --- | ---
 `.ng.IBM Cloud.net` | `.eu-gb.IBM Cloud.net` | `.au-syd.IBM Cloud.net`
 
-You can find your region in multiple ways. For instance, by just looking at the URL you use to access your application's page (or the IBM Cloud dashboard). Another way is to look at the `cloud_config.json` file you modified earlier. If you look at the credentials under your `AdvancedMobileAccess` service, there is a value called `serverUrl` which should contain one of the regions mentioned above. Once you insert your `IBM CloudAppRegion` value into the `IBM Cloud.plist`, your app should be configured.
+You can find your region in multiple ways. For instance, by just looking at the URL you use to access your application's page (or the IBM Cloud dashboard). Another way is to look at the `configuration.json` file you modified earlier. If you look at the credentials under your `AppID` service, there is a value called `oauthServerUrl` which should contain one of the regions mentioned above. Once you insert your `cloudAppRegion` value into the `cloud.plist`, your app should be configured.
 
 ## Optional features to configure
-This section describes the steps to take in order to leverage Facebook authentication with App ID, Push Notifications, and OpenWhisk.
+This section describes the steps to take in order to leverage Facebook authentication with App ID, Push Notifications, and Cloud Functions.
 
-*API endpoints in BluePic-Server are currently not protected due to dependency limitations, but they will be as soon as that functionality is availalbe with the Kitura and App ID SDKs*
+*API endpoints in BluePic-Server are currently not protected due to dependency limitations, but they will be as soon as that functionality is available with the Kitura and App ID SDKs*
 
 ### 1. Create an application instance on Facebook
 In order to have the app authenticate with Facebook, you must create an application instance on Facebook's website.
@@ -163,33 +146,29 @@ In order to have the app authenticate with Facebook, you must create an applicat
 1. Flip the toggle switch to On for Facebook and click the edit button. Here, enter your Facebook application ID and secret from your Facebook app's page (see [Create an application instance on Facebook](#1-create-an-application-instance-on-facebook) section for further details).
 <p align="center"><img src="Imgs/facebook-appid-setup.png"  alt="Drawing" height=250 border=0 /></p>
 
-1. On this page, you will also see a "Redirect URL for Facebook for Developers", copy it because we need it in a minute. On your Facebook Developer app page, navigate to the Facebook login product. That URL is `https://developers.facebook.com/apps/<facebookAppId>/fb-login/`. Here, paste that link into the "Valid OAuth redirect URIs" field and clieck Save changes. Back on IBM Cloud, you can also click the Save button.
+1. On this page, you will also see a "Redirect URL for Facebook for Developers", copy it because we need it in a minute. On your Facebook Developer app page, navigate to the Facebook login product. That URL is `https://developers.facebook.com/apps/<facebookAppId>/fb-login/`. Here, paste that link into the "Valid OAuth redirect URIs" field and click Save changes. Back on IBM Cloud, you can also click the Save button.
 
-1. One more thing that needs to be done for App ID to work properly is that you need add the `tenantId` for App ID into the `IBM Cloud.plist` for BluePic-iOS. We get the `tenantId ` by viewing our credentials for the App ID service in IBM Cloud, all your services should be under the "Connections" tab of your app on IBM Cloud. Once there, click on the "View Credentials" or "Show Credentials" button for your App ID service and you should see the `tenantId ` pop up, among other values. Now, simply put that value into your `IBM Cloud.plist` corresponding with the `appIdTenantId` key.
+2. One more thing that needs to be done for App ID to work properly is that you need add the `tenantId` for App ID into the `cloud.plist` for BluePic-iOS. We get the `tenantId ` by viewing our credentials for the App ID service in IBM Cloud, all your services should be under the "Connections" tab of your app on IBM Cloud. Once there, click on the "View Credentials" or "Show Credentials" button for your App ID service and you should see the `tenantId ` pop up, among other values. Now, simply put that value into your `cloud.plist` corresponding with the `appIdTenantId` key.
 
-1. Facebook authentication with IBM Cloud App ID is now completely set up!
+3. Facebook authentication with IBM Cloud App ID is now completely set up!
 
 ### 3. Configure IBM Cloud Push service
 To utilize push notification capabilities on IBM Cloud, you need to configure a notification provider. For BluePic, you should configure credentials for the Apple Push Notification Service (APNS). As part of this configuration step, you will need to use the **bundle identifier** you chose in the [Create an application instance on Facebook](#1-create-an-application-instance-on-facebook) section.
 
 Luckily, IBM Cloud has [instructions](https://console.ng.bluemix.net/docs/services/mobilepush/t_push_provider_ios.html) to walk you through the process of configuring APNS with your IBM Cloud Push service. Please note that you'd need to upload a `.p12` certificate to IBM Cloud and enter the password for it, as described in the IBM Cloud instructions.
 
-Additionally, the `appGuid ` for your Push service acts independently of the BluePic app so we will need to add that value to our `IBM Cloud.plist`. Additionally, we need the `clientSecret` value for the push service. We get both, the `appGuid` and `clientSecret` by viewing our credentials for the Push service in IBM Cloud, all your services should be under the "Connections" of your app. Once there, click on the "View Credentials" or "Show Credentials" button for your Push Notifications service and you should see the `appGuid` pop up, among other values. Now, simply put that value into your `IBM Cloud.plist` corresponding with the `pushAppGUID` key. Next, you should see the `clientSecret` value which you can use to populate the `pushClientSecret` field in the `IBM Cloud.plist`. This should ensure your device gets registered properly with the Push service.
+Additionally, the `appGuid ` for your Push service acts independently of the BluePic app so we will need to add that value to our `cloud.plist`. Additionally, we need the `clientSecret` value for the push service. We get both, the `appGuid` and `clientSecret` by viewing our credentials for the Push service in IBM Cloud, all your services should be under the "Connections" of your app. Once there, click on the "View Credentials" or "Show Credentials" button for your Push Notifications service and you should see the `appGuid` pop up, among other values. Now, simply put that value into your `cloud.plist` corresponding with the `pushAppGUID` key. Next, you should see the `clientSecret` value which you can use to populate the `pushClientSecret` field in the `cloud.plist`. This should ensure your device gets registered properly with the Push service.
 
-Lastly, remember that push notifications will only show up on a physical iOS device. To ensure your app can run on a device and receive push notifications, make sure you followed the [IBM Cloud instructions](https://console.ng.bluemix.net/docs/services/mobilepush/t_push_provider_ios.html) above. At this point, open the `bluemix.xcworkspace` in Xcode and navigate to the `Capabilities` tab for the BluePic app target. Here, flip the switch for push notifications, like so:
+Lastly, remember that push notifications will only show up on a physical iOS device. To ensure your app can run on a device and receive push notifications, make sure you followed the [IBM Cloud instructions](https://console.ng.bluemix.net/docs/services/mobilepush/t_push_provider_ios.html) above. At this point, open the `BluePic.xcworkspace` in Xcode and navigate to the `Capabilities` tab for the BluePic app target. Here, flip the switch for push notifications, like so:
 
 <p align="center"><img src="Imgs/enablePush.png"  alt="Drawing" height=145 border=0 /></p>
 
 Now, make sure your app is using the push enabled provisioning profile you created earlier in the IBM Cloud instructions. Then at this point, you can run the app on your device and be able to receive push notifications.
 
-### 4. Configure OpenWhisk
-BluePic leverages OpenWhisk actions written in Swift for accessing the Watson Visual Recognition and Weather APIs. For instructions on how to configure OpenWhisk, see the following [page](Docs/OpenWhisk.md). You will find there details on configuration and invocation of OpenWhisk commands.
+### 4. Configure Cloud Functions
+BluePic leverages Cloud Functions actions written in Swift for accessing the Watson Visual Recognition and Weather APIs. For instructions on how to configure Cloud Functions, see the following [page](Docs/CloudFunctions.md). You will find there details on configuration and invocation of Cloud Functions commands.
 
 ### 5. Redeploy BluePic app to IBM Cloud
-#### Using the IBM Cloud Tools for Swift
-After configuring the optional features, you should redeploy the BluePic app to IBM Cloud. If you used the IBM Cloud Tools for Swift to initially deploy the BluePic app to IBM Cloud, you can also use this tool to redeploy the app. On your project's page in the IBM Cloud Tools for Swift, you should find an entry for the BluePic app runtime. On that entry, you will find options for deploying the runtime to IBM Cloud, as shown here:
-
-<p align="center"><img src="Imgs/cloud-tools-deploy.png"  alt="Deploy to server" height=250 border=0 /></p>
 
 #### Using the IBM Cloud command line interface
 After configuring the optional features, you should redeploy the BluePic app to IBM Cloud. You can use the IBM Cloud CLI to do that, download it [here](http://clis.ng.bluemix.net/ui/home.html). Once you have logged in to IBM Cloud using the command line, you can execute `bx app push` from the root folder of this repo on your local file system. This will push the application code and configuration to IBM Cloud.
@@ -208,7 +187,7 @@ The easiest method for running the iOS app on a physical device is to change the
 Alternatively, you can manually configure code signing of the app by using a wildcard App ID to run the app on your device. If already created, simply select it in the provisioning profile dropdown in the `Signing (Debug)` section. If not created, you can create one through the Apple Developer Portal. This [link](https://developer.apple.com/library/content/qa/qa1713/_index.html) should be helpful in providing more info about wildcard App IDs.
 
 ## Running the Kitura-based server locally
-You can build the BluePic-Server by going to the `BluePic-Server` directory of the cloned repository and running `swift build`. To start the Kitura-based server for the BluePic app on your local system, go to the `BluePic-Server` directory of the cloned repository and run `.build/debug/BluePicServer`. You should also update the `IBM Cloud.plist` file in the Xcode project in order to have the iOS app connect to this local server. See the [Update configuration for iOS app](#7-update-configuration-for-ios-app) section for details.
+You can build the BluePic-Server by going to the `BluePic-Server` directory of the cloned repository and running `swift build`. To start the Kitura-based server for the BluePic app on your local system, go to the `BluePic-Server` directory of the cloned repository and run `.build/debug/BluePicServer`. You should also update the `cloud.plist` file in the Xcode project in order to have the iOS app connect to this local server. See the [Update configuration for iOS app](#7-update-configuration-for-ios-app) section for details.
 
 ## Using BluePic
 BluePic was designed with a lot of useful features. To see further information and details on how to use the iOS app, check out our walkthrough on [Using BluePic](Docs/Usage.md) page.

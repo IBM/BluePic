@@ -1,5 +1,5 @@
 /**
- * Copyright IBM Corporation 2016
+ * Copyright IBM Corporation 2016, 2017
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -87,7 +87,7 @@ class SearchViewController: UIViewController {
 
      - parameter n: Notification
      */
-    func keyboardWillShow(_ n: Notification) {
+    @objc func keyboardWillShow(_ n: Notification) {
         let userInfo = n.userInfo
 
         if let info = userInfo, let keyboardRect = info[UIKeyboardFrameEndUserInfoKey] as? NSValue {
@@ -126,7 +126,7 @@ extension SearchViewController {
     /**
      Method is called when the BluemixDataManager has successfully received tags. It updates the tag collection view with this new data
      */
-    func updateWithTagData() {
+    @objc func updateWithTagData() {
         DispatchQueue.main.async(execute: {
             self.popularTags = BluemixDataManager.SharedInstance.tags
             self.tagCollectionView.performBatchUpdates({
@@ -178,7 +178,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
      - returns: CGSize
      */
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let size = NSString(string: popularTags[indexPath.item].uppercased()).size(attributes: [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 13.0)])
+        let size = NSString(string: popularTags[indexPath.item].uppercased()).size(withAttributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 13.0)])
         return CGSize(width: size.width + kCellPadding, height: 30.0)
     }
 
@@ -211,7 +211,7 @@ extension SearchViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
 
-        if let query = textField.text, let vc = Utils.vcWithNameFromStoryboardWithName("FeedViewController", storyboardName: "Feed") as? FeedViewController, query.characters.count > 0 {
+        if let query = textField.text, let vc = Utils.vcWithNameFromStoryboardWithName("FeedViewController", storyboardName: "Feed") as? FeedViewController, query.count > 0 {
 
             vc.searchQuery = query
 
@@ -234,7 +234,7 @@ extension SearchViewController: UITextFieldDelegate {
      - returns: Bool
      */
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if let text = textField.text, text.characters.count + string.characters.count <= 40 {
+        if let text = textField.text, text.count + string.count <= 40 {
             return true
         }
         return false

@@ -1,5 +1,5 @@
 /**
- * Copyright IBM Corporation 2016
+ * Copyright IBM Corporation 2016, 2017
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -87,19 +87,19 @@ class ImageInfoHeaderCollectionReusableView: UICollectionReusableView {
         setupByUserLabel(image.user.name)
 
         //setup locationLabel
-        setupCityAndStateLabel(image.location.name)
+        setupCityAndStateLabel(image.location?.name)
 
         //setup coordinatesLabel
-        setupCoordinatesLabel(image.location.latitude, longitude: image.location.longitude)
+        setupCoordinatesLabel(image.location?.latitude, longitude: image.location?.longitude)
 
         //setup dateLabel
-        setupDateLabelWithData(image.timeStamp as Date)
+        setupDateLabelWithData(image.timeStamp)
 
         //setup timeLabel
-        setupTimeLabelWithData(image.timeStamp as Date)
+        setupTimeLabelWithData(image.timeStamp)
 
         //setup weatherImageView and Temperature Label
-        setupWeatherImageViewAndTemperatureLabel(image.location.weather?.iconId, temperature: image.location.weather?.temperature)
+        setupWeatherImageViewAndTemperatureLabel(image.location?.weather?.iconId, temperature: image.location?.weather?.temperature)
 
         setupTagsLabel(image.tags)
 

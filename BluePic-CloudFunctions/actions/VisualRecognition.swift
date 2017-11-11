@@ -10,7 +10,7 @@ import SwiftyJSON
 func main(args: [String:Any]) -> [String:Any] {
 
     var str = ""
-    var result:[String:Any] = [
+    var result: [String:Any] = [
         "visualRecognition": str
     ]
 
@@ -19,7 +19,7 @@ func main(args: [String:Any]) -> [String:Any] {
             return result
     }
 
-    var requestOptions: [ClientRequest.Options] = [ .method("GET"),
+    let requestOptions: [ClientRequest.Options] = [ .method("GET"),
                                                     .schema("https://"),
                                                     .hostname("gateway-a.watsonplatform.net"),
                                                     .port(443),
@@ -35,7 +35,7 @@ func main(args: [String:Any]) -> [String:Any] {
 
                 if let imageClasses = jsonObj["images"][0]["classifiers"][0]["classes"].array {
                 	for imageClass in imageClasses {
-                		
+
                 		if let label = imageClass["class"].string, let confidence = imageClass["score"].double {
                 			if (str.characters.count > 0) {
    		                    	str = str + ","
@@ -49,7 +49,7 @@ func main(args: [String:Any]) -> [String:Any] {
             print("Error: \(error)")
         }
     }
-    req.end();
+    req.end()
 
 	str = "[\(str)]"
     result = [

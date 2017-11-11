@@ -18,5 +18,5 @@
 
 cloudantFolder=`cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd`/cloudantNoSQLDB
 objectStorageFolder=`cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd`/Object-Storage
-$cloudantFolder/populator.sh --username=<cloudant username> --password=<cloudant password> --projectId=<object storage projectId>
-$objectStorageFolder/populator.sh --userId=<object storage username> --password=<object storage password> --projectId=<object storage projectId> --region=<object storage region>
+$cloudantFolder/populator.sh --username="" --password="" --projectId=""
+$objectStorageFolder/populator.sh --userId="" --password="" --projectId="" --region=""

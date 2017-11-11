@@ -1,5 +1,5 @@
 /**
- * Copyright IBM Corporation 2016
+ * Copyright IBM Corporation 2016, 2017
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,21 +16,22 @@
 
 import Foundation
 import Kitura
+import KituraContracts
 
 protocol ServerProtocol {
-    
+
   var router: Router { get }
   var port: Int { get }
 
   func ping(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws
-  func getPopularTags(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws
-  func getUsers(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws
-  func getUser(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws
-  func createUser(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws
-  func getImages(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws
-  func getImage(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws
   func getImagesForUser(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws
-  func postImage(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws
   func sendPushNotification(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws
-    
+
+  func getTags(respondWith: @escaping ([String]?, RequestError?) -> Void)
+  func getImage(id: String, respondWith: @escaping (Image?, RequestError?) -> Void)
+  func getImages(respondWith: @escaping ([Image]?, RequestError?) -> Void)
+  func postImage(image: Image, respondWith: @escaping (Image?, RequestError?) -> Void)
+  func postUser(user: User, respondWith: @escaping (User?, RequestError?) -> Void)
+  func getUsers(respondWith: @escaping ([User]?, RequestError?) -> Void)
+  func getUser(id: String, respondWith: @escaping (User?, RequestError?) -> Void)
 }

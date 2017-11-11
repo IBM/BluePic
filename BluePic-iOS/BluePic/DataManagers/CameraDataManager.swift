@@ -1,5 +1,5 @@
 /**
- * Copyright IBM Corporation 2016
+ * Copyright IBM Corporation 2016, 2017
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ class CameraDataManager: NSObject {
     var pickedImage: UIImage?
 
     //instance of the image the user decided to post
-    var imageUserDecidedToPost: ImagePayload?
+    var imageUserDecidedToPost: Image?
 
     //state variables
     var failureGettingUserLocation = false
@@ -103,7 +103,7 @@ class CameraDataManager: NSObject {
         if UIImagePickerController .isSourceTypeAvailable(UIImagePickerControllerSourceType.camera) {
 
             picker.sourceType = UIImagePickerControllerSourceType.camera
-            self.tabVC.present(picker, animated: true, completion: { _ in
+            self.tabVC.present(picker, animated: true, completion: {
                 self.showCameraConfirmation()
             })
         } else {
@@ -116,7 +116,7 @@ class CameraDataManager: NSObject {
      */
     func openGallery() {
         picker.sourceType = UIImagePickerControllerSourceType.photoLibrary
-        self.tabVC.present(picker, animated: true, completion: { _ in
+        self.tabVC.present(picker, animated: true, completion: {
             self.showCameraConfirmation()
         })
 
@@ -176,7 +176,7 @@ class CameraDataManager: NSObject {
     /**
      Method is called when the user pressed the cancel
      */
-    func userPressedCancelButtonAction() {
+    @objc func userPressedCancelButtonAction() {
 
         SVProgressHUD.dismiss()
 
@@ -195,7 +195,7 @@ class CameraDataManager: NSObject {
         UIApplication.shared.isStatusBarHidden = false
         self.confirmationView.loadingIndicator.stopAnimating()
         self.confirmationView.endEditing(true) //dismiss keyboard first if shown
-        UIView.animate(withDuration: 0.4, animations: { _ in
+        UIView.animate(withDuration: 0.4, animations: {
             self.confirmationView.frame = CGRect(x: 0, y: self.tabVC.view.frame.height, width: self.tabVC.view.frame.width, height: self.tabVC.view.frame.height)
             }, completion: { _ in
                 self.destroyConfirmationView()
@@ -305,7 +305,7 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
                     captionText = text
                 }
 
-                self.imageUserDecidedToPost = ImagePayload(caption: captionText, fileName: fileName, width: pickedImage.size.width, height: pickedImage.size.height, location: location, image: pickedImage)
+                self.imageUserDecidedToPost = Image(caption: captionText, fileName: fileName, width: pickedImage.size.width, height: pickedImage.size.height, location: location, image: pickedImage)
 
             } else {
                 self.failureGettingUserLocation = true
@@ -318,7 +318,7 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
     /**
      Method is called when the post button is pressed
      */
-    func postPhotoButtonAction() {
+    @objc func postPhotoButtonAction() {
         userPressedPostPhoto = true
 
         tryToPostPhoto()
@@ -413,25 +413,17 @@ extension CameraDataManager: UIImagePickerControllerDelegate {
     fileprivate func setLatLongAndLocationNameForImage(_ callback : @escaping (_ location: Location?) -> Void) {
 
         LocationDataManager.SharedInstance.getCurrentLatLongCityAndState { (latitude: CLLocationDegrees?, longitude: CLLocationDegrees?, city: String?, state: String?, error: LocationDataManagerError?) in
-
-            //failure
-            if error != nil {
-                callback(nil)
-            }
-            //success
-            else if let latitude = latitude,
+            guard error == nil,
+                let latitude = latitude,
                 let longitude = longitude,
                 let city = city,
-                let state = state {
-
-                let location = Location(name: "\(city), \(state)", latitude: latitude, longitude: longitude, weather: nil)
-
-                callback(location)
+                let state = state else {
+                    callback(nil)
+                    return
             }
-            //failure
-            else {
-                callback(nil)
-            }
+
+            let location = Location(name: "\(city), \(state)", latitude: latitude, longitude: longitude, weather: nil)
+            callback(location)
 
         }
     }

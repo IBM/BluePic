@@ -3,10 +3,10 @@ angular.module('bluepicWebApp')
 .controller('exploreController', ['$scope', '$state', 'PropertiesService', 'photos',
     function($scope, $state, PropertiesService, photos) {
         'use strict';
-                                  
+
         $scope.state = $state;
 
-        $scope.photos = photos.data.records;
+        $scope.photos = photos.data;
 
         $scope.searchTerm = { value: ""};
 
@@ -28,7 +28,7 @@ angular.module('bluepicWebApp')
 
             var photoIndex, tagIndex, photoTags, photo, tag, newCollection;
 
-            collections.images = photos.data.records;
+            collections.images = photos.data;
 
             for (photoIndex in collections.images) {
 
