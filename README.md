@@ -5,7 +5,7 @@
 
 BluePic is a photo and image sharing sample application that allows you to take photos and share them with other BluePic users. This sample application demonstrates how to leverage, in a mobile iOS 10 application, a Kitura-based server application written in Swift.
 
-BluePic takes advantage of Swift in a typical iOS client setting, but also on the server-side using the new Swift web framework and HTTP Server, Kitura. An interesting feature of Bluepic, is the way it handles photos on the server. When an image is posted, it's data is recorded in Cloudant and the image binary is stored in Object Storage. From there, an [OpenWhisk](http://www.ibm.com/cloud-computing/IBM Cloud/openwhisk/) sequence is invoked causing weather data like temperature and current condition (e.g. sunny, cloudy, etc.) to be calculated based on the location an image was uploaded from. Watson Visual Recognition is also used in the OpenWhisk sequence to analyze the image and extract text tags based on the content of the image. A push notification is finally sent to the user, informing them their image has been processed and now includes weather and tag data.
+BluePic takes advantage of Swift in a typical iOS client setting, but also on the server-side using the new Swift web framework and HTTP Server, Kitura. An interesting feature of Bluepic, is the way it handles photos on the server. When an image is posted, it's data is recorded in Cloudant and the image binary is stored in Object Storage. From there, a [Cloud Functions](https://www.ibm.com/cloud/functions) sequence is invoked causing weather data like temperature and current condition (e.g. sunny, cloudy, etc.) to be calculated based on the location an image was uploaded from. Watson Visual Recognition is also used in the Cloud Functions sequence to analyze the image and extract text tags based on the content of the image. A push notification is finally sent to the user, informing them their image has been processed and now includes weather and tag data.
 
 ## Swift version
 The back-end components (i.e. Kitura-based server and Cloud Functions actions) and the iOS component of the BluePic app work with specific versions of the Swift binaries, see following table:
@@ -18,7 +18,7 @@ The back-end components (i.e. Kitura-based server and Cloud Functions actions) a
 
 You can download the development snapshots of the Swift binaries by following this [link](https://swift.org/download/). Compatibility with other Swift versions is not guaranteed.
 
-Optionally, if you'd like to run the BluePic Kitura-based server using Xcode, you should use Xcode 9 and configure it to use the default toolchain. For details on how to set up Xcode, see [Building your Kitura application on XCode](https://github.com/IBM-Swift/Kitura/wiki/Building-your-Kitura-application-on-XCode/d43b796976bfb533d3d209948de17716fce859b0). Please note that any other versions of Xcode are not guaranteed to work with the back-end code.
+Optionally, if you'd like to run the BluePic Kitura-based server using Xcode, you should use Xcode 9 and configure it to use the default toolchain. For details on how to set up Xcode, see [Building within Xcode](http://www.kitura.io/en/starter/xcode.html). Please note that any other versions of Xcode are not guaranteed to work with the back-end code.
 
 
 ## Getting started
@@ -30,7 +30,7 @@ The following system level dependencies should be installed on macOS using [Home
 brew install curl
 ```
 
-If you are using Linux as your development platform, you can find full details on how to set up your environment for building Kitura-based applications at [Getting started with Kitura](https://github.com/IBM-Swift/Kitura).
+If you would like to use Linux as your development platform for the Kitura server component, see [Compile and test your code on macOS and Linux](http://www.kitura.io/en/starter/leveragedocker.html) for details on how to leverage Docker on your macOS system.
 
 ### 2. Clone the BluePic Git repository
 Execute the following command to clone the Git repository:
@@ -140,11 +140,11 @@ In order to have the app authenticate with Facebook, you must create an applicat
 ### 3. Configure IBM Cloud Push service
 To utilize push notification capabilities on IBM Cloud, you need to configure a notification provider. For BluePic, you should configure credentials for the Apple Push Notification Service (APNS). As part of this configuration step, you will need to use the **bundle identifier** you chose in the [Create an application instance on Facebook](#1-create-an-application-instance-on-facebook) section.
 
-Luckily, IBM Cloud has [instructions](https://console.ng.bluemix.net/docs/services/mobilepush/t_push_provider_ios.html) to walk you through the process of configuring APNS with your IBM Cloud Push service. Please note that you'd need to upload a `.p12` certificate to IBM Cloud and enter the password for it, as described in the IBM Cloud instructions.
+Luckily, IBM Cloud has [instructions](https://console.bluemix.net/docs/services/mobilepush/index.html#gettingstartedtemplate) to walk you through the process of configuring APNS with your IBM Cloud Push service. Please note that you'd need to upload a `.p12` certificate to IBM Cloud and enter the password for it, as described in the IBM Cloud instructions.
 
 Additionally, the `appGuid ` for your Push service acts independently of the BluePic app so we will need to add that value to our `cloud.plist`. Additionally, we need the `clientSecret` value for the push service. We get both, the `appGuid` and `clientSecret` by viewing our credentials for the Push service in IBM Cloud, all your services should be under the "Connections" of your app. Once there, click on the "View Credentials" or "Show Credentials" button for your Push Notifications service and you should see the `appGuid` pop up, among other values. Now, simply put that value into your `cloud.plist` corresponding with the `pushAppGUID` key. Next, you should see the `clientSecret` value which you can use to populate the `pushClientSecret` field in the `cloud.plist`. This should ensure your device gets registered properly with the Push service.
 
-Lastly, remember that push notifications will only show up on a physical iOS device. To ensure your app can run on a device and receive push notifications, make sure you followed the [IBM Cloud instructions](https://console.ng.bluemix.net/docs/services/mobilepush/t_push_provider_ios.html) above. At this point, open the `BluePic.xcworkspace` in Xcode and navigate to the `Capabilities` tab for the BluePic app target. Here, flip the switch for push notifications, like so:
+Lastly, remember that push notifications will only show up on a physical iOS device. To ensure your app can run on a device and receive push notifications, make sure you followed the IBM Cloud [instructions](https://console.bluemix.net/docs/services/mobilepush/index.html#gettingstartedtemplate). At this point, open the `BluePic.xcworkspace` in Xcode and navigate to the `Capabilities` tab for the BluePic app target. Here, flip the switch for push notifications, like so:
 
 <p align="center"><img src="Imgs/enablePush.png"  alt="Drawing" height=145 border=0 /></p>
 
@@ -181,12 +181,13 @@ BluePic was designed with a lot of useful features. To see further information a
 To learn more about BluePic's folder structure, its architecture, and the Swift packages it depends on, see the [About](Docs/About.md) page.
 
 ## Learn More
-[Transition to Server-Side Swift with BluePic](https://developer.ibm.com/swift/2016/11/15/transition-to-server-side-swift-with-bluepic/)
-[Introducing Kitura 2.0](https://developer.ibm.com/swift/2017/10/30/kitura-20/)
-[Build a server-side Swift application using the Kitura command-line interface](https://developer.ibm.com/swift/2017/10/30/kitura-cli/)
+
+- [Transition to Server-Side Swift with BluePic](https://developer.ibm.com/swift/2016/11/15/transition-to-server-side-swift-with-bluepic/)
+- [Introducing Kitura 2.0](https://developer.ibm.com/swift/2017/10/30/kitura-20/)
+- [Build a server-side Swift application using the Kitura command-line interface](https://developer.ibm.com/swift/2017/10/30/kitura-cli/)
 
 ## Privacy Notice
-The BluePic-Server application includes code to track deployments to [IBM Cloud](https://www.IBM Cloud.net/) and other Cloud Foundry platforms. The following information is sent to [Deployment Tracker](https://github.com/IBM-bluemix/cf-deployment-tracker-service) and [Metrics collector](https://github.com/IBM/metrics-collector-service) service on each deployment:
+The BluePic-Server application includes code to track deployments to [IBM Cloud](https://www.ibm.com/cloud/) and other Cloud Foundry platforms. The following information is sent to [Deployment Tracker](https://github.com/IBM-bluemix/cf-deployment-tracker-service) and [Metrics collector](https://github.com/IBM/metrics-collector-service) service on each deployment:
 
 * Swift project code version (if provided)
 * Swift project repository URL
