@@ -27,11 +27,11 @@ stages:
     script: |-
       #!/bin/bash
       cf create-service cloudantNoSQLDB Lite BluePic-Cloudant
-      cf create-service cloudantNoSQLDB Lite BluePic-Object-Storage
+      cf create-service Object-Storage Free BluePic-Object-Storage
       cf create-service AppID Graduated\ tier BluePic-App-ID
       cf create-service imfpush Basic BluePic-IBM-Push
       cf create-service weatherinsights Free-v2 BluePic-Weather-Company-Data
-      cf create-service cloudantNoSQLDB Lite BluePic-Visual-Recognition
+      cf create-service watson_vision_combined Free BluePic-Visual-Recognition
 
       cf push "${CF_APP}"
       # View logs
