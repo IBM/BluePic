@@ -126,7 +126,7 @@
 <text id="headerSVG.run" transform="matrix(1 0 0 1 9.8564 568.7954)" class="st18 st19">RUN</text>
 <text id="headerSVG.repository" transform="matrix(0.9271 0 0 1 -157.3945 681.2939)" class="st18 st19">REPOSITORY</text>
 <text id="headerSVG.pipeline" transform="matrix(0.9271 0 0 1 -59.4912 681.2939)" class="st18 st19">PIPELINE</text>
-<text id="headerSVG.bluemix" transform="matrix(0.9271 0 0 1 32.293 681.2939)" class="st18 st19">BLUEMIX</text>
+<text id="headerSVG.IBMCloud" transform="matrix(0.9271 0 0 1 32.293 681.2939)" class="st18 st19">IBM Cloud</text>
 <text id="headerSVG.webIde" transform="matrix(0.9271 0 0 1 -149.2354 793.2744)" class="st18 st19">WEB IDE</text>
 <line id="svg_15" class="st6" x1="-128" y1="716" x2="-128" y2="691.9"/>
 <g>

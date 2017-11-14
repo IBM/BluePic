@@ -12,15 +12,15 @@
     "type": "object",
     "properties": {
         "dev-region": {
-            "description": "The bluemix region",
+            "description": "The IBM Cloud region",
             "type": "string"
         },
         "dev-organization": {
-            "description": "The bluemix org",
+            "description": "The IBM Cloud org",
             "type": "string"
         },
         "dev-space": {
-            "description": "The bluemix space",
+            "description": "The IBM Cloud space",
             "type": "string"
         },
         "app-name": {
