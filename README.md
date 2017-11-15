@@ -235,9 +235,6 @@ To learn more about BluePic's folder structure, its architecture, and the Swift 
 [Introducing Kitura 2.0](https://developer.ibm.com/swift/2017/10/30/kitura-20/)
 [Build a server-side Swift application using the Kitura command-line interface](https://developer.ibm.com/swift/2017/10/30/kitura-cli/)
 
-## Reporting issues against the IBM Cloud Tools for Swift
-You can use the [dW Answers](https://developer.ibm.com/answers/topics/cloud-tools-for-swift.html) web site to ask a question and/or report any issues you encounter while using the IBM Cloud Tools for Swift. Just make sure you use the tag `cloud-tools-for-swift` for the questions you post on dW Answers.
-
 ## Privacy Notice
 The BluePic-Server application includes code to track deployments to [IBM Cloud](https://www.IBM Cloud.net/) and other Cloud Foundry platforms. The following information is sent to [Deployment Tracker](https://github.com/IBM-bluemix/cf-deployment-tracker-service) and [Metrics collector](https://github.com/IBM/metrics-collector-service) service on each deployment:
 
