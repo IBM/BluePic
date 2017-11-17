@@ -19,9 +19,9 @@ container-port-map : "8080:8080"
 container-port-map-debug : "2048:1024,2049:1025"
 
 # The name for the dockerfile for the run container
-dockerfile-run : "Dockerfile"
+dockerfile-run : "./BluePic-Server/Dockerfile"
 # The name for the dockerfile for the tools container
-dockerfile-tools : "Dockerfile-tools"
+#dockerfile-tools : "./BluePic-Server/Dockerfile-tools"
 
 # The name of image to create from dockerfile-run
 image-name-run : "bluepic"

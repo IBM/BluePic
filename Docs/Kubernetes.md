@@ -53,3 +53,40 @@ bx cs cluster-config BluePic-Cluster
   ```
   sh ./Cloud-Scripts/deploy.sh cluster
   ```
+
+4. Bind your Services
+```
+  kubectl edit
+```
+
+Executing the above command will bring up the deployment metadata YAML file and allow you to edit it. Once the file is opened, look for the `containers` element under the `spec` element. Here, paste the following block outlining the environment variable bindings. Please not that indentation is extremely import in YAML files
+
+```
+volumeMounts:
+  - mountPath: /opt/service-bind # Mount the "BLUEPIC_OBJECT_STORAGE" volume into the pod.
+    name: BLUEPIC_OBJECT_STORAGE
+volumes:
+  - name: BLUEPIC_OBJECT_STORAGE
+    secret:
+      defaultMode: 420
+      secretName: binding-bluepic-object-storage
+volumes:
+- name: BLUEPIC_OBJECT_STORAGE
+  secret:
+      secretName: binding-bluepic-object-storage
+      defaultMode: 420
+- name: BLUEPIC_CLOUDANT
+  secret:
+    secretName: binding-bluepic-cloudant
+    defaultMode: 420
+- name: BLUEPIC_APP_ID
+  secret:
+    secretName: binding-bluepic-app-id
+    defaultMode: 420
+- name: BLUEPIC_IBM_PUSH
+  secret:
+    secretName: binding-bluepic-ibm-push
+    defaultMode: 420
+```
+
+For further details on binding services to Kubernetes clusters, refer to the [Kubernetes clusters documentation] (https://console.bluemix.net/docs/containers/cs_apps.html#cs_appson) on IBM Cloud.

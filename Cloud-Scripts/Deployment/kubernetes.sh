@@ -20,9 +20,10 @@
 #set -x
 
 KUBERNETES_CLUSTER_NAME="BluePic-Cluster"
+CONTAINER_REGISTRY_NAMESPACE="bluepic_container_registry"
 CLUSTER_NAMESPACE="bluepic"
 CHART_NAME="bluepic"
-DEPLOY_IMAGE_TARGET="registry.ng.bluemix.net/$CLUSTER_NAMESPACE/bluepic"
+DEPLOY_IMAGE_TARGET="registry.ng.bluemix.net/$CONTAINER_REGISTRY_NAMESPACE/bluepic"
 SCRIPTS_FOLDER=$( dirname "$( dirname "${BASH_SOURCE[0]}" )" )
 
 echo "Check cluster availability"
@@ -37,6 +38,11 @@ if ! kubectl get namespace $CLUSTER_NAMESPACE ; then
     echo "$CLUSTER_NAMESPACE cluster namespace does not exist, creating it"
     kubectl create namespace $CLUSTER_NAMESPACE
 fi
+
+echo "Check Container Registry Namespace"
+bx cr namespace-add $CONTAINER_REGISTRY_NAMESPACE
+
+docker build -t registry.ng.bluemix.net/$CONTAINER_REGISTRY_NAMESPACE/bluepic:latest ./BluePic-Server
 
 # Check Helm/Tiller
 echo "CHECKING TILLER (Helm's server component)"

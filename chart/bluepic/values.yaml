@@ -3,7 +3,7 @@
 replicaCount: 1
 revisionHistoryLimit: 1
 image:
-  repository: registry.ng.bluemix.net/bluepic/bluepic
+  repository: registry.ng.bluemix.net/bluepic_container_registry/bluepic
   tag: latest
   pullPolicy: Always
   resources:
@@ -26,4 +26,3 @@ hpa:
       targetAverageUtilization: 70
     memory:
       targetAverageUtilization: 70
-services:
