@@ -60,35 +60,7 @@ You will need to install the following:
 sh ./Cloud-Scripts/deploy.sh
 ```
 ##### Deploy as Kubernetes Container Cluster with Docker
-You will need to install the following:
-- [IBM Cloud Container Service CLI](https://console.bluemix.net/docs/containers/cs_cli_install.html#cs_cli_install)
-- [IBM Cloud Container Registry](https://console.bluemix.net/docs/services/Registry/registry_setup_cli_namespace.html#registry_setup_cli_namespace)
-- [IBM Cloud Dev Plugin](https://console.bluemix.net/docs/cloudnative/dev_cli.html#developercli)
-- [Docker](https://docs.docker.com/engine/installation/)
-- [Helm](https://docs.helm.sh/using_helm/#quickstart-guide)
-
-
-1. Create Cluster
-```
-bx cs cluster-create --name BluePic-Cluster
-```
-2. Export the Kube Config environment variable after executing the below
-```
-bx cs cluster-config BluePic-Cluster
-```
- ** NOTE: When the download of the configuration files is finished, a command is displayed that you can use to set the path to the local Kubernetes configuration file as an environment variable. **
-
- Example for OS X:
-
- ```
- export KUBECONFIG=/Users/<user_name>/.bluemix/plugins/container-service/clusters/<cluster_name>/kube-config-prod-dal10-<cluster_name>.yml
- ```
-
-3. Deploy your application and services (Make sure your cluster is deployed [Ready])
-
-  ```
-  sh ./Cloud-Scripts/deploy.sh cluster
-  ```
+- For information on deploying to Kubernetes please read our [docs](./Docs/Kubernetes.md)
 
 ### 4. Populate Cloudant database
 To populate your Cloudant database instance with sample data, you need to obtain the following credential values:

@@ -16,12 +16,14 @@
 # limitations under the License.
 ##
 
-set -e
+SCRIPTS_FOLDER=$( dirname "$( dirname "${BASH_SOURCE[0]}" )" )
 
-# Set serverFolder variable
-serverFolder=`dirname $( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )`/BluePic-Server
-echo "serverFolder: $serverFolder"
-cd $serverFolder
+### Deploy Services
+$SCRIPTS_FOLDER/Deployment/services.sh
 
-# Compile server code (Kitura-based server)
-make clean && make
+### Deploy App
+echo "Deploying App to Bluemix. This could take awhile.."
+bx dev deploy
+
+route=$(bx app show bluepic | grep routes | sed 's/routes:[ ]*//')
+echo "After you populate your database, you may view the application at: http://$route/"

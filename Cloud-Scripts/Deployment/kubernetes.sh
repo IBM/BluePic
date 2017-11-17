@@ -23,7 +23,6 @@ KUBERNETES_CLUSTER_NAME="BluePic-Cluster"
 CLUSTER_NAMESPACE="bluepic"
 CHART_NAME="bluepic"
 DEPLOY_IMAGE_TARGET="registry.ng.bluemix.net/$CLUSTER_NAMESPACE/bluepic"
-
 SCRIPTS_FOLDER=$( dirname "$( dirname "${BASH_SOURCE[0]}" )" )
 
 echo "Check cluster availability"
