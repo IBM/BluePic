@@ -19,9 +19,9 @@
 set -e
 
 # Set serverFolder variable
-serverFolder=`dirname $( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )`/BluePic-Server
-echo "serverFolder: $serverFolder"
-cd $serverFolder
+SERVER_FOLDER=`dirname $( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )`/BluePic-Server
+echo "serverFolder: $SERVER_FOLDER"
+cd $SERVER_FOLDER
 
 # Compile server code (Kitura-based server)
 make clean && make
