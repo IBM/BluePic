@@ -19,9 +19,7 @@
 SCRIPTS_FOLDER="$( dirname "${BASH_SOURCE[0]}" )"
 
 if [ "$1" == "cluster" ]; then
-  echo "Deploying as a Kubernetes Cluster application"
   sh $SCRIPTS_FOLDER/Deployment/kubernetes.sh
 else
-  echo "Deploying as a Cloud Foundry application"
   sh $SCRIPTS_FOLDER/Deployment/cloud_foundry.sh
 fi

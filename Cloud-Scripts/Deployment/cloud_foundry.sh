@@ -15,15 +15,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 ##
+bold=$(tput bold)
+normal=$(tput sgr0)
+echo "${bold}Deploying BluePic as a Cloud Foundry Cluster application${normal}"
 
 SCRIPTS_FOLDER=$( dirname "$( dirname "${BASH_SOURCE[0]}" )" )
 
+echo ""
+echo "${bold}Deploying IBM Cloud Services${normal}"
 ### Deploy Services
-$SCRIPTS_FOLDER/Deployment/services.sh
+$SCRIPTS_FOLDER/Deployment/create_services.sh
 
 ### Deploy App
-echo "Deploying App to Bluemix. This could take awhile.."
+echo ""
+echo "${bold}Deploying App to Bluemix.${normal} This could take awhile.."
 bx dev deploy
 
 route=$(bx app show bluepic | grep routes | sed 's/routes:[ ]*//')
-echo "After you populate your database, you may view the application at: http://$route/"
+echo "After you populate your database, you may view the application at: ${bold}http://$route/${normal}"

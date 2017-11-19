@@ -24,7 +24,7 @@ bx plugin install dev
 
 ```
 
-#### Step-By-Step Guide
+#### Quick Setup
 1. Login following the prompts
 ```
 bx login
@@ -54,39 +54,18 @@ bx cs cluster-config BluePic-Cluster
   sh ./Cloud-Scripts/deploy.sh cluster
   ```
 
-4. Bind your Services
-```
-  kubectl edit
-```
+#### Troubleshooting Build Script
+- When Binding Services...
+  - Error: "The secret name is already in use.  Select a different name or remove the existing secret"
 
-Executing the above command will bring up the deployment metadata YAML file and allow you to edit it. Once the file is opened, look for the `containers` element under the `spec` element. Here, paste the following block outlining the environment variable bindings. Please not that indentation is extremely import in YAML files
+    When a service is bound to the cluster, it uses a secret to store the service credentials. In order to bind a new service instance you should remove the old binds.
 
-```
-volumeMounts:
-  - mountPath: /opt/service-bind # Mount the "BLUEPIC_OBJECT_STORAGE" volume into the pod.
-    name: BLUEPIC_OBJECT_STORAGE
-volumes:
-  - name: BLUEPIC_OBJECT_STORAGE
-    secret:
-      defaultMode: 420
-      secretName: binding-bluepic-object-storage
-volumes:
-- name: BLUEPIC_OBJECT_STORAGE
-  secret:
-      secretName: binding-bluepic-object-storage
-      defaultMode: 420
-- name: BLUEPIC_CLOUDANT
-  secret:
-    secretName: binding-bluepic-cloudant
-    defaultMode: 420
-- name: BLUEPIC_APP_ID
-  secret:
-    secretName: binding-bluepic-app-id
-    defaultMode: 420
-- name: BLUEPIC_IBM_PUSH
-  secret:
-    secretName: binding-bluepic-ibm-push
-    defaultMode: 420
-```
+    GUI:
 
-For further details on binding services to Kubernetes clusters, refer to the [Kubernetes clusters documentation] (https://console.bluemix.net/docs/containers/cs_apps.html#cs_appson) on IBM Cloud.
+    Execute `kubectl proxy` and navigate to `http://localhost:8001/api/v1/namespaces/kube-system/services/kubernetes-dashboard/proxy/#!/secret?namespace=default` and delete all of the BluePic service secret bindings.
+
+    Command line:
+
+    Please run `bx cs cluster-service-bind "BluePic-Cluster" default <service_name>` using the failed service's name
+
+    For further details on binding services to Kubernetes clusters, refer to the [Kubernetes clusters documentation] (https://console.bluemix.net/docs/containers/cs_apps.html#cs_appson) on IBM Cloud.

@@ -34,3 +34,23 @@ spec:
         env:
           - name: PORT
             value : "{{ .Values.service.servicePort }}"
+          - name: BLUEPIC_OBJECT_STORAGE
+            valueFrom:
+              secretKeyRef:
+                name: binding-bluepic-object-storage
+                key: binding
+          - name: BLUEPIC_CLOUDANT
+            valueFrom:
+              secretKeyRef:
+                name: binding-bluepic-cloudant
+                key: binding
+          - name: BLUEPIC_APP_ID
+            valueFrom:
+              secretKeyRef:
+                name: binding-bluepic-app-id
+                key: binding
+          - name: BLUEPIC_IBM_PUSH
+            valueFrom:
+              secretKeyRef:
+                name: binding-bluepic-ibm-push
+                key: binding
