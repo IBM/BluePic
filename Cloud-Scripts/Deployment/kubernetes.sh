@@ -18,6 +18,7 @@
 set -e
 
 ### Environment Variables
+
 bold=$(tput bold)
 normal=$(tput sgr0)
 CHART_NAME="bluepic"
@@ -61,7 +62,7 @@ helm version
 
 echo ""
 echo "${bold}Deploying IBM Cloud Services${normal}"
-$SCRIPTS_FOLDER/Deployment/create_services.sh
+$SCRIPTS_FOLDER/Deployment/services.sh
 
 sleep 30 ### Allow services time to instantiate
 
@@ -69,7 +70,7 @@ sleep 30 ### Allow services time to instantiate
 
 echo ""
 echo "${bold}Binding IBM Cloud Services to Cluster${normal}"
-services=( "BluePic-Cloudant" "BluePic-Object-Storage" "BluePic-App-ID" "BluePic-IBM-Push" ) # "BluePic-Weather-Company-Data" "BluePic-Visual-Recognition" )
+services=( "BluePic-Cloudant" "BluePic-Object-Storage" "BluePic-App-ID" "BluePic-IBM-Push" "BluePic-Weather-Company-Data" "BluePic-Visual-Recognition" )
 for service in "${services[@]}"
 do
   bx cs cluster-service-bind $KUBERNETES_CLUSTER_NAME default $service || { echo 'Failed to bind service:' $service ; exit 1; }

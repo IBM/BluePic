@@ -17,16 +17,18 @@
 ##
 bold=$(tput bold)
 normal=$(tput sgr0)
-echo "${bold}Deploying BluePic as a Cloud Foundry Cluster application${normal}"
-
 SCRIPTS_FOLDER=$( dirname "$( dirname "${BASH_SOURCE[0]}" )" )
 
+echo "${bold}Deploying BluePic as a Cloud Foundry Cluster application${normal}"
 echo ""
 echo "${bold}Deploying IBM Cloud Services${normal}"
+
 ### Deploy Services
-$SCRIPTS_FOLDER/Deployment/create_services.sh
+
+$SCRIPTS_FOLDER/Deployment/services.sh
 
 ### Deploy App
+
 echo ""
 echo "${bold}Deploying App to Bluemix.${normal} This could take awhile.."
 bx dev deploy
