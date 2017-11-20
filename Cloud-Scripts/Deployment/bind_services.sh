@@ -21,7 +21,7 @@ source "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"/config.sh
 echo ""
 echo "${bold}Binding IBM Cloud Services to Cluster${normal}"
 
-services=( "BluePic-Cloudant" "BluePic-Object-Storage" "BluePic-App-ID" "BluePic-IBM-Push" ) #"BluePic-Weather-Company-Data" "BluePic-Visual-Recognition" )
+services=( "BluePic-Cloudant" "BluePic-Object-Storage" "BluePic-App-ID" "BluePic-IBM-Push" "BluePic-Weather-Company-Data" "BluePic-Visual-Recognition" )
 
 for service in "${services[@]}"
 do
