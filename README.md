@@ -56,9 +56,11 @@ Note that the [IBM Cloud buildpack for Swift](https://github.com/IBM-Swift/swift
 ##### Deploy as Cloud Foundry Application
 You will need to install the following:
 - [IBM Cloud Dev Plugin](https://console.bluemix.net/docs/cloudnative/dev_cli.html#developercli)
+
 ```
-sh ./Cloud-Scripts/deploy.sh
+sh ./Cloud-Scripts/Deployment/cloud_foundry.sh
 ```
+
 ##### Deploy as Kubernetes Container Cluster with Docker
 - For information on deploying to Kubernetes please read our [docs](./Docs/Kubernetes.md)
 

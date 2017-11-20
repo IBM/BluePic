@@ -16,24 +16,14 @@
 # limitations under the License.
 ##
 
-# If any commands fail, we want the shell script to exit immediately.
-set -e
-
 source "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"/config.sh
 
-echo "${bold}Deploying BluePic as a Cloud Foundry Cluster application${normal}"
 echo ""
-echo "${bold}Deploying IBM Cloud Services${normal}"
+echo "${bold}Binding IBM Cloud Services to Cluster${normal}"
 
-### Deploy Services
+services=( "BluePic-Cloudant" "BluePic-Object-Storage" "BluePic-App-ID" "BluePic-IBM-Push" ) #"BluePic-Weather-Company-Data" "BluePic-Visual-Recognition" )
 
-$SCRIPTS_FOLDER/Deployment/create_services.sh
-
-### Deploy App
-
-echo ""
-echo "${bold}Deploying App to Bluemix.${normal} This could take awhile.."
-bx dev deploy
-
-route=$(bx app show bluepic | grep routes | sed 's/routes:[ ]*//')
-echo "After you populate your database, you may view the application at: ${bold}http://$route/${normal}"
+for service in "${services[@]}"
+do
+  bx cs cluster-service-bind $KUBERNETES_CLUSTER_NAME default $service || { echo "Failed to bind service:" ${bold}$service${normal}; }
+done
