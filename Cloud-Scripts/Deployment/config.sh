@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ##
-# Copyright IBM Corporation 2016
+# Copyright IBM Corporation 2017
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,7 +16,15 @@
 # limitations under the License.
 ##
 
-CLOUDANT_FOLDER=`cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd`/cloudantNoSQLDB
-OBJECT_STORAGE_FOLDER=`cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd`/Object-Storage
-$CLOUDANT_FOLDER/populator.sh --username="" --password="" --projectId=""
-$OBJECT_STORAGE_FOLDER/populator.sh --userId="" --password="" --projectId="" --region=""
+## Styles
+bold=$(tput bold)
+normal=$(tput sgr0)
+
+## Variables
+CHART_NAME="bluepic"
+KUBERNETES_CLUSTER_NAME="BluePic-Cluster"
+CONTAINER_REGISTRY_NAMESPACE="bluepic_container_registry"
+DEPLOY_IMAGE_TARGET="registry.ng.bluemix.net/$CONTAINER_REGISTRY_NAMESPACE/bluepic"
+
+## Folders
+SCRIPTS_FOLDER=$( dirname "$( dirname "${BASH_SOURCE[0]}" )" )

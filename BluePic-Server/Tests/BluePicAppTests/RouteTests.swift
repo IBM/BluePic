@@ -32,8 +32,6 @@ import SwiftyRequest
 
 class RouteTests: XCTestCase {
 
-  private let queue = DispatchQueue(label: "Kitura runloop", qos: .userInitiated, attributes: .concurrent)
-
   private let serverController = try? ServerController()
 
   private var accessToken: String = ""
@@ -68,7 +66,7 @@ class RouteTests: XCTestCase {
 
     let task = Process()
     let directoryPath = fileURL(directoriesUp: 4, path: "Cloud-Scripts").relativePath
-    
+
     task.currentDirectoryPath = directoryPath
     task.launchPath = "/bin/bash"
     task.arguments = [directoryPath + "/populator.sh"]
@@ -98,9 +96,7 @@ class RouteTests: XCTestCase {
     XCTAssertNotNil(serverController, "ServerController object is nil and is not getting created properly.")
     Kitura.addHTTPServer(onPort: 8080, with: serverController!.router)
 
-    queue.async {
-      Kitura.start()
-    }
+    Kitura.start()
 
     print("------------------------------")
     print("------------New Test----------")
@@ -110,7 +106,7 @@ class RouteTests: XCTestCase {
   override func tearDown() {
     Kitura.stop()
   }
-  
+
   private func handleError(_ err: Error) {
     print("Error response from BluePic-Server: \(String(describing: err))")
     XCTFail()
@@ -162,7 +158,7 @@ class RouteTests: XCTestCase {
 
     let imageExpectation = expectation(description: "Get all images.")
     let req = RestRequest(method: .get, route: "/images")
-    
+
     req.responseData { res in
       switch res.result {
       case .success(let data):
@@ -188,7 +184,7 @@ class RouteTests: XCTestCase {
     let imageExpectation = expectation(description: "Get an image with a specific image.")
 
     let req = RestRequest(method: .get, route: "/images/2010")
-    
+
     req.responseData { res in
       switch res.result {
       case .success(let data):
@@ -207,7 +203,7 @@ class RouteTests: XCTestCase {
     let imageExpectation = expectation(description: "Get all images with a specific tag.")
 
     let req = RestRequest(method: .get, route: "/images/tag/mountain")
-    
+
     req.responseData { res in
       switch res.result {
       case .success(let data):
@@ -217,7 +213,7 @@ class RouteTests: XCTestCase {
         let image = records.first
         XCTAssertNotNil(image, "First image with tag, mountain, is nil.")
         self.assertImage2010(image: image!)
-        
+
         // No need to test contents of every image, mainly want to know we got the correct images.
         let imageIds = [2010, 2008, 2003]
         for (index, img) in records.enumerated() {
@@ -241,9 +237,9 @@ class RouteTests: XCTestCase {
                       height: 300,
                       userId: "anonymous",
                       image: Data())
-    
+
     let req = RestRequest(method: .post, route: "/images", authToken: self.accessToken)
-    
+
     req.messageBody = try? JSONEncoder().encode(image)
 
     req.responseData { resp in
@@ -263,13 +259,13 @@ class RouteTests: XCTestCase {
     let req = RestRequest(route: "/users/1001/images", authToken: self.accessToken)
 
     req.responseData { resp in
-      
+
       switch resp.result {
       case .success(let data):
         let images = SwiftyJSON.JSON(data: data)
         let records = images.arrayValue
         XCTAssertEqual(records.count, 4)
-        
+
         let imageIds = [2010, 2007, 2004, 2001]
         for (index, img) in records.enumerated() {
           XCTAssertEqual(img["_id"].intValue, imageIds[index])
@@ -289,7 +285,7 @@ class RouteTests: XCTestCase {
     let userExpectation = expectation(description: "Gets all Users.")
 
     let req = RestRequest(route: "/users", authToken: self.accessToken)
-    
+
     req.responseData { resp in
       switch resp.result {
       case .success(let data):
@@ -321,7 +317,7 @@ class RouteTests: XCTestCase {
     let userExpectation = expectation(description: "Gets a specific User.")
 
     let req = RestRequest(route: "/users/1003", authToken: self.accessToken)
-    
+
     req.responseData { resp in
       switch resp.result {
       case .success(let data):
@@ -343,12 +339,12 @@ class RouteTests: XCTestCase {
     let userExpectation = expectation(description: "Creates a new User.")
 
     let usr = User(id: "3434", name: "Time Billings")
-    
+
     guard let jsonData = try? JSONEncoder().encode(usr) else {
       XCTFail()
       return
     }
-    
+
     let req = RestRequest(method: .post, route: "/users", authToken: self.accessToken)
     req.messageBody = jsonData
 
@@ -371,7 +367,7 @@ class RouteTests: XCTestCase {
   func testPushNotification() {
 
     let pushExpectation = expectation(description: "Sends a push notification to a User.")
-  
+
     let req = RestRequest(method: .post, route: "/push/images/2010", authToken: self.accessToken)
 
     req.responseData { response in
@@ -484,5 +480,6 @@ private extension RestRequest {
     if let authToken = authToken {
       headers["Authorization"] = "Bearer \(authToken)"
     }
+    headerParameters = headers
   }
 }

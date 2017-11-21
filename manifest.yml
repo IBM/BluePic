@@ -21,6 +21,8 @@ declared-services:
 applications:
 - name: BluePic
   path: ./BluePic-Server
+  domain: mybluemix.net
+  host: BluePic
   command: BluePicServer
   random-route: true
   memory: 256M

@@ -1,0 +1,3 @@
+---
+root:
+  $ref: ./nls/messages.yml

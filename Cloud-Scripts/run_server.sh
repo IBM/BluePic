@@ -18,15 +18,12 @@
 
 set -e
 
-# Install system level dependencies
-brew install curl
+# Set serverFolder variable
+SERVER_FOLDER=`dirname $( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )`/BluePic-Server
 
-# Set scripts folder variable
-scriptsFolder="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-echo "scriptsFolder: $scriptsFolder"
+echo "serverFolder: $SERVER_FOLDER"
+cd $SERVER_FOLDER
 
-# Compile server code (Kitura-based server)
-$scriptsFolder/compile-server.sh
-
-# Start server
-$scriptsFolder/run-server.sh
+kill `ps aux | grep -F '.build/debug/Server' | grep -v -F 'grep' | awk '{ print $2 }'` || true
+echo 'Running Kitura-based server in the background.'
+.build/debug/Server &

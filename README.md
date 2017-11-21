@@ -42,6 +42,8 @@ git clone https://github.com/IBM/BluePic.git
 If you'd like to, you can spend a few minutes to get familiar with the folder structure of the repo as described in the [About](Docs/About.md) page.
 
 ### 3. Create BluePic application on IBM Cloud
+
+#### Cloud Foundry Deployment
 Clicking on the button below deploys the BluePic application to IBM Cloud. The [`manifest.yml`](manifest.yml) file [included in the repo] is parsed to obtain the name of the application and to determine the Cloud Foundry services that should be instantiated. For further details on the structure of the `manifest.yml` file, see the [Cloud Foundry documentation](https://docs.cloudfoundry.org/devguide/deploy-apps/manifest.html#minimal-manifest). After clicking the button below, you will be able to name your application, keep in mind that your IBM Cloud application name needs to match the name value in your `manifest.yml`. Therefore, you may have to change the name value in your `manifest.yml` if there is a naming conflict in your IBM Cloud account.
 
 [![Deploy to IBM Cloud](https://deployment-tracker.mybluemix.net/stats/c45eeb765e77bf2bffd747e8d910e37d/button.svg)](https://bluemix.net/deploy?repository=https://github.com/IBM/BluePic.git&cm_mmc=github-code-_-native-_-bluepic-_-deploy2bluemix)
@@ -49,6 +51,18 @@ Clicking on the button below deploys the BluePic application to IBM Cloud. The [
 Once deployment to IBM Cloud is completed, you should access the route assigned to your application using the web browser of your choice. You should see the Kitura welcome page!
 
 Note that the [IBM Cloud buildpack for Swift](https://github.com/IBM-Swift/swift-buildpack) is used for the deployment of BluePic to IBM Cloud. This buildpack is currently installed in the following IBM Cloud regions: US South, United Kingdom, and Sydney.
+
+#### Manual Command Line Deployment
+##### Deploy as Cloud Foundry Application
+You will need to install the following:
+- [IBM Cloud Dev Plugin](https://console.bluemix.net/docs/cloudnative/dev_cli.html#developercli)
+
+```
+sh ./Cloud-Scripts/Deployment/cloud_foundry.sh
+```
+
+##### Deploy as Kubernetes Container Cluster with Docker
+- For information on deploying to Kubernetes please read our [docs](./Docs/Kubernetes.md)
 
 ### 4. Populate Cloudant database
 To populate your Cloudant database instance with sample data, you need to obtain the following credential values:
@@ -156,7 +170,17 @@ BluePic leverages Cloud Functions actions written in Swift for accessing the Wat
 ### 5. Redeploy BluePic app to IBM Cloud
 
 #### Using the IBM Cloud command line interface
-After configuring the optional features, you should redeploy the BluePic app to IBM Cloud. You can use the IBM Cloud CLI to do that, download it [here](http://clis.ng.bluemix.net/ui/home.html). Once you have logged in to IBM Cloud using the command line, you can execute `bx app push` from the root folder of this repo on your local file system. This will push the application code and configuration to IBM Cloud.
+After configuring the optional features, you should redeploy the BluePic app to IBM Cloud.
+
+###### Cloud Foundry
+You can use the IBM Cloud CLI to do that, download it [here](http://clis.ng.bluemix.net/ui/home.html). Once you have logged in to IBM Cloud using the command line, you can execute `bx app push` from the root folder of this repo on your local file system. This will push the application code and configuration to IBM Cloud.
+
+###### Kubernetes Cluster
+If you are using a Kubernetes Cluser and have already gone through the initial deployment process [here](#deploy-as-kubernetes-container-cluster-with-docker)
+```
+  # Using defaults parameters from earlier setup instructions:
+  bx dev deploy --target=container --deploy-image-target=bluepic --ibm-cluster=BluePic-Cluster
+```
 
 ## Running the iOS app
 If you don't have the iOS project already open, go to the `BluePic-iOS` directory and open the BluePic workspace using `open BluePic.xcworkspace`.

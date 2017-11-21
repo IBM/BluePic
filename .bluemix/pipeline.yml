@@ -1,0 +1,38 @@
+---
+stages:
+- name: Build Stage
+  inputs:
+  - type: git
+    branch: ${BRANCH}
+    service: ${REPO}
+  jobs:
+  - name: Build
+    type: builder
+    artifact_dir: ''
+- name: Deploy Stage
+  inputs:
+  - type: job
+    stage: Build Stage
+    job: Build
+  triggers:
+  - type: stage
+  jobs:
+  - name: Deploy
+    type: deployer
+    target:
+      region_id: ${CF_REGION_ID}
+      organization: ${CF_ORGANIZATION}
+      space: ${CF_SPACE}
+      application: ${CF_APP}
+    script: |-
+      #!/bin/bash
+      cf create-service cloudantNoSQLDB Lite BluePic-Cloudant
+      cf create-service Object-Storage Free BluePic-Object-Storage
+      cf create-service AppID Graduated\ tier BluePic-App-ID
+      cf create-service imfpush Basic BluePic-IBM-Push
+      cf create-service weatherinsights Free-v2 BluePic-Weather-Company-Data
+      cf create-service watson_vision_combined Free BluePic-Visual-Recognition
+
+      cf push "${CF_APP}"
+      # View logs
+      # cf logs "${CF_APP}" --recent

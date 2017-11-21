@@ -1,0 +1,56 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: "{{  .Chart.Name }}-deployment"
+  labels:
+    chart: '{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}'
+spec:
+  replicas: {{ .Values.replicaCount }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
+  template:
+    metadata:
+      labels:
+        app: "{{  .Chart.Name }}-selector"
+    spec:
+      containers:
+      - name: "{{  .Chart.Name  }}"
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: {{ .Values.service.servicePort }}
+          initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds}}
+          periodSeconds: {{ .Values.livenessProbe.periodSeconds}}
+        resources:
+          requests:
+            cpu: "{{ .Values.image.resources.requests.cpu }}"
+            memory: "{{ .Values.image.resources.requests.memory }}"
+        env:
+          - name: PORT
+            value : "{{ .Values.service.servicePort }}"
+          - name: BLUEPIC_OBJECT_STORAGE
+            valueFrom:
+              secretKeyRef:
+                name: binding-bluepic-object-storage
+                key: binding
+          - name: BLUEPIC_CLOUDANT
+            valueFrom:
+              secretKeyRef:
+                name: binding-bluepic-cloudant
+                key: binding
+          - name: BLUEPIC_APP_ID
+            valueFrom:
+              secretKeyRef:
+                name: binding-bluepic-app-id
+                key: binding
+          - name: BLUEPIC_IBM_PUSH
+            valueFrom:
+              secretKeyRef:
+                name: binding-bluepic-ibm-push
+                key: binding

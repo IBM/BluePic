@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ##
-# Copyright IBM Corporation 2016
+# Copyright IBM Corporation 2017
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,7 +16,14 @@
 # limitations under the License.
 ##
 
-CLOUDANT_FOLDER=`cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd`/cloudantNoSQLDB
-OBJECT_STORAGE_FOLDER=`cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd`/Object-Storage
-$CLOUDANT_FOLDER/populator.sh --username="" --password="" --projectId=""
-$OBJECT_STORAGE_FOLDER/populator.sh --userId="" --password="" --projectId="" --region=""
+source "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"/config.sh
+
+echo ""
+echo "${bold}Binding IBM Cloud Services to Cluster${normal}"
+
+services=( "BluePic-Cloudant" "BluePic-Object-Storage" "BluePic-App-ID" "BluePic-IBM-Push" "BluePic-Weather-Company-Data" "BluePic-Visual-Recognition" )
+
+for service in "${services[@]}"
+do
+  bx cs cluster-service-bind $KUBERNETES_CLUSTER_NAME default $service || { echo "Failed to bind service:" ${bold}$service${normal}; }
+done
