@@ -19,13 +19,11 @@ import Kitura
 import LoggerAPI
 import HeliumLogger
 import BluePicApp
-import CloudFoundryDeploymentTracker
 import MetricsTrackerClient
 
 HeliumLogger.use(LoggerMessageType.info)
 
 do {
-  CloudFoundryDeploymentTracker(repositoryURL: "https://github.com/IBM-Swift/BluePic.git", codeVersion: nil).track()
   MetricsTrackerClient(repository: "BluePic", organization: "IBM").track()
   let serverController = try ServerController()
   // Start server...

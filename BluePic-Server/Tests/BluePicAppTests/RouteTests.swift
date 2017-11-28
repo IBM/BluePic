@@ -56,7 +56,7 @@ class RouteTests: XCTestCase {
 
   func fileURL(directoriesUp: Int, path: String) -> URL {
     let initialPath = #file
-    let components = initialPath.characters.split(separator: "/").map(String.init)
+    let components = initialPath.split(separator: "/").map(String.init)
     let notLastFour = components[0..<components.count - directoriesUp]
     let directoryPath = "/" + notLastFour.joined(separator: "/") + "/" + path
     return URL(fileURLWithPath: directoryPath)
