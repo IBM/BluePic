@@ -219,7 +219,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0077028321C24630BC2D3CA30135B30D /* Pods_BluePic.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_BluePic.framework; path = "Pods-BluePic.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		0077028321C24630BC2D3CA30135B30D /* Pods_BluePic.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BluePic.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0354A3494C22A0D87B950C2E56055E7B /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		04CCBB35CE5E1EFCCEB19EFDEB89BDE5 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/ImageIO.framework; sourceTree = DEVELOPER_DIR; };
 		07268EF320C5A93188F6FAB5D3BE6F4A /* SecurityUtils.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SecurityUtils.swift; path = Source/BluemixAppID/internal/SecurityUtils.swift; sourceTree = "<group>"; };
@@ -231,9 +231,9 @@
 		0E929E4DB933D8B78F23B37288605D64 /* BMSPush-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "BMSPush-umbrella.h"; sourceTree = "<group>"; };
 		0FD954E33578FC07C5E318CE6639D71D /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		12CA596062ED627CB1FAB8E9EEB18074 /* SVProgressHUD-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SVProgressHUD-umbrella.h"; sourceTree = "<group>"; };
-		13664244FC6223102A2891BC9CBB1A6D /* BluemixAppID.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = BluemixAppID.framework; path = BluemixAppID.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		13664244FC6223102A2891BC9CBB1A6D /* BluemixAppID.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BluemixAppID.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1691C5EFC90015903DADC9E26DE2BCFC /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		176789356BFCC15F3A5CBEC911E75090 /* BMSCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = BMSCore.framework; path = BMSCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		176789356BFCC15F3A5CBEC911E75090 /* BMSCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BMSCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		19C31FFFAE616BD59F1E13588482F009 /* SDWebImage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = SDWebImage.xcconfig; sourceTree = "<group>"; };
 		1A310D045F016494F3C3482EBFA76EB0 /* SDWebImageManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SDWebImageManager.m; path = SDWebImage/SDWebImageManager.m; sourceTree = "<group>"; };
 		1BD21F448FCFBD3C0A375944800550FB /* UIView+WebCacheOperation.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIView+WebCacheOperation.h"; path = "SDWebImage/UIView+WebCacheOperation.h"; sourceTree = "<group>"; };
@@ -263,13 +263,13 @@
 		3FF71E6C24164A02C149CE79D0F02711 /* TokenResponseDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TokenResponseDelegate.swift; path = Source/BluemixAppID/api/TokenResponseDelegate.swift; sourceTree = "<group>"; };
 		403DF1B332F038CF22AFD9881F71C114 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		414637F70E374D1C9903D306D6F374AE /* Error.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Error.swift; path = Source/Error.swift; sourceTree = "<group>"; };
-		418EA4B775E14601DB6FC5B59C093FEA /* module.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; name = module.modulemap; path = Source/Resources/module.modulemap; sourceTree = "<group>"; };
+		418EA4B775E14601DB6FC5B59C093FEA /* module.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; name = module.modulemap; path = Source/Resources/module.modulemap; sourceTree = "<group>"; };
 		42123AB18F77794B005A71E77808F4F9 /* NetworkMonitor.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NetworkMonitor.swift; path = "Source/Network Requests/NetworkMonitor.swift"; sourceTree = "<group>"; };
 		43D0B33645F3ABBE67BE292C0607300F /* OAuthManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = OAuthManager.swift; path = Source/BluemixAppID/internal/OAuthManager.swift; sourceTree = "<group>"; };
 		458F8A80D0F23C761063B6A792BDC380 /* SDWebImageCompat.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SDWebImageCompat.h; path = SDWebImage/SDWebImageCompat.h; sourceTree = "<group>"; };
 		467FDB4318E68AC26BCB3101CDD85FF6 /* AppIDConstants.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AppIDConstants.swift; path = Source/BluemixAppID/internal/AppIDConstants.swift; sourceTree = "<group>"; };
 		496BCD603B5CF7561AD2101E9F8C35CB /* Pods-BluePic.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-BluePic.release.xcconfig"; sourceTree = "<group>"; };
-		4DF003E0444B7E469EB13199FC9E3EBF /* SVProgressHUD.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = SVProgressHUD.framework; path = SVProgressHUD.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4DF003E0444B7E469EB13199FC9E3EBF /* SVProgressHUD.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SVProgressHUD.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4E090FC5EC11C63857861BF746A2B10E /* SVRadialGradientLayer.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SVRadialGradientLayer.m; path = SVProgressHUD/SVRadialGradientLayer.m; sourceTree = "<group>"; };
 		4F041DA1EF3013EDDF78353B56CED65F /* UIImage+MultiFormat.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIImage+MultiFormat.m"; path = "SDWebImage/UIImage+MultiFormat.m"; sourceTree = "<group>"; };
 		4F4832BA4FD7EF0B36616FA779A5A123 /* OAuthClientImpl.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = OAuthClientImpl.swift; path = Source/BluemixAppID/internal/tokens/OAuthClientImpl.swift; sourceTree = "<group>"; };
@@ -279,14 +279,14 @@
 		548FDD158736E7ABE112BC395A5551A8 /* UIImage+GIF.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIImage+GIF.h"; path = "SDWebImage/UIImage+GIF.h"; sourceTree = "<group>"; };
 		549BDB90095C15CE49D395A125751374 /* UIImageView+HighlightedWebCache.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIImageView+HighlightedWebCache.h"; path = "SDWebImage/UIImageView+HighlightedWebCache.h"; sourceTree = "<group>"; };
 		55B2C99DA2B9C27452AA62333990F52B /* AccessTokenImpl.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AccessTokenImpl.swift; path = Source/BluemixAppID/internal/tokens/AccessTokenImpl.swift; sourceTree = "<group>"; };
-		5623E8C9D40809CC77BF5D48E02517B7 /* SDWebImage.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = SDWebImage.framework; path = SDWebImage.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5623E8C9D40809CC77BF5D48E02517B7 /* SDWebImage.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SDWebImage.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		56D1650469BAC1B0495FBF5E3E0F0127 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5B7525BD4362BC9D1237B91EF8AD8EF4 /* SDWebImagePrefetcher.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SDWebImagePrefetcher.m; path = SDWebImage/SDWebImagePrefetcher.m; sourceTree = "<group>"; };
 		5B98A654008F2CE5E79B3827061B6446 /* StringPreference.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = StringPreference.swift; path = Source/BluemixAppID/internal/StringPreference.swift; sourceTree = "<group>"; };
 		5E7F8081320311CADBF123446E2C9584 /* Pods-BluePic-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-BluePic-acknowledgements.plist"; sourceTree = "<group>"; };
 		625D026964B677BA864AD0DA20DAB34A /* BMSCore-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "BMSCore-dummy.m"; sourceTree = "<group>"; };
 		6327CD8C103B5C458FE914027EE9254B /* SDWebImageCompat.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SDWebImageCompat.m; path = SDWebImage/SDWebImageCompat.m; sourceTree = "<group>"; };
-		697AA587CEBC0E7DDD52220E679310F2 /* BMSPush.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = BMSPush.framework; path = BMSPush.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		697AA587CEBC0E7DDD52220E679310F2 /* BMSPush.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BMSPush.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6983CA84319903746E4B5AB6077B4E1B /* UIImageView+WebCache.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIImageView+WebCache.h"; path = "SDWebImage/UIImageView+WebCache.h"; sourceTree = "<group>"; };
 		6BA3075E939BACE7FEF6B84A8C928A5A /* SDWebImageDownloader.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SDWebImageDownloader.m; path = SDWebImage/SDWebImageDownloader.m; sourceTree = "<group>"; };
 		6C600DDB4F219E5A68AE828C23AE8580 /* AuthorizationError.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AuthorizationError.swift; path = Source/BluemixAppID/api/AuthorizationError.swift; sourceTree = "<group>"; };
@@ -297,9 +297,9 @@
 		718BF50852C62B5658E809A9BBF07F90 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		72284F7737D9010CAA29B0E564BEC028 /* SVRadialGradientLayer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SVRadialGradientLayer.h; path = SVProgressHUD/SVRadialGradientLayer.h; sourceTree = "<group>"; };
 		72DBDC4F058D00A87CBC4E105ACDFA0C /* JSONPreference.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = JSONPreference.swift; path = Source/BluemixAppID/internal/JSONPreference.swift; sourceTree = "<group>"; };
-		7309DB624EFFC646039C0AAED7D83468 /* BMSAnalyticsAPI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = BMSAnalyticsAPI.framework; path = BMSAnalyticsAPI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7309DB624EFFC646039C0AAED7D83468 /* BMSAnalyticsAPI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BMSAnalyticsAPI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7437CDE7F23FF65952095BBC457BDA92 /* BaseAppIdentity.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BaseAppIdentity.swift; path = Source/Security/Identity/BaseAppIdentity.swift; sourceTree = "<group>"; };
-		776C69C9EED632DBB6EFD80AC6360694 /* BMSAnalyticsAPI.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = BMSAnalyticsAPI.modulemap; sourceTree = "<group>"; };
+		776C69C9EED632DBB6EFD80AC6360694 /* BMSAnalyticsAPI.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = BMSAnalyticsAPI.modulemap; sourceTree = "<group>"; };
 		79BDE6BAAE1D59146BA6F41CD95E4429 /* Response.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Response.swift; path = "Source/Network Requests/Response.swift"; sourceTree = "<group>"; };
 		7AEC5D59C72FA822CDD0D53D7D32823D /* SVIndefiniteAnimatedView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SVIndefiniteAnimatedView.m; path = SVProgressHUD/SVIndefiniteAnimatedView.m; sourceTree = "<group>"; };
 		7BCC323F6B22D7FDBD606B7842F8BD9A /* UIView+WebCacheOperation.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIView+WebCacheOperation.m"; path = "SDWebImage/UIView+WebCacheOperation.m"; sourceTree = "<group>"; };
@@ -316,16 +316,16 @@
 		92D16DF756BB5A79D7C963060DB88578 /* NSData+ImageContentType.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSData+ImageContentType.m"; path = "SDWebImage/NSData+ImageContentType.m"; sourceTree = "<group>"; };
 		92D290C76D3A858119FB1487CDC037F8 /* AuthorizationHeaderHelper.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AuthorizationHeaderHelper.swift; path = Source/BluemixAppID/internal/AuthorizationHeaderHelper.swift; sourceTree = "<group>"; };
 		92D42F8A54CD3F2C95CCCB428F5D1F60 /* AccessToken.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AccessToken.swift; path = Source/BluemixAppID/api/Tokens/AccessToken.swift; sourceTree = "<group>"; };
-		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		93B70BF10BB78F94747AEFEB6678B6DC /* BMSClient.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BMSClient.swift; path = Source/BMSClient.swift; sourceTree = "<group>"; };
 		94F5548388BAF11BA9A8994614D22C50 /* BMSAnalyticsAPI-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "BMSAnalyticsAPI-dummy.m"; sourceTree = "<group>"; };
 		957C56071AF10D9253445434910F0EB8 /* BaseRequest.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BaseRequest.swift; path = "Source/Network Requests/BaseRequest.swift"; sourceTree = "<group>"; };
-		95EB235D54123F13A88A09C78DCAE1EF /* BMSCore.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = BMSCore.modulemap; sourceTree = "<group>"; };
+		95EB235D54123F13A88A09C78DCAE1EF /* BMSCore.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = BMSCore.modulemap; sourceTree = "<group>"; };
 		9823A0004E716EDC16B0CBFA02A18F07 /* RegistrationManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RegistrationManager.swift; path = Source/BluemixAppID/internal/RegistrationManager.swift; sourceTree = "<group>"; };
 		9E9A9D6CD562D4AF75F0AE46C9504E1D /* BMSResponse.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BMSResponse.swift; path = Source/BMSResponse.swift; sourceTree = "<group>"; };
 		A28AF781DC2C42EDDFF4FEA74E7D83C5 /* BMSAnalyticsAPI-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "BMSAnalyticsAPI-prefix.pch"; sourceTree = "<group>"; };
 		A41D67B7D910D07E3E551BB6D90E65C4 /* DeviceIdentity.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DeviceIdentity.swift; path = Source/Security/Identity/DeviceIdentity.swift; sourceTree = "<group>"; };
-		A487CA165A31DB62128F0C31467B92BC /* SDWebImage.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = SDWebImage.modulemap; sourceTree = "<group>"; };
+		A487CA165A31DB62128F0C31467B92BC /* SDWebImage.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = SDWebImage.modulemap; sourceTree = "<group>"; };
 		A61545740E98A891125A03DCEC72281B /* BluemixAppID-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "BluemixAppID-dummy.m"; sourceTree = "<group>"; };
 		A743ED8CFF9722159E8B39D415564152 /* SDImageCache.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SDImageCache.h; path = SDWebImage/SDImageCache.h; sourceTree = "<group>"; };
 		A8B337FEF219B94376784ACD424A99EA /* Pods-BluePic-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-BluePic-dummy.m"; sourceTree = "<group>"; };
@@ -341,7 +341,7 @@
 		B83C2E32B66790B26A74923ECBF96042 /* BMSAnalyticsAPI.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = BMSAnalyticsAPI.xcconfig; sourceTree = "<group>"; };
 		BAFC1EDCF103A650EF3C0018839FB443 /* SDWebImagePrefetcher.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SDWebImagePrefetcher.h; path = SDWebImage/SDWebImagePrefetcher.h; sourceTree = "<group>"; };
 		BC4814284D3A090AEAE6FFD53AEC68A0 /* BMSCore.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = BMSCore.xcconfig; sourceTree = "<group>"; };
-		BCB9B5FBF1DEE7930FFF9B89A2DCCC41 /* BMSPush.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = BMSPush.modulemap; sourceTree = "<group>"; };
+		BCB9B5FBF1DEE7930FFF9B89A2DCCC41 /* BMSPush.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = BMSPush.modulemap; sourceTree = "<group>"; };
 		BDC51915BC004F9AA1B31C983972C27D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/QuartzCore.framework; sourceTree = DEVELOPER_DIR; };
 		BE2636AFA1553623F64467F2D2C023C0 /* SDWebImageDownloader.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SDWebImageDownloader.h; path = SDWebImage/SDWebImageDownloader.h; sourceTree = "<group>"; };
 		BED68FD064BAB258985B7F4C80D2F553 /* SVProgressHUD.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SVProgressHUD.m; path = SVProgressHUD/SVProgressHUD.m; sourceTree = "<group>"; };
@@ -352,7 +352,7 @@
 		C6332B678F309FCA1B43215D7AA87C1E /* SDWebImage-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "SDWebImage-dummy.m"; sourceTree = "<group>"; };
 		C652040D6A9BFC6D210918229C66CC14 /* UserAttributeManagerImpl.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = UserAttributeManagerImpl.swift; path = Source/BluemixAppID/internal/UserAttributeManagerImpl.swift; sourceTree = "<group>"; };
 		C880CE49ED8B5C1940955C74418FF77C /* BaseAuthorizationManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BaseAuthorizationManager.swift; path = Source/Security/BaseAuthorizationManager.swift; sourceTree = "<group>"; };
-		C8A1B00CC988BC0DE1E39DC2AF085AD0 /* SVProgressHUD.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = SVProgressHUD.modulemap; sourceTree = "<group>"; };
+		C8A1B00CC988BC0DE1E39DC2AF085AD0 /* SVProgressHUD.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = SVProgressHUD.modulemap; sourceTree = "<group>"; };
 		CAA0A79246B430B0A971256CAC5BB8C3 /* PreferenceManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PreferenceManager.swift; path = Source/BluemixAppID/internal/PreferenceManager.swift; sourceTree = "<group>"; };
 		CACA55DB0475616766C8AA84133CEE16 /* BMSPush-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "BMSPush-prefix.pch"; sourceTree = "<group>"; };
 		CC0E43EFA691D1D0C21442253AFD421E /* BMSCore-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "BMSCore-prefix.pch"; sourceTree = "<group>"; };
@@ -377,8 +377,8 @@
 		F78EF1096385BF5BEEA6340BA27B706C /* BMSAnalyticsAPI-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "BMSAnalyticsAPI-umbrella.h"; sourceTree = "<group>"; };
 		F7BA7F0041A99A1C2A4E2A1E5447ABAF /* BMSPush.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = BMSPush.xcconfig; sourceTree = "<group>"; };
 		FA3246E75971D6217E710F6A916A9A7F /* Pods-BluePic-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-BluePic-acknowledgements.markdown"; sourceTree = "<group>"; };
-		FAECF359147A8220225A2F858996DCF4 /* Pods-BluePic.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = "Pods-BluePic.modulemap"; sourceTree = "<group>"; };
-		FC3B19046334D26F527C62D69BCB026A /* BluemixAppID.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = BluemixAppID.modulemap; sourceTree = "<group>"; };
+		FAECF359147A8220225A2F858996DCF4 /* Pods-BluePic.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-BluePic.modulemap"; sourceTree = "<group>"; };
+		FC3B19046334D26F527C62D69BCB026A /* BluemixAppID.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = BluemixAppID.modulemap; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -472,7 +472,6 @@
 				D1D47D9928CC8B13D4762AD2B6DF0D95 /* UserIdentity.swift */,
 				DB33B366BCD0BDCC43140A72748CD8A1 /* Support Files */,
 			);
-			name = BMSCore;
 			path = BMSCore;
 			sourceTree = "<group>";
 		};
@@ -490,7 +489,6 @@
 				50F01A3E72853256EBEF753C979ECB4A /* BMSRichPushNotificationOptions.swift */,
 				7CD838A43E37F1EB01287B26FAFC8BC7 /* Support Files */,
 			);
-			name = BMSPush;
 			path = BMSPush;
 			sourceTree = "<group>";
 		};
@@ -540,7 +538,6 @@
 				8F015D5E317F00CDDB20A56FD66FAF81 /* Core */,
 				CDEB886B566890892F1CB3EDB397A34B /* Support Files */,
 			);
-			name = SDWebImage;
 			path = SDWebImage;
 			sourceTree = "<group>";
 		};
@@ -617,7 +614,6 @@
 				E2F17689D9A9A8289EA6CE25522975CF /* Utils.swift */,
 				FB526691884A60372F72FB86A8A3D355 /* Support Files */,
 			);
-			name = BluemixAppID;
 			path = BluemixAppID;
 			sourceTree = "<group>";
 		};
@@ -706,7 +702,6 @@
 				3702EBABEC4A6613E91B8A674C04C930 /* Resources */,
 				D5D957BFCDC5761DCF5B73E2417408D6 /* Support Files */,
 			);
-			name = SVProgressHUD;
 			path = SVProgressHUD;
 			sourceTree = "<group>";
 		};
@@ -742,7 +737,6 @@
 				7E092A1CD730E92ADA6261D134B13E36 /* RequestMetadata.swift */,
 				14CCBA0DB06D9573B4A99D1B878BBC56 /* Support Files */,
 			);
-			name = BMSAnalyticsAPI;
 			path = BMSAnalyticsAPI;
 			sourceTree = "<group>";
 		};
@@ -1007,7 +1001,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0830;
-				LastUpgradeCheck = 0700;
+				LastUpgradeCheck = 0910;
 			};
 			buildConfigurationList = 2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -1252,41 +1246,7 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		02AE6B7EE8794F2D751745D1F1005E52 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = DFC6BADBFCECB3FF0F6DA21E4C60CC92 /* Pods-BluePic.debug.xcconfig */;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "Target Support Files/Pods-BluePic/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-BluePic/Pods-BluePic.modulemap";
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = Pods_BluePic;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		037257B743EE551E18D8A4C29DB360B0 /* Release */ = {
+		0B4E9009FF107B5372CF6471A62E52AF /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 496BCD603B5CF7561AD2101E9F8C35CB /* Pods-BluePic.release.xcconfig */;
 			buildSettings = {
@@ -1301,7 +1261,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = "Target Support Files/Pods-BluePic/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = staticlib;
 				MODULEMAP_FILE = "Target Support Files/Pods-BluePic/Pods-BluePic.modulemap";
@@ -1320,70 +1280,7 @@
 			};
 			name = Release;
 		};
-		1714903C2D8C4B57E179DA649F4BCCAE /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7E2092805656BD298575EE7E17674509 /* BluemixAppID.xcconfig */;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/BluemixAppID/BluemixAppID-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/BluemixAppID/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/BluemixAppID/BluemixAppID.modulemap";
-				PRODUCT_NAME = BluemixAppID;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		626F92954FAC7555554E9146B83A2789 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = F7BA7F0041A99A1C2A4E2A1E5447ABAF /* BMSPush.xcconfig */;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/BMSPush/BMSPush-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/BMSPush/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/BMSPush/BMSPush.modulemap";
-				PRODUCT_NAME = BMSPush;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
-		6F9224530522DD3C735EC96CF142642E /* Release */ = {
+		12C4B864767C59600DBFA238F1E2F8BC /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -1429,14 +1326,172 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = NO_SIGNING/;
 				STRIP_INSTALLED_PRODUCT = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SYMROOT = "${SRCROOT}/../build";
 			};
 			name = Release;
+		};
+		1714903C2D8C4B57E179DA649F4BCCAE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7E2092805656BD298575EE7E17674509 /* BluemixAppID.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/BluemixAppID/BluemixAppID-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/BluemixAppID/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/BluemixAppID/BluemixAppID.modulemap";
+				PRODUCT_NAME = BluemixAppID;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		59F0302F2371FCC6B73EF0A418D40734 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_REQUIRED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_DEBUG=1",
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = NO_SIGNING/;
+				STRIP_INSTALLED_PRODUCT = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SYMROOT = "${SRCROOT}/../build";
+			};
+			name = Debug;
+		};
+		626F92954FAC7555554E9146B83A2789 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F7BA7F0041A99A1C2A4E2A1E5447ABAF /* BMSPush.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/BMSPush/BMSPush-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/BMSPush/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/BMSPush/BMSPush.modulemap";
+				PRODUCT_NAME = BMSPush;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		9847543A6A4F4753E49A46D66DF2EB34 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = DFC6BADBFCECB3FF0F6DA21E4C60CC92 /* Pods-BluePic.debug.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-BluePic/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-BluePic/Pods-BluePic.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = Pods_BluePic;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
 		};
 		9F62237920115AEFB66855A888F52CA4 /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -1590,66 +1645,6 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		B57951D085A1B98A97F8A1062A5E5C5B /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGNING_REQUIRED = NO;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_TESTABILITY = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"POD_CONFIGURATION_DEBUG=1",
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				MTL_ENABLE_DEBUG_INFO = YES;
-				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = NO_SIGNING/;
-				STRIP_INSTALLED_PRODUCT = NO;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SYMROOT = "${SRCROOT}/../build";
 			};
 			name = Debug;
 		};
@@ -1824,8 +1819,8 @@
 		2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				B57951D085A1B98A97F8A1062A5E5C5B /* Debug */,
-				6F9224530522DD3C735EC96CF142642E /* Release */,
+				59F0302F2371FCC6B73EF0A418D40734 /* Debug */,
+				12C4B864767C59600DBFA238F1E2F8BC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1878,8 +1873,8 @@
 		F8443E7977E73157BE80C26EBC3B0C17 /* Build configuration list for PBXNativeTarget "Pods-BluePic" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				02AE6B7EE8794F2D751745D1F1005E52 /* Debug */,
-				037257B743EE551E18D8A4C29DB360B0 /* Release */,
+				9847543A6A4F4753E49A46D66DF2EB34 /* Debug */,
+				0B4E9009FF107B5372CF6471A62E52AF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

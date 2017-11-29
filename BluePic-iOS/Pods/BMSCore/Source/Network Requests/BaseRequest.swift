@@ -250,7 +250,7 @@ open class BaseRequest: NSObject, URLSessionTaskDelegate {
         networkRequest.url = requestUrl
         networkRequest.httpMethod = httpMethod.rawValue
         networkRequest.httpBody = requestBody
-        networkRequest.cachePolicy = cachePolicy
+		networkRequest.cachePolicy = cachePolicy
         for header in self.headers {
             networkRequest.setValue(header.value, forHTTPHeaderField: header.key)
         }
