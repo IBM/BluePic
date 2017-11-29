@@ -1,7 +1,6 @@
 # BluePic
 
 [![Build Status - Master](https://travis-ci.org/IBM/BluePic.svg?branch=master)](https://travis-ci.org/IBM/BluePic)
-![IBM Cloud Deployments](https://deployment-tracker.mybluemix.net/stats/c45eeb765e77bf2bffd747e8d910e37d/badge.svg)
 
 BluePic is a photo and image sharing sample application that allows you to take photos and share them with other BluePic users. This sample application demonstrates how to leverage, in a mobile iOS 10 application, a Kitura-based server application written in Swift.
 
@@ -46,7 +45,7 @@ If you'd like to, you can spend a few minutes to get familiar with the folder st
 #### Cloud Foundry Deployment
 Clicking on the button below deploys the BluePic application to IBM Cloud. The [`manifest.yml`](manifest.yml) file [included in the repo] is parsed to obtain the name of the application and to determine the Cloud Foundry services that should be instantiated. For further details on the structure of the `manifest.yml` file, see the [Cloud Foundry documentation](https://docs.cloudfoundry.org/devguide/deploy-apps/manifest.html#minimal-manifest). After clicking the button below, you will be able to name your application, keep in mind that your IBM Cloud application name needs to match the name value in your `manifest.yml`. Therefore, you may have to change the name value in your `manifest.yml` if there is a naming conflict in your IBM Cloud account.
 
-[![Deploy to IBM Cloud](https://deployment-tracker.mybluemix.net/stats/c45eeb765e77bf2bffd747e8d910e37d/button.svg)](https://bluemix.net/deploy?repository=https://github.com/IBM/BluePic.git&cm_mmc=github-code-_-native-_-bluepic-_-deploy2bluemix)
+[![Deploy to Bluemix](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy?repository=https://github.com/IBM/BluePic.git&cm_mmc=github-code-_-native-_-bluepic-_-deploy2bluemix)
 
 Once deployment to IBM Cloud is completed, you should access the route assigned to your application using the web browser of your choice. You should see the Kitura welcome page!
 
@@ -211,7 +210,7 @@ To learn more about BluePic's folder structure, its architecture, and the Swift 
 - [Build a server-side Swift application using the Kitura command-line interface](https://developer.ibm.com/swift/2017/10/30/kitura-cli/)
 
 ## Privacy Notice
-The BluePic-Server application includes code to track deployments to [IBM Cloud](https://www.ibm.com/cloud/) and other Cloud Foundry platforms. The following information is sent to [Deployment Tracker](https://github.com/IBM-bluemix/cf-deployment-tracker-service) and [Metrics collector](https://github.com/IBM/metrics-collector-service) service on each deployment:
+The BluePic-Server application includes code to track deployments to [IBM Cloud](https://www.ibm.com/cloud/) and other Cloud Foundry platforms. The following information is sent to the [Metrics collector](https://github.com/IBM/metrics-collector-service) service on each deployment:
 
 * Swift project code version (if provided)
 * Swift project repository URL
@@ -222,12 +221,11 @@ The BluePic-Server application includes code to track deployments to [IBM Cloud]
 * Labels and names of bound services
 * Number of instances for each bound service and associated plan information
 
-This data is collected from the parameters of the `CloudFoundryDeploymentTracker` and `MetricsTrackerClient`, the `VCAP_APPLICATION` and `VCAP_SERVICES` environment variables in IBM Cloud and other Cloud Foundry platforms. This data is used by IBM to track metrics around deployments of sample applications to IBM Cloud to measure the usefulness of our examples, so that we can continuously improve the content we offer to you. Only deployments of sample applications that include code to ping the Deployment Tracker service will be tracked.
+This data is collected from the parameters of the `MetricsTrackerClient`, the `VCAP_APPLICATION` and `VCAP_SERVICES` environment variables in IBM Cloud and other Cloud Foundry platforms. This data is used by IBM to track metrics around deployments of sample applications to IBM Cloud to measure the usefulness of our examples, so that we can continuously improve the content we offer to you.
 
 ### Disabling Deployment Tracking
 Deployment tracking can be disabled by removing the following lines from `main.swift`:
 
-    CloudFoundryDeploymentTracker(repositoryURL: "https://github.com/IBM-Swift/BluePic.git", codeVersion: nil).track()
     MetricsTrackerClient(repository: "BluePic", organization: "IBM").track()
 
 ## License
