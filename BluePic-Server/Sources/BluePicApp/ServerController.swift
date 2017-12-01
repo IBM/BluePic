@@ -62,7 +62,7 @@ public class ServerController {
 
   // let credentials = Credentials()
   // let webCredentialsPlugin: WebAppKituraCredentialsPlugin
-  let landing_url = "/#/homepage"
+  let landingUrl = "/#/homepage"
 
   let kTagsPath = "/tags"
   let kPingPath = "/ping"
@@ -142,8 +142,8 @@ public class ServerController {
     })
 
     let handler = credentials.authenticate(credentialsType: webCredentialsPlugin.name,
-                                           successRedirect: landing_url,
-                                           failureRedirect: landing_url)
+                                           successRedirect: landingUrl,
+                                           failureRedirect: landingUrl)
 
     router.get("/ibm/bluemix/appid/login", handler: handler)
     router.get("/ibm/bluemix/appid/callback", handler: handler)
@@ -188,7 +188,7 @@ extension ServerController: ServerProtocol {
   fileprivate func logout(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
     credentials.logOut(request: request)
     webCredentialsPlugin.logout(request: request)
-    _ = try? response.redirect(landing_url)
+    _ = try? response.redirect(landingUrl)
   }
  */
 
