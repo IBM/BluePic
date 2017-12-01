@@ -58,7 +58,7 @@ public struct RequestMetadata {
         var roundTripTime: Int64 = 0
         // If this is not true, that means some BMSCore developer forgot to set the endTime somewhere
         if endTime > startTime {
-            (roundTripTime, _) = endTime.subtractingReportingOverflow(startTime)
+	    roundTripTime = endTime &- startTime
         }
         
         // Data for analytics logging
