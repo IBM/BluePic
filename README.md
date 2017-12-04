@@ -204,17 +204,12 @@ BluePic was designed with a lot of useful features. To see further information a
 To learn more about BluePic's folder structure, its architecture, and the Swift packages it depends on, see the [About](Docs/About.md) page.
 
 ## Learn More
-
 - [Transition to Server-Side Swift with BluePic](https://developer.ibm.com/swift/2016/11/15/transition-to-server-side-swift-with-bluepic/)
 - [Introducing Kitura 2.0](https://developer.ibm.com/swift/2017/10/30/kitura-20/)
 - [Build a server-side Swift application using the Kitura command-line interface](https://developer.ibm.com/swift/2017/10/30/kitura-cli/)
 
 ## Privacy Notice
-<<<<<<< HEAD
-The BluePic-Server application includes code to track deployments to [IBM Cloud](https://www.ibm.com/cloud/) and other Cloud Foundry platforms. The following information is sent to [Metrics collector](https://github.com/IBM/metrics-collector-service) service on each deployment:
-=======
 The BluePic-Server application includes code to track deployments to [IBM Cloud](https://www.ibm.com/cloud/) and other Cloud Foundry platforms. The following information is sent to the [Metrics collector](https://github.com/IBM/metrics-collector-service) service on each deployment:
->>>>>>> origin
 
 * Swift project code version (if provided)
 * Swift project repository URL
