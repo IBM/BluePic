@@ -61,10 +61,7 @@ extension ServerController {
       req.responseData { response in
         switch response.result {
           case .success(let body):
-            guard let jsonResponse = try? JSON(data: body) else {
-              Log.warning("Failed to parse JSON response")
-              return
-            }
+            let jsonResponse = JSON(data: body)
             Log.debug("CloudFunctions response: \(jsonResponse)")
           case .failure(let err):
             Log.error("Error response from CloudFunctions: \(String(describing: err))")
@@ -149,7 +146,7 @@ extension ServerController {
       let data = try self.encoder.encode(object)
       let json = SwiftyJSON.JSON(data: data)
 
-      database.create(json) { id, revision, _, error in
+      database.create(json) { _, revision, _, error in
 
         guard error == nil, let revision = revision else {
           Log.error("Failed to add user to the system of records.")
@@ -166,7 +163,6 @@ extension ServerController {
 
     }
   }
-
 
   /**
    Convenience method to create a URL for a container.

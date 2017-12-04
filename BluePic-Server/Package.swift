@@ -30,14 +30,13 @@ let package = Package(
     dependencies: [
       .package(url: "https://github.com/IBM-Swift/Kitura.git", .upToNextMinor(from: "2.0.0")),
       .package(url: "https://github.com/IBM-Swift/Kitura-CouchDB.git", .upToNextMinor(from: "1.7.0")),
-      .package(url: "https://github.com/IBM-Swift/CloudEnvironment.git", .upToNextMajor(from: "5.0.0")),
-      .package(url: "https://github.com/IBM/metrics-collector-client-swift", .upToNextMinor(from: "5.0.0")),
+      .package(url: "https://github.com/IBM-Swift/CloudEnvironment.git", .upToNextMajor(from: "6.0.0")),
+      .package(url: "https://github.com/IBM/metrics-collector-client-swift", .upToNextMajor(from: "5.0.0")),
       .package(url: "https://github.com/ibm-bluemix-mobile-services/bluemix-simple-http-client-swift.git", .upToNextMinor(from: "0.7.0")),
       .package(url: "https://github.com/ibm-bluemix-mobile-services/bluemix-objectstorage-serversdk-swift.git", .upToNextMinor(from: "0.8.0")),
       .package(url: "https://github.com/ibm-bluemix-mobile-services/bms-pushnotifications-serversdk-swift.git", .upToNextMinor(from: "0.6.0")),
       .package(url: "https://github.com/ibm-cloud-security/appid-serversdk-swift.git", .upToNextMinor(from: "2.0.0")),
-      .package(url: "https://github.com/IBM-Swift/Kitura-CredentialsFacebook.git", .upToNextMinor(from: "2.0.0")),
-      .package(url: "https://github.com/IBM-Swift/SwiftyRequest", .upToNextMajor(from: "0.0.0"))
+      .package(url: "https://github.com/IBM-Swift/Kitura-CredentialsFacebook.git", .upToNextMinor(from: "2.0.0"))
     ],
     targets: [
         .target(
@@ -49,8 +48,7 @@ let package = Package(
                             "BluemixAppID",
                             "CredentialsFacebook",
                             "BluemixPushNotifications",
-                            "MetricsTrackerClient",
-                            "SwiftyRequest"
+                            "MetricsTrackerClient"
                           ]
         ),
         .target(
@@ -59,7 +57,7 @@ let package = Package(
         ),
         .testTarget(
             name: "BluePicAppTests",
-            dependencies: ["BluePicServer", "SwiftyRequest"]
+            dependencies: ["BluePicServer", "MetricsTrackerClient"]
         )
     ]
 )

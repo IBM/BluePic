@@ -17,7 +17,7 @@
 import Foundation
 
 enum BluePicLocalizedError: LocalizedError {
-  
+
   case getTagsFailed
   case noImagesByTag(String)
   case getAllImagesFailed
@@ -32,7 +32,7 @@ enum BluePicLocalizedError: LocalizedError {
   case addUserRecordFailed(String)
   case requestFailed
   case createDatabaseObjectFailed(String)
-  
+
   var errorDescription: String? {
     switch self {
     case .getTagsFailed: return "Failed to obtain tags from database."

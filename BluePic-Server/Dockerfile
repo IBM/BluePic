@@ -16,7 +16,7 @@
 
 # Builds a Docker image with all the dependencies for compiling and running the BluePic-iOS sample application.
 
-FROM ibmcom/swift-ubuntu:4.0
+FROM ibmcom/swift-ubuntu:4.0.2
 MAINTAINER IBM Swift Engineering at IBM Cloud
 LABEL Description="Docker image for building and running the BluePic sample application."
 

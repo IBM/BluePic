@@ -130,7 +130,7 @@ public class BMSPushClient: NSObject {
                         UIApplication.shared.registerForRemoteNotifications()
                         self.delegate?.onChangePermission(status: true)
                     } else {
-                        print("Error while registering with APNS server :  \(error?.localizedDescription)")
+                        print("Error while registering with APNS server :  \(String(describing: error))")
                         self.delegate?.onChangePermission(status: false)
                     }
                 })
@@ -209,7 +209,7 @@ public class BMSPushClient: NSObject {
                         UIApplication.shared.registerForRemoteNotifications()
                         self.delegate?.onChangePermission(status: true)
                     } else {
-                        print("Error while registering with APNS server :  \(error?.localizedDescription)")
+                        print("Error while registering with APNS server :  \(String(describing: error))")
                         self.delegate?.onChangePermission(status: false)
                     }
                 })
@@ -344,8 +344,8 @@ public class BMSPushClient: NSObject {
                                         self.sendAnalyticsData(logType: LogLevel.info, logStringData: "Response of device registration - Response is: \(responseText)")
                                         completionHandler(responseText, status, "")
                                     }else{
-                                        self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error during device registration - Error code is: \(status) and error is: \(response?.responseText)")
-                                        completionHandler("", IMFPushErrorvalues.IMFPushRegistrationError.rawValue, "Error during device registration - Error code is: \(status) and error is: \(response?.responseText)")
+                                        self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error during device registration - Error code is: \(status) and error is: \(String(describing: response?.responseText))")
+                                        completionHandler("", IMFPushErrorvalues.IMFPushRegistrationError.rawValue, "Error during device registration - Error code is: \(status) and error is: \(String(describing: response?.responseText))")
                                     }
                                 }
                                 else if let responseError = error {
@@ -359,7 +359,7 @@ public class BMSPushClient: NSObject {
                             
                             // MARK: device is already Registered
                             
-                            self.sendAnalyticsData(logType: LogLevel.debug, logStringData: "Device is already registered. Return the device Id - Response is: \(response?.responseText)")
+                            self.sendAnalyticsData(logType: LogLevel.debug, logStringData: "Device is already registered. Return the device Id - Response is: \(String(describing: response?.responseText))")
                             let respJson = response?.responseText
                             let data = respJson!.data(using: String.Encoding.utf8)
                             let jsonResponse:NSDictionary = try! JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! NSDictionary
@@ -395,8 +395,8 @@ public class BMSPushClient: NSObject {
                                             self.sendAnalyticsData(logType: LogLevel.info, logStringData: "Response of device registration - Response is: \(responseText)")
                                             completionHandler(responseText, status, "")
                                         }else{
-                                            self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error during device registration - Error code is: \(status) and error is: \(response?.responseText)")
-                                            completionHandler("", IMFPushErrorvalues.IMFPushRegistrationError.rawValue, "Error during device registration - Error code is: \(status) and error is: \(response?.responseText)")
+                                            self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error during device registration - Error code is: \(status) and error is: \(String(describing: response?.responseText))")
+                                            completionHandler("", IMFPushErrorvalues.IMFPushRegistrationError.rawValue, "Error during device registration - Error code is: \(status) and error is: \(String(describing: response?.responseText))")
                                         }
                                     }
                                     else if let responseError = error {
@@ -513,8 +513,8 @@ public class BMSPushClient: NSObject {
                                     self.sendAnalyticsData(logType: LogLevel.info, logStringData: "Response of device registration - Response is: \(responseText)")
                                     completionHandler(responseText, status, "")
                                 }else{
-                                    self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error during device registration - Error code is: \(status) and error is: \(response?.responseText) ")
-                                    completionHandler("", IMFPushErrorvalues.IMFPushRegistrationError.rawValue, "Error during device registration - Error code is: \(status) and error is: \(response?.responseText)")
+                                    self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error during device registration - Error code is: \(status) and error is: \(String(describing: response?.responseText)) ")
+                                    completionHandler("", IMFPushErrorvalues.IMFPushRegistrationError.rawValue, "Error during device registration - Error code is: \(status) and error is: \(String(describing: response?.responseText))")
                                 }
                                 
                             }
@@ -529,7 +529,7 @@ public class BMSPushClient: NSObject {
                         
                         // MARK: device is already Registered
                         
-                        self.sendAnalyticsData(logType: LogLevel.debug, logStringData: "Device is already registered. Return the device Id - Response is: \(response?.responseText)")
+                        self.sendAnalyticsData(logType: LogLevel.debug, logStringData: "Device is already registered. Return the device Id - Response is: \(String(describing: response?.responseText))")
                         let respJson = response?.responseText
                         let data = respJson!.data(using: String.Encoding.utf8)
                         let jsonResponse:NSDictionary = try! JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! NSDictionary
@@ -563,8 +563,8 @@ public class BMSPushClient: NSObject {
                                         self.sendAnalyticsData(logType: LogLevel.info, logStringData: "Response of device registration - Response is: \(responseText)")
                                         completionHandler(responseText, status, "")
                                     }else{
-                                        self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error during device registration - Error code is: \(status) and error is: \(response?.responseText)")
-                                        completionHandler("", IMFPushErrorvalues.IMFPushRegistrationError.rawValue, "Error during device registration - Error code is: \(status) and error is: \(response?.responseText)")
+                                        self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error during device registration - Error code is: \(status) and error is: \(String(describing: response?.responseText))")
+                                        completionHandler("", IMFPushErrorvalues.IMFPushRegistrationError.rawValue, "Error during device registration - Error code is: \(status) and error is: \(String(describing: response?.responseText))")
                                     }
                                 }
                                 else if let responseError = error {
@@ -643,8 +643,8 @@ public class BMSPushClient: NSObject {
                     completionHandler(availableTagsArray, status, "")
 
                 }else{
-                    self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error while retrieving available tags - Error code is: \(status) and error is: \(response?.responseText)")
-                    completionHandler([], IMFPushErrorvalues.IMFPushRetrieveTagsError.rawValue,"Error while retrieving available tags - Error code is: \(status) and error is: \(response?.responseText)")
+                    self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error while retrieving available tags - Error code is: \(status) and error is: \(String(describing: response?.responseText))")
+                    completionHandler([], IMFPushErrorvalues.IMFPushRetrieveTagsError.rawValue,"Error while retrieving available tags - Error code is: \(status) and error is: \(String(describing: response?.responseText))")
                 }
                 
             } else if let responseError = error {
@@ -710,8 +710,8 @@ public class BMSPushClient: NSObject {
                         completionHandler(subscriptionResponse, status, "")
                         
                     }else{
-                        self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error while subscribing to tags - Error code is: \(status) and error is: \(response?.responseText)")
-                        completionHandler([:], IMFPushErrorvalues.IMFPushTagSubscriptionError.rawValue,"Error while subscribing to tags - Error code is: \(status) and error is: \(response?.responseText)")
+                        self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error while subscribing to tags - Error code is: \(status) and error is: \(String(describing: response?.responseText))")
+                        completionHandler([:], IMFPushErrorvalues.IMFPushTagSubscriptionError.rawValue,"Error while subscribing to tags - Error code is: \(status) and error is: \(String(describing: response?.responseText))")
                     }
                     
                 } else if let responseError = error {
@@ -779,8 +779,8 @@ public class BMSPushClient: NSObject {
                     
                     completionHandler(subscriptionArray, status, "")
                 }else{
-                    self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error while retrieving subscriptions - Error codeis: \(status) and error is: \(response?.responseText)")
-                    completionHandler([], IMFPushErrorvalues.IMFPushRetrieveSubscriptionError.rawValue,"Error while retrieving subscriptions - Error code is: \(status) and error is: \(response?.responseText)")
+                    self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error while retrieving subscriptions - Error codeis: \(status) and error is: \(String(describing: response?.responseText))")
+                    completionHandler([], IMFPushErrorvalues.IMFPushRetrieveSubscriptionError.rawValue,"Error while retrieving subscriptions - Error code is: \(status) and error is: \(String(describing: response?.responseText))")
                 }
                 
             } else if let responseError = error {
@@ -902,12 +902,12 @@ public class BMSPushClient: NSObject {
                 if (status == 204){
                     let responseText = response?.responseText ?? ""
                     
-                    self.sendAnalyticsData(logType: LogLevel.info, logStringData: "Successfully unregistered the device. - Response is: \(response?.responseText)")
+                    self.sendAnalyticsData(logType: LogLevel.info, logStringData: "Successfully unregistered the device. - Response is: \(String(describing: response?.responseText))")
                     
                     completionHandler(responseText, status, "")
                 }else{
-                    self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error while unregistering device - Error code is: \(status) and error is: \(response?.responseText)")
-                    completionHandler("", IMFPushErrorvalues.BMSPushUnregitrationError.rawValue,"Error while unregistering device - Error code is: \(status) and error is: \(response?.responseText)")
+                    self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error while unregistering device - Error code is: \(status) and error is: \(String(describing: response?.responseText))")
+                    completionHandler("", IMFPushErrorvalues.BMSPushUnregitrationError.rawValue,"Error while unregistering device - Error code is: \(status) and error is: \(String(describing: response?.responseText))")
                 }
             } else if let responseError = error  {
                 

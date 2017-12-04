@@ -53,6 +53,14 @@ public class BMSClient {
             - note: Use this in the `BMSClient.initialize(bluemixAppRoute:bluemixAppGUID:bluemixRegion:)` method.
          */
         public static let sydney = ".au-syd.bluemix.net"
+	
+	/**
+	    The Germany Bluemix region.
+         
+            - note: Use this in the `BMSClient.initialize(bluemixAppRoute:bluemixAppGUID:bluemixRegion:)` method.
+         */
+	public static let germany = ".eu-de.bluemix.net"
+        
     }
     
     

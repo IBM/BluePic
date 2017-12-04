@@ -11,13 +11,13 @@ The back-end components (i.e. Kitura-based server and Cloud Functions actions) a
 
 | Component | Swift Version |
 | --- | --- |
-| Kitura-based server | `4.0` |
+| Kitura-based server | `4.0.2` |
 | Cloud Functions actions | `3.1.1` |
-| iOS App | Xcode 9.0 default (`Swift 4.0`)
+| iOS App | Xcode 9.1 default (`Swift 4.0.2`)
 
 You can download the development snapshots of the Swift binaries by following this [link](https://swift.org/download/). Compatibility with other Swift versions is not guaranteed.
 
-Optionally, if you'd like to run the BluePic Kitura-based server using Xcode, you should use Xcode 9 and configure it to use the default toolchain. For details on how to set up Xcode, see [Building within Xcode](http://www.kitura.io/en/starter/xcode.html). Please note that any other versions of Xcode are not guaranteed to work with the back-end code.
+Optionally, if you'd like to run the BluePic Kitura-based server using Xcode, you should use Xcode 9.1 and configure it to use the default toolchain. For details on how to set up Xcode, see [Building within Xcode](http://www.kitura.io/en/starter/xcode.html). Please note that any other versions of Xcode are not guaranteed to work with the back-end code.
 
 
 ## Getting started
@@ -210,7 +210,11 @@ To learn more about BluePic's folder structure, its architecture, and the Swift 
 - [Build a server-side Swift application using the Kitura command-line interface](https://developer.ibm.com/swift/2017/10/30/kitura-cli/)
 
 ## Privacy Notice
+<<<<<<< HEAD
+The BluePic-Server application includes code to track deployments to [IBM Cloud](https://www.ibm.com/cloud/) and other Cloud Foundry platforms. The following information is sent to [Metrics collector](https://github.com/IBM/metrics-collector-service) service on each deployment:
+=======
 The BluePic-Server application includes code to track deployments to [IBM Cloud](https://www.ibm.com/cloud/) and other Cloud Foundry platforms. The following information is sent to the [Metrics collector](https://github.com/IBM/metrics-collector-service) service on each deployment:
+>>>>>>> origin
 
 * Swift project code version (if provided)
 * Swift project repository URL

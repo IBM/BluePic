@@ -1,7 +1,7 @@
 # To use this file, simply execute: docker-compose up
 # make sure you have filled out the credentials in the cloud.json file before running this
 app:
-  image: ibmcom/swift-ubuntu:4.0
+  image: ibmcom/swift-ubuntu:4.0.2
   ports:
     - "8080:8080"
   volumes:

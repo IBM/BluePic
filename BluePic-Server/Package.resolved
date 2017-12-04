@@ -42,8 +42,8 @@
         "repositoryURL": "https://github.com/IBM-Swift/CircuitBreaker.git",
         "state": {
           "branch": null,
-          "revision": "7f6fe4ced83ddea67ac59f86724638d4e1619039",
-          "version": "2.0.1"
+          "revision": "252f7bccb70dc34283f7a05ece624075967d1bb2",
+          "version": "3.0.0"
         }
       },
       {
@@ -51,8 +51,8 @@
         "repositoryURL": "https://github.com/IBM-Swift/CloudEnvironment.git",
         "state": {
           "branch": null,
-          "revision": "1b1b8db4b7b2eae55d87722b635167b7ed0d87cc",
-          "version": "5.1.2"
+          "revision": "446c74f26a6c757b8f694fb66af662396e520eea",
+          "version": "6.0.0"
         }
       },
       {
@@ -60,8 +60,8 @@
         "repositoryURL": "https://github.com/IBM-Swift/Swift-cfenv.git",
         "state": {
           "branch": null,
-          "revision": "a87a057209b420c4167137f87ecfc91b1fe8afc4",
-          "version": "5.0.1"
+          "revision": "2b4a8a35ac285f7ad8a09519cbdbe486da5d675b",
+          "version": "6.0.0"
         }
       },
       {
@@ -78,8 +78,8 @@
         "repositoryURL": "https://github.com/IBM-Swift/Configuration.git",
         "state": {
           "branch": null,
-          "revision": "20e2167fc80a039e3ee75ff3940c19c71084395e",
-          "version": "2.0.0"
+          "revision": "5a295cffa7083ab6f30cc75de373b729f61a3e7c",
+          "version": "3.0.0"
         }
       },
       {
@@ -89,6 +89,15 @@
           "branch": null,
           "revision": "16f9c7ddcbe11bbd32106a791ebef2108a4e9183",
           "version": "0.8.21"
+        }
+      },
+      {
+        "package": "FileKit",
+        "repositoryURL": "https://github.com/IBM-Swift/FileKit.git",
+        "state": {
+          "branch": null,
+          "revision": "319016dbf4b3ce04589265c23c9cac0016fe8096",
+          "version": "0.0.1"
         }
       },
       {
@@ -195,8 +204,8 @@
         "repositoryURL": "https://github.com/IBM/metrics-collector-client-swift",
         "state": {
           "branch": null,
-          "revision": "89059c0a99f60385f039ced9f0f57a1e928cb443",
-          "version": "5.0.3"
+          "revision": "1ae0e6559505a16e0ce61b035fb1a51f7127909a",
+          "version": "5.0.4"
         }
       },
       {
@@ -246,11 +255,11 @@
       },
       {
         "package": "SwiftyRequest",
-        "repositoryURL": "https://github.com/IBM-Swift/SwiftyRequest",
+        "repositoryURL": "https://github.com/IBM-Swift/SwiftyRequest.git",
         "state": {
           "branch": null,
-          "revision": "0bfab0f6ead80636eb92ada433b10586bdb7faff",
-          "version": "0.0.6"
+          "revision": "4c571be415d71f1f45d5c44ccc92b17a47acde88",
+          "version": "1.0.0"
         }
       },
       {
