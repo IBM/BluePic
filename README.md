@@ -111,7 +111,7 @@ Go to the `BluePic-iOS` directory and open the BluePic workspace with Xcode usin
 
 REGION US SOUTH | REGION UK | REGION SYDNEY
 --- | --- | ---
-`.ng.IBM Cloud.net` | `.eu-gb.IBM Cloud.net` | `.au-syd.IBM Cloud.net`
+`.ng.bluemix.net` | `.eu-gb.bluemix.net` | `.au-syd.bluemix.net`
 
 You can find your region in multiple ways. For instance, by just looking at the URL you use to access your application's page (or the IBM Cloud dashboard). Another way is to look at the `configuration.json` file you modified earlier. If you look at the credentials under your `AppID` service, there is a value called `oauthServerUrl` which should contain one of the regions mentioned above. Once you insert your `cloudAppRegion` value into the `cloud.plist`, your app should be configured.
 
