@@ -1,6 +1,6 @@
 # BluePic
 
-*Read this in other languages: [한국어](README-ko.md), [Português](README-pt.md).*
+*Read this in other languages: [한국어](README-ko.md), [Português](README-pt.md),[中国](README-cn.md).*
 
 [![Build Status - Master](https://travis-ci.org/IBM/BluePic.svg?branch=master)](https://travis-ci.org/IBM/BluePic)
 
