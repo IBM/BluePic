@@ -210,25 +210,6 @@ BluePic 设计了大量实用功能。要查看有关如何使用 iOS 应用程�
 - [Kitura 2.0 简介](https://developer.ibm.com/swift/2017/10/30/kitura-20/)
 - [使用 Kitura 命令行界面构建服务器端的 Swift 应用程序](https://developer.ibm.com/swift/2017/10/30/kitura-cli/)
 
-## 隐私声明
-BluePic-Server 应用程序提供一些代码用于跟踪到 [IBM Cloud](https://www.ibm.com/cloud/) 和其他 Cloud Foundry 平台的部署。系统会将有关每个部署的以下信息发送到 [Metrics collector](https://github.com/IBM/metrics-collector-service) 服务：
-
-* Swift 项目代码版本（如果已提供）
-* Swift 项目存储库 URL
-* 应用程序名称 (`application_name`)
-* 空间 ID (`space_id`)
-* 应用程序版本 (`application_version`)
-* 应用程序 URI (`application_uris`)
-* 绑定服务的标签和名称
-* 每个绑定服务的实例数量和相关计划信息
-
-这些数据收集自 IBM Cloud 和其他 Cloud Foundry 平台中的 `MetricsTrackerClient`、`VCAP_APPLICATION` 和 `VCAP_SERVICES` 环境变量的参数。IBM 使用这些数据来跟踪有关将样本应用程序部署到 IBM Cloud 的指标，方便我们度量示例的实用性，以便持续改进所提供的内容。
-
-### 禁用部署跟踪
-可通过从 `main.swift` 中移除以下行来禁用部署跟踪：
-
-    MetricsTrackerClient(repository: "BluePic", organization: "IBM").track()
-
 ## 许可
 此应用程序是在 Apache 2.0 下授予许可的。在[许可](LICENSE)中提供了完整许可文本。
 

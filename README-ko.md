@@ -203,25 +203,6 @@ BluePic의 폴더구조, 아키텍처, 종속된 Swift 패키지에 대한 자�
 ## IBM Cloud Tools for Swift에 관한 이슈 보고
  [dW Answers](https://developer.ibm.com/answers/topics/cloud-tools-for-swift.html) 웹사이트를 활용해 IBM Cloud Tools for Swift를 사용하는 동안 발생하는 모든 이슈를 질문 및/또는 보고할 수 있습니다. dW Answers에 질문을 올리실 때 `cloud-tools-for-swift`태그를 사용하시기 바랍니다.
 
-## 개인정보 보호정책
-BluePic-Server 애플리케이션은 [IBM Bluemix](https://www.bluemix.net/) 와 기타 Cloud Foundry 플랫폼에 대한 배포를 추적하는 코드가 포함되어 있습니다. 각 배포시 아래의 정보가 [Deployment Tracker](https://github.com/IBM-Bluemix/cf-deployment-tracker-service) 서비스로 전송됩니다.
-
-* Swift 프로젝트 코드 버전  (제공되는 경우)
-* Swift 프로젝트 저장소URL
-* 애플리케이션 이름  (`application_name`)
-* Space ID (`space_id`)
-* 애플리케이션 버전  (`application_version`)
-* 애플리케이션 URI (`application_uris`)
-* 바인딩 서비스 라벨
-* 각 바인딩 서비스의 인스턴스 수, 관련 계획 정보
-
-이 데이터는IBM Bluemix와 여타 Cloud Foundry 플래폼의  `CloudFoundryDeploymentTracker` 매개변수와 `VCAP_APPLICATION` and `VCAP_SERVICES` 환경 변수로부터 수집됩니다. IBM은 해당 데이터를 제공된 예제의 유용한 정도를 가늠하여 지속적으로 개발자 여러분들께 제공하는 컨텐츠를 개선하고자 IBM Bluemix의 샘플 애플리케이션의 개발 관련 항목들을 추적 관찰하고 있습니다. Deployment Tracker서비스를 호출하기 위한 코드가 있는 샘플 애플리케이션만 배포시 추적됩니다.
-
-### 배포 추적 비활성화하기
- `main.swift`에서 다음 행을 제거하여 배포 추적을 비활성화 할 수 있습니다.:
-
-    CloudFoundryDeploymentTracker(repositoryURL: "https://github.com/IBM-Swift/Kitura-Starter-Bluemix.git", codeVersion: nil).track()
-
 ## 라이센스
 이 애플리케이션은 Apache 2.0을 사용하였습니다. 라이센스 관련한 전문은 [라이센스](LICENSE)에서 확인하십시오.
 

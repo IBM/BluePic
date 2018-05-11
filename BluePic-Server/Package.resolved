@@ -200,15 +200,6 @@
         }
       },
       {
-        "package": "MetricsTrackerClient",
-        "repositoryURL": "https://github.com/IBM/metrics-collector-client-swift",
-        "state": {
-          "branch": null,
-          "revision": "1ae0e6559505a16e0ce61b035fb1a51f7127909a",
-          "version": "5.0.4"
-        }
-      },
-      {
         "package": "SSLService",
         "repositoryURL": "https://github.com/IBM-Swift/BlueSSLService.git",
         "state": {

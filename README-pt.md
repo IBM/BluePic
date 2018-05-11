@@ -204,25 +204,6 @@ Para saber mais a respeito da estrutura de pastas do BluePic, sua arquitetura e 
 #### Notificando problemas com relação ao IBM Cloud Tools for Swift
 É possível usar o website [dW Answers](https://developer.ibm.com/answers/topics/cloud-tools-for-swift.html) para fazer uma pergunta e/ou notificar algum problema encontrado durante o uso do IBM Cloud Tools for Swift. Não se esqueça de usar a tag `cloud-tools-for-swift` para as perguntas publicadas no dW Answers.
 
-## Aviso de Privacidade
-O aplicativo BluePic-Server inclui um código para acompanhar implementações no [IBM Bluemix](https://www.bluemix.net/) e em outras plataformas do Cloud Foundry. As informações a seguir são enviadas para um serviço de [Rastreador de Implementação](https://github.com/IBM-Bluemix/cf-deployment-tracker-service) em cada implementação:
-
-* Versão do código do projeto do Swift (se for fornecida)
-* URL do repositório do projeto do Swift
-* Nome do Aplicativo (`application_name`)
-* ID do Espaço (`space_id`)
-* Versão do Aplicativo (`application_version`)
-* URIs do Aplicativo (`application_uris`)
-* Etiquetas de serviços de limite
-* Número de instâncias para cada serviço de limite e informações do plano associado
-
-Esses dados são coletados a partir dos parâmetros do `CloudFoundryDeploymentTracker` e das variáveis de ambiente `VCAP_APPLICATION` e `VCAP_SERVICES` no IBM Bluemix e em outras plataformas do Cloud Foundry. Esses dados são utilizados pela IBM para o acompanhamento de métricas a respeito de implementações dos mesmos aplicativos no IBM Bluemix. O objetivo é determinar a utilidade dos nossos exemplos para podermos melhorar continuamente o conteúdo que oferecemos a você. Somente implementações de aplicativos de amostra que incluem código para fazer ping do serviço de Rastreador da Implementação serão acompanhadas.
-
-## Desativando o acompanhamento da implementação
-Para desativar o acompanhamento de implementação, basta remover a linha a seguir do `main swift`:
-
-    CloudFoundryDeploymentTracker(repositoryURL: "https://github.com/IBM-Swift/Kitura-Starter-Bluemix.git", codeVersion: nil).track()
-
 ## Licença
 Este aplicativo é licenciado conforme o Apache 2.0. O texto completo da licença está disponível em [LICENÇA](LICENÇA).
 
