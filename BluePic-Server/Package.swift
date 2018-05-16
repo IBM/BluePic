@@ -31,7 +31,7 @@ let package = Package(
       .package(url: "https://github.com/IBM-Swift/Kitura.git", .upToNextMinor(from: "2.0.0")),
       .package(url: "https://github.com/IBM-Swift/Kitura-CouchDB.git", .upToNextMinor(from: "1.7.0")),
       .package(url: "https://github.com/IBM-Swift/CloudEnvironment.git", .upToNextMajor(from: "6.0.0")),
-      .package(url: "https://github.com/IBM/metrics-collector-client-swift", .upToNextMajor(from: "5.0.0")),
+      .package(url: "https://github.com/IBM-Swift/SwiftyRequest.git", .upToNextMajor(from: "1.0.0")),
       .package(url: "https://github.com/ibm-bluemix-mobile-services/bluemix-simple-http-client-swift.git", .upToNextMinor(from: "0.7.0")),
       .package(url: "https://github.com/ibm-bluemix-mobile-services/bluemix-objectstorage-serversdk-swift.git", .upToNextMinor(from: "0.8.0")),
       .package(url: "https://github.com/ibm-bluemix-mobile-services/bms-pushnotifications-serversdk-swift.git", .upToNextMinor(from: "0.6.0")),
@@ -48,7 +48,7 @@ let package = Package(
                             "BluemixAppID",
                             "CredentialsFacebook",
                             "BluemixPushNotifications",
-                            "MetricsTrackerClient"
+                            "SwiftyRequest"
                           ]
         ),
         .target(
@@ -57,7 +57,7 @@ let package = Package(
         ),
         .testTarget(
             name: "BluePicAppTests",
-            dependencies: ["BluePicServer", "MetricsTrackerClient"]
+            dependencies: ["BluePicServer"]
         )
     ]
 )

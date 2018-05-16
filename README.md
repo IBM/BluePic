@@ -210,25 +210,6 @@ To learn more about BluePic's folder structure, its architecture, and the Swift 
 - [Introducing Kitura 2.0](https://developer.ibm.com/swift/2017/10/30/kitura-20/)
 - [Build a server-side Swift application using the Kitura command-line interface](https://developer.ibm.com/swift/2017/10/30/kitura-cli/)
 
-## Privacy Notice
-The BluePic-Server application includes code to track deployments to [IBM Cloud](https://www.ibm.com/cloud/) and other Cloud Foundry platforms. The following information is sent to the [Metrics collector](https://github.com/IBM/metrics-collector-service) service on each deployment:
-
-* Swift project code version (if provided)
-* Swift project repository URL
-* Application Name (`application_name`)
-* Space ID (`space_id`)
-* Application Version (`application_version`)
-* Application URIs (`application_uris`)
-* Labels and names of bound services
-* Number of instances for each bound service and associated plan information
-
-This data is collected from the parameters of the `MetricsTrackerClient`, the `VCAP_APPLICATION` and `VCAP_SERVICES` environment variables in IBM Cloud and other Cloud Foundry platforms. This data is used by IBM to track metrics around deployments of sample applications to IBM Cloud to measure the usefulness of our examples, so that we can continuously improve the content we offer to you.
-
-### Disabling Deployment Tracking
-Deployment tracking can be disabled by removing the following lines from `main.swift`:
-
-    MetricsTrackerClient(repository: "BluePic", organization: "IBM").track()
-
 ## License
 This application is licensed under Apache 2.0. Full license text is available in [LICENSE](LICENSE).
 
