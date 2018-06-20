@@ -17,7 +17,7 @@ declared-services:
     plan: Free-v2
   BluePic-Visual-Recognition:
     label: watson_vision_combined
-    plan: free
+    plan: lite
 applications:
 - name: BluePic
   path: ./BluePic-Server
