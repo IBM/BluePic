@@ -19,25 +19,25 @@ The back-end components (i.e. Kitura-based server and Cloud Functions actions) a
 
 You can download the development snapshots of the Swift binaries by following this [link](https://swift.org/download/). Compatibility with other Swift versions is not guaranteed.
 
-Optionally, if you'd like to run the BluePic Kitura-based server using Xcode, you should use Xcode 9.1 and configure it to use the default toolchain. For details on how to set up Xcode, see [Building within Xcode](http://www.kitura.io/en/starter/xcode.html). Please note that any other versions of Xcode are not guaranteed to work with the back-end code.
+Optionally, if you'd like to run the BluePic Kitura-based server using Xcode, you should use Xcode 9.1 and configure it to use the default toolchain. For details on how to set up Xcode, see [Building within Xcode](https://www.kitura.io/guides/building/xcodebuild.html). Please note that any other versions of Xcode are not guaranteed to work with the back-end code.
 
 
 ## Getting started
 
 ### 1. Install system dependencies
-The following system level dependencies should be installed on macOS using [Homebrew](http://brew.sh/):
+The following system level dependencies should be installed on macOS using [Homebrew](https://brew.sh/):
 
 ```bash
 brew install curl
 ```
 
-If you would like to use Linux as your development platform for the Kitura server component, see [Compile and test your code on macOS and Linux](http://www.kitura.io/en/starter/leveragedocker.html) for details on how to leverage Docker on your macOS system.
+If you would like to use Linux as your development platform for the Kitura server component, see [Compile and test your code on macOS and Linux](https://www.kitura.io/guides/building/linuxbuild.html) for details on how to leverage Docker on your macOS system.
 
 ### 2. Clone the BluePic Git repository
 Execute the following command to clone the Git repository:
 
 ```bash
-git clone https://github.com/IBM/BluePic.git
+git clone https://github.com/IBM/BluePic
 ```
 
 If you'd like to, you can spend a few minutes to get familiar with the folder structure of the repo as described in the [About](Docs/About.md) page.
@@ -47,7 +47,7 @@ If you'd like to, you can spend a few minutes to get familiar with the folder st
 #### Cloud Foundry Deployment
 Clicking on the button below deploys the BluePic application to IBM Cloud. The [`manifest.yml`](manifest.yml) file [included in the repo] is parsed to obtain the name of the application and to determine the Cloud Foundry services that should be instantiated. For further details on the structure of the `manifest.yml` file, see the [Cloud Foundry documentation](https://docs.cloudfoundry.org/devguide/deploy-apps/manifest.html#minimal-manifest). After clicking the button below, you will be able to name your application, keep in mind that your IBM Cloud application name needs to match the name value in your `manifest.yml`. Therefore, you may have to change the name value in your `manifest.yml` if there is a naming conflict in your IBM Cloud account.
 
-[![Deploy to Bluemix](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy?repository=https://github.com/IBM/BluePic.git&cm_mmc=github-code-_-native-_-bluepic-_-deploy2bluemix)
+[![Deploy to Bluemix](https://cloud.ibm.com/devops/setup/deploy/button.png)](https://cloud.ibm.com/devops/setup/deploy?repository=https://github.com/IBM/BluePic&cm_mmc=github-code-_-native-_-bluepic-_-deploy2bluemix)
 
 Once deployment to IBM Cloud is completed, you should access the route assigned to your application using the web browser of your choice. You should see the Kitura welcome page!
 
@@ -56,7 +56,7 @@ Note that the [IBM Cloud buildpack for Swift](https://github.com/IBM-Swift/swift
 #### Manual Command Line Deployment
 ##### Deploy as Cloud Foundry Application
 You will need to install the following:
-- [IBM Cloud Dev Plugin](https://console.bluemix.net/docs/cloudnative/dev_cli.html#developercli)
+- [IBM Cloud Dev Plugin](https://cloud.ibm.com/docs/cloudnative/dev_cli.html#developercli)
 
 ```
 sh ./Cloud-Scripts/Deployment/cloud_foundry.sh
@@ -155,11 +155,11 @@ In order to have the app authenticate with Facebook, you must create an applicat
 ### 3. Configure IBM Cloud Push service
 To utilize push notification capabilities on IBM Cloud, you need to configure a notification provider. For BluePic, you should configure credentials for the Apple Push Notification Service (APNS). As part of this configuration step, you will need to use the **bundle identifier** you chose in the [Create an application instance on Facebook](#1-create-an-application-instance-on-facebook) section.
 
-Luckily, IBM Cloud has [instructions](https://console.bluemix.net/docs/services/mobilepush/index.html#gettingstartedtemplate) to walk you through the process of configuring APNS with your IBM Cloud Push service. Please note that you'd need to upload a `.p12` certificate to IBM Cloud and enter the password for it, as described in the IBM Cloud instructions.
+Luckily, IBM Cloud has [instructions](https://cloud.ibm.com/docs/services/mobilepush/index.html#gettingstartedtemplate) to walk you through the process of configuring APNS with your IBM Cloud Push service. Please note that you'd need to upload a `.p12` certificate to IBM Cloud and enter the password for it, as described in the IBM Cloud instructions.
 
 Additionally, the `appGuid ` for your Push service acts independently of the BluePic app so we will need to add that value to our `cloud.plist`. Additionally, we need the `clientSecret` value for the push service. We get both, the `appGuid` and `clientSecret` by viewing our credentials for the Push service in IBM Cloud, all your services should be under the "Connections" of your app. Once there, click on the "View Credentials" or "Show Credentials" button for your Push Notifications service and you should see the `appGuid` pop up, among other values. Now, simply put that value into your `cloud.plist` corresponding with the `pushAppGUID` key. Next, you should see the `clientSecret` value which you can use to populate the `pushClientSecret` field in the `cloud.plist`. This should ensure your device gets registered properly with the Push service.
 
-Lastly, remember that push notifications will only show up on a physical iOS device. To ensure your app can run on a device and receive push notifications, make sure you followed the IBM Cloud [instructions](https://console.bluemix.net/docs/services/mobilepush/index.html#gettingstartedtemplate). At this point, open the `BluePic.xcworkspace` in Xcode and navigate to the `Capabilities` tab for the BluePic app target. Here, flip the switch for push notifications, like so:
+Lastly, remember that push notifications will only show up on a physical iOS device. To ensure your app can run on a device and receive push notifications, make sure you followed the IBM Cloud [instructions](https://cloud.ibm.com/docs/services/mobilepush/index.html#gettingstartedtemplate). At this point, open the `BluePic.xcworkspace` in Xcode and navigate to the `Capabilities` tab for the BluePic app target. Here, flip the switch for push notifications, like so:
 
 <p align="center"><img src="Imgs/enablePush.png"  alt="Drawing" height=145 border=0 /></p>
 
@@ -174,7 +174,7 @@ BluePic leverages Cloud Functions actions written in Swift for accessing the Wat
 After configuring the optional features, you should redeploy the BluePic app to IBM Cloud.
 
 ###### Cloud Foundry
-You can use the IBM Cloud CLI to do that, download it [here](http://clis.ng.bluemix.net/ui/home.html). Once you have logged in to IBM Cloud using the command line, you can execute `bx app push` from the root folder of this repo on your local file system. This will push the application code and configuration to IBM Cloud.
+You can use the IBM Cloud CLI to do that, download it [here](https://cloud.ibm.com/docs/cli/index.html). Once you have logged in to IBM Cloud using the command line, you can execute `bx app push` from the root folder of this repo on your local file system. This will push the application code and configuration to IBM Cloud.
 
 ###### Kubernetes Cluster
 If you are using a Kubernetes Cluser and have already gone through the initial deployment process [here](#deploy-as-kubernetes-container-cluster-with-docker)
@@ -194,7 +194,7 @@ For IBM developers, see our [Wiki](https://github.com/IBM/BluePic/wiki/Code-Sign
 
 The easiest method for running the iOS app on a physical device is to change the bundle ID for BluePic to a unique value (if you haven't already). Afterwards, check the box for `Automatically manage signing` located under the `General` tab for the BluePic app target (in Xcode). After checking that box, you need to ensure the team for your personal Apple Developer account is selected from the dropdown. Assuming you have the Apple Developer Program team role of `Agent` or `Admin`, either a provisioning profile will be created for the BluePic app or a wildcard profile will be used (if exists), allowing you to run on a device.
 
-Alternatively, you can manually configure code signing of the app by using a wildcard App ID to run the app on your device. If already created, simply select it in the provisioning profile dropdown in the `Signing (Debug)` section. If not created, you can create one through the Apple Developer Portal. This [link](https://developer.apple.com/library/content/qa/qa1713/_index.html) should be helpful in providing more info about wildcard App IDs.
+Alternatively, you can manually configure code signing of the app by using a wildcard App ID to run the app on your device. If already created, simply select it in the provisioning profile dropdown in the `Signing (Debug)` section. If not created, you can create one through the Apple Developer Portal. This [link](https://developer.apple.com/library/archive/qa/qa1713/_index.html) should be helpful in providing more info about wildcard App IDs.
 
 ## Running the Kitura-based server locally
 You can build the BluePic-Server by going to the `BluePic-Server` directory of the cloned repository and running `swift build`. To start the Kitura-based server for the BluePic app on your local system, go to the `BluePic-Server` directory of the cloned repository and run `.build/debug/BluePicServer`. You should also update the `cloud.plist` file in the Xcode project in order to have the iOS app connect to this local server. See the [Update configuration for iOS app](#7-update-configuration-for-ios-app) section for details.
@@ -211,9 +211,9 @@ To learn more about BluePic's folder structure, its architecture, and the Swift 
 - [Build a server-side Swift application using the Kitura command-line interface](https://developer.ibm.com/swift/2017/10/30/kitura-cli/)
 
 ## License
-This code pattern is licensed under the Apache Software License, Version 2.  Separate third party code objects invoked within this code pattern are licensed by their respective providers pursuant to their own separate licenses. Contributions are subject to the [Developer Certificate of Origin, Version 1.1 (DCO)](https://developercertificate.org/) and the [Apache Software License, Version 2](http://www.apache.org/licenses/LICENSE-2.0.txt).
+This code pattern is licensed under the Apache Software License, Version 2.  Separate third party code objects invoked within this code pattern are licensed by their respective providers pursuant to their own separate licenses. Contributions are subject to the [Developer Certificate of Origin, Version 1.1 (DCO)](https://developercertificate.org/) and the [Apache Software License, Version 2](https://www.apache.org/licenses/LICENSE-2.0.txt).
 
-[Apache Software License (ASL) FAQ](http://www.apache.org/foundation/license-faq.html#WhatDoesItMEAN)
+[Apache Software License (ASL) FAQ](https://www.apache.org/foundation/license-faq.html#WhatDoesItMEAN)
 
 
 For a list of demo images used, view the [Image Sources](Docs/ImageSources.md) file.
